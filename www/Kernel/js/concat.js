@@ -4793,6 +4793,266 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false},"addListener":{"nowait":true},"new":{"nowait":false}},"fields":{"id":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.AbstractShape',
+  shortName: 'AbstractShape',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.TObject,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_AbstractShape_main() {
+        "use strict";
+        var _this=this;
+        
+        "field strict";
+        
+      },
+      fiber$main :function _trc_AbstractShape_f_main(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        "field strict";
+        
+        
+        _thread.retVal=_this;return;
+      },
+      clone :function _trc_AbstractShape_clone(value) {
+        "use strict";
+        var _this=this;
+        
+        throw new Error("clone::abstract");
+        
+      },
+      fiber$clone :function _trc_AbstractShape_f_clone(_thread,value) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        throw new Error("clone::abstract");
+        
+        
+        _thread.retVal=_this;return;
+      },
+      changeLayer :function _trc_AbstractShape_changeLayer(value) {
+        "use strict";
+        var _this=this;
+        
+        throw new Error("changeLayer::abstract");
+        
+      },
+      fiber$changeLayer :function _trc_AbstractShape_f_changeLayer(_thread,value) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        throw new Error("changeLayer::abstract");
+        
+        
+        _thread.retVal=_this;return;
+      },
+      intersects :function _trc_AbstractShape_intersects(s) {
+        "use strict";
+        var _this=this;
+        
+        if (! s) {
+          return false;
+        }
+        if (s.layer===_this.layer||! s.layer||! _this.layer) {
+          return _this.intersectsRaw(s);
+          
+        }
+        return _this.intersectsRaw(s.layerChanged(_this.layer));
+      },
+      fiber$intersects :function _trc_AbstractShape_f_intersects(_thread,s) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        if (! s) {
+          _thread.retVal=false;return;
+          
+        }
+        
+        _thread.enter(function _trc_AbstractShape_ent_intersects(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              if (!(s.layer===_this.layer||! s.layer||! _this.layer)) { __pc=2     ; break; }
+              _this.fiber$intersectsRaw(_thread, s);
+              __pc=1;return;
+            case 1:
+              _thread.exit(_thread.retVal);return;
+              
+            case 2     :
+              
+              _this.fiber$intersectsRaw(_thread, s.layerChanged(_this.layer));
+              __pc=3;return;
+            case 3:
+              _thread.exit(_thread.retVal);return;
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      intersectsRaw :function _trc_AbstractShape_intersectsRaw(s) {
+        "use strict";
+        var _this=this;
+        
+        throw new Error("intersectsRaw::abstract");
+        
+      },
+      fiber$intersectsRaw :function _trc_AbstractShape_f_intersectsRaw(_thread,s) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        throw new Error("intersectsRaw::abstract");
+        
+        
+        _thread.retVal=_this;return;
+      },
+      contains :function _trc_AbstractShape_contains(s) {
+        "use strict";
+        var _this=this;
+        var cv;
+        
+        if (! s) {
+          return false;
+        }
+        if (s.layer===_this.layer||! s.layer||! _this.layer) {
+          return _this.containsRaw(s);
+          
+        }
+        cv = _this.screen.convert(s,_this.layer);
+        
+        return _this.intersectsRaw(cv);
+      },
+      fiber$contains :function _trc_AbstractShape_f_contains(_thread,s) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var cv;
+        
+        if (! s) {
+          _thread.retVal=false;return;
+          
+        }
+        
+        _thread.enter(function _trc_AbstractShape_ent_contains(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              if (!(s.layer===_this.layer||! s.layer||! _this.layer)) { __pc=2     ; break; }
+              _this.fiber$containsRaw(_thread, s);
+              __pc=1;return;
+            case 1:
+              _thread.exit(_thread.retVal);return;
+              
+            case 2     :
+              
+              cv = _this.screen.convert(s,_this.layer);
+              
+              _this.fiber$intersectsRaw(_thread, cv);
+              __pc=3;return;
+            case 3:
+              _thread.exit(_thread.retVal);return;
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      containsRaw :function _trc_AbstractShape_containsRaw(s) {
+        "use strict";
+        var _this=this;
+        
+        throw new Error("containsRaw::abstract");
+        
+      },
+      fiber$containsRaw :function _trc_AbstractShape_f_containsRaw(_thread,s) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        throw new Error("containsRaw::abstract");
+        
+        
+        _thread.retVal=_this;return;
+      },
+      layerChanged :function _trc_AbstractShape_layerChanged(layer) {
+        "use strict";
+        var _this=this;
+        var res;
+        
+        res = _this.clone();
+        
+        res.layer=layer;
+        return res;
+      },
+      fiber$layerChanged :function _trc_AbstractShape_f_layerChanged(_thread,layer) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var res;
+        
+        
+        _thread.enter(function _trc_AbstractShape_ent_layerChanged(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$clone(_thread);
+              __pc=1;return;
+            case 1:
+              res=_thread.retVal;
+              
+              res.layer=layer;
+              _thread.exit(res);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      __getter__layer :function _trc_AbstractShape___getter__layer() {
+        "use strict";
+        var _this=this;
+        
+        return _this._layer;
+      },
+      __setter__layer :function _trc_AbstractShape___setter__layer(value) {
+        "use strict";
+        var _this=this;
+        
+        if (! _this._layer) {
+          _this._layer=value;
+        } else {
+          _this.changeLayer(value);
+        }
+      },
+      __getter__screen :function _trc_AbstractShape___getter__screen() {
+        "use strict";
+        var _this=this;
+        
+        return (_this.layer&&_this.layer.screen)||Tonyu.globals.$Screen;
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false},"clone":{"nowait":false},"changeLayer":{"nowait":false},"intersects":{"nowait":false},"intersectsRaw":{"nowait":false},"contains":{"nowait":false},"containsRaw":{"nowait":false},"layerChanged":{"nowait":false},"__getter__layer":{"nowait":true},"__setter__layer":{"nowait":true},"__getter__screen":{"nowait":true}},"fields":{"_layer":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.CubeShape',
   shortName: 'CubeShape',
   namespace: 'kernel',
@@ -5459,6 +5719,138 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"cn":{"nowait":false},"chk":{"nowait":false},"getNode":{"nowait":false},"change":{"nowait":false}},"fields":{"dstParent":{},"nodes":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.PointShape',
+  shortName: 'PointShape',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.AbstractShape,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_PointShape_main() {
+        "use strict";
+        var _this=this;
+        
+        "field strict";
+        
+      },
+      fiber$main :function _trc_PointShape_f_main(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        "field strict";
+        
+        
+        _thread.retVal=_this;return;
+      },
+      clone :function _trc_PointShape_clone() {
+        "use strict";
+        var _this=this;
+        
+        return new Tonyu.classes.kernel.PointShape({x: _this.x,y: _this.y,_layer: _this._layer});
+      },
+      fiber$clone :function _trc_PointShape_f_clone(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=new Tonyu.classes.kernel.PointShape({x: _this.x,y: _this.y,_layer: _this._layer});return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      changeLayer :function _trc_PointShape_changeLayer(newLayer) {
+        "use strict";
+        var _this=this;
+        var c;
+        
+        c = _this.screen.convert({x: _this.x,y: _this.y,layer: _this._layer},newLayer);
+        
+        _this.x=c.x;
+        _this.y=c.y;
+        _this._layer=newLayer;
+      },
+      fiber$changeLayer :function _trc_PointShape_f_changeLayer(_thread,newLayer) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var c;
+        
+        c = _this.screen.convert({x: _this.x,y: _this.y,layer: _this._layer},newLayer);
+        
+        _this.x=c.x;
+        _this.y=c.y;
+        _this._layer=newLayer;
+        
+        _thread.retVal=_this;return;
+      },
+      intersectsRaw :function _trc_PointShape_intersectsRaw(s) {
+        "use strict";
+        var _this=this;
+        
+        return s.containsRaw(_this);
+      },
+      fiber$intersectsRaw :function _trc_PointShape_f_intersectsRaw(_thread,s) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=s.containsRaw(_this);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      containsRaw :function _trc_PointShape_containsRaw(p) {
+        "use strict";
+        var _this=this;
+        
+        return p.x===_this.x&&p.y===_this.y;
+      },
+      fiber$containsRaw :function _trc_PointShape_f_containsRaw(_thread,p) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=p.x===_this.x&&p.y===_this.y;return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      __getter__xmin :function _trc_PointShape___getter__xmin() {
+        "use strict";
+        var _this=this;
+        
+        return _this.x;
+      },
+      __getter__xmax :function _trc_PointShape___getter__xmax() {
+        "use strict";
+        var _this=this;
+        
+        return _this.x;
+      },
+      __getter__ymin :function _trc_PointShape___getter__ymin() {
+        "use strict";
+        var _this=this;
+        
+        return _this.y;
+      },
+      __getter__ymax :function _trc_PointShape___getter__ymax() {
+        "use strict";
+        var _this=this;
+        
+        return _this.y;
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false},"clone":{"nowait":false},"changeLayer":{"nowait":false},"intersectsRaw":{"nowait":false},"containsRaw":{"nowait":false},"__getter__xmin":{"nowait":true},"__getter__xmax":{"nowait":true},"__getter__ymin":{"nowait":true},"__getter__ymax":{"nowait":true}},"fields":{"x":{},"y":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.Quaternion',
   shortName: 'Quaternion',
   namespace: 'kernel',
@@ -5899,7 +6291,7 @@ Tonyu.klass.define({
   fullName: 'kernel.RectShape',
   shortName: 'RectShape',
   namespace: 'kernel',
-  superclass: Tonyu.classes.kernel.TObject,
+  superclass: Tonyu.classes.kernel.AbstractShape,
   includes: [],
   methods: function (__superClass) {
     return {
@@ -5921,30 +6313,103 @@ Tonyu.klass.define({
         
         _thread.retVal=_this;return;
       },
-      intersects :function _trc_RectShape_intersects(s) {
+      clone :function _trc_RectShape_clone() {
         "use strict";
         var _this=this;
         
-        return s&&Math.abs(_this.x-s.x)*2<_this.width+s.width&&Math.abs(_this.y-s.y)*2<_this.height+s.height;
+        return new Tonyu.classes.kernel.RectShape({x: _this.x,y: _this.y,width: _this.width,height: _this.height,_layer: _this._layer});
       },
-      fiber$intersects :function _trc_RectShape_f_intersects(_thread,s) {
+      fiber$clone :function _trc_RectShape_f_clone(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         
-        _thread.retVal=s&&Math.abs(_this.x-s.x)*2<_this.width+s.width&&Math.abs(_this.y-s.y)*2<_this.height+s.height;return;
+        _thread.retVal=new Tonyu.classes.kernel.RectShape({x: _this.x,y: _this.y,width: _this.width,height: _this.height,_layer: _this._layer});return;
         
         
         _thread.retVal=_this;return;
       },
-      contains :function _trc_RectShape_contains(p) {
+      changeLayer :function _trc_RectShape_changeLayer(newLayer) {
+        "use strict";
+        var _this=this;
+        var c;
+        var rb;
+        
+        c = _this.screen.convert({x: _this.x,y: _this.y,layer: _this._layer},newLayer);
+        
+        rb = _this.screen.convert({x: _this.x+_this.width,y: _this.y+_this.height,layer: _this._layer},newLayer);
+        
+        _this.x=c.x;
+        _this.y=c.y;
+        _this.width=(rb.x-c.x);
+        _this.height=(rb.y-c.y);
+        _this._layer=newLayer;
+      },
+      fiber$changeLayer :function _trc_RectShape_f_changeLayer(_thread,newLayer) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var c;
+        var rb;
+        
+        c = _this.screen.convert({x: _this.x,y: _this.y,layer: _this._layer},newLayer);
+        
+        rb = _this.screen.convert({x: _this.x+_this.width,y: _this.y+_this.height,layer: _this._layer},newLayer);
+        
+        _this.x=c.x;
+        _this.y=c.y;
+        _this.width=(rb.x-c.x);
+        _this.height=(rb.y-c.y);
+        _this._layer=newLayer;
+        
+        _thread.retVal=_this;return;
+      },
+      intersectsRaw :function _trc_RectShape_intersectsRaw(s) {
+        "use strict";
+        var _this=this;
+        
+        if (Tonyu.is(s,Tonyu.classes.kernel.RectShape)) {
+          return Math.abs(_this.x-s.x)*2<_this.width+s.width&&Math.abs(_this.y-s.y)*2<_this.height+s.height;
+          
+        }
+        return _this.containsRaw(s);
+      },
+      fiber$intersectsRaw :function _trc_RectShape_f_intersectsRaw(_thread,s) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        if (Tonyu.is(s,Tonyu.classes.kernel.RectShape)) {
+          _thread.retVal=Math.abs(_this.x-s.x)*2<_this.width+s.width&&Math.abs(_this.y-s.y)*2<_this.height+s.height;return;
+          
+          
+        }
+        
+        _thread.enter(function _trc_RectShape_ent_intersectsRaw(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$containsRaw(_thread, s);
+              __pc=1;return;
+            case 1:
+              _thread.exit(_thread.retVal);return;
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      containsRaw :function _trc_RectShape_containsRaw(p) {
         "use strict";
         var _this=this;
         
         return p.x>=_this.xmin&&p.x<=_this.xmax&&p.y>=_this.ymin&&p.y<=_this.ymax;
       },
-      fiber$contains :function _trc_RectShape_f_contains(_thread,p) {
+      fiber$containsRaw :function _trc_RectShape_f_containsRaw(_thread,p) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
@@ -5982,7 +6447,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"intersects":{"nowait":false},"contains":{"nowait":false},"__getter__xmin":{"nowait":true},"__getter__xmax":{"nowait":true},"__getter__ymin":{"nowait":true},"__getter__ymax":{"nowait":true}},"fields":{"x":{},"y":{},"width":{},"height":{}}}
+  decls: {"methods":{"main":{"nowait":false},"clone":{"nowait":false},"changeLayer":{"nowait":false},"intersectsRaw":{"nowait":false},"containsRaw":{"nowait":false},"__getter__xmin":{"nowait":true},"__getter__xmax":{"nowait":true},"__getter__ymin":{"nowait":true},"__getter__ymax":{"nowait":true}},"fields":{"x":{},"y":{},"width":{},"height":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Transform',
@@ -6581,12 +7046,12 @@ Tonyu.klass.define({
         var _this=this;
         var name;
         var val;
-        var _it_232;
+        var _it_237;
         
-        _it_232=Tonyu.iterator(o,2);
-        while(_it_232.next()) {
-          name=_it_232[0];
-          val=_it_232[1];
+        _it_237=Tonyu.iterator(o,2);
+        while(_it_237.next()) {
+          name=_it_237[0];
+          val=_it_237[1];
           
           if (typeof  val!=="number") {
             throw new Error(name+"("+val+")は数値ではありません．");
@@ -6603,12 +7068,12 @@ Tonyu.klass.define({
         var __pc=0;
         var name;
         var val;
-        var _it_232;
+        var _it_237;
         
-        _it_232=Tonyu.iterator(o,2);
-        while(_it_232.next()) {
-          name=_it_232[0];
-          val=_it_232[1];
+        _it_237=Tonyu.iterator(o,2);
+        while(_it_237.next()) {
+          name=_it_237[0];
+          val=_it_237[1];
           
           if (typeof  val!=="number") {
             throw new Error(name+"("+val+")は数値ではありません．");
@@ -7705,13 +8170,13 @@ Tonyu.klass.define({
         var _this=this;
         var a;
         var k;
-        var _it_260;
+        var _it_265;
         
         a = new Tonyu.classes.kernel.ArgParser(arguments);
         
-        _it_260=Tonyu.iterator(a.toArray(),1);
-        while(_it_260.next()) {
-          k=_it_260[0];
+        _it_265=Tonyu.iterator(a.toArray(),1);
+        while(_it_265.next()) {
+          k=_it_265[0];
           
           if (_this.value[k]==null) {
             _this.value[k]=(k=="a"?_this.maxs.a:0);
@@ -7726,13 +8191,13 @@ Tonyu.klass.define({
         var __pc=0;
         var a;
         var k;
-        var _it_260;
+        var _it_265;
         
         a = new Tonyu.classes.kernel.ArgParser(_arguments);
         
-        _it_260=Tonyu.iterator(a.toArray(),1);
-        while(_it_260.next()) {
-          k=_it_260[0];
+        _it_265=Tonyu.iterator(a.toArray(),1);
+        while(_it_265.next()) {
+          k=_it_265[0];
           
           if (_this.value[k]==null) {
             _this.value[k]=(k=="a"?_this.maxs.a:0);
@@ -9468,16 +9933,16 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var layer;
-        var _it_321;
+        var _it_326;
         var pp;
         var ts;
         var t;
-        var _it_322;
+        var _it_327;
         var c;
         
-        _it_321=Tonyu.iterator(_this.screen.layers,1);
-        while(_it_321.next()) {
-          layer=_it_321[0];
+        _it_326=Tonyu.iterator(_this.screen.layers,1);
+        while(_it_326.next()) {
+          layer=_it_326[0];
           
           pp = p;
           
@@ -9492,9 +9957,9 @@ Tonyu.klass.define({
             
             return a.zOrder-b.zOrder;
           }));
-          _it_322=Tonyu.iterator(ts,1);
-          while(_it_322.next()) {
-            t=_it_322[0];
+          _it_327=Tonyu.iterator(ts,1);
+          while(_it_327.next()) {
+            t=_it_327[0];
             
             c = t.getTouchShape(scale);
             
@@ -9513,11 +9978,11 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var layer;
-        var _it_321;
+        var _it_326;
         var pp;
         var ts;
         var t;
-        var _it_322;
+        var _it_327;
         var c;
         
         
@@ -9526,10 +9991,10 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              _it_321=Tonyu.iterator(_this.screen.layers,1);
+              _it_326=Tonyu.iterator(_this.screen.layers,1);
             case 1:
-              if (!(_it_321.next())) { __pc=7     ; break; }
-              layer=_it_321[0];
+              if (!(_it_326.next())) { __pc=7     ; break; }
+              layer=_it_326[0];
               
               pp = p;
               
@@ -9548,10 +10013,10 @@ Tonyu.klass.define({
                 
                 return a.zOrder-b.zOrder;
               }));
-              _it_322=Tonyu.iterator(ts,1);
+              _it_327=Tonyu.iterator(ts,1);
             case 4:
-              if (!(_it_322.next())) { __pc=6     ; break; }
-              t=_it_322[0];
+              if (!(_it_327.next())) { __pc=6     ; break; }
+              t=_it_327[0];
               
               c = t.getTouchShape(scale);
               
@@ -10740,11 +11205,11 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var s;
-        var _it_360;
+        var _it_365;
         
-        _it_360=Tonyu.iterator(_this.sprites,1);
-        while(_it_360.next()) {
-          s=_it_360[0];
+        _it_365=Tonyu.iterator(_this.sprites,1);
+        while(_it_365.next()) {
+          s=_it_365[0];
           
           s.draw3D(ctx);
           
@@ -10756,11 +11221,11 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var s;
-        var _it_360;
+        var _it_365;
         
-        _it_360=Tonyu.iterator(_this.sprites,1);
-        while(_it_360.next()) {
-          s=_it_360[0];
+        _it_365=Tonyu.iterator(_this.sprites,1);
+        while(_it_365.next()) {
+          s=_it_365[0];
           
           s.draw3D(ctx);
           
@@ -11742,14 +12207,14 @@ Tonyu.klass.define({
         var _this=this;
         var dupc;
         var t;
-        var _it_376;
-        var _it_377;
+        var _it_381;
+        var _it_382;
         
         dupc = {};
         
-        _it_376=Tonyu.iterator(_this.cur,1);
-        while(_it_376.next()) {
-          t=_it_376[0];
+        _it_381=Tonyu.iterator(_this.cur,1);
+        while(_it_381.next()) {
+          t=_it_381[0];
           
           if (dupc[t.id]) {
             console.log("WARNING","Scheduler: duplicate thread detected in cur",t);
@@ -11758,9 +12223,9 @@ Tonyu.klass.define({
           dupc[t.id]="cur";
           
         }
-        _it_377=Tonyu.iterator(_this.next,1);
-        while(_it_377.next()) {
-          t=_it_377[0];
+        _it_382=Tonyu.iterator(_this.next,1);
+        while(_it_382.next()) {
+          t=_it_382[0];
           
           if (dupc[t.id]) {
             console.log("WARNING","Scheduler: duplicate thread detected in next and "+dupc[t.id],t);
@@ -11777,14 +12242,14 @@ Tonyu.klass.define({
         var __pc=0;
         var dupc;
         var t;
-        var _it_376;
-        var _it_377;
+        var _it_381;
+        var _it_382;
         
         dupc = {};
         
-        _it_376=Tonyu.iterator(_this.cur,1);
-        while(_it_376.next()) {
-          t=_it_376[0];
+        _it_381=Tonyu.iterator(_this.cur,1);
+        while(_it_381.next()) {
+          t=_it_381[0];
           
           if (dupc[t.id]) {
             console.log("WARNING","Scheduler: duplicate thread detected in cur",t);
@@ -11793,9 +12258,9 @@ Tonyu.klass.define({
           dupc[t.id]="cur";
           
         }
-        _it_377=Tonyu.iterator(_this.next,1);
-        while(_it_377.next()) {
-          t=_it_377[0];
+        _it_382=Tonyu.iterator(_this.next,1);
+        while(_it_382.next()) {
+          t=_it_382[0];
           
           if (dupc[t.id]) {
             console.log("WARNING","Scheduler: duplicate thread detected in next and "+dupc[t.id],t);
@@ -12208,11 +12673,11 @@ Tonyu.klass.define({
         });
         e.sendUp=(function anonymous_345() {
           var f;
-          var _it_392;
+          var _it_397;
           
-          _it_392=Tonyu.iterator(e.sendUps,1);
-          while(_it_392.next()) {
-            f=_it_392[0];
+          _it_397=Tonyu.iterator(e.sendUps,1);
+          while(_it_397.next()) {
+            f=_it_397[0];
             
             f();
           }
@@ -12243,11 +12708,11 @@ Tonyu.klass.define({
         });
         e.sendUp=(function anonymous_345() {
           var f;
-          var _it_392;
+          var _it_397;
           
-          _it_392=Tonyu.iterator(e.sendUps,1);
-          while(_it_392.next()) {
-            f=_it_392[0];
+          _it_397=Tonyu.iterator(e.sendUps,1);
+          while(_it_397.next()) {
+            f=_it_397[0];
             
             f();
           }
@@ -12268,8 +12733,8 @@ Tonyu.klass.define({
           var a;
           var e;
           var f;
-          var _it_396;
-          var _it_397;
+          var _it_401;
+          var _it_402;
           
           if (_this.pressState[raw.keyCode]) {
             return _this;
@@ -12280,9 +12745,9 @@ Tonyu.klass.define({
           
           a.push(e);
           if (_this.handlers[raw.keyCode]) {
-            _it_396=Tonyu.iterator(_this.handlers[raw.keyCode],1);
-            while(_it_396.next()) {
-              f=_it_396[0];
+            _it_401=Tonyu.iterator(_this.handlers[raw.keyCode],1);
+            while(_it_401.next()) {
+              f=_it_401[0];
               
               f(e);
               
@@ -12290,9 +12755,9 @@ Tonyu.klass.define({
             
           }
           if (_this.handlers.all) {
-            _it_397=Tonyu.iterator(_this.handlers.all,1);
-            while(_it_397.next()) {
-              f=_it_397[0];
+            _it_402=Tonyu.iterator(_this.handlers.all,1);
+            while(_it_402.next()) {
+              f=_it_402[0];
               
               f(e);
               
@@ -12303,14 +12768,14 @@ Tonyu.klass.define({
         Tonyu.globals.$InputDevice.on("keyUpRaw",(function anonymous_968(e) {
           var a;
           var e;
-          var _it_404;
+          var _it_409;
           
           a = _this.pressState[e.keyCode]=_this.pressState[e.keyCode]||[];
           
           delete _this.pressState[e.keyCode];
-          _it_404=Tonyu.iterator(a,1);
-          while(_it_404.next()) {
-            e=_it_404[0];
+          _it_409=Tonyu.iterator(a,1);
+          while(_it_409.next()) {
+            e=_it_409[0];
             
             e.sendUp();
             
@@ -12359,7 +12824,7 @@ Tonyu.klass.define({
       main :function _trc_Keys_main() {
         "use strict";
         var _this=this;
-        var _it_411;
+        var _it_416;
         
         _this.stats={};
         _this.codes={left: 37,up: 38,right: 39,down: 40,space: 32,enter: 13,shift: 16,ctrl: 17,alt: 18,esc: 27,mouseleft: 1,mouseright: 2,mousewheel: 4};
@@ -12376,10 +12841,10 @@ Tonyu.klass.define({
           }
         }
         _this.codesRev={};
-        _it_411=Tonyu.iterator(_this.codes,2);
-        while(_it_411.next()) {
-          _this.k=_it_411[0];
-          _this.v=_it_411[1];
+        _it_416=Tonyu.iterator(_this.codes,2);
+        while(_it_416.next()) {
+          _this.k=_it_416[0];
+          _this.v=_it_416[1];
           
           _this.codesRev[_this.v]=_this.k;
         }
@@ -12424,7 +12889,7 @@ Tonyu.klass.define({
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
-        var _it_411;
+        var _it_416;
         
         _this.stats={};
         _this.codes={left: 37,up: 38,right: 39,down: 40,space: 32,enter: 13,shift: 16,ctrl: 17,alt: 18,esc: 27,mouseleft: 1,mouseright: 2,mousewheel: 4};
@@ -12441,10 +12906,10 @@ Tonyu.klass.define({
           }
         }
         _this.codesRev={};
-        _it_411=Tonyu.iterator(_this.codes,2);
-        while(_it_411.next()) {
-          _this.k=_it_411[0];
-          _this.v=_it_411[1];
+        _it_416=Tonyu.iterator(_this.codes,2);
+        while(_it_416.next()) {
+          _this.k=_it_416[0];
+          _this.v=_it_416[1];
           
           _this.codesRev[_this.v]=_this.k;
         }
@@ -12535,11 +13000,11 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var i;
-        var _it_418;
+        var _it_423;
         
-        _it_418=Tonyu.iterator(_this.stats,1);
-        while(_it_418.next()) {
-          i=_it_418[0];
+        _it_423=Tonyu.iterator(_this.stats,1);
+        while(_it_423.next()) {
+          i=_it_423[0];
           
           if (_this.stats[i]>0) {
             _this.stats[i]++;
@@ -12562,11 +13027,11 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var i;
-        var _it_418;
+        var _it_423;
         
-        _it_418=Tonyu.iterator(_this.stats,1);
-        while(_it_418.next()) {
-          i=_it_418[0];
+        _it_423=Tonyu.iterator(_this.stats,1);
+        while(_it_423.next()) {
+          i=_it_423[0];
           
           if (_this.stats[i]>0) {
             _this.stats[i]++;
@@ -12977,12 +13442,12 @@ Tonyu.klass.define({
         _this.fingerArray.findWithin=(function anonymous_277(o,d) {
           var j;
           var t;
-          var _it_431;
+          var _it_436;
           
-          _it_431=Tonyu.iterator(_this.fingerSet,2);
-          while(_it_431.next()) {
-            j=_it_431[0];
-            t=_it_431[1];
+          _it_436=Tonyu.iterator(_this.fingerSet,2);
+          while(_it_436.next()) {
+            j=_it_436[0];
+            t=_it_436[1];
             
             if (o.within(t,d)) {
               return t;
@@ -12994,12 +13459,12 @@ Tonyu.klass.define({
         _this.fingerArray.findTouch=(function anonymous_454(f) {
           var j;
           var t;
-          var _it_436;
+          var _it_441;
           
-          _it_436=Tonyu.iterator(_this.fingerSet,2);
-          while(_it_436.next()) {
-            j=_it_436[0];
-            t=_it_436[1];
+          _it_441=Tonyu.iterator(_this.fingerSet,2);
+          while(_it_441.next()) {
+            j=_it_441[0];
+            t=_it_441[1];
             
             if (f(t)) {
               return t;
@@ -13261,13 +13726,13 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var t;
-        var _it_456;
+        var _it_461;
         var i;
-        var _it_457;
+        var _it_462;
         
-        _it_456=Tonyu.iterator(_this.fingerArray,1);
-        while(_it_456.next()) {
-          t=_it_456[0];
+        _it_461=Tonyu.iterator(_this.fingerArray,1);
+        while(_it_461.next()) {
+          t=_it_461[0];
           
           if (t.identifier==ID_MOUSE) {
             t.reset();
@@ -13275,10 +13740,10 @@ Tonyu.klass.define({
           }
           
         }
-        _it_457=Tonyu.iterator(_this.fingerSet,2);
-        while(_it_457.next()) {
-          i=_it_457[0];
-          t=_it_457[1];
+        _it_462=Tonyu.iterator(_this.fingerSet,2);
+        while(_it_462.next()) {
+          i=_it_462[0];
+          t=_it_462[1];
           
           if (t.identifier==ID_MOUSE) {
             t.reset();
@@ -13293,13 +13758,13 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var t;
-        var _it_456;
+        var _it_461;
         var i;
-        var _it_457;
+        var _it_462;
         
-        _it_456=Tonyu.iterator(_this.fingerArray,1);
-        while(_it_456.next()) {
-          t=_it_456[0];
+        _it_461=Tonyu.iterator(_this.fingerArray,1);
+        while(_it_461.next()) {
+          t=_it_461[0];
           
           if (t.identifier==ID_MOUSE) {
             t.reset();
@@ -13307,10 +13772,10 @@ Tonyu.klass.define({
           }
           
         }
-        _it_457=Tonyu.iterator(_this.fingerSet,2);
-        while(_it_457.next()) {
-          i=_it_457[0];
-          t=_it_457[1];
+        _it_462=Tonyu.iterator(_this.fingerSet,2);
+        while(_it_462.next()) {
+          i=_it_462[0];
+          t=_it_462[1];
           
           if (t.identifier==ID_MOUSE) {
             t.reset();
@@ -13325,21 +13790,21 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var t;
-        var _it_462;
+        var _it_467;
         var i;
-        var _it_463;
+        var _it_468;
         
-        _it_462=Tonyu.iterator(_this.fingerArray,1);
-        while(_it_462.next()) {
-          t=_it_462[0];
+        _it_467=Tonyu.iterator(_this.fingerArray,1);
+        while(_it_467.next()) {
+          t=_it_467[0];
           
           t.update();
           
         }
-        _it_463=Tonyu.iterator(_this.fingerSet,2);
-        while(_it_463.next()) {
-          i=_it_463[0];
-          t=_it_463[1];
+        _it_468=Tonyu.iterator(_this.fingerSet,2);
+        while(_it_468.next()) {
+          i=_it_468[0];
+          t=_it_468[1];
           
           t.update();
           
@@ -13351,21 +13816,21 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var t;
-        var _it_462;
+        var _it_467;
         var i;
-        var _it_463;
+        var _it_468;
         
-        _it_462=Tonyu.iterator(_this.fingerArray,1);
-        while(_it_462.next()) {
-          t=_it_462[0];
+        _it_467=Tonyu.iterator(_this.fingerArray,1);
+        while(_it_467.next()) {
+          t=_it_467[0];
           
           t.update();
           
         }
-        _it_463=Tonyu.iterator(_this.fingerSet,2);
-        while(_it_463.next()) {
-          i=_it_463[0];
-          t=_it_463[1];
+        _it_468=Tonyu.iterator(_this.fingerSet,2);
+        while(_it_468.next()) {
+          i=_it_468[0];
+          t=_it_468[1];
           
           t.update();
           
@@ -13488,7 +13953,7 @@ Tonyu.klass.define({
         var _this=this;
         var p;
         var k;
-        var _it_468;
+        var _it_473;
         
         if (typeof  o=="function") {
           if (param) {
@@ -13498,9 +13963,9 @@ Tonyu.klass.define({
           p = Tonyu.globals.$ObjectPool.withdraw(o.meta.fullName);
           
           if (p) {
-            _it_468=Tonyu.iterator(Object.keys(p),1);
-            while(_it_468.next()) {
-              k=_it_468[0];
+            _it_473=Tonyu.iterator(Object.keys(p),1);
+            while(_it_473.next()) {
+              k=_it_473[0];
               
               if (k!="objectPoolAge") {
                 delete p[k];
@@ -13527,7 +13992,7 @@ Tonyu.klass.define({
         var __pc=0;
         var p;
         var k;
-        var _it_468;
+        var _it_473;
         
         if (typeof  o=="function") {
           if (param) {
@@ -13537,9 +14002,9 @@ Tonyu.klass.define({
           p = Tonyu.globals.$ObjectPool.withdraw(o.meta.fullName);
           
           if (p) {
-            _it_468=Tonyu.iterator(Object.keys(p),1);
-            while(_it_468.next()) {
-              k=_it_468[0];
+            _it_473=Tonyu.iterator(Object.keys(p),1);
+            while(_it_473.next()) {
+              k=_it_473[0];
               
               if (k!="objectPoolAge") {
                 delete p[k];
@@ -13766,8 +14231,8 @@ Tonyu.klass.define({
         var SEP;
         var lines;
         var l;
-        var _it_473;
-        var _it_474;
+        var _it_478;
+        var _it_479;
         
         f = _this.file(csvFile);
         
@@ -13778,15 +14243,15 @@ Tonyu.klass.define({
         
         lines = f.lines();
         
-        _it_473=Tonyu.iterator(lines,1);
-        while(_it_473.next()) {
-          l=_it_473[0];
+        _it_478=Tonyu.iterator(lines,1);
+        while(_it_478.next()) {
+          l=_it_478[0];
           
           _this.row=l.split(SEP);
           x=0;
-          _it_474=Tonyu.iterator(_this.row,1);
-          while(_it_474.next()) {
-            _this.cell=_it_474[0];
+          _it_479=Tonyu.iterator(_this.row,1);
+          while(_it_479.next()) {
+            _this.cell=_it_479[0];
             
             _this.set(x,y,_this.cell);
             x++;
@@ -13807,8 +14272,8 @@ Tonyu.klass.define({
         var SEP;
         var lines;
         var l;
-        var _it_473;
-        var _it_474;
+        var _it_478;
+        var _it_479;
         
         
         _thread.enter(function _trc_Matrix_ent_load(_thread) {
@@ -13828,17 +14293,17 @@ Tonyu.klass.define({
               
               lines = f.lines();
               
-              _it_473=Tonyu.iterator(lines,1);
+              _it_478=Tonyu.iterator(lines,1);
             case 2:
-              if (!(_it_473.next())) { __pc=6     ; break; }
-              l=_it_473[0];
+              if (!(_it_478.next())) { __pc=6     ; break; }
+              l=_it_478[0];
               
               _this.row=l.split(SEP);
               x=0;
-              _it_474=Tonyu.iterator(_this.row,1);
+              _it_479=Tonyu.iterator(_this.row,1);
             case 3:
-              if (!(_it_474.next())) { __pc=5     ; break; }
-              _this.cell=_it_474[0];
+              if (!(_it_479.next())) { __pc=5     ; break; }
+              _this.cell=_it_479[0];
               
               _this.fiber$set(_thread, x, y, _this.cell);
               __pc=4;return;
@@ -13908,12 +14373,12 @@ Tonyu.klass.define({
         var _this=this;
         var k;
         var v;
-        var _it_485;
+        var _it_490;
         
-        _it_485=Tonyu.iterator(_this.data,2);
-        while(_it_485.next()) {
-          k=_it_485[0];
-          v=_it_485[1];
+        _it_490=Tonyu.iterator(_this.data,2);
+        while(_it_490.next()) {
+          k=_it_490[0];
+          v=_it_490[1];
           
           if (v===cell) {
             return _this.unkey(k);
@@ -13929,7 +14394,7 @@ Tonyu.klass.define({
         var __pc=0;
         var k;
         var v;
-        var _it_485;
+        var _it_490;
         
         
         _thread.enter(function _trc_Matrix_ent_search(_thread) {
@@ -13937,11 +14402,11 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              _it_485=Tonyu.iterator(_this.data,2);
+              _it_490=Tonyu.iterator(_this.data,2);
             case 1:
-              if (!(_it_485.next())) { __pc=4     ; break; }
-              k=_it_485[0];
-              v=_it_485[1];
+              if (!(_it_490.next())) { __pc=4     ; break; }
+              k=_it_490[0];
+              v=_it_490[1];
               
               if (!(v===cell)) { __pc=3     ; break; }
               _this.fiber$unkey(_thread, k);
@@ -14094,13 +14559,13 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var e;
-        var _it_495;
+        var _it_500;
         
         res = [];
         
-        _it_495=Tonyu.iterator(line,1);
-        while(_it_495.next()) {
-          e=_it_495[0];
+        _it_500=Tonyu.iterator(line,1);
+        while(_it_500.next()) {
+          e=_it_500[0];
           
           res.unshift(e);
           
@@ -14114,13 +14579,13 @@ Tonyu.klass.define({
         var __pc=0;
         var res;
         var e;
-        var _it_495;
+        var _it_500;
         
         res = [];
         
-        _it_495=Tonyu.iterator(line,1);
-        while(_it_495.next()) {
-          e=_it_495[0];
+        _it_500=Tonyu.iterator(line,1);
+        while(_it_500.next()) {
+          e=_it_500[0];
           
           res.unshift(e);
           
@@ -14170,14 +14635,14 @@ Tonyu.klass.define({
         var res;
         var k;
         var v;
-        var _it_499;
+        var _it_504;
         
         res = {i: 0,keys: []};
         
-        _it_499=Tonyu.iterator(_this.data,2);
-        while(_it_499.next()) {
-          k=_it_499[0];
-          v=_it_499[1];
+        _it_504=Tonyu.iterator(_this.data,2);
+        while(_it_504.next()) {
+          k=_it_504[0];
+          v=_it_504[1];
           
           res.keys.push(k);
           
@@ -14217,14 +14682,14 @@ Tonyu.klass.define({
         var res;
         var k;
         var v;
-        var _it_499;
+        var _it_504;
         
         res = {i: 0,keys: []};
         
-        _it_499=Tonyu.iterator(_this.data,2);
-        while(_it_499.next()) {
-          k=_it_499[0];
-          v=_it_499[1];
+        _it_504=Tonyu.iterator(_this.data,2);
+        while(_it_504.next()) {
+          k=_it_504[0];
+          v=_it_504[1];
           
           res.keys.push(k);
           
@@ -14651,7 +15116,7 @@ Tonyu.klass.define({
         var dirs;
         var res;
         var dir;
-        var _it_512;
+        var _it_517;
         var i;
         var j;
         var r;
@@ -14662,9 +15127,9 @@ Tonyu.klass.define({
         
         res = [];
         
-        _it_512=Tonyu.iterator(dirs,1);
-        while(_it_512.next()) {
-          dir=_it_512[0];
+        _it_517=Tonyu.iterator(dirs,1);
+        while(_it_517.next()) {
+          dir=_it_517[0];
           
           i = dir[1];
           j = dir[0];
@@ -14703,7 +15168,7 @@ Tonyu.klass.define({
         var dirs;
         var res;
         var dir;
-        var _it_512;
+        var _it_517;
         var i;
         var j;
         var r;
@@ -14720,10 +15185,10 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              _it_512=Tonyu.iterator(dirs,1);
+              _it_517=Tonyu.iterator(dirs,1);
             case 1:
-              if (!(_it_512.next())) { __pc=8     ; break; }
-              dir=_it_512[0];
+              if (!(_it_517.next())) { __pc=8     ; break; }
+              dir=_it_517[0];
               
               i = dir[1];
               j = dir[0];
@@ -14987,13 +15452,13 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var obj;
-        var _it_532;
+        var _it_537;
         
         while (true) {
           if (typeof  d=="function") {
-            _it_532=Tonyu.iterator(_this.allCrash(d),1);
-            while(_it_532.next()) {
-              obj=_it_532[0];
+            _it_537=Tonyu.iterator(_this.allCrash(d),1);
+            while(_it_537.next()) {
+              obj=_it_537[0];
               
               _this.callEventHandler(f,[obj]);
               
@@ -15015,7 +15480,7 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var obj;
-        var _it_532;
+        var _it_537;
         
         
         _thread.enter(function _trc_QueryMod_ent_crashToChecker(_thread) {
@@ -15025,10 +15490,10 @@ Tonyu.klass.define({
             case 0:
             case 1:
               if (!(typeof  d=="function")) { __pc=5     ; break; }
-              _it_532=Tonyu.iterator(_this.allCrash(d),1);
+              _it_537=Tonyu.iterator(_this.allCrash(d),1);
             case 2:
-              if (!(_it_532.next())) { __pc=4     ; break; }
-              obj=_it_532[0];
+              if (!(_it_537.next())) { __pc=4     ; break; }
+              obj=_it_537[0];
               
               _this.fiber$callEventHandler(_thread, f, [obj]);
               __pc=3;return;
@@ -15113,13 +15578,13 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var obj;
-        var _it_538;
+        var _it_543;
         
         while (true) {
           if (typeof  d=="function") {
-            _it_538=Tonyu.iterator(_this.allWithin(d,r),1);
-            while(_it_538.next()) {
-              obj=_it_538[0];
+            _it_543=Tonyu.iterator(_this.allWithin(d,r),1);
+            while(_it_543.next()) {
+              obj=_it_543[0];
               
               f(obj);
               
@@ -15141,7 +15606,7 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var obj;
-        var _it_538;
+        var _it_543;
         
         
         _thread.enter(function _trc_QueryMod_ent_withinChecker(_thread) {
@@ -15151,9 +15616,9 @@ Tonyu.klass.define({
             case 0:
             case 1:
               if (typeof  d=="function") {
-                _it_538=Tonyu.iterator(_this.allWithin(d,r),1);
-                while(_it_538.next()) {
-                  obj=_it_538[0];
+                _it_543=Tonyu.iterator(_this.allWithin(d,r),1);
+                while(_it_543.next()) {
+                  obj=_it_543[0];
                   
                   f(obj);
                   
@@ -16032,7 +16497,7 @@ Tonyu.klass.define({
         var c3;
         var s2ds;
         var s2d;
-        var _it_569;
+        var _it_574;
         
         c3 = new Tonyu.classes.kernel.Context3D({camera: _this.camera});
         
@@ -16044,9 +16509,9 @@ Tonyu.klass.define({
         
         c2.save();
         c2.translate(_this.spx,_this.spy);
-        _it_569=Tonyu.iterator(c3.sprites2D,1);
-        while(_it_569.next()) {
-          s2d=_it_569[0];
+        _it_574=Tonyu.iterator(c3.sprites2D,1);
+        while(_it_574.next()) {
+          s2d=_it_574[0];
           
           s2d.draw(c2);
           
@@ -16061,7 +16526,7 @@ Tonyu.klass.define({
         var c3;
         var s2ds;
         var s2d;
-        var _it_569;
+        var _it_574;
         
         c3 = new Tonyu.classes.kernel.Context3D({camera: _this.camera});
         
@@ -16073,9 +16538,9 @@ Tonyu.klass.define({
         
         c2.save();
         c2.translate(_this.spx,_this.spy);
-        _it_569=Tonyu.iterator(c3.sprites2D,1);
-        while(_it_569.next()) {
-          s2d=_it_569[0];
+        _it_574=Tonyu.iterator(c3.sprites2D,1);
+        while(_it_574.next()) {
+          s2d=_it_574[0];
           
           s2d.draw(c2);
           
@@ -17291,13 +17756,13 @@ Tonyu.klass.define({
         var _this=this;
         var k;
         var v;
-        var _it_624;
+        var _it_629;
         
         if (Tonyu.globals.$MMLS) {
-          _it_624=Tonyu.iterator(Tonyu.globals.$MMLS,2);
-          while(_it_624.next()) {
-            k=_it_624[0];
-            v=_it_624[1];
+          _it_629=Tonyu.iterator(Tonyu.globals.$MMLS,2);
+          while(_it_629.next()) {
+            k=_it_629[0];
+            v=_it_629[1];
             
             v.stop();
             
@@ -18054,15 +18519,15 @@ Tonyu.klass.define({
         var res;
         var name;
         var k;
-        var _it_639;
+        var _it_644;
         var vec;
         
         res = _this.position.clone();
         
-        _it_639=Tonyu.iterator(fru,2);
-        while(_it_639.next()) {
-          name=_it_639[0];
-          k=_it_639[1];
+        _it_644=Tonyu.iterator(fru,2);
+        while(_it_644.next()) {
+          name=_it_644[0];
+          k=_it_644[1];
           
           vec = _this.direction[name];
           
@@ -18081,15 +18546,15 @@ Tonyu.klass.define({
         var res;
         var name;
         var k;
-        var _it_639;
+        var _it_644;
         var vec;
         
         res = _this.position.clone();
         
-        _it_639=Tonyu.iterator(fru,2);
-        while(_it_639.next()) {
-          name=_it_639[0];
-          k=_it_639[1];
+        _it_644=Tonyu.iterator(fru,2);
+        while(_it_644.next()) {
+          name=_it_644[0];
+          k=_it_644[1];
           
           vec = _this.direction[name];
           
@@ -21260,14 +21725,14 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var l;
-        var _it_732;
+        var _it_737;
         var q;
         
         res = new Tonyu.classes.kernel.TQuery({screen: _this});
         
-        _it_732=Tonyu.iterator(_this.layers,1);
-        while(_it_732.next()) {
-          l=_it_732[0];
+        _it_737=Tonyu.iterator(_this.layers,1);
+        while(_it_737.next()) {
+          l=_it_737[0];
           
           q = l.group.all.apply(l.group,arguments);
           
@@ -21281,7 +21746,7 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var e;
-        var _it_737;
+        var _it_742;
         var r;
         var i;
         var t;
@@ -21290,9 +21755,9 @@ Tonyu.klass.define({
         res = [];
         
         options=options||{};
-        _it_737=Tonyu.iterator(q,1);
-        while(_it_737.next()) {
-          e=_it_737[0];
+        _it_742=Tonyu.iterator(q,1);
+        while(_it_742.next()) {
+          e=_it_742[0];
           
           r = e.getCrashRect();
           
@@ -21324,7 +21789,7 @@ Tonyu.klass.define({
         var __pc=0;
         var res;
         var e;
-        var _it_737;
+        var _it_742;
         var r;
         var i;
         var t;
@@ -21339,10 +21804,10 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              _it_737=Tonyu.iterator(q,1);
+              _it_742=Tonyu.iterator(q,1);
             case 1:
-              if (!(_it_737.next())) { __pc=7     ; break; }
-              e=_it_737[0];
+              if (!(_it_742.next())) { __pc=7     ; break; }
+              e=_it_742[0];
               
               r = e.getCrashRect();
               
@@ -22948,7 +23413,7 @@ Tonyu.klass.define({
         var func;
         var callbacks;
         var reqP;
-        var _it_805;
+        var _it_810;
         var i;
         
         if (! _this.available) {
@@ -23003,9 +23468,9 @@ Tonyu.klass.define({
         callbacks.succ=func;
         callbacks.err=func;
         
-        _it_805=Tonyu.iterator(r.sounds,1);
-        while(_it_805.next()) {
-          s=_it_805[0];
+        _it_810=Tonyu.iterator(r.sounds,1);
+        while(_it_810.next()) {
+          s=_it_810[0];
           
           url=s.url;
           if (url.match(/\.midi?$/)) {
@@ -23052,7 +23517,7 @@ Tonyu.klass.define({
         var func;
         var callbacks;
         var reqP;
-        var _it_805;
+        var _it_810;
         var i;
         
         if (! _this.available) {
@@ -23116,9 +23581,9 @@ Tonyu.klass.define({
               callbacks.succ=func;
               callbacks.err=func;
               
-              _it_805=Tonyu.iterator(r.sounds,1);
-              while(_it_805.next()) {
-                s=_it_805[0];
+              _it_810=Tonyu.iterator(r.sounds,1);
+              while(_it_810.next()) {
+                s=_it_810[0];
                 
                 url=s.url;
                 if (url.match(/\.midi?$/)) {
@@ -25565,11 +26030,11 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var t;
-        var _it_834;
+        var _it_839;
         
-        _it_834=Tonyu.iterator(Tonyu.globals.$touches,1);
-        while(_it_834.next()) {
-          t=_it_834[0];
+        _it_839=Tonyu.iterator(Tonyu.globals.$touches,1);
+        while(_it_839.next()) {
+          t=_it_839[0];
           
           if ((! _this.touchRadius||_this.dist(t)<_this.touchRadius)&&t.touched==1) {
             return t;
@@ -33288,13 +33753,13 @@ Tonyu.klass.define({
         }),releaseAll: (function anonymous_1647() {
           var a;
           var e;
-          var _it_945;
+          var _it_950;
           
           a = Tonyu.globals.$Screen.all();
           
-          _it_945=Tonyu.iterator(a,1);
-          while(_it_945.next()) {
-            e=_it_945[0];
+          _it_950=Tonyu.iterator(a,1);
+          while(_it_950.next()) {
+            e=_it_950[0];
             
             res.release(e);
             
@@ -33337,13 +33802,13 @@ Tonyu.klass.define({
         }),releaseAll: (function anonymous_1647() {
           var a;
           var e;
-          var _it_945;
+          var _it_950;
           
           a = Tonyu.globals.$Screen.all();
           
-          _it_945=Tonyu.iterator(a,1);
-          while(_it_945.next()) {
-            e=_it_945[0];
+          _it_950=Tonyu.iterator(a,1);
+          while(_it_950.next()) {
+            e=_it_950[0];
             
             res.release(e);
             
@@ -33389,16 +33854,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_949;
+        var _it_954;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_949=Tonyu.iterator(g,1);
-          while(_it_949.next()) {
-            name=_it_949[0];
+          _it_954=Tonyu.iterator(g,1);
+          while(_it_954.next()) {
+            name=_it_954[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -33415,16 +33880,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_949;
+        var _it_954;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_949=Tonyu.iterator(g,1);
-          while(_it_949.next()) {
-            name=_it_949[0];
+          _it_954=Tonyu.iterator(g,1);
+          while(_it_954.next()) {
+            name=_it_954[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -33738,7 +34203,7 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_958;
+        var _it_963;
         
         _this.progress("Loading pats..");
         rs = Tonyu.globals.$currentProject.getResource();
@@ -33749,10 +34214,10 @@ Tonyu.klass.define({
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         }));
         Tonyu.globals.$imageList=r[0];
-        _it_958=Tonyu.iterator(r[0].names,2);
-        while(_it_958.next()) {
-          name=_it_958[0];
-          val=_it_958[1];
+        _it_963=Tonyu.iterator(r[0].names,2);
+        while(_it_963.next()) {
+          name=_it_963[0];
+          val=_it_963[1];
           
           Tonyu.setGlobal(name,val);
           
@@ -33768,7 +34233,7 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_958;
+        var _it_963;
         
         
         _thread.enter(function _trc_Boot_ent_loadImages(_thread) {
@@ -33792,10 +34257,10 @@ Tonyu.klass.define({
               r=_thread.retVal;
               
               Tonyu.globals.$imageList=r[0];
-              _it_958=Tonyu.iterator(r[0].names,2);
-              while(_it_958.next()) {
-                name=_it_958[0];
-                val=_it_958[1];
+              _it_963=Tonyu.iterator(r[0].names,2);
+              while(_it_963.next()) {
+                name=_it_963[0];
+                val=_it_963[1];
                 
                 Tonyu.setGlobal(name,val);
                 

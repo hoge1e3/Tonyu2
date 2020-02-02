@@ -1,0 +1,25 @@
+extends AbstractShape;
+"field strict";
+native Math;
+var x,y;
+
+\clone() {
+    return new PointShape{x,y,_layer};
+}
+
+\changeLayer(newLayer) {
+    var c=screen.convert({x,y,layer:_layer}, newLayer);
+    x=c.x;
+    y=c.y;
+    _layer=newLayer;
+}
+\intersectsRaw(s:AbstractShape) {
+    return s.containsRaw(this);
+}
+\containsRaw(p:Object/*{x,y}*/) {
+    return p.x===x && p.y===y;
+}
+\xmin {return x;}
+\xmax {return x;}
+\ymin {return y;}
+\ymax {return y;}

@@ -1,0 +1,43 @@
+extends TObject;
+"field strict";
+var _layer; // should be REAL layer(not group)
+\clone(value) {
+    throw new Error("clone::abstract");
+}
+\changeLayer(value) {
+    throw new Error("changeLayer::abstract");
+}
+\intersects(s:AbstractShape) {
+    if (!s) return false;
+    if (s.layer===layer || !s.layer || !layer) {
+        return intersectsRaw(s);
+    }
+    return intersectsRaw(s.layerChanged(layer));
+}
+\intersectsRaw(s:AbstractShape) {
+    throw new Error("intersectsRaw::abstract");
+}
+\contains(s:Object/*x,y,layer*/) {
+    if (!s) return false;
+    if (s.layer===layer || !s.layer || !layer) {
+        return containsRaw(s);
+    }
+    var cv=screen.convert(s,layer);
+    return intersectsRaw(cv);
+}
+\containsRaw(s:Object/*x,y,layer*/) {
+    throw new Error("containsRaw::abstract");
+}
+\layerChanged(layer) {
+    var res=clone();
+    res.layer=layer;
+    return res;
+}
+\layer {return _layer;}
+\layer=value {
+    if (!_layer) _layer=value;
+    else changeLayer(value);
+}
+\screen {
+    return (layer && layer.screen) || $Screen;
+}
