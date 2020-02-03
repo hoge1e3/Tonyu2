@@ -21,7 +21,7 @@ const DebugDialog=require("DebugDialog");
 const root=require("root");
 const IDEProject=require("IDEProject");
 const optionFixer=require("optionFixer");
-const SourceFiles=require("SourceFiles");
+//const SourceFiles=require("SourceFiles");
 const RealtimeErrorMarker=require("RealtimeErrorMarker");
 const Dialogs=require("Dialogs");
 const jshint=require("jshint");
@@ -285,9 +285,11 @@ $(function () {
         }
         curPrjDir.touch();
         return curPrj.fullCompile().then(async r=>{
-            await SourceFiles.add(r).saveAs(curPrj.getOutputFile());
+            jshint.use(r);
+            // does in fullCompile
+            //await SourceFiles.add(r).saveAs(curPrj.getOutputFile());
             runDialog.show();
-        },showError).finally(function () {
+        }).catch(showError).finally(function () {
             if (root.SplashScreen) root.SplashScreen.hide();
         });
     }
