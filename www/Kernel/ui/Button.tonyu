@@ -31,6 +31,7 @@ on("touch") \(touchEvent) {
 };
 \doStartClick(){
     _clicked=$frameCount;
+    Button.last=this;
     fireEvent("click");
     if (typeof onClick==="function") onClick(this);
     if (autoRepeat) {
@@ -41,7 +42,7 @@ on("touch") \(touchEvent) {
 }
 \doEndClick() {
     fireEvent("release");
-    _clicked=0;  
+    _clicked=0;
     undoEffect();
     if (_arth) _arth.kill();
 }

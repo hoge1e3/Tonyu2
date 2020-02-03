@@ -26352,6 +26352,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this._clicked=Tonyu.globals.$frameCount;
+        Tonyu.classes.kernel.Button.last=_this;
         _this.fireEvent("click");
         if (typeof  _this.onClick==="function") {
           _this.onClick(_this);
@@ -26372,6 +26373,7 @@ Tonyu.klass.define({
         var __pc=0;
         
         _this._clicked=Tonyu.globals.$frameCount;
+        Tonyu.classes.kernel.Button.last=_this;
         _this.fireEvent("click");
         if (typeof  _this.onClick==="function") {
           _this.onClick(_this);
