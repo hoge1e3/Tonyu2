@@ -35,7 +35,7 @@ var _layer; // should be REAL layer(not group)
 }
 \layer {return _layer;}
 \layer=value {
-    if (!_layer) _layer=value;
+    if (!_layer || _layer===value) _layer=value;
     else changeLayer(value);
 }
 \screen {

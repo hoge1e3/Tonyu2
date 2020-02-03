@@ -1,5 +1,5 @@
 extends TObject;
-
+includes MathMod;
 "field strict";
 var screen;
 \add(a:Actor) {
@@ -23,15 +23,51 @@ var screen;
     return layer.__touchables;
 }
 \findActor(shape) {
-    for (var layer of screen.layers) {
+    var cands=[],i=0;
+    for (var i=0; i<screen.layers.length;i++) {// front -> back
+        var layer=screen.layers[i];
         var ts=getTouchables(layer);
         if (!ts) continue;
         var localShape=shape.layerChanged(layer);
-        ts=ts.sort\(a,b) {return a.zOrder-b.zOrder;};
+        //ts=ts.sort\(a,b) {return a.zOrder-b.zOrder;};
         for (var t of ts) {
             var c=t.getTouchShape();
-            if (c.intersects(localShape)) return t;
+            if (c.intersects(localShape)) {
+                var ch=c.layerChanged(shape.layer);
+                cands.push{
+                    actor: t,
+                    shape: ch,
+                    zOrder: t.zOrder,
+                    zOrderLayer: i,
+                    dist: dist(shape.x-ch.x, shape.y-ch.y)
+                };
+                //return t;
+            }
         }
     }
-    return null;
+    // Erase "overlapping" objects
+    for (var i=0; i<cands.length;i++) {
+        var shape=cands[i].shape;
+        for (var j=i+1; j<cands.length;j++) {
+            if (shape.intersects(cands[j].shape)) {
+                var cmp=compZ(cands[j],cands[i]);
+                if (cmp>0) {
+                    cands[j].dead=true;
+                }
+                if (cmp<0) {
+                    cands[i].dead=true;
+                }
+            }
+        }
+    }
+    \compZ(a,b) {
+        var c=a.zOrderLayer-b.zOrderLayer;
+        if (c) return c;
+        return a.zOrder-b.zOrder;
+    }
+    cands=cands.filter \(e){return !e.dead;};
+    cands.sort\(a,b) {
+        return a.dist-b.dist;
+    };
+    return cands[0] && cands[0].actor;
 }
