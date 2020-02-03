@@ -1,6 +1,10 @@
 extends Actor;
+"field strict";
 
-// padding, left, top ,width, height, text, fillStyle, strokeStyle, clickedStyle
+var padding, left, top ,width, height, text, fillStyle, strokeStyle;
+var clickedStyle, effect, savedEffect, disabled, disabledStrokeStyle, key,autoRepeat;
+var onClick;
+var _clicked,_arth;
 \new(options) {
     options.layer=options.layer||$frontLayer;
     super(options);
@@ -14,19 +18,42 @@ extends Actor;
     height = height || 50;
     left=typeof(left)=="number"?left:50;
 }
-while(true) {
-    if (!disabled) {
-        clicked=checkTouch();
-        if (clicked==1) {
-            Button.last=this;
-            if (onClick) onClick(this);
-        }
-    } else {
-        clicked=0;
-    }
-    update();
+if (key) {
+    on("keyDown",key) \(keyEvent) {
+        doStartClick();
+        keyEvent.on("up",doEndClick);
+    };
 }
-\checkTouch() {
+on("touch") \(touchEvent) {
+    var f=touchEvent.finger;
+    doStartClick();
+    f.on("end",doEndClick);
+};
+\doStartClick(){
+    _clicked=$frameCount;
+    fireEvent("click");
+    if (typeof onClick==="function") onClick(this);
+    if (autoRepeat) {
+        if (_arth) _arth.kill();
+        _arth=parallel("procAR");
+    }
+    doEffect();
+}
+\doEndClick() {
+    fireEvent("release");
+    _clicked=0;  
+    undoEffect();
+    if (_arth) _arth.kill();
+}
+\procAR() {
+    updateEx(autoRepeat);
+    while(true) {
+	    if (typeof onClick==="function") onClick(this);
+        update();
+    }
+}
+
+/*\checkTouch() {
     for (i=0 ; i<2; i++) {
         if ($touches[i].touched>0 && inRect($touches[i])) {
             return $touches[i].touched;
@@ -34,11 +61,14 @@ while(true) {
     }
     if (key) return getkey(key);
     return 0;
+}*/
+\getCrashRect() {
+    return {x:left+width/2,y:top+height/2,width, height};
 }
-\inRect(p) {
+/*\inRect(p) {
     p=$Screen.convert(p,layer);
     return p.x>=left && p.x<=left+width && p.y>=top && p.y<=top+height;
-}
+}*/
 \draw(c) {
     c.globalAlpha=alpha/255;
     c.fillStyle=fillStyle ? fillStyle+"" : "gray";
@@ -54,4 +84,29 @@ while(true) {
     disabled?disabledStrokeStyle+"":strokeStyle+"";
     var r=c.measureText(text);
     c.fillText(text, left+width/2-r.width/2, top+padding);
+}
+\doEffect() {
+    if (!effect) return;
+    savedEffect={};
+    for (var k,v in effect) {
+        if (k==="move") {
+            savedEffect.x=x;
+            savedEffect.y=y;
+            x+=v.x;
+            y+=v.y;
+        } else {
+            savedEffect[k]=this[k];
+            this[k]=v;
+        }
+    }
+}
+\undoEffect() {
+    if (!savedEffect) return;
+    for (var k,v in savedEffect) {
+        this[k]=v;
+    }
+}
+\clicked {
+    if (!_clicked) return 0;
+    return $frameCount-_clicked+1;
 }
