@@ -87,7 +87,6 @@ class BuilderClient {
     }
     async fullCompile() {
         try {
-            console.log("fullCompile");
             this.partialCompilable=false;
             await this.init();
             const compres=await this.w.run("compiler/fullCompile");
@@ -296,7 +295,6 @@ class SourceFile {
         let text=this.text;
         //text+="\n//# traceFunctions="+JSON.stringify(this.functions);
         if (this.sourceMap) {
-            console.log("saving sourcemap",mapFile.path());
             await mapFile.text(this.sourceMap);
             text+="\n//# sourceMappingURL="+mapFile.name();
         }
