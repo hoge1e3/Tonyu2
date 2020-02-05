@@ -333,7 +333,7 @@ $(".dropdown-toggle");
         "upCased" : "The class name is automatically capitalized: {1}", //先頭を大文字({1}) にして作成します．
         "resouceList" : "{1} List", //{1}リスト
         "dragFileHere" : "Drag {1} File({2}) Here", //ここに{1}ファイル({2})をドラッグ＆ドロップして追加
-        "storageUsage" : "Storage Usage: {1}/{2}KB", //{1}KB中{2}KB使用中．
+        "storageUsage" : "Storage Usage: {2}/{1}KB", //{1}KB中{2}KB使用中．
         "unzipping" : "Unzipping {1}", //{1}を展開中...
         "doesNotContainTonyu2Project" : "{1} Does Not Contain Tonyu2 Project", //{1}にはTonyu2の編集可能なプロジェクトが含まれていません.
         "checking" : "Checking {1}", //{1}をチェック中...
