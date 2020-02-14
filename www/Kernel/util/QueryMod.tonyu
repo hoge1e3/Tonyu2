@@ -35,7 +35,7 @@ nowait \allCrash(t) {//23D
     getSpriteGroup().sprites.forEach(\(s) {
         var t2;
         if (s!==this &&
-        !s.excludeFromAll &&
+        //!s.excludeFromAll &&
         s instanceof t &&
         (t2=s.getCrashShape()) && t1.intersects(t2)) {
             res.push(s);
@@ -78,7 +78,7 @@ nowait \allWithin(t,distance) {//23D (use dist with 3d)
     if (typeof t !=="function") throw new Error("allWithinの第一引数はクラスにしてください");
     getSpriteGroup().sprites.forEach(\(s) {
         if (s!==this &&
-        !s.excludeFromAll &&
+        //!s.excludeFromAll &&
         s instanceof t &&
         dist(s)<distance) {
             res.push(s);
