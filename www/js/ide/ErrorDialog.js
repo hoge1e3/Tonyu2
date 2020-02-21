@@ -31,9 +31,10 @@ class ErrorDialog {
             row=err.row;
             col=err.col;
         } else {
-            src={name:function (){return R("unknown");},text:()=>null};
+            //src={name:function (){return R("unknown");},text:()=>null};
             pos=0;
         }
+        if (!src || typeof src.name!=="function") src={name:function (){return R("unknown");},text:()=>null};
         if (err.stack && err.stack.length>0 && err.stack[0].fileName) {
             const compiler=ide.project.compiler;
             for (let {columnNumber, lineNumber, fileName} of err.stack) {
