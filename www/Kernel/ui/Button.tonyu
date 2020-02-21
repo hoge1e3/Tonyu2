@@ -1,30 +1,69 @@
 extends Actor;
+native Tonyu;
 "field strict";
 
 var padding, left, top ,width, height, text, fillStyle, strokeStyle;
-var clickedStyle, effect, savedEffect, disabled, disabledStrokeStyle, key,autoRepeat;
+//var clickedStyle, effect, disabledStrokeStyle;
+var clickedEffect, disabledEffect;
+//var savedEffect, _effectState;
+var disabled, key,autoRepeat;
 var onClick;
 var _clicked,_arth;
+
+\clickedStyle {
+    return (clickedEffect && clickedEffect.strokeStyle);
+}
+\clickedStyle=v {
+    clickedEffect=clickedEffect||{};
+    clickedEffect.strokeStyle=v;
+}
+\effect {
+    return clickedEffect;
+}
+\effect=v {
+    clickedEffect=v;
+}
+\disabledStrokeStyle {
+    return (disabledEffect && disabledEffect.strokeStyle);
+}
+\disabledStrokeStyle=v {
+    disabledEffect=disabledEffect||{};
+    disabledEffect.strokeStyle=v;
+}
+
 \new(options) {
     options.layer=options.layer||$frontLayer;
     super(options);
     fillStyle=fillStyle||"rgb(179,255,142)";
     strokeStyle=strokeStyle||"black";
-    clickedStyle=clickedStyle||"white";
-    disabledStrokeStyle=disabledStrokeStyle||"#ddd";
     alpha=typeof(alpha)=="number"?alpha:255;
     padding= typeof(padding)=="number"?padding:5;
     width = width || $screenWidth-100;
     height = height || 50;
     left=typeof(left)=="number"?left:50;
+    clickedEffect=clickedEffect||{strokeStyle:"white"};
+    disabledEffect=disabledEffect||{strokeStyle:"#ddd"};
+}
+\curEffect {
+    var base={
+        fillStyle, strokeStyle, alpha, padding, width, height
+    };
+    if (disabled) {
+        Tonyu.extend(base, disabledEffect);
+    } else if (clicked) {
+        Tonyu.extend(base, clickedEffect);
+    }
+    return base;
 }
 if (key) {
     on("keyDown",key) \(keyEvent) {
+        if (disabled) return;
         doStartClick();
         keyEvent.on("up",doEndClick);
     };
 }
 on("touch") \(touchEvent) {
+    if (disabled) return;
     var f=touchEvent.finger;
     doStartClick();
     f.on("end",doEndClick);
@@ -38,12 +77,12 @@ on("touch") \(touchEvent) {
         if (_arth) _arth.kill();
         _arth=parallel("procAR");
     }
-    doEffect();
+    //doEffect();
 }
 \doEndClick() {
     fireEvent("release");
     _clicked=0;
-    undoEffect();
+    //undoEffect();
     if (_arth) _arth.kill();
 }
 \procAR() {
@@ -71,21 +110,29 @@ on("touch") \(touchEvent) {
     return p.x>=left && p.x<=left+width && p.y>=top && p.y<=top+height;
 }*/
 \draw(c) {
-    c.globalAlpha=alpha/255;
-    c.fillStyle=fillStyle ? fillStyle+"" : "gray";
-    c.strokeStyle=strokeStyle ? strokeStyle+"" : "black";
-    if (disabled) c.strokeStyle=disabledStrokeStyle+"";
-    c.fillRect(left, top, width, height);
-    c.strokeRect(left, top, width, height);
-    var size=height-padding*2;
+    var e=curEffect;
+    c.globalAlpha=e.alpha/255;
+    c.fillStyle=e.fillStyle ? e.fillStyle+"" : "gray";
+    c.strokeStyle=e.strokeStyle ? e.strokeStyle+"" : "black";
+    //if (disabled) c.strokeStyle=disabledStrokeStyle+"";
+    var eleft=left, etop=top;
+    if (e.move) {
+        eleft+=e.move.x||0;
+        etop+=e.move.y||0;
+    }
+    c.fillRect(eleft, etop, e.width, e.height);
+    c.strokeRect(eleft, etop, e.width, e.height);
+    var size=e.height-e.padding*2;
     var f=c.font.replace(/^[0-9]+px /,"");
     c.font=size+"px "+f;//monospace";
     c.textBaseline="top";
-    c.fillStyle=clicked?clickedStyle+"":
-    disabled?disabledStrokeStyle+"":strokeStyle+"";
+    c.fillStyle=e.strokeStyle;
+    //clicked?clickedStyle+"":
+    //disabled?disabledStrokeStyle+"":strokeStyle+"";
     var r=c.measureText(text);
-    c.fillText(text, left+width/2-r.width/2, top+padding);
+    c.fillText(text, eleft+e.width/2-r.width/2, etop+e.padding);
 }
+/*
 \doEffect() {
     if (!effect) return;
     savedEffect={};
@@ -106,7 +153,7 @@ on("touch") \(touchEvent) {
     for (var k,v in savedEffect) {
         this[k]=v;
     }
-}
+}*/
 \clicked {
     if (!_clicked) return 0;
     return $frameCount-_clicked+1;
