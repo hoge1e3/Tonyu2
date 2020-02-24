@@ -137,7 +137,7 @@ class BuilderClient {
         if (e.isTError) {
             try {
                 e.src=FS.get(this.convertFromWorkerPath(e.src));
-            }catch(ee) {
+            } catch(ee) {
                 console.log(ee);
             }
         }
