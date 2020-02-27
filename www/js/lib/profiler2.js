@@ -1,11 +1,13 @@
-window.Profiler={
+/*global define*/
+define(function (require, exports,module) {
+module.exports={
 	idSeq: 1,
 	MEASURED: Symbol("MEASURED"),
 	measure(f,name) {
 		if (f[this.MEASURED]) return f;
 		const id=this.idSeq++;
 		const r=function (...a) {
-			const sid=id+":start", eid=id+":end"
+			const sid=id+":start", eid=id+":end";
 			performance.mark(sid);
 			const r=f.apply(this, a);
 			performance.mark(eid);
@@ -20,7 +22,7 @@ window.Profiler={
 		while(prot && prot.isTonyuObject) {
 			const meta=prot.getClassInfo();
 			const fn=meta.fullName||meta.extenderFullName;
-			const methods=meta.decls?meta.decls.methods: Tonyu.classMetas[fn].decls.methods;
+			const methods=meta.decls?meta.decls.methods: window.Tonyu.classMetas[fn].decls.methods;
 			for (let n in methods) {
 				if (typeof prot[n]==="function") {
 					//console.log(fn+"."+n);
@@ -32,6 +34,9 @@ window.Profiler={
 		return s;
 	},
 	profile(o, name) {
+		if (arguments.length===0) {
+			return this.profile(Tonyu.classes);
+		}
 		if (o && typeof o==="object") {
 			const hash=o;
 			if (!name) name="";
@@ -72,4 +77,5 @@ window.Profiler={
 		return list;
 	}
 };
-
+window.Profiler=module.exports;
+});

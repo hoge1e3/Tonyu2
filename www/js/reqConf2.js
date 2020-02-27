@@ -243,7 +243,7 @@ var reqConf={
             "lib": {
                 R:1,
                 jshint:1,
-                "Mesg":1, 
+                "Mesg":1,
                 "miniJSLoader":1,
                 "Class": 1,
                 "FileSaver.min": "FileSaver",
@@ -267,6 +267,7 @@ var reqConf={
                 "jquery.binarytransport": 1,
                 "jszip": "JSZip",
                 "profiler": "Profiler",
+                "profiler2": 1,
                 "promise": 1,
                 "WorkerLib": 1,
                 "timbre": 1,

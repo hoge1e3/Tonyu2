@@ -12,6 +12,8 @@ define(function (require/*,exports,module*/) {
     const runScript_common=require("runScript_common");
     const thumbnail=require("thumbnail");
     const jshint=require("jshint");
+    const Profiler=require("profiler2");
+    Debugger.Profiler=Profiler;
     jshint.use(runtime);// UIDiag etc... needed
     F.addDependencyResolver((prj,spec)=>{
         if (spec.namespace==="kernel") {
