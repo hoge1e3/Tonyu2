@@ -15494,7 +15494,7 @@ Tonyu.klass.define({
           var t2;
           
           
-          if (s!==_this&&! s.excludeFromAll&&s instanceof t&&(t2=s.getCrashShape())&&t1.intersects(t2)) {
+          if (s!==_this&&s instanceof t&&(t2=s.getCrashShape())&&t1.intersects(t2)) {
             res.push(s);
             
           }
@@ -15638,9 +15638,9 @@ Tonyu.klass.define({
           throw new Error("allWithinの第一引数はクラスにしてください");
           
         }
-        _this.getSpriteGroup().sprites.forEach((function anonymous_1963(s) {
+        _this.getSpriteGroup().sprites.forEach((function anonymous_1965(s) {
           
-          if (s!==_this&&! s.excludeFromAll&&s instanceof t&&_this.dist(s)<distance) {
+          if (s!==_this&&s instanceof t&&_this.dist(s)<distance) {
             res.push(s);
             
           }
@@ -15745,7 +15745,7 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        _this.getSpriteGroup().watchHit(typeA,typeB,(function anonymous_2907(a,b) {
+        _this.getSpriteGroup().watchHit(typeA,typeB,(function anonymous_2911(a,b) {
           
           onHit.apply(_this,[a,b]);
         }));
@@ -26276,17 +26276,24 @@ Tonyu.klass.define({
         
         
         
+        
         if (_this.key) {
-          _this.on("keyDown",_this.key,(function anonymous_736(keyEvent) {
+          _this.on("keyDown",_this.key,(function anonymous_1547(keyEvent) {
             
+            if (_this.disabled) {
+              return _this;
+            }
             _this.doStartClick();
             keyEvent.on("up",Tonyu.bindFunc(_this,_this.doEndClick));
           }));
           
         }
-        _this.on("touch",(function anonymous_838(touchEvent) {
+        _this.on("touch",(function anonymous_1680(touchEvent) {
           var f;
           
+          if (_this.disabled) {
+            return _this;
+          }
           f = touchEvent.finger;
           
           _this.doStartClick();
@@ -26305,22 +26312,29 @@ Tonyu.klass.define({
         
         
         
+        
         _thread.enter(function _trc_Button_ent_main(_thread) {
           if (_thread.lastEx) __pc=_thread.catchPC;
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
               if (!(_this.key)) { __pc=1     ; break; }
-              _this.on("keyDown",_this.key,(function anonymous_736(keyEvent) {
+              _this.on("keyDown",_this.key,(function anonymous_1547(keyEvent) {
                 
+                if (_this.disabled) {
+                  return _this;
+                }
                 _this.doStartClick();
                 keyEvent.on("up",Tonyu.bindFunc(_this,_this.doEndClick));
               }));
             case 1     :
               
-              _this.on("touch",(function anonymous_838(touchEvent) {
+              _this.on("touch",(function anonymous_1680(touchEvent) {
                 var f;
                 
+                if (_this.disabled) {
+                  return _this;
+                }
                 f = touchEvent.finger;
                 
                 _this.doStartClick();
@@ -26331,6 +26345,44 @@ Tonyu.klass.define({
           }
         });
       },
+      __getter__clickedStyle :function _trc_Button___getter__clickedStyle() {
+        "use strict";
+        var _this=this;
+        
+        return (_this.clickedEffect&&_this.clickedEffect.strokeStyle);
+      },
+      __setter__clickedStyle :function _trc_Button___setter__clickedStyle(v) {
+        "use strict";
+        var _this=this;
+        
+        _this.clickedEffect=_this.clickedEffect||{};
+        _this.clickedEffect.strokeStyle=v;
+      },
+      __getter__effect :function _trc_Button___getter__effect() {
+        "use strict";
+        var _this=this;
+        
+        return _this.clickedEffect;
+      },
+      __setter__effect :function _trc_Button___setter__effect(v) {
+        "use strict";
+        var _this=this;
+        
+        _this.clickedEffect=v;
+      },
+      __getter__disabledStrokeStyle :function _trc_Button___getter__disabledStrokeStyle() {
+        "use strict";
+        var _this=this;
+        
+        return (_this.disabledEffect&&_this.disabledEffect.strokeStyle);
+      },
+      __setter__disabledStrokeStyle :function _trc_Button___setter__disabledStrokeStyle(v) {
+        "use strict";
+        var _this=this;
+        
+        _this.disabledEffect=_this.disabledEffect||{};
+        _this.disabledEffect.strokeStyle=v;
+      },
       initialize :function _trc_Button_initialize(options) {
         "use strict";
         var _this=this;
@@ -26339,13 +26391,31 @@ Tonyu.klass.define({
         __superClass.apply( _this, [options]);
         _this.fillStyle=_this.fillStyle||"rgb(179,255,142)";
         _this.strokeStyle=_this.strokeStyle||"black";
-        _this.clickedStyle=_this.clickedStyle||"white";
-        _this.disabledStrokeStyle=_this.disabledStrokeStyle||"#ddd";
         _this.alpha=typeof  (_this.alpha)=="number"?_this.alpha:255;
         _this.padding=typeof  (_this.padding)=="number"?_this.padding:5;
         _this.width=_this.width||Tonyu.globals.$screenWidth-100;
         _this.height=_this.height||50;
         _this.left=typeof  (_this.left)=="number"?_this.left:50;
+        _this.clickedEffect=_this.clickedEffect||{strokeStyle: "white"};
+        _this.disabledEffect=_this.disabledEffect||{strokeStyle: "#ddd"};
+      },
+      __getter__curEffect :function _trc_Button___getter__curEffect() {
+        "use strict";
+        var _this=this;
+        var base;
+        
+        base = {fillStyle: _this.fillStyle,strokeStyle: _this.strokeStyle,alpha: _this.alpha,padding: _this.padding,width: _this.width,height: _this.height};
+        
+        if (_this.disabled) {
+          Tonyu.extend(base,_this.disabledEffect);
+          
+        } else {
+          if (_this.clicked) {
+            Tonyu.extend(base,_this.clickedEffect);
+            
+          }
+        }
+        return base;
       },
       doStartClick :function _trc_Button_doStartClick() {
         "use strict";
@@ -26364,7 +26434,6 @@ Tonyu.klass.define({
           _this._arth=_this.parallel("procAR");
           
         }
-        _this.doEffect();
       },
       fiber$doStartClick :function _trc_Button_f_doStartClick(_thread) {
         "use strict";
@@ -26386,19 +26455,7 @@ Tonyu.klass.define({
           
         }
         
-        _thread.enter(function _trc_Button_ent_doStartClick(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _this.fiber$doEffect(_thread);
-              __pc=1;return;
-            case 1:
-              
-              _thread.exit(_this);return;
-            }
-          }
-        });
+        _thread.retVal=_this;return;
       },
       doEndClick :function _trc_Button_doEndClick() {
         "use strict";
@@ -26406,7 +26463,6 @@ Tonyu.klass.define({
         
         _this.fireEvent("release");
         _this._clicked=0;
-        _this.undoEffect();
         if (_this._arth) {
           _this._arth.kill();
         }
@@ -26419,23 +26475,11 @@ Tonyu.klass.define({
         
         _this.fireEvent("release");
         _this._clicked=0;
+        if (_this._arth) {
+          _this._arth.kill();
+        }
         
-        _thread.enter(function _trc_Button_ent_doEndClick(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _this.fiber$undoEffect(_thread);
-              __pc=1;return;
-            case 1:
-              
-              if (_this._arth) {
-                _this._arth.kill();
-              }
-              _thread.exit(_this);return;
-            }
-          }
-        });
+        _thread.retVal=_this;return;
       },
       procAR :function _trc_Button_procAR() {
         "use strict";
@@ -26491,136 +26535,38 @@ Tonyu.klass.define({
       draw :function _trc_Button_draw(c) {
         "use strict";
         var _this=this;
+        var e;
+        var eleft;
+        var etop;
         var size;
         var f;
         var r;
         
-        c.globalAlpha=_this.alpha/255;
-        c.fillStyle=_this.fillStyle?_this.fillStyle+"":"gray";
-        c.strokeStyle=_this.strokeStyle?_this.strokeStyle+"":"black";
-        if (_this.disabled) {
-          c.strokeStyle=_this.disabledStrokeStyle+"";
+        e = _this.curEffect;
+        
+        c.globalAlpha=e.alpha/255;
+        c.fillStyle=e.fillStyle?e.fillStyle+"":"gray";
+        c.strokeStyle=e.strokeStyle?e.strokeStyle+"":"black";
+        eleft = _this.left;
+        etop = _this.top;
+        
+        if (e.move) {
+          eleft+=e.move.x||0;
+          etop+=e.move.y||0;
+          
         }
-        c.fillRect(_this.left,_this.top,_this.width,_this.height);
-        c.strokeRect(_this.left,_this.top,_this.width,_this.height);
-        size = _this.height-_this.padding*2;
+        c.fillRect(eleft,etop,e.width,e.height);
+        c.strokeRect(eleft,etop,e.width,e.height);
+        size = e.height-e.padding*2;
         
         f = c.font.replace(/^[0-9]+px /,"");
         
         c.font=size+"px "+f;
         c.textBaseline="top";
-        c.fillStyle=_this.clicked?_this.clickedStyle+"":_this.disabled?_this.disabledStrokeStyle+"":_this.strokeStyle+"";
+        c.fillStyle=e.strokeStyle;
         r = c.measureText(_this.text);
         
-        c.fillText(_this.text,_this.left+_this.width/2-r.width/2,_this.top+_this.padding);
-      },
-      doEffect :function _trc_Button_doEffect() {
-        "use strict";
-        var _this=this;
-        var k;
-        var v;
-        var _it_858;
-        
-        if (! _this.effect) {
-          return _this;
-        }
-        _this.savedEffect={};
-        _it_858=Tonyu.iterator(_this.effect,2);
-        while(_it_858.next()) {
-          k=_it_858[0];
-          v=_it_858[1];
-          
-          if (k==="move") {
-            _this.savedEffect.x=_this.x;
-            _this.savedEffect.y=_this.y;
-            _this.x+=v.x;
-            _this.y+=v.y;
-            
-          } else {
-            _this.savedEffect[k]=_this[k];
-            _this[k]=v;
-            
-          }
-          
-        }
-      },
-      fiber$doEffect :function _trc_Button_f_doEffect(_thread) {
-        "use strict";
-        var _this=this;
-        //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
-        var k;
-        var v;
-        var _it_858;
-        
-        if (! _this.effect) {
-          _thread.retVal=_this;return;
-          
-        }
-        _this.savedEffect={};
-        _it_858=Tonyu.iterator(_this.effect,2);
-        while(_it_858.next()) {
-          k=_it_858[0];
-          v=_it_858[1];
-          
-          if (k==="move") {
-            _this.savedEffect.x=_this.x;
-            _this.savedEffect.y=_this.y;
-            _this.x+=v.x;
-            _this.y+=v.y;
-            
-          } else {
-            _this.savedEffect[k]=_this[k];
-            _this[k]=v;
-            
-          }
-          
-        }
-        
-        _thread.retVal=_this;return;
-      },
-      undoEffect :function _trc_Button_undoEffect() {
-        "use strict";
-        var _this=this;
-        var k;
-        var v;
-        var _it_862;
-        
-        if (! _this.savedEffect) {
-          return _this;
-        }
-        _it_862=Tonyu.iterator(_this.savedEffect,2);
-        while(_it_862.next()) {
-          k=_it_862[0];
-          v=_it_862[1];
-          
-          _this[k]=v;
-          
-        }
-      },
-      fiber$undoEffect :function _trc_Button_f_undoEffect(_thread) {
-        "use strict";
-        var _this=this;
-        //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
-        var k;
-        var v;
-        var _it_862;
-        
-        if (! _this.savedEffect) {
-          _thread.retVal=_this;return;
-          
-        }
-        _it_862=Tonyu.iterator(_this.savedEffect,2);
-        while(_it_862.next()) {
-          k=_it_862[0];
-          v=_it_862[1];
-          
-          _this[k]=v;
-          
-        }
-        
-        _thread.retVal=_this;return;
+        c.fillText(_this.text,eleft+e.width/2-r.width/2,etop+e.padding);
       },
       __getter__clicked :function _trc_Button___getter__clicked() {
         "use strict";
@@ -26634,7 +26580,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"doStartClick":{"nowait":false},"doEndClick":{"nowait":false},"procAR":{"nowait":false},"getCrashRect":{"nowait":true},"draw":{"nowait":true},"doEffect":{"nowait":false},"undoEffect":{"nowait":false},"__getter__clicked":{"nowait":true}},"fields":{"padding":{},"left":{},"top":{},"width":{},"height":{},"text":{},"fillStyle":{},"strokeStyle":{},"clickedStyle":{},"effect":{},"savedEffect":{},"disabled":{},"disabledStrokeStyle":{},"key":{},"autoRepeat":{},"onClick":{},"_clicked":{},"_arth":{}}}
+  decls: {"methods":{"main":{"nowait":false},"__getter__clickedStyle":{"nowait":true},"__setter__clickedStyle":{"nowait":true},"__getter__effect":{"nowait":true},"__setter__effect":{"nowait":true},"__getter__disabledStrokeStyle":{"nowait":true},"__setter__disabledStrokeStyle":{"nowait":true},"new":{"nowait":false},"__getter__curEffect":{"nowait":true},"doStartClick":{"nowait":false},"doEndClick":{"nowait":false},"procAR":{"nowait":false},"getCrashRect":{"nowait":true},"draw":{"nowait":true},"__getter__clicked":{"nowait":true}},"fields":{"padding":{},"left":{},"top":{},"width":{},"height":{},"text":{},"fillStyle":{},"strokeStyle":{},"clickedEffect":{},"disabledEffect":{},"disabled":{},"key":{},"autoRepeat":{},"onClick":{},"_clicked":{},"_arth":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.GameConsole',
@@ -34034,20 +33980,22 @@ Tonyu.klass.define({
         }),releaseAll: (function anonymous_1647() {
           var a;
           var e;
-          var _it_969;
+          var _it_965;
           
           a = Tonyu.globals.$Screen.all();
           
-          _it_969=Tonyu.iterator(a,1);
-          while(_it_969.next()) {
-            e=_it_969[0];
+          _it_965=Tonyu.iterator(a,1);
+          while(_it_965.next()) {
+            e=_it_965[0];
             
             res.release(e);
             
           }
         })};
         
-        res.release(except);
+        if (except) {
+          res.release(except);
+        }
         return res;
       },
       fiber$timeStop :function _trc_Boot_f_timeStop(_thread,except) {
@@ -34083,20 +34031,22 @@ Tonyu.klass.define({
         }),releaseAll: (function anonymous_1647() {
           var a;
           var e;
-          var _it_969;
+          var _it_965;
           
           a = Tonyu.globals.$Screen.all();
           
-          _it_969=Tonyu.iterator(a,1);
-          while(_it_969.next()) {
-            e=_it_969[0];
+          _it_965=Tonyu.iterator(a,1);
+          while(_it_965.next()) {
+            e=_it_965[0];
             
             res.release(e);
             
           }
         })};
         
-        res.release(except);
+        if (except) {
+          res.release(except);
+        }
         _thread.retVal=res;return;
         
         
@@ -34135,16 +34085,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_973;
+        var _it_969;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_973=Tonyu.iterator(g,1);
-          while(_it_973.next()) {
-            name=_it_973[0];
+          _it_969=Tonyu.iterator(g,1);
+          while(_it_969.next()) {
+            name=_it_969[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -34161,16 +34111,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_973;
+        var _it_969;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_973=Tonyu.iterator(g,1);
-          while(_it_973.next()) {
-            name=_it_973[0];
+          _it_969=Tonyu.iterator(g,1);
+          while(_it_969.next()) {
+            name=_it_969[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -34187,7 +34137,7 @@ Tonyu.klass.define({
         
         Tonyu.globals.$InputDevice=new Tonyu.classes.kernel.InputDevice;
         Tonyu.globals.$Screen.multiLayerTouches=new Tonyu.classes.kernel.MultiLayerTouches({screen: Tonyu.globals.$Screen});
-        Tonyu.globals.$InputDevice.on("touchstart",(function anonymous_2525(e) {
+        Tonyu.globals.$InputDevice.on("touchstart",(function anonymous_2537(e) {
           var shape;
           var f;
           var a;
@@ -34235,7 +34185,7 @@ Tonyu.klass.define({
         Tonyu.globals.$printLimit=500;
         if (Tonyu.globals.$debugger) {
           _this.autoReload=Tonyu.globals.$debugger.startWithAutoReload;
-          Tonyu.globals.$debugger.on("classChanged",(function anonymous_3874() {
+          Tonyu.globals.$debugger.on("classChanged",(function anonymous_3886() {
             
             _this.getMainClass();
             if (typeof  _this.autoReload==="function") {
@@ -34258,7 +34208,7 @@ Tonyu.klass.define({
         
         Tonyu.globals.$InputDevice=new Tonyu.classes.kernel.InputDevice;
         Tonyu.globals.$Screen.multiLayerTouches=new Tonyu.classes.kernel.MultiLayerTouches({screen: Tonyu.globals.$Screen});
-        Tonyu.globals.$InputDevice.on("touchstart",(function anonymous_2525(e) {
+        Tonyu.globals.$InputDevice.on("touchstart",(function anonymous_2537(e) {
           var shape;
           var f;
           var a;
@@ -34312,7 +34262,7 @@ Tonyu.klass.define({
             case 0:
               if (!(Tonyu.globals.$debugger)) { __pc=1     ; break; }
               _this.autoReload=Tonyu.globals.$debugger.startWithAutoReload;
-              Tonyu.globals.$debugger.on("classChanged",(function anonymous_3874() {
+              Tonyu.globals.$debugger.on("classChanged",(function anonymous_3886() {
                 
                 _this.getMainClass();
                 if (typeof  _this.autoReload==="function") {
@@ -34346,7 +34296,7 @@ Tonyu.klass.define({
         Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Layer3D({group: Tonyu.globals.$sprites3D,camera: Tonyu.globals.$camera3D});
         _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-        Tonyu.globals.$Screen.on("resize",(function anonymous_4751() {
+        Tonyu.globals.$Screen.on("resize",(function anonymous_4763() {
           
           Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
           Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
@@ -34393,7 +34343,7 @@ Tonyu.klass.define({
         Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Layer3D({group: Tonyu.globals.$sprites3D,camera: Tonyu.globals.$camera3D});
         _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-        Tonyu.globals.$Screen.on("resize",(function anonymous_4751() {
+        Tonyu.globals.$Screen.on("resize",(function anonymous_4763() {
           
           Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
           Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
@@ -34465,7 +34415,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.progress("Loading plugins..");
-        _this.runAsync((function anonymous_5974(r) {
+        _this.runAsync((function anonymous_5986(r) {
           
           Tonyu.globals.$currentProject.loadPlugins(r);
         }));
@@ -34487,7 +34437,7 @@ Tonyu.klass.define({
               __pc=1;return;
             case 1:
               
-              _this.fiber$runAsync(_thread, (function anonymous_5974(r) {
+              _this.fiber$runAsync(_thread, (function anonymous_5986(r) {
                 
                 Tonyu.globals.$currentProject.loadPlugins(r);
               }));
@@ -34510,21 +34460,21 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_984;
+        var _it_980;
         
         _this.progress("Loading pats..");
         rs = Tonyu.globals.$currentProject.getResource();
         
         
-        r=_this.runAsync((function anonymous_6193(succ) {
+        r=_this.runAsync((function anonymous_6205(succ) {
           
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         }));
         Tonyu.globals.$imageList=r[0];
-        _it_984=Tonyu.iterator(r[0].names,2);
-        while(_it_984.next()) {
-          name=_it_984[0];
-          val=_it_984[1];
+        _it_980=Tonyu.iterator(r[0].names,2);
+        while(_it_980.next()) {
+          name=_it_980[0];
+          val=_it_980[1];
           
           Tonyu.setGlobal(name,val);
           
@@ -34540,7 +34490,7 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_984;
+        var _it_980;
         
         
         _thread.enter(function _trc_Boot_ent_loadImages(_thread) {
@@ -34555,7 +34505,7 @@ Tonyu.klass.define({
               rs = Tonyu.globals.$currentProject.getResource();
               
               
-              _this.fiber$runAsync(_thread, (function anonymous_6193(succ) {
+              _this.fiber$runAsync(_thread, (function anonymous_6205(succ) {
                 
                 ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
               }));
@@ -34564,10 +34514,10 @@ Tonyu.klass.define({
               r=_thread.retVal;
               
               Tonyu.globals.$imageList=r[0];
-              _it_984=Tonyu.iterator(r[0].names,2);
-              while(_it_984.next()) {
-                name=_it_984[0];
-                val=_it_984[1];
+              _it_980=Tonyu.iterator(r[0].names,2);
+              while(_it_980.next()) {
+                name=_it_980[0];
+                val=_it_980[1];
                 
                 Tonyu.setGlobal(name,val);
                 
@@ -34589,7 +34539,7 @@ Tonyu.klass.define({
         _this.initT2MediaPlayer();
         _this.loadFromProject(Tonyu.globals.$currentProject);
         _this.progress("Loading sounds done.");
-        _this.on("stop",(function anonymous_6720() {
+        _this.on("stop",(function anonymous_6732() {
           
           _this.allResetBGM();
         }));
@@ -34623,7 +34573,7 @@ Tonyu.klass.define({
               __pc=4;return;
             case 4:
               
-              _this.on("stop",(function anonymous_6720() {
+              _this.on("stop",(function anonymous_6732() {
                 
                 _this.allResetBGM();
               }));
@@ -34759,30 +34709,40 @@ Tonyu.klass.define({
           }
         });
       },
-      loadPage :function _trc_Boot_loadPage(page,arg) {
+      loadPage :function _trc_Boot_loadPage(page,arg,push) {
         "use strict";
         var _this=this;
         var a;
         
+        if (arg===true) {
+          push=true;
+          arg=undefined;
+          
+        }
         a = Tonyu.globals.$Screen.all();
         
-        a=a.find((function anonymous_7368(e) {
+        a=a.find((function anonymous_7449(e) {
           
           return ! Tonyu.globals.$excludeFromAll.contains(e);
         }));
         a.die();
         new page(arg);
       },
-      fiber$loadPage :function _trc_Boot_f_loadPage(_thread,page,arg) {
+      fiber$loadPage :function _trc_Boot_f_loadPage(_thread,page,arg,push) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var a;
         
+        if (arg===true) {
+          push=true;
+          arg=undefined;
+          
+        }
         a = Tonyu.globals.$Screen.all();
         
-        a=a.find((function anonymous_7368(e) {
+        a=a.find((function anonymous_7449(e) {
           
           return ! Tonyu.globals.$excludeFromAll.contains(e);
         }));
@@ -34801,11 +34761,11 @@ Tonyu.klass.define({
         
         res = new $.Deferred();
         
-        evt = {die: (function anonymous_7523() {
+        evt = {die: (function anonymous_7604() {
           
           _this.die();
           res.resolve();
-        }),preventDefault: (function anonymous_7652() {
+        }),preventDefault: (function anonymous_7733() {
           
           evt.defaultPrevented=true;
         })};
@@ -34838,11 +34798,11 @@ Tonyu.klass.define({
         
         res = new $.Deferred();
         
-        evt = {die: (function anonymous_7523() {
+        evt = {die: (function anonymous_7604() {
           
           _this.die();
           res.resolve();
-        }),preventDefault: (function anonymous_7652() {
+        }),preventDefault: (function anonymous_7733() {
           
           evt.defaultPrevented=true;
         })};
@@ -35493,7 +35453,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_14008() {
+        requestAnimationFrame((function anonymous_14089() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -35514,7 +35474,7 @@ Tonyu.klass.define({
           
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_14008() {
+        requestAnimationFrame((function anonymous_14089() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;

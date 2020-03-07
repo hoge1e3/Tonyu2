@@ -84,7 +84,7 @@ mainLoop();
             }
         }
     };
-    res.release(except);
+    if (except) res.release(except);
     return res;
 }
 \update() {
@@ -272,7 +272,10 @@ mainLoop();
     $excludeFromAll=$Screen.all();
     new mainClass();
 }
-\loadPage(page,arg) {
+\loadPage(page,arg,push) {
+    if (arg===true) {
+        push=true;arg=undefined;
+    }
     var a=$Screen.all();
     a=a.find \(e) { return !$excludeFromAll.contains(e); };
     a.die();
