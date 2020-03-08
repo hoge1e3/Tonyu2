@@ -952,6 +952,7 @@ module.exports=function (Tonyu) {
 },{"../lib/R":1}],6:[function(require,module,exports){
 //define(["Klass"], function (Klass) {
 	//var Klass=require("../lib/Klass");
+	const SYMIT=typeof Symbol!=="undefined" && Symbol.iterator;
 	class ArrayValueIterator {
 		constructor(set) {
 			this.set=set;
@@ -1008,8 +1009,17 @@ module.exports=function (Tonyu) {
 			return true;
 		}
 	}
-
-
+	class NativeIteratorWrapper {
+		constructor(it) {
+			this.it=it;
+		}
+		next() {
+			const {value,done}=this.it.next();
+			if (done) return false;
+			this[0]=value;
+			return true;
+		}
+	}
 	function IT(set, arity) {
 		if (set.tonyuIterator) {
 			// TODO: the prototype of class having tonyuIterator will iterate infinitively
@@ -1020,6 +1030,8 @@ module.exports=function (Tonyu) {
 			} else {
 				return new ArrayKeyValueIterator(set);
 			}
+		} else if (typeof set[SYMIT]==="function") {
+			return new NativeIteratorWrapper(set[SYMIT]());
 		} else if (set instanceof Object){
 			if (arity==1) {
 				return new ObjectKeyIterator(set);
