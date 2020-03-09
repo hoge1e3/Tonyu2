@@ -132,6 +132,21 @@ extends Panel;
     }
     return res;
 }
+\saveAndClear(excludes:Array) {
+    var res=[];
+    excludes=excludes||$excludeFromAll.toArray();
+    for (var l in layers) {
+        res.push(l.group.saveAndClear(excludes));
+    }
+    return res;
+}
+\restore(saved) {
+    var i=0;
+    for (var l in layers) {
+        l.group.restore(saved[i]);
+        i++;
+    }
+}
 \touchedFingers(q:TQuery,options) {
     //options: filter, layer
     var res=[];

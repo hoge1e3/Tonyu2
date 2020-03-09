@@ -18,6 +18,7 @@ var _x,_y,_vx,_vy,_rotation,_vr;
 }
 \getWorld() {
     if ($t2World) return $t2World;
+    //console.log("World created");
     $t2World=new T2World;
     return $t2World;
 }

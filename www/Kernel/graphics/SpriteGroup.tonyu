@@ -12,3 +12,15 @@ var transform:Transform;
 \add(){
     throw new Error("SpriteGroup::add abstract");
 }
+\saveAndClear(excludes:Array) {
+    var saved=sprites;
+    sprites=sprites.filter \(s) {
+        return excludes.indexOf(s)>=0;
+    };
+    if (!saved) throw new Error("Invalid saved data "+saved);
+    return saved;
+}
+\restore(saved) {
+    if (!saved) throw new Error("Invalid data "+saved);
+    sprites=saved;
+}

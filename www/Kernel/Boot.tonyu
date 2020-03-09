@@ -16,6 +16,7 @@ native UIDiag;
 native performance;
 native Mezonet;
 native FS;
+native R;
 
 // old browser support
 if (typeof performance==="undefined") {
@@ -106,7 +107,8 @@ mainLoop();
     eventTypes={
         "screenOut":ScreenOutHandler,
         "crashTo":CrashToHandler,
-        "within":WithinHandler
+        "within":WithinHandler,
+        "keyDown": KeyDownHandler
     };
 }
 */
@@ -163,6 +165,7 @@ mainLoop();
             }
         };
     }
+    pageStack=[];
 }
 \initLayers() {
     $screenWidth=465;
@@ -276,10 +279,29 @@ mainLoop();
     if (arg===true) {
         push=true;arg=undefined;
     }
-    var a=$Screen.all();
-    a=a.find \(e) { return !$excludeFromAll.contains(e); };
-    a.die();
-    new page(arg);
+    if (!page) {
+        var saved=pageStack.pop();
+        if (!saved) {
+            throw new Error(R("noPushedPages"));
+        }
+        $Screen.restore(saved.sprites);
+        $t2World=saved.t2World;
+        saved.timeStop.releaseAll();
+    } else if (push) {
+        var saved={
+            timeStop: timeStop(),
+            sprites:$Screen.saveAndClear(),
+            t2World: $t2World
+        };
+        $t2World=null;
+        pageStack.push(saved);
+        new page(arg);
+    } else {
+        var a=$Screen.all();
+        a=a.find \(e) { return !$excludeFromAll.contains(e); };
+        a.die();
+        new page(arg);
+    }
 }
 \stop() {
     var res=new $.Deferred();
