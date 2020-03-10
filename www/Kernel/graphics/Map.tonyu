@@ -68,17 +68,21 @@ native console;
     }
 }
 
-\resolve(file, fallback) {
-    if (typeof file==="string") {
-        var r=file("../maps/").rel(file);
+\resolve(fileName, fallback) {
+    if (typeof fileName==="string") {
+        var r=file("../maps/").rel(fileName);
         if (!fallback || r.exists()) return r;
-        r=file(file);
+        r=file(fileName);
         return r;
     }
-    return file;
+    return fileName;
 }
 \load(dataFile){
     dataFile=resolve(dataFile,true);
+    if (!dataFile || !dataFile.obj) {
+        print(dataFile);
+        throw new Error(dataFile+" is not a file!");
+    }
     baseData=dataFile.obj();
     mapTable=baseData[0];
     mapData=mapTable;

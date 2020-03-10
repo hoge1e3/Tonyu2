@@ -19402,52 +19402,68 @@ Tonyu.klass.define({
           }
         });
       },
-      resolve :function _trc_Map_resolve(file,fallback) {
+      resolve :function _trc_Map_resolve(fileName,fallback) {
         "use strict";
         var _this=this;
         var r;
         
-        if (typeof  file==="string") {
-          r = file("../maps/").rel(file);
+        if (typeof  fileName==="string") {
+          r = _this.file("../maps/").rel(fileName);
           
           if (! fallback||r.exists()) {
             return r;
           }
-          r=file(file);
+          r=_this.file(fileName);
           return r;
           
         }
-        return file;
+        return fileName;
       },
-      fiber$resolve :function _trc_Map_f_resolve(_thread,file,fallback) {
+      fiber$resolve :function _trc_Map_f_resolve(_thread,fileName,fallback) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var r;
         
-        if (typeof  file==="string") {
-          r = file("../maps/").rel(file);
-          
-          if (! fallback||r.exists()) {
-            _thread.retVal=r;return;
-            
+        
+        _thread.enter(function _trc_Map_ent_resolve(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              if (!(typeof  fileName==="string")) { __pc=3     ; break; }
+              r = _this.file("../maps/").rel(fileName);
+              
+              if (!(! fallback||r.exists())) { __pc=1     ; break; }
+              _thread.exit(r);return;
+            case 1     :
+              
+              _this.fiber$file(_thread, fileName);
+              __pc=2;return;
+            case 2:
+              r=_thread.retVal;
+              
+              _thread.exit(r);return;
+            case 3     :
+              
+              _thread.exit(fileName);return;
+              _thread.exit(_this);return;
+            }
           }
-          r=file(file);
-          _thread.retVal=r;return;
-          
-          
-        }
-        _thread.retVal=file;return;
-        
-        
-        _thread.retVal=_this;return;
+        });
       },
       load :function _trc_Map_load(dataFile) {
         "use strict";
         var _this=this;
         
         dataFile=_this.resolve(dataFile,true);
+        if (! dataFile||! dataFile.obj) {
+          _this.print(dataFile);
+          throw new Error(dataFile+" is not a file!");
+          
+          
+        }
         _this.baseData=dataFile.obj();
         _this.mapTable=_this.baseData[0];
         _this.mapData=_this.mapTable;
@@ -19481,6 +19497,12 @@ Tonyu.klass.define({
             case 1:
               dataFile=_thread.retVal;
               
+              if (! dataFile||! dataFile.obj) {
+                _this.print(dataFile);
+                throw new Error(dataFile+" is not a file!");
+                
+                
+              }
               _this.baseData=dataFile.obj();
               _this.mapTable=_this.baseData[0];
               _this.mapData=_this.mapTable;
