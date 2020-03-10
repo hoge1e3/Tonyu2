@@ -68,9 +68,18 @@ native console;
     }
 }
 
+\resolve(file, fallback) {
+    if (typeof file==="string") {
+        var r=file("../maps/").rel(file);
+        if (!fallback || r.exists()) return r;
+        r=file(file);
+        return r;
+    }
+    return file;
+}
 \load(dataFile){
-    baseData=file("../maps/").rel(dataFile).obj();
-    if(!baseData) baseData=file(dataFile).obj();
+    dataFile=resolve(dataFile,true);
+    baseData=dataFile.obj();
     mapTable=baseData[0];
     mapData=mapTable;
     row=mapTable.length;
@@ -83,7 +92,7 @@ native console;
     initMap();
 }
 \save(saveFileName) {
-    var saveDataFile=file("../maps/").rel(saveFileName);
+    var saveDataFile=resolve(saveFileName);//file("../maps/").rel(saveFileName);
     var data=[mapTable,mapOnTable,chipWidth,chipHeight];
     saveDataFile.obj(data);
 }
