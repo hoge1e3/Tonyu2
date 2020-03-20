@@ -20,7 +20,10 @@ native console;
     layer=layer||defaultLayer;
     if (layer.group instanceof SpriteGroup) layer=layer.group;
     crashScale=1;
-    initSpriteMod();
+    if (position) {
+        this.x=position.x;this.y=position.y;//z=position.z;
+    }
+    initSpriteMod();//inits position =new Vec3View;
     addToLayer();
     initAnimMod();
 }

@@ -10,6 +10,11 @@ native Tonyu;
     // TODO use forward, right ...   in param when layer is Actor3D
     //if (layer.group instanceof SpriteGroup) layer=layer.group;
     crashScale=1;
+    if (position) {
+        this.x=position.x;
+        this.y=position.y;
+        this.z=position.z;
+    }
     initSpriteMod();
     /*---Inserted from BaseActor(It should be inited before addToLayer)
      -- moved to initSpriteMod->initTransform

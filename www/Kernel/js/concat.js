@@ -18179,6 +18179,11 @@ Tonyu.klass.define({
           _this.layer=_this.layer.group;
         }
         _this.crashScale=1;
+        if (_this.position) {
+          _this.x=_this.position.x;
+          _this.y=_this.position.y;
+          
+        }
         _this.initSpriteMod();
         _this.addToLayer();
         _this.initAnimMod();
@@ -18594,6 +18599,12 @@ Tonyu.klass.define({
         _this.initSchedulerMod();
         _this.layer=_this.layer||_this.defaultLayer;
         _this.crashScale=1;
+        if (_this.position) {
+          _this.x=_this.position.x;
+          _this.y=_this.position.y;
+          _this.z=_this.position.z;
+          
+        }
         _this.initSpriteMod();
         _this.addToLayer();
         _this.initAnimMod();
