@@ -26809,7 +26809,7 @@ Tonyu.klass.define({
         
         
         if (_this.key) {
-          _this.on("keyDown",_this.key,(function anonymous_1547(keyEvent) {
+          _this.on("keyDown",_this.key,(function anonymous_1579(keyEvent) {
             
             if (_this.disabled) {
               return _this;
@@ -26819,7 +26819,7 @@ Tonyu.klass.define({
           }));
           
         }
-        _this.on("touch",(function anonymous_1680(touchEvent) {
+        _this.on("touch",(function anonymous_1712(touchEvent) {
           var f;
           
           if (_this.disabled) {
@@ -26850,7 +26850,7 @@ Tonyu.klass.define({
             switch (__pc) {
             case 0:
               if (!(_this.key)) { __pc=1     ; break; }
-              _this.on("keyDown",_this.key,(function anonymous_1547(keyEvent) {
+              _this.on("keyDown",_this.key,(function anonymous_1579(keyEvent) {
                 
                 if (_this.disabled) {
                   return _this;
@@ -26860,7 +26860,7 @@ Tonyu.klass.define({
               }));
             case 1     :
               
-              _this.on("touch",(function anonymous_1680(touchEvent) {
+              _this.on("touch",(function anonymous_1712(touchEvent) {
                 var f;
                 
                 if (_this.disabled) {
@@ -26918,6 +26918,7 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
+        options=options||{top: 50};
         options.layer=options.layer||Tonyu.globals.$frontLayer;
         __superClass.apply( _this, [options]);
         _this.fillStyle=_this.fillStyle||"rgb(179,255,142)";

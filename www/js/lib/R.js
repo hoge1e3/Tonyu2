@@ -228,7 +228,7 @@ $(".dropdown-toggle");
         "save" : "Save", //保存
         "varableName" : "Varable Name", //グローバル変数名
         "value" : "Value", //値
-        "varableNameShouldBeAlphabetOrNumber" : "Varable Name Should be Alphabet or Number", //変数名には半角英数字を使ってください
+        "varableNameShouldBeAlphabetOrNumber" : "Variable Name Should be Alphabet or Number", //変数名には半角英数字を使ってください
         "cannotBeParsedAsValue" : "Cannot be Parsed as a Value. If you meant this is a plain string, surround it with double quotes.", //解釈できない値です．この値をそのまま文字列として登録したい場合，前後をダブルクォーテーションで囲ってください．
 
         "ifYouWantContainDoubleQuoteAsTheValue" : "If You Want Contain Double Quote as The Value, write as \\\" ", //ダブルクォーテーション自身を文字列に含める場合は \" と書いてください．

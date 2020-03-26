@@ -32,6 +32,7 @@ var _clicked,_arth;
 }
 
 \new(options) {
+    options=options||{top:50};
     options.layer=options.layer||$frontLayer;
     super(options);
     fillStyle=fillStyle||"rgb(179,255,142)";
