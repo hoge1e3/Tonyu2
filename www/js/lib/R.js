@@ -149,6 +149,7 @@ $(".dropdown-toggle");
         "fileExists": "ファイル{1}は存在します",
         "deleteFileConfirm": "{1}を削除しますか？",
         "duplicatedFiles": "{1} ⇒ {2}({3}) と重複\n",
+        "cannotUseFolderManagedByProject":"{1}はプロジェクトで管理されているフォルダなので，クラスを作成することはできません．",
         "cannotUseKernelFiles": "{1}はシステムで利用されているフォルダなので使用できません",
         "upCased": "先頭を大文字({1}) にして作成します．",
         "resouceList": "{1}リスト",
@@ -164,13 +165,15 @@ $(".dropdown-toggle");
         "duplicateGlobalVariable": "変数名'{1}'が重複しています．",
         "invalidGlobalVariableName": "変数名'{1}'はグローバル変数名として使えません．",
         "runClass": "{1}を実行",
+        "ThisFolderWillBeCreated": "このフォルダは新規作成されます．",
         "pluginAddedAndRestart":"必要なプラグイン{1}を追加しました。もう一度実行してください",
         "otherCommandInProgress": "他のコマンド({1})が実行されているのでお待ちください．\n"+
             "しばらくたってもこのメッセージが出る場合，一旦Homeに戻ってください．",
         "deleteProjectConfirm": "{1}内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．",
         "renamedProjectExists": "{1}はすでに存在します．",
         "at":" 場所：",
-        "deleteProjectFromItem":"プロジェクト{1}を削除しますか？"
+        "deleteProjectFromItem":"プロジェクト{1}を削除しますか？",
+        "destinationFolder": "フォルダ(省略可)",
     };
     /*let buf="";
     for (let k of Object.keys(ja)) {
@@ -328,9 +331,10 @@ $(".dropdown-toggle");
         "fileExists" : "File {1} already Exists", //ファイル{1}は存在します
         "deleteFileConfirm" : "Delete File {1}?", //{1}を削除しますか？
         "duplicatedFiles" : "Duplicated:{1}=>{2}({3})", //{1} ⇒ {2}({3}) と重複
-
+        "cannotUseFolderManagedByProject":"Cannot create class files in folder {1}, managed by the project.",
         "cannotUseKernelFiles" : "Cannot Use name {1}, conflicting with Kernel Files", //{1}はシステムで利用されているフォルダなので使用できません
         "upCased" : "The class name is automatically capitalized: {1}", //先頭を大文字({1}) にして作成します．
+        "ThisFolderWillBeCreated": "This folder will be created.",
         "resouceList" : "{1} List", //{1}リスト
         "dragFileHere" : "Drag {1} File({2}) Here", //ここに{1}ファイル({2})をドラッグ＆ドロップして追加
         "storageUsage" : "Storage Usage: {2}/{1}KB", //{1}KB中{2}KB使用中．
@@ -349,6 +353,7 @@ $(".dropdown-toggle");
         "deleteProjectConfirm" : "Are you sure to Delete Project {1}? If so, type DELETE", //{1}内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．
         "renamedProjectExists" : "Renamed Project {1} Exists", //{1}はすでに存在します．
         "at" : "at:", // 場所：
+        "destinationFolder": "Folder(Optional)",
         "deleteProjectFromItem" : "Delete Project {1}?", //プロジェクト{1}を削除しますか？
     };
     let localeStr=localStorage.locale || navigator.language;

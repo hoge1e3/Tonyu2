@@ -60,7 +60,10 @@ module.exports=function FileList(elem, options) {
     function isModified() {
     	return _mod;
     }
+    let curT;
     function ls(dir) {
+        if (curT!=null) clearTimeout(curT);
+        console.log("LS!",dir.path());
         if (typeof dir=="string") dir=FS.get(dir);
         if (dir) {
             _curDir=dir;
@@ -95,12 +98,13 @@ module.exports=function FileList(elem, options) {
         }
         var i=0;
         var dirs=_curDir.listFiles();
-        if (dirs.length>0) setTimeout(lp,0);
+        if (dirs.length>0) curT=setTimeout(lp,0);
         else wait.remove();
         function lp() {
+            curT=null;
             if (i==0) wait.remove();
             var f=dirs[i++];
-            if (i<dirs.length) setTimeout(lp,0);
+            if (i<dirs.length) curT=setTimeout(lp,0);
             var n=displayName(f);
             if (!n) return;
             var isCur=_curFile && _curFile.path()==f.path();

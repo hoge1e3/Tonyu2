@@ -30,19 +30,28 @@ module.exports=function (ide) {
     	var onend=options.onend || function (){};
         //var t;
         if (!FM.d) FM.d=UI(["div"], {title: title},
-             R("inputFileName"),["br"],
-             ["input", {
+             ["div",R("inputFileName")],
+             ["div",["input", {
                  $var: "name",
                  on:{
                 	 enterkey:function () {
                 		 FM.d.$vars.done();
                 	 },
-                	 realtimechange: function (v) {
-                		 FM.d.$vars.chg(v);
+                	 realtimechange: function (f) {
+                		 FM.d.$vars.chg(f,v.dir.val());
                 	 }
                  }
-             }],
-             ["br"],
+             }]],
+            ["div",R("destinationFolder")],
+            ["div",["input",{
+                $var:"dir",
+                on:{
+                    enterkey:function () {
+                        FM.d.$vars.done();
+                    },
+                 	realtimechange: function (d) {
+                        FM.d.$vars.chg(v.name.val(),d);
+                    }}}]],
              ["div",{$var:"extra"}],
              ["div",{$var:"msg"}],
             ["button", {$var:"b", on:{click: function () {
@@ -53,6 +62,7 @@ module.exports=function (ide) {
         var v=FM.d.$vars;
         //console.log(name);
         v.name.val(name);
+        v.dir.val(folderName(FM.fileList.curDir()));
         FM.d.dialog({title:title});
         var r=null;
         v.done=function() {
@@ -61,9 +71,12 @@ module.exports=function (ide) {
             onend(r.file);
             FM.d.dialog("close");
         };
-        v.chg=function (s) {
-            r=fixName(s,options);
+        v.chg=function (file,dir) {
+            r=fixName(file,dir);
             if (r.ok && r.file.exists()) r={ok:false, reason:R("fileExists",r.file.name())};
+            if (r.ok && !r.file.up().exists()) {
+                r.note=(r.note||"")+R("ThisFolderWillBeCreated");
+            }
             if (!r.ok) {
                 v.msg.css({"color":"red"});
                 v.msg.text(r.reason);
@@ -79,13 +92,12 @@ module.exports=function (ide) {
             options.extraUI(v.extra);
         }
     };
-
     FM.create=function () {
         save();
         FM.dialogOpt({title:R("newFile"), action:"create", onend:function (f) {
             if (!f.exists()) {
                 createContent(f); //f.text("");
-                ls();
+                ls(f.up());
                 open(f);
                 resetFiles();// See https://github.com/hoge1e3/tonyu2-compiler/commit/04ef9c655943b261eea47ed1f49b16c16797f564
             }
@@ -98,16 +110,18 @@ module.exports=function (ide) {
         var oldName=displayName(curFile);
         FM.dialogOpt({title:R("renameFile"), name:oldName, action:"mv", extraUI:mvExtraUI, onend:async function (nf) {
             if (!nf) return;
-            const doRefactor=refactorUI.$vars.chk.prop("checked");
+            const doRefactor=curFile.name()!==nf.name() && refactorUI.$vars.chk.prop("checked");
             if (doRefactor) {
                 return await refactor(curFile,nf);
             }
             reloadFromFiles();
-            var t=curFile.text();
+            const t=curFile.text();
+            const nfd=nf.up();
+            if (!nfd.exists()) nfd.mkdir();
+            nf.text(t);
             curFile.rm();
             close(curFile);
-            nf.text(t);
-            ls();
+            ls(nfd);
             open(nf);
             resetFiles();
         }});
@@ -182,8 +196,12 @@ module.exports=function (ide) {
             close(inf.file);
         }
     };
-    function fixName(name/*, options*/) {
-        const fl=FM.fileList;
+    function folderName(dir) {
+        var ndir=dir.relPath(curPrjDir).replace(/[\/\\].*/,"");
+        return ndir;
+    }
+    function fixName(name,dirName) {
+        //const fl=FM.fileList;
         var upcased=false;
         //if (name=="aaaa") throw new Error("iikagen name error "+EC.enter);
         if (name.match(/^[a-z]/)) {
@@ -191,14 +209,17 @@ module.exports=function (ide) {
             upcased=true;
         }
         if (name.match(/^[A-Z_][a-zA-Z0-9_]*$/)) {
-            var dir=fl.curDir();
-            var sysdir={files:1, static:1 ,maps:1};
-            if (sysdir[dir.relPath(curPrjDir).replace(/\/*/,"")]) {
-                return {ok:false, reason:R("cannotUseKernelFiles",dir.name())};
+            //var dir=fl.curDir();
+            var sysdir={images:1, sounds:1, js:1, files:1, static:1 ,maps:1};
+            //var ndir=folderName(dir);
+            //console.log("ndir",ndir);
+            if (sysdir[dirName]) {
+                return {ok:false, reason:R("cannotUseFolderManagedByProject",dirName)};
             }
             if (isKernel(name)) {
                 return {ok:false, reason:R("cannotUseKernelFiles",name)};
             }
+            const dir=dirName===""? curPrjDir: curPrjDir.rel(dirName+"/");
             if (upcased) {
                 //name= name.substring(0,1).toUpperCase()+name.substring(1);
                 return {ok:true, file: dir.rel(name+EXT), note: R("upCased",name)};
