@@ -49,7 +49,7 @@ native console;
     $mouseX=fingerArray[0].x;
     $mouseY=fingerArray[0].y;
     inputDevice.handleListeners("touchstart") {
-        byMouse: !!e.byMouse,
+        byMouse: e.byMouse,
         finger:dst, index: dst.bound && dst.bound.index
     };
 }
@@ -69,7 +69,7 @@ native console;
             dst.doMove(mp);
             //console.log(dst.show(),dst.bound.show());
             inputDevice.handleListeners("touchmove") {
-                byMouse: !!e.byMouse,
+                byMouse: e.byMouse,
                 finger:dst, index: dst.bound && dst.bound.index
             };
         }
@@ -88,7 +88,7 @@ native console;
             delete fingerSet[src.identifier];
             dst.doEnd();
             inputDevice.handleListeners("touchend") {
-                byMouse: !!e.byMouse,
+                byMouse: e.byMouse,
                 finger:dst, index: dst.bound && dst.bound.index
             };
         }

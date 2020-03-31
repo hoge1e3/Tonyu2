@@ -35,6 +35,7 @@ native T2MediaLib;
     rootCanvas=cvj;
     var cv=cvj[0];
     var ID_MOUSE=31238612;
+    var bmap=[1,4,2];
     $handleMouseDown=\(e) {
         mouseDownAtCV=true;
         Tonyu.resetLoopCheck();
@@ -59,7 +60,7 @@ native T2MediaLib;
                         {identifier:ID_MOUSE+e.button, pageX:e.clientX,pageY:e.clientY}
                     ]
                },
-               byMouse: true
+               byMouse: bmap[e.button]||1
             });
         }
         handleListeners();
@@ -80,7 +81,7 @@ native T2MediaLib;
                         {identifier:ID_MOUSE+e.button, pageX:e.clientX,pageY:e.clientY}
                     ]
                },
-               byMouse: true
+               byMouse: bmap[e.button]||1
             });
         }
         handleListeners();
@@ -100,7 +101,7 @@ native T2MediaLib;
                         {identifier:ID_MOUSE+e.button, pageX:e.clientX,pageY:e.clientY}
                     ]
                },
-               byMouse: true
+               byMouse: bmap[e.button]||1
             });
         }
     };
