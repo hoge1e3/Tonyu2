@@ -20,7 +20,7 @@ extends Actor;
     rightKey=rightKey||"right";
     upKey=upKey||"up";
     downKey=downKey||"down";
-    decay=decay||0.8;
+    decay=(typeof decay)==="number"?decay:0.8;
     velocity=new Vec3View(this) {x:"vx",y:"vy",z:"vz"};
     if ((typeof x!=="number") || x!==x) {
         x=$screenWidth/2;
