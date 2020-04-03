@@ -10,6 +10,10 @@ module.exports=function (ide) {
     const FM={};
     const EXT=ide.project.getEXT();
     const curPrjDir=ide.project.getDir();
+    let files={};
+    function refreshFiles() {
+        files=ide.project.sourceFiles();
+    }
     function open(f){
         if (typeof FM.fileList=="object") {
             FM.fileList.select(f);
@@ -74,6 +78,7 @@ module.exports=function (ide) {
         v.chg=function (file,dir) {
             r=fixName(file,dir);
             if (r.ok && r.file.exists()) r={ok:false, reason:R("fileExists",r.file.name())};
+            if (r.ok && files[r.file.truncExt()]) r={ok:false, reason:R("fileExistsInOtherFolder",r.file.name())};
             if (r.ok && !r.file.up().exists()) {
                 r.note=(r.note||"")+R("ThisFolderWillBeCreated");
             }
@@ -94,6 +99,7 @@ module.exports=function (ide) {
     };
     FM.create=function () {
         save();
+        refreshFiles();
         FM.dialogOpt({title:R("newFile"), action:"create", onend:function (f) {
             if (!f.exists()) {
                 createContent(f); //f.text("");
@@ -108,6 +114,7 @@ module.exports=function (ide) {
         const curFile=getCurFile();
         if (!curFile) return;
         var oldName=displayName(curFile);
+        refreshFiles();
         FM.dialogOpt({title:R("renameFile"), name:oldName, action:"mv", extraUI:mvExtraUI, onend:async function (nf) {
             if (!nf) return;
             const doRefactor=curFile.name()!==nf.name() && refactorUI.$vars.chk.prop("checked");

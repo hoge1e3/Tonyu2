@@ -223,6 +223,30 @@ return {
         return DU.promise(function (succ) {
             setTimeout(succ,0);
         });
+    },
+    nonSourceDirs() {
+        return {images:1, sounds:1, js:1, files:1, static:1 ,maps:1};
+    },
+    sourceFiles() {
+        const res={};
+        const ext=this.getEXT();
+        const ns=this.nonSourceDirs();
+        for (let d of this.dir.listFiles()) {
+            if (d.isDir()) {
+                if (!ns[d.name().replace(/[\/\\]$/,"")]) {
+                    d.recursive(collect);
+                }
+            } else {
+                collect(d);
+            }
+        }
+    	function collect(f) {
+    		if (f.endsWith(ext)) {
+    			var nb=f.truncExt(ext);
+    			res[nb]=f;
+    		}
+    	}
+    	return res;
     }
 };
 });

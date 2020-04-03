@@ -147,6 +147,7 @@ $(".dropdown-toggle");
         "cancel": "キャンセル",
         "input": "入力",
         "fileExists": "ファイル{1}は存在します",
+        "fileExistsInOtherFolder": "ファイル{1}が他のフォルダに存在します",
         "deleteFileConfirm": "{1}を削除しますか？",
         "duplicatedFiles": "{1} ⇒ {2}({3}) と重複\n",
         "cannotUseFolderManagedByProject":"{1}はプロジェクトで管理されているフォルダなので，クラスを作成することはできません．",
