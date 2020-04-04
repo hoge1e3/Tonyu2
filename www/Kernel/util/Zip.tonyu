@@ -1,0 +1,13 @@
+native FS;
+native JSZip;
+
+\zip(srcdir, zipfile) {
+	$currentProject.requestPlugin("JSZip");
+	FS.zip.setJSZip(JSZip);
+	return FS.zip.zip(srcdir,zipfile);
+}
+\unzip(zipfile, dstdir) {
+	$currentProject.requestPlugin("JSZip");
+	FS.zip.setJSZip(JSZip);
+	return FS.zip.unzip(zipfile, dstdir);
+}

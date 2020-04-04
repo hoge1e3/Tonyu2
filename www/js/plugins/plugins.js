@@ -6,6 +6,7 @@ define(["WebSite","root"],function (WebSite,root){
         gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
         Mezonet: {src:"Mezonet.js", symbol: "Mezonet"},
         PicoAudio: {src:"PicoAudio.min.js", symbol:"PicoAudio"},
+        JSZip: {src:"jszip.min.js", symbol:"JSZip"},
         // single js is required for runScript1.js
         jquery_ui: {src:"jquery-ui.js", detection:/\$InputBox/,symbol:"$.ui"}
     };

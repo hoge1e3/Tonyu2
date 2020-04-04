@@ -147,6 +147,7 @@ mainLoop();
     initFPSParams();
     $WebPage=new WebPage;
     $Navigator=new Navigator;
+    $Zip=new Zip;
     $mouseX=$mouseX||0;
     $mouseY=$mouseY||0;
     $imageList=[];// temporary before load assets(for customLoading)
