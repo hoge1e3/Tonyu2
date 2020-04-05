@@ -8,6 +8,7 @@ var clickedEffect, disabledEffect;
 //var savedEffect, _effectState;
 var disabled, key,autoRepeat;
 var onClick;
+var clickOnUp;
 var _clicked,_arth;
 
 \clickedStyle {
@@ -69,11 +70,14 @@ on("touch") \(touchEvent) {
     doStartClick();
     f.on("end",doEndClick);
 };
+\handleClickEvent() {
+    fireEvent("click");
+    if (typeof onClick==="function") onClick(this);
+}
 \doStartClick(){
     _clicked=$frameCount;
     Button.last=this;
-    fireEvent("click");
-    if (typeof onClick==="function") onClick(this);
+    if (!clickOnUp ) handleClickEvent();
     if (autoRepeat) {
         if (_arth) _arth.kill();
         _arth=parallel("procAR");
@@ -82,6 +86,7 @@ on("touch") \(touchEvent) {
 }
 \doEndClick() {
     fireEvent("release");
+    if (clickOnUp ) handleClickEvent();
     _clicked=0;
     //undoEffect();
     if (_arth) _arth.kill();
@@ -89,7 +94,7 @@ on("touch") \(touchEvent) {
 \procAR() {
     updateEx(autoRepeat);
     while(true) {
-	    if (typeof onClick==="function") onClick(this);
+	    handleClickEvent();
         update();
     }
 }

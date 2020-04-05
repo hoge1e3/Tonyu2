@@ -26882,8 +26882,9 @@ Tonyu.klass.define({
         
         
         
+        
         if (_this.key) {
-          _this.on("keyDown",_this.key,(function anonymous_1579(keyEvent) {
+          _this.on("keyDown",_this.key,(function anonymous_1595(keyEvent) {
             
             if (_this.disabled) {
               return _this;
@@ -26893,7 +26894,7 @@ Tonyu.klass.define({
           }));
           
         }
-        _this.on("touch",(function anonymous_1712(touchEvent) {
+        _this.on("touch",(function anonymous_1728(touchEvent) {
           var f;
           
           if (_this.disabled) {
@@ -26918,13 +26919,14 @@ Tonyu.klass.define({
         
         
         
+        
         _thread.enter(function _trc_Button_ent_main(_thread) {
           if (_thread.lastEx) __pc=_thread.catchPC;
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
               if (!(_this.key)) { __pc=1     ; break; }
-              _this.on("keyDown",_this.key,(function anonymous_1579(keyEvent) {
+              _this.on("keyDown",_this.key,(function anonymous_1595(keyEvent) {
                 
                 if (_this.disabled) {
                   return _this;
@@ -26934,7 +26936,7 @@ Tonyu.klass.define({
               }));
             case 1     :
               
-              _this.on("touch",(function anonymous_1712(touchEvent) {
+              _this.on("touch",(function anonymous_1728(touchEvent) {
                 var f;
                 
                 if (_this.disabled) {
@@ -27023,15 +27025,36 @@ Tonyu.klass.define({
         }
         return base;
       },
+      handleClickEvent :function _trc_Button_handleClickEvent() {
+        "use strict";
+        var _this=this;
+        
+        _this.fireEvent("click");
+        if (typeof  _this.onClick==="function") {
+          _this.onClick(_this);
+        }
+      },
+      fiber$handleClickEvent :function _trc_Button_f_handleClickEvent(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _this.fireEvent("click");
+        if (typeof  _this.onClick==="function") {
+          _this.onClick(_this);
+        }
+        
+        _thread.retVal=_this;return;
+      },
       doStartClick :function _trc_Button_doStartClick() {
         "use strict";
         var _this=this;
         
         _this._clicked=Tonyu.globals.$frameCount;
         Tonyu.classes.kernel.Button.last=_this;
-        _this.fireEvent("click");
-        if (typeof  _this.onClick==="function") {
-          _this.onClick(_this);
+        if (! _this.clickOnUp) {
+          _this.handleClickEvent();
         }
         if (_this.autoRepeat) {
           if (_this._arth) {
@@ -27049,25 +27072,39 @@ Tonyu.klass.define({
         
         _this._clicked=Tonyu.globals.$frameCount;
         Tonyu.classes.kernel.Button.last=_this;
-        _this.fireEvent("click");
-        if (typeof  _this.onClick==="function") {
-          _this.onClick(_this);
-        }
-        if (_this.autoRepeat) {
-          if (_this._arth) {
-            _this._arth.kill();
-          }
-          _this._arth=_this.parallel("procAR");
-          
-        }
         
-        _thread.retVal=_this;return;
+        _thread.enter(function _trc_Button_ent_doStartClick(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              if (!(! _this.clickOnUp)) { __pc=2     ; break; }
+              _this.fiber$handleClickEvent(_thread);
+              __pc=1;return;
+            case 1:
+              
+            case 2     :
+              
+              if (_this.autoRepeat) {
+                if (_this._arth) {
+                  _this._arth.kill();
+                }
+                _this._arth=_this.parallel("procAR");
+                
+              }
+              _thread.exit(_this);return;
+            }
+          }
+        });
       },
       doEndClick :function _trc_Button_doEndClick() {
         "use strict";
         var _this=this;
         
         _this.fireEvent("release");
+        if (_this.clickOnUp) {
+          _this.handleClickEvent();
+        }
         _this._clicked=0;
         if (_this._arth) {
           _this._arth.kill();
@@ -27080,12 +27117,27 @@ Tonyu.klass.define({
         var __pc=0;
         
         _this.fireEvent("release");
-        _this._clicked=0;
-        if (_this._arth) {
-          _this._arth.kill();
-        }
         
-        _thread.retVal=_this;return;
+        _thread.enter(function _trc_Button_ent_doEndClick(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              if (!(_this.clickOnUp)) { __pc=2     ; break; }
+              _this.fiber$handleClickEvent(_thread);
+              __pc=1;return;
+            case 1:
+              
+            case 2     :
+              
+              _this._clicked=0;
+              if (_this._arth) {
+                _this._arth.kill();
+              }
+              _thread.exit(_this);return;
+            }
+          }
+        });
       },
       procAR :function _trc_Button_procAR() {
         "use strict";
@@ -27093,9 +27145,7 @@ Tonyu.klass.define({
         
         _this.updateEx(_this.autoRepeat);
         while (true) {
-          if (typeof  _this.onClick==="function") {
-            _this.onClick(_this);
-          }
+          _this.handleClickEvent();
           _this.update();
           
         }
@@ -27117,15 +27167,16 @@ Tonyu.klass.define({
             case 1:
               
             case 2:
-              if (typeof  _this.onClick==="function") {
-                _this.onClick(_this);
-              }
-              _this.fiber$update(_thread);
+              _this.fiber$handleClickEvent(_thread);
               __pc=3;return;
             case 3:
               
+              _this.fiber$update(_thread);
+              __pc=4;return;
+            case 4:
+              
               __pc=2;break;
-            case 4     :
+            case 5     :
               
               _thread.exit(_this);return;
             }
@@ -27186,7 +27237,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"__getter__clickedStyle":{"nowait":true},"__setter__clickedStyle":{"nowait":true},"__getter__effect":{"nowait":true},"__setter__effect":{"nowait":true},"__getter__disabledStrokeStyle":{"nowait":true},"__setter__disabledStrokeStyle":{"nowait":true},"new":{"nowait":false},"__getter__curEffect":{"nowait":true},"doStartClick":{"nowait":false},"doEndClick":{"nowait":false},"procAR":{"nowait":false},"getCrashRect":{"nowait":true},"draw":{"nowait":true},"__getter__clicked":{"nowait":true}},"fields":{"padding":{},"left":{},"top":{},"width":{},"height":{},"text":{},"fillStyle":{},"strokeStyle":{},"clickedEffect":{},"disabledEffect":{},"disabled":{},"key":{},"autoRepeat":{},"onClick":{},"_clicked":{},"_arth":{}}}
+  decls: {"methods":{"main":{"nowait":false},"__getter__clickedStyle":{"nowait":true},"__setter__clickedStyle":{"nowait":true},"__getter__effect":{"nowait":true},"__setter__effect":{"nowait":true},"__getter__disabledStrokeStyle":{"nowait":true},"__setter__disabledStrokeStyle":{"nowait":true},"new":{"nowait":false},"__getter__curEffect":{"nowait":true},"handleClickEvent":{"nowait":false},"doStartClick":{"nowait":false},"doEndClick":{"nowait":false},"procAR":{"nowait":false},"getCrashRect":{"nowait":true},"draw":{"nowait":true},"__getter__clicked":{"nowait":true}},"fields":{"padding":{},"left":{},"top":{},"width":{},"height":{},"text":{},"fillStyle":{},"strokeStyle":{},"clickedEffect":{},"disabledEffect":{},"disabled":{},"key":{},"autoRepeat":{},"onClick":{},"clickOnUp":{},"_clicked":{},"_arth":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.GameConsole',
