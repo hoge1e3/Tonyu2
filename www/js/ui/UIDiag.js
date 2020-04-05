@@ -38,7 +38,9 @@ define(["UI","R","root"],function (UI,R,root) {
     }
     UIDiag.confirm=function (mesg) {
         if (UIDiag.useNative) {
-            return window.confirm(...arguments);
+            const res=window.confirm(...arguments);
+            if (root.Tonyu) root.Tonyu.resetLoopCheck();
+            return res;
         }
         requestJQueryUI();
         mesg=parseMesg(mesg,R("confirm"));
@@ -53,7 +55,9 @@ define(["UI","R","root"],function (UI,R,root) {
     };
     UIDiag.alert=function (mesg) {
         if (UIDiag.useNative) {
-            return window.alert(...arguments);
+            const res=window.alert(...arguments);
+            if (root.Tonyu) root.Tonyu.resetLoopCheck();
+            return res;
         }
         requestJQueryUI();
         mesg=parseMesg(mesg,R("confirm"));
@@ -76,7 +80,9 @@ define(["UI","R","root"],function (UI,R,root) {
     //---
     UIDiag.prompt=function (mesg,value,geom) {
         if (UIDiag.useNative) {
-            return window.prompt(...arguments);
+            const res=window.prompt(...arguments);
+            if (root.Tonyu) root.Tonyu.resetLoopCheck();
+            return res;
         }
         requestJQueryUI();
         mesg=parseMesg(mesg,R("input"));
