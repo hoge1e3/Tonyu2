@@ -26884,7 +26884,7 @@ Tonyu.klass.define({
         
         
         if (_this.key) {
-          _this.on("keyDown",_this.key,(function anonymous_1595(keyEvent) {
+          _this.on("keyDown",_this.key,(function anonymous_1597(keyEvent) {
             
             if (_this.disabled) {
               return _this;
@@ -26894,7 +26894,7 @@ Tonyu.klass.define({
           }));
           
         }
-        _this.on("touch",(function anonymous_1728(touchEvent) {
+        _this.on("touch",(function anonymous_1730(touchEvent) {
           var f;
           
           if (_this.disabled) {
@@ -26926,7 +26926,7 @@ Tonyu.klass.define({
             switch (__pc) {
             case 0:
               if (!(_this.key)) { __pc=1     ; break; }
-              _this.on("keyDown",_this.key,(function anonymous_1595(keyEvent) {
+              _this.on("keyDown",_this.key,(function anonymous_1597(keyEvent) {
                 
                 if (_this.disabled) {
                   return _this;
@@ -26936,7 +26936,7 @@ Tonyu.klass.define({
               }));
             case 1     :
               
-              _this.on("touch",(function anonymous_1728(touchEvent) {
+              _this.on("touch",(function anonymous_1730(touchEvent) {
                 var f;
                 
                 if (_this.disabled) {
@@ -27053,7 +27053,7 @@ Tonyu.klass.define({
         
         _this._clicked=Tonyu.globals.$frameCount;
         Tonyu.classes.kernel.Button.last=_this;
-        if (! _this.clickOnUp) {
+        if (_this.clickTiming!=="release") {
           _this.handleClickEvent();
         }
         if (_this.autoRepeat) {
@@ -27078,7 +27078,7 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              if (!(! _this.clickOnUp)) { __pc=2     ; break; }
+              if (!(_this.clickTiming!=="release")) { __pc=2     ; break; }
               _this.fiber$handleClickEvent(_thread);
               __pc=1;return;
             case 1:
@@ -27102,7 +27102,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.fireEvent("release");
-        if (_this.clickOnUp) {
+        if (_this.clickTiming==="release") {
           _this.handleClickEvent();
         }
         _this._clicked=0;
@@ -27123,7 +27123,7 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              if (!(_this.clickOnUp)) { __pc=2     ; break; }
+              if (!(_this.clickTiming==="release")) { __pc=2     ; break; }
               _this.fiber$handleClickEvent(_thread);
               __pc=1;return;
             case 1:
@@ -27237,7 +27237,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"__getter__clickedStyle":{"nowait":true},"__setter__clickedStyle":{"nowait":true},"__getter__effect":{"nowait":true},"__setter__effect":{"nowait":true},"__getter__disabledStrokeStyle":{"nowait":true},"__setter__disabledStrokeStyle":{"nowait":true},"new":{"nowait":false},"__getter__curEffect":{"nowait":true},"handleClickEvent":{"nowait":false},"doStartClick":{"nowait":false},"doEndClick":{"nowait":false},"procAR":{"nowait":false},"getCrashRect":{"nowait":true},"draw":{"nowait":true},"__getter__clicked":{"nowait":true}},"fields":{"padding":{},"left":{},"top":{},"width":{},"height":{},"text":{},"fillStyle":{},"strokeStyle":{},"clickedEffect":{},"disabledEffect":{},"disabled":{},"key":{},"autoRepeat":{},"onClick":{},"clickOnUp":{},"_clicked":{},"_arth":{}}}
+  decls: {"methods":{"main":{"nowait":false},"__getter__clickedStyle":{"nowait":true},"__setter__clickedStyle":{"nowait":true},"__getter__effect":{"nowait":true},"__setter__effect":{"nowait":true},"__getter__disabledStrokeStyle":{"nowait":true},"__setter__disabledStrokeStyle":{"nowait":true},"new":{"nowait":false},"__getter__curEffect":{"nowait":true},"handleClickEvent":{"nowait":false},"doStartClick":{"nowait":false},"doEndClick":{"nowait":false},"procAR":{"nowait":false},"getCrashRect":{"nowait":true},"draw":{"nowait":true},"__getter__clicked":{"nowait":true}},"fields":{"padding":{},"left":{},"top":{},"width":{},"height":{},"text":{},"fillStyle":{},"strokeStyle":{},"clickedEffect":{},"disabledEffect":{},"disabled":{},"key":{},"autoRepeat":{},"onClick":{},"clickTiming":{},"_clicked":{},"_arth":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.GameConsole',
