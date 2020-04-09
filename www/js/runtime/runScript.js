@@ -12,7 +12,7 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 		var cv=com.initCanvas();
 
 
-		var locs=location.href.replace(/\?.*/,"").split(/\//);
+		var locs=location.href.replace(/[\?#].*/,"").split(/\//);
 		var prjPath=locs.pop() || "runscript";
 		var user=locs.pop() || "nobody";
 		//if (prjloc.length<0) locs="runscript";

@@ -1,4 +1,8 @@
-    OK runScript1 missing builtin.png.js
+search subfolder
+fullCompiler before create executable
+Ctrl+T
+Chara -> Player, Enemy  not updated
+OK runScript1 missing builtin.png.js
 importHTML does not go project page
 MAC
   download nw.js to $TMP

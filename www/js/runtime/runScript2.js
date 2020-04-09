@@ -12,7 +12,7 @@ requirejs(["FS","compiledTonyuProject", "Shell","runtime","WebSite","LSFS","Tony
 			if (!home.isDir()) home=home.up();
 			curProjectDir=home;
 		} else {
-			var locs=location.href.replace(/\?.*/,"").split(/\//);
+			var locs=location.href.replace(/[\?#].*/,"").split(/\//);
 			prj=locs.pop() || "runscript";
 			var user=locs.pop() || "nobody";
 			home=FS.get(WebSite.tonyuHome);
