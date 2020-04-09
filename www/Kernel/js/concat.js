@@ -1703,12 +1703,12 @@ Tonyu.klass.define({
           if (Tonyu.globals.$InputDevice.touchEmu) {
             Tonyu.globals.$handleTouchStart({preventDefault: (function anonymous_1606() {
               
-            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
+            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
             
           }
           _this.handleListeners();
         });
-        Tonyu.globals.$handleMouseMove=(function anonymous_1953(e) {
+        Tonyu.globals.$handleMouseMove=(function anonymous_1957(e) {
           var p;
           var mp;
           
@@ -1721,17 +1721,18 @@ Tonyu.klass.define({
           mp = {x: e.clientX-p.left,y: e.clientY-p.top,layer: Tonyu.globals.$Screen.layer};
           
           mp=Tonyu.globals.$Screen.convert(mp,_this.defaultLayer);
+          _this.fireEvent("mouseMove",{x: mp.x,y: mp.y,vx: Tonyu.globals.$mouseX==null?0:mp.x-Tonyu.globals.$mouseX,vy: Tonyu.globals.$mouseY==null?0:mp.y-Tonyu.globals.$mouseY});
           Tonyu.globals.$mouseX=mp.x;
           Tonyu.globals.$mouseY=mp.y;
           if (_this.isMouseDown&&Tonyu.globals.$InputDevice.touchEmu) {
-            Tonyu.globals.$handleTouchMove({preventDefault: (function anonymous_2382() {
+            Tonyu.globals.$handleTouchMove({preventDefault: (function anonymous_2553() {
               
-            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
+            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
             
           }
           _this.handleListeners();
         });
-        Tonyu.globals.$handleMouseUp=(function anonymous_2727(e) {
+        Tonyu.globals.$handleMouseUp=(function anonymous_2994(e) {
           
           Tonyu.resetLoopCheck();
           if (Tonyu.globals.$t2MediaLib) {
@@ -1744,7 +1745,7 @@ Tonyu.klass.define({
           _this.isMouseDown=false;
           _this.mouseButton=_this.mouseButton&~ (1<<e.button);
           if (Tonyu.globals.$InputDevice.touchEmu) {
-            Tonyu.globals.$handleTouchEnd({preventDefault: (function anonymous_3073() {
+            Tonyu.globals.$handleTouchEnd({preventDefault: (function anonymous_3340() {
               
             }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
             
@@ -1752,52 +1753,52 @@ Tonyu.klass.define({
         });
         _this.touch=new Tonyu.classes.kernel.TouchFingers(_this);
         Tonyu.globals.$touches=_this.touch.fingerArray;
-        Tonyu.globals.$handleTouchStart=(function anonymous_3472(e) {
+        Tonyu.globals.$handleTouchStart=(function anonymous_3739(e) {
           
           return _this.touch.handleStart(e);
         });
-        Tonyu.globals.$handleTouchMove=(function anonymous_3556(e) {
+        Tonyu.globals.$handleTouchMove=(function anonymous_3823(e) {
           
           return _this.touch.handleMove(e);
         });
-        Tonyu.globals.$handleTouchEnd=(function anonymous_3638(e) {
+        Tonyu.globals.$handleTouchEnd=(function anonymous_3905(e) {
           
           return _this.touch.handleEnd(e);
         });
-        Tonyu.globals.$unsetTouchEmu=(function anonymous_3718() {
+        Tonyu.globals.$unsetTouchEmu=(function anonymous_3985() {
           
           Tonyu.resetLoopCheck();
           Tonyu.globals.$InputDevice.touchEmu=false;
           return _this.touch.unsetEmu();
         });
-        handleMouseDown = (function anonymous_3871(e) {
+        handleMouseDown = (function anonymous_4138(e) {
           
           Tonyu.globals.$handleMouseDown(e);
         });
         
-        handleMouseMove = (function anonymous_3924(e) {
+        handleMouseMove = (function anonymous_4191(e) {
           
           Tonyu.globals.$handleMouseMove(e);
         });
         
-        handleMouseUp = (function anonymous_3975(e) {
+        handleMouseUp = (function anonymous_4242(e) {
           
           Tonyu.globals.$handleMouseUp(e);
         });
         
-        handleTouchStart = (function anonymous_4027(e) {
+        handleTouchStart = (function anonymous_4294(e) {
           
           Tonyu.globals.$unsetTouchEmu();
           Tonyu.globals.$handleTouchStart(e);
         });
         
-        handleTouchMove = (function anonymous_4098(e) {
+        handleTouchMove = (function anonymous_4365(e) {
           
           Tonyu.globals.$unsetTouchEmu();
           Tonyu.globals.$handleTouchMove(e);
         });
         
-        handleTouchEnd = (function anonymous_4167(e) {
+        handleTouchEnd = (function anonymous_4434(e) {
           
           Tonyu.globals.$unsetTouchEmu();
           Tonyu.globals.$handleTouchEnd(e);
@@ -1810,7 +1811,7 @@ Tonyu.klass.define({
           cvj.mousedown(handleMouseDown);
           $(document).mousemove(handleMouseMove);
           $(document).mouseup(handleMouseUp);
-          cvj.on("contextmenu",(function anonymous_4460(e) {
+          cvj.on("contextmenu",(function anonymous_4727(e) {
             
             e.stopPropagation();
             e.preventDefault();
@@ -1874,12 +1875,12 @@ Tonyu.klass.define({
                 if (Tonyu.globals.$InputDevice.touchEmu) {
                   Tonyu.globals.$handleTouchStart({preventDefault: (function anonymous_1606() {
                     
-                  }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
+                  }),originalEvent: {changedTouches: [{identifier: ID_MOUSE,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
                   
                 }
                 _this.handleListeners();
               });
-              Tonyu.globals.$handleMouseMove=(function anonymous_1953(e) {
+              Tonyu.globals.$handleMouseMove=(function anonymous_1957(e) {
                 var p;
                 var mp;
                 
@@ -1892,17 +1893,18 @@ Tonyu.klass.define({
                 mp = {x: e.clientX-p.left,y: e.clientY-p.top,layer: Tonyu.globals.$Screen.layer};
                 
                 mp=Tonyu.globals.$Screen.convert(mp,_this.defaultLayer);
+                _this.fireEvent("mouseMove",{x: mp.x,y: mp.y,vx: Tonyu.globals.$mouseX==null?0:mp.x-Tonyu.globals.$mouseX,vy: Tonyu.globals.$mouseY==null?0:mp.y-Tonyu.globals.$mouseY});
                 Tonyu.globals.$mouseX=mp.x;
                 Tonyu.globals.$mouseY=mp.y;
                 if (_this.isMouseDown&&Tonyu.globals.$InputDevice.touchEmu) {
-                  Tonyu.globals.$handleTouchMove({preventDefault: (function anonymous_2382() {
+                  Tonyu.globals.$handleTouchMove({preventDefault: (function anonymous_2553() {
                     
-                  }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
+                  }),originalEvent: {changedTouches: [{identifier: ID_MOUSE,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
                   
                 }
                 _this.handleListeners();
               });
-              Tonyu.globals.$handleMouseUp=(function anonymous_2727(e) {
+              Tonyu.globals.$handleMouseUp=(function anonymous_2994(e) {
                 
                 Tonyu.resetLoopCheck();
                 if (Tonyu.globals.$t2MediaLib) {
@@ -1915,7 +1917,7 @@ Tonyu.klass.define({
                 _this.isMouseDown=false;
                 _this.mouseButton=_this.mouseButton&~ (1<<e.button);
                 if (Tonyu.globals.$InputDevice.touchEmu) {
-                  Tonyu.globals.$handleTouchEnd({preventDefault: (function anonymous_3073() {
+                  Tonyu.globals.$handleTouchEnd({preventDefault: (function anonymous_3340() {
                     
                   }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
                   
@@ -1923,52 +1925,52 @@ Tonyu.klass.define({
               });
               _this.touch=new Tonyu.classes.kernel.TouchFingers(_this);
               Tonyu.globals.$touches=_this.touch.fingerArray;
-              Tonyu.globals.$handleTouchStart=(function anonymous_3472(e) {
+              Tonyu.globals.$handleTouchStart=(function anonymous_3739(e) {
                 
                 return _this.touch.handleStart(e);
               });
-              Tonyu.globals.$handleTouchMove=(function anonymous_3556(e) {
+              Tonyu.globals.$handleTouchMove=(function anonymous_3823(e) {
                 
                 return _this.touch.handleMove(e);
               });
-              Tonyu.globals.$handleTouchEnd=(function anonymous_3638(e) {
+              Tonyu.globals.$handleTouchEnd=(function anonymous_3905(e) {
                 
                 return _this.touch.handleEnd(e);
               });
-              Tonyu.globals.$unsetTouchEmu=(function anonymous_3718() {
+              Tonyu.globals.$unsetTouchEmu=(function anonymous_3985() {
                 
                 Tonyu.resetLoopCheck();
                 Tonyu.globals.$InputDevice.touchEmu=false;
                 return _this.touch.unsetEmu();
               });
-              handleMouseDown = (function anonymous_3871(e) {
+              handleMouseDown = (function anonymous_4138(e) {
                 
                 Tonyu.globals.$handleMouseDown(e);
               });
               
-              handleMouseMove = (function anonymous_3924(e) {
+              handleMouseMove = (function anonymous_4191(e) {
                 
                 Tonyu.globals.$handleMouseMove(e);
               });
               
-              handleMouseUp = (function anonymous_3975(e) {
+              handleMouseUp = (function anonymous_4242(e) {
                 
                 Tonyu.globals.$handleMouseUp(e);
               });
               
-              handleTouchStart = (function anonymous_4027(e) {
+              handleTouchStart = (function anonymous_4294(e) {
                 
                 Tonyu.globals.$unsetTouchEmu();
                 Tonyu.globals.$handleTouchStart(e);
               });
               
-              handleTouchMove = (function anonymous_4098(e) {
+              handleTouchMove = (function anonymous_4365(e) {
                 
                 Tonyu.globals.$unsetTouchEmu();
                 Tonyu.globals.$handleTouchMove(e);
               });
               
-              handleTouchEnd = (function anonymous_4167(e) {
+              handleTouchEnd = (function anonymous_4434(e) {
                 
                 Tonyu.globals.$unsetTouchEmu();
                 Tonyu.globals.$handleTouchEnd(e);
@@ -1981,7 +1983,7 @@ Tonyu.klass.define({
                 cvj.mousedown(handleMouseDown);
                 $(document).mousemove(handleMouseMove);
                 $(document).mouseup(handleMouseUp);
-                cvj.on("contextmenu",(function anonymous_4460(e) {
+                cvj.on("contextmenu",(function anonymous_4727(e) {
                   
                   e.stopPropagation();
                   e.preventDefault();

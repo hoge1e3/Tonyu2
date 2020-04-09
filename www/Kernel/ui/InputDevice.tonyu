@@ -57,7 +57,7 @@ native T2MediaLib;
                preventDefault: function (){},
                originalEvent: {
                     changedTouches: [
-                        {identifier:ID_MOUSE+e.button, pageX:e.clientX,pageY:e.clientY}
+                        {identifier:ID_MOUSE/*+e.button*/, pageX:e.clientX,pageY:e.clientY}
                     ]
                },
                byMouse: bmap[e.button]||1
@@ -71,6 +71,11 @@ native T2MediaLib;
         var p=cvj.offset();
         var mp={x:e.clientX-p.left, y:e.clientY-p.top,layer:$Screen.layer};
         mp=$Screen.convert(mp,defaultLayer);// $Screen.canvas2buf(mp);
+        fireEvent("mouseMove",{
+            x: mp.x, y:mp.y,
+            vx:$mouseX==null?0:mp.x-$mouseX,
+            vy:$mouseY==null?0:mp.y-$mouseY
+        });
         $mouseX=mp.x;
         $mouseY=mp.y;
         if (isMouseDown && $InputDevice.touchEmu) {
@@ -78,7 +83,8 @@ native T2MediaLib;
                preventDefault: function (){},
                originalEvent: {
                     changedTouches: [
-                        {identifier:ID_MOUSE+e.button, pageX:e.clientX,pageY:e.clientY}
+                        //e.button is not passed on move? (right-drag is not processed...)
+                        {identifier:ID_MOUSE/*+e.button*/, pageX:e.clientX,pageY:e.clientY}
                     ]
                },
                byMouse: bmap[e.button]||1
