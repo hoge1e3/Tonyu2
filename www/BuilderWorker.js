@@ -284,7 +284,7 @@ module.exports=class {
 			return this.partialCompile(c);
 		} else {
 			// existing file modified
-			console.log("Ex",classMeta);
+			console.log("Ex",classMeta.fullName);
 			return this.partialCompile(this.reverseDependingClasses(classMeta));
 		}
 	}
@@ -295,10 +295,10 @@ module.exports=class {
         let mod;
 		do {
 			mod=false;
-			for(let k of this.getMyClasses()) {
-				if (dep[k.fullName]) break;
+        	for(let k of this.getMyClasses()) {
+        		if (dep[k.fullName]) continue;
 				for (let k2 of Tonyu.klass.getDependingClasses(k)) {
-					if (dep[k2.fullName]) {
+        			if (dep[k2.fullName]) {
 						dep[k.fullName]=k;
 						mod=true;
 						break;
@@ -306,7 +306,7 @@ module.exports=class {
 				}
 			}
 		} while(mod);
-		console.log("revdep",dep);
+		//console.log("revdep",Object.keys(dep));
 		return dep;
 	}
     parse(f) {
