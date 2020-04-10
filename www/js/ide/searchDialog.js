@@ -1,10 +1,10 @@
 define(["UI","Shell","R"], function (UI,sh,R) {
     var res={};
-    res.show=function (prjDir, onLineClick) {
-        var d=res.embed(prjDir,onLineClick);
+    res.show=function (ide, onLineClick) {
+        var d=res.embed(ide,onLineClick);
         d.dialog({width:600});
     };
-    res.embed=function (prjDir, onLineClick) {
+    res.embed=function (ide, onLineClick) {
         if (!res.d) {
             res.d=UI("div",{title:R("find")},
                     ["div",
@@ -24,21 +24,25 @@ define(["UI","Shell","R"], function (UI,sh,R) {
         var model={word:""};
         d.$edits.load(model);
         d.start=function () {
+            const files=ide.project.sourceFiles();
             d.$vars.searchRes.empty();
-            var sres=sh.grep(model.word, prjDir);
-            sres.forEach(function (l) {
-                if (l.file.name().match(/^concat\.js/)) {
-                    return;
+            const doLineClickF=l=>()=>doLineClick(l);
+            for (let fileName in files) {
+                const file=files[fileName];
+                let lineNo=0;
+                for (let line of file.lines()) {
+                    lineNo++;
+                    if (line.indexOf(model.word)<0) continue;
+                    d.$vars.searchRes.append(
+                            UI("tr",
+                                    ["td",{on:{click:doLineClickF({file,lineNo,line})}},file.name()+"("+lineNo+")"],
+                                    ["td",{on:{click:doLineClickF({file,lineNo,line})}},line]
+                            ));
                 }
-                d.$vars.searchRes.append(
-                        UI("tr",
-                                ["td",{on:{click:doLineClick}},l.file.name()+"("+l.lineNo+")"],
-                                ["td",{on:{click:doLineClick}},l.line]
-                        ));
-                function doLineClick() {
-                    if (onLineClick) onLineClick(l);
-                }
-            });
+            }
+            function doLineClick(l) {
+                if (onLineClick) onLineClick(l);
+            }
         };
         return d;
     };

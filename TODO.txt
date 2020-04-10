@@ -1,7 +1,7 @@
-search subfolder
+OK search subfolder
 fullCompiler before create executable
 Ctrl+T
-Chara -> Player, Enemy  not updated
+OK Chara -> Player, Enemy  not updated
 OK runScript1 missing builtin.png.js
 importHTML does not go project page
 MAC

@@ -47,7 +47,7 @@ define(function (require, exports, module) {
             },
             search() {
                 console.log("src diag");
-                searchDialog.show(curPrjDir,function (info){
+                searchDialog.show(ide,function (info){
                     ide.fileList.select(info.file);
                     setTimeout(function () {
                         var prog=getCurrentEditor();
