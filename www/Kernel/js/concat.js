@@ -13066,6 +13066,7 @@ Tonyu.klass.define({
         
         _this.stats={};
         _this.codes={left: 37,up: 38,right: 39,down: 40,space: 32,enter: 13,shift: 16,ctrl: 17,alt: 18,esc: 27,mouseleft: 1,mouseright: 2,mousewheel: 4};
+        _this.preventDefaults={"37": true,"38": true,"39": true,"40": true,"32": true};
         _this.i = 65;
         for (; _this.i<65+26 ; _this.i++) {
           {
@@ -13090,23 +13091,23 @@ Tonyu.klass.define({
           _this.bmap = [1,4,2];
           
           $.data(document,"key_event",true);
-          $(document).keydown((function anonymous_618(e) {
+          $(document).keydown((function anonymous_696(e) {
             
             Tonyu.globals.$Keys.keydown(e);
           }));
-          $(document).keyup((function anonymous_667(e) {
+          $(document).keyup((function anonymous_745(e) {
             
             Tonyu.globals.$Keys.keyup(e);
           }));
-          $(document).mousedown((function anonymous_718(e) {
+          $(document).mousedown((function anonymous_796(e) {
             
             _this.lastMouseDown=Tonyu.globals.$frameCount;
             Tonyu.globals.$Keys.keydown({keyCode: _this.bmap[e.button]||1});
           }));
-          $(document).mouseup((function anonymous_980(e) {
+          $(document).mouseup((function anonymous_1058(e) {
             var a;
             
-            a = (function anonymous_1002() {
+            a = (function anonymous_1080() {
               
               Tonyu.globals.$Keys.keyup({keyCode: _this.bmap[e.button]||1});
             });
@@ -13131,6 +13132,7 @@ Tonyu.klass.define({
         
         _this.stats={};
         _this.codes={left: 37,up: 38,right: 39,down: 40,space: 32,enter: 13,shift: 16,ctrl: 17,alt: 18,esc: 27,mouseleft: 1,mouseright: 2,mousewheel: 4};
+        _this.preventDefaults={"37": true,"38": true,"39": true,"40": true,"32": true};
         _this.i = 65;
         for (; _this.i<65+26 ; _this.i++) {
           {
@@ -13155,23 +13157,23 @@ Tonyu.klass.define({
           _this.bmap = [1,4,2];
           
           $.data(document,"key_event",true);
-          $(document).keydown((function anonymous_618(e) {
+          $(document).keydown((function anonymous_696(e) {
             
             Tonyu.globals.$Keys.keydown(e);
           }));
-          $(document).keyup((function anonymous_667(e) {
+          $(document).keyup((function anonymous_745(e) {
             
             Tonyu.globals.$Keys.keyup(e);
           }));
-          $(document).mousedown((function anonymous_718(e) {
+          $(document).mousedown((function anonymous_796(e) {
             
             _this.lastMouseDown=Tonyu.globals.$frameCount;
             Tonyu.globals.$Keys.keydown({keyCode: _this.bmap[e.button]||1});
           }));
-          $(document).mouseup((function anonymous_980(e) {
+          $(document).mouseup((function anonymous_1058(e) {
             var a;
             
-            a = (function anonymous_1002() {
+            a = (function anonymous_1080() {
               
               Tonyu.globals.$Keys.keyup({keyCode: _this.bmap[e.button]||1});
             });
@@ -13293,6 +13295,9 @@ Tonyu.klass.define({
         var _this=this;
         var s;
         
+        if (_this.preventDefaults[e.keyCode+""]&&e.preventDefault) {
+          e.preventDefault();
+        }
         if (Tonyu.globals.$t2MediaLib) {
           Tonyu.globals.$t2MediaLib.activate();
         }
@@ -13312,6 +13317,9 @@ Tonyu.klass.define({
         var __pc=0;
         var s;
         
+        if (_this.preventDefaults[e.keyCode+""]&&e.preventDefault) {
+          e.preventDefault();
+        }
         if (Tonyu.globals.$t2MediaLib) {
           Tonyu.globals.$t2MediaLib.activate();
         }
@@ -13330,6 +13338,9 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
+        if (_this.preventDefaults[e.keyCode+""]&&e.preventDefault) {
+          e.preventDefault();
+        }
         if (Tonyu.globals.$t2MediaLib) {
           Tonyu.globals.$t2MediaLib.activate();
         }
@@ -13343,6 +13354,9 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         
+        if (_this.preventDefaults[e.keyCode+""]&&e.preventDefault) {
+          e.preventDefault();
+        }
         if (Tonyu.globals.$t2MediaLib) {
           Tonyu.globals.$t2MediaLib.activate();
         }
@@ -13355,7 +13369,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"getkey":{"nowait":false},"update":{"nowait":false},"keydown":{"nowait":false},"keyup":{"nowait":false}},"fields":{"i":{},"k":{},"v":{},"bmap":{},"stats":{},"codes":{},"codesRev":{},"lastMouseDown":{},"reservedAction":{}}}
+  decls: {"methods":{"main":{"nowait":false},"getkey":{"nowait":false},"update":{"nowait":false},"keydown":{"nowait":false},"keyup":{"nowait":false}},"fields":{"i":{},"k":{},"v":{},"bmap":{},"stats":{},"codes":{},"preventDefaults":{},"codesRev":{},"lastMouseDown":{},"reservedAction":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.TouchFinger',
