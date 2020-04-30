@@ -3,18 +3,19 @@
 Language and IDE for action game development using html5+js.
 
 - Website: https://www.tonyu.jp/ (Japanese)
-- Quick start: https://edit.tonyu.jp/ (Japanese)
+- Quick start: https://edit.tonyu.jp/ (You can switch language English/Japanese at right-top links)
 
 ## Tested browsers:
 
 Windows 7/8/10
-  - Chrome 31
-  - Firefox 25
+  - Chrome 81
+  - Firefox 72
+  - Edge 44
   - Internet Explorer 11(runtime only)
 
 ## How to build
 
-- The following files should be copied from [tonyu2-compiler](https://github.com/hoge1e3/tonyu2-compiler/), you can use copyFromCompier.sh
+- The following files should be copied from [tonyu2-compiler](https://github.com/hoge1e3/tonyu2-compiler/), you can use copyFromCompiler.sh
   - www/js/lang/BuilderClient4Sys.js
   - www/BuilderWorker.js
   - www/js/runtime/TonyuRuntime.js
@@ -25,7 +26,7 @@ Windows 7/8/10
 cd /path/to/tonyu2-compiler/
 node index.js /path/to/Tonyu2/www/Kernel/
 ~~~
-- To run as a native application, download nw.js and add follwing files in /path/to/Tonyu2/
+- To run as a native application, download [nw.js](https://nwjs.io/) and add following files in /path/to/Tonyu2/
 ~~~
 d3dcompiler_47.dll
 ffmpeg.dll
@@ -40,6 +41,6 @@ nw_100_percent.pak
 nw_200_percent.pak
 nw_elf.dll
 resources.pak
-v8_context_snapshot.bin 
+v8_context_snapshot.bin
 nw.exe -> rename as Tonyu2.exe, change icon by resouce editors
 ~~~
