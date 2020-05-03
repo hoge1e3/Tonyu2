@@ -40,10 +40,10 @@ native T2MediaLib;
         mouseDownAtCV=true;
         Tonyu.resetLoopCheck();
         if ($t2MediaLib) $t2MediaLib.activate();
-        // for inside iframe (preventDefault prevents also focus into this iframe)
+        // [1]for inside iframe (preventDefault prevents also focus into this iframe)
         // e.preventDefault();
         e.preventDefault();
-        window.focus();
+        window.focus();//[1] So, Added this
         //----
         var p=cvj.offset();
         var mp={x:e.clientX-p.left, y:e.clientY-p.top,layer:$Screen.layer};
@@ -51,13 +51,13 @@ native T2MediaLib;
         $mouseX=mp.x;
         $mouseY=mp.y;
         mouseButton=mouseButton|(1<<e.button);
-        isMouseDown=true;
+        isMouseDown=true;// TODO: it looks like same as mouseDownAtCV
         if ($InputDevice.touchEmu) {
             $handleTouchStart({
                preventDefault: function (){},
                originalEvent: {
                     changedTouches: [
-                        {identifier:ID_MOUSE/*+e.button*/, pageX:e.clientX,pageY:e.clientY}
+                        {identifier:ID_MOUSE+e.button, pageX:e.clientX,pageY:e.clientY}
                     ]
                },
                byMouse: bmap[e.button]||1
@@ -78,14 +78,23 @@ native T2MediaLib;
         });
         $mouseX=mp.x;
         $mouseY=mp.y;
-        if (isMouseDown && $InputDevice.touchEmu) {
+        if (isMouseDown && $InputDevice.touchEmu) {// TODO: isMouseDown looks like same as mouseDownAtCV
+            var changedTouches=[];
+            var btn=mouseButton, bid=0;
+            while(btn) {
+                if (btn & 1) {
+                    changedTouches.push{
+                        identifier:ID_MOUSE+bid,
+                        pageX:e.clientX,pageY:e.clientY
+                    };
+                }
+                btn=btn>>1;
+                bid++;
+            }
             $handleTouchMove({
                preventDefault: function (){},
                originalEvent: {
-                    changedTouches: [
-                        //e.button is not passed on move? (right-drag is not processed...)
-                        {identifier:ID_MOUSE/*+e.button*/, pageX:e.clientX,pageY:e.clientY}
-                    ]
+                    changedTouches
                },
                byMouse: bmap[e.button]||1
             });
@@ -97,7 +106,7 @@ native T2MediaLib;
         if ($t2MediaLib) $t2MediaLib.activate();
         if (mouseDownAtCV) e.preventDefault();
         mouseDownAtCV=false;
-        isMouseDown=false;
+        isMouseDown=false;// TODO: it looks like same as mouseDownAtCV
         mouseButton=mouseButton&~(1<<e.button);
         if ($InputDevice.touchEmu) {
             $handleTouchEnd({
