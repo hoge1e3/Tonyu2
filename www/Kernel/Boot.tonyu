@@ -30,7 +30,7 @@ if (!performance.now) {
 
 Tonyu.resetLoopCheck(10000);
 $Boot=this;
-_scheduler=$Scheduler=new Scheduler;
+setScheduler(new Scheduler);
 initGlobals();
 //initEvents();
 initLayers();
@@ -62,9 +62,12 @@ mainLoop();
         subActors:"__SUBACTOR"
     };
 }
+\setScheduler(s) {
+    _scheduler=$Scheduler=s;
+}
 \timeStop(except) {
     var oldS=_scheduler;
-    _scheduler=$Scheduler=new Scheduler;
+    setScheduler(new Scheduler);
     var newS=_scheduler;
     oldS.doTimeStop();
     var res={
@@ -287,13 +290,14 @@ mainLoop();
         }
         $Screen.restore(saved.sprites);
         $t2World=saved.t2World;
-        saved.timeStop.releaseAll();
+        setScheduler(saved.scheduler);
     } else if (push) {
         var saved={
-            timeStop: timeStop(),
+            scheduler: _scheduler,
             sprites:$Screen.saveAndClear(),
             t2World: $t2World
         };
+        setScheduler(new Scheduler);
         $t2World=null;
         pageStack.push(saved);
         new page(arg);

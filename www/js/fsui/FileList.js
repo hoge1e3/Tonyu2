@@ -63,7 +63,7 @@ module.exports=function FileList(elem, options) {
     let curT;
     function ls(dir) {
         if (curT!=null) clearTimeout(curT);
-        console.log("LS!",dir.path());
+        //console.log("LS!",dir.path());
         if (typeof dir=="string") dir=FS.get(dir);
         if (dir) {
             _curDir=dir;

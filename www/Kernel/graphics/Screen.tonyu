@@ -138,13 +138,19 @@ extends Panel;
     for (var l in layers) {
         res.push(l.group.saveAndClear(excludes));
     }
-    return res;
+    return {
+        layers:res,
+        multiLayerTouches:multiLayerTouches&&multiLayerTouches.saveAndClear()
+    };
 }
 \restore(saved) {
     var i=0;
     for (var l in layers) {
-        l.group.restore(saved[i]);
+        l.group.restore(saved.layers[i]);
         i++;
+    }
+    if(multiLayerTouches && saved.multiLayerTouches) {
+        multiLayerTouches.restore(saved.multiLayerTouches);
     }
 }
 \touchedFingers(q:TQuery,options) {

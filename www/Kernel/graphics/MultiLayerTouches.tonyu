@@ -1,7 +1,9 @@
 extends TObject;
 includes MathMod;
+native WeakMap;
 "field strict";
 var screen;
+var layers=new WeakMap;
 \add(a:Actor) {
     var layer=screen.findLayer( a.getSpriteGroup() );
     var ts=getOrNewTouchables(layer);
@@ -17,10 +19,14 @@ var screen;
     /*if (layer ===$mainLayer3D || layer.group===$mainLayer3D) {
         throw new Error("Why 3d?");
     }*/
-    return layer.__touchables=layer.__touchables||[];
+    var res=getTouchables(layer);
+    if (res) return res;
+    res=[];
+    layers.set(layer,res);
+    return res;
 }
 \getTouchables(layer) {
-    return layer.__touchables;
+    return layers.get(layer);
 }
 \findActor(shape) {
     var cands=[],i=0;
@@ -70,4 +76,12 @@ var screen;
         return a.dist-b.dist;
     };
     return cands[0] && cands[0].actor;
+}
+\saveAndClear() {
+    var saved=layers;
+    layers=new WeakMap;
+    return saved;
+}
+\restore(saved) {
+    layers=saved;
 }

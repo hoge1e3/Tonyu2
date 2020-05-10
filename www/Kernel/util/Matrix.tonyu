@@ -181,7 +181,7 @@ includes MathMod,EventMod,FileMod;
     var k;
     if (v===undefined) {
         k=key(x,y);
-        if (!data[k]) return v;
+        if (data[k]===undefined) return v;
         fireEvent("change") {
             x,y,value:v
         };
