@@ -15,16 +15,24 @@ Windows 7/8/10
 
 ## How to build
 
-- The following files should be copied from [tonyu2-compiler](https://github.com/hoge1e3/tonyu2-compiler/), you can use copyFromCompiler.sh
-  - www/js/lang/BuilderClient4Sys.js
-  - www/BuilderWorker.js
-  - www/js/runtime/TonyuRuntime.js
-- use build/build.bat to generate files www/js/g2/*
-  - required node.js packages: `r.js`, `uglify-es`  
-- To compile www/Kernel/js/concat.js, use [tonyu2-compiler](https://github.com/hoge1e3/tonyu2-compiler/), by following commands
+- Clone [tonyu2-compiler](https://github.com/hoge1e3/tonyu2-compiler/) repository to the same directory.
+- Run the following node.js command.
 ~~~
-cd /path/to/tonyu2-compiler/
-node index.js /path/to/Tonyu2/www/Kernel/
+npm install
+npm run build
+~~~
+
+
+- ~~The following files should be copied from [tonyu2-compiler](https://github.com/hoge1e3/tonyu2-compiler/), you can use copyFromCompiler.sh~~
+  - ~~www/js/lang/BuilderClient4Sys.js~~
+  - ~~www/BuilderWorker.js~~
+  - ~~www/js/runtime/TonyuRuntime.js~~
+- ~~use build/build.bat to generate files www/js/g2/*~~
+  - ~~required node.js packages: `r.js`, `uglify-es`~~  
+- ~~To compile www/Kernel/js/concat.js, use [tonyu2-compiler](https://github.com/hoge1e3/tonyu2-compiler/), by following commands~~
+~~~
+## cd /path/to/tonyu2-compiler/
+## node index.js /path/to/Tonyu2/www/Kernel/
 ~~~
 - To run as a native application, download [nw.js](https://nwjs.io/) and add following files in /path/to/Tonyu2/
 ~~~
