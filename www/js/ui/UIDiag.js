@@ -39,7 +39,7 @@ define(["UI","R","root"],function (UI,R,root) {
     UIDiag.confirm=function (mesg) {
         if (UIDiag.useNative) {
             const res=window.confirm(...arguments);
-            if (root.Tonyu) root.Tonyu.resetLoopCheck();
+            UIDiag.afterModal();
             return res;
         }
         requestJQueryUI();
@@ -77,11 +77,19 @@ define(["UI","R","root"],function (UI,R,root) {
     };
     UIDiag.getStatus=function () {return UIDiag.status;};
     UIDiag.getText=function () {return UIDiag.val? UIDiag.val.val():"";};
+    UIDiag.afterModal=function() {
+        try {
+            root.Tonyu.resetLoopCheck();
+        }catch(e){}
+        try {
+            root.Tonyu.globals.$Scheduler.resetLastSteps();
+        }catch(e){}
+    };
     //---
     UIDiag.prompt=function (mesg,value,geom) {
         if (UIDiag.useNative) {
             const res=window.prompt(...arguments);
-            if (root.Tonyu) root.Tonyu.resetLoopCheck();
+            UIDiag.afterModal();
             return res;
         }
         requestJQueryUI();

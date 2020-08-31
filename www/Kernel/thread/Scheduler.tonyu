@@ -84,8 +84,11 @@ next=[];
     cur=[];
     return next;
 }
-\stepsAll() {
+\resetLastSteps() {
     lastSteps=performance.now();
+}
+\stepsAll() {
+    resetLastSteps();
     var dupc={};
     while(cur.length) {
         var t=cur.shift();

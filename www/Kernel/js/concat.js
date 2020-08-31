@@ -12637,13 +12637,29 @@ Tonyu.klass.define({
         
         _thread.retVal=_this;return;
       },
+      resetLastSteps :function _trc_Scheduler_resetLastSteps() {
+        "use strict";
+        var _this=this;
+        
+        _this.lastSteps=performance.now();
+      },
+      fiber$resetLastSteps :function _trc_Scheduler_f_resetLastSteps(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _this.lastSteps=performance.now();
+        
+        _thread.retVal=_this;return;
+      },
       stepsAll :function _trc_Scheduler_stepsAll() {
         "use strict";
         var _this=this;
         var dupc;
         var t;
         
-        _this.lastSteps=performance.now();
+        _this.resetLastSteps();
         dupc = {};
         
         while (_this.cur.length) {
@@ -12683,47 +12699,50 @@ Tonyu.klass.define({
         var dupc;
         var t;
         
-        _this.lastSteps=performance.now();
-        dupc = {};
-        
         
         _thread.enter(function _trc_Scheduler_ent_stepsAll(_thread) {
           if (_thread.lastEx) __pc=_thread.catchPC;
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
+              _this.fiber$resetLastSteps(_thread);
+              __pc=1;return;
             case 1:
-              if (!(_this.cur.length)) { __pc=8     ; break; }
+              
+              dupc = {};
+              
+            case 2:
+              if (!(_this.cur.length)) { __pc=9     ; break; }
               t = _this.cur.shift();
               
-              if (!(dupc[t.id])) { __pc=2     ; break; }
+              if (!(dupc[t.id])) { __pc=3     ; break; }
               console.log("WARNING","Scheduler: duplicate thread detected",t);
-              __pc=1; break;
+              __pc=2; break;
               
-            case 2     :
+            case 3     :
               
               dupc[t.id]=t;
               delete t.scheduled;
-              if (!(t.waitCount)) { __pc=4     ; break; }
+              if (!(t.waitCount)) { __pc=5     ; break; }
               t.waitCount--;
               _this.fiber$addToNext(_thread, t);
-              __pc=3;return;
-            case 3:
+              __pc=4;return;
+            case 4:
               
-              __pc=7     ;break;
-            case 4     :
+              __pc=8     ;break;
+            case 5     :
               t.steps();
-              if (!(t.preempted)) { __pc=6     ; break; }
+              if (!(t.preempted)) { __pc=7     ; break; }
               _this.fiber$addToNext(_thread, t);
-              __pc=5;return;
-            case 5:
-              
-            case 6     :
+              __pc=6;return;
+            case 6:
               
             case 7     :
               
-              __pc=1;break;
             case 8     :
+              
+              __pc=2;break;
+            case 9     :
               
               _this.cur=_this.next;
               _this.next=[];
@@ -12743,7 +12762,7 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        return _this.allThreads.filter((function anonymous_3038(t) {
+        return _this.allThreads.filter((function anonymous_3085(t) {
           
           return t._threadGroup===o;
         }));
@@ -12754,7 +12773,7 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         
-        _thread.retVal=_this.allThreads.filter((function anonymous_3038(t) {
+        _thread.retVal=_this.allThreads.filter((function anonymous_3085(t) {
           
           return t._threadGroup===o;
         }));return;
@@ -12771,7 +12790,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"addObj":{"nowait":false},"newThread":{"nowait":false},"addToCur":{"nowait":false},"addToNext":{"nowait":false},"unschedule":{"nowait":false},"checkTimeout":{"nowait":false},"checkDuplicate":{"nowait":false},"doTimeStop":{"nowait":false},"stepsAll":{"nowait":false},"__getter__allThreads":{"nowait":true},"findByThreadGroup":{"nowait":false},"__getter__isEmpty":{"nowait":true}},"fields":{"window":{},"cur":{},"next":{},"lastSteps":{}}}
+  decls: {"methods":{"main":{"nowait":false},"addObj":{"nowait":false},"newThread":{"nowait":false},"addToCur":{"nowait":false},"addToNext":{"nowait":false},"unschedule":{"nowait":false},"checkTimeout":{"nowait":false},"checkDuplicate":{"nowait":false},"doTimeStop":{"nowait":false},"resetLastSteps":{"nowait":false},"stepsAll":{"nowait":false},"__getter__allThreads":{"nowait":true},"findByThreadGroup":{"nowait":false},"__getter__isEmpty":{"nowait":true}},"fields":{"window":{},"cur":{},"next":{},"lastSteps":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.DialogMod',
