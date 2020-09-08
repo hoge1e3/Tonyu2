@@ -1,16 +1,48 @@
 {
-  "name": "Tonyu2-dev",
+  "name": "tonyu2-dev",
   "main": "www/index.html",
   "single-instance": false,
   "window": {
     "width": 1024,
     "height": 768,
     "icon": "www/images/tonyu.png",
-	"toolbar"	: true
+    "toolbar": true
   },
   "config": {
-     "prjDirs": [
-     "Projects","Samples","fs/Tonyu/Projects"
-     ]
-  }
+    "prjDirs": [
+      "Projects",
+      "Samples",
+      "fs/Tonyu/Projects"
+    ]
+  },
+  "devDependencies": {
+    "requirejs": "^2.3.6",
+    "uglify-es": "^3.3.9"
+  },
+  "description": "Language and IDE for action game development using html5+js.",
+  "version": "1.0.0",
+  "dependencies": {},
+  "scripts": {
+    "build": "npm run build:copy && npm run build:g2 && npm run build:kernel",
+    "build:copy": "copyFromCompiler.sh",
+    "build:g2": "node build/build.js",
+    "build:kernel": "node build/build_kernel.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoge1e3/Tonyu2.git"
+  },
+  "keywords": [
+    "Tonyu2",
+    "Game",
+    "Engin",
+    "IDE",
+    "AltJS"
+  ],
+  "author": "hoge1e3",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hoge1e3/Tonyu2/issues"
+  },
+  "homepage": "https://github.com/hoge1e3/Tonyu2#readme"
 }
