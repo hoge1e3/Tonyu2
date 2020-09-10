@@ -5,7 +5,7 @@ const cmds = [
     "node ..\\..\\tonyu2-compiler\\index.js ..\\www\\Kernel\\"
 ];
 
-for (var cmd of cmds) {
+for (const cmd of cmds) {
     console.log(cmd);
     const stdout = execSync(cmd, {cwd: __dirname});
     // console.log(stdout.toString());
