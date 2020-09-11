@@ -26,7 +26,8 @@
     "build": "npm run build:copy && npm run build:g2 && npm run build:kernel",
     "build:copy": "node build/copy_from_compiler.js",
     "build:g2": "node build/build.js",
-    "build:kernel": "node build/build_kernel.js"
+    "build:kernel": "node build/build_kernel.js",
+    "dl:nw": "node build/dl_nw.js"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const src = "../tonyu2-compiler";
 const dist = "www";
