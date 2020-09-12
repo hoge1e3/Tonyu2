@@ -25,7 +25,7 @@ npm install
 npm run build
 ~~~
 
-- To run as a native application, download [nw.js](https://nwjs.io/) and add following files in /path/to/Tonyu2/
+- To run as a native application, download [nw.js](https://nwjs.io/) and add following files in /path/to/Tonyu2/, you can use `npm run runtime`
 ~~~
 d3dcompiler_47.dll
 ffmpeg.dll

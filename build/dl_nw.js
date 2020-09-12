@@ -1,33 +1,38 @@
 const https = require("https");
-const fs = require("fs");
+const fs = require("fs-extra");
 const {performance} = require("perf_hooks");
-// const zlib = require("zlib");
-// const stream = require("stream");
+const AdmZip = require("adm-zip");
 
-dlMain().then(() => {
-    console.log("Success dl_nw.js");
-});
+dlMain().then(() => {});
 
 async function dlMain() {
     const verJson = await getJson("https://nwjs.io/versions.json");
     // console.log(verJson);
 
-    let version = verJson.stable; // EX) "v0.48.1"
-    let osFile = "win-x64";
-    let [url, fileName] = getURL(version, osFile);
-    // fileName = ""+fileName;
+    const version = verJson.stable; // EX) "v0.48.1"
+    const osFile = "win-x64";
+    const [url, fileName, dirName] = getURL(version, osFile);
     
     console.log("url  : "+url);
     console.log("file : "+fileName);
 
-    await dlNw(url, fileName);
-    // await unzip(fileName, "nwdir");
+    const workDir = "./download/";
+    const zipFileName = workDir+fileName;
+    fs.mkdirsSync(workDir);
+
+    if (!fs.existsSync(zipFileName)) {
+        await downloadNw(url, zipFileName);
+    }
+    await unzip(zipFileName, workDir);
+    await copyFile(dirName, workDir);
+    fs.removeSync(workDir+dirName);
 }
 
 function getURL(version, osFile) {
-    const fileName = "nwjs-sdk-"+version+"-"+osFile+".zip";
+    const dirName = "nwjs-sdk-"+version+"-"+osFile;
+    const fileName = dirName+".zip";
     const url = "https://dl.nwjs.io/"+version+"/"+fileName;
-    return [url, fileName];
+    return [url, fileName, dirName];
 }
 
 function getJson(url) {
@@ -45,7 +50,7 @@ function getJson(url) {
     });
 }
 
-function dlNw(url, fileName) {
+function downloadNw(url, fileName) {
     return new Promise((resolve, reject) => {
         const file = fs.createWriteStream(fileName);
         const req = https.get(url, (res) => {
@@ -77,36 +82,59 @@ function dlNw(url, fileName) {
     });
 }
 
-// function unzip(zipFileName, fileName) {
-//     return new Promise((resolve, reject) => {
-//         console.log("zipFileName  : "+zipFileName);
-//         console.log("fileName : "+fileName);
+function unzip(zipFileName, dirName) {
+    return new Promise((resolve, reject) => {
+        const zip = new AdmZip(zipFileName);
+        const zipEntries = zip.getEntries();
+        const size = zipEntries.length;
+        let cnt = 0;
+        zipEntries.forEach((zipEntry) => {
+            zip.extractEntryTo(zipEntry.entryName, dirName, true, true);
+            cnt ++;
+            const per = parseInt(cnt / size * 100);
+            process.stdout.clearLine();
+            process.stdout.cursorTo(0);
+            process.stdout.write("["+per+"%]  "+cnt+" / "+size+"   "+zipEntry.entryName);
+            if (cnt >= size) {
+                process.stdout.clearLine();
+                process.stdout.cursorTo(0);
+                console.log("unziped!");
+            }
+        });
+        resolve();
+    })
+}
 
-//         const unzip = zlib.createUnzip();
-//         const src = fs.createReadStream(zipFileName);
-//         const dist = fs.createWriteStream(fileName);
-        
-//         let size = fs.statSync(zipFileName).size;
-//         const progress = new Progress(size, (per, cnt, size, cntsecdisp) => {
-//             // process.stdout.clearLine();
-//             process.stdout.cursorTo(0);
-//             process.stdout.write("["+per+"%]  "+dispSize(cnt)+" / "+dispSize(size)+"  ("+dispSize(cntsecdisp)+"/sec)         ");
-//         });
-//         dist.on("data", (d) => {
-//             progress.notice(d.length);
-//         });
-//         dist.on("finish", (err) => {
-//             process.stdout.clearLine();
-//             process.stdout.cursorTo(0);
-//             console.log("finish Unzip");
-//             resolve();
-//         });
-
-//         stream.pipeline(src, unzip, dist, (err) => {
-//             console.error("error Unzip:", err);
-//         });
-//     })
-// }
+function copyFile(dirName, workDir) {
+    return new Promise((resolve, reject) => {
+        const src = workDir+dirName+"/";
+        const dist = "./";
+        const files = [
+            "d3dcompiler_47.dll",
+            "ffmpeg.dll",
+            "icudtl.dat",
+            "libEGL.dll",
+            "libGLESv2.dll",
+            "locales/",
+            // "natives_blob.bin",
+            "node.dll",
+            "nw.dll",
+            "nw_100_percent.pak",
+            "nw_200_percent.pak",
+            "nw_elf.dll",
+            "resources.pak",
+            "v8_context_snapshot.bin",
+            "nw.exe"
+        ];
+        for (const f of files) {
+            fs.copySync(src+f, dist+f);
+            console.log("copy", src+f, dist+f);
+        }
+        fs.moveSync("./nw.exe", "./Tonyu2.exe", { overwrite: true });
+        console.log("rename", "./nw.exe", "./Tonyu2.exe");
+        resolve();
+    });
+}
 
 class Progress {
     constructor(size, fnDisp) {
