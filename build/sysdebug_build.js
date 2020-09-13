@@ -1,6 +1,6 @@
 /* global process, nodeRequire*/
 (function() {
-    const top = `${process.cwd()}/..`;
+    const top = `${process.cwd()}`;
     const build = `${top}/build`;
     const www = `${top}/www`;
     const js = `${www}/js`;

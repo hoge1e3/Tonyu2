@@ -1,9 +1,19 @@
+/**
+ * setup_nw.js
+ * 1. download NW.js zip file
+ * 2. unzip
+ * 3. copy unzip file
+ * 4. Tonyu2 icon change
+ */
 const https = require("https");
 const fs = require("fs-extra");
 const {performance} = require("perf_hooks");
 const AdmZip = require("adm-zip");
+const execSync = require("child_process").execSync;
 
-dlMain().then(() => {});
+dlMain().then(() => {
+    console.log("setup complete!");
+});
 
 async function dlMain() {
     const verJson = await getJson("https://nwjs.io/versions.json");
@@ -16,7 +26,7 @@ async function dlMain() {
     console.log("url  : "+url);
     console.log("file : "+fileName);
 
-    const workDir = "./download/";
+    const workDir = "download/";
     const zipFileName = workDir+fileName;
     fs.mkdirsSync(workDir);
 
@@ -25,9 +35,7 @@ async function dlMain() {
     } else {
         console.log("cache zip");
     }
-    await unzip(zipFileName, workDir);
-    await copyFile(dirName, workDir);
-    fs.removeSync(workDir+dirName);
+    await setupFile(zipFileName, dirName, workDir);
 }
 
 function getURL(version, osFile) {
@@ -72,53 +80,23 @@ function downloadNw(url, fileName) {
                 file.close();
                 process.stdout.clearLine();
                 process.stdout.cursorTo(0);
-                console.log("downloaded!");
+                console.log("downloaded");
                 resolve();
             });
-        });
-        req.on("error", (e) => {
-            console.error(e);
-            reject();
         });
         req.end();
     });
 }
 
-function unzip(zipFileName, dirName) {
+function setupFile(zipFileName, dirName, workDir) {
     return new Promise((resolve, reject) => {
-        const zip = new AdmZip(zipFileName);
-        const zipEntries = zip.getEntries();
-        const size = zipEntries.length;
-        let cnt = 0;
-        zipEntries.forEach((zipEntry) => {
-            zip.extractEntryTo(zipEntry.entryName, dirName, true, true);
-            cnt ++;
-            const per = parseInt(cnt / size * 100);
-            process.stdout.clearLine();
-            process.stdout.cursorTo(0);
-            process.stdout.write("["+per+"%]  "+cnt+" / "+size+"   "+zipEntry.entryName);
-            if (cnt >= size) {
-                process.stdout.clearLine();
-                process.stdout.cursorTo(0);
-                console.log("unziped!");
-            }
-        });
-        resolve();
-    })
-}
-
-function copyFile(dirName, workDir) {
-    return new Promise((resolve, reject) => {
-        const src = workDir+dirName+"/";
-        const dist = "./";
         const files = [
             "d3dcompiler_47.dll",
             "ffmpeg.dll",
             "icudtl.dat",
-            "libEGL.dll",
-            "libGLESv2.dll",
+            "libEGL.dll", // and swiftshader/libEGL.dll
+            "libGLESv2.dll", // and swiftshader/libGLESv2.dll
             "locales/",
-            // "natives_blob.bin",
             "node.dll",
             "nw.dll",
             "nw_100_percent.pak",
@@ -128,14 +106,40 @@ function copyFile(dirName, workDir) {
             "v8_context_snapshot.bin",
             "nw.exe"
         ];
-        for (const f of files) {
-            fs.copySync(src+f, dist+f);
-            console.log("copy", src+f, dist+f);
-        }
-        fs.moveSync("./nw.exe", "./Tonyu2.exe", { overwrite: true });
-        console.log("rename", "./nw.exe", "./Tonyu2.exe");
+        const zipEntryNameIdx = dirName.length + 1;
+
+        const zip = new AdmZip(zipFileName);
+        const zipEntries = zip.getEntries();
+        zipEntries.forEach((zipEntry) => {
+            const entryName = zipEntry.entryName;
+            const isExtract = files.find((name) => entryName.lastIndexOf(name)>=0);
+            if (!isExtract) return;
+
+            const writeFile = entryName.substring(zipEntryNameIdx);
+            const writeDir = entryName.substring(zipEntryNameIdx, entryName.lastIndexOf("/")+1);
+            process.stdout.clearLine();
+            process.stdout.cursorTo(0);
+            process.stdout.write("unzip "+writeFile);
+            // console.log("unzip", writeFile, writeDir, entryName);
+            zip.extractEntryTo(entryName, writeDir, false, true);
+        });
+        process.stdout.clearLine();
+        process.stdout.cursorTo(0);
+        console.log("unziped");
+
+        console.log("remove", "Tonyu2.exe");
+        fs.removeSync("Tonyu2.exe");
+
+        const cmd = "node node_modules/exe-edit/out/cli.js nw.exe Tonyu2.exe --icon www/favicon.ico"
+        console.log(cmd);
+        const stdout = execSync(cmd);
+        // console.log(stdout.toString());
+
+        console.log("remove", "nw.exe");
+        fs.removeSync("nw.exe");
+
         resolve();
-    });
+    })
 }
 
 class Progress {
