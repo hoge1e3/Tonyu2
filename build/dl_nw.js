@@ -22,6 +22,8 @@ async function dlMain() {
 
     if (!fs.existsSync(zipFileName)) {
         await downloadNw(url, zipFileName);
+    } else {
+        console.log("cache zip");
     }
     await unzip(zipFileName, workDir);
     await copyFile(dirName, workDir);
