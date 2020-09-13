@@ -18,11 +18,14 @@ Windows 7/8/10
 - Clone [tonyu2-compiler](https://github.com/hoge1e3/tonyu2-compiler/) repository to the same directory.
 - Run the following node.js command.
 ~~~
+cd tonyu2-compiler
+npm install
+cd ../Tonyu2
 npm install
 npm run build
 ~~~
 
-- To run as a native application, download [nw.js](https://nwjs.io/) and add following files in /path/to/Tonyu2/
+- To run as a native application, download [nw.js](https://nwjs.io/) and add following files in /path/to/Tonyu2/, you can use `npm run runtime`
 ~~~
 d3dcompiler_47.dll
 ffmpeg.dll

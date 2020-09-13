@@ -31,3 +31,4 @@ www/js/g2/*.map
 www/js/g2/send.bat
 www/html/BuilderWorker.js
 node_modules/
+/download/*
