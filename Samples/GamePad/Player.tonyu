@@ -1,9 +1,9 @@
-// １つのキャラごとに１つのコントローラを担当する
+// １つのキャラごとに１つのゲームパッドを担当する
 
 alpha = 0; // 最初は非表示
 NEUTRAL_AXIS = 0.15; // 軸が傾いても中立として扱う角度(0.0～1.0)
 
-// playerNo : この値のコントローラ番号を監視する
+// playerNo : この値のゲームパッド番号を監視する
 gamePad = $GamePad.get(playerNo);
 
 analogMode = true;
@@ -11,24 +11,24 @@ while (true) {
     scaleX = 1;
     scaleY = 1;
     
-    // コントローラが接続されているかチェック
+    // ゲームパッドが接続されているかチェック
     connected = gamePad.isConnected();
     
     if (connected) { // 接続されている
         
         // ボタンが押されているか取得 //
-        // コントローラの0,1,2,3番目のボタン
+        // ゲームパッドの0,1,2,3番目のボタン
         if (gamePad.getButton(0)) {scaleX = 1.5; scaleY = 1.5;}
         if (gamePad.getButton(1)) alpha = 127;
         if (gamePad.getButton(2)) analogMode = true;
         if (gamePad.getButton(3)) analogMode = false;
-        // コントローラの6,7番目のボタン(アナログ値取得)
+        // ゲームパッドの6,7番目のボタン(アナログ値取得)
         rotation -= 5 * gamePad.getButtonValue(6);
         rotation += 5 * gamePad.getButtonValue(7);
         
         if (analogMode) {
             // アナログ移動
-            // コントローラの0,1番目の軸（横軸・縦軸）
+            // ゲームパッドの0,1番目の軸（横軸・縦軸）
             vx = gamePad.getAxis(0);
             vy = gamePad.getAxis(1);
             // アナログスティックは中立でも少し傾いているのである程度傾けると動くようにする
@@ -44,13 +44,13 @@ while (true) {
             }
         } else {
             // 単純な移動（デジタル移動）
-            // コントローラの左キー or 14番目のボタン
+            // ゲームパッドの左キー or 14番目のボタン
             if (gamePad.getLeft() || gamePad.getButton(14)) x -= 3;
-            // コントローラの右キー or 15番目のボタン
+            // ゲームパッドの右キー or 15番目のボタン
             if (gamePad.getRight() || gamePad.getButton(15)) x += 3;
-            // コントローラの上キー or 12番目のボタン
+            // ゲームパッドの上キー or 12番目のボタン
             if (gamePad.getUp() || gamePad.getButton(12)) y -= 3;
-            // コントローラの下キー or 13番目のボタン
+            // ゲームパッドの下キー or 13番目のボタン
             if (gamePad.getDown() || gamePad.getButton(13)) y += 3;
         }
         
@@ -80,9 +80,9 @@ while (true) {
     var tColor = "white";
     var textA = analogMode ? "(アナログ移動)" : "(デジタル移動)";
     
-    // コントローラ番号を表示 //
+    // ゲームパッド番号を表示 //
     drawText(tx, ty, (playerNo+1)+"P "+textA, tColor, tSize); ty += 60;
-    // id：コントローラの識別名
+    // id：ゲームパッドの識別名
     drawText(tx, ty, "id :"+gamePad.getPadId(), tColor, tSize); ty += tSize;
     // マッピング："standard"なら標準ゲームパッド、それ以外は""(空文字)
     drawText(tx, ty, "mapping :"+gamePad.getMapping(), tColor, tSize); ty += tSize;
