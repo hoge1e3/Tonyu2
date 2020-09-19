@@ -34,6 +34,8 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
                 return;
             } else if (f.endsWith(".desktop")) {
                 return;
+            } else if (f.endsWith(".html")) {
+                return;
             } else if (f.endsWith(".js.map")) {
                 return;
             } else if (f.endsWith(".js")) {
@@ -48,7 +50,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">";
             buf+=escapeLoosely(f.text());
             buf+="</script>\n\n";
-        },{excludes:["files/"]});
+        },{excludes:["files/",".sync/"]});
         json.forEach(function (f) {
             var rel=f.relPath(dir);
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
