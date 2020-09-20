@@ -175,6 +175,8 @@ $(".dropdown-toggle");
         "at":" 場所：",
         "deleteProjectFromItem":"プロジェクト{1}を削除しますか？",
         "destinationFolder": "フォルダ(省略可)",
+        "Open_URL": "別ウィンドウで開きます",
+        "UseRightClick":"※リンクが開かない場合、右クリックか長押しで新しいタブを開くか、URLをコピーしてください。",
     };
     /*let buf="";
     for (let k of Object.keys(ja)) {
@@ -356,6 +358,8 @@ $(".dropdown-toggle");
         "at" : "at:", // 場所：
         "destinationFolder": "Folder(Optional)",
         "deleteProjectFromItem" : "Delete Project {1}?", //プロジェクト{1}を削除しますか？
+        "Open_URL": "Opening New Window",
+        "UseRightClick":"If the link cannot works, use submenus by Right-Click or Long-Tap.",
     };
     let localeStr=localStorage.locale || navigator.language;
     localeStr=localeStr.substring(0,2);

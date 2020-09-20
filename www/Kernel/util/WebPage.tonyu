@@ -6,7 +6,12 @@ native encodeURIComponent;
 eventWindowOpen = \(e) {
     //window.console.log("evtwinopen",postUrl);
 
-    window.open(postUrl);
+    if ($RPGAtsumaru) {
+        postOptions=postOptions||{};
+        $RPGAtsumaru.popups.openLink(postUrl, postOptions.comment);
+    } else {
+        window.open(postUrl);
+    }
     if (canvas.removeEventListener) {
         canvas.removeEventListener("click", eventWindowOpen, false);
         canvas.removeEventListener("touchend", eventWindowOpen, false);
@@ -18,8 +23,10 @@ eventWindowOpen = \(e) {
     }
 };
 
-\openNewWindow(url) {
+\openNewWindow(url, options) {
     postUrl = url;
+    options=options||{};
+    postOptions = options;
     //window.console.log("opennw",postUrl,listenerExists);
     canvas=
     document.querySelector("canvas.tonyu-canvas") ||
@@ -76,7 +83,7 @@ eventWindowOpen = \(e) {
         sendUrl += "&";
         sendUrl += "source=webclient";
     }
-    openNewWindow(sendUrl);
+    openNewWindow(sendUrl, {comment:text});
 }
 
 // OLD
@@ -139,5 +146,19 @@ eventWindowOpen = \(e) {
         sendUrl += "&";
         sendUrl += "source=webclient";
     }
-    openNewWindow(sendUrl);
+    openNewWindow(sendUrl) {comment:text};
+}
+\showLink(url,text,options) {
+    $currentProject.requestPlugin("jquery_ui");
+    var $=window.$;
+    var domain;
+    options=options||{};
+    var sz=options.size||20;
+    var target=options.target||"_new";
+    url.replace(/^https?:\/\/([^\/]+)/) \(_,d) {domain=d;};
+    var d=$("<div>").attr{title:"Open URL"}.append(
+        $("<div>").append(domain),
+        $("<a>").css{font_size:sz+"px"}.text(text).attr{href:url,target}
+    );
+    d.dialog();
 }

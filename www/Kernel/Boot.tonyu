@@ -17,6 +17,7 @@ native performance;
 native Mezonet;
 native FS;
 native R;
+native RPGAtsumaru;
 
 // old browser support
 if (typeof performance==="undefined") {
@@ -151,6 +152,9 @@ mainLoop();
     $WebPage=new WebPage;
     $Navigator=new Navigator;
     $Zip=new Zip;
+    if (typeof RPGAtsumaru!=="undefined") {
+        $RPGAtsumaru=RPGAtsumaru;
+    }
     $mouseX=$mouseX||0;
     $mouseY=$mouseY||0;
     $imageList=[];// temporary before load assets(for customLoading)
