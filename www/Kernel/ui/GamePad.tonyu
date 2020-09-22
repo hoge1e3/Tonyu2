@@ -6,6 +6,7 @@ available = false;
 useGamePad = false;
 enable = true;
 gamepads = [];
+gamepadones = [];
 prevFrameCount = -1;
 
 \setEnable(e) {
@@ -29,7 +30,10 @@ prevFrameCount = -1;
 }
 
 \get(no) {
-    return new GamePadOne(this, no);
+    if (gamepadones[no] == null) {
+        gamepadones[no] = new GamePadOne(this, no);
+    }
+    return gamepadones[no];
 }
 
 \padsCount() {
