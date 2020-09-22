@@ -1,0 +1,31 @@
+// ゲームパッドの判定にはJavaScriptのGamepad APIを利用しています
+
+// Gamepad APIに対応している環境は
+// コントローラー４台接続まで対応している模様
+// ５台目は無視するブラウザが多い（PC版Firefoxでは５台目も取得できた）
+
+$Screen.resize(640, 480); // 画面サイズ変更
+
+// Playerを16人用意
+for (var i=0; i<16; i++) {
+    new Player {
+        playerNo : i, // コントローラ番号を渡す
+        x : (i%4+1)/5*$screenWidth,
+        y : (trunc(i/4)+1)/5*$screenHeight,
+        p : $pat_base+i
+    };
+}
+
+x = 0;
+y = 0;
+align = "left";
+while (true) {
+    if ($GamePad.available) {
+        // 接続中のコントローラの数
+        text = "padsCount : "+$GamePad.padsCount();
+    } else {
+        text = "このデバイス・ブラウザはGamepad APIに対応していません";
+    }
+    update();
+}
+

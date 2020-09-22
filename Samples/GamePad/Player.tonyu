@@ -1,0 +1,111 @@
+// １つのキャラごとに１つのコントローラを担当する
+
+alpha = 0; // 最初は非表示
+NEUTRAL_AXIS = 0.15; // 軸が傾いても中立として扱う角度(0.0～1.0)
+
+// playerNo : この値のコントローラ番号を監視する
+gamePad = $GamePad.get(playerNo);
+
+analogMode = true;
+while (true) {
+    scaleX = 1;
+    scaleY = 1;
+    
+    // コントローラが接続されているかチェック
+    connected = gamePad.isConnected();
+    
+    if (connected) { // 接続されている
+        
+        // ボタンが押されているか取得 //
+        // コントローラの0,1,2,3番目のボタン
+        if (gamePad.getButton(0)) {scaleX = 1.5; scaleY = 1.5;}
+        if (gamePad.getButton(1)) alpha = 127;
+        if (gamePad.getButton(2)) analogMode = true;
+        if (gamePad.getButton(3)) analogMode = false;
+        // コントローラの6,7番目のボタン(アナログ値取得)
+        rotation -= 5 * gamePad.getButtonValue(6);
+        rotation += 5 * gamePad.getButtonValue(7);
+        
+        if (analogMode) {
+            // アナログ移動
+            // コントローラの0,1番目の軸（横軸・縦軸）
+            vx = gamePad.getAxis(0);
+            vy = gamePad.getAxis(1);
+            // アナログスティックは中立でも少し傾いているのである程度傾けると動くようにする
+            if (dist(vx,vy) >= NEUTRAL_AXIS) {
+                // 斜め移動のとき移動が速くならないようにする
+                var ang = atanxy(vx, vy);
+                var maxvx = cos(ang);
+                var maxvy = sin(ang);
+                vx = clamp(vx, -maxvx, maxvx);
+                vy = clamp(vy, -maxvy, maxvy);
+                x += vx * 3;
+                y += vy * 3;
+            }
+        } else {
+            // 単純な移動（デジタル移動）
+            // コントローラの左キー or 14番目のボタン
+            if (gamePad.getLeft() || gamePad.getButton(14)) x -= 3;
+            // コントローラの右キー or 15番目のボタン
+            if (gamePad.getRight() || gamePad.getButton(15)) x += 3;
+            // コントローラの上キー or 12番目のボタン
+            if (gamePad.getUp() || gamePad.getButton(12)) y -= 3;
+            // コントローラの下キー or 13番目のボタン
+            if (gamePad.getDown() || gamePad.getButton(13)) y += 3;
+        }
+        
+        // 画面外出ないように制限
+        x = clamp(x, 16, $screenWidth-16);
+        y = clamp(y, 16, $screenHeight-16);
+        
+        alpha += 5;
+        
+    } else { // 接続されていない
+        alpha -= 1/2;
+    }
+    
+    alpha = clamp(alpha, 50, 255); // alphaが10～255を超えないように制限
+    drawStatus(); // ボタン・軸の状態などを表示
+    
+    update();
+}
+
+// ボタン・軸の状態などを表示
+\drawStatus() {
+    if (alpha <= 50) return; // 接続されていないとき表示しない
+    
+    var tx = x - 30;
+    var ty = y - 40;
+    var tSize = 12;
+    var tColor = "white";
+    var textA = analogMode ? "(アナログ移動)" : "(デジタル移動)";
+    
+    // コントローラ番号を表示 //
+    drawText(tx, ty, (playerNo+1)+"P "+textA, tColor, tSize); ty += 60;
+    // id：コントローラの識別名
+    drawText(tx, ty, "id :"+gamePad.getPadId(), tColor, tSize); ty += tSize;
+    // マッピング："standard"なら標準ゲームパッド、それ以外は""(空文字)
+    drawText(tx, ty, "mapping :"+gamePad.getMapping(), tColor, tSize); ty += tSize;
+    
+    buttonCnt = gamePad.getButtonCount(); // ボタン数
+    for (var i=0; i<buttonCnt; i++) {
+        // ボタンを押した時間(フレーム単位)
+        var b = gamePad.getButton(i);
+        // ボタンを押した深さ(0.0～1.0)
+        var v = gamePad.getButtonValue(i);
+        drawText(tx, ty, "b["+i+"]:"+b+" v:"+v, tColor, tSize); ty += tSize;
+    }
+    
+    axisCnt = gamePad.getAxisCount(); // 軸の数
+    for (var i=0; i<axisCnt; i++) {
+        // 軸の傾き(-1.0～1.0)
+        var a = gamePad.getAxis(i);
+        drawText(tx, ty, "a["+i+"]:"+a, tColor, tSize); ty += tSize;
+    }
+    
+    // 上下左右キーを押した時間(フレーム単位)
+    drawText(tx, ty, "left :"+gamePad.getLeft(), tColor, tSize); ty += tSize;
+    drawText(tx, ty, "right:"+gamePad.getRight(), tColor, tSize); ty += tSize;
+    drawText(tx, ty, "up   :"+gamePad.getUp(), tColor, tSize); ty += tSize;
+    drawText(tx, ty, "down :"+gamePad.getDown(), tColor, tSize);
+}

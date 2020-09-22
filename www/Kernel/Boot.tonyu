@@ -140,6 +140,7 @@ mainLoop();
     $ObjectPool=new ObjectPool;
     $pat_fruits=30;
     $Keys=new Keys;
+    $GamePad=new GamePad;
     $Math=Math;
     $JSON=JSON;
     $DeferredUtil=FS.DeferredUtil;
@@ -466,6 +467,7 @@ nowait \moveFrame() {
     //debug("MoveFrame",2);
     $Keys.update();
     //debug("MoveFrame",3);
+    $GamePad.update();
     $InputDevice.update();
     if ($sound )$sound.resetSEFrame();
     //console.log("running");

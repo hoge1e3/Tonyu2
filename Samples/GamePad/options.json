@@ -1,0 +1,1 @@
+{"compiler":{"defaultSuperClass":"Actor","commentLastPos":true,"diagnose":false,"dependingProjects":[{"namespace":"kernel"}],"namespace":"user","noLoopCheck":false,"field_strict":false},"run":{"mainClass":"user.Main","bootClass":"Boot","globals":{"$defaultFPS":60,"$imageSmoothingDisabled":true,"$soundLoadAndDecode":false}},"kernelEditable":false,"plugins":{},"language":"tonyu"}
