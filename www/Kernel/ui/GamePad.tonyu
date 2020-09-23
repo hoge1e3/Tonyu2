@@ -1,0 +1,229 @@
+extends TObject;
+native window;
+native navigator;
+
+available = false;
+useGamePad = false;
+enable = true;
+gamepads = [];
+gamepadones = [];
+prevFrameCount = -1;
+
+\setEnable(e) {
+    enable = e;
+}
+
+\enableGamePad() {
+    // Gamepad APIを使うとXbox One等のゲーム機はコントローラでカーソル操作ができなくなる
+    //（Gamepad APIを使うモードとなり、カーソル操作が無効になる）
+    // カーソル操作ができるようにGamepadのメソッドを使うまでGamepad APIは使用しない
+    if (!useGamePad) {
+        update();
+        useGamePad = true;
+    }
+}
+
+\getGamepads() {
+    enableGamePad();
+    var pads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+    return pads;
+}
+
+\get(no) {
+    if (gamepadones[no] == null) {
+        gamepadones[no] = new GamePadOne(this, no);
+    }
+    return gamepadones[no];
+}
+
+\padsCount() {
+    enableGamePad();
+    var count = 0;
+    for (var i=0; i<gamepads.length; i++) {
+        if (gamepads[i]) count ++;
+    }
+    return count;
+}
+
+\getPad(index) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp) return null;
+    return gp.pad;
+}
+
+\getPadId(index) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp || !gp.pad) return null;
+    return gp.pad.id;
+}
+
+\isConnected(index) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp || !gp.pad) return false;
+    return gp.pad.connected;
+}
+
+\getMapping(index) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp || !gp.pad) return null;
+    return gp.pad.mapping;
+}
+
+\getButton(index, no) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp || !gp.status || !gp.status[no]) return 0;
+    return gp.status[no];
+}
+
+\getButtonValue(index, no) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp || !gp.pad || !gp.pad.buttons || !gp.pad.buttons[no]) return 0;
+    return gp.pad.buttons[no].value;
+}
+
+\getButtonCount(index) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp || !gp.pad || !gp.pad.buttons) return 0;
+    return gp.pad.buttons.length;
+}
+
+\getAxis(index, no) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp || !gp.pad || !gp.pad.axes) return 0;
+    return gp.pad.axes[no];
+}
+
+\getAxisCount(index) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp || !gp.pad || !gp.pad.axes) return 0;
+    return gp.pad.axes.length;
+}
+
+\getUp(index) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp) return 0;
+    return gp.statusA1U;
+}
+
+\getDown(index) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp) return 0;
+    return gp.statusA1D;
+}
+
+\getLeft(index) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp) return 0;
+    return gp.statusA1L;
+}
+
+\getRight(index) {
+    enableGamePad();
+    var gp = gamepads[index];
+    if (!gp) return 0;
+    return gp.statusA1R;
+}
+
+\update() {
+    // ブラウザがGamepad APIに対応していなかったら処理しない
+    if(!(window.Gamepad || navigator.getGamepads || navigator.webkitGetGamepads)) {
+        available = false;
+        //print("null window.Gamepad");
+        return;
+    }
+    available = true;
+    // GamePad系のメソッドが呼ばれていなければGamePadの処理はしない
+    if (!useGamePad) return;
+    // ユーザが明示的に無効にすることもできるようにしておく
+    if (!enable) return;
+    // 同じフレームで２回以上は処理しない
+    if (prevFrameCount == $frameCount) return;
+    
+    // gamepad.indexとgetGamepads()で返されるpadの順番はindexと異なっている場合がある
+    // pads[0]にgamepad.index==1のものがあるブラウザもある
+    var pads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+    for (var i=0; i<pads.length; i++) {
+        var pad = pads[i];
+        //print("pad "+i+" "+pad);
+        // 配列にnullが含まれる場合があるので処理しない
+        if (!pad) {
+            continue;
+        }
+        // pad.indexを配列のindexとして使う
+        var idx = pad.index;
+        
+        if (!gamepads[idx]) {
+            // コントローラ登録
+            gamepads[idx] = {
+                updateFrame:$frameCount,
+                pad:pad,
+                status:[],
+                statusA1L:0,
+                statusA1R:0,
+                statusA1U:0,
+                statusA1D:0
+            };
+        } else {
+            // 更新されていないコントローラは後でnullにする
+            gamepads[idx].updateFrame = $frameCount;
+            // XboxのEdgeではpadを更新しないとaxisが更新されない
+            gamepads[idx].pad = pad;
+        }
+        var gamepad = gamepads[idx];
+        
+        // ボタンの押下フレーム数をカウント
+        var buttons = pad.buttons;
+        for (var j=0; j<buttons.length; j++) {
+            var button = buttons[j];
+            var pressed = button.pressed;
+            //print("button "+i+" "+j+" "+pressed);
+            if (gamepad.status[j] == null) {
+                gamepad.status[j] = 0;
+            } else {
+                // 接続直後はボタンカウントしない
+                if (pressed) {
+                    gamepad.status[j] ++;
+                } else {
+                    gamepad.status[j] = 0;
+                }
+            }
+        }
+        
+        // 上下左右キーの押下フレームをカウント
+        var AXIS_NEUTRAL = 0.4; // 押下として扱う閾値
+        if (pad.axes.length >= 2) {
+            var axisLR = pad.axes[0];
+            var axisUD = pad.axes[1];
+            if (axisLR != null && axisUD != null) {
+                gamepad.statusA1L = (axisLR <= -AXIS_NEUTRAL) ? gamepad.statusA1L + 1 : 0;
+                gamepad.statusA1R = (axisLR >=  AXIS_NEUTRAL) ? gamepad.statusA1R + 1 : 0;
+                gamepad.statusA1U = (axisUD <= -AXIS_NEUTRAL) ? gamepad.statusA1U + 1 : 0;
+                gamepad.statusA1D = (axisUD >=  AXIS_NEUTRAL) ? gamepad.statusA1D + 1 : 0;
+            }
+        }
+    }
+    
+    // 更新されていないコントローラはnullにする
+    for (var i=0; i<gamepads.length; i++) {
+        var pad = gamepads[i];
+        if (pad) {
+            if (pad.updateFrame != $frameCount) {
+                gamepads[i] = null;
+            }
+        }
+    }
+    
+    prevFrameCount = $frameCount;
+}

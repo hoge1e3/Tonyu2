@@ -1,9 +1,8 @@
 /**
  * setup_nw.js
  * 1. download NW.js zip file
- * 2. unzip
- * 3. copy unzip file
- * 4. Tonyu2 icon change
+ * 2. unzip some file
+ * 3. Tonyu2 icon change
  */
 const https = require("https");
 const fs = require("fs-extra");

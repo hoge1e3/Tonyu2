@@ -1,0 +1,23 @@
+extends TObject;
+
+\new(gamePad, padNo) {
+    this.gamePad=gamePad;
+    this.padNo=padNo;
+}
+
+\getGamePad() { return gamePad;}
+\getPadNo() { return padNo;}
+
+\getPad() { return gamePad.gamePadCount(padNo); }
+\getPadId() { return gamePad.getPadId(padNo); }
+\isConnected() { return gamePad.isConnected(padNo); }
+\getMapping() { return gamePad.getMapping(padNo); }
+\getButton(btnNo) { return gamePad.getButton(padNo, btnNo); }
+\getButtonValue(btnNo) { return gamePad.getButtonValue(padNo, btnNo); }
+\getButtonCount() { return gamePad.getButtonCount(padNo); }
+\getAxis(btnNo) { return gamePad.getAxis(padNo, btnNo); }
+\getAxisCount() { return gamePad.getAxisCount(padNo); }
+\getUp() { return gamePad.getUp(padNo); }
+\getDown() { return gamePad.getDown(padNo); }
+\getLeft() { return gamePad.getLeft(padNo); }
+\getRight() { return gamePad.getRight(padNo); }
