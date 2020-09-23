@@ -24,8 +24,11 @@ cd ../Tonyu2
 npm install
 npm run build
 ~~~
+- If you want to build again, just `npm run build`
 
-- To run as a native application, download [nw.js](https://nwjs.io/) and add following files in /path/to/Tonyu2/
+## How to run your project as a native application
+
+- Download [nw.js](https://nwjs.io/) and add following files in /path/to/Tonyu2/
 - you can use `npm run runtime` (Windows 64bit)
 ~~~
 d3dcompiler_47.dll
