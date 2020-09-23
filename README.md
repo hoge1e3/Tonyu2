@@ -16,6 +16,7 @@ Windows 7/8/10
 ## How to build
 
 - Clone [tonyu2-compiler](https://github.com/hoge1e3/tonyu2-compiler/) repository to the same directory.
+  - ex.  `/some/folder/Tonyu2` and `/some/folder/tonyu2-compiler`
 - Run the following node.js command.
 ~~~
 cd tonyu2-compiler
