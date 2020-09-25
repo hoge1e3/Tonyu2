@@ -12989,6 +12989,1278 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false},"prompt":{"nowait":false},"waitInput":{"nowait":false},"promptNumber":{"nowait":false},"confirm":{"nowait":false},"alert":{"nowait":false}},"fields":{}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.GamePad',
+  shortName: 'GamePad',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.TObject,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_GamePad_main() {
+        "use strict";
+        var _this=this;
+        
+        _this.available=false;
+        _this.useGamePad=false;
+        _this.enable=true;
+        _this.gamepads=[];
+        _this.gamepadones=[];
+        _this.prevFrameCount=- 1;
+      },
+      fiber$main :function _trc_GamePad_f_main(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _this.available=false;
+        _this.useGamePad=false;
+        _this.enable=true;
+        _this.gamepads=[];
+        _this.gamepadones=[];
+        _this.prevFrameCount=- 1;
+        
+        _thread.retVal=_this;return;
+      },
+      setEnable :function _trc_GamePad_setEnable(e) {
+        "use strict";
+        var _this=this;
+        
+        _this.enable=e;
+      },
+      fiber$setEnable :function _trc_GamePad_f_setEnable(_thread,e) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _this.enable=e;
+        
+        _thread.retVal=_this;return;
+      },
+      enableGamePad :function _trc_GamePad_enableGamePad() {
+        "use strict";
+        var _this=this;
+        
+        if (! _this.useGamePad) {
+          _this.update();
+          _this.useGamePad=true;
+          
+        }
+      },
+      fiber$enableGamePad :function _trc_GamePad_f_enableGamePad(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_enableGamePad(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              if (!(! _this.useGamePad)) { __pc=2     ; break; }
+              _this.fiber$update(_thread);
+              __pc=1;return;
+            case 1:
+              
+              _this.useGamePad=true;
+            case 2     :
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getGamepads :function _trc_GamePad_getGamepads() {
+        "use strict";
+        var _this=this;
+        var pads;
+        
+        _this.enableGamePad();
+        pads = navigator.getGamepads?navigator.getGamepads():(navigator.webkitGetGamepads?navigator.webkitGetGamepads:[]);
+        
+        return pads;
+      },
+      fiber$getGamepads :function _trc_GamePad_f_getGamepads(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var pads;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getGamepads(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              pads = navigator.getGamepads?navigator.getGamepads():(navigator.webkitGetGamepads?navigator.webkitGetGamepads:[]);
+              
+              _thread.exit(pads);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      get :function _trc_GamePad_get(no) {
+        "use strict";
+        var _this=this;
+        
+        if (_this.gamepadones[no]==null) {
+          _this.gamepadones[no]=new Tonyu.classes.kernel.GamePadOne(_this,no);
+          
+        }
+        return _this.gamepadones[no];
+      },
+      fiber$get :function _trc_GamePad_f_get(_thread,no) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        if (_this.gamepadones[no]==null) {
+          _this.gamepadones[no]=new Tonyu.classes.kernel.GamePadOne(_this,no);
+          
+        }
+        _thread.retVal=_this.gamepadones[no];return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      padsCount :function _trc_GamePad_padsCount() {
+        "use strict";
+        var _this=this;
+        var count;
+        var i;
+        
+        _this.enableGamePad();
+        count = 0;
+        
+        i = 0;
+        for (; i<_this.gamepads.length ; i++) {
+          {
+            if (_this.gamepads[i]) {
+              count++;
+            }
+          }
+        }
+        return count;
+      },
+      fiber$padsCount :function _trc_GamePad_f_padsCount(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var count;
+        var i;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_padsCount(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              count = 0;
+              
+              i = 0;
+              for (; i<_this.gamepads.length ; i++) {
+                {
+                  if (_this.gamepads[i]) {
+                    count++;
+                  }
+                }
+              }
+              _thread.exit(count);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getPad :function _trc_GamePad_getPad(index) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp) {
+          return null;
+        }
+        return gp.pad;
+      },
+      fiber$getPad :function _trc_GamePad_f_getPad(_thread,index) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getPad(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp)) { __pc=2     ; break; }
+              _thread.exit(null);return;
+            case 2     :
+              
+              _thread.exit(gp.pad);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getPadId :function _trc_GamePad_getPadId(index) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp||! gp.pad) {
+          return null;
+        }
+        return gp.pad.id;
+      },
+      fiber$getPadId :function _trc_GamePad_f_getPadId(_thread,index) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getPadId(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp||! gp.pad)) { __pc=2     ; break; }
+              _thread.exit(null);return;
+            case 2     :
+              
+              _thread.exit(gp.pad.id);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      isConnected :function _trc_GamePad_isConnected(index) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp||! gp.pad) {
+          return false;
+        }
+        return gp.pad.connected;
+      },
+      fiber$isConnected :function _trc_GamePad_f_isConnected(_thread,index) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_isConnected(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp||! gp.pad)) { __pc=2     ; break; }
+              _thread.exit(false);return;
+            case 2     :
+              
+              _thread.exit(gp.pad.connected);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getMapping :function _trc_GamePad_getMapping(index) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp||! gp.pad) {
+          return null;
+        }
+        return gp.pad.mapping;
+      },
+      fiber$getMapping :function _trc_GamePad_f_getMapping(_thread,index) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getMapping(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp||! gp.pad)) { __pc=2     ; break; }
+              _thread.exit(null);return;
+            case 2     :
+              
+              _thread.exit(gp.pad.mapping);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getButton :function _trc_GamePad_getButton(index,no) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp||! gp.status||! gp.status[no]) {
+          return 0;
+        }
+        return gp.status[no];
+      },
+      fiber$getButton :function _trc_GamePad_f_getButton(_thread,index,no) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getButton(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp||! gp.status||! gp.status[no])) { __pc=2     ; break; }
+              _thread.exit(0);return;
+            case 2     :
+              
+              _thread.exit(gp.status[no]);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getButtonValue :function _trc_GamePad_getButtonValue(index,no) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp||! gp.pad||! gp.pad.buttons||! gp.pad.buttons[no]) {
+          return 0;
+        }
+        return gp.pad.buttons[no].value;
+      },
+      fiber$getButtonValue :function _trc_GamePad_f_getButtonValue(_thread,index,no) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getButtonValue(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp||! gp.pad||! gp.pad.buttons||! gp.pad.buttons[no])) { __pc=2     ; break; }
+              _thread.exit(0);return;
+            case 2     :
+              
+              _thread.exit(gp.pad.buttons[no].value);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getButtonCount :function _trc_GamePad_getButtonCount(index) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp||! gp.pad||! gp.pad.buttons) {
+          return 0;
+        }
+        return gp.pad.buttons.length;
+      },
+      fiber$getButtonCount :function _trc_GamePad_f_getButtonCount(_thread,index) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getButtonCount(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp||! gp.pad||! gp.pad.buttons)) { __pc=2     ; break; }
+              _thread.exit(0);return;
+            case 2     :
+              
+              _thread.exit(gp.pad.buttons.length);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getAxis :function _trc_GamePad_getAxis(index,no) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp||! gp.pad||! gp.pad.axes) {
+          return 0;
+        }
+        return gp.pad.axes[no];
+      },
+      fiber$getAxis :function _trc_GamePad_f_getAxis(_thread,index,no) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getAxis(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp||! gp.pad||! gp.pad.axes)) { __pc=2     ; break; }
+              _thread.exit(0);return;
+            case 2     :
+              
+              _thread.exit(gp.pad.axes[no]);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getAxisCount :function _trc_GamePad_getAxisCount(index) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp||! gp.pad||! gp.pad.axes) {
+          return 0;
+        }
+        return gp.pad.axes.length;
+      },
+      fiber$getAxisCount :function _trc_GamePad_f_getAxisCount(_thread,index) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getAxisCount(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp||! gp.pad||! gp.pad.axes)) { __pc=2     ; break; }
+              _thread.exit(0);return;
+            case 2     :
+              
+              _thread.exit(gp.pad.axes.length);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getUp :function _trc_GamePad_getUp(index) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp) {
+          return 0;
+        }
+        return gp.statusA1U;
+      },
+      fiber$getUp :function _trc_GamePad_f_getUp(_thread,index) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getUp(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp)) { __pc=2     ; break; }
+              _thread.exit(0);return;
+            case 2     :
+              
+              _thread.exit(gp.statusA1U);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getDown :function _trc_GamePad_getDown(index) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp) {
+          return 0;
+        }
+        return gp.statusA1D;
+      },
+      fiber$getDown :function _trc_GamePad_f_getDown(_thread,index) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getDown(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp)) { __pc=2     ; break; }
+              _thread.exit(0);return;
+            case 2     :
+              
+              _thread.exit(gp.statusA1D);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getLeft :function _trc_GamePad_getLeft(index) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp) {
+          return 0;
+        }
+        return gp.statusA1L;
+      },
+      fiber$getLeft :function _trc_GamePad_f_getLeft(_thread,index) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getLeft(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp)) { __pc=2     ; break; }
+              _thread.exit(0);return;
+            case 2     :
+              
+              _thread.exit(gp.statusA1L);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getRight :function _trc_GamePad_getRight(index) {
+        "use strict";
+        var _this=this;
+        var gp;
+        
+        _this.enableGamePad();
+        gp = _this.gamepads[index];
+        
+        if (! gp) {
+          return 0;
+        }
+        return gp.statusA1R;
+      },
+      fiber$getRight :function _trc_GamePad_f_getRight(_thread,index) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var gp;
+        
+        
+        _thread.enter(function _trc_GamePad_ent_getRight(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$enableGamePad(_thread);
+              __pc=1;return;
+            case 1:
+              
+              gp = _this.gamepads[index];
+              
+              if (!(! gp)) { __pc=2     ; break; }
+              _thread.exit(0);return;
+            case 2     :
+              
+              _thread.exit(gp.statusA1R);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      update :function _trc_GamePad_update() {
+        "use strict";
+        var _this=this;
+        var pads;
+        var i;
+        var pad;
+        var idx;
+        var gamepad;
+        var buttons;
+        var j;
+        var button;
+        var pressed;
+        var AXIS_NEUTRAL;
+        var axisLR;
+        var axisUD;
+        
+        if (! (window.Gamepad||navigator.getGamepads||navigator.webkitGetGamepads)) {
+          _this.available=false;
+          return _this;
+          
+        }
+        _this.available=true;
+        if (! _this.useGamePad) {
+          return _this;
+        }
+        if (! _this.enable) {
+          return _this;
+        }
+        if (_this.prevFrameCount==Tonyu.globals.$frameCount) {
+          return _this;
+        }
+        pads = navigator.getGamepads?navigator.getGamepads():(navigator.webkitGetGamepads?navigator.webkitGetGamepads:[]);
+        
+        i = 0;
+        for (; i<pads.length ; i++) {
+          {
+            pad = pads[i];
+            
+            if (! pad) {
+              continue;
+              
+              
+            }
+            idx = pad.index;
+            
+            if (! _this.gamepads[idx]) {
+              _this.gamepads[idx]={updateFrame: Tonyu.globals.$frameCount,pad: pad,status: [],statusA1L: 0,statusA1R: 0,statusA1U: 0,statusA1D: 0};
+              
+            } else {
+              _this.gamepads[idx].updateFrame=Tonyu.globals.$frameCount;
+              _this.gamepads[idx].pad=pad;
+              
+            }
+            gamepad = _this.gamepads[idx];
+            
+            buttons = pad.buttons;
+            
+            j = 0;
+            for (; j<buttons.length ; j++) {
+              {
+                button = buttons[j];
+                
+                pressed = button.pressed;
+                
+                if (gamepad.status[j]==null) {
+                  gamepad.status[j]=0;
+                  
+                } else {
+                  if (pressed) {
+                    gamepad.status[j]++;
+                    
+                  } else {
+                    gamepad.status[j]=0;
+                    
+                  }
+                  
+                }
+              }
+            }
+            AXIS_NEUTRAL = 0.4;
+            
+            if (pad.axes.length>=2) {
+              axisLR = pad.axes[0];
+              
+              axisUD = pad.axes[1];
+              
+              if (axisLR!=null&&axisUD!=null) {
+                gamepad.statusA1L=(axisLR<=- AXIS_NEUTRAL)?gamepad.statusA1L+1:0;
+                gamepad.statusA1R=(axisLR>=AXIS_NEUTRAL)?gamepad.statusA1R+1:0;
+                gamepad.statusA1U=(axisUD<=- AXIS_NEUTRAL)?gamepad.statusA1U+1:0;
+                gamepad.statusA1D=(axisUD>=AXIS_NEUTRAL)?gamepad.statusA1D+1:0;
+                
+              }
+              
+            }
+          }
+        }
+        i = 0;
+        for (; i<_this.gamepads.length ; i++) {
+          {
+            pad = _this.gamepads[i];
+            
+            if (pad) {
+              if (pad.updateFrame!=Tonyu.globals.$frameCount) {
+                _this.gamepads[i]=null;
+                
+              }
+              
+            }
+          }
+        }
+        _this.prevFrameCount=Tonyu.globals.$frameCount;
+      },
+      fiber$update :function _trc_GamePad_f_update(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var pads;
+        var i;
+        var pad;
+        var idx;
+        var gamepad;
+        var buttons;
+        var j;
+        var button;
+        var pressed;
+        var AXIS_NEUTRAL;
+        var axisLR;
+        var axisUD;
+        
+        if (! (window.Gamepad||navigator.getGamepads||navigator.webkitGetGamepads)) {
+          _this.available=false;
+          _thread.retVal=_this;return;
+          
+          
+        }
+        _this.available=true;
+        if (! _this.useGamePad) {
+          _thread.retVal=_this;return;
+          
+        }
+        if (! _this.enable) {
+          _thread.retVal=_this;return;
+          
+        }
+        if (_this.prevFrameCount==Tonyu.globals.$frameCount) {
+          _thread.retVal=_this;return;
+          
+        }
+        pads = navigator.getGamepads?navigator.getGamepads():(navigator.webkitGetGamepads?navigator.webkitGetGamepads:[]);
+        
+        i = 0;
+        for (; i<pads.length ; i++) {
+          {
+            pad = pads[i];
+            
+            if (! pad) {
+              continue;
+              
+              
+            }
+            idx = pad.index;
+            
+            if (! _this.gamepads[idx]) {
+              _this.gamepads[idx]={updateFrame: Tonyu.globals.$frameCount,pad: pad,status: [],statusA1L: 0,statusA1R: 0,statusA1U: 0,statusA1D: 0};
+              
+            } else {
+              _this.gamepads[idx].updateFrame=Tonyu.globals.$frameCount;
+              _this.gamepads[idx].pad=pad;
+              
+            }
+            gamepad = _this.gamepads[idx];
+            
+            buttons = pad.buttons;
+            
+            j = 0;
+            for (; j<buttons.length ; j++) {
+              {
+                button = buttons[j];
+                
+                pressed = button.pressed;
+                
+                if (gamepad.status[j]==null) {
+                  gamepad.status[j]=0;
+                  
+                } else {
+                  if (pressed) {
+                    gamepad.status[j]++;
+                    
+                  } else {
+                    gamepad.status[j]=0;
+                    
+                  }
+                  
+                }
+              }
+            }
+            AXIS_NEUTRAL = 0.4;
+            
+            if (pad.axes.length>=2) {
+              axisLR = pad.axes[0];
+              
+              axisUD = pad.axes[1];
+              
+              if (axisLR!=null&&axisUD!=null) {
+                gamepad.statusA1L=(axisLR<=- AXIS_NEUTRAL)?gamepad.statusA1L+1:0;
+                gamepad.statusA1R=(axisLR>=AXIS_NEUTRAL)?gamepad.statusA1R+1:0;
+                gamepad.statusA1U=(axisUD<=- AXIS_NEUTRAL)?gamepad.statusA1U+1:0;
+                gamepad.statusA1D=(axisUD>=AXIS_NEUTRAL)?gamepad.statusA1D+1:0;
+                
+              }
+              
+            }
+          }
+        }
+        i = 0;
+        for (; i<_this.gamepads.length ; i++) {
+          {
+            pad = _this.gamepads[i];
+            
+            if (pad) {
+              if (pad.updateFrame!=Tonyu.globals.$frameCount) {
+                _this.gamepads[i]=null;
+                
+              }
+              
+            }
+          }
+        }
+        _this.prevFrameCount=Tonyu.globals.$frameCount;
+        
+        _thread.retVal=_this;return;
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false},"setEnable":{"nowait":false},"enableGamePad":{"nowait":false},"getGamepads":{"nowait":false},"get":{"nowait":false},"padsCount":{"nowait":false},"getPad":{"nowait":false},"getPadId":{"nowait":false},"isConnected":{"nowait":false},"getMapping":{"nowait":false},"getButton":{"nowait":false},"getButtonValue":{"nowait":false},"getButtonCount":{"nowait":false},"getAxis":{"nowait":false},"getAxisCount":{"nowait":false},"getUp":{"nowait":false},"getDown":{"nowait":false},"getLeft":{"nowait":false},"getRight":{"nowait":false},"update":{"nowait":false}},"fields":{"available":{},"useGamePad":{},"enable":{},"gamepads":{},"gamepadones":{},"prevFrameCount":{}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.GamePadOne',
+  shortName: 'GamePadOne',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.TObject,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_GamePadOne_main() {
+        "use strict";
+        var _this=this;
+        
+      },
+      fiber$main :function _trc_GamePadOne_f_main(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      initialize :function _trc_GamePadOne_initialize(gamePad,padNo) {
+        "use strict";
+        var _this=this;
+        
+        _this.gamePad=gamePad;
+        _this.padNo=padNo;
+      },
+      getGamePad :function _trc_GamePadOne_getGamePad() {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad;
+      },
+      fiber$getGamePad :function _trc_GamePadOne_f_getGamePad(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad;return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getPadNo :function _trc_GamePadOne_getPadNo() {
+        "use strict";
+        var _this=this;
+        
+        return _this.padNo;
+      },
+      fiber$getPadNo :function _trc_GamePadOne_f_getPadNo(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.padNo;return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getPad :function _trc_GamePadOne_getPad() {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.gamePadCount(_this.padNo);
+      },
+      fiber$getPad :function _trc_GamePadOne_f_getPad(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.gamePadCount(_this.padNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getPadId :function _trc_GamePadOne_getPadId() {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.getPadId(_this.padNo);
+      },
+      fiber$getPadId :function _trc_GamePadOne_f_getPadId(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.getPadId(_this.padNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      isConnected :function _trc_GamePadOne_isConnected() {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.isConnected(_this.padNo);
+      },
+      fiber$isConnected :function _trc_GamePadOne_f_isConnected(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.isConnected(_this.padNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getMapping :function _trc_GamePadOne_getMapping() {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.getMapping(_this.padNo);
+      },
+      fiber$getMapping :function _trc_GamePadOne_f_getMapping(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.getMapping(_this.padNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getButton :function _trc_GamePadOne_getButton(btnNo) {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.getButton(_this.padNo,btnNo);
+      },
+      fiber$getButton :function _trc_GamePadOne_f_getButton(_thread,btnNo) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.getButton(_this.padNo,btnNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getButtonValue :function _trc_GamePadOne_getButtonValue(btnNo) {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.getButtonValue(_this.padNo,btnNo);
+      },
+      fiber$getButtonValue :function _trc_GamePadOne_f_getButtonValue(_thread,btnNo) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.getButtonValue(_this.padNo,btnNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getButtonCount :function _trc_GamePadOne_getButtonCount() {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.getButtonCount(_this.padNo);
+      },
+      fiber$getButtonCount :function _trc_GamePadOne_f_getButtonCount(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.getButtonCount(_this.padNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getAxis :function _trc_GamePadOne_getAxis(btnNo) {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.getAxis(_this.padNo,btnNo);
+      },
+      fiber$getAxis :function _trc_GamePadOne_f_getAxis(_thread,btnNo) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.getAxis(_this.padNo,btnNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getAxisCount :function _trc_GamePadOne_getAxisCount() {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.getAxisCount(_this.padNo);
+      },
+      fiber$getAxisCount :function _trc_GamePadOne_f_getAxisCount(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.getAxisCount(_this.padNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getUp :function _trc_GamePadOne_getUp() {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.getUp(_this.padNo);
+      },
+      fiber$getUp :function _trc_GamePadOne_f_getUp(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.getUp(_this.padNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getDown :function _trc_GamePadOne_getDown() {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.getDown(_this.padNo);
+      },
+      fiber$getDown :function _trc_GamePadOne_f_getDown(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.getDown(_this.padNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getLeft :function _trc_GamePadOne_getLeft() {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.getLeft(_this.padNo);
+      },
+      fiber$getLeft :function _trc_GamePadOne_f_getLeft(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.getLeft(_this.padNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getRight :function _trc_GamePadOne_getRight() {
+        "use strict";
+        var _this=this;
+        
+        return _this.gamePad.getRight(_this.padNo);
+      },
+      fiber$getRight :function _trc_GamePadOne_f_getRight(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=_this.gamePad.getRight(_this.padNo);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"getGamePad":{"nowait":false},"getPadNo":{"nowait":false},"getPad":{"nowait":false},"getPadId":{"nowait":false},"isConnected":{"nowait":false},"getMapping":{"nowait":false},"getButton":{"nowait":false},"getButtonValue":{"nowait":false},"getButtonCount":{"nowait":false},"getAxis":{"nowait":false},"getAxisCount":{"nowait":false},"getUp":{"nowait":false},"getDown":{"nowait":false},"getLeft":{"nowait":false},"getRight":{"nowait":false}},"fields":{"gamePad":{},"padNo":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.KeyDownHandler',
   shortName: 'KeyDownHandler',
   namespace: 'kernel',
@@ -13036,11 +14308,11 @@ Tonyu.klass.define({
         });
         e.sendUp=(function anonymous_345() {
           var f;
-          var _it_414;
+          var _it_442;
           
-          _it_414=Tonyu.iterator(e.sendUps,1);
-          while(_it_414.next()) {
-            f=_it_414[0];
+          _it_442=Tonyu.iterator(e.sendUps,1);
+          while(_it_442.next()) {
+            f=_it_442[0];
             
             f();
           }
@@ -13071,11 +14343,11 @@ Tonyu.klass.define({
         });
         e.sendUp=(function anonymous_345() {
           var f;
-          var _it_414;
+          var _it_442;
           
-          _it_414=Tonyu.iterator(e.sendUps,1);
-          while(_it_414.next()) {
-            f=_it_414[0];
+          _it_442=Tonyu.iterator(e.sendUps,1);
+          while(_it_442.next()) {
+            f=_it_442[0];
             
             f();
           }
@@ -13096,8 +14368,8 @@ Tonyu.klass.define({
           var a;
           var e;
           var f;
-          var _it_418;
-          var _it_419;
+          var _it_446;
+          var _it_447;
           
           if (_this.pressState[raw.keyCode]) {
             return _this;
@@ -13108,9 +14380,9 @@ Tonyu.klass.define({
           
           a.push(e);
           if (_this.handlers[raw.keyCode]) {
-            _it_418=Tonyu.iterator(_this.handlers[raw.keyCode],1);
-            while(_it_418.next()) {
-              f=_it_418[0];
+            _it_446=Tonyu.iterator(_this.handlers[raw.keyCode],1);
+            while(_it_446.next()) {
+              f=_it_446[0];
               
               f(e);
               
@@ -13118,9 +14390,9 @@ Tonyu.klass.define({
             
           }
           if (_this.handlers.all) {
-            _it_419=Tonyu.iterator(_this.handlers.all,1);
-            while(_it_419.next()) {
-              f=_it_419[0];
+            _it_447=Tonyu.iterator(_this.handlers.all,1);
+            while(_it_447.next()) {
+              f=_it_447[0];
               
               f(e);
               
@@ -13131,14 +14403,14 @@ Tonyu.klass.define({
         Tonyu.globals.$InputDevice.on("keyUpRaw",(function anonymous_968(e) {
           var a;
           var e;
-          var _it_426;
+          var _it_454;
           
           a = _this.pressState[e.keyCode]=_this.pressState[e.keyCode]||[];
           
           delete _this.pressState[e.keyCode];
-          _it_426=Tonyu.iterator(a,1);
-          while(_it_426.next()) {
-            e=_it_426[0];
+          _it_454=Tonyu.iterator(a,1);
+          while(_it_454.next()) {
+            e=_it_454[0];
             
             e.sendUp();
             
@@ -13187,7 +14459,7 @@ Tonyu.klass.define({
       main :function _trc_Keys_main() {
         "use strict";
         var _this=this;
-        var _it_433;
+        var _it_461;
         
         _this.stats={};
         _this.codes={left: 37,up: 38,right: 39,down: 40,space: 32,enter: 13,shift: 16,ctrl: 17,alt: 18,esc: 27,mouseleft: 1,mouseright: 2,mousewheel: 4};
@@ -13205,10 +14477,10 @@ Tonyu.klass.define({
           }
         }
         _this.codesRev={};
-        _it_433=Tonyu.iterator(_this.codes,2);
-        while(_it_433.next()) {
-          _this.k=_it_433[0];
-          _this.v=_it_433[1];
+        _it_461=Tonyu.iterator(_this.codes,2);
+        while(_it_461.next()) {
+          _this.k=_it_461[0];
+          _this.v=_it_461[1];
           
           _this.codesRev[_this.v]=_this.k;
         }
@@ -13253,7 +14525,7 @@ Tonyu.klass.define({
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
-        var _it_433;
+        var _it_461;
         
         _this.stats={};
         _this.codes={left: 37,up: 38,right: 39,down: 40,space: 32,enter: 13,shift: 16,ctrl: 17,alt: 18,esc: 27,mouseleft: 1,mouseright: 2,mousewheel: 4};
@@ -13271,10 +14543,10 @@ Tonyu.klass.define({
           }
         }
         _this.codesRev={};
-        _it_433=Tonyu.iterator(_this.codes,2);
-        while(_it_433.next()) {
-          _this.k=_it_433[0];
-          _this.v=_it_433[1];
+        _it_461=Tonyu.iterator(_this.codes,2);
+        while(_it_461.next()) {
+          _this.k=_it_461[0];
+          _this.v=_it_461[1];
           
           _this.codesRev[_this.v]=_this.k;
         }
@@ -13365,11 +14637,11 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var i;
-        var _it_440;
+        var _it_468;
         
-        _it_440=Tonyu.iterator(_this.stats,1);
-        while(_it_440.next()) {
-          i=_it_440[0];
+        _it_468=Tonyu.iterator(_this.stats,1);
+        while(_it_468.next()) {
+          i=_it_468[0];
           
           if (_this.stats[i]>0) {
             _this.stats[i]++;
@@ -13392,11 +14664,11 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var i;
-        var _it_440;
+        var _it_468;
         
-        _it_440=Tonyu.iterator(_this.stats,1);
-        while(_it_440.next()) {
-          i=_it_440[0];
+        _it_468=Tonyu.iterator(_this.stats,1);
+        while(_it_468.next()) {
+          i=_it_468[0];
           
           if (_this.stats[i]>0) {
             _this.stats[i]++;
@@ -13819,12 +15091,12 @@ Tonyu.klass.define({
         _this.fingerArray.findWithin=(function anonymous_277(o,d) {
           var j;
           var t;
-          var _it_453;
+          var _it_481;
           
-          _it_453=Tonyu.iterator(_this.fingerSet,2);
-          while(_it_453.next()) {
-            j=_it_453[0];
-            t=_it_453[1];
+          _it_481=Tonyu.iterator(_this.fingerSet,2);
+          while(_it_481.next()) {
+            j=_it_481[0];
+            t=_it_481[1];
             
             if (o.within(t,d)) {
               return t;
@@ -13836,12 +15108,12 @@ Tonyu.klass.define({
         _this.fingerArray.findTouch=(function anonymous_454(f) {
           var j;
           var t;
-          var _it_458;
+          var _it_486;
           
-          _it_458=Tonyu.iterator(_this.fingerSet,2);
-          while(_it_458.next()) {
-            j=_it_458[0];
-            t=_it_458[1];
+          _it_486=Tonyu.iterator(_this.fingerSet,2);
+          while(_it_486.next()) {
+            j=_it_486[0];
+            t=_it_486[1];
             
             if (f(t)) {
               return t;
@@ -14103,13 +15375,13 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var t;
-        var _it_478;
+        var _it_506;
         var i;
-        var _it_479;
+        var _it_507;
         
-        _it_478=Tonyu.iterator(_this.fingerArray,1);
-        while(_it_478.next()) {
-          t=_it_478[0];
+        _it_506=Tonyu.iterator(_this.fingerArray,1);
+        while(_it_506.next()) {
+          t=_it_506[0];
           
           if (t.identifier==ID_MOUSE) {
             t.reset();
@@ -14117,10 +15389,10 @@ Tonyu.klass.define({
           }
           
         }
-        _it_479=Tonyu.iterator(_this.fingerSet,2);
-        while(_it_479.next()) {
-          i=_it_479[0];
-          t=_it_479[1];
+        _it_507=Tonyu.iterator(_this.fingerSet,2);
+        while(_it_507.next()) {
+          i=_it_507[0];
+          t=_it_507[1];
           
           if (t.identifier==ID_MOUSE) {
             t.reset();
@@ -14135,13 +15407,13 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var t;
-        var _it_478;
+        var _it_506;
         var i;
-        var _it_479;
+        var _it_507;
         
-        _it_478=Tonyu.iterator(_this.fingerArray,1);
-        while(_it_478.next()) {
-          t=_it_478[0];
+        _it_506=Tonyu.iterator(_this.fingerArray,1);
+        while(_it_506.next()) {
+          t=_it_506[0];
           
           if (t.identifier==ID_MOUSE) {
             t.reset();
@@ -14149,10 +15421,10 @@ Tonyu.klass.define({
           }
           
         }
-        _it_479=Tonyu.iterator(_this.fingerSet,2);
-        while(_it_479.next()) {
-          i=_it_479[0];
-          t=_it_479[1];
+        _it_507=Tonyu.iterator(_this.fingerSet,2);
+        while(_it_507.next()) {
+          i=_it_507[0];
+          t=_it_507[1];
           
           if (t.identifier==ID_MOUSE) {
             t.reset();
@@ -14167,21 +15439,21 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var t;
-        var _it_484;
+        var _it_512;
         var i;
-        var _it_485;
+        var _it_513;
         
-        _it_484=Tonyu.iterator(_this.fingerArray,1);
-        while(_it_484.next()) {
-          t=_it_484[0];
+        _it_512=Tonyu.iterator(_this.fingerArray,1);
+        while(_it_512.next()) {
+          t=_it_512[0];
           
           t.update();
           
         }
-        _it_485=Tonyu.iterator(_this.fingerSet,2);
-        while(_it_485.next()) {
-          i=_it_485[0];
-          t=_it_485[1];
+        _it_513=Tonyu.iterator(_this.fingerSet,2);
+        while(_it_513.next()) {
+          i=_it_513[0];
+          t=_it_513[1];
           
           t.update();
           
@@ -14193,21 +15465,21 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var t;
-        var _it_484;
+        var _it_512;
         var i;
-        var _it_485;
+        var _it_513;
         
-        _it_484=Tonyu.iterator(_this.fingerArray,1);
-        while(_it_484.next()) {
-          t=_it_484[0];
+        _it_512=Tonyu.iterator(_this.fingerArray,1);
+        while(_it_512.next()) {
+          t=_it_512[0];
           
           t.update();
           
         }
-        _it_485=Tonyu.iterator(_this.fingerSet,2);
-        while(_it_485.next()) {
-          i=_it_485[0];
-          t=_it_485[1];
+        _it_513=Tonyu.iterator(_this.fingerSet,2);
+        while(_it_513.next()) {
+          i=_it_513[0];
+          t=_it_513[1];
           
           t.update();
           
@@ -14330,7 +15602,7 @@ Tonyu.klass.define({
         var _this=this;
         var p;
         var k;
-        var _it_490;
+        var _it_518;
         
         if (typeof  o=="function") {
           if (param) {
@@ -14340,9 +15612,9 @@ Tonyu.klass.define({
           p = Tonyu.globals.$ObjectPool.withdraw(o.meta.fullName);
           
           if (p) {
-            _it_490=Tonyu.iterator(Object.keys(p),1);
-            while(_it_490.next()) {
-              k=_it_490[0];
+            _it_518=Tonyu.iterator(Object.keys(p),1);
+            while(_it_518.next()) {
+              k=_it_518[0];
               
               if (k!="objectPoolAge") {
                 delete p[k];
@@ -14369,7 +15641,7 @@ Tonyu.klass.define({
         var __pc=0;
         var p;
         var k;
-        var _it_490;
+        var _it_518;
         
         if (typeof  o=="function") {
           if (param) {
@@ -14379,9 +15651,9 @@ Tonyu.klass.define({
           p = Tonyu.globals.$ObjectPool.withdraw(o.meta.fullName);
           
           if (p) {
-            _it_490=Tonyu.iterator(Object.keys(p),1);
-            while(_it_490.next()) {
-              k=_it_490[0];
+            _it_518=Tonyu.iterator(Object.keys(p),1);
+            while(_it_518.next()) {
+              k=_it_518[0];
               
               if (k!="objectPoolAge") {
                 delete p[k];
@@ -14608,8 +15880,8 @@ Tonyu.klass.define({
         var SEP;
         var lines;
         var l;
-        var _it_495;
-        var _it_496;
+        var _it_523;
+        var _it_524;
         
         f = _this.file(csvFile);
         
@@ -14620,15 +15892,15 @@ Tonyu.klass.define({
         
         lines = f.lines();
         
-        _it_495=Tonyu.iterator(lines,1);
-        while(_it_495.next()) {
-          l=_it_495[0];
+        _it_523=Tonyu.iterator(lines,1);
+        while(_it_523.next()) {
+          l=_it_523[0];
           
           _this.row=l.split(SEP);
           x=0;
-          _it_496=Tonyu.iterator(_this.row,1);
-          while(_it_496.next()) {
-            _this.cell=_it_496[0];
+          _it_524=Tonyu.iterator(_this.row,1);
+          while(_it_524.next()) {
+            _this.cell=_it_524[0];
             
             _this.set(x,y,_this.cell);
             x++;
@@ -14649,8 +15921,8 @@ Tonyu.klass.define({
         var SEP;
         var lines;
         var l;
-        var _it_495;
-        var _it_496;
+        var _it_523;
+        var _it_524;
         
         
         _thread.enter(function _trc_Matrix_ent_load(_thread) {
@@ -14670,17 +15942,17 @@ Tonyu.klass.define({
               
               lines = f.lines();
               
-              _it_495=Tonyu.iterator(lines,1);
+              _it_523=Tonyu.iterator(lines,1);
             case 2:
-              if (!(_it_495.next())) { __pc=6     ; break; }
-              l=_it_495[0];
+              if (!(_it_523.next())) { __pc=6     ; break; }
+              l=_it_523[0];
               
               _this.row=l.split(SEP);
               x=0;
-              _it_496=Tonyu.iterator(_this.row,1);
+              _it_524=Tonyu.iterator(_this.row,1);
             case 3:
-              if (!(_it_496.next())) { __pc=5     ; break; }
-              _this.cell=_it_496[0];
+              if (!(_it_524.next())) { __pc=5     ; break; }
+              _this.cell=_it_524[0];
               
               _this.fiber$set(_thread, x, y, _this.cell);
               __pc=4;return;
@@ -14750,12 +16022,12 @@ Tonyu.klass.define({
         var _this=this;
         var k;
         var v;
-        var _it_507;
+        var _it_535;
         
-        _it_507=Tonyu.iterator(_this.data,2);
-        while(_it_507.next()) {
-          k=_it_507[0];
-          v=_it_507[1];
+        _it_535=Tonyu.iterator(_this.data,2);
+        while(_it_535.next()) {
+          k=_it_535[0];
+          v=_it_535[1];
           
           if (v===cell) {
             return _this.unkey(k);
@@ -14771,7 +16043,7 @@ Tonyu.klass.define({
         var __pc=0;
         var k;
         var v;
-        var _it_507;
+        var _it_535;
         
         
         _thread.enter(function _trc_Matrix_ent_search(_thread) {
@@ -14779,11 +16051,11 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              _it_507=Tonyu.iterator(_this.data,2);
+              _it_535=Tonyu.iterator(_this.data,2);
             case 1:
-              if (!(_it_507.next())) { __pc=4     ; break; }
-              k=_it_507[0];
-              v=_it_507[1];
+              if (!(_it_535.next())) { __pc=4     ; break; }
+              k=_it_535[0];
+              v=_it_535[1];
               
               if (!(v===cell)) { __pc=3     ; break; }
               _this.fiber$unkey(_thread, k);
@@ -14936,13 +16208,13 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var e;
-        var _it_517;
+        var _it_545;
         
         res = [];
         
-        _it_517=Tonyu.iterator(line,1);
-        while(_it_517.next()) {
-          e=_it_517[0];
+        _it_545=Tonyu.iterator(line,1);
+        while(_it_545.next()) {
+          e=_it_545[0];
           
           res.unshift(e);
           
@@ -14956,13 +16228,13 @@ Tonyu.klass.define({
         var __pc=0;
         var res;
         var e;
-        var _it_517;
+        var _it_545;
         
         res = [];
         
-        _it_517=Tonyu.iterator(line,1);
-        while(_it_517.next()) {
-          e=_it_517[0];
+        _it_545=Tonyu.iterator(line,1);
+        while(_it_545.next()) {
+          e=_it_545[0];
           
           res.unshift(e);
           
@@ -15012,14 +16284,14 @@ Tonyu.klass.define({
         var res;
         var k;
         var v;
-        var _it_521;
+        var _it_549;
         
         res = {i: 0,keys: []};
         
-        _it_521=Tonyu.iterator(_this.data,2);
-        while(_it_521.next()) {
-          k=_it_521[0];
-          v=_it_521[1];
+        _it_549=Tonyu.iterator(_this.data,2);
+        while(_it_549.next()) {
+          k=_it_549[0];
+          v=_it_549[1];
           
           res.keys.push(k);
           
@@ -15059,14 +16331,14 @@ Tonyu.klass.define({
         var res;
         var k;
         var v;
-        var _it_521;
+        var _it_549;
         
         res = {i: 0,keys: []};
         
-        _it_521=Tonyu.iterator(_this.data,2);
-        while(_it_521.next()) {
-          k=_it_521[0];
-          v=_it_521[1];
+        _it_549=Tonyu.iterator(_this.data,2);
+        while(_it_549.next()) {
+          k=_it_549[0];
+          v=_it_549[1];
           
           res.keys.push(k);
           
@@ -15493,7 +16765,7 @@ Tonyu.klass.define({
         var dirs;
         var res;
         var dir;
-        var _it_534;
+        var _it_562;
         var i;
         var j;
         var r;
@@ -15504,9 +16776,9 @@ Tonyu.klass.define({
         
         res = [];
         
-        _it_534=Tonyu.iterator(dirs,1);
-        while(_it_534.next()) {
-          dir=_it_534[0];
+        _it_562=Tonyu.iterator(dirs,1);
+        while(_it_562.next()) {
+          dir=_it_562[0];
           
           i = dir[1];
           j = dir[0];
@@ -15545,7 +16817,7 @@ Tonyu.klass.define({
         var dirs;
         var res;
         var dir;
-        var _it_534;
+        var _it_562;
         var i;
         var j;
         var r;
@@ -15562,10 +16834,10 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              _it_534=Tonyu.iterator(dirs,1);
+              _it_562=Tonyu.iterator(dirs,1);
             case 1:
-              if (!(_it_534.next())) { __pc=8     ; break; }
-              dir=_it_534[0];
+              if (!(_it_562.next())) { __pc=8     ; break; }
+              dir=_it_562[0];
               
               i = dir[1];
               j = dir[0];
@@ -15829,13 +17101,13 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var obj;
-        var _it_554;
+        var _it_582;
         
         while (true) {
           if (typeof  d=="function") {
-            _it_554=Tonyu.iterator(_this.allCrash(d),1);
-            while(_it_554.next()) {
-              obj=_it_554[0];
+            _it_582=Tonyu.iterator(_this.allCrash(d),1);
+            while(_it_582.next()) {
+              obj=_it_582[0];
               
               _this.callEventHandler(f,[obj]);
               
@@ -15857,7 +17129,7 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var obj;
-        var _it_554;
+        var _it_582;
         
         
         _thread.enter(function _trc_QueryMod_ent_crashToChecker(_thread) {
@@ -15867,10 +17139,10 @@ Tonyu.klass.define({
             case 0:
             case 1:
               if (!(typeof  d=="function")) { __pc=5     ; break; }
-              _it_554=Tonyu.iterator(_this.allCrash(d),1);
+              _it_582=Tonyu.iterator(_this.allCrash(d),1);
             case 2:
-              if (!(_it_554.next())) { __pc=4     ; break; }
-              obj=_it_554[0];
+              if (!(_it_582.next())) { __pc=4     ; break; }
+              obj=_it_582[0];
               
               _this.fiber$callEventHandler(_thread, f, [obj]);
               __pc=3;return;
@@ -15955,13 +17227,13 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var obj;
-        var _it_560;
+        var _it_588;
         
         while (true) {
           if (typeof  d=="function") {
-            _it_560=Tonyu.iterator(_this.allWithin(d,r),1);
-            while(_it_560.next()) {
-              obj=_it_560[0];
+            _it_588=Tonyu.iterator(_this.allWithin(d,r),1);
+            while(_it_588.next()) {
+              obj=_it_588[0];
               
               f(obj);
               
@@ -15983,7 +17255,7 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var obj;
-        var _it_560;
+        var _it_588;
         
         
         _thread.enter(function _trc_QueryMod_ent_withinChecker(_thread) {
@@ -15993,9 +17265,9 @@ Tonyu.klass.define({
             case 0:
             case 1:
               if (typeof  d=="function") {
-                _it_560=Tonyu.iterator(_this.allWithin(d,r),1);
-                while(_it_560.next()) {
-                  obj=_it_560[0];
+                _it_588=Tonyu.iterator(_this.allWithin(d,r),1);
+                while(_it_588.next()) {
+                  obj=_it_588[0];
                   
                   f(obj);
                   
@@ -16862,7 +18134,7 @@ Tonyu.klass.define({
         var c3;
         var s2ds;
         var s2d;
-        var _it_590;
+        var _it_618;
         
         c3 = new Tonyu.classes.kernel.Context3D({camera: _this.camera});
         
@@ -16874,9 +18146,9 @@ Tonyu.klass.define({
         
         c2.save();
         c2.translate(_this.spx,_this.spy);
-        _it_590=Tonyu.iterator(c3.sprites2D,1);
-        while(_it_590.next()) {
-          s2d=_it_590[0];
+        _it_618=Tonyu.iterator(c3.sprites2D,1);
+        while(_it_618.next()) {
+          s2d=_it_618[0];
           
           s2d.draw(c2);
           
@@ -16891,7 +18163,7 @@ Tonyu.klass.define({
         var c3;
         var s2ds;
         var s2d;
-        var _it_590;
+        var _it_618;
         
         c3 = new Tonyu.classes.kernel.Context3D({camera: _this.camera});
         
@@ -16903,9 +18175,9 @@ Tonyu.klass.define({
         
         c2.save();
         c2.translate(_this.spx,_this.spy);
-        _it_590=Tonyu.iterator(c3.sprites2D,1);
-        while(_it_590.next()) {
-          s2d=_it_590[0];
+        _it_618=Tonyu.iterator(c3.sprites2D,1);
+        while(_it_618.next()) {
+          s2d=_it_618[0];
           
           s2d.draw(c2);
           
@@ -18121,13 +19393,13 @@ Tonyu.klass.define({
         var _this=this;
         var k;
         var v;
-        var _it_645;
+        var _it_673;
         
         if (Tonyu.globals.$MMLS) {
-          _it_645=Tonyu.iterator(Tonyu.globals.$MMLS,2);
-          while(_it_645.next()) {
-            k=_it_645[0];
-            v=_it_645[1];
+          _it_673=Tonyu.iterator(Tonyu.globals.$MMLS,2);
+          while(_it_673.next()) {
+            k=_it_673[0];
+            v=_it_673[1];
             
             v.stop();
             
@@ -18895,15 +20167,15 @@ Tonyu.klass.define({
         var res;
         var name;
         var k;
-        var _it_660;
+        var _it_688;
         var vec;
         
         res = _this.position.clone();
         
-        _it_660=Tonyu.iterator(fru,2);
-        while(_it_660.next()) {
-          name=_it_660[0];
-          k=_it_660[1];
+        _it_688=Tonyu.iterator(fru,2);
+        while(_it_688.next()) {
+          name=_it_688[0];
+          k=_it_688[1];
           
           vec = _this.direction[name];
           
@@ -18922,15 +20194,15 @@ Tonyu.klass.define({
         var res;
         var name;
         var k;
-        var _it_660;
+        var _it_688;
         var vec;
         
         res = _this.position.clone();
         
-        _it_660=Tonyu.iterator(fru,2);
-        while(_it_660.next()) {
-          name=_it_660[0];
-          k=_it_660[1];
+        _it_688=Tonyu.iterator(fru,2);
+        while(_it_688.next()) {
+          name=_it_688[0];
+          k=_it_688[1];
           
           vec = _this.direction[name];
           
@@ -22475,14 +23747,14 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var l;
-        var _it_800;
+        var _it_828;
         var q;
         
         res = new Tonyu.classes.kernel.TQuery({screen: _this});
         
-        _it_800=Tonyu.iterator(_this.layers,1);
-        while(_it_800.next()) {
-          l=_it_800[0];
+        _it_828=Tonyu.iterator(_this.layers,1);
+        while(_it_828.next()) {
+          l=_it_828[0];
           
           q = l.group.all.apply(l.group,arguments);
           
@@ -22496,14 +23768,14 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var l;
-        var _it_805;
+        var _it_833;
         
         res = [];
         
         excludes=excludes||Tonyu.globals.$excludeFromAll.toArray();
-        _it_805=Tonyu.iterator(_this.layers,1);
-        while(_it_805.next()) {
-          l=_it_805[0];
+        _it_833=Tonyu.iterator(_this.layers,1);
+        while(_it_833.next()) {
+          l=_it_833[0];
           
           res.push(l.group.saveAndClear(excludes));
           
@@ -22517,14 +23789,14 @@ Tonyu.klass.define({
         var __pc=0;
         var res;
         var l;
-        var _it_805;
+        var _it_833;
         
         res = [];
         
         excludes=excludes||Tonyu.globals.$excludeFromAll.toArray();
-        _it_805=Tonyu.iterator(_this.layers,1);
-        while(_it_805.next()) {
-          l=_it_805[0];
+        _it_833=Tonyu.iterator(_this.layers,1);
+        while(_it_833.next()) {
+          l=_it_833[0];
           
           res.push(l.group.saveAndClear(excludes));
           
@@ -22539,13 +23811,13 @@ Tonyu.klass.define({
         var _this=this;
         var i;
         var l;
-        var _it_809;
+        var _it_837;
         
         i = 0;
         
-        _it_809=Tonyu.iterator(_this.layers,1);
-        while(_it_809.next()) {
-          l=_it_809[0];
+        _it_837=Tonyu.iterator(_this.layers,1);
+        while(_it_837.next()) {
+          l=_it_837[0];
           
           l.group.restore(saved.layers[i]);
           i++;
@@ -22563,13 +23835,13 @@ Tonyu.klass.define({
         var __pc=0;
         var i;
         var l;
-        var _it_809;
+        var _it_837;
         
         i = 0;
         
-        _it_809=Tonyu.iterator(_this.layers,1);
-        while(_it_809.next()) {
-          l=_it_809[0];
+        _it_837=Tonyu.iterator(_this.layers,1);
+        while(_it_837.next()) {
+          l=_it_837[0];
           
           l.group.restore(saved.layers[i]);
           i++;
@@ -22587,7 +23859,7 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var e;
-        var _it_813;
+        var _it_841;
         var r;
         var i;
         var t;
@@ -22596,9 +23868,9 @@ Tonyu.klass.define({
         res = [];
         
         options=options||{};
-        _it_813=Tonyu.iterator(q,1);
-        while(_it_813.next()) {
-          e=_it_813[0];
+        _it_841=Tonyu.iterator(q,1);
+        while(_it_841.next()) {
+          e=_it_841[0];
           
           r = e.getCrashRect();
           
@@ -22630,7 +23902,7 @@ Tonyu.klass.define({
         var __pc=0;
         var res;
         var e;
-        var _it_813;
+        var _it_841;
         var r;
         var i;
         var t;
@@ -22645,10 +23917,10 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              _it_813=Tonyu.iterator(q,1);
+              _it_841=Tonyu.iterator(q,1);
             case 1:
-              if (!(_it_813.next())) { __pc=7     ; break; }
-              e=_it_813[0];
+              if (!(_it_841.next())) { __pc=7     ; break; }
+              e=_it_841[0];
               
               r = e.getCrashRect();
               
@@ -24254,7 +25526,7 @@ Tonyu.klass.define({
         var func;
         var callbacks;
         var reqP;
-        var _it_881;
+        var _it_909;
         var i;
         
         if (! _this.available) {
@@ -24309,9 +25581,9 @@ Tonyu.klass.define({
         callbacks.succ=func;
         callbacks.err=func;
         
-        _it_881=Tonyu.iterator(r.sounds,1);
-        while(_it_881.next()) {
-          s=_it_881[0];
+        _it_909=Tonyu.iterator(r.sounds,1);
+        while(_it_909.next()) {
+          s=_it_909[0];
           
           url=s.url;
           if (url.match(/\.midi?$/)) {
@@ -24358,7 +25630,7 @@ Tonyu.klass.define({
         var func;
         var callbacks;
         var reqP;
-        var _it_881;
+        var _it_909;
         var i;
         
         if (! _this.available) {
@@ -24422,9 +25694,9 @@ Tonyu.klass.define({
               callbacks.succ=func;
               callbacks.err=func;
               
-              _it_881=Tonyu.iterator(r.sounds,1);
-              while(_it_881.next()) {
-                s=_it_881[0];
+              _it_909=Tonyu.iterator(r.sounds,1);
+              while(_it_909.next()) {
+                s=_it_909[0];
                 
                 url=s.url;
                 if (url.match(/\.midi?$/)) {
@@ -26871,11 +28143,11 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var t;
-        var _it_910;
+        var _it_938;
         
-        _it_910=Tonyu.iterator(Tonyu.globals.$touches,1);
-        while(_it_910.next()) {
-          t=_it_910[0];
+        _it_938=Tonyu.iterator(Tonyu.globals.$touches,1);
+        while(_it_938.next()) {
+          t=_it_938[0];
           
           if ((! _this.touchRadius||_this.dist(t)<_this.touchRadius)&&t.touched==1) {
             return t;
@@ -34879,13 +36151,13 @@ Tonyu.klass.define({
         }),releaseAll: (function anonymous_1716() {
           var a;
           var e;
-          var _it_1035;
+          var _it_1063;
           
           a = Tonyu.globals.$Screen.all();
           
-          _it_1035=Tonyu.iterator(a,1);
-          while(_it_1035.next()) {
-            e=_it_1035[0];
+          _it_1063=Tonyu.iterator(a,1);
+          while(_it_1063.next()) {
+            e=_it_1063[0];
             
             res.release(e);
             
@@ -34939,13 +36211,13 @@ Tonyu.klass.define({
               }),releaseAll: (function anonymous_1716() {
                 var a;
                 var e;
-                var _it_1035;
+                var _it_1063;
                 
                 a = Tonyu.globals.$Screen.all();
                 
-                _it_1035=Tonyu.iterator(a,1);
-                while(_it_1035.next()) {
-                  e=_it_1035[0];
+                _it_1063=Tonyu.iterator(a,1);
+                while(_it_1063.next()) {
+                  e=_it_1063[0];
                   
                   res.release(e);
                   
@@ -34994,16 +36266,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_1039;
+        var _it_1067;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_1039=Tonyu.iterator(g,1);
-          while(_it_1039.next()) {
-            name=_it_1039[0];
+          _it_1067=Tonyu.iterator(g,1);
+          while(_it_1067.next()) {
+            name=_it_1067[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -35020,16 +36292,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_1039;
+        var _it_1067;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_1039=Tonyu.iterator(g,1);
-          while(_it_1039.next()) {
-            name=_it_1039[0];
+          _it_1067=Tonyu.iterator(g,1);
+          while(_it_1067.next()) {
+            name=_it_1067[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -35075,6 +36347,7 @@ Tonyu.klass.define({
         Tonyu.globals.$ObjectPool=new Tonyu.classes.kernel.ObjectPool;
         Tonyu.globals.$pat_fruits=30;
         Tonyu.globals.$Keys=new Tonyu.classes.kernel.Keys;
+        Tonyu.globals.$GamePad=new Tonyu.classes.kernel.GamePad;
         Tonyu.globals.$Math=Math;
         Tonyu.globals.$JSON=JSON;
         Tonyu.globals.$DeferredUtil=FS.DeferredUtil;
@@ -35099,7 +36372,7 @@ Tonyu.klass.define({
         Tonyu.globals.$printLimit=500;
         if (Tonyu.globals.$debugger) {
           _this.autoReload=Tonyu.globals.$debugger.startWithAutoReload;
-          Tonyu.globals.$debugger.on("classChanged",(function anonymous_4097() {
+          Tonyu.globals.$debugger.on("classChanged",(function anonymous_4124() {
             
             _this.getMainClass();
             if (typeof  _this.autoReload==="function") {
@@ -35152,6 +36425,7 @@ Tonyu.klass.define({
         Tonyu.globals.$ObjectPool=new Tonyu.classes.kernel.ObjectPool;
         Tonyu.globals.$pat_fruits=30;
         Tonyu.globals.$Keys=new Tonyu.classes.kernel.Keys;
+        Tonyu.globals.$GamePad=new Tonyu.classes.kernel.GamePad;
         Tonyu.globals.$Math=Math;
         Tonyu.globals.$JSON=JSON;
         Tonyu.globals.$DeferredUtil=FS.DeferredUtil;
@@ -35182,7 +36456,7 @@ Tonyu.klass.define({
             case 0:
               if (!(Tonyu.globals.$debugger)) { __pc=1     ; break; }
               _this.autoReload=Tonyu.globals.$debugger.startWithAutoReload;
-              Tonyu.globals.$debugger.on("classChanged",(function anonymous_4097() {
+              Tonyu.globals.$debugger.on("classChanged",(function anonymous_4124() {
                 
                 _this.getMainClass();
                 if (typeof  _this.autoReload==="function") {
@@ -35217,7 +36491,7 @@ Tonyu.klass.define({
         Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Layer3D({group: Tonyu.globals.$sprites3D,camera: Tonyu.globals.$camera3D});
         _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-        Tonyu.globals.$Screen.on("resize",(function anonymous_4993() {
+        Tonyu.globals.$Screen.on("resize",(function anonymous_5020() {
           
           Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
           Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
@@ -35264,7 +36538,7 @@ Tonyu.klass.define({
         Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Layer3D({group: Tonyu.globals.$sprites3D,camera: Tonyu.globals.$camera3D});
         _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-        Tonyu.globals.$Screen.on("resize",(function anonymous_4993() {
+        Tonyu.globals.$Screen.on("resize",(function anonymous_5020() {
           
           Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
           Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
@@ -35336,7 +36610,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.progress("Loading plugins..");
-        _this.runAsync((function anonymous_6216(r) {
+        _this.runAsync((function anonymous_6243(r) {
           
           Tonyu.globals.$currentProject.loadPlugins(r);
         }));
@@ -35358,7 +36632,7 @@ Tonyu.klass.define({
               __pc=1;return;
             case 1:
               
-              _this.fiber$runAsync(_thread, (function anonymous_6216(r) {
+              _this.fiber$runAsync(_thread, (function anonymous_6243(r) {
                 
                 Tonyu.globals.$currentProject.loadPlugins(r);
               }));
@@ -35381,21 +36655,21 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_1050;
+        var _it_1078;
         
         _this.progress("Loading pats..");
         rs = Tonyu.globals.$currentProject.getResource();
         
         
-        r=_this.runAsync((function anonymous_6435(succ) {
+        r=_this.runAsync((function anonymous_6462(succ) {
           
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         }));
         Tonyu.globals.$imageList=r[0];
-        _it_1050=Tonyu.iterator(r[0].names,2);
-        while(_it_1050.next()) {
-          name=_it_1050[0];
-          val=_it_1050[1];
+        _it_1078=Tonyu.iterator(r[0].names,2);
+        while(_it_1078.next()) {
+          name=_it_1078[0];
+          val=_it_1078[1];
           
           Tonyu.setGlobal(name,val);
           
@@ -35411,7 +36685,7 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_1050;
+        var _it_1078;
         
         
         _thread.enter(function _trc_Boot_ent_loadImages(_thread) {
@@ -35426,7 +36700,7 @@ Tonyu.klass.define({
               rs = Tonyu.globals.$currentProject.getResource();
               
               
-              _this.fiber$runAsync(_thread, (function anonymous_6435(succ) {
+              _this.fiber$runAsync(_thread, (function anonymous_6462(succ) {
                 
                 ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
               }));
@@ -35435,10 +36709,10 @@ Tonyu.klass.define({
               r=_thread.retVal;
               
               Tonyu.globals.$imageList=r[0];
-              _it_1050=Tonyu.iterator(r[0].names,2);
-              while(_it_1050.next()) {
-                name=_it_1050[0];
-                val=_it_1050[1];
+              _it_1078=Tonyu.iterator(r[0].names,2);
+              while(_it_1078.next()) {
+                name=_it_1078[0];
+                val=_it_1078[1];
                 
                 Tonyu.setGlobal(name,val);
                 
@@ -35460,7 +36734,7 @@ Tonyu.klass.define({
         _this.initT2MediaPlayer();
         _this.loadFromProject(Tonyu.globals.$currentProject);
         _this.progress("Loading sounds done.");
-        _this.on("stop",(function anonymous_6962() {
+        _this.on("stop",(function anonymous_6989() {
           
           _this.allResetBGM();
         }));
@@ -35494,7 +36768,7 @@ Tonyu.klass.define({
               __pc=4;return;
             case 4:
               
-              _this.on("stop",(function anonymous_6962() {
+              _this.on("stop",(function anonymous_6989() {
                 
                 _this.allResetBGM();
               }));
@@ -35665,7 +36939,7 @@ Tonyu.klass.define({
           } else {
             a = Tonyu.globals.$Screen.all();
             
-            a=a.find((function anonymous_8240(e) {
+            a=a.find((function anonymous_8267(e) {
               
               return ! Tonyu.globals.$excludeFromAll.contains(e);
             }));
@@ -35724,7 +36998,7 @@ Tonyu.klass.define({
             case 4     :
               a = Tonyu.globals.$Screen.all();
               
-              a=a.find((function anonymous_8240(e) {
+              a=a.find((function anonymous_8267(e) {
                 
                 return ! Tonyu.globals.$excludeFromAll.contains(e);
               }));
@@ -35749,11 +37023,11 @@ Tonyu.klass.define({
         
         res = new $.Deferred();
         
-        evt = {die: (function anonymous_8410() {
+        evt = {die: (function anonymous_8437() {
           
           _this.die();
           res.resolve();
-        }),preventDefault: (function anonymous_8539() {
+        }),preventDefault: (function anonymous_8566() {
           
           evt.defaultPrevented=true;
         })};
@@ -35786,11 +37060,11 @@ Tonyu.klass.define({
         
         res = new $.Deferred();
         
-        evt = {die: (function anonymous_8410() {
+        evt = {die: (function anonymous_8437() {
           
           _this.die();
           res.resolve();
-        }),preventDefault: (function anonymous_8539() {
+        }),preventDefault: (function anonymous_8566() {
           
           evt.defaultPrevented=true;
         })};
@@ -36265,6 +37539,7 @@ Tonyu.klass.define({
         sc = _this._scheduler.stepsAll();
         
         Tonyu.globals.$Keys.update();
+        Tonyu.globals.$GamePad.update();
         Tonyu.globals.$InputDevice.update();
         if (Tonyu.globals.$sound) {
           Tonyu.globals.$sound.resetSEFrame();
@@ -36441,7 +37716,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_14895() {
+        requestAnimationFrame((function anonymous_14946() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -36462,7 +37737,7 @@ Tonyu.klass.define({
           
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_14895() {
+        requestAnimationFrame((function anonymous_14946() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
