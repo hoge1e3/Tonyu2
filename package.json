@@ -26,10 +26,11 @@
   "version": "1.0.0",
   "dependencies": {},
   "scripts": {
-    "build": "npm run build:copy && npm run build:g2 && npm run build:kernel",
+    "build": "npm run build:copy && npm run build:g2 && npm run build:kernel && npm run build:send",
     "build:copy": "node build/copy_from_compiler.js",
     "build:g2": "node build/build.js",
     "build:kernel": "node build/build_kernel.js",
+    "build:send": "node build/build_send.js",
     "runtime": "node build/setup_nw.js"
   },
   "repository": {
