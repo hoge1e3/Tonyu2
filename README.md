@@ -16,6 +16,7 @@ Windows 7/8/10
 ## How to build
 
 - Clone [tonyu2-compiler](https://github.com/hoge1e3/tonyu2-compiler/) repository to the same directory.
+  - ex.  `/some/folder/Tonyu2` and `/some/folder/tonyu2-compiler`
 - Run the following node.js command.
 ~~~
 cd tonyu2-compiler
@@ -24,8 +25,11 @@ cd ../Tonyu2
 npm install
 npm run build
 ~~~
+- If you want to build again, just `npm run build`
 
-- To run as a native application, download [nw.js](https://nwjs.io/) and add following files in /path/to/Tonyu2/
+## How to run your project as a native application
+
+- Download [nw.js](https://nwjs.io/) and add following files in /path/to/Tonyu2/
 - you can use `npm run runtime` (Windows 64bit)
 ~~~
 d3dcompiler_47.dll
