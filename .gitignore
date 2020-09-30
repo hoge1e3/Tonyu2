@@ -32,3 +32,5 @@ www/js/g2/send.bat
 www/html/BuilderWorker.js
 node_modules/
 /download/*
+Samples/GamePad/.desktop
+Samples/GamePad/images/icon_thumbnail.png
