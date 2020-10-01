@@ -3162,7 +3162,7 @@ function timeout(t) {
 }
 let vm;
 /*global global*/
-if (typeof global!=="undefined" && global.require) {
+if (typeof global!=="undefined" && global.require && global.require.name!=="requirejs") {
     vm=global.require("vm");
 }
 class SourceFile {
