@@ -1,0 +1,99 @@
+extends TObject;
+"field strict";
+var h;// left center right
+var v;// top (center) bottom hanging *middle *alphabetic ideographic default
+var offset;// {x,y}
+
+\new() {
+    var params;
+    if (arguments.length>=2) params=Array.prototype.slice.call(arguments);
+    else params=arguments[0];
+    params=params||["center","middle"];
+    var p;
+    switch (typeof params) {
+        case "string":
+        params=params.split(/[ ,]+/).map \(s) {
+            var n=s-0;
+            if (n===n) return n;
+            return s;
+        };
+        // fallthrough
+        case "object":
+        if (typeof params.shift==="function") {
+            // Array
+            while(params.length) {
+                p=params.shift();
+                switch (typeof p) {
+                    case "string":
+                    if (h==null) h=p;
+                    else v=p;
+                    break;
+                    case "number":
+                    offset=offset||{};
+                    if (offset.x==null) offset.x=p;
+                    else offset.y=p;
+                    break;
+                    case "object":
+                    if (h==null) {
+                        h=p.h||p[0];
+                        v=p.v||p[1];
+                    } else {
+                        offset=offset||{};
+                        offset.x=p.x||p[0];
+                        offset.y=p.y||p[1];
+                    }
+                    break;
+                }
+            }
+        } else {
+            // Obj
+            h=params.h;
+            v=params.v;
+            offset=params.offset||params.ofs;
+            if (typeof offset.shift==="function") {
+                offset.x=offset[0]||0;
+                offset.y=offset[1]||0;
+            }
+            if (!offset) {
+                offset=offset||{};
+                offset.x=params.offsetX||params.ofsX||params.ox||params.x;
+                offset.y=params.offsetY||params.ofsY||params.oy||params.y;
+            }
+        }
+        break;
+    }
+    h=h||"center";
+    v=v||"default";
+    offset=offset||{};
+    offset.x=offset.x||0;
+    offset.y=offset.y||0;
+    if (v=="center") v="middle";
+}
+\isOriginPivot {
+    return h=="center" && (v=="middle" || v=="default") && offset.x==0 && offset.y==0;
+}
+
+\getDrawRect(obj) {
+    // {width,height} (return value of measureText is also allowed)
+    // returns Rect-like object whose (0,0) is pivot
+    var width=obj.width;
+    var height=obj.height;
+    var res={x:offset.x, y:offset.y ,width,height};
+    switch (h) {
+        case "left":
+        res.x+=res.width/2;
+        break;
+        case "right":
+        res.x-=res.width/2;
+        break;
+    }
+    switch (v) {
+        case "top":
+        res.y+=res.height/2;
+        break;
+        case "bottom":
+        res.y-=res.height/2;
+        break;
+    }
+    return res;
+}

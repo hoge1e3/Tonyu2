@@ -21665,6 +21665,1071 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"createBuf":{"nowait":false},"initMap":{"nowait":false},"redrawMap":{"nowait":false},"redraw":{"nowait":false},"resolve":{"nowait":false},"load":{"nowait":false},"save":{"nowait":false},"setAll":{"nowait":false},"set":{"nowait":false},"setOn":{"nowait":false},"setOnAt":{"nowait":false},"setAt":{"nowait":false},"get":{"nowait":false},"getAt":{"nowait":false},"getOn":{"nowait":false},"getOnAt":{"nowait":false},"scrollTo":{"nowait":false},"draw":{"nowait":true}},"fields":{"bufSplit":{},"sx":{},"sy":{},"chipWidth":{},"chipHeight":{},"col":{},"row":{},"bufAry":{},"mapObj":{},"mapTable":{},"mapOnTable":{},"mapData":{},"mapOnData":{},"baseData":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.Map2',
+  shortName: 'Map2',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.Actor,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_Map2_main() {
+        "use strict";
+        var _this=this;
+        
+        "field strict";
+        
+        
+        
+        
+      },
+      fiber$main :function _trc_Map2_f_main(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        "field strict";
+        
+        
+        
+        
+        
+        _thread.retVal=_this;return;
+      },
+      initialize :function _trc_Map2_initialize(param) {
+        "use strict";
+        var _this=this;
+        var j;
+        var rows;
+        var i;
+        
+        _this.bufSplit=1024;
+        _this.sx=0;
+        _this.sy=0;
+        _this.alpha=255;
+        __superClass.apply( _this, [param]);
+        _this.chipWidth=_this.chipWidth||32;
+        _this.chipHeight=_this.chipHeight||_this.chipWidth||32;
+        if (typeof  _this.col!=="number") {
+          _this.col=Tonyu.globals.$screenWidth/_this.chipWidth;
+        }
+        if (typeof  _this.row!=="number") {
+          _this.row=Tonyu.globals.$screenHeight/_this.chipHeight;
+        }
+        _this.col=_this.floor(_this.col);
+        _this.row=_this.floor(_this.row);
+        _this.bufAry=_this.createBuf(_this.col*_this.chipWidth,_this.row*_this.chipHeight);
+        _this.mapObj=true;
+        _this.mapTable=[];
+        _this.mapOnTable=[];
+        j = 0;
+        for (; j<_this.row ; j++) {
+          {
+            rows = [];
+            
+            i = 0;
+            for (; i<_this.col ; i++) {
+              {
+                rows.push(- 1);
+              }
+            }
+            _this.mapTable.push(rows);
+          }
+        }
+        j = 0;
+        for (; j<_this.row ; j++) {
+          {
+            rows = [];
+            
+            i = 0;
+            for (; i<_this.col ; i++) {
+              {
+                rows.push(- 1);
+              }
+            }
+            _this.mapOnTable.push(rows);
+          }
+        }
+        _this.initMap();
+      },
+      createBuf :function _trc_Map2_createBuf(width,height) {
+        "use strict";
+        var _this=this;
+        var rh;
+        var ary;
+        var j;
+        var a;
+        var h;
+        var rw;
+        var i;
+        var w;
+        
+        rh = _this.floor(height);
+        
+        ary = [];
+        
+        j = 0;
+        for (; 0<rh ; j++) {
+          {
+            a = [];
+            
+            h = rh;
+            
+            if (rh>_this.bufSplit) {
+              h=_this.bufSplit;
+            }
+            if (rh<2) {
+              h=2;
+            }
+            rw = _this.floor(width);
+            
+            i = 0;
+            for (; 0<rw ; i++) {
+              {
+                w = rw;
+                
+                if (rw>_this.bufSplit) {
+                  w=_this.bufSplit;
+                }
+                if (rw<2) {
+                  w=2;
+                }
+                a.push($("<canvas>").attr({width: w,height: h}));
+                rw-=_this.bufSplit;
+              }
+            }
+            ary.push(a);
+            rh-=_this.bufSplit;
+          }
+        }
+        return ary;
+      },
+      fiber$createBuf :function _trc_Map2_f_createBuf(_thread,width,height) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var rh;
+        var ary;
+        var j;
+        var a;
+        var h;
+        var rw;
+        var i;
+        var w;
+        
+        rh = _this.floor(height);
+        
+        ary = [];
+        
+        j = 0;
+        for (; 0<rh ; j++) {
+          {
+            a = [];
+            
+            h = rh;
+            
+            if (rh>_this.bufSplit) {
+              h=_this.bufSplit;
+            }
+            if (rh<2) {
+              h=2;
+            }
+            rw = _this.floor(width);
+            
+            i = 0;
+            for (; 0<rw ; i++) {
+              {
+                w = rw;
+                
+                if (rw>_this.bufSplit) {
+                  w=_this.bufSplit;
+                }
+                if (rw<2) {
+                  w=2;
+                }
+                a.push($("<canvas>").attr({width: w,height: h}));
+                rw-=_this.bufSplit;
+              }
+            }
+            ary.push(a);
+            rh-=_this.bufSplit;
+          }
+        }
+        _thread.retVal=ary;return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      initMap :function _trc_Map2_initMap() {
+        "use strict";
+        var _this=this;
+        var i;
+        var j;
+        
+        if (! _this.mapTable) {
+          return _this;
+        }
+        if (! _this.mapOnTable) {
+          return _this;
+        }
+        i = 0;
+        for (; i<_this.row ; i++) {
+          {
+            j = 0;
+            for (; j<_this.col ; j++) {
+              {
+                _this.setAll(j,i,_this.mapTable[i][j],_this.mapOnTable[i][j]);
+              }
+            }
+          }
+        }
+      },
+      fiber$initMap :function _trc_Map2_f_initMap(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var i;
+        var j;
+        
+        if (! _this.mapTable) {
+          _thread.retVal=_this;return;
+          
+        }
+        if (! _this.mapOnTable) {
+          _thread.retVal=_this;return;
+          
+        }
+        
+        _thread.enter(function _trc_Map2_ent_initMap(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              i = 0;
+              
+            case 1:
+              if (!(i<_this.row)) { __pc=7     ; break; }
+              j = 0;
+              
+            case 2:
+              if (!(j<_this.col)) { __pc=5     ; break; }
+              _this.fiber$setAll(_thread, j, i, _this.mapTable[i][j], _this.mapOnTable[i][j]);
+              __pc=3;return;
+            case 3:
+              
+            case 4     :
+              j++;
+              __pc=2;break;
+            case 5     :
+              
+            case 6     :
+              i++;
+              __pc=1;break;
+            case 7     :
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      redrawMap :function _trc_Map2_redrawMap() {
+        "use strict";
+        var _this=this;
+        
+        return _this.redraw();
+      },
+      fiber$redrawMap :function _trc_Map2_f_redrawMap(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        
+        _thread.enter(function _trc_Map2_ent_redrawMap(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$redraw(_thread);
+              __pc=1;return;
+            case 1:
+              _thread.exit(_thread.retVal);return;
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      redraw :function _trc_Map2_redraw() {
+        "use strict";
+        var _this=this;
+        var i;
+        var j;
+        
+        if (! _this.mapTable) {
+          return _this;
+        }
+        _this.bufAry=_this.createBuf(_this.col*_this.chipWidth,_this.row*_this.chipHeight);
+        i = 0;
+        for (; i<_this.row ; i++) {
+          {
+            j = 0;
+            for (; j<_this.col ; j++) {
+              {
+                _this.set(j,i,_this.mapTable[i][j]);
+              }
+            }
+          }
+        }
+        if (! _this.mapOnTable) {
+          return _this;
+        }
+        i = 0;
+        for (; i<_this.row ; i++) {
+          {
+            j = 0;
+            for (; j<_this.col ; j++) {
+              {
+                _this.setOn(j,i,_this.mapOnTable[i][j]);
+              }
+            }
+          }
+        }
+      },
+      fiber$redraw :function _trc_Map2_f_redraw(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var i;
+        var j;
+        
+        if (! _this.mapTable) {
+          _thread.retVal=_this;return;
+          
+        }
+        
+        _thread.enter(function _trc_Map2_ent_redraw(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$createBuf(_thread, _this.col*_this.chipWidth, _this.row*_this.chipHeight);
+              __pc=1;return;
+            case 1:
+              _this.bufAry=_thread.retVal;
+              
+              i = 0;
+              
+            case 2:
+              if (!(i<_this.row)) { __pc=8     ; break; }
+              j = 0;
+              
+            case 3:
+              if (!(j<_this.col)) { __pc=6     ; break; }
+              _this.fiber$set(_thread, j, i, _this.mapTable[i][j]);
+              __pc=4;return;
+            case 4:
+              
+            case 5     :
+              j++;
+              __pc=3;break;
+            case 6     :
+              
+            case 7     :
+              i++;
+              __pc=2;break;
+            case 8     :
+              
+              if (!(! _this.mapOnTable)) { __pc=9     ; break; }
+              _thread.exit(_this);return;
+            case 9     :
+              
+              i = 0;
+              
+            case 10:
+              if (!(i<_this.row)) { __pc=16    ; break; }
+              j = 0;
+              
+            case 11:
+              if (!(j<_this.col)) { __pc=14    ; break; }
+              _this.fiber$setOn(_thread, j, i, _this.mapOnTable[i][j]);
+              __pc=12;return;
+            case 12:
+              
+            case 13    :
+              j++;
+              __pc=11;break;
+            case 14    :
+              
+            case 15    :
+              i++;
+              __pc=10;break;
+            case 16    :
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      resolve :function _trc_Map2_resolve(fileName,fallback) {
+        "use strict";
+        var _this=this;
+        var r;
+        
+        if (typeof  fileName==="string") {
+          r = _this.file("../maps/").rel(fileName);
+          
+          if (! fallback||r.exists()) {
+            return r;
+          }
+          r=_this.file(fileName);
+          return r;
+          
+        }
+        return fileName;
+      },
+      fiber$resolve :function _trc_Map2_f_resolve(_thread,fileName,fallback) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var r;
+        
+        
+        _thread.enter(function _trc_Map2_ent_resolve(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              if (!(typeof  fileName==="string")) { __pc=3     ; break; }
+              r = _this.file("../maps/").rel(fileName);
+              
+              if (!(! fallback||r.exists())) { __pc=1     ; break; }
+              _thread.exit(r);return;
+            case 1     :
+              
+              _this.fiber$file(_thread, fileName);
+              __pc=2;return;
+            case 2:
+              r=_thread.retVal;
+              
+              _thread.exit(r);return;
+            case 3     :
+              
+              _thread.exit(fileName);return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      load :function _trc_Map2_load(dataFile) {
+        "use strict";
+        var _this=this;
+        var baseData;
+        
+        dataFile=_this.resolve(dataFile,true);
+        if (! dataFile||! dataFile.obj) {
+          _this.print(dataFile);
+          throw new Error(dataFile+" is not a file!");
+          
+          
+        }
+        baseData = dataFile.obj();
+        
+        _this.mapTable=baseData[0];
+        _this.row=_this.mapTable.length;
+        _this.col=_this.mapTable[0].length;
+        _this.mapOnTable=baseData[1];
+        if (baseData[2]) {
+          _this.chipWidth=(baseData[2]-0)||_this.chipWidth||32;
+        }
+        if (baseData[3]) {
+          _this.chipHeight=(baseData[3]-0)||_this.chipHeight||32;
+        }
+        _this.bufAry=_this.createBuf(_this.col*_this.chipWidth,_this.row*_this.chipHeight);
+        _this.initMap();
+      },
+      fiber$load :function _trc_Map2_f_load(_thread,dataFile) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var baseData;
+        
+        
+        _thread.enter(function _trc_Map2_ent_load(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$resolve(_thread, dataFile, true);
+              __pc=1;return;
+            case 1:
+              dataFile=_thread.retVal;
+              
+              if (! dataFile||! dataFile.obj) {
+                _this.print(dataFile);
+                throw new Error(dataFile+" is not a file!");
+                
+                
+              }
+              baseData = dataFile.obj();
+              
+              _this.mapTable=baseData[0];
+              _this.row=_this.mapTable.length;
+              _this.col=_this.mapTable[0].length;
+              _this.mapOnTable=baseData[1];
+              if (baseData[2]) {
+                _this.chipWidth=(baseData[2]-0)||_this.chipWidth||32;
+              }
+              if (baseData[3]) {
+                _this.chipHeight=(baseData[3]-0)||_this.chipHeight||32;
+              }
+              _this.fiber$createBuf(_thread, _this.col*_this.chipWidth, _this.row*_this.chipHeight);
+              __pc=2;return;
+            case 2:
+              _this.bufAry=_thread.retVal;
+              
+              _this.fiber$initMap(_thread);
+              __pc=3;return;
+            case 3:
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      save :function _trc_Map2_save(saveFileName) {
+        "use strict";
+        var _this=this;
+        var saveDataFile;
+        var data;
+        
+        saveDataFile = _this.resolve(saveFileName);
+        
+        data = [_this.mapTable,_this.mapOnTable,_this.chipWidth,_this.chipHeight];
+        
+        saveDataFile.obj(data);
+      },
+      fiber$save :function _trc_Map2_f_save(_thread,saveFileName) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var saveDataFile;
+        var data;
+        
+        
+        _thread.enter(function _trc_Map2_ent_save(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$resolve(_thread, saveFileName);
+              __pc=1;return;
+            case 1:
+              saveDataFile=_thread.retVal;
+              
+              data = [_this.mapTable,_this.mapOnTable,_this.chipWidth,_this.chipHeight];
+              
+              saveDataFile.obj(data);
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      setAll :function _trc_Map2_setAll(setCol,setRow,p,onP) {
+        "use strict";
+        var _this=this;
+        var oldP;
+        var oldOnP;
+        var x1;
+        var y1;
+        var hs;
+        var j;
+        var ws;
+        var i;
+        var drawX;
+        var drawY;
+        var cv;
+        var ctx;
+        var pImg;
+        
+        if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
+          return _this;
+        }
+        oldP = _this.mapTable[setRow][setCol];
+        
+        oldOnP = _this.mapOnTable[setRow][setCol];
+        
+        _this.mapTable[setRow][setCol]=p;
+        _this.mapOnTable[setRow][setCol]=onP;
+        x1 = _this.floor(setCol*_this.chipWidth/_this.bufSplit);
+        
+        y1 = _this.floor(setRow*_this.chipHeight/_this.bufSplit);
+        
+        hs = _this.bufAry.length;
+        
+        j = y1;
+        
+        ws = _this.bufAry[j].length;
+        
+        i = x1;
+        
+        drawX = setCol*_this.chipWidth-i*_this.bufSplit;
+        
+        drawY = setRow*_this.chipHeight-j*_this.bufSplit;
+        
+        cv = _this.bufAry[j][i];
+        
+        if (! cv) {
+          return _this;
+        }
+        ctx = cv[0].getContext("2d");
+        
+        if (! ctx) {
+          return _this;
+        }
+        p=Math.floor(p);
+        pImg = Tonyu.globals.$imageList[p];
+        
+        ctx.clearRect(drawX,drawY,_this.chipWidth,_this.chipHeight);
+        if (pImg) {
+          ctx.save();
+          ctx.drawImage(pImg.image,pImg.x,pImg.y,pImg.width,pImg.height,drawX,drawY,_this.chipWidth,_this.chipHeight);
+          ctx.restore();
+          
+        }
+        onP=Math.floor(onP);
+        pImg=Tonyu.globals.$imageList[onP];
+        if (pImg) {
+          ctx.save();
+          ctx.drawImage(pImg.image,pImg.x,pImg.y,pImg.width,pImg.height,drawX,drawY,_this.chipWidth,_this.chipHeight);
+          ctx.restore();
+          
+        }
+      },
+      fiber$setAll :function _trc_Map2_f_setAll(_thread,setCol,setRow,p,onP) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var oldP;
+        var oldOnP;
+        var x1;
+        var y1;
+        var hs;
+        var j;
+        var ws;
+        var i;
+        var drawX;
+        var drawY;
+        var cv;
+        var ctx;
+        var pImg;
+        
+        if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
+          _thread.retVal=_this;return;
+          
+        }
+        oldP = _this.mapTable[setRow][setCol];
+        
+        oldOnP = _this.mapOnTable[setRow][setCol];
+        
+        _this.mapTable[setRow][setCol]=p;
+        _this.mapOnTable[setRow][setCol]=onP;
+        x1 = _this.floor(setCol*_this.chipWidth/_this.bufSplit);
+        
+        y1 = _this.floor(setRow*_this.chipHeight/_this.bufSplit);
+        
+        hs = _this.bufAry.length;
+        
+        j = y1;
+        
+        ws = _this.bufAry[j].length;
+        
+        i = x1;
+        
+        drawX = setCol*_this.chipWidth-i*_this.bufSplit;
+        
+        drawY = setRow*_this.chipHeight-j*_this.bufSplit;
+        
+        cv = _this.bufAry[j][i];
+        
+        if (! cv) {
+          _thread.retVal=_this;return;
+          
+        }
+        ctx = cv[0].getContext("2d");
+        
+        if (! ctx) {
+          _thread.retVal=_this;return;
+          
+        }
+        p=Math.floor(p);
+        pImg = Tonyu.globals.$imageList[p];
+        
+        ctx.clearRect(drawX,drawY,_this.chipWidth,_this.chipHeight);
+        if (pImg) {
+          ctx.save();
+          ctx.drawImage(pImg.image,pImg.x,pImg.y,pImg.width,pImg.height,drawX,drawY,_this.chipWidth,_this.chipHeight);
+          ctx.restore();
+          
+        }
+        onP=Math.floor(onP);
+        pImg=Tonyu.globals.$imageList[onP];
+        if (pImg) {
+          ctx.save();
+          ctx.drawImage(pImg.image,pImg.x,pImg.y,pImg.width,pImg.height,drawX,drawY,_this.chipWidth,_this.chipHeight);
+          ctx.restore();
+          
+        }
+        
+        _thread.retVal=_this;return;
+      },
+      set :function _trc_Map2_set(setCol,setRow,p) {
+        "use strict";
+        var _this=this;
+        
+        if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
+          return _this;
+        }
+        _this.setAll(setCol,setRow,p,_this.mapOnTable[setRow][setCol]);
+      },
+      fiber$set :function _trc_Map2_f_set(_thread,setCol,setRow,p) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
+          _thread.retVal=_this;return;
+          
+        }
+        
+        _thread.enter(function _trc_Map2_ent_set(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$setAll(_thread, setCol, setRow, p, _this.mapOnTable[setRow][setCol]);
+              __pc=1;return;
+            case 1:
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      setOn :function _trc_Map2_setOn(setCol,setRow,onP) {
+        "use strict";
+        var _this=this;
+        
+        if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
+          return _this;
+        }
+        _this.setAll(setCol,setRow,_this.mapTable[setRow][setCol],onP);
+      },
+      fiber$setOn :function _trc_Map2_f_setOn(_thread,setCol,setRow,onP) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
+          _thread.retVal=_this;return;
+          
+        }
+        
+        _thread.enter(function _trc_Map2_ent_setOn(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$setAll(_thread, setCol, setRow, _this.mapTable[setRow][setCol], onP);
+              __pc=1;return;
+            case 1:
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      setOnAt :function _trc_Map2_setOnAt(setX,setY,p) {
+        "use strict";
+        var _this=this;
+        
+        _this.setOn(Math.floor((setX-_this.sx)/_this.chipWidth),Math.floor((setY-_this.sy)/_this.chipHeight),p);
+      },
+      fiber$setOnAt :function _trc_Map2_f_setOnAt(_thread,setX,setY,p) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        
+        _thread.enter(function _trc_Map2_ent_setOnAt(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$setOn(_thread, Math.floor((setX-_this.sx)/_this.chipWidth), Math.floor((setY-_this.sy)/_this.chipHeight), p);
+              __pc=1;return;
+            case 1:
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      setAt :function _trc_Map2_setAt(setX,setY,p) {
+        "use strict";
+        var _this=this;
+        
+        _this.set(Math.floor((setX-_this.sx)/_this.chipWidth),Math.floor((setY-_this.sy)/_this.chipHeight),p);
+      },
+      fiber$setAt :function _trc_Map2_f_setAt(_thread,setX,setY,p) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        
+        _thread.enter(function _trc_Map2_ent_setAt(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$set(_thread, Math.floor((setX-_this.sx)/_this.chipWidth), Math.floor((setY-_this.sy)/_this.chipHeight), p);
+              __pc=1;return;
+            case 1:
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      get :function _trc_Map2_get(getCol,getRow) {
+        "use strict";
+        var _this=this;
+        
+        if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
+          return _this.mapTable[getRow][getCol];
+        }
+        return - 1;
+      },
+      fiber$get :function _trc_Map2_f_get(_thread,getCol,getRow) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
+          _thread.retVal=_this.mapTable[getRow][getCol];return;
+          
+        }
+        _thread.retVal=- 1;return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getAt :function _trc_Map2_getAt(getX,getY) {
+        "use strict";
+        var _this=this;
+        
+        return _this.get(Math.floor((getX-_this.sx)/_this.chipWidth),Math.floor((getY-_this.sy)/_this.chipHeight));
+      },
+      fiber$getAt :function _trc_Map2_f_getAt(_thread,getX,getY) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        
+        _thread.enter(function _trc_Map2_ent_getAt(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$get(_thread, Math.floor((getX-_this.sx)/_this.chipWidth), Math.floor((getY-_this.sy)/_this.chipHeight));
+              __pc=1;return;
+            case 1:
+              _thread.exit(_thread.retVal);return;
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      getOn :function _trc_Map2_getOn(getCol,getRow) {
+        "use strict";
+        var _this=this;
+        
+        if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
+          return _this.mapOnTable[getRow][getCol];
+        }
+        return - 1;
+      },
+      fiber$getOn :function _trc_Map2_f_getOn(_thread,getCol,getRow) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
+          _thread.retVal=_this.mapOnTable[getRow][getCol];return;
+          
+        }
+        _thread.retVal=- 1;return;
+        
+        
+        _thread.retVal=_this;return;
+      },
+      getOnAt :function _trc_Map2_getOnAt(getX,getY) {
+        "use strict";
+        var _this=this;
+        
+        return _this.getOn(Math.floor((getX-_this.sx)/_this.chipWidth),Math.floor((getY-_this.sy)/_this.chipHeight));
+      },
+      fiber$getOnAt :function _trc_Map2_f_getOnAt(_thread,getX,getY) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        
+        _thread.enter(function _trc_Map2_ent_getOnAt(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$getOn(_thread, Math.floor((getX-_this.sx)/_this.chipWidth), Math.floor((getY-_this.sy)/_this.chipHeight));
+              __pc=1;return;
+            case 1:
+              _thread.exit(_thread.retVal);return;
+              
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
+      scrollTo :function _trc_Map2_scrollTo(scrollX,scrollY) {
+        "use strict";
+        var _this=this;
+        
+        _this.sx=- scrollX;
+        _this.sy=- scrollY;
+      },
+      fiber$scrollTo :function _trc_Map2_f_scrollTo(_thread,scrollX,scrollY) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _this.sx=- scrollX;
+        _this.sy=- scrollY;
+        
+        _thread.retVal=_this;return;
+      },
+      draw :function _trc_Map2_draw(ctx) {
+        "use strict";
+        var _this=this;
+        var lay;
+        var lsx;
+        var lsy;
+        var lwx;
+        var lwy;
+        var ls;
+        var lr;
+        var hs;
+        var sum;
+        var j;
+        var ws;
+        var i;
+        var pCv;
+        var pCtx;
+        var dx;
+        var dy;
+        var dw;
+        var dh;
+        var mx1;
+        var my1;
+        var mx2;
+        var my2;
+        
+        lay = Tonyu.globals.$Screen.findLayer(_this.layer);
+        
+        lsx = lay.spx;
+        
+        lsy = lay.spy;
+        
+        lwx = lay.wpx;
+        
+        lwy = lay.wpy;
+        
+        ls = (typeof  lay.scale=="number")?lay.scale:1;
+        
+        lr = (typeof  lay.rotation=="number")?lay.rotation:0;
+        
+        hs = _this.bufAry.length;
+        
+        sum = 0;
+        
+        ctx.save();
+        j = 0;
+        for (; j<hs ; j++) {
+          {
+            ws = _this.bufAry[j].length;
+            
+            i = 0;
+            for (; i<ws ; i++) {
+              {
+                pCv = _this.bufAry[j][i];
+                
+                if (! pCv) {
+                  return _this;
+                }
+                pCtx = pCv[0];
+                
+                if (! pCtx) {
+                  return _this;
+                }
+                dx = _this.sx+i*_this.bufSplit;
+                
+                dy = _this.sy+j*_this.bufSplit;
+                
+                dw = pCtx.width;
+                
+                dh = pCtx.height;
+                
+                mx1 = lsx+(dx-lwx)*ls;
+                
+                my1 = lsy+(dy-lwy)*ls;
+                
+                mx2 = lsx+(dx-lwx+dw)*ls;
+                
+                my2 = lsy+(dy-lwy+dh)*ls;
+                
+                if (lr!=0||(0<=mx2&&mx1<Tonyu.globals.$screenWidth&&0<=my2&&my1<Tonyu.globals.$screenHeight)) {
+                  ctx.globalAlpha=_this.alpha/255;
+                  ctx.drawImage(pCtx,0,0,dw,dh,dx,dy,dw,dh);
+                  sum++;
+                  
+                }
+              }
+            }
+          }
+        }
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"createBuf":{"nowait":false},"initMap":{"nowait":false},"redrawMap":{"nowait":false},"redraw":{"nowait":false},"resolve":{"nowait":false},"load":{"nowait":false},"save":{"nowait":false},"setAll":{"nowait":false},"set":{"nowait":false},"setOn":{"nowait":false},"setOnAt":{"nowait":false},"setAt":{"nowait":false},"get":{"nowait":false},"getAt":{"nowait":false},"getOn":{"nowait":false},"getOnAt":{"nowait":false},"scrollTo":{"nowait":false},"draw":{"nowait":true}},"fields":{"chipWidth":{},"chipHeight":{},"row":{},"col":{},"bufSplit":{},"sx":{},"sy":{},"bufAry":{},"mapTable":{},"mapOnTable":{},"mapObj":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.Panel',
   shortName: 'Panel',
   namespace: 'kernel',
@@ -23747,14 +24812,14 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var l;
-        var _it_828;
+        var _it_882;
         var q;
         
         res = new Tonyu.classes.kernel.TQuery({screen: _this});
         
-        _it_828=Tonyu.iterator(_this.layers,1);
-        while(_it_828.next()) {
-          l=_it_828[0];
+        _it_882=Tonyu.iterator(_this.layers,1);
+        while(_it_882.next()) {
+          l=_it_882[0];
           
           q = l.group.all.apply(l.group,arguments);
           
@@ -23768,14 +24833,14 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var l;
-        var _it_833;
+        var _it_887;
         
         res = [];
         
         excludes=excludes||Tonyu.globals.$excludeFromAll.toArray();
-        _it_833=Tonyu.iterator(_this.layers,1);
-        while(_it_833.next()) {
-          l=_it_833[0];
+        _it_887=Tonyu.iterator(_this.layers,1);
+        while(_it_887.next()) {
+          l=_it_887[0];
           
           res.push(l.group.saveAndClear(excludes));
           
@@ -23789,14 +24854,14 @@ Tonyu.klass.define({
         var __pc=0;
         var res;
         var l;
-        var _it_833;
+        var _it_887;
         
         res = [];
         
         excludes=excludes||Tonyu.globals.$excludeFromAll.toArray();
-        _it_833=Tonyu.iterator(_this.layers,1);
-        while(_it_833.next()) {
-          l=_it_833[0];
+        _it_887=Tonyu.iterator(_this.layers,1);
+        while(_it_887.next()) {
+          l=_it_887[0];
           
           res.push(l.group.saveAndClear(excludes));
           
@@ -23811,13 +24876,13 @@ Tonyu.klass.define({
         var _this=this;
         var i;
         var l;
-        var _it_837;
+        var _it_891;
         
         i = 0;
         
-        _it_837=Tonyu.iterator(_this.layers,1);
-        while(_it_837.next()) {
-          l=_it_837[0];
+        _it_891=Tonyu.iterator(_this.layers,1);
+        while(_it_891.next()) {
+          l=_it_891[0];
           
           l.group.restore(saved.layers[i]);
           i++;
@@ -23835,13 +24900,13 @@ Tonyu.klass.define({
         var __pc=0;
         var i;
         var l;
-        var _it_837;
+        var _it_891;
         
         i = 0;
         
-        _it_837=Tonyu.iterator(_this.layers,1);
-        while(_it_837.next()) {
-          l=_it_837[0];
+        _it_891=Tonyu.iterator(_this.layers,1);
+        while(_it_891.next()) {
+          l=_it_891[0];
           
           l.group.restore(saved.layers[i]);
           i++;
@@ -23859,7 +24924,7 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var e;
-        var _it_841;
+        var _it_895;
         var r;
         var i;
         var t;
@@ -23868,9 +24933,9 @@ Tonyu.klass.define({
         res = [];
         
         options=options||{};
-        _it_841=Tonyu.iterator(q,1);
-        while(_it_841.next()) {
-          e=_it_841[0];
+        _it_895=Tonyu.iterator(q,1);
+        while(_it_895.next()) {
+          e=_it_895[0];
           
           r = e.getCrashRect();
           
@@ -23902,7 +24967,7 @@ Tonyu.klass.define({
         var __pc=0;
         var res;
         var e;
-        var _it_841;
+        var _it_895;
         var r;
         var i;
         var t;
@@ -23917,10 +24982,10 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              _it_841=Tonyu.iterator(q,1);
+              _it_895=Tonyu.iterator(q,1);
             case 1:
-              if (!(_it_841.next())) { __pc=7     ; break; }
-              e=_it_841[0];
+              if (!(_it_895.next())) { __pc=7     ; break; }
+              e=_it_895[0];
               
               r = e.getCrashRect();
               
@@ -25526,7 +26591,7 @@ Tonyu.klass.define({
         var func;
         var callbacks;
         var reqP;
-        var _it_909;
+        var _it_963;
         var i;
         
         if (! _this.available) {
@@ -25581,9 +26646,9 @@ Tonyu.klass.define({
         callbacks.succ=func;
         callbacks.err=func;
         
-        _it_909=Tonyu.iterator(r.sounds,1);
-        while(_it_909.next()) {
-          s=_it_909[0];
+        _it_963=Tonyu.iterator(r.sounds,1);
+        while(_it_963.next()) {
+          s=_it_963[0];
           
           url=s.url;
           if (url.match(/\.midi?$/)) {
@@ -25630,7 +26695,7 @@ Tonyu.klass.define({
         var func;
         var callbacks;
         var reqP;
-        var _it_909;
+        var _it_963;
         var i;
         
         if (! _this.available) {
@@ -25694,9 +26759,9 @@ Tonyu.klass.define({
               callbacks.succ=func;
               callbacks.err=func;
               
-              _it_909=Tonyu.iterator(r.sounds,1);
-              while(_it_909.next()) {
-                s=_it_909[0];
+              _it_963=Tonyu.iterator(r.sounds,1);
+              while(_it_963.next()) {
+                s=_it_963[0];
                 
                 url=s.url;
                 if (url.match(/\.midi?$/)) {
@@ -28143,11 +29208,11 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var t;
-        var _it_938;
+        var _it_992;
         
-        _it_938=Tonyu.iterator(Tonyu.globals.$touches,1);
-        while(_it_938.next()) {
-          t=_it_938[0];
+        _it_992=Tonyu.iterator(Tonyu.globals.$touches,1);
+        while(_it_992.next()) {
+          t=_it_992[0];
           
           if ((! _this.touchRadius||_this.dist(t)<_this.touchRadius)&&t.touched==1) {
             return t;
@@ -36151,13 +37216,13 @@ Tonyu.klass.define({
         }),releaseAll: (function anonymous_1716() {
           var a;
           var e;
-          var _it_1063;
+          var _it_1117;
           
           a = Tonyu.globals.$Screen.all();
           
-          _it_1063=Tonyu.iterator(a,1);
-          while(_it_1063.next()) {
-            e=_it_1063[0];
+          _it_1117=Tonyu.iterator(a,1);
+          while(_it_1117.next()) {
+            e=_it_1117[0];
             
             res.release(e);
             
@@ -36211,13 +37276,13 @@ Tonyu.klass.define({
               }),releaseAll: (function anonymous_1716() {
                 var a;
                 var e;
-                var _it_1063;
+                var _it_1117;
                 
                 a = Tonyu.globals.$Screen.all();
                 
-                _it_1063=Tonyu.iterator(a,1);
-                while(_it_1063.next()) {
-                  e=_it_1063[0];
+                _it_1117=Tonyu.iterator(a,1);
+                while(_it_1117.next()) {
+                  e=_it_1117[0];
                   
                   res.release(e);
                   
@@ -36266,16 +37331,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_1067;
+        var _it_1121;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_1067=Tonyu.iterator(g,1);
-          while(_it_1067.next()) {
-            name=_it_1067[0];
+          _it_1121=Tonyu.iterator(g,1);
+          while(_it_1121.next()) {
+            name=_it_1121[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -36292,16 +37357,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_1067;
+        var _it_1121;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_1067=Tonyu.iterator(g,1);
-          while(_it_1067.next()) {
-            name=_it_1067[0];
+          _it_1121=Tonyu.iterator(g,1);
+          while(_it_1121.next()) {
+            name=_it_1121[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -36655,7 +37720,7 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_1078;
+        var _it_1132;
         
         _this.progress("Loading pats..");
         rs = Tonyu.globals.$currentProject.getResource();
@@ -36666,10 +37731,10 @@ Tonyu.klass.define({
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         }));
         Tonyu.globals.$imageList=r[0];
-        _it_1078=Tonyu.iterator(r[0].names,2);
-        while(_it_1078.next()) {
-          name=_it_1078[0];
-          val=_it_1078[1];
+        _it_1132=Tonyu.iterator(r[0].names,2);
+        while(_it_1132.next()) {
+          name=_it_1132[0];
+          val=_it_1132[1];
           
           Tonyu.setGlobal(name,val);
           
@@ -36685,7 +37750,7 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_1078;
+        var _it_1132;
         
         
         _thread.enter(function _trc_Boot_ent_loadImages(_thread) {
@@ -36709,10 +37774,10 @@ Tonyu.klass.define({
               r=_thread.retVal;
               
               Tonyu.globals.$imageList=r[0];
-              _it_1078=Tonyu.iterator(r[0].names,2);
-              while(_it_1078.next()) {
-                name=_it_1078[0];
-                val=_it_1078[1];
+              _it_1132=Tonyu.iterator(r[0].names,2);
+              while(_it_1132.next()) {
+                name=_it_1132[0];
+                val=_it_1132[1];
                 
                 Tonyu.setGlobal(name,val);
                 
