@@ -3,7 +3,19 @@ includes SpriteMod,TextRectMod;
 "field strict";
 native Math;
 var x,y;
+var _alignVal, _align;
 
+\initSpriteMod(){
+    super.initSpriteMod();
+    _align=new Align2D();
+}
+\align=v {
+    _alignVal=v;
+    _align=new Align2D(v);
+}
+\align {
+    return _alignVal;
+}
 nowait \performTransform(ctx) {//2D
     if (x!==x || y!==y || x==null || y==null) {
         //console.log("警告：",getClassInfo().shortName,"で座標の指定に誤りがあります");
@@ -78,9 +90,16 @@ nowait \drawAsText(ctx) {
         //_animation();
         ctx.save();
         performTransform(ctx);
-        ctx.drawImage(
-        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
-        -width/2, -height/2, width, height);
+        if (_align.isOriginPivot) {
+            ctx.drawImage(
+            pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+            -width/2, -height/2, width, height);
+        } else {
+            var r=_align.getDrawRect(this);
+            ctx.drawImage(
+            pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+            r.x-r.width/2, r.y-r.height/2, r.width, r.height);
+        }
         ctx.restore();
     }
 }
