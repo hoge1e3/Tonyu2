@@ -11,15 +11,15 @@ nowait \getCrashRect() {//2D
         var scx=scaleX;
         var scy=(scaleY==null?scaleX:scaleY);
         var r=this._align.getDrawRect{
-            width : (width ||radius*2)*scx,
-            height: (height||radius*2)*scy,
+            width : (width ||radius*2),
+            height: (height||radius*2),
         };
-        var v=new Vec3(r.x,r.y);
+        var v=new Vec3(r.x*scx, r.y*scy);
         v.rotateX(rotation).addX(x,y);
         return {
             x=v.x, y=v.y,
-            width =abs(r.width*crashScale),
-            height=abs(r.height*crashScale),
+            width =abs(r.width*scx*crashScale),
+            height=abs(r.height*scy*crashScale),
         };
     }
     var actWidth=(width||radius*2)*scaleX*crashScale, actHeight;

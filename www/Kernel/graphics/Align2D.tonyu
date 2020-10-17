@@ -78,7 +78,7 @@ var offset;// {x,y}
     // returns Rect-like object whose (0,0) is pivot
     var width=obj.width;
     var height=obj.height;
-    var res={x:offset.x, y:offset.y ,width,height};
+    var res={x:-offset.x, y:-offset.y ,width,height};
     switch (h) {
         case "left":
         res.x+=res.width/2;

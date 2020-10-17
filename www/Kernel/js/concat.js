@@ -8181,7 +8181,7 @@ Tonyu.klass.define({
         
         height = obj.height;
         
-        res = {x: _this.offset.x,y: _this.offset.y,width: width,height: height};
+        res = {x: - _this.offset.x,y: - _this.offset.y,width: width,height: height};
         
         switch (_this.h) {
         case "left":
@@ -8218,7 +8218,7 @@ Tonyu.klass.define({
         
         height = obj.height;
         
-        res = {x: _this.offset.x,y: _this.offset.y,width: width,height: height};
+        res = {x: - _this.offset.x,y: - _this.offset.y,width: width,height: height};
         
         switch (_this.h) {
         case "left":
@@ -17742,12 +17742,12 @@ Tonyu.klass.define({
           
           scy = (_this.scaleY==null?_this.scaleX:_this.scaleY);
           
-          r = _this._align.getDrawRect({width: (_this.width||_this.radius*2)*scx,height: (_this.height||_this.radius*2)*scy});
+          r = _this._align.getDrawRect({width: (_this.width||_this.radius*2),height: (_this.height||_this.radius*2)});
           
-          v = new Tonyu.classes.kernel.Vec3(r.x,r.y);
+          v = new Tonyu.classes.kernel.Vec3(r.x*scx,r.y*scy);
           
           v.rotateX(_this.rotation).addX(_this.x,_this.y);
-          return {x: v.x,y: v.y,width: _this.abs(r.width*_this.crashScale),height: _this.abs(r.height*_this.crashScale)};
+          return {x: v.x,y: v.y,width: _this.abs(r.width*scx*_this.crashScale),height: _this.abs(r.height*scy*_this.crashScale)};
           
         }
         actWidth = (_this.width||_this.radius*2)*_this.scaleX*_this.crashScale;
