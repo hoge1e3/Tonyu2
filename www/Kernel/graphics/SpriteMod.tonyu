@@ -3,6 +3,7 @@ extends null;
 var p,pImg,text,size,font,align,fillStyle,
 scaleX,scaleY,width,height,radius,rotation,alpha,
 position,zOrder,_isInvisible,subsprites;
+var _alignVal, _align;
 native Tonyu;
 native Math;
 native console;
@@ -17,6 +18,10 @@ native console;
     initTransform();
 }
 \initTransform() {}
+\align {
+    return _alignVal;
+}
+// abstract align=v
 nowait \prepareImage() {//23D
     if (typeof p!="number") {
         p=(p-0)||0;

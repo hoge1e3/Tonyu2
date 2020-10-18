@@ -7,7 +7,7 @@ native Math;
     return new RectShape(getCrashRect());
 }
 nowait \getCrashRect() {//2D
-    if (this._align && !this._align.isOriginPivot) {
+    if (_align && !_align.isOriginPivot) {
         var scx=scaleX;
         var scy=(scaleY==null?scaleX:scaleY);
         var r=this._align.getDrawRect{

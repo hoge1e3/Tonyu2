@@ -30,7 +30,7 @@ native requestAnimationFrame;
     if (_fillStyle && canvas) canvas.getContext("2d").fillStyle=_fillStyle+"";
     x=typeof x==="number"? x : width/2;
     y=typeof y==="number"? y : height/2;
-    if(align==null) align="center";
+    //if(align==null) align="center";
     if(alpha==null) alpha=255;
     if(_drawn==null) _drawn=false;
 
@@ -157,27 +157,11 @@ native requestAnimationFrame;
     if(_drawn){
         var pImg=canvas;
         ctx.save();
-        if(align=="left"){
-            ctx.translate(x+width/2,y+height/2);
-        }else if(align=="center"){
-            ctx.translate(x,y);
-        }else if(align=="right"){
-            ctx.translate(x-width/2,y-height/2);
-        }
-        if(this.rotation!=0){
-            ctx.rotate(this.rotation/180*Math.PI);
-        }else{
-            ctx.rotate(this.rotate/180*Math.PI);
-        }
-        if(typeof this.scaleY==="undefined") {
-            ctx.scale(this.scaleX,this.scaleX);
-        }else{
-            ctx.scale(this.scaleX,this.scaleY);
-        }
-        ctx.globalAlpha=this.alpha/255;
+        performTransform(ctx);
+        var r=_align.getDrawRect(this);
         ctx.drawImage(
         pImg, 0, 0,width,height,
-        -width/2, -height/2, width ,height);
+        r.x-r.width/2, r.y-r.height/2, width ,height);
         ctx.restore();
     }
 }
@@ -265,8 +249,10 @@ nowait \copy() {
     if (fromLayer==null || toLayer==null) throw new Error("layer not set");
     if (fromLayer===this && toLayer===layer) {
         // panelXY to world
-        var dx=obj.x-width/2;
-        var dy=obj.y-height/2;
+        var r=_align.getDrawRect(this);
+
+        var dx=obj.x+r.x-r.width/2;
+        var dy=obj.y+r.y-r.height/2;
         var rt=rotation;
         // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
         // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
@@ -280,6 +266,7 @@ nowait \copy() {
         };
     } else if (fromLayer===layer && toLayer===this) {
         // world to panelXY
+        var r=_align.getDrawRect(this);
         var rt=-rotation;
         var dx=obj.x-(this.x);
         var dy=obj.y-(this.y);
@@ -287,8 +274,8 @@ nowait \copy() {
         // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
         // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
         // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale;
-        var x=width/2 + (cos(rt)*dx+cos(rt+90)*dy)/scaleX;
-        var y=height/2 + (sin(rt)*dx+sin(rt+90)*dy)/scaleY;
+        var x=r.width/2-r.x + (cos(rt)*dx+cos(rt+90)*dy)/scaleX;
+        var y=r.height/2-r.y + (sin(rt)*dx+sin(rt+90)*dy)/scaleY;
         return {x,y,
             rotation:rt,
             scale:1/scaleX,

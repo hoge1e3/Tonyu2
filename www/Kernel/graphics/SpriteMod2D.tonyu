@@ -3,18 +3,15 @@ includes SpriteMod,TextRectMod;
 "field strict";
 native Math;
 var x,y;
-var _alignVal, _align;
+
 
 \initSpriteMod(){
     super.initSpriteMod();
-    _align=new Align2D();
+    _align=_align || new Align2D();
 }
 \align=v {
     _alignVal=v;
     _align=new Align2D(v);
-}
-\align {
-    return _alignVal;
 }
 nowait \performTransform(ctx) {//2D
     if (x!==x || y!==y || x==null || y==null) {
