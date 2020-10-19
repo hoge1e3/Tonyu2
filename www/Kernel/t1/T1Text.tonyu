@@ -5,7 +5,7 @@ includes TextRectMod;
     var splitsText=(text+"").split("\n");
     var drawY=y;
     if (!size) size=15;
-    if (!align) align="left";
+    if (!align) align=new Align2D("left");
     if (!fillStyle) fillStyle="white";
     ctx.fillStyle=col+"";
     ctx.globalAlpha=this.alpha/255;

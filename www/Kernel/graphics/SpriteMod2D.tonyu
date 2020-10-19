@@ -45,14 +45,14 @@ nowait \drawAsText(ctx) {
     var splitsText=(text+"").split("\n");
     var drawY=y;
     if (!size) size=15;
-    if (!align) align="center";
+    //if (!align) align="center";
     if (!fillStyle) fillStyle="white";
     if (font) ctx.font=size+"px "+font;
     ctx.fillStyle=fillStyle+"";
     ctx.globalAlpha=this.alpha/255;
     height=0;width=0;
     for(var textCount=0;textCount<splitsText.length;textCount++){
-        var rect=drawTextRect(ctx, splitsText[textCount], x, drawY, size, align , "fill");
+        var rect=drawTextRect(ctx, splitsText[textCount], x, drawY, size, _align , "fill");
         if(width<rect.w) width=rect.w;
         height+=rect.h;
         drawY+=size;

@@ -848,30 +848,20 @@ Tonyu.klass.define({
         var _this=this;
         var met;
         var res;
-        var t;
+        var r;
         
         if (! align) {
-          align="center";
+          align=new Tonyu.classes.kernel.Align2D;
         }
-        ctx.textBaseline="top";
+        ctx.textBaseline=(align.v==="center"?"middle":align.v==="default"?"top":align.v);
         _this.setFontSize(ctx,h);
         met = ctx.measureText(text);
         
         res = {y: topY,w: met.width,h: h};
         
-        t = align.substring(0,1).toLowerCase();
+        r = align.getDrawRect({width: met.width,height: h});
         
-        if (t=="l") {
-          res.x=x;
-        } else {
-          if (t=="r") {
-            res.x=x-met.width;
-          } else {
-            if (t=="c") {
-              res.x=x-met.width/2;
-            }
-          }
-        }
+        res.x=x+r.x-r.width/2;
         if (type=="fill") {
           ctx.fillText(text,res.x,topY);
         }
@@ -10990,9 +10980,6 @@ Tonyu.klass.define({
         if (! _this.size) {
           _this.size=15;
         }
-        if (! _this.align) {
-          _this.align="center";
-        }
         if (! _this.fillStyle) {
           _this.fillStyle="white";
         }
@@ -11006,7 +10993,7 @@ Tonyu.klass.define({
         textCount = 0;
         for (; textCount<splitsText.length ; textCount++) {
           {
-            rect = _this.drawTextRect(ctx,splitsText[textCount],_this.x,drawY,_this.size,_this.align,"fill");
+            rect = _this.drawTextRect(ctx,splitsText[textCount],_this.x,drawY,_this.size,_this._align,"fill");
             
             if (_this.width<rect.w) {
               _this.width=rect.w;
@@ -12481,7 +12468,7 @@ Tonyu.klass.define({
           _this.size=15;
         }
         if (! _this.align) {
-          _this.align="left";
+          _this.align=new Tonyu.classes.kernel.Align2D("left");
         }
         if (! _this.fillStyle) {
           _this.fillStyle="white";
@@ -12525,7 +12512,7 @@ Tonyu.klass.define({
           _this.size=15;
         }
         if (! _this.align) {
-          _this.align="left";
+          _this.align=new Tonyu.classes.kernel.Align2D("left");
         }
         if (! _this.fillStyle) {
           _this.fillStyle="white";
@@ -23979,7 +23966,7 @@ Tonyu.klass.define({
         
         element = $("<img>").css({display: "none"}).appendTo("body");
         
-        element.on("load",(function anonymous_10485() {
+        element.on("load",(function anonymous_9864() {
           var img;
           var width;
           var height;
@@ -24027,7 +24014,7 @@ Tonyu.klass.define({
               
               element = $("<img>").css({display: "none"}).appendTo("body");
               
-              element.on("load",(function anonymous_10485() {
+              element.on("load",(function anonymous_9864() {
                 var img;
                 var width;
                 var height;
