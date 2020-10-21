@@ -2,7 +2,7 @@ extends null;
 includes SpriteMod,TextRectMod;
 "field strict";
 native Math;
-var x,y;
+var x,y,transform;
 
 
 \initSpriteMod(){
@@ -13,6 +13,10 @@ var x,y;
     _alignVal=v;
     _align=new Align2D(v);
 }
+\initTransform() {//called from initSoriteMod
+    transform=new Transform2D(this);
+}
+
 nowait \performTransform(ctx) {//2D
     if (x!==x || y!==y || x==null || y==null) {
         //console.log("警告：",getClassInfo().shortName,"で座標の指定に誤りがあります");

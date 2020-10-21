@@ -23,8 +23,9 @@ includes MathMod;
         p={};
         p.x=a.shift();
         p.y=a.shift();
-        p.z=a.shift()||0;
+        p.z=a.shift();
     }
+    p.z=p.z||0;
     return p;
 }
 function addX() {

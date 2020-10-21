@@ -1,0 +1,50 @@
+extends TObject;
+includes MathMod;
+"field strict";
+var actor;
+
+\new(actor:Actor) {
+    this.actor=actor;
+}
+\position {
+    return actor.position;
+}
+\scale {
+    // TODO write
+    var x=actor.scaleX, y=actor.scaleY;
+    x=(typeof x==="number" && x==x)? x : 1;
+    y=(typeof y==="number" && y==y)? y : x;
+    return {x,y};
+}
+\rotation {
+    // TODO write
+    return actor.rotation;
+}
+
+\base {
+    var s=scale;
+    return {
+        x: new Vec3(cos(rotation)*s.x, sin(rotation)*s.x),
+        y: new Vec3(cos(rotation+90)*s.y, sin(rotation+90)*s.y),
+    };
+}
+\localToWorld(pos) {
+    var b=base;
+    return b.x.mul(pos.x).addX(b.y.mul(pos.y)).addX(position);
+}
+\worldToLocal(pos) {
+    var b=base;
+    pos.z=pos.z||0;
+    pos=position.mul(-1).addX(pos); // pos-=position;
+    //return {x:b.x.innerProduct(pos)/b.x.length, y:b.y.innerProduct(pos)/b.y.length };
+    var det=b.x.x*b.y.y - b.y.x*b.x.y;
+    return new Vec3(b.y.y*pos.x - b.y.x*pos.y, -b.x.y*pos.x + b.x.x*pos.y).divX(det);
+    //  X bx + Y by = p
+    //  X bx.x +  Y by.x = p.x
+    //  X bx.y +  Y by.y = p.y
+    //  bx.x  by.x   X  = p.x
+    //  bx.y  by.y   Y    p.y
+    //               X  =        by.y   -by.x   p.x
+    //               Y  =  det  -bx.y    bx.x   p.y
+    //             det  =  bx.x*by.y - by.x*bx.y
+}
