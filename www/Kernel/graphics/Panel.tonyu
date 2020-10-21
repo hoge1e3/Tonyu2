@@ -315,6 +315,45 @@ nowait \copy() {
     return context.putImageData(data,x,y);
 }
 
+\setAsText(text:String, options) {
+    options=options||{};
+    var padding=options.padding || 0;
+    switch (typeof padding) {
+        case "number":
+        padding={left: padding, top:padding, right: padding, bottom:padding};
+        break;
+        case "string":
+        padding=padding.split(/[ ,]+/);
+        switch (padding.length) {
+            case 1:
+            padding={left: padding[0]-0, top:padding[0]-0, right: padding[0]-0, bottom:padding[0]-0};
+            break;
+            case 2:
+            padding={left: padding[0]-0, top:padding[1]-0, right: padding[0]-0, bottom:padding[1]-0};
+            break;
+            default:
+            padding={left: padding[0]-0, top:padding[1]-0, right: padding[2]-0, bottom:padding[3]-0};
+        }
+    }
+    padding.left=padding.left||0;
+    padding.right=padding.right || padding.left;
+    padding.top=padding.top || 0;
+    padding.bottom=padding.bottom || padding.top;
+    var f=options.fillStyle || fillStyle;
+    var size=options.size || 15;
+    var a=new Align2D("left top");
+    var rect=drawTextRect(context, text, padding.left, padding.top, size, a, "test");
+    resize(padding.left+ rect.w+padding.right, padding.top+rect.h+padding.bottom);
+    var bg=options.background || options.bg || \{};
+    if (typeof bg!=="function") {
+        fillStyle=bg;
+        fillRect(0,0,width,height);
+    } else {
+        bg(this);
+    }
+    fillStyle=f;
+    var rect=drawTextRect(context, text, padding.left, padding.top, size, a, "fill");
+}
 \replace(x,y,width,height,replacement) {
 
 }
