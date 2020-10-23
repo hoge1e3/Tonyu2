@@ -4,19 +4,21 @@ native $;
 native console;
 "field strict";
 var chipWidth, chipHeight, row, col;
-var bufSplit, sx, sy;
+var bufferSize;
 var bufAry;
 var mapTable, mapOnTable, mapObj;
 \new (param){
-    bufSplit=1024;
-    sx=0;
-    sy=0;
+    bufferSize=param.bufferSize||1024;
     alpha=255;
     super(param);
+    x=x||0;
+    y=y||0;
+    if (!align) align="left top";
     chipWidth=chipWidth||32;
     chipHeight=chipHeight||chipWidth||32;
     if (typeof col!=="number") col=$screenWidth/chipWidth;
     if (typeof row!=="number") row=$screenHeight/chipHeight;
+    parseBufferSize();
     col=floor(col);row=floor(row);
     bufAry=createBuf(col*chipWidth,row*chipHeight);
     mapObj=true;
@@ -41,24 +43,42 @@ var mapTable, mapOnTable, mapObj;
     }*/
     initMap();
 }
+\setPivot(x,y) {
+    align=["left","top",x,y];
+}
+\parseBufferSize() {
+    \fitSize(size, unit) {
+        size=floor(size/unit)*unit;
+        if (size<unit) size=unit;
+        return size;
+    }
+    if (typeof bufferSize==="number") {
+        bufferSize={w:bufferSize, h:bufferSize};
+    } else {
+        bufferSize.w=bufferSize.w||bufferSize.width||1024;
+        bufferSize.h=bufferSize.h||bufferSize.height||1024;
+    }
+    bufferSize.w=fitSize(bufferSize.w,chipWidth);
+    bufferSize.h=fitSize(bufferSize.h,chipHeight);
+}
 \createBuf(width,height){
     var rh=floor(height); // remaining Height
     var ary=[];
     for(var j=0;0<rh;j++){
         var a=[];
         var h=rh;
-        if(rh>bufSplit) h=bufSplit;
+        if(rh>bufferSize.h) h=bufferSize.h;
         if(rh<2) h=2;
         var rw=floor(width); // remaining Width
         for(var i=0;0<rw;i++){
             var w=rw;
-            if(rw>bufSplit) w=bufSplit;
+            if(rw>bufferSize.w) w=bufferSize.w;
             if(rw<2) w=2;
             a.push($("<canvas>").attr{width:w,height:h});
-            rw-=bufSplit;
+            rw-=bufferSize.w;
         }
         ary.push(a);
-        rh-=bufSplit;
+        rh-=bufferSize.h;
     }
     // console.log(this);
     // console.log(ary);
@@ -128,14 +148,14 @@ var mapTable, mapOnTable, mapObj;
     var oldOnP=mapOnTable[setRow][setCol];
     mapTable[setRow][setCol]=p;
     mapOnTable[setRow][setCol]=onP;
-    var x1=floor(setCol*chipWidth/bufSplit);
-    var y1=floor(setRow*chipHeight/bufSplit);
+    var x1=floor(setCol*chipWidth/bufferSize.w);
+    var y1=floor(setRow*chipHeight/bufferSize.h);
     var hs=bufAry.length;
     var j=y1;
     var ws=bufAry[j].length;
     var i=x1;
-    var drawX = setCol*chipWidth-i*bufSplit;
-    var drawY = setRow*chipHeight-j*bufSplit;
+    var drawX = setCol*chipWidth-i*bufferSize.w;
+    var drawY = setRow*chipHeight-j*bufferSize.h;
     var cv=bufAry[j][i];
     if (!cv) return;
     var ctx=cv[0].getContext("2d");
@@ -172,42 +192,62 @@ var mapTable, mapOnTable, mapObj;
     if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;
     setAll(setCol,setRow,mapTable[setRow][setCol],onP);
 }
-\setOnAt(setX,setY,p){
-    setOn(Math.floor((setX-sx)/chipWidth),Math.floor((setY-sy)/chipHeight),p);
+\worldToChip(o) {
+    var l=transform.worldToLocal(o);
+    //print(l.x, l.y);
+    var r=getDrawRect();
+    return {x:Math.floor((l.x-r.left)/chipWidth),y:Math.floor((l.y-r.top)/chipHeight)};
 }
-\setAt(setX,setY,p){
-    set(Math.floor((setX-sx)/chipWidth),Math.floor((setY-sy)/chipHeight),p);
+\setOnAt(x,y,p){
+    var l=worldToChip{x,y};
+    setOn(l.x, l.y ,p);
+}
+\setAt(x,y,p){
+    var l=worldToChip{x,y};
+    set(l.x, l.y ,p);
 }
 \get(getCol,getRow){
     if(getCol<col && getRow<row && getCol>=0 && getRow>=0) return mapTable[getRow][getCol];
     return -1;
 }
-\getAt(getX,getY){
-    return get(Math.floor((getX-sx)/chipWidth),Math.floor((getY-sy)/chipHeight));
+\getAt(y){
+    var l=worldToChip{x,y};
+    return get(l.x, l.y);
 }
 \getOn(getCol,getRow){
     if(getCol<col && getRow<row && getCol>=0 && getRow>=0) return mapOnTable[getRow][getCol];
     return -1;
 }
-\getOnAt(getX,getY){
-    return getOn(Math.floor((getX-sx)/chipWidth),Math.floor((getY-sy)/chipHeight));
+\getOnAt(x,y){
+    var l=worldToChip{x,y};
+    return getOn(l.x,l.y);
 }
 \scrollTo(scrollX,scrollY){
-    sx=-scrollX;
-    sy=-scrollY;
+    x=-scrollX;
+    y=-scrollY;
+}
+\getDrawRect() {
+    var r=_align.getDrawRect{width: chipWidth* col, height: chipHeight* row};
+    r.left=r.x-r.width/2;
+    r.top=r.y-r.height/2;
+    return r;
 }
 \draw(ctx) {
-    var lay=$Screen.findLayer(layer);
+    //var lay=$Screen.findLayer(layer);
     //console.log("lay",lay);
-    var lsx=lay.spx; // Screen pivot x
+    /*var lsx=lay.spx; // Screen pivot x
     var lsy=lay.spy; // Screen pivot y
     var lwx=lay.wpx; // World pivot x
-    var lwy=lay.wpy; // World pivot y
-    var ls=(typeof lay.scale=="number")? lay.scale : 1; // layer scale
-    var lr=(typeof lay.rotation=="number")? lay.rotation : 0; // layer rotation
+    var lwy=lay.wpy; // World pivot y*/
+    //var ls=(typeof lay.scale=="number")? lay.scale : 1; // layer scale
+    //var lr=(typeof lay.rotation=="number")? lay.rotation : 0; // layer rotation
     var hs=bufAry.length;
     var sum=0;
+    var r=getDrawRect();
+    var sx=r.left;
+    var sy=r.top;
     ctx.save();
+    performTransform(ctx);
     for(var j=0;j<hs;j++){
         var ws=bufAry[j].length;
         for(var i=0;i<ws;i++){
@@ -215,19 +255,19 @@ var mapTable, mapOnTable, mapObj;
             if (!pCv) return;
             var pCtx=pCv[0];
             if (!pCtx) return;
-            var dx=sx+i*bufSplit; // Split Map x
-            var dy=sy+j*bufSplit; // Split Map y
+            var dx=sx+i*bufferSize.w; // Split Map x
+            var dy=sy+j*bufferSize.h; // Split Map y
             var dw=pCtx.width;    // Split Map width
             var dh=pCtx.height;   // Split Map height
-            var mx1=lsx+(dx-lwx)*ls;    // Map draw x1 (left)
-            var my1=lsy+(dy-lwy)*ls;    // Map draw y1 (top)
-            var mx2=lsx+(dx-lwx+dw)*ls; // Map draw x2 (right)
-            var my2=lsy+(dy-lwy+dh)*ls; // Map draw y2 (buttom)
-            if(lr!=0 || (0<=mx2 && mx1<$screenWidth && 0<=my2 && my1<$screenHeight)){
-                ctx.globalAlpha=alpha/255;
-                ctx.drawImage(
-                pCtx, 0, 0, dw, dh,
-                dx, dy, dw, dh);
+            /*var mx1=lsx+(dx-lwx);    // Map draw x1 (left)
+            var my1=lsy+(dy-lwy);    // Map draw y1 (top)
+            var mx2=lsx+(dx-lwx+dw); // Map draw x2 (right)
+            var my2=lsy+(dy-lwy+dh); // Map draw y2 (buttom)*/
+            //if(lr!=0 || (0<=mx2 && mx1<$screenWidth && 0<=my2 && my1<$screenHeight)){
+            ctx.globalAlpha=alpha/255;
+            ctx.drawImage(
+            pCtx, 0, 0, dw, dh,
+            dx, dy, dw, dh);
                 // if ((i+j)%2==1) {
                 //     var ga = ctx.globalAlpha;
                 //     var fi = ctx.fillStyle;
@@ -237,8 +277,8 @@ var mapTable, mapOnTable, mapObj;
                 //     ctx.globalAlpha = ga;
                 //     ctx.fillStyle = fi;
                 // }
-                sum++;
-            }
+            sum++;
+            //}
         }
     }
     ctx.restore();
