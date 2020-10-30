@@ -1,3 +1,44 @@
+RAD
+DotConsole
+「JavaScriptに似ています」←はやめたい
+NaNだったら警告　undefined+1 -> NaN
+  ->  x,y を強制的に数値にしちゃえばよくね？
+      x+=vx;
+      x ,y をgetter/setter <-速度は？
+`${hi}の天気は${ten}です`
+体力=3;
+グローバル変数リスト
+予約変数の一覧
+flipped
+nowait \hide() {}
+\hide() {
+    update();
+}
+strokeStyle
+$InputDevice.assginKey("left", $bleft);
+$InputDevice.assginKey("left") {pad: $gamePad, digital:"left"} ;
+$InputDevice.assginKey("left") {pad: $gamePad, axis:0 , threshhold:0.5 } ;
+$InputDevice.assginKey("left") {pad: $apad, threshhold:0.5};
+
+new Apad{key:  , gamePad: $gamePad  };
+new Pad{gamePad: $gamePad  };
+
+/**
+効果音を演奏します
+se: 演奏したい効果音
+*/
+\playSE{se, vol=128, pan=0.5, offset=0}  {
+
+}
+playSE($se_hoge,100) {offset:5}
+typeCheck
+    var e:Enemy;
+    e.motion();
+    call(e, "motion");
+Ctrl+Tでファイル名検索
+file share(zip->url)　URLは4000文字までOKポイ
+$Screen.resizeしたとき、３Dカメラの中心がなおらない
+
 OK search subfolder
 fullCompiler before create executable
 Ctrl+T
