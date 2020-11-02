@@ -90,7 +90,7 @@ $(function () {
         $("#fileItemList").height(h);
     }
     onResize();
-    RealtimeErrorMarker(ide);
+    const em=RealtimeErrorMarker(ide);
     KeyEventChecker.down(document,"F9",F(run));
     KeyEventChecker.down(document,"F2",F(stop));
     KeyEventChecker.down(document,"ctrl+s",F(save));/*function (e) {
@@ -263,7 +263,7 @@ $(function () {
             setCmdStat();
         });
     }
-    function run2(fullName) {
+    async function run2(fullName) {
         if (typeof fullName!="string") {
             if (runMenuOrd.length==0) {
                 alert(R("createAtLeastOneFile"));
@@ -271,7 +271,7 @@ $(function () {
             }
             fullName=`${NSP_USR}.${runMenuOrd[0]}`;// curFile.name().replace(/\.tonyu$/,"");
         }
-        save();
+        await save({skipCompile:true});
         curPrj.initCanvas=function () {
             displayMode("run");
             Tonyu.globals.$mainCanvas=runDialog.canvas;
@@ -284,14 +284,18 @@ $(function () {
             curPrj.setOptions(o);
         }
         curPrjDir.touch();
-        return curPrj.fullCompile().then(async r=>{
-            jshint.use(r);
+        try {
+            await curPrj.waitReady();
+            await curPrj.fullCompile();
+            //jshint.use(r);
             // does in fullCompile
             //await SourceFiles.add(r).saveAs(curPrj.getOutputFile());
             runDialog.show();
-        }).catch(showError).finally(function () {
+        } catch(e) {
+            showError(e);
+        } finally {
             if (root.SplashScreen) root.SplashScreen.hide();
-        });
+        }
     }
     var alertOnce;
     alertOnce=function (e) {
@@ -341,7 +345,7 @@ $(function () {
             prog.moveCursorTo(cur.row, cur.column);
         }
     }
-    function save() {
+    async function save({skipCompile}={}) {
         var inf=getCurrentEditorInfo();
         if (!inf) return;
         var curFile=inf.file; //fl.curFile();
@@ -352,8 +356,14 @@ $(function () {
             var nw=prog.getValue();
             if (old!=nw) {
                 curFile.text(nw);
-                curPrj.partialCompile(curFile).catch(Tonyu.onRunTimeError);
                 inf.lastTimeStamp=curFile.lastUpdate();
+                if (!skipCompile && curPrj.readyState) {
+                    try {
+                        await curPrj.partialCompile(curFile);
+                    } catch (e) {
+                        em.mark(inf,e);
+                    }
+                }
             }
         }
         fl.setModified(false);
@@ -433,5 +443,11 @@ $(function () {
             fl.select(file);
         }
     }
+    const cs=$("<div>").attr({"id":"compileState"}).addClass("compileState").text("").appendTo("body");
+	curPrj.on("readyState", e=>{
+        const s=(e.state===true ? "Ready" : e.state);
+        cs.text(s);
+    });
+    curPrj.fullCompile();
 });
 });

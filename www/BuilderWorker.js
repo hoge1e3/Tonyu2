@@ -3945,8 +3945,9 @@ module.exports=function () {
 
 		}
 		var lt=tokens[res.src.maxPos];
-		var mp=(lt?lt.pos+lt.len: str.length);
-		throw TError(R("parseError"), file ,  mp );
+		var mp=(lt?lt.pos : str.length);
+		const len=(lt?lt.len:0);
+		throw TError(R("parseError"), file ,  mp, len );
 		/*return "ERROR\nSyntax error at "+mp+"\n"+
 		str.substring(0,mp)+"!!HERE!!"+str.substring(mp);*/
 	};
@@ -12303,26 +12304,26 @@ module.exports=function (bufSize=1024) {
 //});/*--end of define--*/
 
 },{}],28:[function(require,module,exports){
-var TError=function (message, src, pos) {
+const TError=function (message, src, pos, len) {
 	let rc;
+	const extend=(dst,src)=>{for (var k in src) dst[k]=src[k];return dst;};
 	if (typeof src=="string") {
 		rc=TError.calcRowCol(src,pos);
 		message+=" at "+(rc.row)+":"+(rc.col);
 		return extend(new Error(message),{
 			isTError:true,
-			//message:message,
 			src:{
 				path:function () {return "/";},
 				name:function () { return "unknown";},
 				text:function () { return src;}
 			},
-			pos:pos,row:rc.row, col:rc.col,
+			pos,row:rc.row, col:rc.col,len,
 			raise: function () {
 				throw this;
 			}
 		});
 	}
-	var klass=null;
+	let klass=null;
 	if (src && src.src) {
 		klass=src;
 		src=klass.src.tonyu;
@@ -12332,12 +12333,10 @@ var TError=function (message, src, pos) {
 	}
 	const s=src.text();
 	rc=TError.calcRowCol(s,pos);
-	function extend(dst,src) {for (var k in src) dst[k]=src[k];return dst;}
 	message+=" at "+src.name()+":"+rc.row+":"+rc.col;
 	return extend(new Error(message),{
 		isTError:true,
-		//message:message,
-		src:src,pos:pos,row:rc.row, col:rc.col, klass:klass,
+		src,pos,row:rc.row, col:rc.col, len, klass,
 		raise: function () {
 			throw this;
 		}

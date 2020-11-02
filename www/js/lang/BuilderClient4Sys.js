@@ -100,16 +100,22 @@ class BuilderClient {
             throw this.convertError(e);
         }
     }
-    async partialCompile(f) {
+    async partialCompile(f, {content, noexec}={}) {
         if (!this.partialCompilable) {
             return await this.clean();
         }
         try {
-            const files={};files[f.relPath(this.getDir())]=f.text();
+            if (typeof content!=="string") {
+                content=f.text();
+                if (noexec==null) noexec=false;
+            } else {
+                if (noexec==null) noexec=true;
+            }
+            const files={};files[f.relPath(this.getDir())]=content;
             await this.init();
             const compres=await this.w.run("compiler/postChange",{files});
             console.log(compres);
-            await this.exec(compres);
+            if (!noexec) await this.exec(compres);
             return compres;
         } catch(e) {
             throw this.convertError(e);

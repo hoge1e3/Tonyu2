@@ -178,3 +178,10 @@ iframe.wikiDialog {
     max-width: 1200px;
   }
 }
+.compileState {
+	position: fixed; /* 要素の位置を固定する */
+	bottom: 0; /* 基準の位置を画面の一番下に指定する */
+	left: 0; /* 基準の位置を画面の一番右に指定する */
+	width: 100px; /* 幅を指定する */
+	border: 3px solid #326693; /* ボーダーを指定する */
+}

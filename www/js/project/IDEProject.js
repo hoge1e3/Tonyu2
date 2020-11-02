@@ -7,6 +7,7 @@ define(function (require,exports) {
     const CP=require("CompiledProject");
     const WebSite=require("WebSite");
     const R=require("R");
+    const EventHandler=require("EventHandler");
     const langMod=BuilderClient.langMod;
     F.addType("IDE",params=>{
         const ide=params.ide;
@@ -47,11 +48,46 @@ define(function (require,exports) {
             if (ifrm) return ifrm.contentWindow.Project;
         };
         res.disconnectDebugger=()=>c.setDebugger();
-        res.fullCompile=c.fullCompile.bind(c);
+        const handler=new EventHandler();
+        res.on=function (...args){return handler.on(...args);};
+        res.fire=function (...args){return handler.fire(...args);};
+        res.readyState=true;
+        res.setReadyState=function (state) {
+            this.readyState=state;
+            this.fire("readyState",{state});
+        };
+        res.waitReady=function (g=true) {
+            return new Promise(s=>{
+                if (this.readyState===g) s(g);
+                console.log("wait until ",this.readyState,"->",g);
+                const r=this.on("readyState", e=>{
+                    console.log("State change",e);
+                    if (e.state===g) {
+                        r.remove();
+                        s(e);
+                    }
+                });
+            });
+        };
+        const cMethods=["fullCompile","clean","partialCompile","renameClassName","resetFiles"];
+        for (let _cMethod of cMethods) {
+            const cMethod=_cMethod;
+            res[cMethod]=async function (...args) {
+                try {
+                    this.setReadyState(cMethod);
+                    const res=await c[cMethod](...args);
+                    return res;
+                } finally {
+                    this.setReadyState(true);
+                }
+            };
+        }
+        /*res.fullCompile=c.fullCompile.bind(c);
         res.clean=c.clean.bind(c);
         res.partialCompile=c.partialCompile.bind(c);
         res.renameClassName=c.renameClassName.bind(c);
         res.resetFiles=c.resetFiles.bind(c);
+        */
         res.include(sysMod).include(langMod);
         res.stop=()=>{
             try {
