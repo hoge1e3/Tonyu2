@@ -271,7 +271,7 @@ $(function () {
             }
             fullName=`${NSP_USR}.${runMenuOrd[0]}`;// curFile.name().replace(/\.tonyu$/,"");
         }
-        await save({skipCompile:true});
+        await save({skipCompile:false}); // quick save->run does not send the saved content to worker
         curPrj.initCanvas=function () {
             displayMode("run");
             Tonyu.globals.$mainCanvas=runDialog.canvas;
