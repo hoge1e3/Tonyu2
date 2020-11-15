@@ -4,6 +4,24 @@ includes MathMod,EventMod,FileMod;
 \new(d) {
     data={}||d;
 }
+\fromArray(array) {//2-dim
+    for (var i,row in array) {
+        for (var j,val in row) {
+            set(j,i,val);
+        }
+    }
+}
+\toArray() {
+    var res=[];
+    for (var i=ymin ; i<=ymax; i++) {
+        var row=[];
+        res.push(row);
+        for (var j=xmin ; j<=xmax; j++) {
+            row.push(get(j,i));
+        }
+    }
+    return res;
+}
 \load(csvFile) {
     var f=file(csvFile);
     var x=0,y=0;
