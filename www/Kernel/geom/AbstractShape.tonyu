@@ -41,3 +41,9 @@ var _layer; // should be REAL layer(not group)
 \screen {
     return (layer && layer.screen) || $Screen;
 }
+/*override them
+\xmin {return x-width/2;}
+\xmax {return x+width/2;}
+\ymin {return y-height/2;}
+\ymax {return y+height/2;}
+*/

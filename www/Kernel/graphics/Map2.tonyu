@@ -5,8 +5,10 @@ native console;
 "field strict";
 var chipWidth, chipHeight, row, col;
 var bufferSize;
-var bufAry;
+var bufMat;
 var chipLayers, mapObj;
+var _expand, _wallFilter;
+
 \getChipLayer(name) {
     for (var mp of chipLayers) {
         if (mp.name===name) return mp;
@@ -14,13 +16,37 @@ var chipLayers, mapObj;
     return null;
 }
 \addChipLayer(name) {
-    var res=[];
+    var res=new Matrix;
     res.name=name;
     chipLayers.push(res);
     return res;
 }
+\expand=v {
+    switch (typeof v) {
+        case "string":
+        v=v.split(/\s*[\s,]\s*/);
+        // fallthrough
+        case "object":
+        if (v.join) {
+            _expand={};
+            for (var k of v) _expand[k]=true;
+        } else {
+            _expand=v;
+        }
+        break;
+    }
+    if (_expand.all) _expand={row:true, col:true};
+    if (_expand.row) {_expand.top=_expand.bottom=true;}
+    if (_expand.col) {_expand.left=_expand.right=true;}
+    //print (_expand.bottom, _expand.right);
+}
+\expand {
+    return _expand;
+}
 \new (param){
+    _expand={};
     chipLayers=[];
+    param=param||{};
     bufferSize=param.bufferSize||1024;
     alpha=255;
     super(param);
@@ -32,21 +58,25 @@ var chipLayers, mapObj;
     if (typeof col!=="number") col=$screenWidth/chipWidth;
     if (typeof row!=="number") row=$screenHeight/chipHeight;
     parseBufferSize();
-    col=floor(col);row=floor(row);
-    bufAry=createBuf(col*chipWidth,row*chipHeight);
+    if (typeof col==="number") {
+        col=floor(col);
+    } else {
+        col=0;
+        expand.right=true;
+    }
+    if (typeof row==="number") {
+        row=floor(row);
+    } else {
+        row=0;
+        expand.bottom=true;
+    }
+    bufMat=new Matrix;
+    //bufAry=createBuf(col*chipWidth,row*chipHeight);
     mapObj=true;
     addChipLayer("base");
     addChipLayer("on");
-    for (var ml of chipLayers) {
-        for(var j=0;j<row;j++){
-            var rows = [];
-            for(var i=0;i<col;i++){
-                rows.push(-1);
-            }
-            ml.push(rows);
-        }
-    }
-    initMap();
+    setWallFilter{layer:"on"};
+    //initMap();
 }
 \setPivot(x,y) {
     align=["left","top",x,y];
@@ -66,35 +96,28 @@ var chipLayers, mapObj;
     bufferSize.w=fitSize(bufferSize.w,chipWidth);
     bufferSize.h=fitSize(bufferSize.h,chipHeight);
 }
-\createBuf(width,height){
-    var rh=floor(height); // remaining Height
-    var ary=[];
-    for(var j=0;0<rh;j++){
-        var a=[];
-        var h=rh;
-        if(rh>bufferSize.h) h=bufferSize.h;
-        if(rh<2) h=2;
-        var rw=floor(width); // remaining Width
-        for(var i=0;0<rw;i++){
-            var w=rw;
-            if(rw>bufferSize.w) w=bufferSize.w;
-            if(rw<2) w=2;
-            a.push($("<canvas>").attr{width:w,height:h});
-            rw-=bufferSize.w;
-        }
-        ary.push(a);
-        rh-=bufferSize.h;
+\getBuf(col, row) {
+    var w=bufferSize.w;
+    var h=bufferSize.h;
+    var cPerBuf= floor(w/chipWidth);
+    var rPerBuf= floor(h/chipHeight);
+    var bx=floor(col/cPerBuf);
+    var by=floor(row/rPerBuf);
+    var canvas=bufMat.get(bx,by);
+    if (!canvas) {
+        canvas=$("<canvas>").attr{width:w,height:h};
+        bufMat.set(bx,by, canvas);
     }
-    // console.log(this);
-    // console.log(ary);
-    return ary;
+    return {
+        canvas,
+        left: (col%cPerBuf)*chipWidth,
+        top: (row%rPerBuf)*chipHeight,
+    };
 }
 \initMap(){
-    //if(!mapTable) return;
-    //if(!mapOnTable) return;
     for(var i=0;i<row;i++){
         for(var j=0;j<col;j++){
-            setAll(j,i);
+            redrawChip(j,i);
         }
     }
 }
@@ -102,7 +125,8 @@ var chipLayers, mapObj;
     return redraw();
 }
 \redraw(){
-    bufAry=createBuf(col*chipWidth,row*chipHeight);
+    bufMat=new Matrix;
+    //bufAry=createBuf(col*chipWidth,row*chipHeight);
     initMap();
 }
 
@@ -123,36 +147,35 @@ var chipLayers, mapObj;
     }
     var baseData=dataFile.obj();
     var mapTable=baseData[0];
-    mapTable.name="base";
-    row=mapTable.length;
-    col=mapTable[0].length;
     var mapOnTable=baseData[1];
-    mapOnTable.name="on";
-    chipLayers=[mapTable, mapOnTable];
+    var mapMat=new Matrix;
+    mapMat.fromArray(mapTable);
+    mapMat.name="base";
+    var mapOnMat=new Matrix;
+    mapOnMat.fromArray(mapOnTable);
+    mapOnMat.name="on";
+    chipLayers=[mapMat, mapOnMat];
+    row=col=0;
+    for (var chipLayer of chipLayers) {
+        if (chipLayer.xmax+1>row) row=chipLayer.xmax+1;
+        if (chipLayer.ymax+1>col) col=chipLayer.ymax+1;
+    }
+    //print(row);
     if (baseData[2]) chipWidth=(baseData[2]-0)||chipWidth||32;
     if (baseData[3]) chipHeight=(baseData[3]-0)||chipHeight||32;
     redraw();
 }
 \save(saveFileName) {
+    //print(row);
     var saveDataFile=resolve(saveFileName);//file("../maps/").rel(saveFileName);
-    var data=[chipLayers[0],chipLayers[1],chipWidth,chipHeight];
+    var data=[chipLayers[0].toArray(),chipLayers[1].toArray(),chipWidth,chipHeight];
     saveDataFile.obj(data);
 }
-\setAll(setCol,setRow){
-    if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;
-    /*var oldP=mapTable[setRow][setCol];
-    var oldOnP=mapOnTable[setRow][setCol];
-    mapTable[setRow][setCol]=p;
-    mapOnTable[setRow][setCol]=onP;*/
-    var x1=floor(setCol*chipWidth/bufferSize.w);
-    var y1=floor(setRow*chipHeight/bufferSize.h);
-    var hs=bufAry.length;
-    var j=y1;
-    var ws=bufAry[j].length;
-    var i=x1;
-    var drawX = setCol*chipWidth-i*bufferSize.w;
-    var drawY = setRow*chipHeight-j*bufferSize.h;
-    var cv=bufAry[j][i];
+\redrawChip(setCol,setRow){
+    var buf=getBuf(setCol, setRow);
+    var cv=buf.canvas;
+    var drawX=buf.left;
+    var drawY=buf.top;
     if (!cv) return;
     var ctx=cv[0].getContext("2d");
     if (!ctx) return;
@@ -160,7 +183,7 @@ var chipLayers, mapObj;
     ctx.clearRect(drawX,drawY,chipWidth,chipHeight);
     // draw set
     for (var l of chipLayers) {
-        var p=l[setRow][setCol];//Math.floor(p);
+        var p=l.get(setCol, setRow);//Math.floor(p);
         var pImg=$imageList[p];
         if (pImg) {
             ctx.save();
@@ -172,27 +195,153 @@ var chipLayers, mapObj;
     }
 }
 \setWithLayerName(name, setCol, setRow , p) {
-    if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;
+    if(setCol>=col && !_expand.right
+    || setRow>=row && !_expand.bottom
+    || setCol<0 && !_expand.left
+    || setRow<0 && !_expand.top) {
+        //print (setCol, _expand.right);
+        return;
+    }
     var l=getChipLayer(name);
     if (!l) throw new Error("No such chipLayer "+name);
-    l[setRow][setCol]=p;
-    setAll(setCol,setRow);
+    if (setRow>=row) row=setRow+1;
+    if (setCol>=col) col=setCol+1;
+    l.set(setCol, setRow, p);
+    //print(row,col);
+    redrawChip(setCol,setRow);
+}
+\range(options) {
+    if (!col || !row) return [];
+    options=options||{xmin:0,ymin:0, xmax:col-1, ymax:row-1};
+    if (options.getCrashShape) {
+        var s=options.getCrashShape();
+        options={
+            world:true,
+            xmin: s.xmin,
+            xmax: s.xmax,
+            ymin: s.ymin,
+            ymax: s.ymax,
+        };
+    }
+    var world=options.world;
+    var left=n(options.left, options.xmin, options.col, options.x);
+    var top= n(options.top, options.ymin,  options.row, options.y);
+    var right= n(options.right, options.xmax, left+options.width-1, left);
+    var width= n(options.width, right-left+1);
+    var bottom= n(options.bottom, options.ymax, top+options.height-1, top);
+    var height= n(options.height, bottom-top+1);
+    if (world) {
+        var lt=worldToChip{x:left, y:top};
+        left=lt.x;
+        top=lt.y;
+        var rb=worldToChip{x:right, y:bottom};
+        right=rb.x;
+        bottom=rb.y;
+    }
+    var res=[];
+    for (var i=top;i<=bottom;i++) {
+        for (var j=left; j<=right; j++) {
+            res.push{
+                x:j, y:i,
+                row:i, col:j,
+                left:j,top:i
+            };
+        }
+    };
+    return res;
+
+    \n() {
+        var a=Array.prototype.slice.call(arguments);
+        while(a.length) {
+            var v=a.shift();
+            if (typeof v==="number" && v===v) return v;
+        }
+    }
+}
+\crashTo(actor, p) {
+    var r=range(actor);
+    var f=_wallFilter;
+    /*if (typeof p==="number") {
+        f=\(x,y) {
+            get
+        }
+    }*/
+    for (var re of r) {
+        if (f(re.x,re.y,this)) {
+            return re;
+        }
+    }
+    return null;
+}
+\isWallAt(x,y) {
+    var o=worldToChip(x,y);
+    return isWall(o.x, o.y);
+}
+\isWall(cx,cy) {
+    return _wallFilter(cx,cy,this);
+}
+\setWallFilter(options) {
+    // wf{layer:"on"};   set anything other than -1 in "on" as wall
+    // wf{layer:["on","mylayer"]};   set anything other than -1 in "on" and "mylayer" as wall
+    // wf{wall:p1};     set only p1 in any chiplayer as wall
+    // wf{wall:[p1,p2]};     set p1 and p2 in any chiplayer as wall
+    // wf{path:p1};   set other than p1 in any chiplayer as wall(-1 is not path in default)
+    // wf(x,y,map=>boolean)
+    if (typeof options==="function") {
+        _wallFilter=options;
+        return;
+    }
+    var wall=options.wall;
+    var path=options.path;
+    var layer=options.layer;
+    if (wall==null && path==null) {
+        path=[-1];
+    }
+    if (typeof wall==="number") wall=[wall];
+    if (typeof path==="number") path=[path];
+    if (typeof layer==="string") layer=[layer];
+    var targetChipLayers;
+    if (layer) {
+        targetChipLayers=chipLayers.filter\(chipLayer) {
+            return layer.indexOf(chipLayer.name)>=0;
+        };
+    } else {
+        targetChipLayers=chipLayers;
+    }
+    if (wall!=null) {
+        _wallFilter=\(x,y,map) {
+            return has(x,y,wall,targetChipLayers);
+        };
+    }
+    if (path!=null) {
+        _wallFilter=\(x,y,map) {
+            return !has(x,y,path,targetChipLayers);
+        };
+    }
 }
 \set(setCol,setRow,p){
     setWithLayerName("base",setCol,setRow,p);
-    //if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;
-    //setAll(setCol,setRow,p,mapOnTable[setRow][setCol]);
 }
 \setOn(setCol,setRow,onP){
-    setWithLayerName("on",setCol,setRow,p);
-    //if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;
-    //setAll(setCol,setRow,mapTable[setRow][setCol],onP);
+    setWithLayerName("on",setCol,setRow,onP);
 }
 \worldToChip(o) {
     var l=transform.worldToLocal(o);
     //print(l.x, l.y);
     var r=getDrawRect();
     return {x:Math.floor((l.x-r.left)/chipWidth),y:Math.floor((l.y-r.top)/chipHeight)};
+}
+\chipToWorld(x,y) {
+    var o=x;
+    if (typeof x==="number") {
+        o={x,y};
+    }
+    var r=getDrawRect();
+    var co={
+        x=r.left+o.x*chipWidth+chipWidth/2,
+        y=r.top+o.y*chipHeight+chipHeight/2,
+    };
+    return transform.localToWorld(co);
 }
 \setOnAt(x,y,p){
     var l=worldToChip{x,y};
@@ -206,12 +355,13 @@ var chipLayers, mapObj;
     if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return -1;
     var l=getChipLayer(name);
     if (!l) throw new Error("No such chipLayer "+name);
-    return l[setRow][setCol];
+    var r=l.get(setCol, setRow);
+    return r==null ? -1: r;
 }
 \get(getCol,getRow){
     return getWithLayerName("base",getCol,getRow);
 }
-\getAt(y){
+\getAt(x,y){
     var l=worldToChip{x,y};
     return get(l.x, l.y);
 }
@@ -221,6 +371,20 @@ var chipLayers, mapObj;
 \getOnAt(x,y){
     var l=worldToChip{x,y};
     return getOn(l.x,l.y);
+}
+\has(x,y,p, targetChipLayers) {
+    targetChipLayers=targetChipLayers||chipLayers;
+    if (typeof p==="number") p=[p];
+    for (var chipLayer of targetChipLayers) {
+        if (p.indexOf(getWithLayerName(chipLayer.name, x,y))>=0) {
+            return chipLayer.name;
+        }
+    }
+    return null;
+}
+\hasAt(x,y,p,targetChipLayers) {
+    var l=worldToChip{x,y};
+    return has(l.x, l.y, p , targetChipLayers);
 }
 \scrollTo(scrollX,scrollY){
     x=-scrollX;
@@ -233,55 +397,41 @@ var chipLayers, mapObj;
     return r;
 }
 \draw(ctx) {
-    //var lay=$Screen.findLayer(layer);
-    //console.log("lay",lay);
-    /*var lsx=lay.spx; // Screen pivot x
-    var lsy=lay.spy; // Screen pivot y
-    var lwx=lay.wpx; // World pivot x
-    var lwy=lay.wpy; // World pivot y*/
-    //var ls=(typeof lay.scale=="number")? lay.scale : 1; // layer scale
-    //var lr=(typeof lay.rotation=="number")? lay.rotation : 0; // layer rotation
-    var hs=bufAry.length;
     var sum=0;
     var r=getDrawRect();
     var sx=r.left;
     var sy=r.top;
     ctx.save();
     performTransform(ctx);
-    for(var j=0;j<hs;j++){
-        var ws=bufAry[j].length;
-        for(var i=0;i<ws;i++){
-            var pCv=bufAry[j][i];
-            if (!pCv) return;
-            var pCtx=pCv[0];
-            if (!pCtx) return;
-            var dx=sx+i*bufferSize.w; // Split Map x
-            var dy=sy+j*bufferSize.h; // Split Map y
-            var dw=pCtx.width;    // Split Map width
-            var dh=pCtx.height;   // Split Map height
-            /*var mx1=lsx+(dx-lwx);    // Map draw x1 (left)
-            var my1=lsy+(dy-lwy);    // Map draw y1 (top)
-            var mx2=lsx+(dx-lwx+dw); // Map draw x2 (right)
-            var my2=lsy+(dy-lwy+dh); // Map draw y2 (buttom)*/
-            //if(lr!=0 || (0<=mx2 && mx1<$screenWidth && 0<=my2 && my1<$screenHeight)){
-            ctx.globalAlpha=alpha/255;
-            //ctx.fillStyle="red";
-            //ctx.fillRect(dx,dy,dw,dh);
-            ctx.drawImage(
-            pCtx, 0, 0, dw, dh,
-            dx, dy, dw, dh);
-                // if ((i+j)%2==1) {
-                //     var ga = ctx.globalAlpha;
-                //     var fi = ctx.fillStyle;
-                //     ctx.globalAlpha = 0.125;
-                //     ctx.fillStyle = "rgb(255, 255, 0)";
-                //     ctx.fillRect(dx, dy, dw, dh);
-                //     ctx.globalAlpha = ga;
-                //     ctx.fillStyle = fi;
-                // }
-            sum++;
-            //}
-        }
+    for (var j,i,pCv of bufMat.keysIterator()) {
+        var pCtx=pCv[0];
+        if (!pCtx) return;
+        var dx=sx+j*bufferSize.w; // Split Map x
+        var dy=sy+i*bufferSize.h; // Split Map y
+        var dw=pCtx.width;    // Split Map width
+        var dh=pCtx.height;   // Split Map height
+        ctx.globalAlpha=alpha/255;
+        ctx.drawImage(
+        pCtx, 0, 0, dw, dh,
+        dx, dy, dw, dh);
+        sum++;
     }
     ctx.restore();
+}
+\chipToActor(options) {
+    var p=options.p, klass=options.class, params=options.params||{};
+    if (typeof p==="number") {
+        p=[p];
+    }
+    for (var r of range()) {
+        var n=has(r.x, r.y, p);
+        if (n) {
+            var w=chipToWorld(r);
+            params.x=w.x;
+            params.y=w.y;
+            params.p=getWithLayerName(n,r.x, r.y);
+            new klass(params);
+            setWithLayerName(n, r.x, r.y,-1);
+        }
+    }
 }
