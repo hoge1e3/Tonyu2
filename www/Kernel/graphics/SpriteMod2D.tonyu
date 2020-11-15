@@ -66,7 +66,7 @@ nowait \drawAsText(ctx) {
     ctx.save();
     performTransform(ctx);
     ctx.fillStyle=fillStyle+"";
-    if (radius) {
+    if (radius && radius>0) {
         ctx.beginPath();
         ctx.arc(0,0,radius,0,2*Math.PI);
         ctx.fill();
