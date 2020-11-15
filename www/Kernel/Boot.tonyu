@@ -132,6 +132,7 @@ mainLoop();
         var a=$Screen.multiLayerTouches.findActor(shape);
         if (a) {
             e.actor=a;
+            f.layer=a.layer;
             a.fireEvent("touch",e);
         }
     };
