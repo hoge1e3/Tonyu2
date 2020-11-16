@@ -93,12 +93,7 @@ $(function () {
     const em=RealtimeErrorMarker(ide);
     KeyEventChecker.down(document,"F9",F(run));
     KeyEventChecker.down(document,"F2",F(stop));
-    KeyEventChecker.down(document,"ctrl+s",F(save));/*function (e) {
-    	save();
-    	e.stopPropagation();
-    	e.preventDefault();
-    	return false;
-    }));*/
+    KeyEventChecker.down(document,"ctrl+s",F(save));
     $(window).resize(F(onResize));
     $("body")[0].spellcheck=false;
     sh.cd(curPrjDir);
@@ -335,6 +330,7 @@ $(function () {
         run("kernel.MapEditor");
     }));
     $("#search").click(F(dialogs.search));
+    KeyEventChecker.down(document,"ctrl+t",F(dialogs.search));
     function fixEditorIndent(prog) {
         var cur=prog.getCursorPosition();
         var orig=prog.getValue();
