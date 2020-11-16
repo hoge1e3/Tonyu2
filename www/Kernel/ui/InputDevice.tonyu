@@ -1,6 +1,7 @@
 extends null;
 includes EventMod;
 native $;
+native console;
 native document;
 native window;
 native Tonyu;
@@ -37,6 +38,7 @@ native T2MediaLib;
     var ID_MOUSE=31238612;
     var bmap=[1,4,2];
     $handleMouseDown=\(e) {
+        debug("mouseDown", $InputDevice.touchEmu);
         mouseDownAtCV=true;
         Tonyu.resetLoopCheck();
         if ($t2MediaLib) $t2MediaLib.activate();
@@ -102,6 +104,7 @@ native T2MediaLib;
         handleListeners();
     };
     $handleMouseUp=\(e) {
+        debug("mouseUp", $InputDevice.touchEmu);
         Tonyu.resetLoopCheck();
         if ($t2MediaLib) $t2MediaLib.activate();
         if (mouseDownAtCV) e.preventDefault();
@@ -162,4 +165,12 @@ native T2MediaLib;
 
 \update() {
     return touch.updateFingers();//---T
+}
+\debug() {
+    if (debugFlag) {
+        console.log.apply(console, arguments);
+    }
+}
+\reset() {
+    touch.reset();
 }

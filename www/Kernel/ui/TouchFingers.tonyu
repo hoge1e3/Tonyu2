@@ -114,3 +114,8 @@ native console;
         t.update();
     }
 }
+\reset(){
+    for (var t of fingerArray) {
+        t.reset();
+    }
+}

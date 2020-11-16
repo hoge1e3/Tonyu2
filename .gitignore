@@ -34,3 +34,4 @@ node_modules/
 /download/*
 Samples/GamePad/.desktop
 Samples/GamePad/images/icon_thumbnail.png
+Runtimes/MapEditor2

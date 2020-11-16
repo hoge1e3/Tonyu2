@@ -84,6 +84,9 @@ define(["UI","R","root"],function (UI,R,root) {
         try {
             root.Tonyu.globals.$Scheduler.resetLastSteps();
         }catch(e){}
+        try {
+            root.Tonyu.globals.$InputDevice.reset();
+        }catch(e){}
     };
     //---
     UIDiag.prompt=function (mesg,value,geom) {
