@@ -10,6 +10,8 @@ var spx,spy,camera,screen;
     spy=spy||$screenHeight/2;
 }
 \draw(c2) {
+    spx=$screenWidth/2;
+    spy=$screenHeight/2;
     var c3=new Context3D{camera};
     group.draw3D(c3);
     var s2ds=c3.sprites2D.sort \(a,b) {
@@ -24,6 +26,8 @@ var spx,spy,camera,screen;
     c2.restore();
 }
 \world2screen(obj) {// world<=>group
+    spx=$screenWidth/2;
+    spy=$screenHeight/2;
     var r=camera.to2D(camera.transform.inverse.childToSibling(obj));
     r.x+=spx;
     r.y+=spy;
