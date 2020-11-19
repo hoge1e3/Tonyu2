@@ -900,6 +900,12 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         sinT = [], //:array [0..sinMAX-1] of ShortInt;
         TTL, //:Integer;
         cnt=0; //:Integer;// debug
+    function defaultBufferTime() {
+        if (window.navigator.userAgent.match(/Android/)) {
+            return 1/2;
+        }
+        return 1/30;
+    }
     var defs;
     var TEnveloper = Klass.define(defs={ //class (TSoundGenerator)
         $this: true,
@@ -922,7 +928,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             //L2WL: log 2 WaveLength
             PCMW: Array, // [0..PCMWavs-1] of TWavLoader,
 
-            Delay: Integer,
+            //Delay: Integer,
 
             Tempo: Integer,
             ComStr: String,
@@ -1076,7 +1082,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             //t.initNode({});
             //t.WavPlaying=false;
             // inherited Create (Handle);
-            t.Delay = 2000;
+            //t.Delay = 2000;
             t.Pos = t.PrevPos = t.RPos = /*t.WriteAd =*/ t.SeqTime =
             t.SeqTime120 = 0;
             t.BeginPlay=false;
@@ -1096,7 +1102,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             }
             t.resetChannelStates();
             t.Fading = FadeMax;
-            t.timeLag = 2000;
+            //t.timeLag = 2000;
 
             t.WriteMaxLen = 20000;
             t.wavoutContext = False;
@@ -1105,7 +1111,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             t.WavOutObj=nil;
              {$endif}*/
             t.ComStr = '';
-            t.bufferTime=1/30;
+            t.bufferTime=options.bufferTime || defaultBufferTime();
             t.performance={timeForChProc:0, timeForWrtSmpl:0};
             if (options.source) {
                 for (i=0;i<Chs;i++) {
@@ -1374,9 +1380,10 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             return true;
         },
         handleAllState: function (t) {
-            var allWait=true,allStop=true,i;
+            var allWait=true,allStop=true,i,endCtxTime=0;
             for(i=0;i<Chs;i++) {
-                switch (t.channels[i].PlayState) {
+                var c=t.channels[i];
+                switch (c.PlayState) {
                 case psPlay:
                     allWait=false;
                     allStop=false;
@@ -1384,6 +1391,12 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                 case psWait:
                     allStop=false;
                     break;
+                case psStop:
+                    if (typeof c.endCtxTime==="number") {
+                        if (c.endCtxTime>endCtxTime) {
+                            endCtxTime=c.endCtxTime;
+                        }
+                    }
                 }
             }
             //          alw     als
@@ -1399,7 +1412,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                     t.RestartMML(i);
                 }
             }
-            return allStop;
+            return allStop ? {endCtxTime} : false;
         },
         allStopped: function (t) {
             for(var i=0;i<Chs;i++) {
@@ -1619,9 +1632,9 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             cnt++;
             //var tempoK=SPS / t.sampleRate ;
             var startTime=new Date().getTime();
-            if (t.allStopped()) {
+            /*if (t.allStopped()) {
                 return;
-            }
+            }*/
             var SeqTime=t.SeqTime,lpchk=0,chn;
             var nextSeqTime=SeqTime+t.convertDeltaTime(lengthInCtx, DU_CTX, DU_SEQ);
             var chPT=now();
@@ -1794,6 +1807,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                             if (wctx) {
                                 wctx.channels[ch].endCtxTime=curCtxTime;
                             }
+                            chn.endCtxTime=curCtxTime;
                             t.StopMML(ch); //MPoint[ch]=nil;
                             break;
                         default:
@@ -1804,7 +1818,11 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                 }
                 // End Of MMLProc
             }
-            if (t.handleAllState()) t.Stop();
+            const stopTiming=t.handleAllState();
+            if (stopTiming) {
+                if (t.context.currentTime>stopTiming.endCtxTime) t.Stop();
+                //else console.log(t.context.currentTime,stopTiming);
+            }
             t.SeqTime= nextSeqTime;// Math.floor( t.Tempo * (length/120) * tempoK*t.rate );
             t.trackTime += t.convertDeltaTime(lengthInCtx  , DU_CTX, DU_TRK);// length/t.sampleRate*t.rate;
             t.contextTime+= lengthInCtx;
@@ -1933,13 +1951,13 @@ function (Klass,SEnv,WDT2,_) {
             t.Mezonet=Mezonet;
             t.load(array);
         },
-        playback: function (t,context) {
-            return new Mezonet.Playback(context, {
+        playback: function (t,context,options={}) {
+            return new Mezonet.Playback(context, Object.assign(options,{
                 source:t,
                 //chdata:t.chdata,
                 WaveDat:Mezonet.WDT.WaveDat,
                 EnvDat: Mezonet.WDT.EnvDat
-            });
+            }));
         },
         load:function (t,d) {
             var ver=readLong(d);
