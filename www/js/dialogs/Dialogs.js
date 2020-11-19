@@ -51,7 +51,7 @@ define(function (require, exports, module) {
                     ide.fileList.select(info.file);
                     setTimeout(function () {
                         var prog=getCurrentEditor();
-                        if (prog) prog.gotoLine(info.lineNo);
+                        if (prog && info.lineNo>=0) prog.gotoLine(info.lineNo);
                     },50);
                 });
             },

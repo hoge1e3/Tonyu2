@@ -5,11 +5,14 @@ define(["UI","Shell","R"], function (UI,sh,R) {
         d.dialog({width:600});
     };
     res.embed=function (ide, onLineClick) {
+        const files=ide.project.sourceFiles();
         if (!res.d) {
             res.d=UI("div",{title:R("find")},
                     ["div",
                      ["span",R("wordToFind")],
-                     ["input",{$edit:"word",on:{enterkey:function () {
+                     ["input",{$var:"word",$edit:"word",on:{input: function () {
+                         res.d.fileNames();
+                     },enterkey:function () {
                          res.d.start();
                      }}}]],
                      ["div", {$var:"validationMessage", css:{color:"red"}}],
@@ -21,10 +24,33 @@ define(["UI","Shell","R"], function (UI,sh,R) {
             );
         }
         var d=res.d;
-        var model={word:""};
-        d.$edits.load(model);
+        var word=res.d.$vars.word;
+        //var model={word:""};
+        //d.$edits.load(model);
+        d.fileNames=function () {
+            d.$vars.searchRes.empty();
+            const doLineClickF=l=>()=>doLineClick(l);
+            for (let fileName in files) {
+                const file=files[fileName];
+                /*console.log(file.truncExt().toLowerCase(),
+                model.word.toLowerCase(),
+                file.truncExt().toLowerCase().indexOf(model.word.toLowerCase()));*/
+                if (file.truncExt().toLowerCase().indexOf(word.val().toLowerCase())>=0) {
+                    const file=files[fileName];
+                    const lineNo=-1;
+                    const line=R("filenameMatched");
+                    d.$vars.searchRes.append(
+                            UI("tr",
+                                    ["td",{on:{click:doLineClickF({file,lineNo,line})}},file.name()],
+                                    ["td",{on:{click:doLineClickF({file,lineNo,line})}},line]
+                            ));
+                }
+            }
+            function doLineClick(l) {
+                if (onLineClick) onLineClick(l);
+            }
+        };
         d.start=function () {
-            const files=ide.project.sourceFiles();
             d.$vars.searchRes.empty();
             const doLineClickF=l=>()=>doLineClick(l);
             for (let fileName in files) {
@@ -32,7 +58,7 @@ define(["UI","Shell","R"], function (UI,sh,R) {
                 let lineNo=0;
                 for (let line of file.lines()) {
                     lineNo++;
-                    if (line.indexOf(model.word)<0) continue;
+                    if (line.indexOf(word.val())<0) continue;
                     d.$vars.searchRes.append(
                             UI("tr",
                                     ["td",{on:{click:doLineClickF({file,lineNo,line})}},file.name()+"("+lineNo+")"],

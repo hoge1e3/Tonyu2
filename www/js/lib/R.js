@@ -177,6 +177,7 @@ $(".dropdown-toggle");
         "destinationFolder": "フォルダ(省略可)",
         "Open_URL": "別ウィンドウで開きます",
         "UseRightClick":"※リンクが開かない場合、右クリックか長押しで新しいタブを開くか、URLをコピーしてください。",
+        "filenameMatched": "(ファイル名の一致)",
     };
     /*let buf="";
     for (let k of Object.keys(ja)) {
