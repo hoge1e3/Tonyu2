@@ -25,6 +25,7 @@ define(["UI","Shell","R"], function (UI,sh,R) {
         }
         var d=res.d;
         var word=res.d.$vars.word;
+        word.val("");
         //var model={word:""};
         //d.$edits.load(model);
         d.fileNames=function () {

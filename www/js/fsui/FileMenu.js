@@ -31,7 +31,7 @@ module.exports=function (ide) {
     FM.dialogOpt=function (options) {
     	var title=options.title;
     	var name=options.name || "";
-    	var onend=options.onend || function (){};
+        var onend=options.onend || function (){};
         //var t;
         if (!FM.d) FM.d=UI(["div"], {title: title},
              ["div",R("inputFileName")],
@@ -78,7 +78,9 @@ module.exports=function (ide) {
         v.chg=function (file,dir) {
             r=fixName(file,dir);
             if (r.ok && r.file.exists()) r={ok:false, reason:R("fileExists",r.file.name())};
-            if (r.ok && files[r.file.truncExt()]) r={ok:false, reason:R("fileExistsInOtherFolder",r.file.name())};
+            if (r.ok && files[r.file.truncExt()] && options.action!=="mv") {
+                r={ok:false, reason:R("fileExistsInOtherFolder",r.file.name())};
+            }
             if (r.ok && !r.file.up().exists()) {
                 r.note=(r.note||"")+R("ThisFolderWillBeCreated");
             }
@@ -115,7 +117,7 @@ module.exports=function (ide) {
         if (!curFile) return;
         var oldName=displayName(curFile);
         refreshFiles();
-        FM.dialogOpt({title:R("renameFile"), name:oldName, action:"mv", extraUI:mvExtraUI, onend:async function (nf) {
+        FM.dialogOpt({title:R("renameFile"), name:oldName, curFile, action:"mv", extraUI:mvExtraUI, onend:async function (nf) {
             if (!nf) return;
             const doRefactor=curFile.name()!==nf.name() && refactorUI.$vars.chk.prop("checked");
             if (doRefactor) {
