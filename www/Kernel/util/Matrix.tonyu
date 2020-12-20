@@ -13,10 +13,10 @@ includes MathMod,EventMod,FileMod;
 }
 \toArray() {
     var res=[];
-    for (var i=ymin ; i<=ymax; i++) {
+    for (var i=0 ; i<=ymax; i++) {
         var row=[];
         res.push(row);
-        for (var j=xmin ; j<=xmax; j++) {
+        for (var j=0 ; j<=xmax; j++) {
             row.push(get(j,i));
         }
     }
@@ -249,6 +249,27 @@ includes MathMod,EventMod,FileMod;
                 d=data(j,i);
             }
             set(j,i,d);
+        }
+    }
+}
+\pack() {
+    var t;
+    t=xmin;    xmin=xmax;    xmax=t;
+    t=ymin;    ymin=ymax;    ymax=t;
+    for (var k,v in data) {
+        var xy=unkey(k);
+        var x=xy.x, y=xy.y;
+        if (x<xmin) {
+            xmin=x;
+        }
+        if (y<ymin) {
+            ymin=y;
+        }
+        if (x>xmax) {
+            xmax=x;
+        }
+        if (y>ymax) {
+            ymax=y;
         }
     }
 }

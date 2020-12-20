@@ -9,7 +9,7 @@ var clickedEffect, disabledEffect;
 var disabled, key,autoRepeat;
 var onClick;
 var clickTiming;
-var _clicked,_arth;
+var _clicked,_arth,__binited,_x,_y;
 
 \clickedStyle {
     return (clickedEffect && clickedEffect.strokeStyle);
@@ -33,7 +33,7 @@ var _clicked,_arth;
 }
 
 \new(options) {
-    options=options||{top:50};
+    options=options||{};
     options.layer=options.layer||$frontLayer;
     super(options);
     fillStyle=fillStyle||"rgb(179,255,142)";
@@ -42,9 +42,13 @@ var _clicked,_arth;
     padding= typeof(padding)=="number"?padding:5;
     width = width || $screenWidth-100;
     height = height || 50;
-    left=typeof(left)=="number"?left:50;
+    left=typeof(left)=="number"?left:typeof(x)=="number"? x- width/2:50;
+    top =typeof(top) =="number"?top :typeof(y)=="number"? y-height/2:50;
+    x=left+width/2;
+    y=top+height/2;
     clickedEffect=clickedEffect||{strokeStyle:"white"};
     disabledEffect=disabledEffect||{strokeStyle:"#ddd"};
+    __binited=true;
 }
 \curEffect {
     var base={
@@ -163,4 +167,20 @@ on("touch") \(touchEvent) {
 \clicked {
     if (!_clicked) return 0;
     return $frameCount-_clicked+1;
+}
+\x {
+    if (__binited) _x=left+width/2;
+    return _x;
+}
+\x=val {
+    if (__binited) left+=(val-x);
+    _x=val;
+}
+\y {
+    if (__binited) _y=top+height/2;
+    return _y;
+}
+\y=val {
+    if (__binited) top+=val-y;
+    _y=val;
 }
