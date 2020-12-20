@@ -20,7 +20,7 @@ define(function (require, exports, module) {
             return r;
         }
         fire(...args) {
-            console.log("INVOKE", args);
+            //console.log("INVOKE", args);
             for (let f of this.funcs) f(...args);
         }
     }
