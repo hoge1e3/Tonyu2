@@ -418,7 +418,7 @@ var T2MediaLib = (function(){
         }
         if (isMezonetSource(soundData.decodedData)) {
             var playback=soundData.decodedData.playback(this.context);
-            playback.Start();
+            playback.Start({volume:typeof vol==="number"?vol:1});
             return playback;
         }
 

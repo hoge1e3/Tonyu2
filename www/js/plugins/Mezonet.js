@@ -1167,8 +1167,9 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             this.buf = this.context.createBuffer(channel, wdataSize, this.sampleRate);
             return this.buf;
         },*/
-        playNode: function (t) {
+        playNode: function (t, options) {
             if (this.isSrcPlaying) return;
+            options=options||{};
             t.masterGain=t.context.createGain();
             t.masterGain.connect(t.context.destination);
             for (var i=0;i<Chs;i++) {
@@ -1176,6 +1177,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                 chn.gainNode=t.context.createGain();
                 chn.gainNode.connect(t.masterGain);
             }
+            if (typeof options.volume==="number") t.setVolume(options.volume);
             this.isSrcPlaying = true;
         },
         startRefreshLoop: function (t) {
@@ -1447,11 +1449,11 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             chn.MCount = t.SeqTime + 1;
         },
         //procedure TEnveloper.Start;
-        Start: function(t) {
+        Start: function(t, options) {
             t.Stop();
             t.Rewind();
             t.BeginPlay = True;
-            t.playNode();
+            t.playNode(options);
             t.playStartTime=t.context.currentTime;
             t.contextTime=t.playStartTime;
             t.startRefreshLoop();
@@ -1511,7 +1513,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             var onLine=t.context;
             t.context=new OfflineAudioContext(1,Math.floor(SPS*l.endTime),SPS);
             t.Rewind();
-            t.playNode();
+            t.playNode(options);
             t.contextTime=0;
             while(true) {
                 t.procChannels(1/60);
