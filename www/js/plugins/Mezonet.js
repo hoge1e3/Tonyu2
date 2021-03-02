@@ -813,6 +813,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         MLfoD = 118,
         MBaseVol = 119,
         MLabel = 120,
+        MWrtWav2 =121,
 
         Mend = 255,
 
@@ -853,6 +854,15 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             r+=ary[idx+3]*0x1000000;
             if (r>=0x80000000) r-=0x100000000;
             return r;
+        },
+        log2=function (len) {
+            let c=0;
+            // 1->1   2->2    4->3
+            while(len>0) {
+                len>>=1;
+                c++;
+            }
+            return c-1;
         },
         Integer = Number,
         sinMax_s = 5,
@@ -1574,9 +1584,9 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             chn.CurWav = n;
             if (n < WvC) {
                 chn.SccWave = t.WaveDat[n];
-                chn.L2WL = 5;
+                chn.L2WL = log2(chn.SccWave.length);// 5;
                 // Noise
-                if (n===WvC-1) chn.L2WL=10;
+                //if (n===WvC-1) chn.L2WL=10;
                 chn.Sync = False;
             } else {
                 if (t.PCMW[n - WvC] != nil) {
@@ -1718,6 +1728,16 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                             for (i = 0; i < 32; i++) {
                                 t.WaveDat[LParam][i] = WDT2Float( chn.MPoint[pc + 2 + i] );
                             }
+                            break;
+                        case MWrtWav2:
+                            const len=HParam+chn.MPoint[pc+3]*256;
+                            const l=chn.MPoint[pc + 4];// reserved, 1
+                            const wd=[];
+                            for (i = 0; i < len; i++) {
+                                wd.push(WDT2Float(chn.MPoint[pc+5+i]));
+                            }
+                            t.WaveDat[LParam]=wd;
+                            chn.MPointC += len+5; // MWrtWav2 wavno lenL lenH l data*len
                             break;
                         case MSelEnv:
                             chn.EShape = t.EnvDat[LParam];
