@@ -5,6 +5,7 @@
 extends Actor;
 
 \new(opt) {
+    opt=opt||{};
     super(opt);
 
     if (!buttonCnt && (version == null || version == 1) && $pat_inputPad != undefined) {
