@@ -322,3 +322,11 @@ function HSLToRGB(h, s, l) {
 
 	return rgb;
 }
+\name {
+	makeName();
+	return value.name;
+}
+\name=v {
+	value.name=v;
+	nameToRGB();
+}
