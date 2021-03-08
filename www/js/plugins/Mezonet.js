@@ -1144,8 +1144,8 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                 chn.Resting=0;
                 chn.Steps = 0;
                 chn.CurWav=0;
-                chn.SccWave = t.WaveDat[chn.CurWav];
-                chn.SccCount = 0;
+                //chn.SccWave = t.WaveDat[chn.CurWav];
+                //chn.SccCount = 0;
                 chn.CurEnv=0;
                 chn.EShape = t.EnvDat[chn.CurEnv];
                 chn.EVol = 0;
@@ -1233,7 +1233,8 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             if (t.waveBuffers[n]) return t.waveBuffers[n];
             var dat=t.WaveDat[n];
             if (!dat) return;
-            var mult=3;
+            var mult= 8-log2(dat.length);
+            if (mult<0) mult=0;
             var buflen=dat.length << mult ;
             var res=t.context.createBuffer(1,buflen, t.sampleRate);
             var chd=res.getChannelData(0);
@@ -1264,6 +1265,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             var steps=m2tInt[n] + chn.Detune * div(m2tInt[n], 2048);
             var SccCount_MAX=0x100000000;
             var source=chn.sourceNode;
+            //console.log(buflen, lambda);
             if (!iss|| !source) {
                 source=t.context.createBufferSource();
                 source.buffer=buf;
@@ -1582,19 +1584,19 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         SelWav: function(t, ch, n) {
             var chn=t.channels[ch];
             chn.CurWav = n;
-            if (n < WvC) {
+            /*if (n < WvC) {
                 chn.SccWave = t.WaveDat[n];
-                chn.L2WL = log2(chn.SccWave.length);// 5;
+                //chn.WL = chn.SccWave.length;// 5;
                 // Noise
                 //if (n===WvC-1) chn.L2WL=10;
                 chn.Sync = False;
             } else {
                 if (t.PCMW[n - WvC] != nil) {
                     chn.SccWave = t.PCMW[n - WvC].Start;
-                    chn.L2WL = t.PCMW[n - WvC].Log2Len;
+                    //chn.WL = t.PCMW[n - WvC].Len;
                     chn.Sync = True;
                 }
-            }
+            }*/
         },
         RegPCM: function (t,fn, n) {
             console.log("[STUB]regpcm",fn.map(function (e) {return String.fromCharCode(e);}),n);
@@ -1730,12 +1732,14 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                             }
                             break;
                         case MWrtWav2:
-                            const len=HParam+chn.MPoint[pc+3]*256;
-                            const l=chn.MPoint[pc + 4];// reserved, 1
+                            const lambda=HParam+chn.MPoint[pc+3]*256;
+                            const mul=chn.MPoint[pc + 4];
+                            const len=lambda*mul;
                             const wd=[];
                             for (i = 0; i < len; i++) {
                                 wd.push(WDT2Float(chn.MPoint[pc+5+i]));
                             }
+                            wd.lambda=lambda;
                             t.WaveDat[LParam]=wd;
                             chn.MPointC += len+5; // MWrtWav2 wavno lenL lenH l data*len
                             break;
@@ -1874,7 +1878,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             return res;
         },
         getTrackTime: function (t) {return t.trackTime;},
-        writeSamples: function (t,data,WriteAd,length) {
+        /*writeSamples: function (t,data,WriteAd,length) {
             var i, ch, v=0, Tmporc=0,chn,ad;
             var WrtEnd=WriteAd+length;
             for (ad=WriteAd; ad<WrtEnd; ad++) {
@@ -1937,7 +1941,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             //             playpos  LS            LE
             //                       +-------------+
 
-        }// of writeToArray
+        }// of writeToArray*/
     }); // of Klass.define
     /*var undefs={};
     function replf(_,name) {
