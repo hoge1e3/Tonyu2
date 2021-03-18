@@ -8,6 +8,12 @@ var T2MediaLib = (function(){
     function isMezonetSource(bgm) {
         return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Source;
     }
+    function isAudioBufferSourceNode(bgm) {
+        // return bgm instanceof AudioBufferSourceNode || bgm instanceof WebKitAudioBufferSourceNode; // 本来はこの処理にしたい
+        // Safari 14でAudioBufferSourceNodeがWebKitAudioBufferSourceNodeに変更されたように、
+        // WebAPIの名前変更は予測できないので、消去方で判定する
+        return bgm != null && !(isPicoAudio(bgm) || isMezonetSource(bgm))
+    }
     var T2MediaLib = function(_context) {
         this.context = null;
         this.picoAudio = null;
@@ -527,7 +533,7 @@ var T2MediaLib = (function(){
         return source;
     };
     T2MediaLib.prototype.stopSE = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         try {
             sourceObj.stop(0);
         } catch(e) { // iOS対策
@@ -552,29 +558,29 @@ var T2MediaLib = (function(){
         this.seMasterVolume = vol;
     };
     T2MediaLib.prototype.getSEVolume = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         return sourceObj.volumeValue;
     };
     T2MediaLib.prototype.setSEVolume = function(sourceObj, vol) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         sourceObj.gainNode.gain.value = vol * this.seMasterVolume * this.masterVolume;
         sourceObj.volumeValue = vol;
         return sourceObj;
     };
     T2MediaLib.prototype.getSERate = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         return sourceObj.playbackRate.value;
     };
     T2MediaLib.prototype.setSERate = function(sourceObj, rate) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         sourceObj.playbackRate.value = rate;
     };
     T2MediaLib.prototype.getSEPan = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         return sourceObj.panValue;
     };
     T2MediaLib.prototype.setSEPan = function(sourceObj, pan) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         var panNode = sourceObj.panNode;
         if      (pan < -1.0) pan = -1.0;
         else if (pan >  1.0) pan =  1.0;
@@ -592,27 +598,27 @@ var T2MediaLib = (function(){
         sourceObj.panValue = pan;
     };
     T2MediaLib.prototype.isSELoop = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         return sourceObj.loop;
     };
     T2MediaLib.prototype.setSELoop = function(sourceObj, loop) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         sourceObj.loop = loop;
     };
     T2MediaLib.prototype.getSELoopStartTime = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         return sourceObj.loopStart;
     };
     T2MediaLib.prototype.setSELoopStartTime = function(sourceObj, loopStart) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         sourceObj.loopStart = loopStart;
     };
     T2MediaLib.prototype.getSELoopEndTime = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         return sourceObj.loopEnd;
     };
     T2MediaLib.prototype.setSELoopEndTime = function(sourceObj, loopEnd) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        if (!isAudioBufferSourceNode(sourceObj)) return null;
         sourceObj.loopEnd = loopEnd;
     };
 
@@ -912,6 +918,12 @@ var T2MediaLib_BGMPlayer = (function(){
     function isMezonetPlayback(bgm) {
         return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Playback;
     }
+    function isAudioBufferSourceNode(bgm) {
+        // return bgm instanceof AudioBufferSourceNode || bgm instanceof WebKitAudioBufferSourceNode; // 本来はこの処理にしたい
+        // Safari 14でAudioBufferSourceNodeがWebKitAudioBufferSourceNodeに変更されたように、
+        // WebAPIの名前変更は予測できないので、消去方で判定する
+        return bgm != null && !(isPicoAudio(bgm) || isMezonetSource(bgm) || isMezonetPlayback(bgm))
+    }
     var T2MediaLib_BGMPlayer = function(t2MediaLib, arg_id) {
         this.t2MediaLib = t2MediaLib;
         this.id = arg_id;
@@ -1024,7 +1036,7 @@ var T2MediaLib_BGMPlayer = (function(){
         } else if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.stop();
-        } else if (bgm instanceof AudioBufferSourceNode) {
+        } else if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             try {
                 bgm.stop(0);
@@ -1054,7 +1066,7 @@ var T2MediaLib_BGMPlayer = (function(){
                 bgm.stop();
                 this.bgmPause = 1;
             }
-        } else if (bgm instanceof AudioBufferSourceNode) {
+        } else if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             if (this.bgmPause === 0) {
                 this.bgmPauseTime = this.getBGMCurrentTime();
@@ -1091,7 +1103,7 @@ var T2MediaLib_BGMPlayer = (function(){
                 bgm.play();
                 this.bgmPause = 0;
             }
-        } else if (bgm instanceof AudioBufferSourceNode) {
+        } else if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             if (this.bgmPause === 1) {
                 bgm = this.playBGM(this.playingBGMName, this.bgmPauseLoop, this.bgmPauseTime, this.bgmPauseLoopStart, this.bgmPauseLoopEnd);
@@ -1116,7 +1128,7 @@ var T2MediaLib_BGMPlayer = (function(){
         } else if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
-        } else if (bgm instanceof AudioBufferSourceNode) {
+        } else if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             bgm.gainNode.gain.value = vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume;
             //↓seMasterVolumeが音量に乗算されてしまう
@@ -1137,7 +1149,7 @@ var T2MediaLib_BGMPlayer = (function(){
         if (isMezonetPlayback(bgm)){
             bgm.setRate(tempo);
             return this;
-        } else if ((bgm instanceof AudioBufferSourceNode) && this.bgmPause === 0) {
+        } else if (isAudioBufferSourceNode(bgm) && this.bgmPause === 0) {
             bgm.plusTime -= (this.t2MediaLib.context.currentTime - bgm.playStartTime) * (tempo - this.bgmTempo);
         }
         this.bgmTempo = tempo;
@@ -1152,7 +1164,7 @@ var T2MediaLib_BGMPlayer = (function(){
     T2MediaLib_BGMPlayer.prototype.setBGMPan = function(pan) {
         var bgm = this.playingBGM;
         this.bgmPan = pan;
-        if (bgm instanceof AudioBufferSourceNode) {
+        if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             this.t2MediaLib.setSEPan(bgm, pan);
         }
@@ -1164,7 +1176,7 @@ var T2MediaLib_BGMPlayer = (function(){
         if (isPicoAudio(bgm)) {
             // Midi
             return this.picoAudio.isLoop();
-        } else if (bgm instanceof AudioBufferSourceNode) {
+        } else if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             if (this.bgmPause === 1) {
                 return this.bgmPauseLoop;
@@ -1180,7 +1192,7 @@ var T2MediaLib_BGMPlayer = (function(){
         if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.setLoop(loop);
-        } else if (bgm instanceof AudioBufferSourceNode) {
+        } else if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             if (this.bgmPause === 1) {
                 this.bgmPauseLoop = loop;
@@ -1196,7 +1208,7 @@ var T2MediaLib_BGMPlayer = (function(){
         if (isPicoAudio(bgm)) {
             // Midi
             return 0;
-        } else if (bgm instanceof AudioBufferSourceNode) {
+        } else if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             if (this.bgmPause === 1) {
                 return this.bgmPauseLoopStart;
@@ -1209,7 +1221,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.setBGMLoopStartTime = function(loopStart) {
         var bgm = this.playingBGM;
-        if (bgm instanceof AudioBufferSourceNode) {
+        if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             if (this.bgmPause === 1) {
                 this.bgmPauseLoopStart = loopStart;
@@ -1225,7 +1237,7 @@ var T2MediaLib_BGMPlayer = (function(){
         if (isPicoAudio(bgm)) {
             // Midi
             return this.getBGMLength();
-        } else if (bgm instanceof AudioBufferSourceNode) {
+        } else if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             if (this.bgmPause === 1) {
                 return this.bgmPauseLoopEnd;
@@ -1238,7 +1250,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.setBGMLoopEndTime = function(loopEnd) {
         var bgm = this.playingBGM;
-        if (bgm instanceof AudioBufferSourceNode) {
+        if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             if (this.bgmPause === 1) {
                 this.bgmPauseLoopEnd = loopEnd;
@@ -1262,7 +1274,7 @@ var T2MediaLib_BGMPlayer = (function(){
                 time = this.bgmPauseTime;
             }
             return time;
-        } else if (bgm instanceof AudioBufferSourceNode) {
+        } else if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             var time2, currenTime, tempo, plusTime, minusTime, mod;
 
@@ -1310,7 +1322,7 @@ var T2MediaLib_BGMPlayer = (function(){
         if (isPicoAudio(bgm)) {
             // Midi
             return this.picoAudio.getTime(Number.MAX_SAFE_INTEGER);
-        } else if (bgm instanceof AudioBufferSourceNode) {
+        } else if (isAudioBufferSourceNode(bgm)) {
             // MP3, Ogg, AAC, WAV
             return bgm.buffer.duration;
         }
