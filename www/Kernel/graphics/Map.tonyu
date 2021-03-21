@@ -103,6 +103,9 @@ native console;
         throw new Error(dataFile+" is not a file!");
     }
     baseData=dataFile.obj();
+    loadFromBaseData(baseData);
+}
+\loadFromBaseData(baseData){
     mapTable=baseData[0];
     mapData=mapTable;
     row=mapTable.length;
@@ -151,7 +154,7 @@ native console;
                 drawX, drawY, chipWidth, chipHeight);
                 ctx.restore();
             }
-            
+
             // draw setOn
             onP=Math.floor(onP);
             pImg=$imageList[onP];

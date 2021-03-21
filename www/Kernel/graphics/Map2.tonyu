@@ -119,7 +119,7 @@ var _expand, _wallFilter;
 }
 \pack() {
     row=col=0;
-    for (var chipLayer of map.chipLayers) {
+    for (var chipLayer of chipLayers) {
         if (chipLayer.xmax+1>row) row=chipLayer.xmax+1;
         if (chipLayer.ymax+1>col) col=chipLayer.ymax+1;
     }
