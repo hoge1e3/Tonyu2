@@ -24747,6 +24747,39 @@ Tonyu.klass.define({
           }
         });
       },
+      getPixelColor :function _trc_Panel_getPixelColor(x,y) {
+        "use strict";
+        var _this=this;
+        var d;
+        
+        d = _this.getPixel(x,y);
+        
+        return new Tonyu.classes.kernel.Color(d[0],d[1],d[2],d[3]);
+      },
+      fiber$getPixelColor :function _trc_Panel_f_getPixelColor(_thread,x,y) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        var d;
+        
+        
+        _thread.enter(function _trc_Panel_ent_getPixelColor(_thread) {
+          if (_thread.lastEx) __pc=_thread.catchPC;
+          for(var __cnt=100 ; __cnt--;) {
+            switch (__pc) {
+            case 0:
+              _this.fiber$getPixel(_thread, x, y);
+              __pc=1;return;
+            case 1:
+              d=_thread.retVal;
+              
+              _thread.exit(new Tonyu.classes.kernel.Color(d[0],d[1],d[2],d[3]));return;
+              _thread.exit(_this);return;
+            }
+          }
+        });
+      },
       getPixel :function _trc_Panel_getPixel(getX,getY) {
         "use strict";
         var _this=this;
@@ -25281,7 +25314,7 @@ Tonyu.klass.define({
         rect = _this.drawTextRect(_this.context,text,padding.left,padding.top,size,a,"test");
         
         _this.resize(padding.left+rect.w+padding.right,padding.top+rect.h+padding.bottom);
-        bg = options.background||options.bg||(function anonymous_10781() {
+        bg = options.background||options.bg||(function anonymous_10876() {
           
         });
         
@@ -25354,7 +25387,7 @@ Tonyu.klass.define({
               __pc=1;return;
             case 1:
               
-              bg = options.background||options.bg||(function anonymous_10781() {
+              bg = options.background||options.bg||(function anonymous_10876() {
                 
               });
               
@@ -25445,7 +25478,7 @@ Tonyu.klass.define({
         
         element = $("<img>").css({display: "none"}).appendTo("body");
         
-        element.on("load",(function anonymous_11397() {
+        element.on("load",(function anonymous_11492() {
           var img;
           var width;
           var height;
@@ -25493,7 +25526,7 @@ Tonyu.klass.define({
               
               element = $("<img>").css({display: "none"}).appendTo("body");
               
-              element.on("load",(function anonymous_11397() {
+              element.on("load",(function anonymous_11492() {
                 var img;
                 var width;
                 var height;
@@ -25706,7 +25739,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"watchResize":{"nowait":false},"setPanel":{"nowait":false},"resize":{"nowait":false},"getContext":{"nowait":false},"__getter__context":{"nowait":true},"__getter__image":{"nowait":true},"setFillStyle":{"nowait":false},"__getter__fillStyle":{"nowait":true},"__setter__fillStyle":{"nowait":true},"__setter__strokeStyle":{"nowait":true},"__setter__lineWidth":{"nowait":true},"fillCircle":{"nowait":false},"fillRect":{"nowait":true},"fillText":{"nowait":false},"clearRect":{"nowait":false},"getPixel":{"nowait":false},"scroll":{"nowait":false},"draw":{"nowait":true},"drawSprite":{"nowait":true},"copy":{"nowait":true},"convert":{"nowait":false},"drawLine":{"nowait":true},"slicePattern":{"nowait":false},"addPattern":{"nowait":false},"getImageData":{"nowait":false},"putImageData":{"nowait":false},"setAsText":{"nowait":false},"replace":{"nowait":false},"save":{"nowait":false},"load":{"nowait":false},"__setter__imageSmoothingEnabled":{"nowait":true},"__getter__imageSmoothingEnabled":{"nowait":true},"replaceColor":{"nowait":false}},"fields":{"canvas":{},"_fillStyle":{},"_drawn":{},"buf":{},"imagedata":{},"colordata":{},"px":{},"py":{}}}
+  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"watchResize":{"nowait":false},"setPanel":{"nowait":false},"resize":{"nowait":false},"getContext":{"nowait":false},"__getter__context":{"nowait":true},"__getter__image":{"nowait":true},"setFillStyle":{"nowait":false},"__getter__fillStyle":{"nowait":true},"__setter__fillStyle":{"nowait":true},"__setter__strokeStyle":{"nowait":true},"__setter__lineWidth":{"nowait":true},"fillCircle":{"nowait":false},"fillRect":{"nowait":true},"fillText":{"nowait":false},"clearRect":{"nowait":false},"getPixelColor":{"nowait":false},"getPixel":{"nowait":false},"scroll":{"nowait":false},"draw":{"nowait":true},"drawSprite":{"nowait":true},"copy":{"nowait":true},"convert":{"nowait":false},"drawLine":{"nowait":true},"slicePattern":{"nowait":false},"addPattern":{"nowait":false},"getImageData":{"nowait":false},"putImageData":{"nowait":false},"setAsText":{"nowait":false},"replace":{"nowait":false},"save":{"nowait":false},"load":{"nowait":false},"__setter__imageSmoothingEnabled":{"nowait":true},"__getter__imageSmoothingEnabled":{"nowait":true},"replaceColor":{"nowait":false}},"fields":{"canvas":{},"_fillStyle":{},"_drawn":{},"buf":{},"imagedata":{},"colordata":{},"px":{},"py":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.ScaledCanvas',
@@ -26550,14 +26583,14 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var l;
-        var _it_989;
+        var _it_990;
         var q;
         
         res = new Tonyu.classes.kernel.TQuery({screen: _this});
         
-        _it_989=Tonyu.iterator(_this.layers,1);
-        while(_it_989.next()) {
-          l=_it_989[0];
+        _it_990=Tonyu.iterator(_this.layers,1);
+        while(_it_990.next()) {
+          l=_it_990[0];
           
           q = l.group.all.apply(l.group,arguments);
           
@@ -26571,14 +26604,14 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var l;
-        var _it_994;
+        var _it_995;
         
         res = [];
         
         excludes=excludes||Tonyu.globals.$excludeFromAll.toArray();
-        _it_994=Tonyu.iterator(_this.layers,1);
-        while(_it_994.next()) {
-          l=_it_994[0];
+        _it_995=Tonyu.iterator(_this.layers,1);
+        while(_it_995.next()) {
+          l=_it_995[0];
           
           res.push(l.group.saveAndClear(excludes));
           
@@ -26592,14 +26625,14 @@ Tonyu.klass.define({
         var __pc=0;
         var res;
         var l;
-        var _it_994;
+        var _it_995;
         
         res = [];
         
         excludes=excludes||Tonyu.globals.$excludeFromAll.toArray();
-        _it_994=Tonyu.iterator(_this.layers,1);
-        while(_it_994.next()) {
-          l=_it_994[0];
+        _it_995=Tonyu.iterator(_this.layers,1);
+        while(_it_995.next()) {
+          l=_it_995[0];
           
           res.push(l.group.saveAndClear(excludes));
           
@@ -26614,13 +26647,13 @@ Tonyu.klass.define({
         var _this=this;
         var i;
         var l;
-        var _it_998;
+        var _it_999;
         
         i = 0;
         
-        _it_998=Tonyu.iterator(_this.layers,1);
-        while(_it_998.next()) {
-          l=_it_998[0];
+        _it_999=Tonyu.iterator(_this.layers,1);
+        while(_it_999.next()) {
+          l=_it_999[0];
           
           l.group.restore(saved.layers[i]);
           i++;
@@ -26638,13 +26671,13 @@ Tonyu.klass.define({
         var __pc=0;
         var i;
         var l;
-        var _it_998;
+        var _it_999;
         
         i = 0;
         
-        _it_998=Tonyu.iterator(_this.layers,1);
-        while(_it_998.next()) {
-          l=_it_998[0];
+        _it_999=Tonyu.iterator(_this.layers,1);
+        while(_it_999.next()) {
+          l=_it_999[0];
           
           l.group.restore(saved.layers[i]);
           i++;
@@ -26662,7 +26695,7 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         var e;
-        var _it_1002;
+        var _it_1003;
         var r;
         var i;
         var t;
@@ -26671,9 +26704,9 @@ Tonyu.klass.define({
         res = [];
         
         options=options||{};
-        _it_1002=Tonyu.iterator(q,1);
-        while(_it_1002.next()) {
-          e=_it_1002[0];
+        _it_1003=Tonyu.iterator(q,1);
+        while(_it_1003.next()) {
+          e=_it_1003[0];
           
           r = e.getCrashRect();
           
@@ -26705,7 +26738,7 @@ Tonyu.klass.define({
         var __pc=0;
         var res;
         var e;
-        var _it_1002;
+        var _it_1003;
         var r;
         var i;
         var t;
@@ -26720,10 +26753,10 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              _it_1002=Tonyu.iterator(q,1);
+              _it_1003=Tonyu.iterator(q,1);
             case 1:
-              if (!(_it_1002.next())) { __pc=7     ; break; }
-              e=_it_1002[0];
+              if (!(_it_1003.next())) { __pc=7     ; break; }
+              e=_it_1003[0];
               
               r = e.getCrashRect();
               
@@ -28329,7 +28362,7 @@ Tonyu.klass.define({
         var func;
         var callbacks;
         var reqP;
-        var _it_1070;
+        var _it_1071;
         var i;
         
         if (! _this.available) {
@@ -28384,9 +28417,9 @@ Tonyu.klass.define({
         callbacks.succ=func;
         callbacks.err=func;
         
-        _it_1070=Tonyu.iterator(r.sounds,1);
-        while(_it_1070.next()) {
-          s=_it_1070[0];
+        _it_1071=Tonyu.iterator(r.sounds,1);
+        while(_it_1071.next()) {
+          s=_it_1071[0];
           
           url=s.url;
           if (url.match(/\.midi?$/)) {
@@ -28433,7 +28466,7 @@ Tonyu.klass.define({
         var func;
         var callbacks;
         var reqP;
-        var _it_1070;
+        var _it_1071;
         var i;
         
         if (! _this.available) {
@@ -28497,9 +28530,9 @@ Tonyu.klass.define({
               callbacks.succ=func;
               callbacks.err=func;
               
-              _it_1070=Tonyu.iterator(r.sounds,1);
-              while(_it_1070.next()) {
-                s=_it_1070[0];
+              _it_1071=Tonyu.iterator(r.sounds,1);
+              while(_it_1071.next()) {
+                s=_it_1071[0];
                 
                 url=s.url;
                 if (url.match(/\.midi?$/)) {
@@ -30946,11 +30979,11 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var t;
-        var _it_1099;
+        var _it_1100;
         
-        _it_1099=Tonyu.iterator(Tonyu.globals.$touches,1);
-        while(_it_1099.next()) {
-          t=_it_1099[0];
+        _it_1100=Tonyu.iterator(Tonyu.globals.$touches,1);
+        while(_it_1100.next()) {
+          t=_it_1100[0];
           
           if ((! _this.touchRadius||_this.dist(t)<_this.touchRadius)&&t.touched==1) {
             return t;
@@ -38995,13 +39028,13 @@ Tonyu.klass.define({
         }),releaseAll: (function anonymous_1716() {
           var a;
           var e;
-          var _it_1224;
+          var _it_1225;
           
           a = Tonyu.globals.$Screen.all();
           
-          _it_1224=Tonyu.iterator(a,1);
-          while(_it_1224.next()) {
-            e=_it_1224[0];
+          _it_1225=Tonyu.iterator(a,1);
+          while(_it_1225.next()) {
+            e=_it_1225[0];
             
             res.release(e);
             
@@ -39055,13 +39088,13 @@ Tonyu.klass.define({
               }),releaseAll: (function anonymous_1716() {
                 var a;
                 var e;
-                var _it_1224;
+                var _it_1225;
                 
                 a = Tonyu.globals.$Screen.all();
                 
-                _it_1224=Tonyu.iterator(a,1);
-                while(_it_1224.next()) {
-                  e=_it_1224[0];
+                _it_1225=Tonyu.iterator(a,1);
+                while(_it_1225.next()) {
+                  e=_it_1225[0];
                   
                   res.release(e);
                   
@@ -39110,16 +39143,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_1228;
+        var _it_1229;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_1228=Tonyu.iterator(g,1);
-          while(_it_1228.next()) {
-            name=_it_1228[0];
+          _it_1229=Tonyu.iterator(g,1);
+          while(_it_1229.next()) {
+            name=_it_1229[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -39136,16 +39169,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_1228;
+        var _it_1229;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_1228=Tonyu.iterator(g,1);
-          while(_it_1228.next()) {
-            name=_it_1228[0];
+          _it_1229=Tonyu.iterator(g,1);
+          while(_it_1229.next()) {
+            name=_it_1229[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -39501,7 +39534,7 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_1239;
+        var _it_1240;
         
         _this.progress("Loading pats..");
         rs = Tonyu.globals.$currentProject.getResource();
@@ -39512,10 +39545,10 @@ Tonyu.klass.define({
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         }));
         Tonyu.globals.$imageList=r[0];
-        _it_1239=Tonyu.iterator(r[0].names,2);
-        while(_it_1239.next()) {
-          name=_it_1239[0];
-          val=_it_1239[1];
+        _it_1240=Tonyu.iterator(r[0].names,2);
+        while(_it_1240.next()) {
+          name=_it_1240[0];
+          val=_it_1240[1];
           
           Tonyu.setGlobal(name,val);
           
@@ -39531,7 +39564,7 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_1239;
+        var _it_1240;
         
         
         _thread.enter(function _trc_Boot_ent_loadImages(_thread) {
@@ -39555,10 +39588,10 @@ Tonyu.klass.define({
               r=_thread.retVal;
               
               Tonyu.globals.$imageList=r[0];
-              _it_1239=Tonyu.iterator(r[0].names,2);
-              while(_it_1239.next()) {
-                name=_it_1239[0];
-                val=_it_1239[1];
+              _it_1240=Tonyu.iterator(r[0].names,2);
+              while(_it_1240.next()) {
+                name=_it_1240[0];
+                val=_it_1240[1];
                 
                 Tonyu.setGlobal(name,val);
                 

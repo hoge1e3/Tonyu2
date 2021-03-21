@@ -132,6 +132,10 @@ native requestAnimationFrame;
     ctx.restore();
     if (arguments.length==0) _drawn=false;
 }
+\getPixelColor(x,y){
+    var d=getPixel(x,y);
+    return new Color(d[0],d[1],d[2],d[3]);
+}
 \getPixel(getX,getY){
     var ctx;
     if(typeof getX=="number" && !isNaN(getX) &&
