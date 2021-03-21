@@ -1,0 +1,95 @@
+extends TObject;
+native console;
+"field strict";
+var map;
+var x,y, layers;// [string]
+
+\new(params) {
+    if (params.layer) params.layers=[params.layer];
+    if (typeof params.layers==="string") params.layers=[params.layers];
+    super(params);
+    if (!layers) layers=map.allLayerNames;
+    for (var l of layers){
+        if (typeof l!=="string") {
+            console.log(layers);
+            throw new Error("Invalid layer spec"+l);
+        }
+    }
+}
+\moved(x,y) {
+    return new MapChip{map,x,y,layers};
+}
+\movedBy(dx,dy) {
+    return moved(x+dx,y+dy);
+}
+\withLayers() {
+    var a=Array.prototype.slice.call(arguments);
+    var nl;
+    if (a.length===0) {
+        nl=map.allLayerNames;
+    } else if (a.length==1 && typeof a[0]!=="string") {
+        nl=a[0];
+    } else {
+        nl=a;
+    }
+    return new MapChip{map,x,y,layers:nl};
+}
+\pAll {
+    var res={};
+    for (var l of layers) {
+        res[l]=map.getWithLayerName(l, x, y);
+    }
+    return res;
+}
+\pAll=vals {
+    for (var l, val in vals) {
+        map.setWithLayerName(l, x, y, val);
+    }
+}
+\p {
+    return map.getWithLayerName(layers[0],x,y);
+}
+\p=val {
+    if (typeof val==="object") return pAll=val;
+    return map.setWithLayerName(layers[0],x,y,val);
+}
+\has(p):MapChip {
+    if (typeof p==="number") p=[p];
+    for (var chipLayer of layers) {
+        if (p.indexOf(map.getWithLayerName(chipLayer, x,y))>=0) {
+            return withLayers(chipLayer);
+        }
+    }
+    return null;
+}
+\hasExcept(p):MapChip {
+    if (typeof p==="number") p=[p];
+    for (var chipLayer of layers) {
+        if (p.indexOf(map.getWithLayerName(chipLayer, x,y))<0) {
+            return withLayers(chipLayer);
+        }
+    }
+    return null;
+}
+\toActor(options, params) {
+    if (typeof options==="function") {
+        options={class:options};
+    }
+    var klass=options.class;
+    params=params||options.params||{};
+    var w=toWorld();
+    params.x=w.x;
+    params.y=w.y;
+    params.p=p;
+    var res=new klass(params);
+    p=-1;
+    return res;
+}
+
+\toWorld(align) {//align:TODO
+    return map.chipToWorld(x,y,align);
+}
+
+\getBuffer() {
+    return map.getBuf(x,y);
+}

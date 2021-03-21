@@ -109,10 +109,21 @@ var _expand, _wallFilter;
         bufMat.set(bx,by, canvas);
     }
     return {
-        canvas,
+        canvas, context: canvas[0].getContext("2d"),
+        bx,by,
         left: (col%cPerBuf)*chipWidth,
         top: (row%rPerBuf)*chipHeight,
+        width: chipWidth,
+        height: chipHeight,
     };
+}
+\pack() {
+    row=col=0;
+    for (var chipLayer of map.chipLayers) {
+        if (chipLayer.xmax+1>row) row=chipLayer.xmax+1;
+        if (chipLayer.ymax+1>col) col=chipLayer.ymax+1;
+    }
+    //var b=getBuf(col-1, row-1);
 }
 \initMap(){
     for(var i=0;i<row;i++){
@@ -157,8 +168,8 @@ var _expand, _wallFilter;
     chipLayers=[mapMat, mapOnMat];
     row=col=0;
     for (var chipLayer of chipLayers) {
-        if (chipLayer.xmax+1>row) row=chipLayer.xmax+1;
-        if (chipLayer.ymax+1>col) col=chipLayer.ymax+1;
+        if (chipLayer.xmax+1>col) col=chipLayer.xmax+1;
+        if (chipLayer.ymax+1>row) row=chipLayer.ymax+1;
     }
     //print(row);
     if (baseData[2]) chipWidth=(baseData[2]-0)||chipWidth||32;
@@ -176,11 +187,14 @@ var _expand, _wallFilter;
     var cv=buf.canvas;
     var drawX=buf.left;
     var drawY=buf.top;
-    if (!cv) return;
+    var ctx=buf.context;
+    var w=buf.width;
+    var h=buf.height;
+    /*if (!cv) return;
     var ctx=cv[0].getContext("2d");
-    if (!ctx) return;
+    if (!ctx) return;*/
 
-    ctx.clearRect(drawX,drawY,chipWidth,chipHeight);
+    ctx.clearRect(drawX,drawY,w,h);
     // draw set
     for (var l of chipLayers) {
         var p=l.get(setCol, setRow);//Math.floor(p);
@@ -189,7 +203,7 @@ var _expand, _wallFilter;
             ctx.save();
             ctx.drawImage(
             pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
-            drawX, drawY, chipWidth, chipHeight);
+            drawX, drawY, w,h);
             ctx.restore();
         }
     }
@@ -206,6 +220,7 @@ var _expand, _wallFilter;
     if (!l) throw new Error("No such chipLayer "+name);
     if (setRow>=row) row=setRow+1;
     if (setCol>=col) col=setCol+1;
+    if (p<0) p=undefined;
     l.set(setCol, setRow, p);
     //print(row,col);
     redrawChip(setCol,setRow);
@@ -230,6 +245,7 @@ var _expand, _wallFilter;
     var width= n(options.width, right-left+1);
     var bottom= n(options.bottom, options.ymax, top+options.height-1, top);
     var height= n(options.height, bottom-top+1);
+    var layers=options.layers||options.layer||allLayerNames;
     if (world) {
         var lt=worldToChip{x:left, y:top};
         left=lt.x;
@@ -241,11 +257,7 @@ var _expand, _wallFilter;
     var res=[];
     for (var i=top;i<=bottom;i++) {
         for (var j=left; j<=right; j++) {
-            res.push{
-                x:j, y:i,
-                row:i, col:j,
-                left:j,top:i
-            };
+            res.push(chip(j,i,layers));
         }
     };
     return res;
@@ -258,18 +270,15 @@ var _expand, _wallFilter;
         }
     }
 }
-\crashTo(actor, p) {
+\crashTo(actor, filter) {
     var r=range(actor);
     var f=_wallFilter;
-    /*if (typeof p==="number") {
-        f=\(x,y) {
-            get
-        }
-    }*/
+    if (filter) {
+        f=chipFilter(filter);
+    }
     for (var re of r) {
-        if (f(re.x,re.y,this)) {
-            return re;
-        }
+        var c=f(re);
+        if (c) return c;
     }
     return null;
 }
@@ -280,44 +289,57 @@ var _expand, _wallFilter;
 \isWall(cx,cy) {
     return _wallFilter(cx,cy,this);
 }
+\chipFilter(options) {
+    // {layer:"on"};   set anything other than -1 in "on" as wall
+    // {layer:["on","mylayer"]};   set anything other than -1 in "on" and "mylayer" as wall
+    // {p:p1};     set only p1 in any chiplayer as wall
+    // {p:[p1,p2]};     set p1 and p2 in any chiplayer as wall
+    // {p:p1, except:true};   set other than p1 in any chiplayer as wall(-1 is not path in default)
+    // (chip=>chip?)
+    var func;
+    if (typeof options==="function") {
+        func=options;
+        return func;
+    } else if (typeof options==="number") {
+        options={p: [options]};
+    } else if (options && typeof options.map==="function") {
+        options={p: options};
+    }
+    var p=options.p;
+    var not=options.not;
+    var layers=options.layers||options.layer||allLayerNames;
+    if (p==null) {
+        p=[-1];
+        not=true;
+    }
+    if (typeof p==="number") p=[p];
+    if (typeof layers==="string") layers=[layers];
+    if (not) {
+        func=\(chip) {
+            return chip.withLayers(layers).hasExcept(p);
+        };
+    } else {
+        func=\(chip) {
+            return chip.withLayers(layers).has(p);
+        };
+    }
+    return func;
+}
 \setWallFilter(options) {
     // wf{layer:"on"};   set anything other than -1 in "on" as wall
     // wf{layer:["on","mylayer"]};   set anything other than -1 in "on" and "mylayer" as wall
     // wf{wall:p1};     set only p1 in any chiplayer as wall
     // wf{wall:[p1,p2]};     set p1 and p2 in any chiplayer as wall
     // wf{path:p1};   set other than p1 in any chiplayer as wall(-1 is not path in default)
-    // wf(x,y,map=>boolean)
-    if (typeof options==="function") {
-        _wallFilter=options;
-        return;
+    // wf(chip=>chip?)
+    if (options.wall!=null) {
+        options.p=options.wall;
     }
-    var wall=options.wall;
-    var path=options.path;
-    var layer=options.layer;
-    if (wall==null && path==null) {
-        path=[-1];
+    if (options.path!=null) {
+        options.p=options.path;
+        options.not=true;
     }
-    if (typeof wall==="number") wall=[wall];
-    if (typeof path==="number") path=[path];
-    if (typeof layer==="string") layer=[layer];
-    var targetChipLayers;
-    if (layer) {
-        targetChipLayers=chipLayers.filter\(chipLayer) {
-            return layer.indexOf(chipLayer.name)>=0;
-        };
-    } else {
-        targetChipLayers=chipLayers;
-    }
-    if (wall!=null) {
-        _wallFilter=\(x,y,map) {
-            return has(x,y,wall,targetChipLayers);
-        };
-    }
-    if (path!=null) {
-        _wallFilter=\(x,y,map) {
-            return !has(x,y,path,targetChipLayers);
-        };
-    }
+    _wallFilter=chipFilter(options);
 }
 \set(setCol,setRow,p){
     setWithLayerName("base",setCol,setRow,p);
@@ -372,19 +394,30 @@ var _expand, _wallFilter;
     var l=worldToChip{x,y};
     return getOn(l.x,l.y);
 }
-\has(x,y,p, targetChipLayers) {
-    targetChipLayers=targetChipLayers||chipLayers;
+\allLayerNames {
+    return chipLayers.map \(l) {return l.name;};
+}
+\chip(x,y,layers) {
+    return new MapChip{map:this, x,y,layers};
+}
+\chipAt(x,y,layers) {
+    var l=worldToChip{x,y};
+    return chip(l.x,l.y,layers);
+}
+\has(x,y,p) {
+    return chip(x,y).has(p);
+    /*targetChipLayers=targetChipLayers||chipLayers;
     if (typeof p==="number") p=[p];
     for (var chipLayer of targetChipLayers) {
         if (p.indexOf(getWithLayerName(chipLayer.name, x,y))>=0) {
             return chipLayer.name;
         }
     }
-    return null;
+    return null;*/
 }
-\hasAt(x,y,p,targetChipLayers) {
+\hasAt(x,y,p) {
     var l=worldToChip{x,y};
-    return has(l.x, l.y, p , targetChipLayers);
+    return has(l.x, l.y, p);
 }
 \scrollTo(scrollX,scrollY){
     x=-scrollX;
@@ -403,6 +436,7 @@ var _expand, _wallFilter;
     var sy=r.top;
     ctx.save();
     performTransform(ctx);
+    ctx.globalAlpha=alpha/255;
     for (var j,i,pCv of bufMat.keysIterator()) {
         var pCtx=pCv[0];
         if (!pCtx) return;
@@ -410,7 +444,6 @@ var _expand, _wallFilter;
         var dy=sy+i*bufferSize.h; // Split Map y
         var dw=pCtx.width;    // Split Map width
         var dh=pCtx.height;   // Split Map height
-        ctx.globalAlpha=alpha/255;
         ctx.drawImage(
         pCtx, 0, 0, dw, dh,
         dx, dy, dw, dh);
@@ -424,14 +457,9 @@ var _expand, _wallFilter;
         p=[p];
     }
     for (var r of range()) {
-        var n=has(r.x, r.y, p);
+        var n=r.has(p);
         if (n) {
-            var w=chipToWorld(r);
-            params.x=w.x;
-            params.y=w.y;
-            params.p=getWithLayerName(n,r.x, r.y);
-            new klass(params);
-            setWithLayerName(n, r.x, r.y,-1);
+            n.toActor{class:klass, params};
         }
     }
 }
