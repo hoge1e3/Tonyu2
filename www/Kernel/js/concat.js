@@ -22582,12 +22582,6 @@ Tonyu.klass.define({
         }
         _this.chipWidth=_this.chipWidth||32;
         _this.chipHeight=_this.chipHeight||_this.chipWidth||32;
-        if (typeof  _this.col!=="number") {
-          _this.col=Tonyu.globals.$screenWidth/_this.chipWidth;
-        }
-        if (typeof  _this.row!=="number") {
-          _this.row=Tonyu.globals.$screenHeight/_this.chipHeight;
-        }
         _this.parseBufferSize();
         if (typeof  _this.col==="number") {
           _this.col=_this.floor(_this.col);
@@ -23556,7 +23550,7 @@ Tonyu.klass.define({
         }
         
         if (layer) {
-          targetChipLayers=_this.chipLayers.filter((function anonymous_8458(chipLayer) {
+          targetChipLayers=_this.chipLayers.filter((function anonymous_8462(chipLayer) {
             
             return layer.indexOf(chipLayer.name)>=0;
           }));
@@ -23566,14 +23560,14 @@ Tonyu.klass.define({
           
         }
         if (wall!=null) {
-          _this._wallFilter=(function anonymous_8642(x,y,map) {
+          _this._wallFilter=(function anonymous_8646(x,y,map) {
             
             return _this.has(x,y,wall,targetChipLayers);
           });
           
         }
         if (path!=null) {
-          _this._wallFilter=(function anonymous_8770(x,y,map) {
+          _this._wallFilter=(function anonymous_8774(x,y,map) {
             
             return ! _this.has(x,y,path,targetChipLayers);
           });
@@ -23617,7 +23611,7 @@ Tonyu.klass.define({
         }
         
         if (layer) {
-          targetChipLayers=_this.chipLayers.filter((function anonymous_8458(chipLayer) {
+          targetChipLayers=_this.chipLayers.filter((function anonymous_8462(chipLayer) {
             
             return layer.indexOf(chipLayer.name)>=0;
           }));
@@ -23633,14 +23627,14 @@ Tonyu.klass.define({
             switch (__pc) {
             case 0:
               if (!(wall!=null)) { __pc=1     ; break; }
-              _this._wallFilter=(function anonymous_8642(x,y,map) {
+              _this._wallFilter=(function anonymous_8646(x,y,map) {
                 
                 return _this.has(x,y,wall,targetChipLayers);
               });
             case 1     :
               
               if (!(path!=null)) { __pc=2     ; break; }
-              _this._wallFilter=(function anonymous_8770(x,y,map) {
+              _this._wallFilter=(function anonymous_8774(x,y,map) {
                 
                 return ! _this.has(x,y,path,targetChipLayers);
               });

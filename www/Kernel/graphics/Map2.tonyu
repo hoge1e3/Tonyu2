@@ -55,8 +55,8 @@ var _expand, _wallFilter;
     if (!align) align="left top";
     chipWidth=chipWidth||32;
     chipHeight=chipHeight||chipWidth||32;
-    if (typeof col!=="number") col=$screenWidth/chipWidth;
-    if (typeof row!=="number") row=$screenHeight/chipHeight;
+    //if (typeof col!=="number") col=$screenWidth/chipWidth;
+    //if (typeof row!=="number") row=$screenHeight/chipHeight;
     parseBufferSize();
     if (typeof col==="number") {
         col=floor(col);
