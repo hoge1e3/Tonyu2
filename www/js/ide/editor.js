@@ -68,7 +68,8 @@ $(function () {
     //const exportHTMLDialog=new ExportHTMLDialog(curPrj);
     function setDiagMode(d) {
         var opt=curPrj.getOptions();
-        if (opt.compiler.diagnose!=d) {
+        // !!opt.compiler.diagnose != !!d
+        if (opt.compiler.diagnose ^ d) {
             opt.compiler.diagnose=d;
             curPrj.setOptions(opt);
         }

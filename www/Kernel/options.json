@@ -1,4 +1,5 @@
 {
+	"dontFix": true,
     "compiler":{
     	"noLoopCheck": true,
         "namespace": "kernel",
