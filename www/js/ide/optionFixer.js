@@ -31,6 +31,7 @@ define(["Tonyu","WebSite"],function (Tonyu,WebSite) {
             }
             const t=f.text();
             const o=JSON.parse(t);
+            if (o.dontFix) return;
             const fo=this.fixObject(o);
             const ft=JSON.stringify(fo);
             if(t!==ft) f.text(ft);

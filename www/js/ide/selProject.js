@@ -154,6 +154,7 @@ $(function () {
     sh.cd(FS.get(WebSite.projects[0]));
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};
+    sh.openKernel=function () {location.href=`project2.html?dir=${WebSite.kernelDir}`;};
     $($("button.showAll").get(0)).click();
     if (!hideSplashScreenOnImport) root.SplashScreen.hide();
 });
