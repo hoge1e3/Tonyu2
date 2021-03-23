@@ -1,0 +1,178 @@
+extends TObject;
+"field strict";
+native Tonyu;
+native console;
+native R;
+var map;
+var resc=$currentProject.getResource().images;
+var patVals=[];
+var c2p=[];
+var cNumberSeq=0;
+var entire={version:2};
+var noCheck;
+for (var r of resc) {
+    patVals.unshift{name: r.name, value: Tonyu.getGlobal(r.name)};
+}
+/*
+entire::{
+    version: number,
+    header: {
+        layerNames: [string],
+        size: {row:number, col:number, nrow: number, ncol:number},
+        expend:: Map._expand
+        e2c: { expr: cNumber } 
+    },
+    chip: [mat of cNumber]// for each layer
+}
+cNumber:: just a sequential number (unrelated to pat)
+nrow, ncol <0 if negative index exists.
+expr:: "$pat_X+m"
+*/
+nowait \genHeader() {// on save
+    var header={
+        size: {row:map.row, col:map.col},
+        expand: map._expand || {},
+        layerNames: [],
+        e2c: {},
+    };
+    entire.header=header;
+    for (var l of map.chipLayers) {
+        header.layerNames.push(l.name);
+    }
+}
+nowait \loadHeader() {//on load
+    var header=entire.header;
+    var e2c=header.e2c;
+    map.row=header.size.row;
+    map.col=header.size.col;
+    map._expand=header.expand;
+    for (var e,c in e2c) {
+        checkExprValidity(e);
+        c2p[c]=exprToPat(e);
+    }
+    var layerNames=entire.header.layerNames;
+    map.chipLayers=layerNames.map \(layerName) {
+        var m=new Matrix;
+        m.name=layerName;
+        return m;
+    };
+    //console.log("c2p", c2p);
+}
+nowait \checkExprValidity(e) {
+    var p=exprToPat(e);
+    if (p<0) return;
+    var re=patToExpr(p);
+    assert(re===e, R("invalidPatExpr", e));
+}
+nowait \assert(b, mesg) {
+    if (!b && !noCheck) {
+        throw new Error(mesg);
+    }
+}
+nowait \genChip() {// on save
+    var header=entire.header;
+    entire.chip=header.layerNames.map \(layerName) {
+        var mat=[];
+        for (var i=0;i<map.row;i++) {
+            var row=[];
+            mat.push(row);
+            for (var j=0;j<map.col;j++) {
+                var e=exprAt(j,i,layerName);
+                var c=exprTocNumber(e);
+                row.push(c);
+            }
+        }
+        return mat;
+    };
+}
+nowait \loadChip() {
+    var c=entire.chip;
+    var layerNames=entire.header.layerNames;
+    for (var k=0;k<c.length;k++) {
+        for (var i=0 ; i<c[k].length;i++) {
+            for (var j=0 ;j<c[k][i].length; j++) {
+                var cNumber=c[k][i][j];
+                var p=c2p[cNumber];
+                //if (i<2 && j<2) console.log(k,j,i,cNumber,p);
+                map.chipLayers[k].set(j,i,p);
+            }
+        }    
+    }
+    
+}
+nowait \genEntire() {
+    entire={version:2};
+    genHeader();
+    genChip();
+}
+nowait \save(file) {
+    genEntire();
+    file.obj(entire);
+}
+nowait \exprTocNumber(expr) {// on save
+    var e2c=entire.header.e2c;
+    if (e2c[expr]!=null) return e2c[expr];
+    e2c[expr]=cNumberSeq;
+    cNumberSeq++;
+    return e2c[expr];
+}
+/*nowait \cNumberTocName(cNumber) {// on load
+    return u2a[cNumber];
+}*/
+/*nowait \isMap2() {
+    return map.chipLayers;
+}*/
+nowait \exprAt(x,y,layer) {
+    return patToExpr( map.getWithLayerName(layer,x,y) );
+}
+
+nowait \patToExpr(p) {
+    for (var r of patVals) {
+        if (p>=r.value) return r.name+"+"+(p-r.value);
+    }
+    return "e";
+}
+nowait \exprToPat(name) {
+    if (name==="e") return -1;
+    var ns=name.split("+");
+    var g=Tonyu.getGlobal(ns[0]);
+    if (g==null) throw new Error(R("noSuchPat",ns[0]));
+    return g+(ns[1]-0);
+}
+/**
+ * ファイルからマップデータを読み込みます。ver1とver2いずれにも対応します。
+ * @param file 読み込むファイルオブジェクト 
+ */
+nowait \load(file) {
+    entire=file.obj();
+    if (entire.version>=2) loadVer2();
+    else loadVer1(entire);
+}
+nowait \loadVer1(baseData) {
+    var mapTable=baseData[0];
+    var mapOnTable=baseData[1];
+        //print(row);
+    if (baseData[2]) map.chipWidth=(baseData[2]-0)||map.chipWidth||32;
+    if (baseData[3]) map.chipHeight=(baseData[3]-0)||map.chipHeight||32;
+
+    var mapMat=new Matrix;
+    mapMat.fromArray(mapTable);
+    mapMat.name="base";
+    var mapOnMat=new Matrix;
+    mapOnMat.fromArray(mapOnTable);
+    mapOnMat.name="on";
+    map.chipLayers=[mapMat, mapOnMat];
+    map.pack();
+    map.redraw();
+    
+}
+nowait \saveVer1(saveDataFile) {
+    var chipLayers=map.chipLayers;
+    var data=[chipLayers[0].toArray(),chipLayers[1].toArray(),map.chipWidth,map.chipHeight];
+    saveDataFile.obj(data);
+}
+nowait \loadVer2() {
+    loadHeader();
+    loadChip();
+    map.redraw();
+}

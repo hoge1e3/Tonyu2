@@ -178,6 +178,9 @@ $(".dropdown-toggle");
         "Open_URL": "別ウィンドウで開きます",
         "UseRightClick":"※リンクが開かない場合、右クリックか長押しで新しいタブを開くか、URLをコピーしてください。",
         "filenameMatched": "(ファイル名の一致)",
+        "noPushedPages": "loadPage()でページが正しく指定されていません。",
+        "noSuchPat": "キャラクタパターン用変数{1}は定義されていません。",
+        "invalidPatExpr": "キャラクタパターン{1}は存在しません。",
     };
     /*let buf="";
     for (let k of Object.keys(ja)) {
@@ -361,6 +364,9 @@ $(".dropdown-toggle");
         "deleteProjectFromItem" : "Delete Project {1}?", //プロジェクト{1}を削除しますか？
         "Open_URL": "Opening New Window",
         "UseRightClick":"If the link cannot works, use submenus by Right-Click or Long-Tap.",
+        "noPushedPages": "Invalid page class passed to loadPage()",
+        "noSuchPat": "No such variable: {1}",
+        "invalidPatExpr": "No such glyph(image) number: {1}",
     };
     let localeStr=localStorage.locale || navigator.language;
     localeStr=localeStr.substring(0,2);
