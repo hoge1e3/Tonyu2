@@ -74,9 +74,14 @@ $(function () {
             curPrj.setOptions(opt);
         }
     }
-    const resf=curPrj.getResourceFile();
-    if (!resf.exists()) resf.obj(WebSite.defaultResource);
     setDiagMode(false);
+    function createResFile() {
+        var opt=curPrj.getOptions();
+        if (opt.dontCreateRes) return;
+        const resf=curPrj.getResourceFile();
+        if (!resf.exists()) resf.obj(WebSite.defaultResource);
+    }
+    createResFile();
     const runDialogParam={
         screenH:200,
         desktopEnv: desktopEnv,

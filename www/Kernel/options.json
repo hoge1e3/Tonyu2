@@ -1,4 +1,5 @@
 {
+	"dontCreateRes": true,
 	"dontFix": true,
     "compiler":{
     	"noLoopCheck": true,
