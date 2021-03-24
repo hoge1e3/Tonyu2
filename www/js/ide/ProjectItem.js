@@ -56,12 +56,16 @@ submenuExpr:function submenuExpr(t) {
             class:"submenu prjMenuButton",
             on:{click:t.$bind.openSubmenu},"data-path":f.path() }," "],
         ["span",{class:"dropdown-content"},
+            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.newWindow}},R("openProjectInNewWindow")],
             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.rename}},R("rename")],
             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.download}},R("downloadAsZip")],
             ["a",{href:HNOP,class:"submenu nwmenu",on:{click:t.$bind.openFolder}},R("openFolder")],
             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.remove}},R("delete")]
         ]
     ];
+},
+newWindow(t) {
+    window.open(t.url);
 },
 download: function (t) {
     S.closeSubmenu();

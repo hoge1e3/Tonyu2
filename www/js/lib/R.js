@@ -181,6 +181,7 @@ $(".dropdown-toggle");
         "noPushedPages": "loadPage()でページが正しく指定されていません。",
         "noSuchPat": "キャラクタパターン用変数{1}は定義されていません。",
         "invalidPatExpr": "キャラクタパターン{1}は存在しません。",
+        "openProjectInNewWindow": "別ウィンドウで開く",
     };
     /*let buf="";
     for (let k of Object.keys(ja)) {
