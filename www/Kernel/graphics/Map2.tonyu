@@ -120,8 +120,8 @@ var _expand, _wallFilter;
 \pack() {
     row=col=0;
     for (var chipLayer of chipLayers) {
-        if (chipLayer.xmax+1>row) row=chipLayer.xmax+1;
-        if (chipLayer.ymax+1>col) col=chipLayer.ymax+1;
+        if (chipLayer.xmax+1>col) col=chipLayer.xmax+1;
+        if (chipLayer.ymax+1>row) row=chipLayer.ymax+1;
     }
     //var b=getBuf(col-1, row-1);
 }
@@ -156,7 +156,9 @@ var _expand, _wallFilter;
         print(dataFile);
         throw new Error(dataFile+" is not a file!");
     }
-    var baseData=dataFile.obj();
+    var c=new MapCodec{map:this};
+    c.load(dataFile);
+    /*var baseData=dataFile.obj();
     var mapTable=baseData[0];
     var mapOnTable=baseData[1];
     var mapMat=new Matrix;
@@ -174,13 +176,15 @@ var _expand, _wallFilter;
     //print(row);
     if (baseData[2]) chipWidth=(baseData[2]-0)||chipWidth||32;
     if (baseData[3]) chipHeight=(baseData[3]-0)||chipHeight||32;
-    redraw();
+    redraw();*/
 }
 \save(saveFileName) {
     //print(row);
+    var c=new MapCodec{map:this};
     var saveDataFile=resolve(saveFileName);//file("../maps/").rel(saveFileName);
-    var data=[chipLayers[0].toArray(),chipLayers[1].toArray(),chipWidth,chipHeight];
-    saveDataFile.obj(data);
+    c.save(saveDataFile);
+    //var data=[chipLayers[0].toArray(),chipLayers[1].toArray(),chipWidth,chipHeight];
+    //saveDataFile.obj(data);
 }
 \redrawChip(setCol,setRow){
     var buf=getBuf(setCol, setRow);

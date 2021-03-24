@@ -1,11 +1,1 @@
-{
-	"dontCreateRes": true,
-	"dontFix": true,
-    "compiler":{
-    	"noLoopCheck": true,
-        "namespace": "kernel",
-        "commentLastPos": true,
-        "outputFile": "js/concat.js",
-        "requireFieldDecl": false
-    }
-}
+{"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"}}

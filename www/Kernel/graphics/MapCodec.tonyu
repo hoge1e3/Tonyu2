@@ -28,6 +28,10 @@ cNumber:: just a sequential number (unrelated to pat)
 nrow, ncol <0 if negative index exists.
 expr:: "$pat_X+m"
 */
+nowait \ignoreCheck(){
+    noCheck=true;
+    return this;
+}
 nowait \genHeader() {// on save
     var header={
         size: {row:map.row, col:map.col},

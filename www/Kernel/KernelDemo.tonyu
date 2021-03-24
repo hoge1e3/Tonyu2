@@ -1,0 +1,2 @@
+extends Actor;
+new Label{x:$screenWidth/2, y:100, text:"Tonyu System",size:20};
