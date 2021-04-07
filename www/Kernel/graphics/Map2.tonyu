@@ -3,9 +3,12 @@ native Math;
 native $;
 native console;
 "field strict";
-var chipWidth, chipHeight, row, col;
-var bufferSize;
+
+var chipWidth, chipHeight, bufferSize;
 var bufMat;
+//var sizeInited;
+
+var row, col;
 var chipLayers, mapObj;
 var _expand, _wallFilter;
 
@@ -53,11 +56,6 @@ var _expand, _wallFilter;
     x=x||0;
     y=y||0;
     if (!align) align="left top";
-    chipWidth=chipWidth||32;
-    chipHeight=chipHeight||chipWidth||32;
-    //if (typeof col!=="number") col=$screenWidth/chipWidth;
-    //if (typeof row!=="number") row=$screenHeight/chipHeight;
-    parseBufferSize();
     if (typeof col==="number") {
         col=floor(col);
     } else {
@@ -70,16 +68,26 @@ var _expand, _wallFilter;
         row=0;
         expand.bottom=true;
     }
-    bufMat=new Matrix;
-    //bufAry=createBuf(col*chipWidth,row*chipHeight);
     mapObj=true;
     addChipLayer("base");
     addChipLayer("on");
     setWallFilter{layer:"on"};
-    //initMap();
 }
 \setPivot(x,y) {
     align=["left","top",x,y];
+}
+\initBuf(p) {
+    if (bufMat) return;
+    bufMat=new Matrix;
+    var pImg=$imageList[p];
+    if (pImg) {
+        chipWidth=chipWidth|| pImg.width;
+        chipHeight=chipHeight || pImg.height;
+    } else {
+        chipWidth=chipWidth|| 32;
+        chipHeight=chipHeight || chipWidth|| 32;
+    }
+    parseBufferSize();
 }
 \parseBufferSize() {
     \fitSize(size, unit) {
@@ -97,6 +105,7 @@ var _expand, _wallFilter;
     bufferSize.h=fitSize(bufferSize.h,chipHeight);
 }
 \getBuf(col, row) {
+    initBuf();
     var w=bufferSize.w;
     var h=bufferSize.h;
     var cPerBuf= floor(w/chipWidth);
@@ -123,24 +132,15 @@ var _expand, _wallFilter;
         if (chipLayer.xmax+1>col) col=chipLayer.xmax+1;
         if (chipLayer.ymax+1>row) row=chipLayer.ymax+1;
     }
-    //var b=getBuf(col-1, row-1);
 }
-\initMap(){
+\redraw(){
+    initBuf();
     for(var i=0;i<row;i++){
         for(var j=0;j<col;j++){
             redrawChip(j,i);
         }
     }
 }
-\redrawMap() {
-    return redraw();
-}
-\redraw(){
-    bufMat=new Matrix;
-    //bufAry=createBuf(col*chipWidth,row*chipHeight);
-    initMap();
-}
-
 \resolve(fileName, fallback) {
     if (typeof fileName==="string") {
         var r=file("../maps/").rel(fileName);
@@ -151,6 +151,7 @@ var _expand, _wallFilter;
     return fileName;
 }
 \load(dataFile){
+    bufMat=null;
     dataFile=resolve(dataFile,true);
     if (!dataFile || !dataFile.obj) {
         print(dataFile);
@@ -158,33 +159,13 @@ var _expand, _wallFilter;
     }
     var c=new MapCodec{map:this};
     c.load(dataFile);
-    /*var baseData=dataFile.obj();
-    var mapTable=baseData[0];
-    var mapOnTable=baseData[1];
-    var mapMat=new Matrix;
-    mapMat.fromArray(mapTable);
-    mapMat.name="base";
-    var mapOnMat=new Matrix;
-    mapOnMat.fromArray(mapOnTable);
-    mapOnMat.name="on";
-    chipLayers=[mapMat, mapOnMat];
-    row=col=0;
-    for (var chipLayer of chipLayers) {
-        if (chipLayer.xmax+1>col) col=chipLayer.xmax+1;
-        if (chipLayer.ymax+1>row) row=chipLayer.ymax+1;
-    }
-    //print(row);
-    if (baseData[2]) chipWidth=(baseData[2]-0)||chipWidth||32;
-    if (baseData[3]) chipHeight=(baseData[3]-0)||chipHeight||32;
-    redraw();*/
+    redraw();
 }
 \save(saveFileName) {
     //print(row);
     var c=new MapCodec{map:this};
     var saveDataFile=resolve(saveFileName);//file("../maps/").rel(saveFileName);
     c.save(saveDataFile);
-    //var data=[chipLayers[0].toArray(),chipLayers[1].toArray(),chipWidth,chipHeight];
-    //saveDataFile.obj(data);
 }
 \redrawChip(setCol,setRow){
     var buf=getBuf(setCol, setRow);
@@ -194,10 +175,6 @@ var _expand, _wallFilter;
     var ctx=buf.context;
     var w=buf.width;
     var h=buf.height;
-    /*if (!cv) return;
-    var ctx=cv[0].getContext("2d");
-    if (!ctx) return;*/
-
     ctx.clearRect(drawX,drawY,w,h);
     // draw set
     for (var l of chipLayers) {
@@ -213,6 +190,7 @@ var _expand, _wallFilter;
     }
 }
 \setWithLayerName(name, setCol, setRow , p) {
+    initBuf(p);
     if(setCol>=col && !_expand.right
     || setRow>=row && !_expand.bottom
     || setCol<0 && !_expand.left
@@ -306,7 +284,7 @@ var _expand, _wallFilter;
         return func;
     } else if (typeof options==="number") {
         options={p: [options]};
-    } else if (options && typeof options.map==="function") {
+    } else if (options && typeof options.slice==="function") {
         options={p: options};
     }
     var p=options.p;
@@ -355,6 +333,7 @@ var _expand, _wallFilter;
     var l=transform.worldToLocal(o);
     //print(l.x, l.y);
     var r=getDrawRect();
+    initBuf();
     return {x:Math.floor((l.x-r.left)/chipWidth),y:Math.floor((l.y-r.top)/chipHeight)};
 }
 \chipToWorld(x,y) {
@@ -363,6 +342,7 @@ var _expand, _wallFilter;
         o={x,y};
     }
     var r=getDrawRect();
+    initBuf();
     var co={
         x=r.left+o.x*chipWidth+chipWidth/2,
         y=r.top+o.y*chipHeight+chipHeight/2,
@@ -410,14 +390,6 @@ var _expand, _wallFilter;
 }
 \has(x,y,p) {
     return chip(x,y).has(p);
-    /*targetChipLayers=targetChipLayers||chipLayers;
-    if (typeof p==="number") p=[p];
-    for (var chipLayer of targetChipLayers) {
-        if (p.indexOf(getWithLayerName(chipLayer.name, x,y))>=0) {
-            return chipLayer.name;
-        }
-    }
-    return null;*/
 }
 \hasAt(x,y,p) {
     var l=worldToChip{x,y};
@@ -428,12 +400,14 @@ var _expand, _wallFilter;
     y=-scrollY;
 }
 \getDrawRect() {
+    initBuf();
     var r=_align.getDrawRect{width: chipWidth* col, height: chipHeight* row};
     r.left=r.x-r.width/2;
     r.top=r.y-r.height/2;
     return r;
 }
 \draw(ctx) {
+    if (!bufMat) return;
     var sum=0;
     var r=getDrawRect();
     var sx=r.left;

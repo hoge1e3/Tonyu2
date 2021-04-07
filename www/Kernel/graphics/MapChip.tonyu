@@ -54,6 +54,7 @@ var x,y, layers;// [string]
     return map.setWithLayerName(layers[0],x,y,val);
 }
 \has(p):MapChip {
+    if (p==null) return hasExcept(-1);
     if (typeof p==="number") p=[p];
     for (var chipLayer of layers) {
         if (p.indexOf(map.getWithLayerName(chipLayer, x,y))>=0) {

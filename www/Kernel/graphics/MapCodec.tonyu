@@ -167,8 +167,7 @@ nowait \loadVer1(baseData) {
     mapOnMat.name="on";
     map.chipLayers=[mapMat, mapOnMat];
     map.pack();
-    map.redraw();
-    
+    //map.redraw();
 }
 nowait \saveVer1(saveDataFile) {
     var chipLayers=map.chipLayers;
@@ -178,5 +177,5 @@ nowait \saveVer1(saveDataFile) {
 nowait \loadVer2() {
     loadHeader();
     loadChip();
-    map.redraw();
+    //map.redraw();
 }
