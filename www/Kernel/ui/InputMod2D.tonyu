@@ -1,0 +1,36 @@
+extends null;
+includes InputMod, SpriteMod2D;
+"field strict";
+
+nowait \findTouch(params) {
+    if (typeof params==="number") params={scale:params};
+    params=params||{};
+    var r;
+    if (params.width && params.height) {
+        r={x,y,width=params.width, height=params.height};
+    } else {
+        params.scale=params.scale||2;
+        r=this.getCrashShape(); //TODO abstract
+        if (!r) return null;
+        r={
+            x,y,
+            width=r.width*params.scale,
+            height=r.height*params.scale
+        };
+    }
+    //---T
+    var res=$touches.findTouch \(t) {
+        if (params.pickup || t.touched==1) {
+            var tt=$Screen.convert(t,layer);
+            if ($Math.abs(r.x-tt.x)<r.width/2 &&
+            $Math.abs(r.y-tt.y)<r.height/2) {
+                return true;
+            }
+        }
+    };
+    if (res) {
+        res.layer=layer;
+        return res;
+    }
+    //----
+}

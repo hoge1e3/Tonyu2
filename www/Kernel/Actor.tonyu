@@ -1,5 +1,5 @@
 extends BaseActor;
-includes SpriteMod2D,QueryMod2D,OneframeSpriteMod;
+includes InputMod2D,SpriteMod2D,QueryMod2D,OneframeSpriteMod;
 "field strict";
 
 \addSubsprite(s) {

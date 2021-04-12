@@ -56,13 +56,13 @@ native T2MediaLib;
         isMouseDown=true;// TODO: it looks like same as mouseDownAtCV
         if ($InputDevice.touchEmu) {
             $handleTouchStart({
-               preventDefault: function (){},
-               originalEvent: {
+                preventDefault: function (){},
+                originalEvent: {
                     changedTouches: [
-                        {identifier:ID_MOUSE+e.button, pageX:e.clientX,pageY:e.clientY}
+                    {identifier:ID_MOUSE+e.button, pageX:e.clientX,pageY:e.clientY}
                     ]
-               },
-               byMouse: bmap[e.button]||1
+                },
+                byMouse: bmap[e.button]||1
             });
         }
         handleListeners();
@@ -94,11 +94,11 @@ native T2MediaLib;
                 bid++;
             }
             $handleTouchMove({
-               preventDefault: function (){},
-               originalEvent: {
+                preventDefault: function (){},
+                originalEvent: {
                     changedTouches
-               },
-               byMouse: bmap[e.button]||1
+                },
+                byMouse: bmap[e.button]||1
             });
         }
         handleListeners();
@@ -113,13 +113,13 @@ native T2MediaLib;
         mouseButton=mouseButton&~(1<<e.button);
         if ($InputDevice.touchEmu) {
             $handleTouchEnd({
-               preventDefault: function (){},
-               originalEvent: {
+                preventDefault: function (){},
+                originalEvent: {
                     changedTouches: [
-                        {identifier:ID_MOUSE+e.button, pageX:e.clientX,pageY:e.clientY}
+                    {identifier:ID_MOUSE+e.button, pageX:e.clientX,pageY:e.clientY}
                     ]
-               },
-               byMouse: bmap[e.button]||1
+                },
+                byMouse: bmap[e.button]||1
             });
         }
     };
