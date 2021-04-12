@@ -66,12 +66,25 @@ nowait \drawAsText(ctx) {
     ctx.save();
     performTransform(ctx);
     ctx.fillStyle=fillStyle+"";
-    if (radius && radius>0) {
-        ctx.beginPath();
-        ctx.arc(0,0,radius,0,2*Math.PI);
-        ctx.fill();
+    if (_align.isOriginPivot) {
+        if (radius && radius>0) {
+            ctx.beginPath();
+            ctx.arc(0,0,radius,0,2*Math.PI);
+            ctx.fill();
+        } else {
+            ctx.fillRect(-width/2,-height/2,width,height);
+        }
     } else {
-        ctx.fillRect(-width/2,-height/2,width,height);
+        if (radius && radius>0) {
+            var r=_align.getDrawRect{width:radius*2, height:radius*2};
+            ctx.beginPath();
+            ctx.arc(r.x,r.y,radius,0,2*Math.PI);
+            ctx.fill();
+        } else {
+            var r=_align.getDrawRect(this);
+            ctx.fillRect(r.x-width/2,r.y-height/2,width,height);
+        }
+
     }
     ctx.restore();
 }
