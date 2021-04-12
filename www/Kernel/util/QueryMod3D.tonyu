@@ -2,6 +2,13 @@ extends null;
 includes QueryMod,SpriteMod3D;
 native Math;
 "field strict";
+nowait \dist(dx,dy,dz) {
+    if (typeof dx=="object") {
+        var t=dx;
+        dx=t.x-x;dy=t.y-y;dz=t.z-z;
+    }
+    return super.dist(dx,dy,dz);
+}
 \getCrashShape() {// 3D
     var actWidth=(width||radius*2)*scaleX*crashScale, actHeight;
     if(typeof scaleY==="undefined"){
@@ -24,5 +31,5 @@ native Math;
     return false;// TODO
     var cp=$Screen.convert(this,$Screen);
     return abs(clamped(cp.x,-a,$screenWidth+a))+
-        abs(clamped(cp.y,-a,$screenHeight+a));
+    abs(clamped(cp.y,-a,$screenHeight+a));
 }

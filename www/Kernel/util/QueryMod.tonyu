@@ -95,7 +95,8 @@ nowait \within(t,distance){//23D
 }
 nowait \within1(t,distance){//23D (use dist with 3d)
     if(!t || t._isDead) return false;
-    if(Math.sqrt(Math.abs(x-t.x)*Math.abs(x-t.x)+ Math.abs(y-t.y)*Math.abs(y-t.y))<distance){
+//    if(Math.sqrt(Math.abs(x-t.x)*Math.abs(x-t.x)+ Math.abs(y-t.y)*Math.abs(y-t.y))<distance){
+    if (dist(t)<distance) {
         return t;
     }
     return false;

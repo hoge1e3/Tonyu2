@@ -1,5 +1,7 @@
 extends TObject;
 includes MathMod;
+"field strict";
+var length, context; 
 \new (context) {
     length=0;
     if (context is BaseActor) context={actor:context};
@@ -124,6 +126,7 @@ includes MathMod;
     return maxs(key)[0];
 }
 \nearests(x,y) {
+    var z;
     if (x==null) {
         if (!parent) throw new Error("nearests: 座標を指定してください");
         x=parent.x;y=parent.y;
@@ -132,7 +135,7 @@ includes MathMod;
     if (typeof x=="object") {y=x.y;x=x.x;}
     if (context.is3D) {
         return mins \(o) {
-                return context.actor.dist(o);
+            return context.actor.dist(o);
         };
     }
     return mins \(o) {

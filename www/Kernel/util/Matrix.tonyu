@@ -143,11 +143,11 @@ includes MathMod,EventMod,FileMod;
                 res.y++;
             }
             if (res.y<=ymax) {
-            res[0]=res.x;
-            res[1]=res.y;
-            res[2]=get(res.x,res.y);
-            res.x++;
-            return true;
+                res[0]=res.x;
+                res[1]=res.y;
+                res[2]=get(res.x,res.y);
+                res.x++;
+                return true;
             }
             return false;
         };

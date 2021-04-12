@@ -1,11 +1,19 @@
 extends null;
-includes QueryMod;
+includes QueryMod, SpriteMod2D;
 native Math;
 "field strict";
 \getCrashShape() {// 2D
     //return new CubeShape(...);// if 3D
     return new RectShape(getCrashRect());
 }
+nowait \dist(dx,dy,dz) {
+    if (typeof dx=="object") {
+        var t=dx;
+        dx=t.x-x;dy=t.y-y;dz=0;
+    }
+    return super.dist(dx,dy,dz);
+}
+
 nowait \getCrashRect() {//2D
     if (_align && !_align.isOriginPivot) {
         var scx=scaleX;
@@ -44,5 +52,5 @@ nowait \getCrashRect() {//2D
     if (!a) a=0;
     var cp=$Screen.convert(this,$Screen);
     return abs(clamped(cp.x,-a,$screenWidth+a))+
-        abs(clamped(cp.y,-a,$screenHeight+a));
+    abs(clamped(cp.y,-a,$screenHeight+a));
 }
