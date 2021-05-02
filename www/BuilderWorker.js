@@ -42,15 +42,25 @@ WS.serv("compiler/resetFiles", params=>{
     prjDir.importFromObject(files);
     builder.requestRebuild();
 });
-WS.serv("compiler/addDependingProject", params=>{
-    // params: namespace, files
-    const files=params.files;
-    const prjDir=ram.rel((params.namespace)+"/");
+WS.serv("compiler/addDependingProject", ({namespace,files})=>{
+    //const files=params.files;
+    const prjDir=ram.rel((namespace)+"/");
     prjDir.importFromObject(files);
     const dprj=CompiledProject.create({dir:prjDir});
-    ns2depspec[params.namespace]={
+    ns2depspec[namespace]={
         dir: prjDir.path()
     };
+    const options=prj.getOptions();
+    const compiler=options.compiler||{};
+    const dependingProjects=compiler.dependingProjects||[];
+    for (let i=0; i<dependingProjects.length; i++) {
+        const p=dependingProjects[i];
+        if (p.namespace===namespace && p.dir) {
+            p.dir=prjDir.path();
+        }
+    }
+    prj.setOptions(options);
+    console.log("Options changed as",options);
     return {prjDir:prjDir.path()};
 });
 WS.serv("compiler/parse", async ({files})=>{
