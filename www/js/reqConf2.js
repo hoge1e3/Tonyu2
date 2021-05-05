@@ -179,6 +179,7 @@ var reqConf={
                 RealtimeErrorMarker:1,
                 EditorPopupMarker:1,
                 kernelChecker:1,
+                DependencyEditor:1,
                 "ErrorDialog":1,
                 "RunDialog": 1,
                 "DiffDialog": 1,

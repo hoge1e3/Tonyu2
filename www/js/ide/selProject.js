@@ -65,12 +65,7 @@ $(function () {
         function newDiag() {
             NPD.show(curDir, function (prjDir) {
                 prjDir.mkdir();
-                // temporaly
-                if (WebSite.version==2) {
-                    location.href="project2.html?dir="+prjDir.path();
-                } else {
-                    location.href="project.html?dir="+prjDir.path();
-                }
+                location.href=WebSite.projectEditorURL+"?dir="+prjDir.path();
             });
         }
         var showAll;
@@ -130,7 +125,7 @@ $(function () {
         onComplete: function ({dir}){
             //prjDirs.forEach(ls);
             if (dir) {
-                location.href="project2.html?dir="+dir.path()+"&autoRun=1";
+                location.href=WebSite.projectEditorURL+"?dir="+dir.path()+"&autoRun=1";
             } else {
                 location.reload();
             }
@@ -154,7 +149,7 @@ $(function () {
     sh.cd(FS.get(WebSite.projects[0]));
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};
-    sh.openKernel=function () {window.open(/*location.href=*/`project2.html?dir=${WebSite.kernelDir}`);};
+    sh.openKernel=function () {window.open(/*location.href=*/`${WebSite.projectEditorURL}?dir=${WebSite.kernelDir}`);};
     $($("button.showAll").get(0)).click();
     if (!hideSplashScreenOnImport) root.SplashScreen.hide();
 });

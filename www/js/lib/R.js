@@ -5,6 +5,17 @@ $(".dropdown-toggle");
 */
     const root=require("root");
     const ja={
+        "reloadRequested": "依存関係に変更がありました．再読み込みが必要です．再読み込みを行いますか？",
+        "namespaceIsNotSet": "追加しようとしているプロジェクト'{1}'に名前空間が設定されていません．プロジェクト'{1}'を開いて，名前空間を設定してください．",
+        "namespaceIsSame": "追加しようとしているプロジェクト'{1}'の名前空間がこのプロジェクトと同じ'{2}'です．プロジェクト'{1}'を開いて，名前空間を変更してください．",
+        "alreadyHaveSameNamespace": "追加しようとしているプロジェクト'{1}'と同じ名前空間'{2}'のプロジェクトがすでに追加されています．",
+        "projectNotFound": "プロジェクト’{1}’は見つかりませんでした",
+        "addDependingProject": "参照するプロジェクトを追加",
+        "dependencyEditor": "ライブラリ管理",
+        "dependingProjects": "参照するプロジェクト",
+        "plugins":"プラグイン",
+        "depProejctPlaceholder":"プロジェクト名で検索",
+        "namespace":"名前空間",
         "file": "ファイル",
         "closeFile": "閉じる",
         "removeFile": "削除",
@@ -189,6 +200,17 @@ $(".dropdown-toggle");
     }
     console.log(buf);*/
     const en={
+        "reloadRequested": "Dependency changed. Reload?",
+        "namespaceIsNotSet": "No namespace is specified in project '{1}'. Open the project '{1}' and configure namespace.",
+        "namespaceIsSame": "The namespace of the project '{1}' is '{2}' which is same as this project. Open the project '{1}' and change the namespace",
+        "alreadyHaveSameNamespace": "Cannot add the project '{1}'. There is another project whose namespace is '{2}' in dependencies.",
+        "projectNotFound": "Project '{1}' did not found",
+        //"addDependingProject": "参照するプロジェクトを追加",
+        //"dependencyEditor": "ライブラリ管理",
+        //"dependingProjects": "参照するプロジェクト",
+        //"plugins":"プラグイン",
+        "depProejctPlaceholder":"Type project name",
+        "namespace":"namespace",
         "file" : "File", //ファイル
         "closeFile" : "Close File", //閉じる
         "removeFile" : "Remove File", //削除

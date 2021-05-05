@@ -91,6 +91,7 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 		FS.setEnvProvider(new FS.Env(WebSite));
 		WebSite.sysVersion=VER;
 		WebSite.version=2;
+		WebSite.projectEditorURL="project2.html";
 		setDefaultResource(WebSite);
 		return WebSite;
 	case "singleHTML":

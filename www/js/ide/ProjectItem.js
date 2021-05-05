@@ -29,11 +29,7 @@ show: function (t) {
 url: {
     get: function (t) {
         var f=t.projectDir;
-        // temporaly
-        if (WebSite.version==2) {
-            return "project2.html?dir="+f.path();
-        }
-        return "project.html?dir="+f.path();
+        return WebSite.projectEditorURL+"?dir="+f.path();
     }
 },
 dom: function (t) {

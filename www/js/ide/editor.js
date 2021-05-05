@@ -405,8 +405,10 @@ $(function () {
     $("#soundResEditor").click(F(function () {
         resEditors.open("sound");
     }));
+    let optionsEditor;
     $("#prjOptEditor").click(F(function () {
-        ProjectOptionsEditor(curPrj);
+        optionsEditor=optionsEditor||ProjectOptionsEditor(curPrj);
+        optionsEditor.show();
     }));
     //var helpd=null;
     $("#refHelp").click(F(dialogs.helpDialog));

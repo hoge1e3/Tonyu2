@@ -9,12 +9,13 @@ define(function (require,exports) {
     const R=require("R");
     const EventHandler=require("EventHandler");
     const langMod=BuilderClient.langMod;
+    const ns2depspec= {
+        kernel: {namespace:"kernel", url: WebSite.compiledKernel}
+    };
+    exports.ns2depspec=ns2depspec;
     F.addType("IDE",params=>{
         const ide=params.ide;
         const res=F.createDirBasedCore(params);
-        const ns2depspec= {
-            kernel: {namespace:"kernel", url: WebSite.compiledKernel}
-        };
         const c=new BuilderClient(res ,{
             worker: {ns2depspec, url: "BuilderWorker.js"/*WORKER_URL*/},
             locale:R.getLocale()
