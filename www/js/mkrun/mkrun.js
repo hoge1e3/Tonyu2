@@ -65,6 +65,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
         var prjDir=prj.getDir();
         var resc=prj.getResource();
         var opt=prj.getOptions();
+        changeDependencies(opt);
         var loadFilesBuf="function loadFiles(dir){\n"+
         "   if (WebSite.isNW) return;\n";
         var wwwDir=FS.get(WebSite.wwwDir);
@@ -89,7 +90,15 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
                 copyIndexHtml(),
                 genReadme()
         );
-
+        function changeDependencies(opt) {
+            const newDep=[];
+            for (let dep of prj.getDependingProjects()) {
+                const ns=dep.getNamespace();
+                newDep.push({namespace: ns, url: `js/${ns}.js`});
+            }
+            opt.compiler.dependingProjects=newDep;
+            console.log("mkrun changed DEP as",opt);
+        }
         function genReadme() {
             dest.rel("Readme.txt").text(
                     R("thisFolderShouldBeUploadedToWebServer")+
@@ -129,7 +138,35 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
                 return dest.rel(htmlfile.name()).text(htmlcont);
             });
         }
-        function copyScripts() {
+        async function copyScripts() {
+            for (let dep of [prj, ...prj.getDependingProjects()]) {
+                const ns=dep.getNamespace();
+                const dstjsfile=dest.rel("js/").rel(`${ns}.js`);
+                const dstjsmapfile=dest.rel("js/").rel(`${ns}.js.map`);
+                if (dep.getOutputURL) {
+                    const url=dep.getOutputURL();
+                    const src=await $.get(url);
+                    dstjsfile.text(src);
+                } else if (dep.getOutputFile) {
+                    const srcjsfile=dep.getOutputFile();
+                    await srcjsfile.copyTo(dstjsfile);
+                    const srcjsmapfile=srcjsfile.sibling(srcjsfile.name()+".map");
+                    if (srcjsmapfile.exists()) {
+                        await srcjsmapfile.copyTo(dstjsmapfile);
+                    }
+                } else {
+                    console.log(dep);
+                    throw new Error("Cannot get compiled file");
+                }
+            }
+            const runScr2=jsDir.rel(`${genDir}/${runScrFileName}`);
+            const runScr2Map=jsDir.rel(`${genDir}/${runScrFileName}.map`);
+            await runScr2.copyTo(dest.rel(`js/${runScrFileName}`));
+            if (runScr2Map.exists()) {
+                await runScr2Map.copyTo(dest.rel(`js/${runScrFileName}.map`));
+            }
+        }
+        function copyScriptsOLD() {
             var usrjs=prjDir.rel("js/concat.js");
             var usrjsmap=prjDir.rel("js/concat.js.map");
             //TODO async...

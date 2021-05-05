@@ -6,16 +6,23 @@ function (root, plugins,sysMod,JS,WebSite) {
         const res={
             getDir:()=>dir,
             resolve(rdir){return this.getDir().rel(rdir);},
-            getOptions(opt) {return this.getOptionsFile().obj();},
+            getOptions(/*opt*/) {return this.getOptionsFile().obj();},
             getOptionsFile() {return this.getDir().rel("options.json");},
             setOptions(opt) {return this.getOptionsFile().obj(opt);},
-            getOutputFile(lang) {return this.getDir().rel("js/concat.js");},
+            getOutputFile(/*lang*/) {
+                const ns=this.getNamespace();
+                return this.getDir().rel(`js/${ns}.js`);
+            },
             getEXT:()=>".tonyu",
             sourceFiles:()=>[],
 			getDependingProjects: ()=>[],
 			async loadClasses() {
-				await JS.load(WebSite.compiledKernel);
-				await JS.load("js/concat.js");
+                const opt=this.getOptions();
+                for (let dep of [...opt.compiler.dependingProjects, {namespace:this.getNamespace()}]) {
+                    const ns=dep.namespace;
+                    await JS.load(`js/${ns}.js`);
+                }
+				//await JS.load(WebSite.compiledKernel);
 			},
 			getNamespace() {
 				var opt=this.getOptions();
