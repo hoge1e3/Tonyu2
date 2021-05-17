@@ -1,6 +1,6 @@
 // do not depend on ProjectFactory which is a part of BuilderClient4Sys
-define(["root","plugins","sysMod","miniJSLoader","WebSite"],
-function (root, plugins,sysMod,JS,WebSite) {
+define(["root","plugins","sysMod","miniJSLoader"],
+function (root, plugins,sysMod,JS) {
     // used by runScript2
     return function (dir) {
         const res={

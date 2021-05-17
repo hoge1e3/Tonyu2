@@ -3,7 +3,9 @@ requirejs(["FS","compiledTonyuProject", "Shell","runtime","WebSite","LSFS","Tony
 		function (FS, CPTR,  sh,  rt,WebSite,LSFS,Tonyu,root,com) {
 	$(function () {
 		const cv=com.initCanvas();
-
+		if (typeof window.tonyu_app_version==="string") {
+			WebSite.tonyu_app_version=WebSite.tonyu_app_version||window.tonyu_app_version;
+		}
 		let curProjectDir, home, prj;
 		if (WebSite.isNW) {
 			var cur=process.cwd().replace(/\\/g,"/");

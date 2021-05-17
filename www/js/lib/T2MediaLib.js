@@ -184,6 +184,9 @@ var T2MediaLib = (function(){
             xhr.status=200;
             xhr.onload();
         } else {
+            try {
+                url=window.Tonyu.urlTrailer.put(url);
+            } catch (e){}
             xhr.open('GET', url, true);
             xhr.responseType = 'arraybuffer';
             try {

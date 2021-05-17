@@ -1,8 +1,12 @@
-define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,assert) {
+define(function (require, exports, module) {
+    const PP=require("PatternParser");
+    const Assets=require("Assets");
+    const assert=require("assert");
+    const urlTrailer=require("urlTrailer");
     var cache={};
     function excludeEmpty(resImgs) {
         var r=[];
-        resImgs.forEach(function (resImg,i) {
+        resImgs.forEach(function (resImg) {
             if (!resImg || resImg.url=="") return;
             r.push(resImg);
         });
@@ -35,7 +39,7 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
             	cache[urlKey]=this;
             	proc.apply(this,[]);
             });
-            im.attr("src",url);
+            im.attr("src",urlTrailer.put(url));
             function proc() {
                 var pw,ph;
                 if (resImg.type=="single") {
@@ -101,5 +105,5 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
         return assert.is(res,Array);
     };
 	window.ImageList=IL;
-    return IL;
+    module.exports=IL;
 });

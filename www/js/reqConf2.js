@@ -107,6 +107,7 @@ var reqConf={
                 "genROM": 1
             },
             "fs": {
+                "urlTrailer": 1,
                 "Assets": 1,
                 "SFileNW": 1,
                 "ScriptTagFS": 1,

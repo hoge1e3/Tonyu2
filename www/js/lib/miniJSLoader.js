@@ -1,7 +1,8 @@
-define(function (require, exports, module) {
+define(function (require, exports) {
+    const urlTrailer=require("urlTrailer");
     exports.load=url=>new Promise(succ=>{
         const s=document.createElement("script");
-        s.setAttribute("src",url);
+        s.setAttribute("src",urlTrailer.put(url));
         s.addEventListener("load",succ);
         document.body.appendChild(s);
         // JQuery does not work
