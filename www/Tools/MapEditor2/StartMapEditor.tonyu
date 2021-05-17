@@ -1,0 +1,27 @@
+
+//「実行」→「StartMapEditorを実行」で起動
+
+var bp=$pat_mapchip;
+$editorConfig={
+    //レイヤー名，レイヤーで使えるパターン
+    layers:[
+    //奥のレイヤー
+    {name:"base", pats:[-1, bp+88, bp+89, bp+90, bp+91]},
+    //手前のレイヤー
+    {name:"on", pats:[-1, bp+1, bp+2, bp+3, bp+4, $pat_neko]},
+    ],
+    
+    // 編集対象のマップファイルのあるフォルダ
+    mapDir: file("../maps/"),
+    
+    // オプション：「Play」ボタンで読み込まれるページ
+    //mainPage: Stage,
+    
+    // オプション：「Title」ボタンで読み込まれるページ
+    //titlePage: Title,
+    
+    showHelp: true,//ヘルプの表示
+};
+loadPage(MapFiles);
+
+

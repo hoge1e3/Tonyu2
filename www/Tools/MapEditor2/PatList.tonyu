@@ -1,0 +1,72 @@
+"field strict";
+\draw(){}
+var editor;
+var config;
+var patSels;// [ [PatSel] ]
+var layers=config.layers;//[ {name:string, pats:[number]} ] 
+var curL=layers[0];// {name:string, pats:[number]}
+var savePats=[];//[number];
+
+var bw=50;
+var patSels=config.layers.map\(layer, lidx) {
+    return layer.pats.map\(p,i) {
+        return new PatSel{y:y+(config.layers.length-1-lidx)*bw+16 , x:x+32*i, p , la:layer};
+    };
+};
+savePats=layers.map\(layer) {
+    return layer.pats[clamp(1,0,layer.pats.length-1)];
+};
+p=savePats[curL];
+var cursor=new Actor{x:0,y:0,layer,text:"▲"};
+size=20;
+shift(0);
+
+\curLIndex {
+    return layers.indexOf(curL);
+}
+\curLIndex=v {
+    curL=layers[v];
+}
+\changeLayer() {
+    var i=curLIndex;
+    savePats[i]=p;
+    i=(i+1)%layers.length;
+    p=savePats[i];
+    curLIndex=i;
+    shift(0);
+    /*if (curL==="base") {
+        savePats.base=p;
+        p=savePats.on;
+        curL="on";
+        shift(0);
+    } else {
+        savePats.on=p;
+        p=savePats.base;
+        curL="base";
+        shift(0);
+    }*/
+}
+\defaultLayer{
+    return $frontLayer;
+}
+\shift(by) {
+    var a=patSels[curLIndex];
+    for(var i=0;i<a.length ;i++) {
+        if (a[i].p===p && !clamped(i+by,0,a.length-1)) {
+            p=a[i+by].p;
+            cursor.x=a[i+by].x;
+            cursor.y=a[i+by].y+16;
+            break;
+        }
+    }
+}
+\set(p, la) {// la:  {name:string, pats:[number]}
+    var preP=this.p, preL=curL;
+    curL=la || curL;
+    this.p=p;
+    if (preP==this.p && preL==curL) {
+        return false;
+    }
+    shift(0);
+    return true;
+}

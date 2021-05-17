@@ -1,0 +1,26 @@
+
+var la;// {name:string, pats:number}
+\draw(ctx) {
+    if (p>-1) {
+        if (width && height) {
+            scaleX=32/width;
+            scaleY=32/height;
+        }
+        return super.draw(ctx);
+    }
+    text="Del";
+    fillStyle="white";
+    super.draw(ctx);
+    width=32;
+    height=32;
+    text=null;
+    
+}
+\defaultLayer{
+    return $frontLayer;
+}
+on("touch",sel);
+
+\sel(e) {
+    $editor.curP.set(p,la);
+}

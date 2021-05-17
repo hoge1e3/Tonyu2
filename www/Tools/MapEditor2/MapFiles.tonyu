@@ -1,0 +1,93 @@
+var config=config||$editorConfig;
+var mapEXT=".json";
+var mapDir=config.mapDir;//$editable ? $userMapDir :  $storyMapDir;
+if (!mapDir.exists()) mapDir.mkdir();
+$InputBox.useNative=true;
+$Screen.resize(600,800);
+$Screen.setPivot(0,0);
+$Screen.scrollTo(0,0);
+$sound.stopBGM();
+y=20;
+var pitch=50;
+for (var mf of mapDir.listFiles()) {
+    if (mf.ext()!==".json") return;
+    item(mf,y);
+    y+=pitch;
+}
+newItem(y);
+y+=pitch;
+backItem(y);
+\newItem(y) {
+    var b=new Button{left:10,top:y, width:100, padding:2,height:pitch*0.7,text:"New.."};
+    b.on("touch") \{
+        //$InputDevice.reset();
+        var name=uniqFile(mapDir, "map", mapEXT).truncExt();
+        name=$InputBox.prompt("New File Name",name);
+        if (name) {
+            name=name.replace(/\.json$/,"");
+            name=name+".json";
+            loadPage(Edit) {config, mapFile:mapDir.rel(name)}; 
+        }
+    };
+}
+\backItem(y) {
+    if (!config.titlePage) return;
+    var b=new Button{left:10,top:y, width:100, padding:2,height:pitch*0.7,text:"Title"};
+    b.on("touch") \{
+        loadPage(config.titlePage);
+    };
+}
+
+
+\item(file, y) {
+    var name=file.truncExt();
+    new Actor{text:name,align:"left", x:10,y,size:30};
+    var b;
+    var xx=400;
+    b=new Button{left:$screenWidth-xx,top:y, width:100, padding:2,height:pitch*0.8,text:"Edit"};
+    b.on("touch") \{
+        loadPage(Edit) {config, mapFile:file};  
+    };
+    xx-=100;
+    if (config.mainPage) {
+        b=new Button{left:$screenWidth-xx,top:y, width:100, padding:2,height:pitch*0.8,text:"Play"};
+        b.on("touch") \{
+            loadPage(config.mainPage) {mapFile:file};  
+        };
+    }
+    xx-=100;
+    b=new Button{left:$screenWidth-xx,top:y, width:100, padding:2,height:pitch*0.8,text:"Copy"};
+    b.on("touch") \{
+        //$InputDevice.reset();
+        name=uniqFile(file.up(), file.truncExt(), mapEXT).truncExt();
+        var nname=$InputBox.prompt("New File Name",name);
+        if (nname && name!==nname) {
+            file.copyTo(file.sibling(nname+mapEXT));
+            loadPage(MapFiles) {config};
+        }
+    };
+    xx-=100;
+    b=new Button{left:$screenWidth-xx,top:y, width:100, padding:2,height:pitch*0.8,text:"Del",
+        fillStyle="#f88"
+    };
+    b.on("touch") \{
+        //$InputDevice.reset();
+        var r=$InputBox.confirm("Delete "+name+"?");
+        if (r) {
+            file.rm();
+            loadPage(MapFiles) {config};
+        }
+    };
+}
+\uniqFile(dir,name, ext) {
+    name=name.replace(/\d*$/,"");
+    var res=dir.rel(name+ext);
+    var i=1;
+    for (var j=0;j<100;j++) {
+        res=dir.rel(name+i+ext);
+        if (!res.exists()) break;
+        i++;
+    }
+    //print(res.path()+"NOT EX!");
+    return res;
+}

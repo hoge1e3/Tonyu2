@@ -1,0 +1,106 @@
+var dx,dy;
+var undos;
+var curP;
+\onAppear() {
+    undos=[];
+}
+\draw(ctx) {
+    ctx.beginPath();
+    ctx.strokeStyle="white";
+    if (dx==null) dx=x;
+    if (dy==null) dy=y;
+    var w=$map.chipWidth, h=$map.chipHeight;
+    ctx.moveTo(     x*w  , y*h);
+    ctx.lineTo((dx+1)*w-1, y*h);
+    ctx.lineTo((dx+1)*w-1, (dy+1)*h-1);
+    ctx.lineTo(     x*w  , (dy+1)*h-1);
+    ctx.closePath();
+    ctx.stroke();
+}
+\move(dx,dy) {
+    x+=dx;y+=dy;
+    x=clamp(x,0,min(250,$map.col+30));
+    y=clamp(y,0,min(250,$map.row+30));
+    dx=x;dy=y;
+
+    //print("moved", x,y);
+}
+
+\moveTo(xx,yy) {
+    if (x==xx && y==yy) return false;
+    x=xx;y=yy;
+    dx=x;dy=y;
+    //print("moved", x,y);
+    return true;
+}
+\clearUndos() {
+    undos=[];
+}
+\rollbacker() {
+    var c=undos.length;
+    return {
+        rollback: \{
+            while(undos.length>c) {
+                undo();
+            }
+        }
+    };
+}
+\curLayerName {
+    return curLayer.name;
+}
+\curLayer {// {name:string, pats:[number]}
+    return curP.curL;
+}
+\undo() {
+    var u=undos.pop();
+    if (!u) return;
+    $map.chip(u.x,u.y, u.layer.name).p=u.was;
+    /*if (u.layer==="base") {
+        $map.set(u.x, u.y, u.was);
+    } else {
+        $map.setOn(u.x, u.y, u.was);
+    }*/
+}
+\put(curP) {
+    //print(p,la);
+    var chip=$map.chip(x,y,curLayerName);
+    var was=chip.p;
+    chip.p=curP.p;
+    /*if (curP.curL==="base") {
+        was=$map.get(x,y);
+        $map.set(x,y,curP.p);
+        //$map.setOn(x,y,$map.getOn(x,y));
+    } else {
+        was=$map.getOn(x,y);
+        $map.setOn(x,y,curP.p);
+    }*/
+    undos.push{x,y,was,layer:curLayer};
+    $editor.modified();
+}
+\pick(curP) {
+    var chip=$map.chip(x,y,curLayerName);
+    curP.set(chip.p);
+    /*if (curP.curL==="base") {
+        curP.set($map.get(x,y));
+    } else {
+        curP.set($map.getOn(x,y));
+    }*/
+    return true;
+}
+\sel(dx,dy) {
+    if (dx==x && dy==y) return false;
+    if (dx>x) {
+        this.dx=dx;
+    } else {
+        this.dx=x;
+        x=dx;
+    }
+    if (dy>y) {
+        this.dy=dy;
+    } else {
+        this.dy=y;
+        y=dy;
+    }
+    return true;
+}

@@ -1,0 +1,242 @@
+
+
+var mapFile;
+var config=config||$editorConfig;// Config
+$editor=this;
+mapFile=mapFile||$lastFile;
+$lastFile=mapFile;
+$map=new Map2;
+if (mapFile.exists()) {
+    $map.load(mapFile);
+}
+$map.expand="right bottom";
+var bw=50;
+var h=$screenHeight;
+var w=$screenWidth;
+var bhide=1000;
+new Button{left:bw*0.5-bhide, top: h-bw*3, width:bw ,text:"↑", key:"up",onClick:moveC,autoRepeat:30};
+new Button{left:bw*0.5-bhide, top: h-bw*1, width:bw ,text:"↓", key:"down",onClick:moveC,autoRepeat:30};
+new Button{left:bw*0-bhide, top: h-bw*2, width:bw ,text:"←", key:"left",onClick:moveC,autoRepeat:30};
+new Button{left:bw*1-bhide, top: h-bw*2, width:bw ,text:"→", key:"right",onClick:moveC,autoRepeat:30};
+
+
+var putB=new Button{top:h-bw*3,left:bw*3-bhide,width:100,text:"Put",key:"space",onClick:put};
+new Button{top:h-bw*3,left:bw*5-bhide,width:100,text:"Pick",key:"z",onClick:pick};
+if (config.mainPage) {
+    new Button{top:h-bw*1,left:bw*1,width:100,text:"Play",key:"p",onClick:play};
+}
+new Button{top:h-bw*1,left:bw*4,width:100,text:"Exit",key:"e",onClick:back};
+new Button{top:h-bw*1,left:w-100,width:100,text:"Undo",key:"u",onClick:\{
+        c.undo();
+}};
+
+
+if (config.showHelp) {
+    new Label{x:10,y:h-bw*3,text:"Left Click: Put\n"+
+        "Right Click: Pick\n"+
+        "Right Click x2: Change Layer\n"+
+        "Right Click+drag: Copy Mode\n"+
+        "wasd or Multi tap: Scroll",
+        align:"left",
+        size:20
+    };
+}
+
+var menuPanelHeight=bw*(1+config.layers.length);
+/*var patSels=config.layers.map\(layer, lidx) {
+    return layer.pats.map\(p,i) {
+        return new PatSel{y:h-(lidx+1)*bw+16, x:bw*8+32*i, p , la:layer};
+    };
+};*/
+var sx=w/2,sy=h/2,zoom=1;
+$Screen.setPivot(sx,sy);
+$Screen.scrollTo(sx,sy);
+
+var plw=$Math.max.apply($Math, config.layers.map\(l) {return l.pats.length;} );
+var curP=new PatList{config, x:w-plw*32, y:h-menuPanelHeight};
+var c=new Cursor{x:0,y:0,curP};
+on("keyDown","c") \{
+    curP.shift(1);      
+};
+on("keyDown","x") \{
+    curP.shift(-1);      
+};
+on("keyDown","q") \{
+    curP.changeLayer();
+};
+on("keyDown","d") \{
+    scrollTo(sx+32,sy,zoom);
+};
+on("keyDown","a") \{
+    scrollTo(sx-32,sy,zoom);
+};
+on("keyDown","s") \{
+    scrollTo(sx,sy+32,zoom);
+};
+on("keyDown","w") \{
+    scrollTo(sx,sy-32,zoom);
+};
+\scrollTo(sx,sy,zoom) {
+    sx=clamp(sx,0, 240*32-w/2);
+    sy=clamp(sy,0, 240*32-h/2);
+    zoom=clamp(zoom, 0.1, 5);
+    $Screen.scrollTo(sx,sy,zoom);
+    extend{sx,sy,zoom};
+}
+
+
+var dstCur;
+var mmove=$InputDevice.on("mouseMove") \(e) {
+    //print(e.x,e.y);
+    if (dstCur) {
+        e.layer=$frontLayer;
+        var cv=$Screen.convert(e,$mainLayer);
+        dstCur.x=floor(cv.x/32);
+        dstCur.y=floor(cv.y/32);
+        
+    }
+};
+on("die") \{
+    mmove.remove();
+};
+
+var menuPanel=new Panel{
+    width:w, height:menuPanelHeight, 
+    x:w/2,   y:h-menuPanelHeight/2,
+    alpha:180, zOrder:100, layer:$frontLayer
+};
+menuPanel.fillStyle="gray";
+menuPanel.fillRect(0,0,menuPanel.width,menuPanel.height);
+var mapToucher=new Panel{width:$screenWidth, height: h-menuPanel.height, layer:$frontLayer};
+var singleTouchState, multiTouchState;//=false, multi=false ,rb;
+mapToucher.on("touch") \(e){
+    //print(e.finger.x, e.finger.y);  
+    var f=e.finger;
+    f.layer=$mainLayer;
+    if (singleTouchState) {
+        //print("Double!");
+        if (!multiTouchState) {
+            singleTouchState.rollback();
+            multiTouchState={
+                finger1: singleTouchState.finger,
+                finger2: f,
+            };
+            procMulti(multiTouchState);
+        }
+        return;
+    } else {
+        var s={
+            rollbacker=c.rollbacker(),
+            finger=f,
+            rollback=\{
+                s.rollbacker.rollback();
+                s.endEvent.remove();
+                if (s.moveEvent) s.moveEvent.remove();     
+            },
+            endEvent=f.on("end") \{
+                singleTouchState=null;  
+            }
+        };
+        singleTouchState=s;
+    }
+    //print (e.byMouse);
+    if (e.byMouse==2) {
+        var moved=c.moveTo(floor(e.finger.x/32), floor(e.finger.y/32));
+        if (!moved) {
+           // print("layer change!");
+            curP.changeLayer();
+        }
+        pick();
+        f.on("move") \(e) {
+            // print("mv");
+            var moved=c.sel(floor(e.finger.x/32), floor(e.finger.y/32));
+            if (!moved) return;
+            if (!dstCur) dstCur=new DstCur;
+            dstCur.setFrom(c);
+        };
+        
+    } else {
+        if (dstCur) {
+            dstCur.doCopy(c);
+            dstCur.die();
+            dstCur=null;
+            var moved=c.moveTo(floor(e.finger.x/32), floor(e.finger.y/32));
+        } else {
+            var moved=c.moveTo(floor(e.finger.x/32), floor(e.finger.y/32));
+            put();
+            singleTouchState.moveEvent=f.on("move") \(e) {
+                var moved=c.moveTo(floor(e.finger.x/32), floor(e.finger.y/32));
+                if (moved) put();
+            };
+        }
+    }
+};
+\procMulti(m) {
+    var f1=m.finger1;
+    var f2=m.finger2;
+    f1.layer=$frontLayer;
+    f2.layer=$frontLayer;
+    var ox=(f1.x+f2.x)/2;
+    var oy=(f1.y+f2.y)/2;
+    var ssx=sx,ssy=sy;
+    var od=dist(f1.x-f2.x, f1.y-f2.y);
+    var sz=zoom;
+    var h=[
+    f1.on("move", mv),
+    f2.on("move", mv),
+    f1.on("end",ed),
+    f2.on("end",ed),
+    ];
+    \mv() {
+        var nx=(f1.x+f2.x)/2;
+        var ny=(f1.y+f2.y)/2;
+        var d=dist(f1.x-f2.x, f1.y-f2.y);
+        scrollTo(ssx-(nx-ox)/zoom, ssy-(ny-oy)/zoom, sz*(d/od));
+    }
+    \ed() {
+        for (var e of h) e.remove();
+        singleTouchState=multiTouchState=null;
+    }
+}
+
+\moveC(b) {
+    switch (b.key){
+        case "up":
+        c.move(0,-1);
+        
+        if (putB.clicked) put();
+        break;
+        case "down":
+        c.move(0,1);
+        if (putB.clicked) put();
+        break;
+        case "left":
+        c.move(-1,0);
+        if (putB.clicked) put();
+        break;
+        case "right":
+        c.move(1,0);
+        if (putB.clicked) put();
+        break;
+    }
+}
+\put() {
+    c.put(curP);
+}
+\pick() {
+    c.pick(curP);
+}
+\save() {
+    $map.save(mapFile);
+}
+\play() {
+    save();
+    loadPage(config.mainPage) {mapFile};
+}
+\back() {
+    save();
+    loadPage(MapFiles) {config};
+}
+\modified() {
+    //$records.modified(mapFile);
+}
