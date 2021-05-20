@@ -82,10 +82,12 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 			WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
 			WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
 			WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
+			WebSite.quickUploadURL=prot+"//localhost/tsite/tonyu/project/quickDone.cgi";
 			WebSite.scriptServer="https://localhost/tonyu2/";
 		} else {
 			WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
 			WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
+			WebSite.quickUploadURL=prot+"//www.tonyu.jp/project/quickDone.cgi";
 			WebSite.scriptServer="https://edit.tonyu.jp/";
 		}
 		FS.setEnvProvider(new FS.Env(WebSite));

@@ -5,6 +5,8 @@ $(".dropdown-toggle");
 */
     const root=require("root");
     const ja={
+        "QuickUpload": "クイックアップロード",
+        "ClickToCompleteQuickUpload": "クイックアップロードを完了させる",
         "reloadRequested": "依存関係に変更がありました．再読み込みが必要です．再読み込みを行いますか？",
         "namespaceIsNotSet": "追加しようとしているプロジェクト'{1}'に名前空間が設定されていません．プロジェクト'{1}'を開いて，名前空間を設定してください．",
         "namespaceIsSame": "追加しようとしているプロジェクト'{1}'の名前空間がこのプロジェクトと同じ'{2}'です．プロジェクト'{1}'を開いて，名前空間を変更してください．",

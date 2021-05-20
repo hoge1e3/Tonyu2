@@ -1,5 +1,5 @@
-define(["exportAsScriptTags","UI","Klass","root","R"],
-function (east,UI,Klass,root,R) {
+define(["exportAsScriptTags","UI","Klass","root","R","WebSite","extLink"],
+function (east,UI,Klass,root,R,WebSite,extLink) {
     root.ExportHTMLDialog=Klass.define({
         $this:true,
         $:["prj"],
@@ -8,8 +8,13 @@ function (east,UI,Klass,root,R) {
             t.options=options||{IE:false};
             t.prj.removeThumbnail();
             t.createDOM();
-            t.dom.dialog({width:800,height:400});
+            t.resetUpload();
+            t.dom.dialog({width:800,height:500});
             t.write();
+        },
+        resetUpload(t) {
+            t.dom.$vars.upd.show();
+            t.dom.$vars.updURL.empty();
         },
         write: function (t) {
             var dir=t.prj.getDir();
@@ -17,6 +22,7 @@ function (east,UI,Klass,root,R) {
             setTimeout(function () {
                 var buf=east(dir,t.options);
                 t.prog.val(buf);
+                t.resetUpload();
             },10);
         },
         createDOM:function (t) {
@@ -33,7 +39,11 @@ function (east,UI,Klass,root,R) {
                     }],
                     ["label",{"for":"ie"},R("showEditButton")],
                 ],
-                ["textarea",{$var:"prog",rows:20,cols:60,placeholder:"Please wait..."}]
+                ["div",
+                    ["button",{$var:"upd",on:{click:()=>t.uploadTmp(t.prog.val())}},R("QuickUpload")],
+                    ["span",{$var:"updURL"}],
+                ],
+                ["textarea",{$var:"prog",rows:20,cols:60,placeholder:"Please wait..."}],
             );
             t.dom.$edits.load(t.options);
             t.dom.$vars.IE.on("change",()=> {
@@ -47,7 +57,20 @@ function (east,UI,Klass,root,R) {
 
             t.prog=t.dom.$vars.prog;
             return t.dom;
-        }
+        },
+        async uploadTmp(t, html) {
+            const f=new FormData();
+            const url=WebSite.uploadTmpUrl;
+            f.append( "content" , new Blob( [html], {type:"text/html"} ) , "index.html" );
+            f.append( "extension", new Blob( [".html"], {type:"text/plain"} ) , "extension" );
+            const upf=await $.ajax({url, method:"POST",data:f,processData: false, contentType: false});
+            console.log(upf, html);
+            const v=this.dom.$vars;
+            v.upd.hide();
+            v.updURL.empty();
+            v.updURL.append(extLink(`${WebSite.quickUploadURL}?name=${upf}`, R("ClickToCompleteQuickUpload")));
+        },
     });
+
     return root.ExportHTMLDialog;
 });
