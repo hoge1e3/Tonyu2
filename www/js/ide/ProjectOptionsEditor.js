@@ -58,9 +58,10 @@ function (UI,GlobalDialog,R,DependencyEditor) {
             //console.log("new opt ",JSON.stringify(prj.getOptions()));
             if (reloadRequested) {
                 reloadRequested=false;
-                if (confirm(R("reloadRequested"))) {
+                /*if (confirm(R("reloadRequested"))) {
                     location.reload();
-                }
+                }*/
+                prj.clean();
             }
         }
         function requestReload() {
