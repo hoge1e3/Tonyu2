@@ -135,7 +135,7 @@ extends Panel;
 \saveAndClear(excludes:Array) {
     var res=[];
     excludes=excludes||$excludeFromAll.toArray();
-    for (var l in layers) {
+    for (var l of layers) {
         res.push(l.group.saveAndClear(excludes));
     }
     return {
@@ -145,7 +145,7 @@ extends Panel;
 }
 \restore(saved) {
     var i=0;
-    for (var l in layers) {
+    for (var l of layers) {
         l.group.restore(saved.layers[i]);
         i++;
     }

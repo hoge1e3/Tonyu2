@@ -66,6 +66,16 @@ mainLoop();
 \setScheduler(s) {
     _scheduler=$Scheduler=s;
 }
+\moveToScheduler(a: Actor, oldS: Scheduler, newS: Scheduler) {
+    a._scheduler=newS;
+    oldS.findByThreadGroup(a).forEach \(th) {
+        if (th.scheduled===newS) return;
+        oldS.unschedule(th);
+        //th.scheduled=null;
+        newS.addToNext(th);
+        newS.checkDuplicate();
+    };
+}
 \timeStop(except) {
     var oldS=_scheduler;
     setScheduler(new Scheduler);
@@ -75,19 +85,20 @@ mainLoop();
         release: \(a) {
             if (!a) return res.releaseAll();
             a._scheduler=newS;
-            oldS.findByThreadGroup(a).forEach \(th) {
+            moveToScheduler(a, oldS, newS);
+            /*oldS.findByThreadGroup(a).forEach \(th) {
                 if (th.scheduled===newS) return;
                 th.scheduled=null;
                 newS.addToNext(th);
                 newS.checkDuplicate();
-            };
+            };*/
         },
         releaseAll: \{
             var a=$Screen.all();
             for (var e in a) {
                 res.release(e);
             }
-        }
+        },
     };
     if (except) res.release(except);
     return res;
@@ -96,14 +107,14 @@ mainLoop();
     waitFor(Tonyu.timeout(50));
 }
 \initGlobals() {
-  var opt=$currentProject.getOptions();
-  if (opt.run && opt.run.globals) {
-    var g=opt.run.globals;
-    for (var name in g) {
-      Tonyu.setGlobal(name, g[name]);
+    var opt=$currentProject.getOptions();
+    if (opt.run && opt.run.globals) {
+        var g=opt.run.globals;
+        for (var name in g) {
+            Tonyu.setGlobal(name, g[name]);
+        }
     }
-  }
-  $fixProductOrder=true;
+    $fixProductOrder=true;
 }
 \initPeripherals() {
     $InputDevice=new InputDevice;
@@ -274,10 +285,22 @@ mainLoop();
     $excludeFromAll=$Screen.all();
     new mainClass();
 }
-\loadPage(page,arg,push) {
-    if (arg===true) {
-        push=true;arg=undefined;
+\loadPage(page,arg,options) {
+    switch (typeof arg) {
+        case "function":
+        options={onLoad:arg};
+        arg=undefined;
+        break;
+        case "boolean":
+        options={push:arg};
+        arg=undefined;
+        break;
     }
+    options=options||{};
+    var push=(options.push);
+    var pass=(options.pass||[]).concat($excludeFromAll.toArray());
+    var res;
+    var oldS=_scheduler, newS;
     if (!page) {
         var saved=pageStack.pop();
         if (!saved) {
@@ -285,23 +308,33 @@ mainLoop();
         }
         $Screen.restore(saved.sprites);
         $t2World=saved.t2World;
-        setScheduler(saved.scheduler);
+        newS=saved.scheduler;
+        setScheduler(newS);
+        for (var pa of saved.pass) {
+            moveToScheduler(pa, oldS, newS);
+        }
     } else if (push) {
         var saved={
-            scheduler: _scheduler,
-            sprites:$Screen.saveAndClear(),
-            t2World: $t2World
+            scheduler: oldS,
+            sprites:$Screen.saveAndClear(pass),
+            t2World: $t2World,
+            pass,
         };
-        setScheduler(new Scheduler);
+        newS=new Scheduler;
+        setScheduler(newS);
+        for (var pa of pass) {
+            moveToScheduler(pa, oldS, newS);
+        }
         $t2World=null;
         pageStack.push(saved);
-        new page(arg);
+        res=new page(arg);
     } else {
         var a=$Screen.all();
-        a=a.find \(e) { return !$excludeFromAll.contains(e); };
+        a=a.find \(e) { return pass.indexOf(e)<0; };
         a.die();
-        new page(arg);
+        res=new page(arg);
     }
+    if (typeof options.onLoad==="function") options.onLoad{page:res};
 }
 \stop() {
     var res=new $.Deferred();
@@ -354,10 +387,10 @@ mainLoop();
     $frameCount=0;
     $drawnFrameCount=0;
     while (true) {
-    	if (_useRAF) loopRAF();
-    	else loopTimer();
+        if (_useRAF) loopRAF();
+        else loopTimer();
         measureFps();
-    	handlePause();
+        handlePause();
         if (typeof Mezonet!=="undefined" && typeof Mezonet.doRefresh==="function") Mezonet.doRefresh();
         $drawnFrameCount++;
     }
@@ -365,8 +398,8 @@ mainLoop();
 \loopRAF() {
     var nowTime=now();
     //var elapsed;
-	var frameTime=1000/_fps; // 1フレームにかけられる時間
-	var moves=0;
+    var frameTime=1000/_fps; // 1フレームにかけられる時間
+    var moves=0;
     //var procCnt;
     //var subTime;
     var bufferTime;
@@ -385,18 +418,18 @@ mainLoop();
         rafProcNowTime += procCnt * frameTime;
     }
     //debug("procCnt:",procCnt,"Moves:",moves);
-	while(moves<procCnt) {
-		moveFrame();
-		moves++;
-	    if (moves<procCnt) afterDraw{drawn:false};
-	}
+    while(moves<procCnt) {
+        moveFrame();
+        moves++;
+        if (moves<procCnt) afterDraw{drawn:false};
+    }
     //debug("endWhile");
     if (moves > 0) {
         drawFrame();
         afterDraw{drawn:true};// was false ... why?
     }
     //debug("beforeWaitRAF");
-	runPromise(requestAnimationFrame);
+    runPromise(requestAnimationFrame);
     //if (isDead()) print("DEAD but continue...");
     //debug("afterWaitRAF");
     //elapsed = now()-start;
@@ -416,7 +449,7 @@ mainLoop();
         resetDeadLine();
     }
     if (doDraw) { // フレームスキップの時は描画しない
-		drawFrame();
+        drawFrame();
         frameSkipped=0;
     } else {
         frameSkipped++;
@@ -448,7 +481,7 @@ nowait \drawFrame() {
     fps_fpsCnt ++;
 }
 nowait \moveFrame() {
-	var s=now();
+    var s=now();
     $_printCount=0;
     Tonyu.resetLoopCheck();
     if (newLimit) newLimitCount=newLimit;
@@ -489,7 +522,7 @@ nowait \initFPSParams() {
     drawTime=5;moveTime=5;
 	//rafAccept=1.1;
 	//rafInterval=1000/60;
-	_useRAF=true;
+    _useRAF=true;
 	//rafCount=2;
 	//frameSkip=1;
 
@@ -527,7 +560,7 @@ nowait \setFrameRate(fps, maxFrameSkip) {
     resetDeadLine();
 }
 \useRAF {
-	return _useRAF;
+    return _useRAF;
 }
 \useRAF=v {
     // 切り替え時にフレームスキップが発生するのを防止する
@@ -536,7 +569,7 @@ nowait \setFrameRate(fps, maxFrameSkip) {
     } else {
         resetDeadLine();
     }
-	return _useRAF=v;
+    return _useRAF=v;
 }
 
 // FPS（計測したフレームレート）を返す //
