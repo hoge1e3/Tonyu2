@@ -13,14 +13,25 @@ define(function (require, exports, module) {
             this.prj=optEditor.prj;
         }
         createElem() {
+            const self=this;
             this.elem=this.elem||UI("div",{title:R("dependencyEditor")},
                 ["div",R("namespace"),
                     ["input",{$var:"ns", on:{change:()=>this.optEditor.requestReload()}}]],
                 ["h1",R("dependingProjects")],
                     ["div", {$var:"deps"},
-                        ...Object.keys(ns2depspec).map(n=>{
+                        ...ns2depspec.map(s=>{
+                            const n=s.namespace;
                             return ["span",
-                                ["input", {type:"checkbox",$var:`ns_${n}`}],n," "];
+                                ["input", {
+                                    type:"checkbox",$var:`ns_${n}`,
+                                    on:{change:function () {
+                                        if ($(this).prop("checked")) {
+                                            self.addBuiltinProject(n);
+                                        } else {
+                                            self.removeDependingProject(n);
+                                        }
+                                    }}
+                                }], n, " "];
                         })
                     ],
                     ["div",
@@ -54,7 +65,8 @@ define(function (require, exports, module) {
             }
             const v=this.elem.$vars;
             v.ns.val( compiler.namespace);
-            for (let n of Object.keys(ns2depspec)) {
+            for (let s of ns2depspec) {
+                const n=s.namespace;
                 v[`ns_${n}`].prop("checked", !!deph[n]);
             }
             const pl=options.plugins||{};
@@ -111,6 +123,16 @@ define(function (require, exports, module) {
                 on:{click:()=>window.open(WebSite.projectEditorURL+"?dir="+dir.path())},
             },`Open ${dir.name()}...`);
         }
+        addBuiltinProject(namespace) {
+            const deps=this.compiler.dependingProjects;
+            if (deps.filter(s=>s.namespace===namespace).length) {
+                return;
+            }
+            deps.push({namespace});
+            this.sortDeps(deps);
+            this.load(this.options);
+            this.optEditor.requestReload();
+        }
         addDependingProject({dir,namespace}) {
             const ns=this.getNamespace();
             if (!namespace) {
@@ -138,6 +160,7 @@ define(function (require, exports, module) {
             deps.push({
                 namespace, dir:this.relPath(dir)
             });
+            this.sortDeps(deps);
             this.load(this.options);
             this.optEditor.requestReload();
         }
@@ -187,6 +210,17 @@ define(function (require, exports, module) {
                 }
             }
             return res;
+        }
+        sortDeps(deps) {
+            let seq=0;
+            const ord={};
+            for (let s of ns2depspec) {
+                ord[s.namespace]=seq++;
+            }
+            for (let d of deps) {
+                ord[d.namespace]=seq++;
+            }
+            deps.sort((a,b)=>ord[a.namespace]-ord[b.namespace]);
         }
     };
     function alert(body) {

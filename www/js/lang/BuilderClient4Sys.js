@@ -4,6 +4,7 @@ const Worker=root.Worker;
 const WS=require("../lib/WorkerServiceB");
 const SourceFiles=require("../lang/SourceFiles");
 const FileMap=require("../lib/FileMap");
+const NS2DepSpec=require("../project/NS2DepSpec");
 //const FS=(root.parent && root.parent.FS) || root.FS;
 const FS=root.FS;// TODO
 
@@ -39,14 +40,14 @@ class BuilderClient {
         return exported;
     }
     exportWithDependingFiles() {
-        const ns2depspec=this.config.worker.ns2depspec;
+        const ns2depspec=new NS2DepSpec(this.config.worker.ns2depspec);
         const exported=this.exportFiles();
         const deps=this.prj.getDependingProjects();//TODO recursive
         const outputDir=this.prj.getOutputFile().up();
         const newDep=[];
         for (let dep of deps) {
             const ns=dep.getNamespace();
-            if (ns2depspec[ns]) {
+            if (ns2depspec.has(ns)) {
                 newDep.push({namespace:ns});
                 continue;
             }
@@ -74,19 +75,6 @@ class BuilderClient {
         });
         fileMap.add({local:localPrjDir, remote: remotePrjDir});
         const deps=this.prj.getDependingProjects();//TODO recursive
-        /*for (let dep of deps) {
-            const ns=dep.getNamespace();
-            if (!ns2depspec[ns]) {
-                const localPrjDir=dep.getDir();
-                const files=localPrjDir.exportAsObject({
-                    excludesF: f=>f.ext()!==".tonyu" && f.name()!=="options.json"
-                });
-                const {prjDir:remotePrjDir}=await this.w.run("compiler/addDependingProject",{
-                    namespace:ns, files
-                });
-                fileMap.add({local:localPrjDir, remote: remotePrjDir});
-            }
-        }*/
         this.inited=true;
     }
     resetFiles() {
@@ -188,10 +176,11 @@ class BuilderClient {
     }
 }
 BuilderClient.SourceFiles=SourceFiles;
+BuilderClient.NS2DepSpec=NS2DepSpec;
 //root.TonyuBuilderClient=BuilderClient;
 module.exports=BuilderClient;
 
-},{"../lang/SourceFiles":4,"../lib/FileMap":9,"../lib/WorkerServiceB":10,"../lib/root":11}],2:[function(require,module,exports){
+},{"../lang/SourceFiles":4,"../lib/FileMap":9,"../lib/WorkerServiceB":10,"../lib/root":11,"../project/NS2DepSpec":13}],2:[function(require,module,exports){
 // Add extra libraries for Tonyu System IDE
 //const root=require("../lib/root");
 const BuilderClient=require("./BuilderClient");
@@ -213,7 +202,7 @@ BuilderClient.DebuggerCore=DebuggerCore;
 module.exports=BuilderClient;
 //root.TonyuBuilderClient=BuilderClient;
 
-},{"../browser/DebuggerCore":3,"../lang/SourceFiles":4,"../lang/StackDecoder":5,"../lang/langMod":6,"../lang/source-map":7,"../project/CompiledProject":12,"../project/ProjectFactory":13,"./BuilderClient":1}],3:[function(require,module,exports){
+},{"../browser/DebuggerCore":3,"../lang/SourceFiles":4,"../lang/StackDecoder":5,"../lang/langMod":6,"../lang/source-map":7,"../project/CompiledProject":12,"../project/ProjectFactory":14,"./BuilderClient":1}],3:[function(require,module,exports){
 //define(function (require,exports,module) {
 // module.exports:: DI_container -> Debugger
 const SourceFiles=require("../lang/SourceFiles");
@@ -3768,7 +3757,32 @@ module.exports=WorkerService;
     });
 //});/*--end of define--*/
 
-},{"../lang/SourceFiles":4,"../lang/langMod":6,"../lib/root":11,"./ProjectFactory":13}],13:[function(require,module,exports){
+},{"../lang/SourceFiles":4,"../lang/langMod":6,"../lib/root":11,"./ProjectFactory":14}],13:[function(require,module,exports){
+
+class NS2DepSpec {
+    constructor(hashOrArray) {
+        if (isArray(hashOrArray)) {
+            this.array=hashOrArray;
+        } else {
+            this.array=Object.keys(hashOrArray).map(n=>hashOrArray[n]);
+        }
+    }
+    has(ns) {
+        return this.array.filter(e=>e.namespace===ns)[0];
+    }
+    specs() {
+        return this.array;
+    }
+    [Symbol.iterator]() {
+        return this.array[Symbol.iterator]();
+    }
+}
+function isArray(o) {
+    return (o && typeof o.slice==="function");
+}
+module.exports=NS2DepSpec;
+
+},{}],14:[function(require,module,exports){
 //define(function (require,exports,module) {
     // This factory will be widely used, even BitArrow.
 

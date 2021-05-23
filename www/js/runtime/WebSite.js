@@ -76,6 +76,10 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 		// compiledKernel is URL , not file path.
 		// It is correct as long as the html pages in www/ (not html/build|dev )
 		WebSite.compiledKernel="Kernel/js/concat.js";   //P.rel(WebSite.kernelDir,"js/concat.js");
+		WebSite.compiledTools={
+			mapEditor2: "Tools/MapEditor2/js/concat.js",
+		};
+		setNS2DepSpec();
 		if (loc.match(/localhost\/tonyu2/)) {
 			WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
 			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
@@ -119,6 +123,10 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 		WebSite.PathSep="/";
 		WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
+		WebSite.compiledTools={
+			mapEditor2: `${WebSite.scriptServer}Tools/MapEditor2/js/concat.js`,
+		};
+		setNS2DepSpec();
 		FS.setEnvProvider(new FS.Env(WebSite));
 		WebSite.sysVersion=VER;
 		setDefaultResource(WebSite);
@@ -149,6 +157,12 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 		return WebSite;
 	default:
 		throw new Error("WebSite.runType is not set");
+	}
+	function setNS2DepSpec() {
+		WebSite.ns2depspec=[
+	        {namespace:"kernel", url: WebSite.compiledKernel},
+	        {namespace:"mapEditor2", url: WebSite.compiledTools.mapEditor2},
+	    ];
 	}
 	function setDefaultResource(WebSite) {
 		WebSite.defaultResource={

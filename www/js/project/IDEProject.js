@@ -9,9 +9,9 @@ define(function (require,exports) {
     const R=require("R");
     const EventHandler=require("EventHandler");
     const langMod=BuilderClient.langMod;
-    const ns2depspec= {
-        kernel: {namespace:"kernel", url: WebSite.compiledKernel}
-    };
+    const NS2DepSpec=BuilderClient.NS2DepSpec;
+    //console.log(BuilderClient);
+    const ns2depspec=WebSite.ns2depspec;
     exports.ns2depspec=ns2depspec;
     F.addType("IDE",params=>{
         const ide=params.ide;
@@ -20,9 +20,11 @@ define(function (require,exports) {
             worker: {ns2depspec, url: "BuilderWorker.js"/*WORKER_URL*/},
             locale:R.getLocale()
         });
+        const n=new NS2DepSpec(ns2depspec);
         F.addDependencyResolver((prj,spec)=>{
-            if (ns2depspec[spec.namespace]) {
-                return CP.create(ns2depspec[spec.namespace]);
+            const s=n.has(spec.namespace);
+            if (s) {
+                return CP.create(s);
             }
         });
         c.onCompiled=function (src) {

@@ -13,12 +13,17 @@ define(function (require/*,exports,module*/) {
     const thumbnail=require("thumbnail");
     const jshint=require("jshint");
     const Profiler=require("profiler2");
+    const ns2depspec=WebSite.ns2depspec;
     Debugger.Profiler=Profiler;
     jshint.use(runtime);// UIDiag etc... needed
     F.addDependencyResolver((prj,spec)=>{
-        if (spec.namespace==="kernel") {
-            return F.create("compiled",{namespace:"kernel",url:WebSite.compiledKernel});
+        const s=ns2depspec.filter(s=>s.namespace===spec.namespace)[0];
+        if (s) {
+            return F.create("compiled", s);
         }
+        /*if (spec.namespace==="kernel") {
+            return F.create("compiled",{namespace:"kernel",url:WebSite.compiledKernel});
+        }*/
     });
     /*Debugger.on("runtimeError",evt=>{
         console.log(evt.stack.map(s=>s+"").join("\n"));

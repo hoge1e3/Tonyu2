@@ -12,18 +12,21 @@ const F=require("../project/ProjectFactory");
 const CompiledProject=require("../project/CompiledProject");
 const langMod=require("../lang/langMod");
 const R=require("../lib/R");
+const NS2DepSpec=require("../project/NS2DepSpec");
+
 
 let prj,builder;
-const ns2depspec={};
+let ns2depspec=new NS2DepSpec({});
 const ram=FS.get("/prj/");
 F.addDependencyResolver(function (prj, spec) {
     console.log("RESOLV",spec,ns2depspec);
-    if (spec.namespace && ns2depspec[spec.namespace]) {
-        return F.fromDependencySpec(prj,ns2depspec[spec.namespace]);
+    if (spec.namespace) {
+        const s=ns2depspec.has(spec.namespace);
+        return F.fromDependencySpec(prj, s);
     }
 });
 WS.serv("compiler/init", params=>{
-    Object.assign(ns2depspec,params.ns2depspec||{});
+    ns2depspec=new NS2DepSpec(params.ns2depspec);
     const files=params.files;
     const namespace=params.namespace||"user";
     const prjDir=ram.rel(namespace+"/");
@@ -42,27 +45,6 @@ WS.serv("compiler/resetFiles", params=>{
     prjDir.importFromObject(files);
     builder.requestRebuild();
 });
-/*WS.serv("compiler/addDependingProject", ({namespace,files})=>{
-    //const files=params.files;
-    const prjDir=ram.rel((namespace)+"/");
-    prjDir.importFromObject(files);
-    const dprj=CompiledProject.create({dir:prjDir});
-    ns2depspec[namespace]={
-        dir: prjDir.path()
-    };
-    const options=prj.getOptions();
-    const compiler=options.compiler||{};
-    const dependingProjects=compiler.dependingProjects||[];
-    for (let i=0; i<dependingProjects.length; i++) {
-        const p=dependingProjects[i];
-        if (p.namespace===namespace && p.dir) {
-            p.dir=prjDir.path();
-        }
-    }
-    prj.setOptions(options);
-    console.log("Options changed as",options);
-    return {prjDir:prjDir.path()};
-});*/
 WS.serv("compiler/parse", async ({files})=>{
     try {
         // params.files:: relPath=>cont
@@ -122,7 +104,7 @@ function convertTError(e) {
 }
 WS.ready();
 
-},{"../lang/Builder":3,"../lang/langMod":15,"../lib/FS":25,"../lib/R":26,"../lib/WorkerServiceW":28,"../lib/root":30,"../project/CompiledProject":31,"../project/ProjectFactory":32,"../runtime/TonyuRuntime":34}],3:[function(require,module,exports){
+},{"../lang/Builder":3,"../lang/langMod":15,"../lib/FS":25,"../lib/R":26,"../lib/WorkerServiceW":28,"../lib/root":30,"../project/CompiledProject":31,"../project/NS2DepSpec":32,"../project/ProjectFactory":33,"../runtime/TonyuRuntime":35}],3:[function(require,module,exports){
 const Tonyu=require("../runtime/TonyuRuntime");
 const JSGenerator=require("./JSGenerator");
 const Semantics=require("./Semantics");
@@ -550,7 +532,7 @@ module.exports=class {
 
 };
 
-},{"../lib/FS":25,"../lib/R":26,"../lib/assert":29,"../runtime/TError":33,"../runtime/TonyuRuntime":34,"./IndentBuffer":6,"./JSGenerator":7,"./Semantics":9,"./SourceFiles":10,"./TypeChecker":11,"./source-map":20,"./tonyu1":22}],4:[function(require,module,exports){
+},{"../lib/FS":25,"../lib/R":26,"../lib/assert":29,"../runtime/TError":34,"../runtime/TonyuRuntime":35,"./IndentBuffer":6,"./JSGenerator":7,"./Semantics":9,"./SourceFiles":10,"./TypeChecker":11,"./source-map":20,"./tonyu1":22}],4:[function(require,module,exports){
 // parser.js の補助ライブラリ．式の解析を担当する
 module.exports=function () {
 	const Parser=require("./parser");
@@ -2334,7 +2316,7 @@ function genJS(klass, env, genOptions) {//B
 return {genJS:genJS};
 })();
 
-},{"../lib/R":26,"../lib/assert":29,"../runtime/TError":33,"../runtime/TonyuRuntime":34,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./tonyu1":22}],8:[function(require,module,exports){
+},{"../lib/R":26,"../lib/assert":29,"../runtime/TError":34,"../runtime/TonyuRuntime":35,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./tonyu1":22}],8:[function(require,module,exports){
 module.exports=(function () {
 	var OM={};
 	var VAR="$var",THIZ="$this";
@@ -3184,7 +3166,7 @@ function annotateSource2(klass, env) {//B
 return {initClassDecls:initClassDecls, annotate:annotateSource2,parse};
 })();
 
-},{"../lib/R":26,"../lib/assert":29,"../lib/root":30,"../runtime/TError":33,"../runtime/TonyuRuntime":34,"./Grammar":5,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./parse_tonyu1":16,"./parse_tonyu2":17,"./tonyu1":22}],10:[function(require,module,exports){
+},{"../lib/R":26,"../lib/assert":29,"../lib/root":30,"../runtime/TError":34,"../runtime/TonyuRuntime":35,"./Grammar":5,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./parse_tonyu1":16,"./parse_tonyu2":17,"./tonyu1":22}],10:[function(require,module,exports){
 //define(function (require,exports,module) {
 /*const root=require("root");*/
 const root=require("../lib/root");
@@ -3602,7 +3584,7 @@ module.exports=Visitor;
 	cu.getParams=getParams;
 	module.exports=cu;
 
-},{"../lib/root":30,"../runtime/TonyuRuntime":34,"./ObjectMatcher":8}],14:[function(require,module,exports){
+},{"../lib/root":30,"../runtime/TonyuRuntime":35,"./ObjectMatcher":8}],14:[function(require,module,exports){
 module.exports=function () {
 	var c={};
 	c.ovrFunc=function (from , to) {
@@ -4593,7 +4575,7 @@ module.exports=function ({TT}) {
 	return $;
 };
 
-},{"../lib/R":26,"../runtime/TError":33,"./ExpressionParser2":4,"./Grammar":5,"./IndentBuffer":6,"./parser":18}],20:[function(require,module,exports){
+},{"../lib/R":26,"../runtime/TError":34,"./ExpressionParser2":4,"./Grammar":5,"./IndentBuffer":6,"./parser":18}],20:[function(require,module,exports){
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -12294,7 +12276,32 @@ module.exports=function (bufSize=1024) {
     });
 //});/*--end of define--*/
 
-},{"../lang/SourceFiles":10,"../lang/langMod":15,"../lib/root":30,"./ProjectFactory":32}],32:[function(require,module,exports){
+},{"../lang/SourceFiles":10,"../lang/langMod":15,"../lib/root":30,"./ProjectFactory":33}],32:[function(require,module,exports){
+
+class NS2DepSpec {
+    constructor(hashOrArray) {
+        if (isArray(hashOrArray)) {
+            this.array=hashOrArray;
+        } else {
+            this.array=Object.keys(hashOrArray).map(n=>hashOrArray[n]);
+        }
+    }
+    has(ns) {
+        return this.array.filter(e=>e.namespace===ns)[0];
+    }
+    specs() {
+        return this.array;
+    }
+    [Symbol.iterator]() {
+        return this.array[Symbol.iterator]();
+    }
+}
+function isArray(o) {
+    return (o && typeof o.slice==="function");
+}
+module.exports=NS2DepSpec;
+
+},{}],33:[function(require,module,exports){
 //define(function (require,exports,module) {
     // This factory will be widely used, even BitArrow.
 
@@ -12425,7 +12432,7 @@ module.exports=function (bufSize=1024) {
     };
 //});/*--end of define--*/
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 const TError=function (message, src, pos, len) {
 	let rc;
 	const extend=(dst,src)=>{for (var k in src) dst[k]=src[k];return dst;};
@@ -12478,7 +12485,7 @@ TError.calcRowCol=function (text,pos) {// returns 1 origin row,col
 };
 module.exports=TError;
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 //		function (assert,TT,IT,DU) {
 var assert=require("../lib/assert");
 var root=require("../lib/root");
@@ -12883,7 +12890,7 @@ module.exports=function () {
 	return Tonyu;
 }();
 
-},{"../lib/R":26,"../lib/assert":29,"../lib/root":30,"./TonyuThread":35,"./tonyuIterator":36}],35:[function(require,module,exports){
+},{"../lib/R":26,"../lib/assert":29,"../lib/root":30,"./TonyuThread":36,"./tonyuIterator":37}],36:[function(require,module,exports){
 //	var Klass=require("../lib/Klass");
 const R=require("../lib/R");
 module.exports=function (Tonyu) {
@@ -13149,7 +13156,7 @@ module.exports=function (Tonyu) {
 	return TonyuThread;
 };
 
-},{"../lib/R":26}],36:[function(require,module,exports){
+},{"../lib/R":26}],37:[function(require,module,exports){
 //define(["Klass"], function (Klass) {
 	//var Klass=require("../lib/Klass");
 	const SYMIT=typeof Symbol!=="undefined" && Symbol.iterator;
