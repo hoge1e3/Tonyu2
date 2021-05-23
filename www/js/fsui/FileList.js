@@ -48,7 +48,12 @@ module.exports=function FileList(elem, options) {
             } else {
                 item(_curFile).removeClass("selected");
                 _curFile=f;
-                item(_curFile).addClass("selected");
+                let it=item(_curFile);
+                if (it.length===0) {
+                    ls();
+                    it=item(_curFile);
+                }
+                it.addClass("selected");
             }
         }
     }

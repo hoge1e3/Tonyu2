@@ -177,6 +177,7 @@ var reqConf={
             },
             dialogs:{Dialogs:1},
             "ide": {
+                MapEditor2:1,
                 RealtimeErrorMarker:1,
                 EditorPopupMarker:1,
                 kernelChecker:1,

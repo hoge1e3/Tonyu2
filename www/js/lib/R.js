@@ -23,7 +23,8 @@ $(".dropdown-toggle");
         "removeFile": "削除",
         "renameProject": "プロジェクト名を変更",
         "removeProject": "このプロジェクト自身を削除",
-        "mapEditor": "マップエディタ",
+        "mapEditor2": "マップエディタ",
+        "mapEditor": "マップエディタ(旧)",
         "searchFiles": "検索",
         "imageList": "画像リスト",
         "soundList": "音声リスト",
@@ -218,7 +219,8 @@ $(".dropdown-toggle");
         "removeFile" : "Remove File", //削除
         "renameProject" : "Rename Project", //プロジェクト名を変更
         "removeProject" : "Remove Project", //このプロジェクト自身を削除
-        "mapEditor" : "Map Editor", //マップエディタ
+        "mapEditor2" : "Map Editor", //マップエディタ
+        "mapEditor" : "Map Editor(old)", //マップエディタ
         "searchFiles" : "Search Files", //検索
         "imageList" : "Image List", //画像リスト
         "soundList" : "Sound List", //音声リスト

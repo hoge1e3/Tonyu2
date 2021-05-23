@@ -25,6 +25,7 @@ const optionFixer=require("optionFixer");
 const RealtimeErrorMarker=require("RealtimeErrorMarker");
 const Dialogs=require("Dialogs");
 const jshint=require("jshint");
+const MapEditor2=require("MapEditor2");
 $(function () {
     jshint.use(sh2);
     //https://codepen.io/oatssss/pen/oYxJQV?editors=0010
@@ -303,7 +304,7 @@ $(function () {
         alert(e);
         alertOnce=function(){};
     };
-    function jump(file,row,col) {
+    function jump(file,row=1,col=1) {
         //alert(file+":"+row+":"+col);
         fl.select(file);
         var inf=getCurrentEditorInfo();
@@ -334,6 +335,9 @@ $(function () {
     $("#mapEditor").click(F(function () {
         console.log("run map");
         run("kernel.MapEditor");
+    }));
+    $("#mapEditor2").click(F(function () {
+        MapEditor2.prepare(ide);
     }));
     $("#search").click(F(dialogs.search));
     KeyEventChecker.down(document,"ctrl+t",F(dialogs.search));
