@@ -1,29 +1,43 @@
 extends Panel;
+"field strict";
 var type:String;
-var alphaTo:Number;
-var alpha:Number;
+//var alphaTo:Number;
+//var alpha:Number;
 var fillStyle:String=fillStyle||"black";
 var page;//Page class
 var params;// Page params
 var duration:Number=duration||30;
+var pass;// loadPager param
 
+zOrder=($consolePanel?$consolePanel.zOrder+1:-100000);
+fillRect(0,0,$screenWidth,$screenHeight);
 switch(type) {
     case "in":
-    alpha=255;alphaTo=0;break;
+    morph(255,0);
+    break;
     case "out":
-    alpha=0;alphaTo=255;break;
-}
-fillRect(0,0,$screenWidth,$screenHeight);
-sa=alpha;
-for (i=0;i<duration;i++) {
-    progress=i/(duration-1);
-    alpha=alphaTo*progress+sa*(1-progress);
-    update();
+    morph(0,255);
+    break;
+    case "outin":
+    morph(0,255);
+    sendEvent("out");
+    loadPage(page,params||{}) {pass:[this].concat(pass||[])};
+    morph(255,0);
+    break;
 }
 sendEvent("complete");
-if (page) {
+if (page && type!=="outin") {
     loadPage(page,params||{});
 }
+if (type!=="out") die();
 \defaultLayer {
     return $frontLayer;
+}
+\morph(from, to) {
+    for (var i=0;i<duration;i++) {
+        var progress=i/(duration-1);
+        alpha=to*progress+from*(1-progress);
+        update();
+    }
+    alpha=to;
 }
