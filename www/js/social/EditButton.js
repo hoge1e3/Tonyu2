@@ -34,7 +34,8 @@ define(function (require, exports) {
         let url=location.href;
         const link=document.querySelector('link[rel="canonical"]');
         if (link) url=link.href;
-        let defName=url.replace(/\?.*/,"").replace(/\/$/,"").replace(/.html?$/i,"");
+        const chompQS=s=>url.match(/run\.tonyu\.jp/)?s:s.replace(/\?.*/,"");
+        let defName=chompQS(url).replace(/\/$/,"").replace(/.html?$/i,"");
         defName.replace(/([a-zA-Z0-9\-\._]+)$/,(_0,_1)=>{
             defName=_1;
         });
