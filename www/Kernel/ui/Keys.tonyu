@@ -34,7 +34,7 @@ if (!$.data(document,"key_event")) {
         }*/
         $Keys.keydown{keyCode:bmap[e.button]||1};
     };
-    $(document).mouseup \(e) {
+    var up=\(e) {
         var a=\{
             /*if ($InputDevice.touchEmu) {
                 $touches[0].touched=0;
@@ -48,6 +48,9 @@ if (!$.data(document,"key_event")) {
             a();
         }
     };
+    $(document).mouseup(up);
+    // TODO: if iframe? 
+    $(document).on("mouseleave",up);
 }
 function getkey(code) {
     if (typeof code=="string") {

@@ -38,7 +38,7 @@ native T2MediaLib;
     var ID_MOUSE=31238612;
     var bmap=[1,4,2];
     $handleMouseDown=\(e) {
-        debug("mouseDown", $InputDevice.touchEmu);
+        debug("mouseDown", $InputDevice.touchEmu, e);
         mouseDownAtCV=true;
         Tonyu.resetLoopCheck();
         if ($t2MediaLib) $t2MediaLib.activate();
@@ -68,6 +68,7 @@ native T2MediaLib;
         handleListeners();
     };
     $handleMouseMove=\(e) {
+        debug("mouseMove", $InputDevice.touchEmu, e);
         Tonyu.resetLoopCheck();
         if (mouseDownAtCV) e.preventDefault();
         var p=cvj.offset();
@@ -152,6 +153,8 @@ native T2MediaLib;
         cvj.mousedown(handleMouseDown);
         $(document).mousemove(handleMouseMove);
         $(document).mouseup(handleMouseUp);
+        // TODO: if iframe?
+        $(document).on("mouseleave",handleMouseUp);
         cvj.on("contextmenu",function (e) {
             e.stopPropagation();
             e.preventDefault();
