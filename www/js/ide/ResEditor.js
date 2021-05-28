@@ -1,8 +1,9 @@
+/*globals requirejs*/
 define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
-"ImageDetailEditor","Util","Assets","jshint","R"],
+"ImageDetailEditor","Util","Assets","root","jshint","R"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
-                ImageDetailEditor,Util,Assets,jshint,R) {
-    var HNOP=jshint.scriptURL("");
+                ImageDetailEditor,Util,Assets,root,jshint,R) {
+    const HNOP=jshint.scriptURL("");
     var ResEditor=function (prj, mediaInfo) {
         var d=UI("div", {title:R("resouceList",mediaInfo.name)});
         d.css({height:200+"px", "overflow-v":"scroll"});
@@ -102,9 +103,27 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                         UI("a",{href:HNOP,class:"submenu",on:{click:addF(item)}},k)
                     );
                 }
+                if (WebSite.serverType==="BA") {
+                    addMenu.append(
+                        UI("a",{href:HNOP,class:"submenu",on:{click:addFromImageList}},"その他...")
+                    );
+                }
                 addMenu.toggleClass("show");
                 //const m=UI("ul",{class:"dropdown"},...menus).appendTo(d);
                 //m.offset($(btn).position());
+            }
+            function addFromImageList() {
+                // defined only in BA
+                requirejs(["IframeDialog"], function (IframeDialog) {
+                    root.onImageSelected=n=> {
+                        const pn=n.replace(/\.(gif|png|jpg)$/,"");
+                        add({
+                            name:`$pat_${pn}`,type:"single",url:"${runtime}images/"+n
+                        });
+                        IframeDialog.close();
+                    };
+                    IframeDialog.show(WebSite.runtime+"images/index.php?fromTonyu=1");
+                });
             }
             _dropAdd=dropAdd;
             function dropAdd(e) {
@@ -122,7 +141,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                     var file = files[i];
                     var filetype= file.type;
                     if (file.name.match(/\.mzo$/)) filetype="audio/mzo";
-                    var useBlob=WebSite.serverType=="GAE" && (file.size>1000*300);
+                    var useBlob=WebSite.serverType=="BA"||WebSite.serverType=="GAE" && (file.size>1000*300);
                     if(!filetype.match(mediaInfo.contentType)) {
                         readFileSum--;
                         notReadFiles.push(file);
@@ -134,7 +153,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                         itemExt=RegExp.lastMatch.toLowerCase();
                     }
                     var itemFile=rsrcDir.rel(itemName+itemExt);
-                    var itemRelPath="ls:"+itemFile.relPath(prj.getDir());
+                    var itemRelPath=(useBlob?"":"ls:")+itemFile.relPath(prj.getDir());
                     var existsFile;
                     var fileExists=tempFiles.some(function(f){
                         existsFile=f;
@@ -170,6 +189,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                                     add(v);
                                 }});*/
                                 console.log(r);
+                                v.url="${pubURLOfPrj}"+v.url;
                                 add(v);
                             }
                         });
@@ -326,49 +346,6 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
             prj.setResource(rsrc);
             reload(action, args);
         }
-        /*function cleanFiles() {
-            var items=rsrc[mediaInfo.key];
-            Auth.currentUser(function (u,ct) {
-                if (!u) return;
-                var rtf=[];
-                items.forEach(function (item) {
-                    var a=Blob.isBlobURL(item.url),ogg;
-                    if (a) {
-                        rtf.push(a.fileName);
-                        ogg=a.fileName.replace(/\.(mp3|mp4|m4a)$/,".ogg");
-                        if (ogg!=a.fileName) rtf.push(ogg);
-                    }
-                });
-                var data={
-                        user:u,
-                        project:prj.getName(),
-                        mediaType:mediaType,
-                        csrfToken:ct,
-                        retainFileNames:JSON.stringify(rtf)
-                };
-                console.log("retainBlobs",data);
-                //TODO: urlchange!
-                $.ajax({url:WebSite.serverTop+"/retainBlobs",type:"get",
-                    data:data
-                });
-            });
-            var cleanFile={};
-            if (rsrcDir.exists()) {
-                rsrcDir.each(function (f) {
-                    cleanFile["ls:"+f.relPath(prj.getDir())]=f;
-                });
-            }
-            rsrc=prj.getResource();
-            items.forEach(function (item){
-                delete cleanFile[item.url];
-                delete cleanFile[item.url.replace(/\.(mp3|mp4|m4a)$/,".ogg")];
-            });
-            console.log(cleanFile);
-        }*/
-        /*function toi(s) {
-            if (!s || s=="") return undefined;
-            return parseInt(s);
-        }*/
         return {
             dropAdd:function (e) {
                 _dropAdd(e);

@@ -18,6 +18,7 @@ function (root, plugins,sysMod,JS) {
 			getDependingProjects: ()=>[],
 			async loadClasses() {
                 const opt=this.getOptions();
+                // TODO Bitarrow kernel
                 for (let dep of [...opt.compiler.dependingProjects, {namespace:this.getNamespace()}]) {
                     const ns=dep.namespace;
                     await JS.load(`js/${ns}.js`);

@@ -8,12 +8,12 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 	var prot=location.protocol;
 	var k;
 
-	var VER=1621942372070;
+	var VER=1622028112472;
 	if (!prot.match(/^http/)) prot="https:";
 	switch(WebSite.runType) {
 	case "IDE":
 		Object.assign(WebSite,{
-			urlAliases: {}, top: ".",
+			urlAliases: WebSite.urlAliases||{}, top: ".",
 			tablet:Platform.tablet,
 			mobile:Platform.mobile
 		});
@@ -102,7 +102,7 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 		return WebSite;
 	case "singleHTML":
 		Object.assign(WebSite,{
-			urlAliases: {}, top: ".",
+			urlAliases: WebSite.urlAliases||{}, top: ".",
 			tablet:Platform.tablet,
 			mobile:Platform.mobile
 		});
@@ -133,7 +133,7 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 		return WebSite;
 	case "multiHTML":
 		Object.assign(WebSite,{
-			urlAliases: {}, top: ".",
+			urlAliases: WebSite.urlAliases||{}, top: ".",
 			tablet:Platform.tablet,
 			mobile:Platform.mobile
 		});

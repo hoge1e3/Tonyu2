@@ -37,8 +37,8 @@ function (ResEditor,Klass,OggConverter,WebSite,R) {
             }
         }
     };
-    return Klass.define({
-        $: function (prj) {
+    return class {
+        constructor(prj) {
             this.prj=prj;
             this.editors={};
             $("body").on("dragover",s).on("dragenter",s).on("drop",this.dropAndOpen.bind(this));
@@ -46,8 +46,8 @@ function (ResEditor,Klass,OggConverter,WebSite,R) {
                 e.stopPropagation();
                 e.preventDefault();
             }
-        },
-        dropAndOpen: function (e) {
+        }
+        dropAndOpen(e) {
             e.stopPropagation();
             e.preventDefault();
             var eo=e.originalEvent;
@@ -60,8 +60,8 @@ function (ResEditor,Klass,OggConverter,WebSite,R) {
                     this.curResEditor.dropAdd(e);
                 }
             }
-        },
-        open: function (type) {// type "image" / "sound"
+        }
+        open(type) {// type "image" / "sound"
             this.editors[type]=this.editors[type]||ResEditor(this.prj,mediaInfos[type]);
             if (this.curResEditor && this.curResEditor!==this.editors[type]) {
                 this.curResEditor.close();
@@ -69,5 +69,5 @@ function (ResEditor,Klass,OggConverter,WebSite,R) {
             this.curResEditor=this.editors[type];
             this.curResEditor.open();
         }
-    });
+    };
 });

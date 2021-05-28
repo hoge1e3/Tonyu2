@@ -3,7 +3,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets","R"],
     var d=UI("div",{title:R("imageDetails")},
             ["div",
              ["div","URL:",["span",{$var:"url"}]],//,size:40,on:{change:setURL}}]],
-             //["a",{$var:"openImg",target:"_blank"},"画像を確認..."]],
+             ["a",{$var:"openImg",target:"_blank"},"画像を確認..."],
              ["canvas",{$edit:"cv",width:500,height:250,on:{mousemove:cvMouse,mousedown:cvClick}}] ],
              ["form",{$var:"theForm"},
                ["div",radio("single"),R("singlePicture")],
@@ -68,7 +68,11 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets","R"],
         d.dialog({width:600,height:520});
         v.url.text(item.url);
         var url=Assets.resolve(item.url, prj);
-
+        if (WebSite.serverType==="BA") {
+            v.openImg.show().attr("href",url);
+        } else {
+            v.openImg.hide();
+        }
         if (WebSite.isNW) {
             var path;
             // NW.jsでWebSite.urlAliasesが空っぽ！
