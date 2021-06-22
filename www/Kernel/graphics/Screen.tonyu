@@ -54,6 +54,11 @@ extends Panel;
     }
     return layer;
 }
+\removeLayer(i) {
+    var r=findLayerIndex(i);
+    if (r<0) return;
+    layers.splice(r,1);
+}
 \selectLayer(i) {
     var r=findLayerIndex(i);
     if (r!=null) index=r;

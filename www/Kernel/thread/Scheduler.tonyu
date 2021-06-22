@@ -106,6 +106,7 @@ next=[];
             t.steps();
             //$Boot.debug("StepsAllEnd",t.name);
             if (t.preempted) {
+                $Boot.fireEvent("preempted") {thread:t, scheduler:this};
                 //$Boot.debug("Preempted: ",t);
                 addToNext(t);
             }
