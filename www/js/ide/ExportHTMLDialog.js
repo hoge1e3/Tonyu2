@@ -19,6 +19,7 @@ function (east,UI,Klass,root,R,WebSite,extLink) {
         write: function (t) {
             var dir=t.prj.getDir();
             t.prog.val("");
+            t.options.editButton=t.dom.$vars.editButton.prop("checked");
             setTimeout(function () {
                 var buf=east(dir,t.options);
                 t.prog.val(buf);
@@ -51,7 +52,6 @@ function (east,UI,Klass,root,R,WebSite,extLink) {
                 t.write();
             });
             t.dom.$vars.editButton.on("change",()=> {
-                t.options.editButton=t.dom.$vars.editButton.prop("checked");
                 t.write();
             });
 
