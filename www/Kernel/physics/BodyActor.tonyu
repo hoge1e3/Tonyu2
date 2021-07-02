@@ -81,6 +81,8 @@ var _x,_y,_vx,_vy,_rotation,_vr;
         );
         width=height=radius*2;
     }
+    //https://qiita.com/teradonburi/items/03915a15b37f88ba6905
+    // fixDef.shape.m_p.Set(0,1);
     var fps=wworld.fps;
     var r=rotation,ve=bvec(defv(vx*fps ,0),defv(vy*fps,0)),vr=defv(vrotation,0);
     body=world.CreateBody(bodyDef);
@@ -98,14 +100,14 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     var w=getWorld();
     for (var c=world.GetContactList();c;c=c.GetNext()) {
         if (c.IsTouching()) {
-	        c.GetWorldManifold(m=new Box2D.Collision.b2WorldManifold);
+            c.GetWorldManifold(m=new Box2D.Collision.b2WorldManifold);
             if (m.m_points[0]) {
                 if (m.m_points[1] && m.m_points[1].x && m.m_points[1].y) {
-	            	point={
-	            	x:(m.m_points[0].x+m.m_points[1].x)/2*w.scale,
-	            	y:(m.m_points[0].y+m.m_points[1].y)/2*w.scale};
+                    point={
+                        x:(m.m_points[0].x+m.m_points[1].x)/2*w.scale,
+                    y:(m.m_points[0].y+m.m_points[1].y)/2*w.scale};
                 } else {
-    	        	point={x:m.m_points[0].x*w.scale, y:m.m_points[0].y*w.scale};
+                    point={x:m.m_points[0].x*w.scale, y:m.m_points[0].y*w.scale};
                 }
             } else point={x,y};
             var a=c.GetFixtureA().GetBody().GetUserData();
@@ -124,10 +126,10 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     return res;
 }
 \contactPoint(klass) {
-   return allContactPoints(klass)[0];
+    return allContactPoints(klass)[0];
 }
 \allContact(klass) {
-   return allContacts(klass);
+    return allContacts(klass);
 }
 \allContacts(klass) {
     if (!initBody()) return [];
@@ -209,9 +211,9 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     jd.Initialize(body,bodyB,new b2Vec2(px/scale, py/scale));
     if (params.lowerAngle && params.upperAngle) {
-       jd.lowerAngle = rad(params.lowerAngle);
-       jd.upperAngle = rad(params.upperAngle);
-       jd.enableLimit = true;
+        jd.lowerAngle = rad(params.lowerAngle);
+        jd.upperAngle = rad(params.upperAngle);
+        jd.enableLimit = true;
     }
     world.CreateJoint(jd);
 }
