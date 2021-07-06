@@ -446,8 +446,15 @@ $(function () {
     extLink.all();
     if (autoRun) {
         run(runMenuOrd[0]);
-        const file=curPrjDir.rel(runMenuOrd[0]+EXT);
+        let file=curPrjDir.rel(runMenuOrd[0]+EXT);
         if (file.exists()) {
+            const s=file.text();
+            const openp=/\/\/\s*OPEN:\s*([\w\d]+)/;
+            const r=openp.exec(s);
+            if (r) {
+                const nfile= curPrjDir.rel(r[1]+EXT);
+                if (nfile.exists()) file=nfile;
+            }
             fl.select(file);
         }
     }
