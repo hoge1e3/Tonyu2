@@ -77,7 +77,7 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			console.log("RAWBoot");
 			debuggerPrj.fixBootRunClasses();
 			debuggerPrj.rawBoot(o.run.bootClass);
-			EditButton.show();
+			EditButton.show(idePrj);
 			/*prjDir.watch((type, file)=>{
 				if (!file.endsWith(".tonyu")) return;
 				console.log("modifai",type,file,arguments);

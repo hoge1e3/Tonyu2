@@ -182,6 +182,7 @@ var reqConf={
                 EditorPopupMarker:1,
                 kernelChecker:1,
                 DependencyEditor:1,
+                SocialEditor:1,
                 "ErrorDialog":1,
                 "RunDialog": 1,
                 "DiffDialog": 1,

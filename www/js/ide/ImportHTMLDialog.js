@@ -14,7 +14,7 @@ function (east,UI,Klass,NPD,STF,R) {
                 console.log(src);
                 t.vars.prog.val(src);
                 $("#importing").remove();
-                t.selDir({defName:options.defName});
+                t.selDir({defName:options.defName, whenPrjDirExists: options.whenPrjDirExists});
             }
         },
         createDOM:function (t) {
@@ -45,7 +45,7 @@ function (east,UI,Klass,NPD,STF,R) {
             options=options||{};
             if (options.defName) {
                 const defDir=t.prjDirs[0].rel(options.defName.replace(/\/$/,"")+"/");
-                t.confirm(defDir);
+                t.confirm(defDir, options.whenPrjDirExists);
                 return;
             }
             //t.vars.selDir.empty();
@@ -58,7 +58,7 @@ function (east,UI,Klass,NPD,STF,R) {
             }
             t.mode("selDir");
         },
-        confirm: function confirm(t,dir) {
+        confirm: function confirm(t,dir, whenPrjDirExists) {
             t.dst=dir;
             var s=t.vars.prog.val();
             var buf="";
@@ -86,11 +86,20 @@ function (east,UI,Klass,NPD,STF,R) {
             }
             t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.selDir}},R("selectOtherFolder")]));
             t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},R("overwriteTheseFiles")]));
-            t.vars.confirm.append(UI("div",["button",{on:{click:doNotOverrite}},R("openTheProjectWithoutOverwrite")]));
+            t.vars.confirm.append(UI("div",["button",{on:{click:doNotOverwrite}},R("openTheProjectWithoutOverwrite")]));
             if (!hasOvr) {
                 t.complete();
+            } else {
+                switch (whenPrjDirExists) {
+                    case "selectOtherFolder":
+                        t.selDir();
+                        break;
+                    case "openTheProjectWithoutOverwrite":
+                        doNotOverwrite();
+                        break;
+                }
             }
-            function doNotOverrite() {
+            function doNotOverwrite() {
                 t.onComplete({dir});
             }
         },

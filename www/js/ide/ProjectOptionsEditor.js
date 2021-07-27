@@ -1,5 +1,5 @@
-define(["UI","GlobalDialog","R","DependencyEditor"],
-function (UI,GlobalDialog,R,DependencyEditor) {
+define(["UI","GlobalDialog","R","DependencyEditor","SocialEditor"],
+function (UI,GlobalDialog,R,DependencyEditor,SocialEditor) {
     return function (prj) {
         const res={
             show, prj, requestReload
@@ -22,6 +22,7 @@ function (UI,GlobalDialog,R,DependencyEditor) {
                      ["div", R("bootClass"), ["input", {$edit: "run.bootClass"}] ],
                      ["div", R("globalVariables"),["button", {on:{click: editG}},R("edit")] ],
                      ["div", R("dependencyEditor"),["button", {on:{click: editD}},R("edit")] ],
+                     ["div", R("socialEditor"),["button", {on:{click: editS}},R("edit")] ],
                      /*["h5","開発"],
                      ["div",
                       ["input", {type:"checkbox", $edit: "kernelEditable"}],
@@ -38,6 +39,11 @@ function (UI,GlobalDialog,R,DependencyEditor) {
             ddiag.load(opt);
             ddiag.show();
         }
+        const sdiag=new SocialEditor(prj);
+        function editS() {
+            sdiag.show(opt);
+        }
+
         function show() {
             opt=prj.getOptions();
             odiag.$edits.load(opt);
