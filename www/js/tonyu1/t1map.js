@@ -15,7 +15,7 @@ define([],function () {
                 );
         var buf="";
         buf+="$map=new T1Map{zOrder:1000};\n";
-        buf+="$map.load(\""+mapFile.name()+"\");"
+        buf+="$map.load(\""+mapFile.name()+"\");";
         return buf;
         function readVersion() {
             readInt();
@@ -35,7 +35,7 @@ define([],function () {
                 matOn.push(rowOn);
                 for (var c=0; c<width ; c++) {
                     var p=readInt();
-                    var e=[];
+                    //var e=[];
                     var added=false;
                     for (var idx=0; idx<table.length; idx++) {
                         var o=table[idx].p;
@@ -67,7 +67,7 @@ define([],function () {
                 res+=ary[i++]*k;
                 k<<=8;
             }
-            console.log("Rdint",i,res);
+            //console.log("Rdint",i,res);
             return res;
         }
         function readString() {
@@ -77,7 +77,7 @@ define([],function () {
                 if (i>=ary.length) throw "strEOF: "+i;
                 buf+=String.fromCharCode(ary[i++]);
             }
-            console.log("Rdstr",i,buf);
+            //console.log("Rdstr",i,buf);
             return buf;
         }
     };

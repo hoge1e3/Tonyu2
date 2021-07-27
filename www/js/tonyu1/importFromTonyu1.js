@@ -1,9 +1,10 @@
+/* global requirejs*/
 requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
         function (JSZip,UI,FS,NPD,Encoding,T1Map,WebSite) {
     var home=FS.get(WebSite.tonyuHome);
 
     var dragMsg="ここにTonyu1プロジェクトフォルダのzipファイルをドラッグ＆ドロップ";
-    var dragPoint=UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
+    /*var dragPoint=*/UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
         on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg
     ).appendTo("body");
     function s(e) {
@@ -11,8 +12,8 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
         e.preventDefault();
 
     }
-    function fromSJIS(zipObj) {
-        var sjisArray =zipObj.asUint8Array();
+    async function fromSJIS(zipObj) {
+        var sjisArray =await zipObj.async("Uint8Array");//asUint8Array();
         //console.log("sjis",sjisArray);
         var res= Encoding.convert(sjisArray, {
             from: 'SJIS',
@@ -22,21 +23,21 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
         //console.log("sjsires",res);
         return res;
     }
-    var zip;
+    let zip;
     function dropAdd(e) {
         try {
-            eo=e.originalEvent;
+            const eo=e.originalEvent;
             var file = eo.dataTransfer.files[0];
             console.log(file);
             var rd = new FileReader();
-            rd.onload = function(e){
+            rd.onload = async function(){
                 var ary = new Uint8Array(rd.result);
-                zip=new JSZip(ary);
+                zip=await JSZip.loadAsync(ary);//new JSZip(ary);
                 start(file.name.replace(/\.zip$/i,""));
             };
             rd.readAsArrayBuffer(file);
-        }catch (e) {
-            console.log(e);
+        }catch (ex) {
+            console.log(ex);
         }
         e.stopPropagation();
         e.preventDefault();
@@ -53,7 +54,7 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
     var dstDir;
     var rsrc;
     var kerDev=false;
-    function extract(dir) {
+    async function extract(dir) {
         mem={};
         rsrc={
                 images:[{name:"$pat_ball1",url:"images/Ball.png"}],
@@ -61,36 +62,40 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
         };
         var base;
         dstDir=dir;
+        //console.log(dstDir);
+        const defp=/\/default\.tonyuprj$/;
         for (var fn in zip.files) {
-            var f=FS.get("/"+fn);
-            if (f.name()=="default.tonyuprj") {
-                base=f.up();
+            //var f=FS.get("/"+fn);
+            if (fn.match(defp)) {
+                base=fn.replace(defp,"/");//f.up();
                 break;
             }
         }
+        console.log("base",base);
         convFiles={};
-        for (var fn in zip.files) {
-            var f=FS.get("/"+fn);
-            var rp=f.relPath(base);
+        for (let fn in zip.files) {
+            //const f=FS.get("/"+fn);
+            var rp=fn.substring(base.length);// f.relPath(base);
+            console.log(rp);
             var fb=zip.files[fn];
             convFiles[ dir.rel(rp).path()] = fb;
         }
         console.log(convFiles);
-        for (var fn in convFiles) {
-            var fb=convFiles[fn];
-            var f=FS.get(fn);
+        for (let fn in convFiles) {
+            const fb=convFiles[fn];
+            const f=FS.get(fn);
             if (f.name()=="default.tonyuprj") {
-                var tprj=$("<div>").html(fromSJIS( fb )).appendTo("body");
-                parseTPRJ(tprj);
+                var tprj=$("<div>").html(await fromSJIS( fb )).appendTo("body");
+                await parseTPRJ(tprj);
                 break;
             }
         }
     }
-    function parseTPRJ(tprj) {
+    async function parseTPRJ(tprj) {
         var classes=tprj.find("class");
         var pages=tprj.find("page");
-        copyClasses(classes);
-        copyPages(pages);
+        await copyClasses(classes);
+        await copyPages(pages);
         mem[dstDir.rel("res.json")]=JSON.stringify(rsrc);
         //console.log(mem);
         cpTmp("SpriteChar");
@@ -110,6 +115,7 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
         for (var fn in mem) {
             FS.get(fn).text(mem[fn]);
         }
+        console.log("Complete");
     }
     function setOptions(){
         mem[dstDir.rel("options.json")]=JSON.stringify({
@@ -133,13 +139,18 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
             kerDev=true;
         }
     }
-    function copyClasses(classes) {
-        classes.each(function () {
-            var fn=$(this).attr("src");
+    function domArray(jq) {
+        const res=[];
+        jq.each(function () {res.push(this);});
+        return res;
+    }
+    async function copyClasses(classes) {
+        for (const classDOM of domArray(classes)) {
+            var fn=$(classDOM).attr("src");
             var f=dstDir.rel(fn);
             console.log(f.path());
-            mem[f.path()]=fromSJIS( convFiles[f.path()]);//.asText();
-        });
+            mem[f.path()]=await fromSJIS( convFiles[f.path()]);//.asText();
+        }
     }
     function copyPages(pages) {
         pages.each(function () {
@@ -147,8 +158,8 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
             copyPage(dstDir.rel(fn));
         });
     }
-    function copyPage(pageF) {
-        var cmmlSrc=fromSJIS( convFiles[pageF.path()]); //.asText();
+    async function copyPage(pageF) {
+        var cmmlSrc=await fromSJIS( convFiles[pageF.path()]); //.asText();
         var pg=$("<div>").html(cmmlSrc).appendTo("body");
         var fn="Page_"+pageF.truncExt(".cmml")+".tonyu";
         console.log("Page", fn);
@@ -160,17 +171,17 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
         });
         buf+="$Screen.resize($screenWidth,$screenHeight);\n";
         var pats=pg.find("cpattern");
-        copyImages(pats);
+        await copyImages(pats);
 
         var gens=pg.find("generator");
-        gens.each(function () {
-            var a=this.attributes;
-            var klass=$(this).attr("classname");
+        for (let gen of domArray(gens)) {
+            var a=gen.attributes;
+            var klass=$(gen).attr("classname");
             if (klass=="Map") {
-                buf+=genMap( $(this) );
-                return;
+                buf+=await genMap( $(gen) );
+                continue;
             }
-            buf+=$(this).attr("name")+"= new "+klass+"{";
+            buf+=$(gen).attr("name")+"= new "+klass+"{";
             var com="";
             for (var i=0 ; i<a.length; i++) {
                 var n=a[i].name;
@@ -181,32 +192,33 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
                 }
             }
             buf+="};\n";
-        });
+        }
         mem[dstDir.rel(fn).path()]=buf;
     }
     function val(v) {
         return v.replace(/%22/g,"\"");
     }
-    function genMap(map) {
+    async function genMap(map) {
         console.log("map", map);
         var src=map.attr("src");
         var mapF=convFiles[dstDir.rel(src)];
-        var ary=mapF.asUint8Array();
+        var ary=await mapF.async("Uint8Array");
         var pwidth=map.attr("inst_pwidth");
         var pheight=map.attr("inst_pheight");
         var width=map.attr("inst_width");
         var height=map.attr("inst_height");
-        console.log(pwidth, pheight, width, height,ary);
+        //console.log(pwidth, pheight, width, height,ary);
         var buf="";
         var mapFile=dstDir.rel("maps/").rel(dstDir.rel(src).name());
         buf+=T1Map(pwidth, pheight, width, height,ary,mapFile, mem);
         return buf;
     }
-    function copyImages(pats) {
-        pats.each(function () {
-            var name=$(this).attr("name");
+    async function copyImages(pats) {
+        console.log(pats);
+        for (let pat of domArray(pats)) {
+            var name=$(pat).attr("name");
             //name=name.replace(/^\$/,"$pat_");
-            var src=$(this).attr("src");
+            var src=$(pat).attr("src");
             var imgFile=dstDir.rel(src).path();
             var o=convFiles[imgFile];
             if (!o) {
@@ -214,9 +226,9 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
                 throw "Image file not found :"+imgFile;
             }
             var fn=dstDir.rel(src).name();
-            //console.log("pats", o);
-            var buf="";
-            var a=o.asUint8Array();
+            console.log("pats", imgFile);
+            //var buf="";
+            var a=await o.async("Uint8Array");
             var s=btoa(String.fromCharCode.apply(null, a));
             s="data:image/png;base64,"+s;
             //$("<img>").attr("src",s).appendTo("body");
@@ -224,7 +236,7 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
             var url="images/"+fn;
             mem[dstDir.rel(url)]=s;
             rsrc.images.push({name:name , url:"ls:"+url });
-        });
-
+        }
+        console.log("Img" , rsrc);
     }
 });

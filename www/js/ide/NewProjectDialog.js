@@ -50,9 +50,9 @@ define(["UI","R"], function (UI,R) {
     		this.allOK();
     		d.$vars.dstDir.text(model.dstDir+"");
     	};
-    	d.done=function () {
+    	d.done=async function () {
     	    if (d.$edits.validator.isValid()) {
-                res.onOK(model.dstDir);
+                await res.onOK(model.dstDir);
                 if ($.data(d[0],"ui-dialog")) d.dialog("close");// not exists when embed
     	    }
     	};
