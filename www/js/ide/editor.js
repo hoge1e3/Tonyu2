@@ -128,9 +128,10 @@ $(function () {
     refreshRunMenu();
     function refreshRunMenu() {
         const runMenuOrdWasEmpty=runMenuOrd.length==0;
-        curPrjDir.each(function (f) {
-            if (f.endsWith(EXT)) {
-                var n=f.truncExt(EXT);
+        const sf=curPrj.sourceFiles();
+        Object.keys(sf).forEach(function (n) {
+            //if (f.endsWith(EXT)) {
+                //var n=f.truncExt(EXT);
                 if (runMenuOrd.indexOf(n)<0) {
                     if (runMenuOrdWasEmpty && n==="Main") {
                         runMenuOrd.unshift(n);
@@ -138,11 +139,11 @@ $(function () {
                         runMenuOrd.push(n);
                     }
                 }
-            }
+            //}
         });
         var i;
         for (i=runMenuOrd.length-1; i>=0 ; i--) {
-            var f=curPrjDir.rel(runMenuOrd[i]+EXT);
+            var f=sf[runMenuOrd[i]];//curPrjDir.rel(runMenuOrd[i]+EXT);
             if (!f.exists()) {
                 runMenuOrd.splice(i,1);
             }
