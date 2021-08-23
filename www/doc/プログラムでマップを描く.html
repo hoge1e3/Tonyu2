@@ -9,7 +9,6 @@
 <h1 id="-">プログラム内でマップを描く</h1>
 <p><a href="mapEditor">マップエディタ</a>を利用しなくても，プログラムでマップを生成することも可能です．</p>
 <h2 id="-">空のマップを作る</h2>
-<p>Main</p>
 <pre><code class="lang-JS">//chipWidth, chipHeight チップ1個あたりのサイズ
 //row, col 敷き詰めるチップの個数（row：縦，col：横）
 $map=new Map{chipWidth:32,chipHeight:32,row:10,col:10};
@@ -18,12 +17,14 @@ $map=new Map{chipWidth:32,chipHeight:32,row:10,col:10};
 <p><a href="set">$map.setメソッド</a>を用いると，実行中にマップチップを書き換えることができます．</p>
 <p>Main</p>
 <pre><code class="lang-JS">//事前にマップを作っておく
+$map=new Map{chipWidth:32,chipHeight:32,row:10,col:10};
 //set(マップ配列の横位置,マップの縦位置,チップ);
 $map.set(2,3,$pat_base+2);
 </code></pre>
 <p><a href="setAt">$map.setAtメソッド</a>を用いると，オブジェクトの位置を指定してチップを書き換えることができます．</p>
 <p>Main</p>
 <pre><code class="lang-JS">//事前にマップを作っておく
+$map=new Map{chipWidth:32,chipHeight:32,row:10,col:10};
 //setAt(スクリーンのx座標,スクリーンのy座標,チップ);
 while(true) {
    // マウスの位置にオブジェクトを移動

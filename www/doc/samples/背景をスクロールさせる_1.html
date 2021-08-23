@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+//画像の縦と横の値を入れる
+$Screen.resize(500,500);
+new Bg{x:$screenWidth/2,y:$screenHeight/2,p:$pat_bg,zOrder:1};
+new Bg{x:$screenWidth/2,y:-$screenHeight/2,p:$pat_bg,zOrder:1};
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Bg.tonyu'>
+while(true){
+    //画像を下に移動
+    y+=10;
+    //画像が画面から出たら
+    if(y-$screenHeight/2>=$screenHeight){
+        //画像を上に戻す
+        y=0-$screenHeight/2;
+    }    
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

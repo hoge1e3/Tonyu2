@@ -13,15 +13,15 @@
 </code></pre>
 <h2 id="-">使用例</h2>
 <ul>
-<li><a href="当たり判定で敵に当たったらプレイヤーを消す">敵に当たったらプレイヤーを消す</a></li>
 <li><a href="当たり判定で当たったオブジェクトを消す">当たったオブジェクトを消す</a></li>
 </ul>
 <h2 id="-">※注意</h2>
-<p>dieが呼び出されたあと，次の待機系メソッドが実行されるまでは処理が継続されます．例えば次のプログラムにおいては，★の処理は実行されます．</p>
+<p>dieが呼び出されたあと，次の待機系メソッドが実行されるまでは処理が継続されます．</p>
+<p>例：</p>
 <pre><code class="lang-JS">die();
-print(&quot;DEAD&quot;);//★
+print(&quot;This is shown&quot;);//これは表示される．
 update();//ここで処理が終了
-print(&quot;This is never shown.&quot;);
+print(&quot;This is never shown.&quot;);//これは表示されない．
 </code></pre>
 <h1 id="backlink">Backlink</h1>
 <ul>

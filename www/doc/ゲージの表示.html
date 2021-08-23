@@ -26,13 +26,15 @@ while(true) {
 </code></pre>
 <h1 id="-">オブジェクト毎に個別のゲージを表示する</h1>
 <p>キャラクタの体力表示などを各キャラクタに個別に出す場合は，キャラクタごとにパネルを作成します．</p>
-<p>Player</p>
-<pre><code class="lang-JS">x=100;y=100;
-// パネルをgauge(ゲージ)という名前で作成．
-// lifeKeeper=this は，このPlayerオブジェクトが消えたときにゲージも消えるための設定．
+<p>Main</p>
+<pre><code class="lang-JS">new Enemy{x:100,y:100,life:100};
+new Enemy{x:150,y:300,life:70};
+</code></pre>
+<p>Enemy</p>
+<pre><code class="lang-JS">// パネルをgauge(ゲージ)という名前で作成．
+// lifeKeeper=this は，このオブジェクトが消えたときにゲージも消えるための設定．
 gauge=new Panel{lifeKeeper=this};
 gauge.resize(100,10);
-life=30;
 while(true) {
     // パネルを自分の頭上に移動
     gauge.x=x;

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+// 5フレーム後から撮影開始，撮影長さ30フレーム，終了後"anim.gif"というファイル名でダウンロード
+g=new GIFWriter{delay=5,length=30,after="download",filename="anim.gif"};
+x=100;y=100;
+while(true) {
+    x++;
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>
+<script language='text/tonyu' type='text/tonyu' data-filename='options.json' >
+{
+    "compiler": {
+        "namespace": "user",
+        "defaultSuperClass": "kernel.Actor",
+        "dependingProjects": [
+            {
+                "namespace": "kernel"
+            }
+        ],
+        "diagnose": false
+    },
+    "run": {
+        "mainClass": "Main",
+        "bootClass": "kernel.Boot",
+        "globals": {
+            "$defaultFPS": 60,
+            "$imageSmoothingDisabled": true,
+            "$soundLoadAndDecode": false
+        }
+    },
+    "plugins": {"gif":1},
+    "kernelEditable": false,
+    "language": "tonyu",
+    "version": 1579395489228
+}</script>
+

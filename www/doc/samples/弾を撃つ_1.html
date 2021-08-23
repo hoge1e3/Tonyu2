@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+while(true) {
+//スペースキーを押すとBulletオブジェクトが出現する。
+  if(getkey("space")==1){
+    // このオブジェクト（Player）と同じ位置にBulletオブジェクトを出現させる※
+    new Bullet{x=x, y=y, p=25};
+  }
+  update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Bullet.tonyu'>
+//画面上端に到達するまで上に移動していき、上端に到達すると消える。
+while(y>0){
+  y=y-4;
+  update();
+}
+die();
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>
+<script language='text/tonyu' type='text/tonyu' data-filename='options.json' >
+{
+    "compiler": {
+        "namespace": "user",
+        "defaultSuperClass": "kernel.Actor",
+        "dependingProjects": [
+            {
+                "namespace": "kernel"
+            }
+        ],
+        "diagnose": false
+    },
+    "run": {
+        "mainClass": "Player",
+        "bootClass": "kernel.Boot",
+        "globals": {
+            "$defaultFPS": 60,
+            "$imageSmoothingDisabled": true,
+            "$soundLoadAndDecode": false
+        }
+    },
+    "plugins": {},
+    "kernelEditable": false,
+    "language": "tonyu",
+    "version": 1579395489228
+}</script>
+

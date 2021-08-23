@@ -7,20 +7,29 @@
 </p>
 <p><a href="api">api</a></p>
 <h1 id="baseactor">BaseActor</h1>
-<p>画面に表示されるオブジェクトの基本クラスです．実際には<a href="Actor">Actor</a>を継承してクラスを作成してください．</p>
-<h1 id="-1-">コンストラクタ(1)</h1>
+<p>画面に表示されるオブジェクトの基本クラスです．実際には<a href="Actor">Actor</a>を継承してクラスを作成してください．<br>使用例は<a href="用途別リファレンス">用途別リファレンス</a>などを参照してください．</p>
+<h1 id="-">コンストラクタ(オブジェクトの生成方法)</h1>
 <pre><code class="lang-JS">\new(params)
 </code></pre>
 <p>paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます</p>
 <p>例：</p>
-<pre><code class="lang-JS">// MyActorはBaseActorの子クラスとする
-a=new MyActor{x:50,y:30, power:20, hp:50};
+<p>Main</p>
+<pre><code class="lang-JS">a=new MyActor{x:50,y:30, power:20, hp:50};
 // a.x=50  a.y=30 a.power=20  a.hp=50 となる
+</code></pre>
+<p>MyActor</p>
+<pre><code class="lang-JS">// デフォルトのプロジェクト設定では，MyActorはBaseActorの子クラスになる
+print(x, y, power, hp);
 </code></pre>
 <h1 id="-2-">コンストラクタ(2)</h1>
 <pre><code class="lang-JS">\new(x,y,p)
 </code></pre>
 <p>x,y,pの値をフィールドに書き込みます</p>
+<p>例：</p>
+<p>Main</p>
+<pre><code class="lang-JS">new MyActor(100,200,$pat_neko);
+// x=100  y=200 p=$pat_nekoとなる
+</code></pre>
 <h1 id="-">フィールドと表示モード</h1>
 <p>表示モードは，「画像」「文字」「図形」「カスタム」のいずれかです．</p>
 <ul>
@@ -40,7 +49,6 @@ a=new MyActor{x:50,y:30, power:20, hp:50};
 <ul>
 <li>text : 表示される文字</li>
 <li>size : 文字の大きさ</li>
-<li>align: &quot;center&quot; &quot;left&quot; &quot;right&quot;のいずれかを指定します．xの値であらわされる横位置がそれぞれ文字の中央，左端，右端になるように表示します．</li>
 <li>fillStyle : 文字の色を表す文字列(JavascriptのCanvasにおけるfillStyleと同じ書式）．または<a href="Color">Color</a>オブジェクト．</li>
 </ul>
 <h2 id="-">「図形」におけるフィールド</h2>
@@ -74,6 +82,23 @@ a=new MyActor{x:50,y:30, power:20, hp:50};
 <li>layer に他のActorを指定すると，そのActorからの相対座標を用いて表示を行います．また，layerに指定した他のActorが消滅するとこのオブジェクトも消滅します．</li>
 </ul>
 </li>
+<li>align: (x,y)の基準点を決めます。<ul>
+<li>例えば、次のような値を代入できます<ul>
+<li>&quot;left&quot;: xが画像の左端になるように表示</li>
+<li>&quot;right&quot;: xが画像の右端になるように表示</li>
+<li>&quot;center&quot;: xが画像の中央になるように表示（デフォルト）</li>
+<li>&quot;center top&quot;: yが画像の上端になるように表示</li>
+<li>&quot;center bottom&quot;: yが画像の下端になるように表示</li>
+<li>&quot;center middle&quot;: yが画像の中央になるように表示（デフォルト）</li>
+<li>&quot;center baseline&quot;: 「文字」においては、CanvasコンテキストのtextBaselineに代入できるものも指定できます。</li>
+<li>&quot;10 10&quot; 画像中心から(10, 10) ずれた場所が(x,y)になるように表示</li>
+<li>&quot;left bottom 10 -20&quot; 画像左下から(10,-20)ずれた場所が(x,y)になるように表示</li>
+</ul>
+</li>
+<li>詳しくは<a href="Align2D">Align2D</a>オブジェクトを参照してください。</li>
+</ul>
+</li>
+<li>width, height: 「図形」以外の表示において、直前に描画を行った際の画像や文字の大きさが代入されています。</li>
 </ul>
 <h2 id="-">その他のフィールド</h2>
 <p>上記以外のフィールドには値を自由に設定できます（表示には影響しません）</p>

@@ -1,0 +1,63 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="Map2">Map2</a></p>
+<h1 id="mapchip-">MapChipクラス</h1>
+<p><a href="Map2">Map2</a>でchip, chipAtメソッドでマップチップを読み出したときに返されるオブジェクトです。<br>1つのMapChipオブジェクトで、同じ位置にある複数のレイヤーにまたがるパターンを操作できます。</p>
+<h2 id="-">フィールド</h2>
+<ul>
+<li>map: もとのMap2オブジェクト</li>
+<li>x,y: マップ上の位置（チップ座標）</li>
+<li>layers: 操作対象となるレイヤーを表すレイヤー名の配列</li>
+</ul>
+<h2 id="-">プロパティ</h2>
+<ul>
+<li>pAll: layersをキーとし、各レイヤーのキャラクタパターンを値としたオブジェクト。書き込むとマップ上のキャラクタパターンを書き換えます。</li>
+<li>p: layers[0]のレイヤーのキャラクタパターン。書き込むとマップ上のキャラクタパターンを書き換えます。</li>
+</ul>
+<h2 id="-">メソッド</h2>
+<ul>
+<li>moved(x,y): 同じマップの異なる座標(x,y)のチップを表す新しいMapChipオブジェクトを返します。layersはこのオブジェクトと同じです</li>
+<li>movedBy(dx,dy): このチップから(dx,dy)だけ移動したチップを表す新しいMapChipオブジェクトを返します。layersはこのオブジェクトと同じです</li>
+<li>withLayers(layers): layersには文字列または文字列の配列を指定します。このMapChipと同じ場所で、layersを変更した新しいMapChipオブジェクトを返します</li>
+<li>has(p): 指定したパターンpがlayersのどれかのレイヤーにあるかを返します。<ul>
+<li>見つからなかった場合nullを返します。</li>
+<li>見つかった場合、新しいMapChipオブジェクトを返します。<ul>
+<li>layersは見つかったレイヤー名1つからなる要素数1の配列になります。</li>
+</ul>
+</li>
+<li>pが文字列配列の場合、pのいずれかがlayersのいずれかにあるかを判定します。</li>
+</ul>
+</li>
+<li>hasExcept(p): 指定したパターン(pは文字列か文字列の配列）以外がlayersのどれかにあるか返します。<ul>
+<li>戻り値はhasと同じです</li>
+</ul>
+</li>
+<li>toActor(Class, params): このチップから指定したClassのActorを生成します。<ul>
+<li>パラメータが必要な場合paramsに渡します。{x,y,p}は自動的に渡されます。<ul>
+<li>x,y はこのチップのワールド座標</li>
+<li>p はlayers[0]のレイヤーのキャラクタパターンです。<ul>
+<li>このキャラクタパターンはマップ上から削除されます(-1が書かれる)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>toWorld()<ul>
+<li>このチップをワールド座標に変換します</li>
+</ul>
+</li>
+<li>getBuffer()<ul>
+<li>このチップが描かれているCanvasオブジェクトについてについての情報を次の形式で返します<ul>
+<li>canvas: Canvasオブジェクト</li>
+<li>context: Canvasオブジェクトのコンテキスト</li>
+<li>left, top ,width, height: 描画範囲</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</body></html>

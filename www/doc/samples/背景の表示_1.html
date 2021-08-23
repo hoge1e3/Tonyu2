@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+//画像の幅，高さを指定
+$Screen.resize(500,500);
+// $pat_bg は追加した画像の名前に応じて変更
+new Bg{x:$screenWidth/2,y:$screenHeight/2,p:$pat_bg,zOrder:1};
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Bg.tonyu'>
+//メニューのファイル→新規作成でBgを作成してください．内容は空でもかまいません．
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

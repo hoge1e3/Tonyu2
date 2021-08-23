@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+while(true){
+    //タッチされたら
+    if($touches[0].touched){
+        //タッチされた位置に移動する
+        x=$touches[0].x;
+        y=$touches[0].y;
+    }
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>
+<script language='text/tonyu' type='text/tonyu' data-filename='options.json' >
+{
+    "compiler": {
+        "namespace": "user",
+        "defaultSuperClass": "kernel.Actor",
+        "dependingProjects": [
+            {
+                "namespace": "kernel"
+            }
+        ],
+        "diagnose": false
+    },
+    "run": {
+        "mainClass": "Player",
+        "bootClass": "kernel.Boot",
+        "globals": {
+            "$defaultFPS": 60,
+            "$imageSmoothingDisabled": true,
+            "$soundLoadAndDecode": false
+        }
+    },
+    "plugins": {},
+    "kernelEditable": false,
+    "language": "tonyu",
+    "version": 1579395489228
+}</script>
+

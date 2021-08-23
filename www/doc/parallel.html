@@ -26,13 +26,70 @@
 // このプログラム自身は待機不能モードでもOK
 obj.parallel(&quot;foo&quot;);
 </code></pre>
-<h2 id="-">実行例</h2>
+<h2 id="-">例</h2>
+<p>Char</p>
+<pre><code class="lang-JS">x=100;y=100;
+// go, scale, shot の各メソッドを並行に実行
+parallel(&quot;go&quot;,3);
+parallel(&quot;scale&quot;,0.1);
+parallel(&quot;shot&quot;);
+\go(speed) {
+    while(true) {
+        print(&quot;Go Left&quot;);
+        while(x&lt;300) {
+            x+=speed;
+            update();
+        }
+        print(&quot;Go Right&quot;);
+        while(x&gt;100) {
+            x-=speed;
+            update();
+        }
+    }
+}
+\scale(speed) {
+    var i;
+    while(true) {
+        print(&quot;Bigger&quot;);
+        for (i=0;i&lt;17;i++) {
+            scaleX+=speed;
+            update();
+        }
+        print(&quot;Smaller&quot;);
+        for (i=0;i&lt;17;i++) {
+            scaleX-=speed;
+            update();
+        }
+    }
+}
+\shot() {
+    var i;
+    while(true) {
+        for (i=0;i&lt;3;i++) {
+            print(&quot;Shot&quot;);
+            new Bullet{x,y};
+            updateEx(10);
+        }
+        updateEx(30);
+    }
+}
+</code></pre>
+<p>Bullet</p>
+<pre><code class="lang-JS">while(y&lt;$screenHeight) {
+    y+=10;
+    update();
+}
+die();
+</code></pre>
 <ul>
-<li><a href="http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest">往復＋拡大縮小＋弾発射</a> <ul>
+<li><a href="http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest">往復＋拡大縮小＋弾発射</a><ul>
 <li><a href="http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest/view-source">ソース</a></li>
 </ul>
 </li>
+</ul>
+<h2 id="-">参考</h2>
+<ul>
 <li><a href="ボタンが押されたとき，複数フレームにまたがる動作を行なう">ボタンが押されたとき，複数フレームにまたがる動作を行なう</a></li>
-<li><a href="キャラクターを歩いているように見せる">キャラクターを歩いているように見せる</a><br>.</li>
+<li><a href="キャラクターを歩いているように見せる">キャラクターを歩いているように見せる</a></li>
 </ul>
 </body></html>

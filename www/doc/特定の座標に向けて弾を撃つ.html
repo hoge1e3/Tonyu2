@@ -11,23 +11,33 @@
 <p>下のプログラムにおいて，</p>
 <ul>
 <li>ShooterオブジェクトはBulletオブジェクトを発射します．</li>
-<li>Bulletオブジェクトはマウスの座標に向かって移動します．</li>
+<li>Bulletオブジェクトは$playerに向かって移動します．</li>
 </ul>
-<p>※Bulletオブジェクトの $mouseX,$mouseYなどをプレイヤーの座標にすれば，プレイヤーに向けて撃つ弾も作れます．</p>
-<p>Shooter</p>
-<pre><code class="lang-JS">x=100;y=100;
-while(true) {
-  if(getkey(&quot;space&quot;)==1){
-    new Bullet{x:x, y:y, p:25};
-  }
+<p>Main</p>
+<pre><code class="lang-JS">$player=new Player{x=100,y=100};
+new Shooter{x=200,y=200};
+</code></pre>
+<p>Player</p>
+<pre><code class="lang-JS">pad=new APad; // APadの作成
+while(true){
+  x+=pad.vx*5;
+  y+=pad.vy*5;
   update();
 }
 </code></pre>
+<p>Shooter</p>
+<pre><code class="lang-JS">while(true) {
+    if(rnd(60)==0){
+        new Bullet{x:x, y:y, p:25};
+    }
+    update();
+}
+</code></pre>
 <p>Bullet</p>
-<pre><code class="lang-JS">// マウスの座標と自分の座標を比較
-dx=$mouseX-x;
-dy=$mouseY-y;
-d=dist(dx,dy);//マウスの座標までの距離
+<pre><code class="lang-JS">// $playerの座標と自分の座標を比較
+dx=$player.x-x;
+dy=$player.y-y;
+d=dist(dx,dy);//$playerまでの距離
 vx=dx/d*5; // 移動速度(x座標)
 vy=dy/d*5; // 移動速度(y座標)
 while(!screenOut()){
@@ -40,10 +50,10 @@ die();
 <h2 id="-">角度を指定して発射</h2>
 <p>Bulletオブジェクトは次のように書くこともできます．特定の座標から角度をずらして発射<br>したい場合はこちらのほうが便利です．</p>
 <p>Bullet</p>
-<pre><code class="lang-JS">// マウスの座標と自分の座標を比較
-dx=$mouseX-x;
-dy=$mouseY-y;
-dir=atanxy(dx,dy);//マウス座標との角度を計算
+<pre><code class="lang-JS">// $playerの座標と自分の座標を比較
+dx=$player.x-x;
+dy=$player.y-y;
+dir=atanxy(dx,dy);//角度を計算
 vx=cos(dir)*5;//角度に応じてvx,vyを設定
 vy=sin(dir)*5;
 while(!screenOut()){

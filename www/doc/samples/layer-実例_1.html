@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+//このキャラクタ単独ではスクロールしていることがわかりにくいので、背景代わりのオブジェクトをいくつか置いておく
+for (i=0;i<10;i++) {
+    new Actor{x=rnd(400),y=rnd(400)};
+}
+//---スクロールの影響を受けないオブジェクト
+new Actor{x=230, y=230, p=5,layer=$frontLayer};//★
+i=0;
+while(true){
+    $Screen.scrollTo(i,0);
+    i++;
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

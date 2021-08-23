@@ -17,13 +17,14 @@
 <li>PlayerオブジェクトにEnemyオブジェクトがぶつかると，Playerオブジェクト自身が消えます。</li>
 <li>PlayerオブジェクトにItemオブジェクトがぶつかると，ぶつかったItemオブジェクトが消えます。</li>
 </ul>
-<p>Player</p>
-<pre><code class="lang-JS">x=300;
-y=300;
-new Enemy{x:100, y:100, p:$pat_neko+49};
+<p>Main</p>
+<pre><code class="lang-JS">new Enemy{x:100, y:100, p:$pat_neko+49};
 new Enemy{x:100, y:200, p:$pat_neko+49};
 new Item{x:100, y:300, p:$pat_neko+30};
-while(true){
+new Player{x:300,y:300};
+</code></pre>
+<p>Player</p>
+<pre><code class="lang-JS">while(true){
     if(getkey(&quot;right&quot;)&gt;0)    x+=3;
     if(getkey(&quot;left&quot;)&gt;0)    x-=3;
     if(getkey(&quot;down&quot;)&gt;0)    y+=3;

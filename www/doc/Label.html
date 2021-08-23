@@ -8,7 +8,7 @@
 <p><a href="api">api</a></p>
 <h1 id="label-">Labelクラス</h1>
 <p>文字列の表示に特化した<a href="Actor">Actor</a>です。<br><code>template</code>を設定することで、グローバル変数の内容を常に更新しながら表示することができます。</p>
-<p>例</p>
+<p>例<br>Main</p>
 <pre><code class="lang-JS">//$scoreの内容を表示
 new Label{x:200,y:200,template:&quot;Score=$score&quot; };
 $score=0;
@@ -19,7 +19,9 @@ while(true) {
 </code></pre>
 <h2 id="-">注意</h2>
 <p>このオブジェクトはデフォルトでは<a href="$frontLayer">$frontLayer</a> に配置されます．</p>
-<h1 id="backlink">Backlink</h1>
+<p>すべてのラベルを消去するなど，一斉に操作をするときは次のようにします．</p>
+<pre><code>$frontLayer.all(Label).die();
+</code></pre><h1 id="backlink">Backlink</h1>
 <ul>
 <li><a href="座標系とレイヤー">座標系とレイヤー</a></li>
 <li><a href="文字に動きをつける">文字に動きをつける</a></li>

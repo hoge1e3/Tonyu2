@@ -9,12 +9,13 @@
 <h1 id="-">当たり判定を変更する</h1>
 <p><code>crashScale</code>に値を設定すると，当たり判定の大きさの比率が変更できます．（1で画像の大きさと同じ，0.5でその大きさの半分）</p>
 <p>Main</p>
-<pre><code class="lang-JS">x=$screenWidth/2;
-y=$screenHeight/2;
-crashScale=0.5; //★
-new Enemy{x:100, y:100, p:4,crashScale:0.5};//★
+<pre><code class="lang-JS">new Enemy{x:100, y:100, p:4,crashScale:0.5};//★
 new Enemy{x:100, y:200, p:4,crashScale:0.5};//★
 new Enemy{x:100, y:300, p:4,crashScale:0.5};//★
+new Player{x:300,y:300};
+</code></pre>
+<p>Player</p>
+<pre><code class="lang-JS">crashScale=0.5; //★
 while(true){
   if(getkey(&quot;right&quot;)&gt;0)    x+=3;
   if(getkey(&quot;left&quot;)&gt;0)    x-=3;

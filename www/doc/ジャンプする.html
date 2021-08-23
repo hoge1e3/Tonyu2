@@ -21,6 +21,10 @@ while(true) {
     update();
 }
 </code></pre>
+<p>Main</p>
+<pre><code class="lang-JS">new Ball{x:100,y:100};
+new BodyActor{x:250,y:400,width:400,height:30,fillStyle:&quot;white&quot;,isStatic:true};
+</code></pre>
 <p>なお，上のプログラムではFloorに横から当たったときにもジャンプ（壁蹴り）ができるようになっています．壁蹴りをできなくするには，当たった位置を特定するために<a href="contactPoint">contactPoint</a>メソッドを用います．</p>
 <p>Ball</p>
 <pre><code class="lang-JS">extends BodyActor;

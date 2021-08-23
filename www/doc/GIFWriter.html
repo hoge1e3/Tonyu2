@@ -7,8 +7,14 @@
 <h1 id="gifwriter-">GIFWriterクラス</h1>
 <p>画面やパネルの画像からアニメーションGIFを作成します．</p>
 <h2 id="-">例</h2>
+<p>Main</p>
 <pre><code class="lang-JS">// 5フレーム後から撮影開始，撮影長さ30フレーム，終了後&quot;anim.gif&quot;というファイル名でダウンロード
 g=new GIFWriter{delay=5,length=30,after=&quot;download&quot;,filename=&quot;anim.gif&quot;};
+x=100;y=100;
+while(true) {
+    x++;
+    update();
+}
 </code></pre>
 <h2 id="-">コンストラクタ</h2>
 <pre><code class="lang-JS">new GIFWriter(param)

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+new Chara1{x:100, y:100};
+new Chara1{x:200, y:100};
+while(true){
+    // 画面内にいるすべてのChara1クラスのオブジェクトに対して繰り返す
+    for (c of all(Chara1)) {
+        // 各Chara1オブジェクトをcに代入しながら繰り返し
+        c.x++;//cを1ピクセル右に移動させる
+    }
+    update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Chara1.tonyu'>
+//Chara1の動作を書く（ 何も書かなくてもよい）
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

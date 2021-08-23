@@ -12,6 +12,11 @@
 </ul>
 <p>Main.Tonyu</p>
 <pre><code class="lang-JS">//事前にマップを作っておく
+$map=new Map{row:20,col:40};
+for(i=0;i&lt;40;i++) {
+    $map.set(i,0,$pat_mapchip+2);
+    $map.set(i,12,$pat_mapchip+4);
+}
 i=0;
 while(true){
     $map.scrollTo(i,0);

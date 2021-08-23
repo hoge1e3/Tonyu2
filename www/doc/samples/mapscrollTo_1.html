@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+//事前にマップを作っておく
+$map=new Map{row:20,col:40};
+for(i=0;i<40;i++) {
+    $map.set(i,0,$pat_mapchip+2);
+    $map.set(i,12,$pat_mapchip+4);
+}
+i=0;
+while(true){
+    $map.scrollTo(i,0);
+    i++;
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

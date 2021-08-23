@@ -14,6 +14,7 @@
 </ul>
 <h2 id="-">例外を検知する</h2>
 <p>例外が発生しそうな場所をtry ... catch で囲むと，例外が発生したときに処理を行うことができます．</p>
+<p>Main</p>
 <pre><code class="lang-JS">try {
     a=null;
     print(a.hoge);
@@ -23,6 +24,7 @@
 </code></pre>
 <h2 id="-">例外を明示的に発生させる</h2>
 <p><code>throw e</code>で例外を発生させることができます．<em>e</em>には<code>Error</code>オブジェクトを指定します．</p>
+<p>Main</p>
 <pre><code class="lang-JS">try {
     if (a==null) {
         throw new Error(&quot;a に値が設定されていません．&quot;);

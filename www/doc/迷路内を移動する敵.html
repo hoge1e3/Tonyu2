@@ -100,7 +100,7 @@ while(true) {
 </code></pre>
 <h1 id="-">バリエーション</h1>
 <h2 id="-">方向転換をランダムに行なう</h2>
-<p>Enemy</p>
+<p>Enemy(一部)</p>
 <pre><code class="lang-JS">    if (dir==0) {
         //進行方向の変更を行なうとき、乱数を用いると方向転換をする・しないが確率で変化する
         if ($map.getOnAt(x,y+32)&lt;0 &amp;&amp; rnd(100)&lt;50) {//★
@@ -116,7 +116,8 @@ while(true) {
     } ... 以下同様に変更
 </code></pre>
 <h2 id="-">プレイヤーのいる方向に方向転換する</h2>
-<p>予めプレイヤーを作成し、変数<code>$player</code>に入れておく必要があります。<br>Enemy</p>
+<p>予めプレイヤーを作成し、変数<code>$player</code>に入れておく必要があります。</p>
+<p>Enemy(一部)</p>
 <pre><code class="lang-JS">    if (dir==0) {
         //進行方向の変更を行なうとき、プレイヤーのいる方向なら方向転換をする
         if ($map.getOnAt(x,y+32)&lt;0 &amp;&amp; $player.y&gt;y) {//★

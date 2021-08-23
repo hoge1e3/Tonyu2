@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Stage1.tonyu'>
+//プレイヤーを生成
+new Player{x:200,y:400};
+//敵を10体生成
+for (i=0 ;i<10; i++) {
+   new Enemy{x:rnd(300),y:rnd(300)};
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Title.tonyu'>
+new Actor{x:230,y:50, text:"Press Space Key"};
+while(true) {
+  if(getkey("space")==1) loadPage(Stage1);
+  update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+p=$pat_neko;
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Enemy.tonyu'>
+p=$pat_neko+48;
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>
+<script language='text/tonyu' type='text/tonyu' data-filename='options.json' >
+{
+    "compiler": {
+        "namespace": "user",
+        "defaultSuperClass": "kernel.Actor",
+        "dependingProjects": [
+            {
+                "namespace": "kernel"
+            }
+        ],
+        "diagnose": false
+    },
+    "run": {
+        "mainClass": "Player",
+        "bootClass": "kernel.Boot",
+        "globals": {
+            "$defaultFPS": 60,
+            "$imageSmoothingDisabled": true,
+            "$soundLoadAndDecode": false
+        }
+    },
+    "plugins": {},
+    "kernelEditable": false,
+    "language": "tonyu",
+    "version": 1579395489228
+}</script>
+

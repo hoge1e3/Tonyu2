@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Wall.tonyu'>
+extends BodyActor;
+\onAppear() {
+    isStatic=true;
+    friction=0;
+    restitution=1;
+    super.onAppear(); //必ず呼び出す
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+//以下の物体は、パラメタを指定しなくてもisStatic=true friction=0 restitution=1で初期化されます
+new Wall{x:20,y:20,scaleX:10,scaleY:1};
+new Wall{x:20,y:200,scaleX:1,scaleY:10};
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>
+<script language='text/tonyu' type='text/tonyu' data-filename='options.json' >
+{
+    "compiler": {
+        "namespace": "user",
+        "defaultSuperClass": "kernel.Actor",
+        "dependingProjects": [
+            {
+                "namespace": "kernel"
+            }
+        ],
+        "diagnose": false
+    },
+    "run": {
+        "mainClass": "Main",
+        "bootClass": "kernel.Boot",
+        "globals": {
+            "$defaultFPS": 60,
+            "$imageSmoothingDisabled": true,
+            "$soundLoadAndDecode": false
+        }
+    },
+    "plugins": {"box2d":1},
+    "kernelEditable": false,
+    "language": "tonyu",
+    "version": 1579395489228
+}</script>
+

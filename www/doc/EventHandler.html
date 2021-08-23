@@ -60,8 +60,9 @@ native clearInterval;
     };
 }
 </code></pre>
-<p>MyActor</p>
-<pre><code class="lang-JS">registerEventHandler(&quot;intervalMsec&quot;, new IntervalEventHandler);
+<p>Main</p>
+<pre><code class="lang-JS">x=100;y=100;
+registerEventHandler(&quot;intervalMsec&quot;, new IntervalEventHandler);
 on(&quot;intervalMsec&quot;,500) \{
     x+=10;
 };

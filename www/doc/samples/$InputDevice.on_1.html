@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+$Boot.setEconomyMode(true);
+x=100;
+y=100;
+$InputDevice.on("touchstart") \(e) {
+    var f=e.finger;
+    print("start",f.x,f.y);
+};
+$InputDevice.on("touchmove") \(e) {
+    var f=e.finger;
+    //print("move",f.x,f.y);
+    f.update();
+    x+=f.vx;
+    y+=f.vy;
+};
+$InputDevice.on("touchend") \(e) {
+    var f=e.finger;
+    print("end",f.x,f.y);
+};
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

@@ -9,6 +9,11 @@
 <li><a href="within">within</a>メソッドを使って，プレイヤーとの距離を計測します</li>
 <li>指定した距離に近づいたら行動を開始します</li>
 </ul>
+<p>Main</p>
+<pre><code>$player=new Player{x=100, y=200};
+new Enemy{x=200, y=300};
+new Enemy{x=250, y=250};
+</code></pre><p>Enemy</p>
 <pre><code>//$playerが近づくまで待つ処理
 while(true) {
     if (within($player,100)) {//プレイヤーとの距離が100以内なら
@@ -18,7 +23,15 @@ while(true) {
 }
 //近づいたときにとる行動
 while(true) {
-    x--;
+    x-=10;
+    update();
+}
+</code></pre><p>Player</p>
+<pre><code>//これ以外の動作でもよい
+pad=new APad;
+while(true){
+    x+=pad.vx*5;
+    y+=pad.vy*5;
     update();
 }
 </code></pre></body></html>

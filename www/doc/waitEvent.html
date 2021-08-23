@@ -22,18 +22,18 @@
 </ul>
 <p><a href="eventTypes">イベントの種類一覧</a></p>
 <h2 id="-1">例1</h2>
-<p>※<a href="sendEvent">sendEvent</a>の例と組み合わせて使ってください。</p>
-<p>Receiver</p>
-<pre><code class="lang-JS">e=waitEvent(&quot;foo&quot;);
-print (&quot;fooイベントが送られました: &quot; + e);
-</code></pre>
-<h2 id="-2">例2</h2>
-<p>WaitDie</p>
-<pre><code class="lang-JS">p=new Player;
+<p>Main</p>
+<pre><code class="lang-JS">player=new Player{x=100,y=100};
 print (&quot;Wait until player is dead&quot;);
-waitEvent(p,&quot;die&quot;);
+waitEvent(player,&quot;die&quot;);
 print (&quot;Player is Dead!&quot;);
 </code></pre>
+<p>Player</p>
+<pre><code class="lang-JS">updateEx(60);
+die();
+</code></pre>
+<h2 id="-2">例2</h2>
+<p>※<a href="sendEvent">sendEvent</a>を参照してください．</p>
 <h1 id="-">その他</h1>
 <p>このメソッドは待機系メソッドです．待機不能モードでは何も動作を行いません．（詳細は<a href="waitmode">動作モード</a>を参照してください）</p>
 <p>.</p>

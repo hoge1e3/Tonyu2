@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+new Enemy{x:100,y:100,life:100};
+new Enemy{x:150,y:300,life:70};
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Enemy.tonyu'>
+// パネルをgauge(ゲージ)という名前で作成．
+// lifeKeeper=this は，このオブジェクトが消えたときにゲージも消えるための設定．
+gauge=new Panel{lifeKeeper=this};
+gauge.resize(100,10);
+while(true) {
+    // パネルを自分の頭上に移動
+    gauge.x=x;
+    gauge.y=y-20;
+    // パネルの描画
+    gauge.fillStyle="red";
+    gauge.fillRect(0,0,100,10);
+    gauge.fillStyle="green";
+    gauge.fillRect(0,0,life,10);
+    life--;
+    if (life<=0) die();
+    x++;
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

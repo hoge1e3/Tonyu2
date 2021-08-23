@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Page1.tonyu'>
+x=100;
+y=100;
+new Label{x:200,y:10,text:"Page1"};
+
+while(true){
+    //オブジェクトの近くがクリックされたらPage2に移動
+    if(getkey("mouseleft")==1 && dist($mouseX-x,$mouseY-y)<32){
+        loadPage(Page2);
+    }
+    update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Page2.tonyu'>
+x=200;
+y=200;
+new Label{x:200,y:10,text:"Page2"};
+
+while(true){
+    //オブジェクトの近くがクリックされたらPage1に移動
+    if(getkey("mouseleft")==1 && dist($mouseX-x,$mouseY-y)<32){
+        loadPage(Page1);
+    }
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>
+<script language='text/tonyu' type='text/tonyu' data-filename='options.json' >
+{
+    "compiler": {
+        "namespace": "user",
+        "defaultSuperClass": "kernel.Actor",
+        "dependingProjects": [
+            {
+                "namespace": "kernel"
+            }
+        ],
+        "diagnose": false
+    },
+    "run": {
+        "mainClass": "Page1",
+        "bootClass": "kernel.Boot",
+        "globals": {
+            "$defaultFPS": 60,
+            "$imageSmoothingDisabled": true,
+            "$soundLoadAndDecode": false
+        }
+    },
+    "plugins": {},
+    "kernelEditable": false,
+    "language": "tonyu",
+    "version": 1579395489228
+}</script>
+

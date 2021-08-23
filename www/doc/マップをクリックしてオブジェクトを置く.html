@@ -1,0 +1,30 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">マップをクリックしてオブジェクトを置く</h1>
+<p>マップ上をクリックして，マップチップの座標に合わせてオブジェクトを置きます．</p>
+<p>※オブジェクトを置くのではなく，マップチップを書き換える例は<a href="マップを書き換える">マップを書き換える</a>の例1を参照．</p>
+<p>★の計算式に出てくる32や16は，マップチップの大きさに合わせて変更する必要があるかもしれません．</p>
+<p>Main</p>
+<pre><code>//（あらかじめマップエディタでmap.jsonを作成しておく）
+$map=new Map;
+$map.load(&quot;map.json&quot;);
+
+while(true) {
+    //マウス（タッチ)の判定
+    t=$touches[0];
+    if (t.touched==1) {
+        // マップチップ上の座標に変換
+        mx=floor(t.x/32);//★
+        my=floor(t.y/32);//★
+        // マップチップに合うようにオブジェクトを置く
+        $target=new Target{x=mx*32+16,y=my*32+16};//★
+    }
+    update();
+}
+</code></pre><p>Target</p>
+<pre><code>//何も書かなくてもよいが，Targetというファイルを作成しておく．
+</code></pre></body></html>

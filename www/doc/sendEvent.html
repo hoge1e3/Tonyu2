@@ -7,7 +7,7 @@
 </p>
 <p><a href="BaseActor">BaseActor</a> / <a href="EventMod">EventMod</a></p>
 <h1 id="sendevent-">sendEventメソッド</h1>
-<p>このオブジェクトにイベントを送ります</p>
+<p>このオブジェクトにイベントを送ります(fireEventも同じ動作です)</p>
 <h2 id="-">書式</h2>
 <pre><code class="lang-JS">sendEvent(イベント名,イベントオブジェクト)
 </code></pre>
@@ -17,14 +17,17 @@
 </ul>
 <p><a href="eventTypes">イベントの種類一覧</a></p>
 <h2 id="-">例</h2>
-<p>※<a href="waitEvent">waitEvent</a>の例と組み合わせて使ってください。</p>
-<p>Sender</p>
+<p>※<a href="waitEvent">waitEvent</a>も参照してください．</p>
+<p>Main</p>
 <pre><code class="lang-JS">receiver=new Receiver;
 updateEx(60);
-print (&quot;fooイベントを送信します...&quot;);
+print (&quot;send foo event...&quot;);
 receiver.sendEvent(&quot;foo&quot;,&quot;hello&quot;);
 </code></pre>
-<p>.</p>
+<p>Receiver</p>
+<pre><code class="lang-JS">e=waitEvent(&quot;foo&quot;);
+print (&quot;foo event received: &quot; + e);
+</code></pre>
 <h1 id="backlink">Backlink</h1>
 <ul>
 <li><a href="registerEventHandler">registerEventHandlerメソッド</a></li>

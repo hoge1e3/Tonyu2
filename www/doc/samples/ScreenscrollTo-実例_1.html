@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+//スクロールしていることをわかりやすくするため、動かないオブジェクトをいくつか置いておく
+for (i=0;i<10;i++) {
+    new Actor{x:rnd(400),y:rnd(400)};
+}
+//プレイヤーの作成
+new Player;
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+x=200;y=200;p=$pat_neko;
+// $Screen.scrollToの基準点を画面真ん中に設定
+$Screen.setPivot($screenWidth/2,$screenHeight/2);
+while(true){
+    // このキャラクタが画面真ん中に来るように設定
+    $Screen.scrollTo(x,y);
+    x++;// 横に移動(移動の処理がすでに書いてある場合，この行は省略してください)
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+$player_x=100;
+loadPage(Field);
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Field.tonyu'>
+new Player;
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+// $player_xからxを復元
+x=$player_x;
+y=200;
+while(true) {
+    if(getkey("left")) x--;
+    if(getkey("right")) x++;
+    if (getkey("space")==1) {
+        // $player_xに値を保存
+        $player_x=x;
+        loadPage(Battle);
+    }
+    update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Battle.tonyu'>
+new Label{text:"Battle", x:100, y:100};
+updateEx(60);
+loadPage(Field);
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

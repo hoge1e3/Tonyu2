@@ -6,7 +6,9 @@
 <p><a href="api">api</a></p>
 <h1 id="matrix-">Matrixクラス</h1>
 <p>2次元配列を扱うクラスです．縦横の要素数の限度はなく，任意の座標に要素（任意の値，オブジェクト）を格納できます．</p>
+<p><a href="https://github.com/hoge1e3/Tonyu2/blob/master/www/Kernel/util/Matrix.tonyu">ソース</a></p>
 <h2 id="-">例</h2>
+<p>Main</p>
 <pre><code class="lang-JS">m=new Matrix;
 m.set(3,5,&quot;test&quot;);
 print(m.get(3,5)); // test
@@ -103,7 +105,14 @@ print(m.get(4,6).name);// tonyu
 <li>※すでに書き込まれているものと同じ値が書き込まれた場合は呼び出されません</li>
 </ul>
 </li>
-<li>呼び出されるときに<code>{x: 横位置, y: 縦位置, value:書き込まれた値 }</code>を<br>オブジェクトにして渡します．</li>
+<li>呼び出されるときに<code>{x: 横位置, y: 縦位置, value:書き込まれた値 }</code>をオブジェクトにして渡します．</li>
+</ul>
+</li>
+<li>&quot;newCell&quot;<ul>
+<li><code>get(x,y)</code>で読み出したときに，値が<code>undefined</code>(未設定)の場合に呼び出されます．<ul>
+<li>呼び出されるときに<code>{x: 横位置, y: 縦位置, set:書き込む値を引数に渡して，(x,y)に書き込む関数 }</code>をオブジェクトにして渡します．</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

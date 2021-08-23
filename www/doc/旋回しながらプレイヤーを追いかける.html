@@ -41,7 +41,15 @@ while (true) {
 <ul>
 <li><code>atanxy</code>と<code>angleDiff</code>の詳細は<a href="MathMod">MathMod</a>クラスを参照してください</li>
 </ul>
-<p>Player</p>
-<pre><code class="lang-JS">//プレイヤーの動作を書く（とりあえず何も書かなくてもよい）
+<p>Player(動作は<a href="上下左右に移動させる">上下左右に移動させる</a>参照)</p>
+<pre><code class="lang-JS">x=$screenWidth/2;
+y=$screenHeight/2;
+pad=new APad; // APadの作成
+while(true){
+  // padの倒れた向きに応じて移動する
+  x+=pad.vx*5;
+  y+=pad.vy*5;
+  update();
+}
 </code></pre>
 </body></html>

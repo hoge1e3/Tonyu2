@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+new Enemy{x:100, y:100, p:$pat_neko+49};
+new Enemy{x:100, y:200, p:$pat_neko+49};
+new Item{x:100, y:300, p:$pat_neko+30};
+new Player{x:300,y:300};
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+while(true){
+    if(getkey("right")>0)	x+=3;
+    if(getkey("left")>0)	x-=3;
+    if(getkey("down")>0)	y+=3;
+    if(getkey("up")>0)	y-=3;
+    //Enemyオブジェクトのどれかにぶつかっているか？
+    // eがundefined →ぶつかっていない
+    // eがundefined以外→ぶつかったEnemyオブジェクトがeに格納される
+    e=crashTo(Enemy);
+    if(e){//eがundefined以外だったら
+        die();//プレイヤー自身を消す
+    }
+    //Itemオブジェクトにぶつかっているか？
+    it=crashTo(Item);
+    if(it){//itがundefined以外だったら
+        it.die();//ぶつかったItemオブジェクトを消す
+    }
+    update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Enemy.tonyu'>
+// 敵の動作を書く。（とりあえず何も書かなくてもよい）
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Item.tonyu'>
+// アイテムの動作を書く。（とりあえず何も書かなくてもよい）
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

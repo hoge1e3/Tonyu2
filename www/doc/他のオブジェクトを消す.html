@@ -25,6 +25,8 @@ while(true){
   if(getkey(&quot;z&quot;)) $enemy1.die();
   //xキーを押すと$enemy2だけが消える
   if(getkey(&quot;x&quot;)) $enemy2.die();
+  //aキーを押すとすべてのEnemyオブジェクトが消える
+  if(getkey(&quot;a&quot;)) all(Enemy).die();
   update();
 }
 </code></pre>

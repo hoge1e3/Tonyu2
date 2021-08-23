@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+panel=new Panel;
+panel.resize(100,100);//大きさ指定★1
+panel.x=150;//場所指定★2
+panel.y=150;
+//パネル全体を白で塗る
+panel.fillStyle="white";
+panel.fillRect(0,0,100,100);
+//パネルに赤い■を描く
+panel.fillStyle="red";
+panel.fillRect(10,20,30,30);//★3
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

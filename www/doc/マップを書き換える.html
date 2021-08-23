@@ -8,6 +8,22 @@
 <p><a href="mapEditor">mapEditor</a></p>
 <h1 id="-">マップを書き換える</h1>
 <p><a href="setAt">Map.setAt</a>またはsetOnAtを使うと、プログラムの実行中にマップチップを書き換えることができます。</p>
+<h2 id="-1-">例1 - クリック(タッチ)した場所のマップを書き換える</h2>
+<p>Main</p>
+<pre><code class="lang-JS">$map=new Map{row:20,col:20 ,chipWidth:32,chipHeight:32};
+
+while(true) {
+    //マウス（タッチ)の判定
+    t=$touches[0];
+    if (t.touched==1) {
+        //タッチした場所のマップチップを書き換える
+        //奥のレイヤーを書き換える場合はsetAt、手前のレイヤーを書き換えるときにはsetOnAt
+        $map.setAt(t.x, t.y, $pat_mapchip+10);
+    }
+    update();
+}
+</code></pre>
+<h2 id="-2-">例2 - オブジェクトの移動した場所のマップを書き換える．</h2>
 <p>Main</p>
 <pre><code class="lang-JS">$map=new Map{row:20,col:20 ,chipWidth:32,chipHeight:32};
 new Player;

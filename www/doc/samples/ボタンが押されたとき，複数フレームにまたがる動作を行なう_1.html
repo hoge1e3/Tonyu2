@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+//  クリックされたときは、下に定義したstartWalkメソッドを呼ぶ
+$b=new Button{top:300,text:"Click Me",onClick:startWalk};
+x=100;
+y=100;
+
+function startWalk() {
+//walkメソッドを並列実行する
+    parallel(walk);
+}
+// walkメソッドの定義
+function walk() {
+    for(i=0;i<10;i++) {
+       x+=1;
+       update();
+    }
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

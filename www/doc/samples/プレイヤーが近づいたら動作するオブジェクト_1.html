@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+$player=new Player{x=100, y=200};
+new Enemy{x=200, y=300};
+new Enemy{x=250, y=250};
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Enemy.tonyu'>
+//$playerが近づくまで待つ処理
+while(true) {
+    if (within($player,100)) {//プレイヤーとの距離が100以内なら
+        break;// 待つ処理を抜ける
+    }
+    update();
+}
+//近づいたときにとる行動
+while(true) {
+    x-=10;
+    update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+//これ以外の動作でもよい
+pad=new APad;
+while(true){
+    x+=pad.vx*5;
+    y+=pad.vy*5;
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

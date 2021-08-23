@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+//初期設定
+$player=new Player{x=300,y=300,hp=1};
+e=new Enemy{x=100,y=100,p=5};
+//初期設定ここまで
+
+while(true){
+   if($player.isDead()) {//プレイヤーが消えたら
+      break; // 繰り返しをやめる
+   }
+   update();
+}
+// ゲームオーバー
+// ラベルの配置
+new Label{x=230,y=200,text="GAMEOVER"};
+// ボタンの配置
+rb=new Button{top=400,text="Retry",key="r"};
+//retryメソッドの定義
+while(true) {
+   if(rb.clicked==1) {//ボタンが押されたら
+      loadPage(Main);//Mainを読み込みしなおす
+   }
+   update();
+}
+
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+while(true){
+  if(getkey("right")>0)	x+=3;
+  if(getkey("left")>0)	x-=3;
+  if(getkey("down")>0)	y+=3;
+  if(getkey("up")>0)	y-=3;
+  //敵に当たっている間体力が減る
+  if(crashTo(Enemy))    hp-=1;
+  //hpが0になったら消える
+  if(hp<=0)             die();
+  update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Enemy.tonyu'>
+//敵の動作を書く（とりあえず何も書かなくてもよい）
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

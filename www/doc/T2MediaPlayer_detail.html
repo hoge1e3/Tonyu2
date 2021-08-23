@@ -11,7 +11,7 @@
 <p>T2MediaPlayerクラスでは、音の再生方法にSE（効果音用）とBGM（背景音用）の２つがあります。</p>
 <ul>
 <li>SE<ul>
-<li>一度再生すると音声データの最後まで再生します。途中で音を止めることはできません</li>
+<li>一度再生すると音声データの最後まで再生します。再生途中で細かい制御はできません。</li>
 <li>他の音といくつも重ねて鳴らすことができます</li>
 </ul>
 </li>
@@ -66,6 +66,15 @@
 <ul>
 <li><a href="T2MediaPlayer.playSE">playSE</a><ul>
 <li>SE(効果音)を再生します</li>
+</ul>
+</li>
+<li>stopSE(sourceObj)<ul>
+<li>playSE()で鳴らしたSE(効果音)を停止します。</li>
+<li>sourceObjにはplaySE()の戻り値を指定します</li>
+</ul>
+</li>
+<li>stopAllSE<ul>
+<li>現在鳴っているSE(効果音)をすべて停止します</li>
 </ul>
 </li>
 </ul>

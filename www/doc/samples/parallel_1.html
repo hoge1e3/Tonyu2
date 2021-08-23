@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Char.tonyu'>
+x=100;y=100;
+// go, scale, shot の各メソッドを並行に実行
+parallel("go",3);
+parallel("scale",0.1);
+parallel("shot");
+\go(speed) {
+    while(true) {
+        print("Go Left");
+        while(x<300) {
+            x+=speed;
+            update();
+        }
+        print("Go Right");
+        while(x>100) {
+            x-=speed;
+            update();
+        }
+    }
+}
+\scale(speed) {
+    var i;
+    while(true) {
+        print("Bigger");
+        for (i=0;i<17;i++) {
+            scaleX+=speed;
+            update();
+        }
+        print("Smaller");
+        for (i=0;i<17;i++) {
+            scaleX-=speed;
+            update();
+        }
+    }
+}
+\shot() {
+    var i;
+    while(true) {
+        for (i=0;i<3;i++) {
+            print("Shot");
+            new Bullet{x,y};
+            updateEx(10);
+        }
+        updateEx(30);
+    }
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Bullet.tonyu'>
+while(y<$screenHeight) {
+    y+=10;
+    update();
+}
+die();
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>
+<script language='text/tonyu' type='text/tonyu' data-filename='options.json' >
+{
+    "compiler": {
+        "namespace": "user",
+        "defaultSuperClass": "kernel.Actor",
+        "dependingProjects": [
+            {
+                "namespace": "kernel"
+            }
+        ],
+        "diagnose": false
+    },
+    "run": {
+        "mainClass": "Char",
+        "bootClass": "kernel.Boot",
+        "globals": {
+            "$defaultFPS": 60,
+            "$imageSmoothingDisabled": true,
+            "$soundLoadAndDecode": false
+        }
+    },
+    "plugins": {},
+    "kernelEditable": false,
+    "language": "tonyu",
+    "version": 1579395489228
+}</script>
+

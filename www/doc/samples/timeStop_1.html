@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Ball.tonyu'>
+while (x<$screenWidth){
+    x+=2;
+    update();
+}
+die();
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+x=20;y=30;
+while (true) {
+    if (t==null) {// まだ時間をとめていなければ
+        if (rnd(10)==0) new Ball(0,rnd($screenHeight),19); // 玉を出現させる
+        if (getkey(32)==1) { //スペースキーが押されたら時間をとめる
+            t=timeStop();
+        }          
+    } else {
+        // すでに時間をとめていたら
+        if (getkey(32)==1) { //スペースキーが押されたら時間を動かす
+            t.releaseAll();//t.release();でも可
+            t=null;
+        }
+        // 玉にふれるとその玉は動き出す
+        a=crashTo(Ball);
+        if (a) t.release(a);
+    }
+    if (getkey("z")==1){
+        new Ball{x:x+30,y,p:19};   
+    }
+    if (getkey(39)>0) x+=3;
+    if (getkey(37)>0) x-=3;
+    if (getkey(40)>0) y+=3;
+    if (getkey(38)>0) y-=3;
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

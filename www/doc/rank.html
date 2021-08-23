@@ -1,0 +1,49 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<h1 id="-">ランキング</h1>
+<p><a href="file">file</a>メソッドを使うと，ファイル読み書きができます．これを用いて<br>ゲームのスコアランキングを作成することができます．</p>
+<p>Main</p>
+<pre><code class="lang-JS">//ランキングファイルのオブジェクトを作成
+rankFile=file(&quot;rank.txt&quot;);
+//rank.txtが存在していれば
+if (rankFile.exists()) {
+    $ranking=rankFile.obj();//$rankingに読み込む
+} else {
+    $ranking=[20,15,10,5,3];//初期化する
+}
+//---ゲーム本体
+$score=0;
+new Label{template:&quot;Score $score&quot;,x:200,y:200,size:30};
+lb=new Label{text:&quot;Space: get score   X: game over&quot;,x:200,y:300,size:20};
+while(true) {
+    if (getkey(&quot;space&quot;)==1) {
+        $score++;
+    }
+    if (getkey(&quot;x&quot;)==1) {
+        break;
+    }
+    update();
+}
+lb.text=&quot;Game Over. R:Replay&quot;;
+//----最下位のスコアより高い点数ならランクイン
+if ($score&gt;$ranking[$ranking.length-1]) {
+    $ranking[$ranking.length-1]=$score;//最下位を今のスコアで上書き．
+    $ranking=$ranking.sort(\(a,b) {return b-a;});//降順並び替え
+    rankFile.obj($ranking);//rank.txtに保存
+}
+//----ランキング表示
+print (&quot;Ranking:&quot;);
+for (r of $ranking) {
+    print (&quot;Score =&quot;,r);
+}
+while(true) {
+    if (getkey(&quot;r&quot;)==1) {
+        loadPage(Main);
+    }
+    update();
+}
+</code></pre>
+</body></html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+new Chara1{x:100, y:100, p:5};
+new Chara1{x:100, y:132, p:5};
+new Chara1{x:100, y:164, p:5};
+x=$screenWidth/2;
+y=$screenHeight/2;
+while(true){
+  // 移動前の値をsx,syに覚えておく
+  sx=x;sy=y;
+  if(getkey("right")>0){
+    x+=3;
+  }
+  if(getkey("left")>0){
+    x-=3;
+  }
+  if(getkey("down")>0){
+    y+=3;
+  }
+  if(getkey("up")>0){
+    y-=3;
+  }
+  if(crashTo(Chara1)){//Chara1にぶつかっていたら
+    x=sx;y=sy;//移動前の値に戻す
+  }
+  update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Chara1.tonyu'>
+//中身は何も書かなくてもよい
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

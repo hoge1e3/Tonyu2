@@ -1,0 +1,189 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="gamepad-">GamePadクラス</h1>
+<p>ゲームパッド（コントローラ）の情報を取得するためのクラスです。</p>
+<h2 id="-">メソッド</h2>
+<ul>
+<li>get(no)<ul>
+<li>GamePadOneオブジェクトを返します</li>
+<li><code>no</code>何番目のゲームパッドの情報を取得するのかを指定します(0:１個目のゲームパッド、1:２個目、...)</li>
+</ul>
+</li>
+<li>padsCount()<ul>
+<li>現在接続中のゲームパッドの個数を返します</li>
+<li>Tonyu2ダウンロード版やChrome系のブラウザでは、最大4つまでゲームパッドが認識されました。(2020年9月現在)</li>
+</ul>
+</li>
+<li>getGamepads()<ul>
+<li>JavaScriptのGamePad APIのnavigator.getGamepads()の戻り値をそのまま返します</li>
+</ul>
+</li>
+</ul>
+<h1 id="gamepadone-">GamePadOneクラス</h1>
+<p>ゲームパッド１個分の情報を取得するためのクラスです。</p>
+<h2 id="-">メソッド</h2>
+<ul>
+<li>isConnected()<ul>
+<li>ゲームパッドが接続されていれば<code>true</code>、未接続の場合<code>false</code>を返します</li>
+</ul>
+</li>
+<li>getButtonCount()<ul>
+<li>ゲームパッドに搭載されているボタンの数を返します</li>
+</ul>
+</li>
+<li>getButton(btnNo)<ul>
+<li><code>btnNo</code>番のボタンが押されているかを返します<ul>
+<li><code>btnNo</code> 0で最初のボタン</li>
+<li><a href="getkey">getkey</a>と同じように、押され続けたフレーム数を返します</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>getButtonValue(btnNo)<ul>
+<li><code>btnNo</code>番のボタンが押された深さを返します<ul>
+<li><code>btnNo</code> 0で最初のボタン</li>
+<li>0.0～1.0の値を返します<ul>
+<li>0.0:押されてない、1.0:最も深く押された</li>
+<li>アナログボタンの場合、0.0～1.0の間の値も返ります</li>
+<li>デジタルボタン（普通のボタン）の場合、0または1のどちらかのみが返ります</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>getAxisCount()<ul>
+<li>アナログスティックの軸がいくつあるかを返します<ul>
+<li>１つのアナログスティックがある場合、X軸,Y軸の２つの軸があるため2が返る</li>
+<li>２つのアナログスティックがある場合4が返る</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>getAxis(btnNo)<ul>
+<li>アナログスティックの<code>btnNo</code>番の軸の傾きを返します<ul>
+<li><code>btnNo</code> 0で最初の軸<ul>
+<li>１つ目アナログスティックのX軸は0、Y軸は1</li>
+<li>２つ目アナログスティックのX軸は2、Y軸は3</li>
+</ul>
+</li>
+<li>-1.0～1.0の値が返ります</li>
+<li>軸を傾けていない場合0.0付近の値が返ります</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>getUp()<ul>
+<li>方向キーが上を向いているかを返します<ul>
+<li><a href="getkey">getkey</a>と同じように、押され続けたフレーム数を返します</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>getDown()<ul>
+<li>方向キーが下を向いているかを返します<ul>
+<li><a href="getkey">getkey</a>と同じように、押され続けたフレーム数を返します</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>getLeft()<ul>
+<li>方向キーが左を向いているかを返します<ul>
+<li><a href="getkey">getkey</a>と同じように、押され続けたフレーム数を返します</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>getRight()<ul>
+<li>方向キーが右を向いているかを返します<ul>
+<li><a href="getkey">getkey</a>と同じように、押され続けたフレーム数を返します</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>getPadId()<ul>
+<li>ゲームパッドの名前を返します</li>
+</ul>
+</li>
+<li>getMapping()<ul>
+<li>&quot;standard&quot;なら標準ゲームパッド(Xbox, PS4などのコントローラ)、それ以外は&quot;&quot;(空文字)</li>
+<li>&quot;standard&quot;の場合、ボタン配置は下記URLのゲームパッド画像のようになります<ul>
+<li><a href="https://w3c.github.io/gamepad/#remapping">https://w3c.github.io/gamepad/#remapping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>getPadNo()<ul>
+<li>このGamePadOneオブジェクトは、何個目のゲームパッドを見ているかを返します</li>
+</ul>
+</li>
+<li>getPad()<ul>
+<li>GamePadで管理しているゲームパッドの情報を返します</li>
+</ul>
+</li>
+<li>getGamePad()<ul>
+<li>GamePadオブジェクトを返します</li>
+</ul>
+</li>
+</ul>
+<p>例：</p>
+<p>Tonyu2付属のサンプル「GamePad」に詳しい使い方があります。</p>
+<p>例１：簡単な実装</p>
+<p>Main.tonyu</p>
+<pre><code class="lang-JS">x=100;y=100;
+gamePad=$GamePad.get(0); // ゲームパッド0番を取得する
+while(true){
+    p=10;
+    if(gamePad.getButton(0)) p=0; // 0番目のボタン
+    if(gamePad.getButton(1)) p=4; // 1番目のボタン
+    if(gamePad.getButton(2)) p=7; // 2番目のボタン
+    if(gamePad.getButton(3)) p=2; // 3番目のボタン
+    x+=gamePad.getAxis(0)*3; // X軸の傾き(-1.0～1.0)
+    y+=gamePad.getAxis(1)*3; // Y軸の傾き(-1.0～1.0)
+    update();
+}
+</code></pre>
+<p>例２：２個のゲームパッドの情報を表示</p>
+<p>Main.tonyu</p>
+<pre><code class="lang-JS">x=10;y=10;size=12;align=&quot;left&quot;;
+gamePad1=new GPad{x:10,y:30,no:0};
+gamePad2=new GPad{x:250,y:30,no:1};
+while(true){
+    if($GamePad.available){
+        text=&quot;GamePadの個数 : &quot;+$GamePad.padsCount();
+    }else{
+        text=&quot;このデバイス・ブラウザはGamepad APIに対応していません&quot;;
+    }
+    update();
+}
+</code></pre>
+<p>GPad.tonyu</p>
+<pre><code class="lang-JS">size=10;align=&quot;left&quot;;
+gamePad=$GamePad.get(no); // ゲームパッド0番を取得する
+while(true){
+    connected=gamePad.isConnected(); // コントローラが接続されているかチェック
+    if(connected){ // 接続されている
+        text=&quot;id :&quot;+gamePad.getPadId()+&quot;\n&quot;; // コントローラの識別名
+        text+=&quot;mapping :&quot;+gamePad.getMapping()+&quot;\n&quot;; // マッピング
+        var buttonCnt=gamePad.getButtonCount(); // ボタン数
+        for(var i=0;i&lt;buttonCnt;i++){
+            var b=gamePad.getButton(i); // ボタンを押した時間(フレーム単位)
+            var v=gamePad.getButtonValue(i); // ボタンを押した深さ(0.0～1.0)
+            text+=&quot;b[&quot;+i+&quot;]:&quot;+b+&quot; v:&quot;+v+&quot;\n&quot;;
+        }
+        var axisCnt=gamePad.getAxisCount(); // 軸の数
+        for(var i=0;i&lt;axisCnt;i++){
+            var a=gamePad.getAxis(i); // 軸の傾き(-1.0～1.0)
+            text+=&quot;a[&quot;+i+&quot;]:&quot;+a+&quot;\n&quot;;
+        }
+    }else{
+        text=&quot;--&quot;;
+    }
+    update();
+}
+</code></pre>
+</body></html>

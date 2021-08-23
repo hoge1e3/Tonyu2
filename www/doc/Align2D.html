@@ -1,0 +1,56 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="align2d-">Align2Dクラス</h1>
+<p>Actorの座標の基準位置を決定するオブジェクトです。</p>
+<ul>
+<li>BaseActorオブジェクトのalignプロパティには、Align2Dクラスのコンストラクタの第1引数を割り当てることができます。内部でAlignオブジェクトに変換されます。</li>
+<li>alignプロパティを読み出した場合は、alignに代入したときの値が返されます（変換されたAlignオブジェクトではない）</li>
+</ul>
+<h2 id="-">コンストラクタ</h2>
+<p><code>new Align2D(val)</code></p>
+<p>valには次の値を指定できます</p>
+<ul>
+<li>文字列（スペースまたはカンマ区切り）<ul>
+<li>次の「文字列または数値の配列」とみなされます。数値に見えるものは数値として扱われます。</li>
+</ul>
+</li>
+<li>文字列または数値の配列<ul>
+<li>1番目の文字列が次の「オブジェクト」のh、2番目の文字列がvに相当します。1番目、2番目ともに省略可能。</li>
+<li>1番目の数値が次の「オブジェクト」のoffset.x、2番目の数値がoffset.yに相当します。1番目、2番目ともに省略可能。</li>
+</ul>
+</li>
+<li>オブジェクト<ul>
+<li>h<ul>
+<li>横方向の配置を&quot;left&quot;, &quot;center&quot;, &quot;right&quot;で指定します。 x がそれぞれ、画像の左端、中央、右端になるように表示します。省略値は&quot;center&quot;</li>
+</ul>
+</li>
+<li>v<ul>
+<li>縦方向の配置を&quot;top&quot;, &quot;middle&quot;, &quot;bottom&quot;で指定します。 y がそれぞれ、画像の上端、中央、下端になるように表示します。省略値は&quot;middle&quot;</li>
+</ul>
+</li>
+<li>offsetX, ofsX, ox, x<ul>
+<li>offset.xと等価です</li>
+</ul>
+</li>
+<li>offsetY, ofsY, oy, y<ul>
+<li>offset.yと等価です</li>
+</ul>
+</li>
+<li>offset, ofs<ul>
+<li>x, yをもつオブジェクトを指定し、基準点を指定した座標だけずらします。省略値はともに0</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>例えば、&quot;left bottom 10 -20&quot;なら、「画像の左下端から右に10ピクセル、上に20ピクセル移動した場所」を基準点とします。<br>次はすべて&quot;left bottom 10 -20&quot;と等価です。</p>
+<ul>
+<li>[&quot;left&quot;, &quot;bottom&quot;, 10 , -20]</li>
+<li>{h: &quot;left&quot;, v:&quot;bottom&quot;, ox: 10, oy: -20}</li>
+<li>{h: &quot;left&quot;, v:&quot;bottom&quot;, {offset:{x:10, y:-20}}}</li>
+</ul>
+</body></html>

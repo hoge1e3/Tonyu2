@@ -1,0 +1,173 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="map2-">Map2クラス</h1>
+<p><a href="Map">Map</a>クラスから、次の機能が拡張されています。</p>
+<ul>
+<li>レイヤーをbase,on だけでなく3層以上作成できます</li>
+<li>row, colが指定されていない場合、自動的にマップが拡張されます。</li>
+<li>chipWidth, chipHeightが指定されていない場合、最初に置いたマップチップの大きさで自動的に設定されます</li>
+<li>壁の判定や、チップの種類による接触判定が簡単に行えるようになります</li>
+<li>マップチップから<a href="Actor">Actor</a>オブジェクトを生成することができます。例えば、マップチップ上に敵の絵のパターンを書き込んでおいて、その敵の動作を表すActorを生成する、という使い方ができます。</li>
+<li>マップを拡大縮小回転させることができ、getAt, setAtが拡大縮小拡大した状態でも有効になります</li>
+<li>マップファイルのフォーマットがver2になりました。<ul>
+<li>マップファイル作成後、キャラクタパターンの順序や個数が変わっても正しく読み込むことができます</li>
+<li>これまでのマップファイル(ver1)も読込可能です。保存した場合はver2に変換されます。</li>
+<li>存在しないパターン番号を読み込もうとした場合はエラーになります。<ul>
+<li>例えば、マップ保存時に$pat_houseという名前の画像があったが、$pat_houseを画像リストから削除してマップを読み込んだ時、あるいは、保存時には$pat_house+50 というパターン番号があったが、元画像を更新してパターン数が減ってしまい、($pat_house自身は存在するが)$pat_house+50が存在しなくなった時など。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">座標系について</h2>
+<ul>
+<li>チップ座標：左上のチップを(0,0)、その右隣のチップを(1,0)のように指定する座標系。本ページでは(cx,cy)と記載</li>
+<li>ワールド座標：他のオブジェクトを基準にした座標系。ピクセル単位。本ページでは(x,y)と記載</li>
+<li>例えば、ある<a href="Actor">Actor</a>オブジェクトが(100,200)の位置にいて、マップ上の左上のチップに重なっている場合、ワールド座標(100,200)はチップ座標(0,0)に置き換えられます。チップ座標をワールド座標に置き換える場合、チップの中央の点を基準に置き換えます。したがって先ほどの例では、チップ座標(0,0)がワールド座標(100,200)に置き換えられるとは限りません（オブジェクトがチップの中央の点にぴったり重なっている場合に限る）。</li>
+</ul>
+<h2 id="-map-">従来のMapと同じメソッド</h2>
+<ul>
+<li>new (param) //(コンストラクタ)</li>
+<li>load(file)</li>
+<li>save(file)</li>
+<li>set(cx,cy,p)</li>
+<li>setAt(x,y,p)</li>
+<li>setOn(cx,cy,onP)</li>
+<li>setOnAt(x,y,p)</li>
+<li>get(cx,cy)</li>
+<li>getAt(x,y)</li>
+<li>getOn(cx,cy)</li>
+<li>getOnAt(x,y)</li>
+<li>scrollTo(x,y)</li>
+</ul>
+<h2 id="-">新しく追加されたメソッド・プロパティ</h2>
+<ul>
+<li>expand<ul>
+<li>マップを自動的に拡張するかどうかをオブジェクトまたは文字列で設定します。</li>
+<li>オブジェクトには次の属性を設定できます<ul>
+<li>row 行（縦方向）を拡張するかどうかを<code>true</code> / <code>false</code>で指定します。Map2を作成時にrowを指定しなかった場合はtrueが設定されています</li>
+<li>col 列（横方向）を拡張するかどうかを<code>true</code> / <code>false</code>で指定します。Map2を作成時にcolを指定しなかった場合はtrueが設定されています</li>
+<li>all 縦と横をともに拡張するかどうかを指定します</li>
+</ul>
+</li>
+<li>文字列の場合、row, col, all をカンマ区切りで指定し、指定したものがtrueになります</li>
+</ul>
+</li>
+<li>addChipLayer(name)<ul>
+<li>新しいレイヤーを名前を指定して作成します。Map2の作成時には<code>&quot;base&quot;</code>と<code>&quot;on&quot;</code>が自動的に追加されています。</li>
+</ul>
+</li>
+<li>setPivot(px,py)<ul>
+<li>拡大縮小回転をするときの中心点を設定します。マップの左上が(px,py)=(0,0)で、ピクセル単位です。マップ自体の座標(x,y)の基準点も(px,py)になります。</li>
+</ul>
+</li>
+<li>pack()<ul>
+<li>一旦拡張したマップのうち、消去した(-1を書き込んだ)領域があれば縮めます（row,colが減る場合があります）</li>
+</ul>
+</li>
+<li>setWithLayerName(name, cx, cy , p)<ul>
+<li>nameで指定された名前のレイヤーの(cx,cy)にマップチップを書き込みます</li>
+</ul>
+</li>
+<li>getWithLayerName(name, cx, cy)<ul>
+<li>nameで指定された名前のレイヤーの(cx,cy)からマップチップのパターン番号を読み出します</li>
+</ul>
+</li>
+<li>setWallFilter(options)<ul>
+<li>「壁」になるチップの種類を指定します。</li>
+<li>optionsには次のものを指定できます<ul>
+<li><code>{layer:[&lt;レイヤー名&gt;, &lt;レイヤー名&gt;...]}</code> &lt;レイヤー名&gt;（文字列）で指定したすべてのレイヤーに配置されているもの（-1のもの以外）すべてを「壁」とみなします。</li>
+<li><code>{wall:[&lt;パターン番号&gt;, &lt;パターン番号&gt;... ]}</code>  全レイヤーの指定した&lt;パターン番号&gt;（数値）をすべて「壁」とみなします。</li>
+<li><code>{path:[&lt;パターン番号&gt;, &lt;パターン番号&gt;... ]}</code>  全レイヤーの指定した&lt;パターン番号&gt;以外をすべて「壁」とみなします。</li>
+<li>[&lt;レイヤー名&gt;, &lt;レイヤー名&gt;...]や[&lt;パターン番号&gt;, &lt;パターン番号&gt;... ]はそれぞれ要素が1つしかない場合、配列ではなく文字列や数値を直接指定できます。</li>
+<li>layer と wall 、　layer と　path　を組み合わせて「指定したレイヤーにある、指定したパターン(以外)を「壁」とみなす」という設定もできます。</li>
+<li>数値： <code>{wall: &lt;数値&gt;}</code>と等価。</li>
+<li>配列： <code>{wall: &lt;配列&gt;}</code>と等価。</li>
+<li>関数：　<a href="MapChip">MapChip</a>オブジェクトを受け取り、true/falseを返す関数を指定します</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>isWall(cx,cy)<ul>
+<li>指定した位置（チップの座標）にあるチップが「壁」かどうかを返します。</li>
+</ul>
+</li>
+<li>isWallAt(x,y)<ul>
+<li>指定した位置（ピクセル単位）にあるチップが「壁」かどうかを返します。</li>
+</ul>
+</li>
+<li>crashTo(actor)<ul>
+<li>指定したactorがこのマップの「壁」にぶつかっていれば、壁と判定されたMapChipオブジェクトを返します。MapChipオブジェクトのlayersに当たった「壁」のレイヤーが格納されます</li>
+</ul>
+</li>
+<li>crashTo(actor, chipFilter)<ul>
+<li>指定したactorがぶつかっているチップがchipFilterで指定された条件を満たせば、そのチップのMapChipオブジェクトを返します。</li>
+<li>chipFilterは、MapChipオブジェクトを受け取り、true/falseを返す関数です。次項のchipFilterで生成できます。あるいは，chipFilterに渡す引数を直接指定してもかまいません．</li>
+</ul>
+</li>
+<li><a href="Map2.chipFilter">chipFilter(options)</a></li>
+<li>range(options)<ul>
+<li>optionsで指定した領域内にある<a href="MapChip">MapChip</a>を配列で返します。</li>
+<li>options が<a href="Actor">Actor</a>の場合、当たり判定（options.getCrashShapeを使用)の図形と一部または全部か重なっているマップチップをすべて返します。ただしoptions.layerがこのMap2のlayerと同じものを指定してください。</li>
+<li>options がActor以外のオブジェクトの場合、属性には次のものを指定できます<ul>
+<li>left（またはxmin）: 左上のx座標</li>
+<li>top（またはymin）: 左上のy座標</li>
+<li>right（またはxmax）: 右下のx座標</li>
+<li>bottom（またはymax）: 右下のy座標</li>
+<li>width: 指定すると、right=left+width-1になります。rightは省略してください。</li>
+<li>height: 指定すると、bottom=top-height-1になります。bottomは省略してください。</li>
+<li>world: true相当の値を指定すると上記の座標を「ワールド座標」とみなします。それ以外は「チップ座標」とみなします。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>worldToChip(o)<ul>
+<li>ワールド座標(o.x, o.y)をチップ座標に変換します</li>
+</ul>
+</li>
+<li>chipToWorld(o)<ul>
+<li>チップ座標(o.x, o.y)をワールド座標に変換します。</li>
+</ul>
+</li>
+<li>chipToWorld(cx,cy)<ul>
+<li>チップ座標(cx, cy)をワールド座標に変換します。</li>
+</ul>
+</li>
+<li>allLayerNames<ul>
+<li>すべてのレイヤー名を文字列の配列で返します。</li>
+</ul>
+</li>
+<li>chip(cx,cy,layers)<ul>
+<li>チップ座標(cx,cy)にある<a href="MapChip">MapChip</a>オブジェクトを取得します。layers(レイヤー名またはその配列)を指定した場合、指定したレイヤーのみが操作対象になります</li>
+</ul>
+</li>
+<li>chipAt(x,y,layers)<ul>
+<li>ワールド座標(x,y)にある<a href="MapChip">MapChip</a>オブジェクトを取得します。layers(レイヤー名またはその配列)を指定した場合、指定したレイヤーのみが操作対象になります</li>
+</ul>
+</li>
+<li>has(cx,cy,p)<ul>
+<li>チップ座標(cx,cy)で指定した位置のいずれかのレイヤーにパターン番号pがあればその位置の<a href="MapChip">MapChip</a>オブジェクトを返し、そのオブジェクトのlayersプロパティにどのレイヤーにpがあったかを返します。パターン番号pがない場合はnullを返します。（どのレイヤーか調べなくてよい場合、if(has(x,y,p))のように判定できます）</li>
+</ul>
+</li>
+<li>hasAt(x,y,p)<ul>
+<li>ワールド座標(x,y)で指定した位置のいずれかのレイヤーにパターン番号pがあればその位置の<a href="MapChip">MapChip</a>オブジェクトを返し、そのオブジェクトのlayersプロパティにどのレイヤーにpがあったかを返します。パターン番号pがない場合はnullを返します。</li>
+</ul>
+</li>
+<li>chipToActor(options)<ul>
+<li>マップチップから<a href="Actor">Actor</a>オブジェクトを生成します。</li>
+<li>生成するオブジェクトには、パラメータとして{x,y,p}が渡されます。(x,y)はチップのワールド座標、pはパターン番号です</li>
+<li>生成したチップには-1 が書き込まれ、マップ上からは消去されます</li>
+<li>optionsには次のものを指定できます<ul>
+<li>p: Actorを生成するパターン番号。パターン番号がpであるすべてのチップからActorが生成されます。</li>
+<li>class: 生成するActorのクラス</li>
+<li>params: オブジェクトに渡すパラメータ。{x,y,p}以外の値を渡したい場合に用います。paramsには{x,y,p}を含めないでください。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</body></html>

@@ -11,16 +11,23 @@
 <ul>
 <li>オブジェクトに<a href="die">die</a>メソッドが呼ばれたときに発生します</li>
 </ul>
+<p>Main</p>
 <pre><code class="lang-JS">p=new Player;
 p.on(&quot;die&quot;) \{
   print (&quot;Player is dead!&quot;);
 };
+</code></pre>
+<p>Player</p>
+<pre><code class="lang-JS">x=100;y=100;
+updateEx(60);
+die();
 </code></pre>
 <h2 id="-screenout-">&quot;screenOut&quot;</h2>
 <ul>
 <li>オブジェクトが画面外に出たときに発生します</li>
 <li>画面外から何ピクセル出たときにイベントが発生するか(<a href="screenOut">screenOut</a>の第1引数)をイベント引数として指定します。</li>
 </ul>
+<p>Main</p>
 <pre><code class="lang-JS">on(&quot;screenOut&quot;,0) \{
    die();
 };

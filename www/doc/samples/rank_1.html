@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+//ランキングファイルのオブジェクトを作成
+rankFile=file("rank.txt");
+//rank.txtが存在していれば
+if (rankFile.exists()) {
+    $ranking=rankFile.obj();//$rankingに読み込む
+} else {
+    $ranking=[20,15,10,5,3];//初期化する
+}
+//---ゲーム本体
+$score=0;
+new Label{template:"Score $score",x:200,y:200,size:30};
+lb=new Label{text:"Space: get score   X: game over",x:200,y:300,size:20};
+while(true) {
+    if (getkey("space")==1) {
+        $score++;
+    }
+    if (getkey("x")==1) {
+        break;
+    }
+    update();
+}
+lb.text="Game Over. R:Replay";
+//----最下位のスコアより高い点数ならランクイン
+if ($score>$ranking[$ranking.length-1]) {
+    $ranking[$ranking.length-1]=$score;//最下位を今のスコアで上書き．
+    $ranking=$ranking.sort(\(a,b) {return b-a;});//降順並び替え
+    rankFile.obj($ranking);//rank.txtに保存
+}
+//----ランキング表示
+print ("Ranking:");
+for (r of $ranking) {
+    print ("Score =",r);
+}
+while(true) {
+    if (getkey("r")==1) {
+        loadPage(Main);
+    }
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

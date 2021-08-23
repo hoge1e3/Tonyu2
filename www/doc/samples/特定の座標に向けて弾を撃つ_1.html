@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+$player=new Player{x=100,y=100};
+new Shooter{x=200,y=200};
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+pad=new APad; // APadの作成
+while(true){
+  x+=pad.vx*5;
+  y+=pad.vy*5;
+  update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Shooter.tonyu'>
+while(true) {
+    if(rnd(60)==0){
+        new Bullet{x:x, y:y, p:25};
+    }
+    update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Bullet.tonyu'>
+// $playerの座標と自分の座標を比較
+dx=$player.x-x;
+dy=$player.y-y;
+d=dist(dx,dy);//$playerまでの距離
+vx=dx/d*5; // 移動速度(x座標)
+vy=dy/d*5; // 移動速度(y座標)
+while(!screenOut()){
+  x+=vx;//移動速度の分だけxを変化させる
+  y+=vy;//移動速度の分だけyを変化させる
+  update();
+}
+die();
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

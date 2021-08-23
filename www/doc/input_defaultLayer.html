@@ -10,7 +10,6 @@
 <li>画面内をスクロールさせても，画面の左上を(0,0)と見なすため，スクロールとマウス・タッチ操作を併用するゲームでは座標がずれてしまうことがあります．</li>
 <li>次のプログラムのように，プログラム開始時に<a href="$InputDevice.defaultLayer">$InputDevice.defaultLayer</a>を <code>$mainLayer</code>にすることで，この問題を解決できます．</li>
 </ul>
-<p>Main</p>
 <pre><code class="lang-JS">$InputDevice.defaultLayer=$mainLayer;
 </code></pre>
 </body></html>

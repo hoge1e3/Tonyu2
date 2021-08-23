@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+<p><!-- noexe -->
 </p>
 <p><a href="チュートリアル">チュートリアル</a></p>
 <p><a href="座標を指定してオブジェクトを表示する">前へ</a>←　→<a href="複数のオブジェクトを出す">次へ</a></p>
@@ -28,9 +28,9 @@ y=200;
 vy=0;
 while(true){
   x++;
-  y+=vy;
-  vy+=0.1;
-  if(y&gt;$screenHeight){
+  y+=vy;//★A
+  vy+=0.1;//★B
+  if(y&gt;$screenHeight){//★C
     y=$screenHeight;
     vy=-vy;
   }
@@ -39,9 +39,13 @@ while(true){
 </code></pre>
 <p>メニューの実行→Chara2を実行を選ぶと、オブジェクトが跳ねる様子が見えます。</p>
 <ul>
-<li>vyというy方向の加速度を設定し，その値をyに加えることで、重力によって落下します．</li>
-<li>画面下部に触れると跳ねかえります。</li>
+<li>★A: yにvyの値を加えることで、vyをy方向の速度として利用できます。</li>
+<li>★B: vyに加速度0.1を加えることで、重力によって落下する様子を再現できます．</li>
+<li>★C: 画面下部に触れると跳ねかえります。<ul>
 <li><a href="$screenWidth,$screenHeight">$screenHeight</a> は、画面の高さをあらわす変数です。</li>
+<li>画面上端が0、画面下端が$screenHeightになります。y軸の向きが、数学とは逆向きである点に注意してください。</li>
+</ul>
+</li>
 </ul>
 <p><a href="座標を指定してオブジェクトを表示する">前へ</a>←　→<a href="複数のオブジェクトを出す">次へ</a></p>
 <h1 id="backlink">Backlink</h1>

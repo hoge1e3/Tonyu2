@@ -13,14 +13,15 @@
 <p>TimeStopperオブジェクトは、止めた時間をふたたび動かす時に使います。</p>
 <p>時間を動かすにはTimeStopperオブジェクトに対して、 releaseメソッドや releaseAllメソッドを呼び出します。</p>
 <h2 id="-">例</h2>
-<p>Ball.tonyu</p>
-<pre><code>while (x&lt;$screenWidth){
+<p>Ball</p>
+<pre><code class="lang-JS">while (x&lt;$screenWidth){
     x+=2;
     update();
 }
 die();
-</code></pre><p>Stop.tonyu</p>
-<pre><code>x=20;y=30;
+</code></pre>
+<p>Main</p>
+<pre><code class="lang-JS">x=20;y=30;
 while (true) {
     if (t==null) {// まだ時間をとめていなければ
         if (rnd(10)==0) new Ball(0,rnd($screenHeight),19); // 玉を出現させる
@@ -46,4 +47,5 @@ while (true) {
     if (getkey(38)&gt;0) y-=3;
     update();
 }
-</code></pre></body></html>
+</code></pre>
+</body></html>

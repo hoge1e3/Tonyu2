@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+//マップチップ１個の大きさを32x32ピクセルとする
+$map=new Map{chipWidth:32,chipHeight:32};
+$map.load("map.json");
+
+//敵の初期位置を通路の真ん中になるようにする
+//（xおよびyを32で割った余りが16の場所）
+// dirは、その敵が最初に進む方向(角度)
+//   0→   90↓  180←   270↑
+new Enemy{x:32*3+16, y:32*1+16, dir:0};
+
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Enemy.tonyu'>
+
+while(true) {
+    //移動方向により処理を振り分ける
+    if (dir==0) {// →  に移動
+        // 8フレームかけて32ピクセル（マップチップ1個分）移動
+        for (i=0;i<8;i++) {
+            x+=4;
+            update();
+        }
+        //進行方向の変更
+        if ($map.getOnAt(x,y+32)<0) {
+            //↓に壁がないならそちらに方向転換
+            dir=90;   
+        } else if ($map.getOnAt(x,y-32)<0) {
+            //↑に壁がないならそちらに方向転換
+            dir=270;
+        } else if ($map.getOnAt(x+32,y)>=0) {
+            //→に壁がある（直進できない）なら引き返す
+            dir=180;
+        }
+    } else if (dir==90) {//↓に移動
+        // 8フレームかけて32ピクセル（マップチップ1個分）移動
+        for (i=0;i<8;i++) {
+            y+=4;
+            update();
+        }
+        //進行方向の変更
+        if ($map.getOnAt(x+32,y)<0) {
+            //→に壁がないならそちらに方向転換
+            dir=0;   
+        } else if ($map.getOnAt(x-32,y)<0) {
+            //←に壁がないならそちらに方向転換
+            dir=180;
+        } else if ($map.getOnAt(x,y+32)>=0) {
+            //↓に壁がある（直進できない）なら引き返す
+            dir=270;
+        }
+    } else if (dir==180) {//←に移動
+        // 8フレームかけて32ピクセル（マップチップ1個分）移動
+        for (i=0;i<8;i++) {
+            x-=4;
+            update();
+        }
+        //進行方向の変更
+        if ($map.getOnAt(x,y+32)<0) {
+            //↓に壁がないならそちらに方向転換
+            dir=90;   
+        } else if ($map.getOnAt(x,y-32)<0) {
+            //↑に壁がないならそちらに方向転換
+            dir=270;
+        } else if ($map.getOnAt(x-32,y)>=0) {
+            //←に壁がある（直進できない）なら引き返す
+            dir=0;
+        }
+    } else if (dir==270) {//↑に移動
+        // 8フレームかけて32ピクセル（マップチップ1個分）移動
+        for (i=0;i<8;i++) {
+            y-=4;
+            update();
+        }
+        //進行方向の変更
+        if ($map.getOnAt(x+32,y)<0) {
+            //→に壁がないならそちらに方向転換
+            dir=0;   
+        } else if ($map.getOnAt(x-32,y)<0) {
+            //←に壁がないならそちらに方向転換
+            dir=180;
+        } else if ($map.getOnAt(x,y-32)>=0) {
+            //↑に壁がある（直進できない）なら引き返す
+            dir=90;
+        }
+    }    
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

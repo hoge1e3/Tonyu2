@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+for(i=0; i<5; i++){
+    new Enemy{x:100+i*50,y:rnd(200)+50,p:2};
+}
+while(true){
+                          //↓敵の残り数を表示
+    print("Enemy.length="+all(Enemy).length);
+       //↓敵の残り数が0になったら，繰り返しをやめる
+    if(all(Enemy).length==0) break;
+    update();
+}
+print("clear");
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Enemy.tonyu'>
+//画面外に出ると消える
+while(y<$screenHeight){
+    y+=5;
+    update();
+}
+die();
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

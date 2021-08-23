@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='PopupLabel.tonyu'>
+extends Label;//Labelクラスを継承
+
+// ラベルに対する処理を書く
+updateEx(30);//30フレーム待機
+die();//消える
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+new Player{x:200,y:200};
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='PointLabel.tonyu'>
+extends Label;//Labelクラスを継承
+// ラベルに対する処理を書く
+for(i=0;i<30;i++) {//30フレーム上に移動
+    y--;
+    update();
+}
+die();//消える
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+while(true) {
+    x=$touches[0].x;y=$touches[0].y;
+    if ($touches[0].touched==1) {
+        // タッチされると「100」と書かれたPointLabelを生成
+        // x,y : プレイヤーと同じ位置に出現させる
+        // layer: プレイヤーと同じレイヤーに出現させる※
+        new PointLabel{x,y,layer,template:"100"};
+    }
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

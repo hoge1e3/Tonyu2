@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+new Enemy{x=rnd($screenWidth),y=rnd($screenHeight),p=8};
+new Enemy{x=rnd($screenWidth),y=rnd($screenHeight),p=8};
+new Enemy{x=rnd($screenWidth),y=rnd($screenHeight),p=8};
+new Player{x=$screenWidth/2,y=$screenHeight/2};
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+c=0;//c>0なら無敵,c==0なら無敵でない
+life=5;
+while(true){
+    x=$mouseX;
+    y=$mouseY;
+    if(crashTo(Enemy) && c<=0){
+        // 無敵でない場合のみ，ここが実行される
+        c=30;//無敵時間を30フレーム（1秒）に設定
+        // 体力を減らす
+        life--;
+        print("Life",life);
+        if (life<=0) die();
+    }
+    //無敵中であれば無敵時間を減らす
+    if (c>0) c--;
+    //無敵中に点滅させる処理
+    if (c%2==0) alpha=255; else alpha=0;
+    update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Enemy.tonyu'>
+//何も書かなくてもよいが，ファイルEnemyは作成する
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

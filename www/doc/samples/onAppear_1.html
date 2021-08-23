@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='BigBall.tonyu'>
+\onAppear() {
+   p=12;
+   scaleX=2;
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+// これらのオブジェクトは、パラメタ指定をしなくても p=12 scaleX=2で初期化されます
+new BigBall{x:200,y:300};
+new BigBall{x:250,y:150};
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='A.tonyu'>
+b=new B;//ここで★が実行される
+print (b.foo);//5
+print (b.bar);//undefined
+update();// ここで☆が実行される
+print (b.bar);//3
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='B.tonyu'>
+\onAppear() {
+   foo=5;//★
+}
+bar=3;//☆
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

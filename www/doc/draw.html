@@ -14,12 +14,18 @@
 <p>ctxに，描画先のcanvasオブジェクトのコンテキスト(canvas.getContext(&quot;2d&quot;)で取得)を渡します．</p>
 <h1 id="-">オーバーライド</h1>
 <p>drawメソッドをオーバーライドすると，オブジェクトの表示方法をカスタマイズできます．</p>
-<p>例</p>
+<p>例<br>Main</p>
 <pre><code class="lang-JS">\draw(ctx) {
    // この中では、ctxを用いて画面への描画が可能。描画方法はHTML5のCanvasに準拠。
    // 例：赤い四角形を表示
    ctx.fillStyle=&quot;red&quot;;
    ctx.fillRect(x,y,20,20);
+}
+x=100;y=100;
+while(true) {
+    x++;
+    rotation++; // draw内でrotationを使っていないので，描画結果には影響を与えない
+    update();
 }
 </code></pre>
 <h1 id="backlink">Backlink</h1>

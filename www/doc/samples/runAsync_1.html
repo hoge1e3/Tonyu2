@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+native setTimeout;
+try {
+    res=runAsync \(success,error) {
+        if (rnd(3)>0) {
+            setTimeout(\{
+                success(10);
+            },1000);            
+        } else {
+            setTimeout(\{
+                error("Fail");
+            },1000);
+        }
+    };
+    print("Success");
+    print(res[0]);
+} catch (e) {
+    print("Error");
+    print(e.args[0]);
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+$player=new Player{x:250,y:250};
+new Enemy{x:200,y:100};
+new Enemy{x:300,y:100};
+new Enemy{x:400,y:300};
+new Enemy{x:100,y:300};
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Enemy.tonyu'>
+extends BodyActor;
+// $player は，Mainで初期化されているグローバル変数（Mainを参照）
+while (true) {
+    // $playerとの座標を比較して移動方向を決める
+    if (x<$player.x) vx=2;
+    if (x>$player.x) vx=-2;
+    if (y<$player.y) vy=2;
+    if (y>$player.y) vy=-2;
+    update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+//プレイヤーの動作を書く（とりあえず何も書かなくてもよい）
+pad=new APad;
+while(true){
+    x+=pad.vx*5;
+    y+=pad.vy*5;
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>
+<script language='text/tonyu' type='text/tonyu' data-filename='options.json' >
+{
+    "compiler": {
+        "namespace": "user",
+        "defaultSuperClass": "kernel.Actor",
+        "dependingProjects": [
+            {
+                "namespace": "kernel"
+            }
+        ],
+        "diagnose": false
+    },
+    "run": {
+        "mainClass": "Main",
+        "bootClass": "kernel.Boot",
+        "globals": {
+            "$defaultFPS": 60,
+            "$imageSmoothingDisabled": true,
+            "$soundLoadAndDecode": false
+        }
+    },
+    "plugins": {"box2d":1},
+    "kernelEditable": false,
+    "language": "tonyu",
+    "version": 1579395489228
+}</script>
+

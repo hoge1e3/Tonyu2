@@ -6,19 +6,24 @@
 <p><!-- Konbaatiddo from Tonyu2 non-md document -->
 </p>
 <p><a href="用途別リファレンス">用途別リファレンス</a></p>
-<h1 id="onupdate-">onUpdate - 例</h1>
+<h1 id="onupdate">onUpdate</h1>
 <ul>
 <li><a href="onUpdate">onUpdate</a>()は<a href="update">update</a>または<a href="updateEx">updateEx</a>が呼び出されたときにしたい処理をユーザが定義するメソッドです。</li>
 </ul>
 <p>Chara1</p>
 <pre><code class="lang-JS">x=100;
 y=100;
-while(true){
+while(x&lt;200){
+    x++;
+    update();
+}
+while(y&lt;200){
+    y++;
     update();
 }
 function onUpdate(){
     // updateが呼ばれるたびに実行される
-    x++;
+    rotation++;
 }
 </code></pre>
 </body></html>

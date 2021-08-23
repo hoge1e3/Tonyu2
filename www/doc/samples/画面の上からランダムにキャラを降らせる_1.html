@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+c=0;//経過時間（フレーム数）を数える変数
+while(true) {
+    c++;
+    if (c%30==0) {//30フレームに1回
+        //Enemyを出現
+        new Enemy{x:rnd($screenWidth),y:0,p:1};
+    }
+    update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Enemy.tonyu'>
+while(true){
+  y+=4;
+  //画面外に出たら消える
+  if(screenOut()){
+    die();
+  }
+  update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

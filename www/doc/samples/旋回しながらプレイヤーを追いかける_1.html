@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+$player=new Player{x:250,y:250};
+new Enemy{x:200,y:100};
+new Enemy{x:300,y:100};
+new Enemy{x:400,y:300};
+new Enemy{x:100,y:300};
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Enemy.tonyu'>
+//移動方向の角度
+dir=0;
+while (true) {
+    //オブジェクトの見た目を回転させる
+    rotation=dir;
+    //dirの方向に移動する
+    x+=cos(dir);
+    y+=sin(dir);
+    //(tx,ty)の場所を目指して移動
+    //この例では$playerの位置
+    tx=$player.x;
+    ty=$player.y;
+    //自分の位置からの(tx,ty)の角度
+    tdir=atanxy(tx-x, ty-y);
+    //移動方向とtdirを比較し、
+    d=angleDiff(dir,tdir);
+    //どちらに旋回するかを決める
+    if (d>0) dir-=2;
+    else dir+=2;
+
+    update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Player.tonyu'>
+x=$screenWidth/2;
+y=$screenHeight/2;
+pad=new APad; // APadの作成
+while(true){
+  // padの倒れた向きに応じて移動する
+  x+=pad.vx*5;
+  y+=pad.vy*5;
+  update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

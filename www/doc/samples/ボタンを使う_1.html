@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+$b=new Button{top:300,text:"Click Me"};
+x=100;
+y=100;
+while(true) {
+   // $b が押されているかどうかは $b.clickedで調べる
+   // 0:押されていない 1:押されたばかり 2以上：押し続けられている
+   if($b.clicked==1) {
+      x+=10;
+   }
+   update();
+}
+
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

@@ -19,7 +19,7 @@
 <li>いずれも設定しないか，<code>p</code>に-1を設定すると SecretCharと同等</li>
 </ul>
 </li>
-<li><p>PanelCharクラスは，Actorクラスのオブジェクトに<a href="Panel">Panel</a>クラスのオブジェクトを作成させることで代用します．</p>
+<li><p>PanelCharクラスは，Actorクラスのオブジェクトに<a href="Panel">Panel</a>クラスのオブジェクトを作成させるか，<code>extends Panel;</code>と書いてPanelの子クラスにすることで代用します．</p>
 </li>
 <li>FrameManagerは未実装です．最初に実行させるクラス（たいてい「Main」などの名前をもつクラス）に，フレームが実行されるごとの処理を記述してください．</li>
 </ul>
@@ -32,19 +32,16 @@ new Actor{text:&quot;タイトル&quot;, x:200, y:200}; // タイトルのテキ
 </code></pre>
 <h2 id="-">オブジェクトの生成と出現</h2>
 <p>Tonyu1ではオブジェクトの生成は次のように，オブジェクトの種類によって指定されたフィールド（SpriteCharならx,y,p）の値を渡して生成していました．</p>
-<p>Main</p>
 <pre><code class="lang-JS">new Player(100,220,12);
 </code></pre>
-<p>指定されたフィールド以外の値を渡す場合，次のように，生成したオブジェクトを一旦変数に入れ，別の文を追加する必要がありました．<br>Main</p>
+<p>指定されたフィールド以外の値を渡す場合，次のように，生成したオブジェクトを一旦変数に入れ，別の文を追加する必要がありました．</p>
 <pre><code class="lang-JS">$player=new Player(100,220,12);
 $player.life=5;
 </code></pre>
 <p>Tonyu2では，次のようにすべてのフィールドをオブジェクト生成時に一文で渡せるようになりました．<br>なお，Tonyu2でも，Tonyu1と同じ方法でx,y,pを渡すことも可能です．</p>
-<p>Main</p>
 <pre><code class="lang-JS">new Player{x:100, y:220,p:12, life:5};
 </code></pre>
 <p>また，Tonyu1ではオブジェクトを実際に出現させるには次のように<a href="appear">appearメソッド</a>を呼び出す必要がありましたが，Tonyu2では不要になっています．なお，Tonyu2でも互換性のためにこの書き方も許容されています．</p>
-<p>Main</p>
 <pre><code class="lang-JS">appear(new Player(100,220,12));
 </code></pre>
 <h2 id="-">当たり判定の機能拡張</h2>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+\draw(ctx) {
+    // このActor本来の図形を描く（中心のスプライト）
+    super.draw(ctx);
+    var a;
+    // 周りに別のスプライトを2つ表示（本体の周りを回る）
+    a=new ActorSprite{x: x+cos(r)*50, y: y+sin(r)*50,p};
+    a.draw(ctx);
+    a=new ActorSprite{x: x-cos(r)*50, y: y-sin(r)*50,p};
+    a.draw(ctx);
+}
+
+x=100;y=100;r=0;
+while(true) {
+    x++;
+    r+=10;
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

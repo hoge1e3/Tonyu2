@@ -29,20 +29,25 @@
 </li>
 </ul>
 <h2 id="-">例</h2>
-<pre><code class="lang-JS">native $;
-
+<p>Main</p>
+<pre><code class="lang-JS">native setTimeout;
 try {
     res=runAsync \(success,error) {
-        $.ajax{
-            url:&quot;http://tonyuedit.appspot.com/&quot;,
-            success,error
-        };
+        if (rnd(3)&gt;0) {
+            setTimeout(\{
+                success(10);
+            },1000);            
+        } else {
+            setTimeout(\{
+                error(&quot;Fail&quot;);
+            },1000);
+        }
     };
     print(&quot;Success&quot;);
     print(res[0]);
 } catch (e) {
     print(&quot;Error&quot;);
-    print(e.args[0].statusText);
+    print(e.args[0]);
 }
 </code></pre>
 <h1 id="backlink">Backlink</h1>

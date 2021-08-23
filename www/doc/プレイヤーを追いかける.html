@@ -27,6 +27,12 @@ while (true) {
 </code></pre>
 <p>Player</p>
 <pre><code class="lang-JS">//プレイヤーの動作を書く（とりあえず何も書かなくてもよい）
+pad=new APad;
+while(true){
+    x+=pad.vx*5;
+    y+=pad.vy*5;
+    update();
+}
 </code></pre>
 <p>※Enemyが物理オブジェクトの場合，vx,vyに値を代入して移動させてください</p>
 <p>Enemy</p>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>
+t=0;
+while(true) {
+    if (t%5==0) {
+        // 新しく作るBall オブジェクトの変数pに，
+        // $pat_balls の0 - 15番目のキャラクタパターンをランダムに設定
+        new Ball{x:rnd($screenWidth),y:0, p:$pat_balls+rnd(16)};
+    }
+    t++;
+    update();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Ball.tonyu'>
+while(y<$screenHeight) {
+    y+=6;
+    update();
+}
+</script>
+
+<script>WebSite={runType:'singleHTML',useEditButton:true};</script>
+<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="https://edit.tonyu.jp/js/g2/runScript_concat.min.js" type="text/javascript"></script>
+</head>
+<body><div id='splash' style='position:relative; height: 100%;'>
+Loading...    <div class='progress'></div>
+</div></body></html>

@@ -1,0 +1,27 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="Map2">Map2</a></p>
+<ul>
+<li>マップチップを特定の条件でフィルタする関数を生成します。</li>
+<li><p>optionsには次の値もつオブジェクトを指定できます。</p>
+<ul>
+<li><code>{layer:[&lt;レイヤー名&gt;, &lt;レイヤー名&gt;...]}</code> &lt;レイヤー名&gt;（文字列）で指定したすべてのレイヤーに配置されているもの（-1のもの以外）すべてを「壁」とみなします。</li>
+<li><code>{p:[&lt;パターン番号&gt;, &lt;パターン番号&gt;... ]}</code>  全レイヤーの指定した&lt;パターン番号&gt;（数値）をすべて「壁」とみなします。</li>
+<li><code>{p:[&lt;パターン番号&gt;, &lt;パターン番号&gt;... ],not:true}</code>  全レイヤーの指定した&lt;パターン番号&gt;以外をすべて「壁」とみなします。</li>
+<li>[&lt;レイヤー名&gt;, &lt;レイヤー名&gt;...]や[&lt;パターン番号&gt;, &lt;パターン番号&gt;... ]はそれぞれ要素が1つしかない場合、配列ではなく文字列や数値を直接指定できます。</li>
+<li>layer と p 、notを組み合わせて「指定したレイヤーにある、指定したパターン(以外)を「壁」とみなす」という設定もできます。</li>
+<li>数値： <code>{p: &lt;数値&gt;}</code>と等価。</li>
+<li>配列： <code>{p: &lt;配列&gt;}</code>と等価。</li>
+<li>関数：戻り値がその関数自身になります</li>
+</ul>
+</li>
+<li><p>戻り値</p>
+<ul>
+<li>関数：　<a href="MapChip">MapChip</a>オブジェクトを受け取り、true/falseを返す関数</li>
+</ul>
+</li>
+</ul>
+</body></html>
