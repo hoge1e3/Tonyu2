@@ -23,7 +23,7 @@ native Tonyu;
     new b2Vec2(gravityX, gravity)    //gravity
     ,  true                 //allow sleep
     );
-    $t2World=this;
+    //$t2World=this;
     $Boot.on("stop",releaseWorld);
     on("die",releaseWorld);
 }

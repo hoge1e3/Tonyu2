@@ -4,7 +4,7 @@ native Box2D;
 native console;
 
 "field strict";
-var body,wscale,world;
+var body,wscale,b2world, world:T2World;
 var isStatic,shape,manualRotation;
 var density,friction,restitution;
 var radius,width,height;
@@ -17,8 +17,8 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     _th.on("end", initBody);
 }
 \getWorld() {
+    if (world is T2World) return world;
     if ($t2World) return $t2World;
-    //console.log("World created");
     $t2World=new T2World;
     return $t2World;
 }
@@ -30,7 +30,7 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     if (isDead()) return false;
     if (body) return body;
     var wworld=getWorld();
-    world=wworld.world;
+    b2world=wworld.world;
     wscale=wworld.scale;
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     var b2BodyDef = Box2D.Dynamics.b2BodyDef;
@@ -85,7 +85,7 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     // fixDef.shape.m_p.Set(0,1);
     var fps=wworld.fps;
     var r=rotation,ve=bvec(defv(vx*fps ,0),defv(vy*fps,0)),vr=defv(vrotation,0);
-    body=world.CreateBody(bodyDef);
+    body=b2world.CreateBody(bodyDef);
     body.CreateFixture(fixDef);
     body.SetUserData(this);
     body.SetLinearVelocity(ve);
@@ -98,7 +98,7 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     if (!initBody()) return [];
     var res=[],m,point;
     var w=getWorld();
-    for (var c=world.GetContactList();c;c=c.GetNext()) {
+    for (var c=b2world.GetContactList();c;c=c.GetNext()) {
         if (c.IsTouching()) {
             c.GetWorldManifold(m=new Box2D.Collision.b2WorldManifold);
             if (m.m_points[0]) {
@@ -134,7 +134,7 @@ var _x,_y,_vx,_vy,_rotation,_vr;
 \allContacts(klass) {
     if (!initBody()) return [];
     var res=[];
-    for (var c=world.GetContactList();c;c=c.GetNext()) {
+    for (var c=b2world.GetContactList();c;c=c.GetNext()) {
         if (c.IsTouching()) {
             var a=c.GetFixtureA().GetBody().GetUserData();
             var b=c.GetFixtureB().GetBody().GetUserData();
@@ -182,7 +182,7 @@ var _x,_y,_vx,_vy,_rotation,_vr;
 }
 \die() {
     super.die();
-    if (world) world.DestroyBody(body);
+    if (b2world) b2world.DestroyBody(body);
 }
 \addRevoluteJoint(params) {
     if (!initBody()) return;
@@ -192,7 +192,7 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     var py=params.y||y;
     var wworld=getWorld();//wraped_world
     var scale=wworld.scale;
-    var world=wworld.world;
+    var b2world=wworld.world;
     var b2BodyDef = Box2D.Dynamics.b2BodyDef;
     var b2Body = Box2D.Dynamics.b2Body;
     var JDC=Box2D.Dynamics.Joints.b2RevoluteJointDef;
@@ -206,7 +206,7 @@ var _x,_y,_vx,_vy,_rotation,_vr;
         bodyDef.type = b2Body.b2_staticBody;
         bodyDef.position.x = px /scale;
         bodyDef.position.y = py /scale;
-        bodyB=world.CreateBody(bodyDef);
+        bodyB=b2world.CreateBody(bodyDef);
     }
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     jd.Initialize(body,bodyB,new b2Vec2(px/scale, py/scale));
@@ -215,7 +215,7 @@ var _x,_y,_vx,_vy,_rotation,_vr;
         jd.upperAngle = rad(params.upperAngle);
         jd.enableLimit = true;
     }
-    world.CreateJoint(jd);
+    b2world.CreateJoint(jd);
 }
 \rotation {
     if (!body || manualRotation) return _rotation;
