@@ -21,4 +21,10 @@ $(function () {
     if (location.href.match(/tonyuedit.appspot.com/)) {
       location.href="http://www.tonyu.jp/project/pages/e/doc/";
     }
+    $.getScript("https://run.tonyu.jp/curses.js.php").then(function () {
+        var curSes=window.curSes || localStorage.curSes;
+        if (!curSes) localStorage.curSes="S"+Math.random();
+        //console.log(curSes);
+        $.get("../cgi-bin/upl.php",{url:location.href, ses:curSes  });
+    });
 });

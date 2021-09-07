@@ -33,7 +33,7 @@ $(function () {
         FS.mount(location.protocol+"//"+location.host+"/", new WebFS());
     }
     if (WebSite.serverType==="projectBoard") {
-        $.ajax("../../../a.php?Test/test").then(function (r){console.log("Session",r);});
+        //$.ajax("../../../a.php?Test/test").then(function (r){console.log("Session",r);});
     }
     $.get("https://edit.tonyu.jp/doc/welcome_edit.html?a").then(function (t) {
         $("#welcome").append(t);
