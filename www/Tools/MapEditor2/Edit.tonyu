@@ -43,11 +43,7 @@ if (config.showHelp) {
 }
 
 var menuPanelHeight=bw*(1+config.layers.length);
-/*var patSels=config.layers.map\(layer, lidx) {
-    return layer.pats.map\(p,i) {
-        return new PatSel{y:h-(lidx+1)*bw+16, x:bw*8+32*i, p , la:layer};
-    };
-};*/
+
 var sx=w/2,sy=h/2,zoom=1;
 $Screen.setPivot(sx,sy);
 $Screen.scrollTo(sx,sy);
@@ -77,24 +73,43 @@ on("keyDown","w") \{
     scrollTo(sx,sy-32,zoom);
 };
 \scrollTo(sx,sy,zoom) {
+    var csz=getChipSize(curP.p);
+    if (!csz) return;
     sx=clamp(sx,0, 240*32-w/2);
     sy=clamp(sy,0, 240*32-h/2);
     zoom=clamp(zoom, 0.1, 5);
     $Screen.scrollTo(sx,sy,zoom);
     extend{sx,sy,zoom};
 }
+\zoomAt(px, py, zoom) {
+    var p=new Vec3(px,py);
+    var s=new Vec3(sx,sy);
+    var d=s.sub(p);
+    
+    /*
+    zoom=2
+       <p>
+          <s>
+          
+       <p>
+          <ns>
+             <s>
+    */
+}
 
-
+var lastMousePos;
 var dstCur;
 var mmove=$InputDevice.on("mouseMove") \(e) {
     //print(e.x,e.y);
+    var cv=$Screen.convert(e,$mainLayer);
     if (dstCur) {
+        var csz=getChipSize(curP.p);
+        if (!csz) return;
         e.layer=$frontLayer;
-        var cv=$Screen.convert(e,$mainLayer);
-        dstCur.x=floor(cv.x/32);
-        dstCur.y=floor(cv.y/32);
-        
+        dstCur.x=floor(cv.x/csz.w);
+        dstCur.y=floor(cv.y/csz.h);
     }
+    lastMousePos={x:cv.x, y:cv.y};
 };
 on("die") \{
     mmove.remove();
@@ -112,6 +127,8 @@ var singleTouchState, multiTouchState;//=false, multi=false ,rb;
 mapToucher.on("touch") \(e){
     //print(e.finger.x, e.finger.y);  
     var f=e.finger;
+    var csz=getChipSize(curP.p);
+    if (!csz) return;
     f.layer=$mainLayer;
     if (singleTouchState) {
         //print("Double!");
@@ -141,7 +158,7 @@ mapToucher.on("touch") \(e){
     }
     //print (e.byMouse);
     if (e.byMouse==2) {
-        var moved=c.moveTo(floor(e.finger.x/32), floor(e.finger.y/32));
+        var moved=c.moveTo(floor(e.finger.x/csz.w), floor(e.finger.y/csz.h));
         if (!moved) {
            // print("layer change!");
             curP.changeLayer();
@@ -149,7 +166,7 @@ mapToucher.on("touch") \(e){
         pick();
         f.on("move") \(e) {
             // print("mv");
-            var moved=c.sel(floor(e.finger.x/32), floor(e.finger.y/32));
+            var moved=c.sel(floor(e.finger.x/csz.w), floor(e.finger.y/csz.h));
             if (!moved) return;
             if (!dstCur) dstCur=new DstCur;
             dstCur.setFrom(c);
@@ -160,12 +177,12 @@ mapToucher.on("touch") \(e){
             dstCur.doCopy(c);
             dstCur.die();
             dstCur=null;
-            var moved=c.moveTo(floor(e.finger.x/32), floor(e.finger.y/32));
+            var moved=c.moveTo(floor(e.finger.x/csz.w), floor(e.finger.y/csz.h));
         } else {
-            var moved=c.moveTo(floor(e.finger.x/32), floor(e.finger.y/32));
+            var moved=c.moveTo(floor(e.finger.x/csz.w), floor(e.finger.y/csz.h));
             put();
             singleTouchState.moveEvent=f.on("move") \(e) {
-                var moved=c.moveTo(floor(e.finger.x/32), floor(e.finger.y/32));
+                var moved=c.moveTo(floor(e.finger.x/csz.w), floor(e.finger.y/csz.h));
                 if (moved) put();
             };
         }
@@ -219,6 +236,23 @@ mapToucher.on("touch") \(e){
         if (putB.clicked) put();
         break;
     }
+}
+\getChipSize(p) {
+    var chipWidth=$map.chipWidth;
+    var chipHeight=$map.chipHeight;
+    if (chipWidth && chipHeight) {
+        return {w:chipWidth, h:chipHeight};
+    }
+    var pImg=$imageList[p];
+    if (pImg) {
+        chipWidth=pImg.width||32;
+        chipHeight=pImg.height||32;
+        return {w:chipWidth, h:chipHeight};
+    }/* else {
+        chipWidth=chipWidth|| 32;
+        chipHeight=chipHeight || chipWidth|| 32;
+    }*/
+    return null;
 }
 \put() {
     c.put(curP);

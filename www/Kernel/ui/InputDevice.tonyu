@@ -9,6 +9,7 @@ native T2MediaLib;
 \new() {
     listeners=[];
     touchEmu=true;
+    wheelVy=0;
     defaultLayer=$Screen;
 }
 \handleListeners(type,evt) {
@@ -136,6 +137,12 @@ native T2MediaLib;
     $handleTouchEnd=\(e) {
         return touch.handleEnd(e);    //--T
     };
+    $handleWheel=\(e){
+        e=e.originalEvent;
+        wheelVy+=e.deltaY;
+        fireEvent("wheel",e);
+        return false; 
+    };
     $unsetTouchEmu=\() {
         Tonyu.resetLoopCheck();
         $InputDevice.touchEmu=false;
@@ -147,6 +154,7 @@ native T2MediaLib;
     var handleTouchStart=\(e){$unsetTouchEmu();$handleTouchStart(e);};
     var handleTouchMove=\(e){$unsetTouchEmu();$handleTouchMove(e);};
     var handleTouchEnd=\(e){$unsetTouchEmu();$handleTouchEnd(e);};
+    var handleWheel=\(e){$handleWheel(e);};
     var d=$.data(cv,"events");
     if (!d) {
         $.data(cv,"events","true");
@@ -163,10 +171,12 @@ native T2MediaLib;
         cvj.on("touchmove",handleTouchMove);
         cvj.on("touchend",handleTouchEnd);
         cvj.on("touchcancel",handleTouchEnd);
+        cvj.on("wheel", handleWheel);
     }
 }
 
 \update() {
+    wheelVy=0;
     return touch.updateFingers();//---T
 }
 \debug() {

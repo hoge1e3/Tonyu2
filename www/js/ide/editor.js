@@ -144,7 +144,7 @@ $(function () {
         var i;
         for (i=runMenuOrd.length-1; i>=0 ; i--) {
             var f=sf[runMenuOrd[i]];//curPrjDir.rel(runMenuOrd[i]+EXT);
-            if (!f.exists()) {
+            if (!f || !f.exists()) {
                 runMenuOrd.splice(i,1);
             }
         }
@@ -362,6 +362,9 @@ $(function () {
             var old=curFile.text();
             var nw=prog.getValue();
             if (old!=nw) {
+                if (typeof window.sendLog==="function") {
+                    window.sendLog({file:curFile.path(), text:nw});
+                }
                 curFile.text(nw);
                 inf.lastTimeStamp=curFile.lastUpdate();
                 if (!skipCompile && curPrj.readyState) {

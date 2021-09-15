@@ -32,6 +32,9 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             if (f.endsWith(".json") && rel.indexOf("maps/")<0) {
                 json.push(f);
                 return;
+            } else if (rel.indexOf("static/")>=0) {
+                binary.push(f);
+                return;
             } else if (f.endsWith(".desktop")) {
                 return;
             } else if (f.endsWith(".html")) {

@@ -8,7 +8,7 @@ $editorConfig={
     //奥のレイヤー
     {name:"base", pats:[-1, bp+88, bp+89, bp+90, bp+91]},
     //手前のレイヤー
-    {name:"on", pats:[-1, bp+1, bp+2, bp+3, bp+4, $pat_neko]},
+    {name:"on", pats:[-1,  $pat_mgoku, bp+1, bp+2, bp+3, bp+4, $pat_neko]},
     ],
     
     // 編集対象のマップファイルのあるフォルダ

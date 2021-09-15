@@ -150,6 +150,7 @@ $(function () {
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};
     sh.openKernel=function () {window.open(/*location.href=*/`${WebSite.projectEditorURL}?dir=${WebSite.kernelDir}`);};
+    sh.openMapEditor=function () {window.open(/*location.href=*/`${WebSite.projectEditorURL}?dir=${WebSite.wwwDir}Tools/MapEditor2/`);};
     $($("button.showAll").get(0)).click();
     if (!hideSplashScreenOnImport) root.SplashScreen.hide();
 });

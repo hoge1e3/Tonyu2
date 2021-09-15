@@ -14,11 +14,12 @@ for (var r of resc) {
     patVals.unshift{name: r.name, value: Tonyu.getGlobal(r.name)};
 }
 /*
+// ver2.1 add w, h
 entire::{
     version: number,
     header: {
         layerNames: [string],
-        size: {row:number, col:number, nrow: number, ncol:number},
+        size: {row:number, col:number, nrow: number, ncol:number, w:number, h:number},
         expend:: Map._expand
         e2c: { expr: cNumber } 
     },
@@ -34,7 +35,7 @@ nowait \ignoreCheck(){
 }
 nowait \genHeader() {// on save
     var header={
-        size: {row:map.row, col:map.col},
+        size: {row:map.row, col:map.col, w:map.chipWidth, h:map.chipHeight},
         expand: map._expand || {},
         layerNames: [],
         e2c: {},
@@ -49,6 +50,8 @@ nowait \loadHeader() {//on load
     var e2c=header.e2c;
     map.row=header.size.row;
     map.col=header.size.col;
+    map.chipWidth=header.size.w || map.chipWidth || 32;
+    map.chipHeight=header.size.h || map.chipHeight || 32;
     map._expand=header.expand;
     for (var e,c in e2c) {
         checkExprValidity(e);
@@ -105,7 +108,7 @@ nowait \loadChip() {
     
 }
 nowait \genEntire() {
-    entire={version:2};
+    entire={version:2.1};
     genHeader();
     genChip();
 }
