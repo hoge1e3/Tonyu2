@@ -288,11 +288,13 @@ $(function () {
         }
         curPrjDir.touch();
         try {
+            Log.sendLog({result:"Tonyu Build", filename: fullName});
             await curPrj.waitReady();
             await curPrj.fullCompile();
             //jshint.use(r);
             // does in fullCompile
             //await SourceFiles.add(r).saveAs(curPrj.getOutputFile());
+            Log.sendLog({result:"Tonyu Run", filename: fullName});
             runDialog.show();
         } catch(e) {
             showError(e);
@@ -329,6 +331,7 @@ $(function () {
         } catch(ee) {
             console.log(ee);
             stop();
+            Log.sendLog({result:"Tonyu Fatal Error",detail:ee+""});
             //alert(ee);
         }
     }
@@ -362,9 +365,7 @@ $(function () {
             var old=curFile.text();
             var nw=prog.getValue();
             if (old!=nw) {
-                if (typeof window.sendLog==="function") {
-                    window.sendLog({file:curFile.path(), text:nw});
-                }
+                Log.sendLog({filename:curFile.path(), result:"Tonyu Save", code:{tonyu:nw}});
                 curFile.text(nw);
                 inf.lastTimeStamp=curFile.lastUpdate();
                 if (!skipCompile && curPrj.readyState) {

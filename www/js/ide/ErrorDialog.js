@@ -2,6 +2,7 @@ define(function (require, exports, module) {
 const R=require("R");
 const FS=require("FS");
 const UI=require("UI");
+const Log=require("Log");
 class ErrorDialog {
     constructor(ide) {//{restart,stop,displayMode,jump}
         this.ide=ide;
@@ -55,7 +56,8 @@ class ErrorDialog {
         }
         if(typeof pos=="object") {row=pos.row; col=pos.col;}
         elem.empty();
-        const mesgd=$("<div>").text(message+" "+R("at")+src.name()+(typeof row=="number"?":"+row+":"+col:""));
+        const mesgFull=message+" "+R("at")+src.name()+(typeof row=="number"?":"+row+":"+col:"");
+        const mesgd=$("<div>").text(mesgFull);
         if(typeof row==="number" && typeof col==="number") {
             mesgd.append($("<button>").text(R("jumpToErrorPosition")).click(jump));
         }
@@ -81,6 +83,7 @@ class ErrorDialog {
             srcd.append($("<span>").text(str.substring(pos)));
             elem.append(srcd);
         }
+        Log.sendLog({result:"Tonyu Error", detail:{message:mesgFull, pos}, code:{tonyu:str}});
         elem.attr("title",R("error"));
         elem.dialog({width:600,height:400});
         $.data(elem,"opened",true);

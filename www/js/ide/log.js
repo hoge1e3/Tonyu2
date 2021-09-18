@@ -56,5 +56,10 @@ define(["FS","WebSite","Shell"], function (FS,WebSite,sh) {
     Log.e=function (tag,con) {
         Log.append(new Date()+": ERROR["+tag+"]"+mul(con));
     };
+    Log.sendLog=function (log) {
+        if (typeof window.sendLog==="function") {
+            window.sendLog(log);
+        }
+    };
     return Log;
 });
