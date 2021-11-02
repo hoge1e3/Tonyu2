@@ -14,6 +14,7 @@ native Math;
 native isNaN;
 native Tonyu;
 native Image;
+native FS;
 native requestAnimationFrame;
 \new(opt){
     super(opt);
@@ -365,6 +366,11 @@ nowait \copy() {
     var url=buf[0].toDataURL();
     if (typeof fn==="string") fn=file(fn);
     return fn.text( url );
+}
+\download(filename) {
+    filename=filename||"download.png";
+    var url=buf[0].toDataURL();
+    FS.Content.url(url).download(filename);
 }
 \load(fn) {
     if (typeof fn==="string") fn=file(fn);
