@@ -3,17 +3,17 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
-<p><a href="用途別リファレンス">用途別リファレンス</a> ‐ <a href="文字をテキストオブジェクトとして表示する">文字をテキストオブジェクトとして表示する</a></p>
-<h1 id="-">スコアを表示する</h1>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
+<p><a href="%E7%94%A8%E9%80%94%E5%88%A5%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9">用途別リファレンス</a> ‐ <a href="%E6%96%87%E5%AD%97%E3%82%92%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%A8%E3%81%97%E3%81%A6%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B">文字をテキストオブジェクトとして表示する</a></p>
+<h1 id="スコアを表示する">スコアを表示する</h1>
 <ul>
-<li><code>$score</code>という<a href="グローバル変数">グローバル変数</a>を用意します。</li>
+<li><code>$score</code>という<a href="%E3%82%B0%E3%83%AD%E3%83%BC%E3%83%90%E3%83%AB%E5%A4%89%E6%95%B0">グローバル変数</a>を用意します。</li>
 <li><a href="Label">Label</a>クラスをを用いて、グローバル変数の内容を表示します。</li>
 </ul>
 <p>※注意：<code>new Label</code> をwhile文の中に書いてしまうと，ラベルが大量に作られてしまって処理が重くなります．while文の前に1回だけ作成すれば，現在のスコアを継続的に表示することができます．</p>
 <p>Main</p>
-<pre><code class="lang-JS">$score=0;
+<pre><code class="language-JS">$score=0;
 //ラベルの作成(while文の前に書く)
 new Label{x:200,y:200,template:&quot;Score: $score&quot;};
 //----
@@ -22,4 +22,11 @@ while(true){
   update();
 }
 </code></pre>
+<h1 id="ライブデモ">ライブデモ</h1>
+<ul>
+<li><p><a href="https://run.tonyu.jp/?18j5000/281a15c8">21. スコアの表示1（例示）</a></p>
+</li>
+<li><p><a href="https://run.tonyu.jp/?18j5000/df51d825">22. スコアの表示2（練習問題）</a></p>
+</li>
+</ul>
 </body></html>

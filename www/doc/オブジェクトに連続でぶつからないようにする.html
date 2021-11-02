@@ -3,19 +3,19 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
-<p><a href="用途別リファレンス">用途別リファレンス</a></p>
-<h1 id="-">オブジェクトに連続でぶつからないようにする</h1>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
+<p><a href="%E7%94%A8%E9%80%94%E5%88%A5%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9">用途別リファレンス</a></p>
+<h1 id="オブジェクトに連続でぶつからないようにする">オブジェクトに連続でぶつからないようにする</h1>
 <p>プレイヤーが敵に当たったときに，一定時間無敵になって連続で敵に当たらないようにします．</p>
 <p>Main</p>
-<pre><code class="lang-JS">new Enemy{x=rnd($screenWidth),y=rnd($screenHeight),p=8};
+<pre><code class="language-JS">new Enemy{x=rnd($screenWidth),y=rnd($screenHeight),p=8};
 new Enemy{x=rnd($screenWidth),y=rnd($screenHeight),p=8};
 new Enemy{x=rnd($screenWidth),y=rnd($screenHeight),p=8};
 new Player{x=$screenWidth/2,y=$screenHeight/2};
 </code></pre>
 <p>Player</p>
-<pre><code class="lang-JS">c=0;//c&gt;0なら無敵,c==0なら無敵でない
+<pre><code class="language-JS">c=0;//c&gt;0なら無敵,c==0なら無敵でない
 life=5;
 while(true){
     x=$mouseX;
@@ -36,6 +36,13 @@ while(true){
 }
 </code></pre>
 <p>Enemy</p>
-<pre><code class="lang-JS">//何も書かなくてもよいが，ファイルEnemyは作成する
+<pre><code class="language-JS">//何も書かなくてもよいが，ファイルEnemyは作成する
 </code></pre>
+<h1 id="ライブデモ">ライブデモ</h1>
+<ul>
+<li><p><a href="https://run.tonyu.jp/?18j5000/bcb74384">33. 無敵時間（例示）</a></p>
+</li>
+<li><p><a href="https://run.tonyu.jp/?18j5000/7c4294f2">34. 無敵時間の変更（練習問題）</a></p>
+</li>
+</ul>
 </body></html>

@@ -4,13 +4,13 @@
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
 <p><a href="BaseActor">BaseActor</a></p>
-<h1 id="align2d-">Align2Dクラス</h1>
+<h1 id="align2dクラス">Align2Dクラス</h1>
 <p>Actorの座標の基準位置を決定するオブジェクトです。</p>
 <ul>
-<li>BaseActorオブジェクトのalignプロパティには、Align2Dクラスのコンストラクタの第1引数を割り当てることができます。内部でAlignオブジェクトに変換されます。</li>
-<li>alignプロパティを読み出した場合は、alignに代入したときの値が返されます（変換されたAlignオブジェクトではない）</li>
+<li>BaseActorオブジェクトのalignプロパティには、Align2Dクラスのコンストラクタの第1引数を割り当てることができます。内部でAlign2Dオブジェクトに変換されます。</li>
+<li>alignプロパティを読み出した場合は、alignに代入したときの値が返されます（変換されたAlign2Dオブジェクトではない）</li>
 </ul>
-<h2 id="-">コンストラクタ</h2>
+<h2 id="コンストラクタ">コンストラクタ</h2>
 <p><code>new Align2D(val)</code></p>
 <p>valには次の値を指定できます</p>
 <ul>
@@ -44,10 +44,12 @@
 <li>x, yをもつオブジェクトを指定し、基準点を指定した座標だけずらします。省略値はともに0</li>
 </ul>
 </li>
+<li>他のAlign2Dオブジェクトを指定することも可能です</li>
 </ul>
 </li>
 </ul>
-<p>例えば、&quot;left bottom 10 -20&quot;なら、「画像の左下端から右に10ピクセル、上に20ピクセル移動した場所」を基準点とします。<br>次はすべて&quot;left bottom 10 -20&quot;と等価です。</p>
+<p>例えば、&quot;left bottom 10 -20&quot;なら、「画像の左下端から右に10ピクセル、上に20ピクセル移動した場所」を基準点とします。
+次はすべて&quot;left bottom 10 -20&quot;と等価です。</p>
 <ul>
 <li>[&quot;left&quot;, &quot;bottom&quot;, 10 , -20]</li>
 <li>{h: &quot;left&quot;, v:&quot;bottom&quot;, ox: 10, oy: -20}</li>

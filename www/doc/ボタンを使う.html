@@ -3,14 +3,14 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
-<p><a href="用途別リファレンス">用途別リファレンス</a></p>
-<h1 id="-">ボタンを使う</h1>
-<h2 id="-1">その1</h2>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
+<p><a href="%E7%94%A8%E9%80%94%E5%88%A5%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9">用途別リファレンス</a></p>
+<h1 id="ボタンを使う">ボタンを使う</h1>
+<h2 id="その1">その1</h2>
 <p><a href="Button">Button</a>オブジェクトでボタンを作成し、<code>clicked</code>で現在クリックしているかどうかを判定します。</p>
 <p>Main</p>
-<pre><code class="lang-JS">$b=new Button{top:300,text:&quot;Click Me&quot;};
+<pre><code class="language-JS">$b=new Button{top:300,text:&quot;Click Me&quot;};
 x=100;
 y=100;
 while(true) {
@@ -22,10 +22,10 @@ while(true) {
    update();
 }
 </code></pre>
-<h2 id="-2">その2</h2>
+<h2 id="その2">その2</h2>
 <p><a href="Button">Button</a>オブジェクトでボタンを作成し、<code>onClick</code>にクリックされたときに呼び出すメソッド名を記述します。</p>
 <p>Main</p>
-<pre><code class="lang-JS">//  クリックされたときは、下に定義したwalkメソッドを呼ぶ
+<pre><code class="language-JS">//  クリックされたときは、下に定義したwalkメソッドを呼ぶ
 $b=new Button{top:300,text:&quot;Click Me&quot;,onClick:walk};
 x=100;
 y=100;
@@ -35,5 +35,12 @@ function walk() {
     x+=10;
 }
 </code></pre>
-<p>※クリック時に呼び出されるメソッド内では，updateやupdateExが使えません．使いたい場合は<a href="ボタンが押されたとき，複数フレームにまたがる動作を行なう">この例</a>をご覧ください．</p>
+<p>※クリック時に呼び出されるメソッド内では，updateやupdateExが使えません．使いたい場合は<a href="%E3%83%9C%E3%82%BF%E3%83%B3%E3%81%8C%E6%8A%BC%E3%81%95%E3%82%8C%E3%81%9F%E3%81%A8%E3%81%8D%EF%BC%8C%E8%A4%87%E6%95%B0%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%81%AB%E3%81%BE%E3%81%9F%E3%81%8C%E3%82%8B%E5%8B%95%E4%BD%9C%E3%82%92%E8%A1%8C%E3%81%AA%E3%81%86">この例</a>をご覧ください．</p>
+<h1 id="ライブデモ">ライブデモ</h1>
+<ul>
+<li><p><a href="https://run.tonyu.jp/?18j5000/5abaab6e">23. ボタンを使う1（例示）</a></p>
+</li>
+<li><p><a href="https://run.tonyu.jp/?18j5000/4d029b10">24. ボタンを使う2（練習問題）</a></p>
+</li>
+</ul>
 </body></html>

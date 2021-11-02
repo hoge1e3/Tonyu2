@@ -3,15 +3,15 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
-<p><a href="用途別リファレンス">用途別リファレンス</a></p>
-<p><a href="オブジェクトを動かす">オブジェクトを動かす</a></p>
-<h1 id="-">上下左右に移動させる</h1>
-<h2 id="-">アナログパッドで上下左右に移動させる</h2>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
+<p><a href="%E7%94%A8%E9%80%94%E5%88%A5%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9">用途別リファレンス</a></p>
+<p><a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8B%95%E3%81%8B%E3%81%99">オブジェクトを動かす</a></p>
+<h1 id="上下左右に移動させる">上下左右に移動させる</h1>
+<h2 id="アナログパッドで上下左右に移動させる">アナログパッドで上下左右に移動させる</h2>
 <p><a href="APad">APad</a>クラスを使用すると，PCなどのキーボードおよび，スマートフォンなどのタッチパネルの両方でプレイヤーを動作させることができます．</p>
 <p>Player</p>
-<pre><code class="lang-JS">x=$screenWidth/2;
+<pre><code class="language-JS">x=$screenWidth/2;
 y=$screenHeight/2;
 pad=new APad; // APadの作成
 while(true){
@@ -21,10 +21,10 @@ while(true){
   update();
 }
 </code></pre>
-<h2 id="-">キーボードで上下左右に移動させる</h2>
+<h2 id="キーボードで上下左右に移動させる">キーボードで上下左右に移動させる</h2>
 <p>キーボードのみで操作する場合，<a href="getkey">getkey</a>メソッドを利用して、オブジェクトを矢印キーの上下左右で動かすことができます。</p>
 <p>Player</p>
-<pre><code class="lang-JS">x=$screenWidth/2;
+<pre><code class="language-JS">x=$screenWidth/2;
 y=$screenHeight/2;
 while(true){
   // それぞれの方向について、押されているかを判定して動かす
@@ -35,12 +35,12 @@ while(true){
   update();
 }
 </code></pre>
-<p>※このままでは画面端より外側にはみ出すことができてしまうので、<a href="画面端から出ないようにする">画面端から出ないようにする</a>も参照してください。</p>
-<p>※壁などの障害物にぶつかったら止まるようにするには<a href="当たり判定で壁にぶつかる">当たり判定で壁にぶつかる</a>も参照してください。</p>
-<h2 id="-">パッドで上下左右に移動させる</h2>
+<p>※このままでは画面端より外側にはみ出すことができてしまうので、<a href="%E7%94%BB%E9%9D%A2%E7%AB%AF%E3%81%8B%E3%82%89%E5%87%BA%E3%81%AA%E3%81%84%E3%82%88%E3%81%86%E3%81%AB%E3%81%99%E3%82%8B">画面端から出ないようにする</a>も参照してください。</p>
+<p>※壁などの障害物にぶつかったら止まるようにするには<a href="%E5%BD%93%E3%81%9F%E3%82%8A%E5%88%A4%E5%AE%9A%E3%81%A7%E5%A3%81%E3%81%AB%E3%81%B6%E3%81%A4%E3%81%8B%E3%82%8B">当たり判定で壁にぶつかる</a>も参照してください。</p>
+<h2 id="パッドで上下左右に移動させる">パッドで上下左右に移動させる</h2>
 <p>スマートフォンの画面に表示するバーチャルパッドで動かす場合はgetkeyではなく<a href="Pad">Pad</a>クラスを使用します。</p>
 <p>Player</p>
-<pre><code class="lang-JS">x=$screenWidth/2;
+<pre><code class="language-JS">x=$screenWidth/2;
 y=$screenHeight/2;
 pad=new Pad(); // Padの作成
 while(true){
@@ -52,4 +52,15 @@ while(true){
   update();
 }
 </code></pre>
+<h1 id="ライブデモ">ライブデモ</h1>
+<ul>
+<li><p><a href="https://run.tonyu.jp/?18j5000/b51eb4a2">9. 左右矢印キーで操作（例示）</a></p>
+</li>
+<li><p><a href="https://run.tonyu.jp/?18j5000/969d2ba0">10. 移動する速度（練習問題）</a></p>
+</li>
+<li><p><a href="https://run.tonyu.jp/?18j5000/c4cf93bc">11. 上下矢印キーで操作（例示）</a></p>
+</li>
+<li><p><a href="https://run.tonyu.jp/?18j5000/c9a012ac">12. 上下左右に矢印キーで操作（練習問題）</a></p>
+</li>
+</ul>
 </body></html>

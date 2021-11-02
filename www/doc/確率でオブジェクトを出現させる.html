@@ -3,13 +3,13 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
-<p><a href="用途別リファレンス">用途別リファレンス</a></p>
-<h1 id="-">確率でオブジェクトを出現させる</h1>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
+<p><a href="%E7%94%A8%E9%80%94%E5%88%A5%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9">用途別リファレンス</a></p>
+<h1 id="確率でオブジェクトを出現させる">確率でオブジェクトを出現させる</h1>
 <p>毎フレーム0～99の値をランダムに決めて、それが5未満(5%の確率)ならば画面の上部にオブジェクトが生成されます．</p>
 <p>Main</p>
-<pre><code class="lang-JS">while(true){
+<pre><code class="language-JS">while(true){
   if(rnd(100)&lt;5){
     new Enemy{x:rnd($screenWidth),y:0,p:1};
   }
@@ -17,7 +17,7 @@
 }
 </code></pre>
 <p>Enemy</p>
-<pre><code class="lang-JS">while(true){
+<pre><code class="language-JS">while(true){
   y+=4;
   if(screenOut(0) ){
     die();
@@ -25,11 +25,18 @@
   update();
 }
 </code></pre>
-<h1 id="-">参考</h1>
+<h1 id="参考">参考</h1>
 <ul>
-<li><a href="乱数を使う">乱数を使う</a></li>
-<li><a href="弾を撃つ">弾を撃つ</a></li>
-<li><a href="出現するオブジェクトの個数を制限する">出現するオブジェクトの個数を制限する</a></li>
+<li><a href="%E4%B9%B1%E6%95%B0%E3%82%92%E4%BD%BF%E3%81%86">乱数を使う</a></li>
+<li><a href="%E5%BC%BE%E3%82%92%E6%92%83%E3%81%A4">弾を撃つ</a></li>
+<li><a href="%E5%87%BA%E7%8F%BE%E3%81%99%E3%82%8B%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%80%8B%E6%95%B0%E3%82%92%E5%88%B6%E9%99%90%E3%81%99%E3%82%8B">出現するオブジェクトの個数を制限する</a></li>
 </ul>
 <p>.</p>
+<h1 id="ライブデモ">ライブデモ</h1>
+<ul>
+<li><p><a href="https://run.tonyu.jp/?18j5000/4a42d243">53. オブジェクトをランダムに配置する（例示）</a></p>
+</li>
+<li><p><a href="https://run.tonyu.jp/?18j5000/17896bcf">54. オブジェクトを出現させるかどうかと、配置する位置をランダムに決定する（練習問題）</a></p>
+</li>
+</ul>
 </body></html>

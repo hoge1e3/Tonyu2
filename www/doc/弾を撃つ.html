@@ -3,17 +3,17 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
-<p><a href="用途別リファレンス">用途別リファレンス</a></p>
-<p><a href="オブジェクトを動かす">オブジェクトを動かす</a></p>
-<h1 id="-">弾を撃つ</h1>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
+<p><a href="%E7%94%A8%E9%80%94%E5%88%A5%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9">用途別リファレンス</a></p>
+<p><a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8B%95%E3%81%8B%E3%81%99">オブジェクトを動かす</a></p>
+<h1 id="弾を撃つ">弾を撃つ</h1>
 <ul>
 <li>キーボードなどの動作に反応してオブジェクトを生成します</li>
 <li>弾が出現する位置は，弾を撃つオブジェクトと同じ位置になるようにします．</li>
 </ul>
 <p>Player</p>
-<pre><code class="lang-JS">while(true) {
+<pre><code class="language-JS">while(true) {
 //スペースキーを押すとBulletオブジェクトが出現する。
   if(getkey(&quot;space&quot;)==1){
     // このオブジェクト（Player）と同じ位置にBulletオブジェクトを出現させる※
@@ -23,7 +23,7 @@
 }
 </code></pre>
 <p>Bullet</p>
-<pre><code class="lang-JS">//画面上端に到達するまで上に移動していき、上端に到達すると消える。
+<pre><code class="language-JS">//画面上端に到達するまで上に移動していき、上端に到達すると消える。
 while(y&gt;0){
   y=y-4;
   update();
@@ -31,19 +31,27 @@ while(y&gt;0){
 die();
 </code></pre>
 <p>※上のPlayerクラスの</p>
-<pre><code class="lang-JS">new Bullet{x=x, y=y, p=25};
+<pre><code class="language-JS">new Bullet{x=x, y=y, p=25};
 </code></pre>
 <p>は，次のように省略して書くことができます．</p>
-<pre><code class="lang-JS">//オブジェクトへのパラメタ内で x と書くと x=x と等価
+<pre><code class="language-JS">//オブジェクトへのパラメタ内で x と書くと x=x と等価
 new Bullet{x, y, p=25};
 </code></pre>
-<h2 id="-">参考</h2>
+<h2 id="参考">参考</h2>
 <ul>
-<li><a href="特定の座標に向けて弾を撃つ">特定の座標に向けて弾を撃つ</a></li>
-<li><a href="出現するオブジェクトの個数を制限する">出現するオブジェクトの個数を制限する</a><br>.</li>
+<li><a href="%E7%89%B9%E5%AE%9A%E3%81%AE%E5%BA%A7%E6%A8%99%E3%81%AB%E5%90%91%E3%81%91%E3%81%A6%E5%BC%BE%E3%82%92%E6%92%83%E3%81%A4">特定の座標に向けて弾を撃つ</a></li>
+<li><a href="%E5%87%BA%E7%8F%BE%E3%81%99%E3%82%8B%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%80%8B%E6%95%B0%E3%82%92%E5%88%B6%E9%99%90%E3%81%99%E3%82%8B">出現するオブジェクトの個数を制限する</a>
+.</li>
 </ul>
 <h1 id="backlink">Backlink</h1>
 <ul>
-<li><a href="確率でオブジェクトを出現させる">確率でオブジェクトを出現させる</a></li>
+<li><a href="%E7%A2%BA%E7%8E%87%E3%81%A7%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%87%BA%E7%8F%BE%E3%81%95%E3%81%9B%E3%82%8B">確率でオブジェクトを出現させる</a></li>
+</ul>
+<h1 id="ライブデモ">ライブデモ</h1>
+<ul>
+<li><p><a href="https://run.tonyu.jp/?18j5000/e6cb66d3">15. スペースキーで弾を発射（例示）</a></p>
+</li>
+<li><p><a href="https://run.tonyu.jp/?18j5000/b005aab8">16. 弾を発射しながら移動（練習問題）</a></p>
+</li>
 </ul>
 </body></html>

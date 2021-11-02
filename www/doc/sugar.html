@@ -3,44 +3,49 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="lang">lang</a></p>
-<h1 id="-">拡張構文</h1>
-<h2 id="-">\ による関数・メソッド定義</h2>
+<h1 id="拡張構文">拡張構文</h1>
+<h2 id="-による関数・メソッド定義">\ による関数・メソッド定義</h2>
 <ul>
 <li><code>function</code> と書く代わりに <code>\</code> と書くことができます．次の２つのコードは等価です．</li>
 </ul>
 <p><code>function</code>を使った例：</p>
-<pre><code class="lang-JS">function a(x,y) {
+<pre><code class="language-JS">function a(x,y) {
    return x+y;
 }
 </code></pre>
 <p><code>\</code>を使った例：</p>
-<pre><code class="lang-JS">\a(x,y) {
+<pre><code class="language-JS">\a(x,y) {
    return x+y;
 }
 </code></pre>
 <ul>
 <li>無名関数にも使えます．</li>
 </ul>
-<pre><code class="lang-JS">onComplete=\(evt) { alert(&quot;Complete&quot;) };
+<pre><code class="language-JS">onComplete=\(evt) { alert(&quot;Complete&quot;) };
 </code></pre>
-<h2 id="-">引数渡しにおける()の省略</h2>
+<ul>
+<li>引数のない関数の場合は()を省略できます．</li>
+</ul>
+<pre><code>new Button{top:100, text:&quot;test&quot;, onClick:\{print(&quot;TEST&quot;);}};
+</code></pre>
+<h2 id="引数渡しにおけるの省略">引数渡しにおける()の省略</h2>
 <p>関数・メソッド呼び出し時に，引数がオブジェクトリテラルまたは関数リテラルのみで構成される場合，()を省略できます．</p>
-<pre><code class="lang-JS">$(&quot;a&quot;).attr{target:&quot;_top&quot;};
+<pre><code class="language-JS">$(&quot;a&quot;).attr{target:&quot;_top&quot;};
 // $(&quot;a&quot;).attr({target:&quot;_top&quot;}); と等価
 
-$(&quot;a&quot;).click \(e) { alert(&quot;click&quot;); };
-// $(&quot;a&quot;).click(\(e) { alert(&quot;click&quot;); }); と等価
+$(&quot;a&quot;).click \{ alert(&quot;click&quot;); };
+// $(&quot;a&quot;).click(\{ alert(&quot;click&quot;); }); と等価
 </code></pre>
 <p>また，通常の引数リスト＋オブジェクトリテラルまたは関数リテラルのみで構成される引数リストを組み合わせて書くこともできます</p>
-<pre><code class="lang-JS">sh.cp(&quot;src.txt&quot;,&quot;dst.txt&quot;) {v:true};
+<pre><code class="language-JS">sh.cp(&quot;src.txt&quot;,&quot;dst.txt&quot;) {v:true};
 // sh.cp(&quot;src.txt&quot;,&quot;dst.txt&quot;,{v:true}); と等価
 </code></pre>
-<h2 id="-">オブジェクトリテラルの省略記法</h2>
+<h2 id="オブジェクトリテラルの省略記法">オブジェクトリテラルの省略記法</h2>
 <p><code>{x:x}</code>のように，属性名と値が同じ場合，<code>{x}</code>と記述できます（ES6と同様）．</p>
-<h2 id="-">オブジェクトリテラル内での= の使用</h2>
+<h2 id="オブジェクトリテラル内での-の使用">オブジェクトリテラル内での= の使用</h2>
 <p><code>{x:0,y:0}</code> の代わりに <code>{x=0,y=0}</code>と記述できます．</p>
 <h1 id="backlink">Backlink</h1>
 <ul>

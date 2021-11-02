@@ -3,14 +3,14 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="BaseActor">BaseActor</a></p>
-<h1 id="runpromise-">runPromiseメソッド</h1>
+<h1 id="runpromiseメソッド">runPromiseメソッド</h1>
 <p>非同期処理を行なうためのメソッドです。</p>
 <p>※<a href="runAsync">runAsync</a>メソッドとの違いは，結果を返す関数に渡せる引数が１つだけである点と，<a href="waitMode">待機不能モード</a>でも動作する点です．</p>
-<h2 id="-">書式</h2>
-<pre><code class="lang-JS">runPromise \(success,error) {
+<h2 id="書式">書式</h2>
+<pre><code class="language-JS">runPromise \(success,error) {
     処理
 };
 </code></pre>
@@ -22,14 +22,14 @@
 </ul>
 </li>
 <li>非同期処理が失敗する可能性がある場合、失敗したときのコールバック関数を指定する部分に<code>error</code>を指定してください。<ul>
-<li>非同期処理が失敗すると、例外が投げられます</li>
-<li>投げられる例外はerrorの第一引数に指定したオブジェクトです</li>
+<li>待機可能モードで非同期処理が失敗すると、例外が投げられます．投げられる例外はerrorの第一引数に指定したオブジェクトです</li>
+<li>待機不能モードで非同期処理が失敗すると、返されたPromiseオブジェクトが失敗状態になります</li>
 </ul>
 </li>
 </ul>
-<h2 id="-">例</h2>
+<h2 id="例">例</h2>
 <p>Main</p>
-<pre><code class="lang-JS">native setTimeout;
+<pre><code class="language-JS">native setTimeout;
 \test(x) {
     // 1秒後にxを返す
     return runPromise \(s) {
