@@ -2,6 +2,8 @@ extends Actor;
 native document;
 native window;
 native encodeURIComponent;
+native Util;
+
 
 eventWindowOpen = \(e) {
     //window.console.log("evtwinopen",postUrl);
@@ -157,8 +159,11 @@ eventWindowOpen = \(e) {
     var target=options.target||"_new";
     url.replace(/^https?:\/\/([^\/]+)/) \(_,d) {domain=d;};
     var d=$("<div>").attr{title:"Open URL"}.append(
-        $("<div>").append(domain),
-        $("<a>").css{font_size:sz+"px"}.text(text).attr{href:url,target}
+    $("<div>").append(domain),
+    $("<a>").css{font_size:sz+"px"}.text(text).attr{href:url,target}
     );
     d.dialog();
+}
+\param(name, def) {
+    return Util.getQueryString(name, def);
 }
