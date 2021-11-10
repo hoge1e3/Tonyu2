@@ -395,7 +395,15 @@ $(".dropdown-toggle");
         "noSuchPat": "No such variable: {1}",
         "invalidPatExpr": "No such glyph(image) number: {1}",
     };
-    let localeStr=localStorage.locale || navigator.language;
+    function loadLocale() {
+        try {
+            // localStorage may fails
+            return localStorage.locale || navigator.language;
+        } catch(e) {
+            return navigator.language;
+        }
+    }
+    let localeStr=loadLocale();
     localeStr=localeStr.substring(0,2);
     let dict=localeStr=="en"? en: ja;
     //const test=x=>`【${x}】`;
