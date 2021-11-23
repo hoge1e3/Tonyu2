@@ -46,6 +46,7 @@ nowait \draw(ctx) {//2D
     }
 }
 nowait \drawAsText(ctx) {
+    ctx.save();
     var splitsText=(text+"").split("\n");
     var drawY=y;
     if (!size) size=15;
@@ -61,6 +62,7 @@ nowait \drawAsText(ctx) {
         height+=rect.h;
         drawY+=size;
     }
+    ctx.restore();
 }
 \drawAsShape(ctx) {
     ctx.save();

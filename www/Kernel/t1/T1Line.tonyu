@@ -1,9 +1,15 @@
 extends OneframeSprite;
 \draw(ctx) {
+    var bx=0.5,by=0.5; // 線がなるべくぼやけないように微調整する座標（斜めの線には非対応）
+    ctx.save();
+    ctx.lineWidth=1;
     ctx.strokeStyle=col+"";
     ctx.beginPath();
-    ctx.moveTo(x,y);
-    ctx.lineTo(tx,ty);
+    if (x==tx) by=0;
+    if (y==ty) bx=0;
+    ctx.moveTo(x+bx,y+by);
+    ctx.lineTo(tx+bx,ty+by);
     ctx.stroke();
+    ctx.restore();
     drawn=true;
 }

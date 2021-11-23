@@ -1,21 +1,75 @@
 extends null;
 
-nowait \drawText(x,y,text,col,size,zOrder) {
+nowait \drawText(x,y,text,fillStyle,size,zOrder) {
     if (!size) size=15;
-    if (!col) col="white";
-    appear(T1Text){x,y,text,col, size,zOrder, owner:this};
+    if (!fillStyle) fillStyle="white";
+    appear(T1Text){x,y,text,fillStyle, size,zOrder, owner:this};
+}
+nowait \centerText(x,y,text,fillStyle,size,zOrder) {
+    if (!size) size=15;
+    if (!fillStyle) fillStyle="white";
+    appear(T1Text){x,y,text,fillStyle, size,zOrder, owner:this, align:new Align2D("center")};
+}
+nowait \drawTextEx(o) {
+    // o{x, y, text, fillStyle, size, zOrder, align, alpha, font}
+    if (typeof o!="object") return;
+    if (!o.size) o.size=15;
+    if (!o.fillStyle) o.fillStyle="white";
+    if (!o.align) o.align="left";
+    if (o.alpha==null) o.alpha=255;
+    appear(T1Text){x:o.x, y:o.y, text:o.text, fillStyle:o.fillStyle, size:o.size, zOrder:o.zOrder, owner:this,
+        align:new Align2D(o.align), alpha:o.alpha, font:o.font};
 }
 nowait \drawLine(x,y,tx,ty,col,zOrder) {
     if (!col) col="white";
     appear(T1Line){x,y,tx,ty,col,zOrder, owner:this};
 }
 
+nowait \drawRect(x,y,w,h,col,zOrder) {
+    appear(T1Rect) {x,y,w,h,col,zOrder,fill:false,owner:this};   
+}
+nowait \drawRectT1(x,y,tx,ty,col,zOrder) {
+    appear(T1Rect) {x,y,w:tx-x,h:ty-y,col,zOrder,fill:false,owner:this};   
+}
+
 nowait \fillRect(x,y,w,h,col,zOrder) {
-    appear(T1Rect) {x,y,w,h,col,zOrder,owner:this};   
+    appear(T1Rect) {x,y,w,h,col,zOrder,fill:true,owner:this};   
+}
+nowait \fillRectT1(x,y,tx,ty,col,zOrder) {
+    appear(T1Rect) {x,y,w:tx-x,h:ty-y,col,zOrder,fill:true,owner:this};   
 }
 nowait \drawSprite(x,y,p,f,zOrder) {
     drawDxSprite(x,y,p,f,zOrder,0,255,1,1);
 }
 nowait \drawDxSprite(x,y,p,f,zOrder,angle,alpha,scaleX,scaleY) {
     appear(T1Sprite) {x,y,p,f,zOrder,angle,alpha,scaleX,scaleY, owner:this};
+}
+
+nowait \setPolygon(seq,x,y) {
+    if (seq<0||seq>=100) return;
+    if (!$_setPolygonTempAry) $_setPolygonTempAry = new Array(2*100);
+    $_setPolygonTempAry[seq*2] = x;
+    $_setPolygonTempAry[seq*2+1] = y;
+}
+nowait \fillPolygon(x,y,posCnt,col,zOrder,alpha) {
+    if (!($_setPolygonTempAry instanceof Array)) return;
+    if (posCnt>100) posCnt=100;
+    if (alpha==null) alpha=255;
+    if (!$_setPolygonDrawAry) {
+        $_setPolygonDrawAry = [];
+        $_setPolygonDrawIdx = 0;
+        $_setPolygonDrawFrame = -1;
+    }
+    if ($_setPolygonDrawFrame != $frameCount) {
+        $_setPolygonDrawFrame = $frameCount;
+        $_setPolygonDrawIdx = 0;
+    }
+    var startPos=$_setPolygonDrawIdx;
+    for (var i=0; i<posCnt; i++) {
+        $_setPolygonDrawAry[$_setPolygonDrawIdx] = $_setPolygonTempAry[i*2];
+        $_setPolygonDrawAry[$_setPolygonDrawIdx+1] = $_setPolygonTempAry[i*2+1];
+        $_setPolygonDrawIdx += 2;
+    }
+    var endPos=$_setPolygonDrawIdx;
+    appear(T1FillPolygon) {x,y,startPos,endPos,col,zOrder,alpha,owner:this};
 }
