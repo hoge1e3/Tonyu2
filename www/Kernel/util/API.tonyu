@@ -1,0 +1,11 @@
+native location;
+native $;
+native Promise;
+\info() {
+    var ide=$Boot.getIDE();
+    if(ide) {
+        return Promise.resolve( ide.getAPIInfo() );
+    } else {
+        return $.get("https://run.tonyu.jp/apiInfo.php") {url=location.href};        
+    }
+}

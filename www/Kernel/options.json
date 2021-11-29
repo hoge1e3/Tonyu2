@@ -1,1 +1,1 @@
-{"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"}}
+{"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":""},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}

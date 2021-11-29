@@ -1,0 +1,7 @@
+native location;
+\getConnectionInfo() {
+    
+}
+\isIDE() {
+    return location.href.match(/(chrome-extension:)|(edit\.tonyu\.jp)/);
+}

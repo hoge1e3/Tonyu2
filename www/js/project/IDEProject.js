@@ -33,6 +33,7 @@ define(function (require,exports) {
             if (rp) rp.exec(src).catch(e=>console.error(e));
         };
         let curDebugger;
+        res.ide=ide;
         root.onTonyuDebuggerReady=d=>{
             d.on("runtimeError",e=>{
                 console.log("runt",e.stack.map(s=>s+"").join("\n"));
