@@ -18,6 +18,7 @@ native Mezonet;
 native FS;
 native R;
 native RPGAtsumaru;
+native parent;
 
 // old browser support
 if (typeof performance==="undefined") {
@@ -270,7 +271,13 @@ mainLoop();
     loadedAll=true;
     if (para) progress();
 }
-
+\getIDE() {
+    try {
+        return (parent.Tonyu.globals.$currentProject.ide);
+    }catch(e) {
+        return null;
+    }
+}
 \getMainClass(){
     var o=$currentProject.getOptions();
     var mainClassName=o.run.mainClass;
