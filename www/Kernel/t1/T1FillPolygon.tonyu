@@ -1,0 +1,19 @@
+extends OneframeSprite;
+
+\draw(ctx) {
+    ctx.save();
+    ctx.lineWidth=0;
+    ctx.fillStyle=col+"";
+    ctx.beginPath();
+    for (var i=startPos; i<endPos; i+=2) {
+        var xx = $_setPolygonDrawAry[i];
+        var yy = $_setPolygonDrawAry[i+1];
+        if (i == startPos) ctx.moveTo(x+xx, y+yy);
+        else ctx.lineTo(x+xx, y+yy);
+    }
+    ctx.closePath();
+    ctx.globalAlpha = alpha/255;
+    ctx.fill();
+    ctx.restore();
+    drawn=true;
+}

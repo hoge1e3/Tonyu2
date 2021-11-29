@@ -111,7 +111,7 @@ native console;
 // vol:0-128-∞
 // pan:-1.0～1.0
 \playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration) {//start,duration add by @hoge1e3
-    if (mute) return;
+    if (mute) return null;
     if (vol && typeof vol==="object") {//@hoge1e3
         var o=vol;
         vol=o.vol;
@@ -135,7 +135,7 @@ native console;
     } else {
         vol = 1.0;
     }
-    if (!start && seStaredAtThisFrame[idx]) return;
+    if (!start && seStaredAtThisFrame[idx]) return null;
     seStaredAtThisFrame[idx]=true;
     return $t2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration);//@hoge1e3
 }

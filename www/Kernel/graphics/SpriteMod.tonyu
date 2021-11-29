@@ -38,6 +38,49 @@ nowait \color(r,g,b) {//23D
     //TODO new Color?
     return "rgb("+[r,g,b].join(",")+")";
 }
+nowait \colorHSL(iroai,azayakasa,akarusa) { // Tonyu1形式
+    var r,g,b,a;
+    //色合いで色を決める
+    r = Math.abs(120-((Math.trunc(iroai+0.5)   % 240) % 240))*6-240;
+    g = Math.abs(120-((Math.trunc(iroai+160.5) % 240) % 240))*6-240;
+    b = Math.abs(120-((Math.trunc(iroai+80.5)  % 240) % 240))*6-240;
+    r = Math.trunc(r*1.0625+0.5);
+    g = Math.trunc(g*1.0625+0.5);
+    b = Math.trunc(b*1.0625+0.5);
+    if (r>255) r = 255;
+    if (g>255) g = 255;
+    if (b>255) b = 255;
+    if (r<0) r = 0;
+    if (g<0) g = 0;
+    if (b<0) b = 0;
+    if (azayakasa==null) return color(r,g,b);
+
+    //鮮やかさで色を決める
+    r = Math.trunc(127.5+(r-127)/240*azayakasa);
+    g = Math.trunc(127.5+(g-127)/240*azayakasa);
+    b = Math.trunc(127.5+(b-127)/240*azayakasa);
+    if (akarusa==null)return color(r,g,b);
+
+    //明るさで色を決める
+    if (akarusa<120) {
+        r = Math.trunc(0.5+r/120*akarusa);
+        g = Math.trunc(0.5+g/120*akarusa);
+        b = Math.trunc(0.5+b/120*akarusa);
+    }
+    if (akarusa>120) {
+        r+= Math.trunc(0.5+(255-r)/120*(akarusa-120));
+        g+= Math.trunc(0.5+(255-g)/120*(akarusa-120));
+        b+= Math.trunc(0.5+(255-b)/120*(akarusa-120));
+    }
+    if (r>255) r = 255;
+    if (g>255) g = 255;
+    if (b>255) b = 255;
+    if (r<0) r = 0;
+    if (g<0) g = 0;
+    if (b<0) b = 0;
+    return color(r,g,b);
+}
+
 \setVisible(v) {//23D
     _isInvisible=!v;
 }

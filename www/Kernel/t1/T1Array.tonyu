@@ -1,0 +1,46 @@
+native Array;
+
+\new() {
+    data = [];
+}
+
+\ary() {
+    return data;
+}
+\add(d) {
+    data.push(d);
+}
+\clear() {
+    data.splice(0);
+}
+\_delete(i) {
+    data.splice(i, 1);
+}
+\get(i) {
+    return data[i];
+}
+\indexOf(d) {
+    data.indexOf(d);
+}
+\insert(i, d) {
+    data.splice(i, 0, d);
+}
+\lightIndexOf() {
+    data.indexOf(d);
+}
+\load() {
+    
+}
+\remove() {
+    var i = data.indexOf(d);
+    data.splice(i, 1);
+}
+\save() {
+    
+}
+\set(i, d) {
+    data[i] = d;
+}
+\size() {
+    return data.length;
+}
