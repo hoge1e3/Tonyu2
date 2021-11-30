@@ -5,15 +5,15 @@ define(function (require, exports, module) {
     const WebSite=require("WebSite");
     const jshint=require("jshint");*/
     module.exports=class {
-        constructor(prj, options) {
+        constructor(api, options) {
             this.options=options;
-            this.prj=prj;
+            this.api=api;
         }
         createElem() {
             this.elem=this.elem||UI("div",{title:R("ApiInfo")},
                 ["h1", R("Websocket")],
                     ["div",R("service"),
-                        ["select",{$var:"wsService"},
+                        ["select",{$var:"wsService", name:"wsService"},
                             ["option",{value:"ScaleDrone"},"ScaleDrone"],
                         ]],
                     ["div",R("ApiKey"),
@@ -24,53 +24,31 @@ define(function (require, exports, module) {
             this.ui_wsKey=v.wsKey;
             return this.elem;
         }
-        load(opt) {
+        load() {
             this.createElem();
-            this.popt=opt;
-            this.popt.social=this.popt.social||{
-                prjName: this.prj.getDir().name().replace(/\//,"")
-            };
-            const sopt=this.popt.social;
-            sopt.title=sopt.title||sopt.prjName;
-            sopt.whenPrjDirExists=sopt.whenPrjDirExists||"selectPolicy";
-            this.ui_title.val(sopt.title);
-            this.ui_prjName.val(sopt.prjName);
-            this.ui_overwritePolicy.val(sopt.whenPrjDirExists);
+            const conf=this.api.get();
+            if (conf.webSocket) {
+                const ws=conf.webSocket;
+                this.ui_wsService.val(ws.service||"ScaleDrone");
+                this.ui_wsKey.val(ws.key);
+            }
+            this.conf=conf;
         }
         update() {
-            const popt=this.popt;
-            if (!popt) return;
-            this.prj.setOptions(popt);
+            const conf=this.conf;
+            if (!conf) return;
+            if (!conf.webSocket) conf.webSocket={};
+            const ws=conf.webSocket;
+            ws.service=this.ui_wsService.val();
+            ws.key=this.ui_wsKey.val();
+            console.log("Save conf",conf);
+            this.api.set(conf);
         }
-        show(opt) {
+        show() {
             const e=this.createElem();
-            this.load(opt);
+            this.load();
             e.dialog({width:600,height:400,close:this.update.bind(this)});
         }
-        onEditTitle() {
-            const sopt=this.popt.social;
-            //const syncTP=sopt.title===sopt.prjName;
-            const nv=this.ui_title.val();
-            sopt.title=nv;
-            /*if (syncTP) {
-                this.ui_prjName.val(nv);
-                this.popt.title=nv;
-            }*/
-        }
-        onEditPrjName() {
-            const sopt=this.popt.social;
-            //const syncTP=sopt.title===sopt.prjName;
-            const nv=this.ui_prjName.val();
-            sopt.prjName=nv;
-            /*if (syncTP) {
-                this.ui_title.val(nv);
-                this.popt.prjName=nv;
-            }*/
-        }
-        onEditOP() {
-            const sopt=this.popt.social;
-            const nv=this.ui_overwritePolicy.val();
-            sopt.whenPrjDirExists=nv;
-        }
+
     };
 });

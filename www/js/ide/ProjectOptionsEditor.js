@@ -1,5 +1,5 @@
-define(["UI","GlobalDialog","R","DependencyEditor","SocialEditor"],
-function (UI,GlobalDialog,R,DependencyEditor,SocialEditor) {
+define(["UI","GlobalDialog","R","DependencyEditor","SocialEditor","APIDialog","API"],
+function (UI,GlobalDialog,R,DependencyEditor,SocialEditor,APIDialog,API) {
     return function (prj) {
         const res={
             show, prj, requestReload
@@ -23,6 +23,7 @@ function (UI,GlobalDialog,R,DependencyEditor,SocialEditor) {
                      ["div", R("globalVariables"),["button", {on:{click: editG}},R("edit")] ],
                      ["div", R("dependencyEditor"),["button", {on:{click: editD}},R("edit")] ],
                      ["div", R("socialEditor"),["button", {on:{click: editS}},R("edit")] ],
+                     ["div", R("ApiInfo"),["button", {on:{click: editA}},R("edit")] ],
                      /*["h5","開発"],
                      ["div",
                       ["input", {type:"checkbox", $edit: "kernelEditable"}],
@@ -42,6 +43,10 @@ function (UI,GlobalDialog,R,DependencyEditor,SocialEditor) {
         const sdiag=new SocialEditor(prj);
         function editS() {
             sdiag.show(opt);
+        }
+        const adiag=new APIDialog(new API(prj));
+        function editA() {
+            adiag.show(opt);
         }
 
         function show() {

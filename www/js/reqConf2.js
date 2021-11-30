@@ -183,6 +183,7 @@ var reqConf={
                 kernelChecker:1,
                 DependencyEditor:1,
                 SocialEditor:1,
+                APIDialog:1,
                 "ErrorDialog":1,
                 "RunDialog": 1,
                 "DiffDialog": 1,
@@ -316,6 +317,7 @@ var reqConf={
                 "workerLoader": 1
             },
             "social": {
+                API:1,
                 EditButton:1,
                 splashElement:1,
                 "exportAsScriptTags": 1,
