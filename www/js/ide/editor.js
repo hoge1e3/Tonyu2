@@ -127,13 +127,18 @@ $(function () {
     fl.ls(curPrjDir);
     refreshRunMenu();
     function refreshRunMenu() {
+        let mainName="Main";
+        try{
+            const o=curPrj.getOptions();
+            mainName=o.run.mainClass.split(".").pop();
+        }catch(e){}
         const runMenuOrdWasEmpty=runMenuOrd.length==0;
         const sf=curPrj.sourceFiles();
         Object.keys(sf).forEach(function (n) {
             //if (f.endsWith(EXT)) {
                 //var n=f.truncExt(EXT);
                 if (runMenuOrd.indexOf(n)<0) {
-                    if (runMenuOrdWasEmpty && n==="Main") {
+                    if (runMenuOrdWasEmpty && n===mainName) {
                         runMenuOrd.unshift(n);
                     } else {
                         runMenuOrd.push(n);
