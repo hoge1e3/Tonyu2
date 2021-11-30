@@ -409,12 +409,12 @@ mainLoop();
     var moves=0;
     //var procCnt;
     //var subTime;
-    var bufferTime;
+    var bufferTime = 0;
     subTime = trunc(nowTime - rafProcNowTime);
     procCnt = subTime / frameTime;
     // 誤差丸めの範囲
     bufferTime = (0.5*_fps/60);
-    if (_fps < 60) bufferTime = 0; // 30FPS時は丸めない方が滑らかそう
+    if (_fps < 58 || _fps > 62) bufferTime = 0; // 60FPS付近以外は丸めない方が滑らかそう
     // 60FPS時、procCntが0,2,0,2,…となり実質30FPSになることがあるため、誤差を丸める
     if (procCnt >= 1.0-bufferTime && procCnt <= 1.0+bufferTime) procCnt = 1.0;
     procCnt = floor(procCnt);
@@ -426,6 +426,7 @@ mainLoop();
     }
     //debug("procCnt:",procCnt,"Moves:",moves);
     while(moves<procCnt) {
+        $_doDraw=moves==procCnt-1;
         moveFrame();
         moves++;
         if (moves<procCnt) afterDraw{drawn:false};
@@ -455,6 +456,7 @@ mainLoop();
         doDraw=true;
         resetDeadLine();
     }
+    $_doDraw=doDraw;
     if (doDraw) { // フレームスキップの時は描画しない
         drawFrame();
         frameSkipped=0;

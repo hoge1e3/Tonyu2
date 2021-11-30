@@ -349,7 +349,7 @@ extends Actor;
     panel.x = x;
     panel.y = y;
     panel.zOrder = zOrder;
-    panel.alpha = alpha;
+    panel.alpha = alpha * pad.alpha;
     panel.layer = layer;
     // ボタン範囲内でtouchDownした場合、touchUpするまで解除しない(複数指対応)
     var allNoTouche = true;
@@ -409,7 +409,7 @@ extends Actor;
     panel.x = x;
     panel.y = y;
     panel.zOrder = zOrder;
-    panel.alpha = alpha;
+    panel.alpha = alpha * pad.alpha;
     panel.layer = layer;
     padPushL = 0;
     padPushR = 0;

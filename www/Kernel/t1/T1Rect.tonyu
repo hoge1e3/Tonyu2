@@ -1,6 +1,15 @@
 extends OneframeSprite;
 \draw(ctx) {
-    ctx.fillStyle=col+"";
-    ctx.fillRect(x,y,w,h);
+    ctx.save();
+    if (fill) {
+        ctx.lineWidth=0;
+        ctx.fillStyle=col+"";
+        ctx.fillRect(x,y,w,h);
+    } else {
+        ctx.lineWidth=1;
+        ctx.strokeStyle=col+"";
+        ctx.strokeRect(x+0.5,y+0.5,w,h);
+    }
+    ctx.restore();
     drawn=true;
 }

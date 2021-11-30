@@ -5,6 +5,7 @@ var curP;
     undos=[];
 }
 \draw(ctx) {
+    ctx.save();
     ctx.beginPath();
     ctx.strokeStyle="white";
     if (dx==null) dx=x;
@@ -16,6 +17,7 @@ var curP;
     ctx.lineTo(     x*w  , (dy+1)*h-1);
     ctx.closePath();
     ctx.stroke();
+    ctx.restore();
 }
 \move(dx,dy) {
     x+=dx;y+=dy;

@@ -1,14 +1,17 @@
 extends OneframeSprite;
 includes TextRectMod;
 \draw(ctx) {
-    ctx.font=size+"px 'ＭＳ Ｐゴシック'";
+    if (!font) font="ＭＳ Ｐゴシック";
+    ctx.save();
+    ctx.font=size+"px '"+font+"'";
     var splitsText=(text+"").split("\n");
     var drawY=y;
     if (!size) size=15;
     if (!align) align=new Align2D("left");
     if (!fillStyle) fillStyle="white";
-    ctx.fillStyle=col+"";
-    ctx.globalAlpha=this.alpha/255;
+    if (alpha==null) alpha=255;
+    ctx.fillStyle=fillStyle+"";
+    ctx.globalAlpha=alpha/255;
     height=0;width=0;
     for(var textCount=0;textCount<splitsText.length;textCount++){
         var rect=drawTextRect(ctx, splitsText[textCount], x, drawY, size, align , "fill");
@@ -18,5 +21,6 @@ includes TextRectMod;
     }
     owner.width=width;
     owner.height=height;
+    ctx.restore();
     drawn=true;
 }

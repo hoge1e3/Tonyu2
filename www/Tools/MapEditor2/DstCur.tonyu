@@ -1,6 +1,7 @@
 var row, col;
 
 \draw(ctx) {
+    ctx.save();
     ctx.beginPath();
     ctx.strokeStyle="red";
     ctx.moveTo(x*32,y*32);
@@ -9,6 +10,7 @@ var row, col;
     ctx.lineTo(x*32,(y+row)*32-1);
     ctx.closePath();
     ctx.stroke();
+    ctx.restore();
 }
 \setFrom(cur) {
     x=cur.x;y=cur.y;

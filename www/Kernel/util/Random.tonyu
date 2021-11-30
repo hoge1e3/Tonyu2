@@ -2,6 +2,10 @@ extends TObject;
 includes MathMod;
 native console;
 \new(seed) {
+    setSeed(seed);
+}
+
+nowait \setSeed(seed) {
     x = 123456789;
     y = 362436069;
     z = 521288629;

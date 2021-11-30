@@ -159,6 +159,7 @@ extends Actor;
     if (jujiPadBorder != null) tempJujiPadBorder = jujiPadBorder;
 
     jujiPads[0] = new PadButton{
+        pad:this,
         mode:10001,
         x:101,
         y:$screenHeight-101,
@@ -261,6 +262,7 @@ extends Actor;
         }
 
         buttons[i] = new PadButton{
+            pad:this,
             mode:10000,
             x:50+(i-4)%4*100,
             y:50+trunc((i-4)/4)*100,

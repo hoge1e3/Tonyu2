@@ -41,6 +41,7 @@ if (!auto) loop();
         ix=x+vx*outerRadius;
         iy=y+vy*outerRadius;
     }
+    ctx.save();
     ctx.globalAlpha=alpha/255;
     ctx.fillStyle=fillStyle+"";
     ctx.beginPath();
@@ -52,6 +53,7 @@ if (!auto) loop();
     ctx.arc(x,y,outerRadius,0,$Math.PI*2);
     ctx.closePath();
     ctx.stroke();
+    ctx.restore();
 }
 \findTouch() {
     for (var t in $touches) {
