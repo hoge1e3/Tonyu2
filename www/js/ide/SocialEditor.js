@@ -11,12 +11,12 @@ define(function (require, exports, module) {
         }
         createElem() {
             this.elem=this.elem||UI("div",{title:R("socialEditor")},
-                ["h1", R("gameInfo")],
+                ["h1", R("socialEditor")],
                     ["div",R("title"),
                         ["input",{$var:"title", on:{input:this.onEditTitle.bind(this)}}]],
+                ["h1", R("importOption")],
                     ["div",R("projectName"),
                         ["input",{$var:"prjName", on:{input:this.onEditPrjName.bind(this)}}]],
-                ["h1", R("importOption")],
                     ["div", R("whenPrjDirExists"),
                         ["select", {$var:"whenPrjDirExists" , on:{input:this.onEditOP.bind(this)}},
                             ["option",{value:"selectPolicy"},R("selectPolicy")],

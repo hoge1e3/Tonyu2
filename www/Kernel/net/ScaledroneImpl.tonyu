@@ -1,0 +1,74 @@
+extends TObject;
+native Scaledrone;
+native Promise;
+native $;
+native console;
+
+"field strict";
+var info, drone;
+\loadScript() {
+    if (typeof Scaledrone==="undefined") {
+        return $.getScript("https://cdn.scaledrone.com/scaledrone.min.js");
+    } else {
+        return Promise.resolve();
+    }
+}
+\connect() {
+    return loadScript().then \() {
+        console.log("KEY", info.key);
+        drone = new Scaledrone(info.key);
+        return this;
+    };
+}
+\newRoom(name) {
+    return enterRoom(name);     
+}
+\enterRoom(name) {
+    return new Promise\(s,e) {
+        var room=drone.subscribe(name);
+        var res=new ScaledroneRoom{drone, room, name};
+        console.log("Prepare con");
+        room.on('open') \(error) {
+            console.log("coned",error);
+            if (error) {
+                return e(error);
+            }
+            s(res);
+        };
+    };
+}
+\new(params) {
+    super(params);
+    if (!info) throw new Error("Info is not set");
+}
+/*
+\connectToLobby() {
+    return lobby?Promise.resolve(lobby):new Promise \(s,e) {
+        lobby = drone.subscribe("__lobby");
+        lobby.on('open') \(error) {
+            if (error) {
+                return e(error);
+            }
+            lobby.on("message") \(message) {
+                var data=message.data;
+                if (data.replyTo==listRoomMesgID) {
+                    rooms.push(data.name);
+                }
+            };
+            s(lobby);
+        };
+    };
+}*/
+/*
+\listRooms() {
+    return connectToLobby().then \{
+        listRoomMesgID=Math.random()+"";
+        rooms=[];
+        lobby.send{type:"listRooms",mesgID:listRoomMesgID};
+        return new Promise \(s) {
+            setTimeout(2000) \{
+                s(rooms);    
+            };
+        };
+    };
+}*/

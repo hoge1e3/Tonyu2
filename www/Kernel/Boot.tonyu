@@ -154,6 +154,7 @@ mainLoop();
     initFPSParams();
     $WebPage=new WebPage;
     $Navigator=new Navigator;
+    $API=new API;
     $Zip=new Zip;
     if (typeof RPGAtsumaru!=="undefined") {
         $RPGAtsumaru=RPGAtsumaru;

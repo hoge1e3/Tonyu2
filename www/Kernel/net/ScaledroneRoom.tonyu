@@ -1,0 +1,17 @@
+extends TObject;
+includes EventMod;
+"field strict";
+var drone, room, name;
+
+\new(params){
+    super(params);
+    room.on("message") \(mesg) {
+        fireEvent("message", mesg);
+    };
+}
+\send(message) {
+    return drone.publish{
+        room: name,
+        message
+    };
+}

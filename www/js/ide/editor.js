@@ -26,6 +26,7 @@ const RealtimeErrorMarker=require("RealtimeErrorMarker");
 const Dialogs=require("Dialogs");
 const jshint=require("jshint");
 const MapEditor2=require("MapEditor2");
+const API=require("API");
 $(function () {
     jshint.use(sh2);
     //https://codepen.io/oatssss/pen/oYxJQV?editors=0010
@@ -56,6 +57,8 @@ $(function () {
     const ide={restart,stop,save,displayMode,dispName,jump,refreshRunMenu,
         editors,getCurrentEditorInfo,saveDesktopEnv,run};
     const curPrj=IDEProject.create({dir:curPrjDir,ide});//, kernelDir);
+    const api=new API(curPrj);
+    ide.getAPIInfo=()=>api.get();
     ide.project=curPrj;
     const EXT=curPrj.getEXT();
     const NSP_USR=curPrj.getNamespace();
@@ -130,8 +133,12 @@ $(function () {
         let mainName="Main";
         try{
             const o=curPrj.getOptions();
+            console.log("refreshRun.o",o);
             mainName=o.run.mainClass.split(".").pop();
-        }catch(e){}
+        }catch(e){
+            console.log(e);
+        }
+        console.log("mainName", mainName);
         const runMenuOrdWasEmpty=runMenuOrd.length==0;
         const sf=curPrj.sourceFiles();
         Object.keys(sf).forEach(function (n) {
@@ -182,6 +189,7 @@ $(function () {
                 $("<li>").append(
                         $("<a>").attr("href","#").text(R("selectMain")).click(F(dialogs.selectMain))
                     ));
+        console.log("runMenuOrd", runMenuOrd);
         //saveDesktopEnv();
         //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
         //$("#exportToExe").attr("href", "exportToExe.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
@@ -455,6 +463,7 @@ $(function () {
     if (root.SplashScreen) root.SplashScreen.hide();
     extLink.all();
     if (autoRun) {
+        console.log("autoRun::runMenuOrd", runMenuOrd);
         run(runMenuOrd[0]);
         let file=curPrjDir.rel(runMenuOrd[0]+EXT);
         if (file.exists()) {

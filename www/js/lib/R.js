@@ -5,6 +5,15 @@ $(".dropdown-toggle");
 */
     const root=require("root");
     const ja={
+        "socialEditor": "アプリ情報",
+        "title": "タイトル",
+        "importOption":"インポート設定",
+        "projectName": "プロジェクト名",
+        "whenPrjDirExists": "同一名プロジェクトが存在したとき",
+        "selectPolicy": "ユーザに選択させる",
+        "ApiInfo": "API設定",
+        "wsService": "使用サービス",
+        "wsKey": "APIキー",
         "QuickUpload": "クイックアップロード",
         "ClickToCompleteQuickUpload": "クイックアップロードを完了させる",
         "reloadRequested": "依存関係に変更がありました．再読み込みが必要です．再読み込みを行いますか？",

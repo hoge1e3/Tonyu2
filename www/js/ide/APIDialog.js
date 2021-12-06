@@ -12,11 +12,11 @@ define(function (require, exports, module) {
         createElem() {
             this.elem=this.elem||UI("div",{title:R("ApiInfo")},
                 ["h1", R("Websocket")],
-                    ["div",R("service"),
+                    ["div",R("wsService"),
                         ["select",{$var:"wsService", name:"wsService"},
-                            ["option",{value:"ScaleDrone"},"ScaleDrone"],
+                            ["option",{value:"Scaledrone"},"Scaledrone"],
                         ]],
-                    ["div",R("ApiKey"),
+                    ["div",R("wsKey"),
                         ["input",{$var:"wsKey"}]],
             );
             const v=this.elem.$vars;
