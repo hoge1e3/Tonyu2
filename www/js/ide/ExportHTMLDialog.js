@@ -63,6 +63,10 @@ function (east,UI,Klass,root,R,WebSite,extLink) {
             const url=WebSite.uploadTmpUrl;
             f.append( "content" , new Blob( [html], {type:"text/html"} ) , "index.html" );
             f.append( "extension", new Blob( [".html"], {type:"text/plain"} ) , "extension" );
+            if (t.prj.api) {
+                const a=JSON.stringify(t.prj.api.get());
+                f.append( "api", new Blob( [a], {type:"text/json"} ) , "api" );
+            }
             const upf=await $.ajax({url, method:"POST",data:f,processData: false, contentType: false});
             console.log(upf, html);
             const v=this.dom.$vars;

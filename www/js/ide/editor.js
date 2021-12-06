@@ -58,6 +58,7 @@ $(function () {
         editors,getCurrentEditorInfo,saveDesktopEnv,run};
     const curPrj=IDEProject.create({dir:curPrjDir,ide});//, kernelDir);
     const api=new API(curPrj);
+    curPrj.api=api;
     ide.getAPIInfo=()=>api.get();
     ide.project=curPrj;
     const EXT=curPrj.getEXT();
