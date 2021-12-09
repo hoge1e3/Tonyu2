@@ -25,10 +25,11 @@ var info, drone;
 }
 \enterRoom(name) {
     return new Promise\(s,e) {
-        var room=drone.subscribe(name);
-        var res=new ScaledroneRoom{drone, room, name};
-        console.log("Prepare con");
-        room.on('open') \(error) {
+        var observable=true;
+        console.log("clientId",drone.clientId);
+        var res=new ScaledroneRoom{drone, observable,name, myId:drone.clientId};
+        res.on('open') \(error) {
+            //room.myId=drone.clientId;
             console.log("coned",error);
             if (error) {
                 return e(error);

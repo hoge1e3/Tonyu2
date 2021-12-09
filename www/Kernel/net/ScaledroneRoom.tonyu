@@ -1,17 +1,51 @@
 extends TObject;
 includes EventMod;
+native Promise;
 "field strict";
-var drone, room, name;
+var drone, room, name, myId ,members, observable;
 
+\rawName {
+    return (observable?"observable-":"")+name;
+}
 \new(params){
     super(params);
+    room=drone.subscribe(rawName);
+    room.on("open") \(error) {
+        fireEvent("open",error);
+    };
     room.on("message") \(mesg) {
         fireEvent("message", mesg);
     };
+    room.on("members") \(members) {
+        this.members=members;
+        fireEvent("members_list",members);
+    };
+    room.on('member_join', function(member) {
+        this.members.push(member);
+        fireEvent("member_join",member);
+    });
+    room.on('member_leave', function(member) {
+        for (var i=this.members.length-1 ; i>=0 ;i--) {
+            if (member.id===this.members[i].id) {
+                this.members.splice(i,1);
+            }            
+        }
+        fireEvent("member_leave",member);
+    });
 }
 \send(message) {
     return drone.publish{
-        room: name,
+        room: rawName,
         message
+    };
+}
+\getMembers() {
+    if (members) {
+        return Promise.resolve(members);
+    }
+    return new Promise \(s) {
+        on("members_list") \(members) {
+            s(members);
+        };
     };
 }

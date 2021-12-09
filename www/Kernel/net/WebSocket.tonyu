@@ -13,7 +13,7 @@ var impl;
 }
 \connect() {
     if (impl) return Promise.resolve(impl);
-    var services={Scaledrone:ScaledroneImpl};
+    var services={Scaledrone:ScaledroneImpl, T2WebSocket: M_T2Web };
     return getConnectionInfo().then\(info) {
         var S=services[info.service];
         if (!S) throw new Error(info.service+"には対応していません");

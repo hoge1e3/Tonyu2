@@ -15,6 +15,7 @@ define(function (require, exports, module) {
                     ["div",R("wsService"),
                         ["select",{$var:"wsService", name:"wsService"},
                             ["option",{value:"Scaledrone"},"Scaledrone"],
+                            ["option",{value:"T2WebSocket"},"T2WebSocket"],
                         ]],
                     ["div",R("wsKey"),
                         ["input",{$var:"wsKey"}]],
@@ -22,6 +23,11 @@ define(function (require, exports, module) {
             const v=this.elem.$vars;
             this.ui_wsService=v.wsService;
             this.ui_wsKey=v.wsKey;
+            this.ui_wsService.on("change",()=>{
+                if (!this.ui_wsKey.val() && this.ui_wsService.val()==="T2WebSocket") {
+                    this.ui_wsKey.val( ("t2ws_"+Math.random()).replace(/\./,""));
+                }
+            });
             return this.elem;
         }
         load() {

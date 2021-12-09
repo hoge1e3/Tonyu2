@@ -2711,9 +2711,6 @@ function annotateSource2(klass, env) {//B
 		var s=topLevelScope;
 		getDependingClasses(klass).forEach(initTopLevelScope2);
 		var decls=klass.decls;// Do not inherit parents' natives
-		for (let i in decls.natives) {
-			s[i]=genSt(ST.NATIVE,{name:"native::"+i,value:root[i]});
-		}
 		if (!tonyu1.isTonyu1(env.options)) {
 			for (let i in JSNATIVES) {
 				s[i]=genSt(ST.NATIVE,{name:"native::"+i,value:root[i]});
@@ -2722,6 +2719,9 @@ function annotateSource2(klass, env) {//B
 		for (let i in env.aliases) {/*ENVC*/ //CFN  env.classes->env.aliases
 			var fullName=env.aliases[i];
 			s[i]=genSt(ST.CLASS,{name:i,fullName:fullName,info:env.classes[fullName]});
+		}
+		for (let i in decls.natives) {
+			s[i]=genSt(ST.NATIVE,{name:"native::"+i,value:root[i]});
 		}
 	}
 	function inheritSuperMethod() {//S

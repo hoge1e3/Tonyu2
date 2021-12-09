@@ -1,0 +1,14 @@
+extends TObject;
+native Promise;
+"field strict";
+var m;
+var info;
+\connect() {
+    return Promise.resolve(this);
+}
+
+\enterRoom(name) {
+    var room=new M_T2Room{info, name};
+    return room.enter();
+    
+}

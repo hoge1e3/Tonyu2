@@ -1,0 +1,74 @@
+extends TObject;
+includes EventMod;
+native Promise;
+"field strict";
+var m, name, info, myId,members;
+\enter(){
+    return new Promise \(s,e) {
+        m = new T2WebSocket();
+        m.on("open") \{
+        };
+        m.on("error",e);
+        m.on("message") \(me) {
+            var data=me.data;
+            if (data) {
+                switch (data.mes) {
+                    case "_start":
+                    myId=data.playerNo;
+                    members=[];
+                    for (var i=0;i<data.playerCnt;i++) {
+                        members.push{id: i};
+                    }
+                    s(this);
+                    break;
+                    case "_connection":
+                    var newMember={id: data.playerNo};
+                    if (!members.some \(m){return m.id===newMember.id;}) {
+                        members.push(newMember);
+                        fireEvent("member_join",newMember);
+                    }
+                    break;
+                    case "_close":
+                    for (var i=members.length-1;i>=0;i--) {
+                        if (members[i].id===data.playerNo) {
+                            var leftMember=members.splice(i,1);
+                            fireEvent("member_leave",leftMember[0]);
+                        }
+                    }
+                    break;
+                    default:
+                    if (data[SYM_CLIENTID]!=null) {
+                        me=cloneEvent(me);
+                        me.clientId=data[SYM_CLIENTID];
+                        delete data[SYM_CLIENTID];
+                    }
+                    fireEvent("message",me);
+                }
+            }
+        };
+        m.connect(url);
+    };
+}
+\getMembers(){
+    return Promise.resolve(members);
+}
+\cloneEvent(ev) {
+    return Object.assign({},ev);
+}
+\send (mesg) {
+    mesg=cloneEvent(mesg);
+    mesg[SYM_CLIENTID]=myId;
+    m.send(mesg);
+}
+\SYM_CLIENTID {
+    return "SYM_CLIENTID";
+}
+\url {
+    var wsProtocol = "wss"; // ws:http用(暗号化なし), wss:https用(暗号化あり) 
+    var wsHost = "t2ws.mkbcr.net"; // WebSocketのサーバープログラムがある接続先
+    var wsPathName = info.key; // location.hostname + location.pathname; // ここの名前が同じゲーム同士で、通信を共有し合います
+    var wsPort = 443;
+
+    var wsURL = wsProtocol + "://" + wsHost + ":" + wsPort + "/" + wsPathName+"__"+name;
+    return wsURL;
+}

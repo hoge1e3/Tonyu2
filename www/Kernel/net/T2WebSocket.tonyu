@@ -1,0 +1,90 @@
+// T2WebSocket 1.0
+// Tonyu2でWebSocketを使うためのライブラリ
+
+extends TObject;
+includes EventMod;
+"field strict";
+native WebSocket;
+native performance;
+native console;
+native JSON;
+native Date;
+native String;
+native ArrayBuffer;
+native Blob;
+native DataView;
+
+var sock = null;
+/*var onOpen = null;
+var onClose = null;
+var onError = null;
+var onMessage = null;
+*/
+
+\connect(url) {
+    if (sock) return;
+    try {
+        sock = new WebSocket(url);
+        sock.addEventListener("open", \(e) {
+            console.log("Connected to ",url);
+            fireEvent("open",e);
+        });
+        sock.addEventListener("message", \(e) {
+            console.log("MESG", e);
+            recv(e);
+        });
+        sock.addEventListener("close", \(e) {
+            fireEvent("close",e);
+            sock = null;
+        });
+        sock.addEventListener("error", \(e) {
+            fireEvent("error",e);
+        });
+    } catch (e) {
+        fireEvent("error",e);
+        console.log("websocket connect error", e);
+    }
+}
+
+\close() {
+    if (sock) {
+        sock.close();
+        sock = null;
+    }
+}
+
+\send(d) {
+    if (sock && sock.readyState == 1) { // WebSocket.OPEN
+        if (
+        d is String ||
+        d is ArrayBuffer ||
+        d is Blob ||
+        _isTypedArray(d)
+        ) {
+            sock.send(d);
+        } else if (d is Object) {
+            sock.send(JSON.stringify(d));
+        } else {
+            sock.send(d);
+        }
+    } else {
+        console.log("Websocket not ready", sock);
+    }
+}
+
+\recv(e) {
+    try {
+        var d=e.data;
+        var obj = JSON.parse(d);
+        var ne=Object.assign({},e);
+        ne.data=obj;
+        fireEvent("message",ne);
+    } catch (e) {
+        fireEvent("message",e);
+    }
+}
+
+
+\_isTypedArray(value) {
+    return ArrayBuffer.isView(value) && !(value instanceof DataView);
+}
