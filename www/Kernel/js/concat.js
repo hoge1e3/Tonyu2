@@ -13627,6 +13627,22 @@ Tonyu.klass.define({
           }
         });
       },
+      close :function _trc_M_T2Room_close() {
+        "use strict";
+        var _this=this;
+        
+        _this.m.close();
+      },
+      fiber$close :function _trc_M_T2Room_f_close(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _this.m.close();
+        
+        _thread.retVal=_this;return;
+      },
       getMembers :function _trc_M_T2Room_getMembers() {
         "use strict";
         var _this=this;
@@ -13723,7 +13739,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"enter":{"nowait":false},"getMembers":{"nowait":false},"cloneEvent":{"nowait":false},"send":{"nowait":false},"__getter__SYM_CLIENTID":{"nowait":true},"__getter__url":{"nowait":true}},"fields":{"m":{},"name":{},"info":{},"myId":{},"members":{}}}
+  decls: {"methods":{"main":{"nowait":false},"enter":{"nowait":false},"close":{"nowait":false},"getMembers":{"nowait":false},"cloneEvent":{"nowait":false},"send":{"nowait":false},"__getter__SYM_CLIENTID":{"nowait":true},"__getter__url":{"nowait":true}},"fields":{"m":{},"name":{},"info":{},"myId":{},"members":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.M_T2Web',
@@ -14048,6 +14064,22 @@ Tonyu.klass.define({
           _this.fireEvent("member_leave",member);
         }));
       },
+      close :function _trc_ScaledroneRoom_close() {
+        "use strict";
+        var _this=this;
+        
+        _this.drone.close();
+      },
+      fiber$close :function _trc_ScaledroneRoom_f_close(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _this.drone.close();
+        
+        _thread.retVal=_this;return;
+      },
       send :function _trc_ScaledroneRoom_send(message) {
         "use strict";
         var _this=this;
@@ -14073,9 +14105,9 @@ Tonyu.klass.define({
           return Promise.resolve(_this.members);
           
         }
-        return new Promise((function anonymous_1119(s) {
+        return new Promise((function anonymous_1151(s) {
           
-          _this.on("members_list",(function anonymous_1153(members) {
+          _this.on("members_list",(function anonymous_1185(members) {
             
             s(members);
           }));
@@ -14092,9 +14124,9 @@ Tonyu.klass.define({
           
           
         }
-        _thread.retVal=new Promise((function anonymous_1119(s) {
+        _thread.retVal=new Promise((function anonymous_1151(s) {
           
-          _this.on("members_list",(function anonymous_1153(members) {
+          _this.on("members_list",(function anonymous_1185(members) {
             
             s(members);
           }));
@@ -14106,7 +14138,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"__getter__rawName":{"nowait":true},"new":{"nowait":false},"send":{"nowait":false},"getMembers":{"nowait":false}},"fields":{"drone":{},"room":{},"name":{},"myId":{},"members":{},"observable":{}}}
+  decls: {"methods":{"main":{"nowait":false},"__getter__rawName":{"nowait":true},"new":{"nowait":false},"close":{"nowait":false},"send":{"nowait":false},"getMembers":{"nowait":false}},"fields":{"drone":{},"room":{},"name":{},"myId":{},"members":{},"observable":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.T2WebSocket',

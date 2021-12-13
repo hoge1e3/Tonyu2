@@ -49,6 +49,9 @@ var m, name, info, myId,members;
         m.connect(url);
     };
 }
+\close() {
+    m.close();
+}
 \getMembers(){
     return Promise.resolve(members);
 }

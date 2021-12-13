@@ -33,6 +33,9 @@ var drone, room, name, myId ,members, observable;
         fireEvent("member_leave",member);
     });
 }
+\close() {
+    drone.close();
+}
 \send(message) {
     return drone.publish{
         room: rawName,
