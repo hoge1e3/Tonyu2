@@ -30,7 +30,7 @@ var onMessage = null;
             fireEvent("open",e);
         });
         sock.addEventListener("message", \(e) {
-            console.log("MESG", e);
+            //console.log("MESG", e);
             recv(e);
         });
         sock.addEventListener("close", \(e) {

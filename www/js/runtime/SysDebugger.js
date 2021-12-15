@@ -42,6 +42,11 @@ define(function (require/*,exports,module*/) {
         try {
             prj.compiler=root.parent.Tonyu.globals.$currentProject;
         } catch(e){console.log(e);}
+        try {
+            if (!getQueryString("nodebug")) {
+                root.parent.onTonyuDebuggerReady(Debugger);
+            }
+        } catch(e) {console.log(e);}
         window.onerror=function (a,b,c,d,e) {
             //console.log(...arguments);
             if (e && e.stack) Tonyu.onRuntimeError(e);
