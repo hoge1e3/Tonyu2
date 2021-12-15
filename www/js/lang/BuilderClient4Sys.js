@@ -275,12 +275,12 @@ root.Debugger={
     on:Events.on.bind(Events),
     fire:Events.fire.bind(Events)
 };
-/*try {
+try {
     //if (root.parent && root.parent.onTonyuDebuggerReady) <- fails CORS
     root.parent.onTonyuDebuggerReady(root.Debugger);
 } catch(e) {
     console.log(e);
-}*/
+}
 return root.Debugger;
 };//--------
 //});//--- end of define
