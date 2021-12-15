@@ -6,6 +6,6 @@ native Promise;
     if(ide) {
         return Promise.resolve( ide.getAPIInfo() );
     } else {
-        return $.get("https://run.tonyu.jp/apiInfo.php") {url=location.href};        
+        return Promise.resolve($.get("https://run.tonyu.jp/apiInfo.php") {url=location.href});        
     }
 }

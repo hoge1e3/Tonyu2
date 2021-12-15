@@ -1,8 +1,11 @@
 extends TObject;
 includes EventMod;
 native Promise;
+native setTimeout;
+native clearTimeout;
+
 "field strict";
-var m, name, info, myId,members;
+var m, name, info, myId,members, timer;
 \enter(){
     return new Promise \(s,e) {
         m = new T2WebSocket();
@@ -19,6 +22,7 @@ var m, name, info, myId,members;
                     for (var i=0;i<data.playerCnt;i++) {
                         members.push{id: i};
                     }
+                    keepAlive();
                     s(this);
                     break;
                     case "_connection":
@@ -62,6 +66,11 @@ var m, name, info, myId,members;
     mesg=cloneEvent(mesg);
     mesg[SYM_CLIENTID]=myId;
     m.send(mesg);
+    keepAlive();
+}
+\keepAlive() {
+    if (timer) clearTimeout(timer);
+    timer=setTimeout(\() { send{type:"keepalive"}; },25*1000 );
 }
 \SYM_CLIENTID {
     return "SYM_CLIENTID";
