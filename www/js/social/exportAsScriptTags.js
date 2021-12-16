@@ -18,7 +18,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
                     buf+='<script src="'+scriptServer+im.url+'.js"></script>\n';
                 }
             });
-            buf+='<script src="'+scriptServer+'js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
+            buf+='<script src="'+scriptServer+'js/lib/jquery-1.12.1.js" type="text/javascript"></script>\n';
             buf+='<script src="'+genPath+'runScript_concat.min.js" type="text/javascript"></script>\n';
             if (!options.IE) {
                 buf+=`<script src="${scriptServer}js/runtime/detectUnsupported.js"></script>`;

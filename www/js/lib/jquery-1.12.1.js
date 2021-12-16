@@ -3434,7 +3434,9 @@ jQuery.extend( {
 							// deferred[ done | fail | progress ] for forwarding actions to newDefer
 							deferred[ tuple[ 1 ] ]( function() {
 								var returned = fn && fn.apply( this, arguments );
-								if ( returned && jQuery.isFunction( returned.promise ) ) {
+								if ( typeof Promise==="function" && returned instanceof Promise) {//@hoge1e3
+									returned.then(newDefer.resolve, newDefer.reject);
+								} else if ( returned && jQuery.isFunction( returned.promise ) ) {
 									returned.promise()
 										.progress( newDefer.notify )
 										.done( newDefer.resolve )

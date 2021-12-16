@@ -199,7 +199,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
         }
         function copyLibs() {
             return $.when(
-                    jsDir.rel("lib/jquery-1.10.1.js").copyTo(dest.rel("js/lib/")),
+                    jsDir.rel("lib/jquery-1.12.1.js").copyTo(dest.rel("js/lib/")),
                     jsDir.rel("lib/require.js").copyTo(dest.rel("js/lib/"))
             );
         }
