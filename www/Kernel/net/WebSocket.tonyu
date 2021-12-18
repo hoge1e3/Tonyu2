@@ -27,5 +27,8 @@ var impl;
 \enterRoom(name) {
     return connect().then \() {
         return impl.enterRoom(name);  
+    }.then \(r) {
+        r.webSocket=this;
+        return r;
     };
 }
