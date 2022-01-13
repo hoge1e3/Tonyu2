@@ -75,25 +75,31 @@ nowait \rndFloat(r,m) {
     if (typeof r!=="number") r=0;
     if (typeof m!=="number") m=1;
     if (r<m) {
-        return Math.random()*(m-r)+r;
+        return rnd()*(m-r)+r;
     } else {
-        return Math.random()*(r-m)+m;
+        return rnd()*(r-m)+m;
     }
 }
 
 nowait \rnd(r,m) {
+    var res;
+    if ($random is Random) res=$random.next01();
+    else res=Math.random();
     if (typeof r=="number") {
         if (typeof m=="number") {
             if (r<m) {
-                return Math.floor(Math.random()*(m-r)+r);
+                return Math.floor(res*(m-r)+r);
             } else {
-                return Math.floor(Math.random()*(r-m)+m);
+                return Math.floor(res(r-m)+m);
             }
         } else {
-            return Math.floor(Math.random()*(r>0?r:0));
+            return Math.floor(res*(r>0?r:0));
         }
     }
-    return Math.random();
+    return res;
+}
+nowait randomize(s) {
+    $random=new Random(s);
 }
 nowait \parseFloat(s) {
     return parseFloat(s);
