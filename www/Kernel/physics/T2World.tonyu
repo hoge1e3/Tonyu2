@@ -23,7 +23,10 @@ native Tonyu;
     new b2Vec2(gravityX, gravity)    //gravity
     ,  true                 //allow sleep
     );
-    //$t2World=this;
+    if (name!==null) {
+        name=name||"$t2World";
+        Tonyu.setGlobal(name,this);
+    }
     $Boot.on("stop",releaseWorld);
     on("die",releaseWorld);
 }

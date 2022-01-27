@@ -69,17 +69,17 @@ nowait \isDead() {
         if (param) { param.layer=param.layer||layer; }
         var p=$ObjectPool.withdraw(o.meta.fullName);
         if (p) {
-        	for (var k in Object.keys(p)) {
-        	   if (k!="objectPoolAge") delete p[k];
-		    }
-		    o.call(p,param);
-        	return p;
+            for (var k in Object.keys(p)) {
+                if (k!="objectPoolAge") delete p[k];
+            }
+            o.call(p,param);
+            return p;
         } else {
-        	return new o(param);
+            return new o(param);
         }
     } else {
-	    return o;
-	}
+        return o;
+    }
 }
 \getSpriteGroup() {
     if (this.__addedToSprites is SpriteGroup) {

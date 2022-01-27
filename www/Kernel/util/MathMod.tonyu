@@ -90,7 +90,7 @@ nowait \rnd(r,m) {
             if (r<m) {
                 return Math.floor(res*(m-r)+r);
             } else {
-                return Math.floor(res(r-m)+m);
+                return Math.floor(res*(r-m)+m);
             }
         } else {
             return Math.floor(res*(r>0?r:0));
