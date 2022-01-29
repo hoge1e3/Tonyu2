@@ -438,8 +438,8 @@ extends Actor;
                     if (isOnRectWH(t.x, t.y, x-cwh-cw, y-chh-ch, w, ch)) padPushU = 1;
                     if (isOnRectWH(t.x, t.y, x-cwh-cw, y-chh+ch, w, ch)) padPushD = 1;
                 } else { // 十字キー範囲外
-                    var subX = t.x - x;
-                    var subY = t.y - y;
+                    var subX = toScaledX(t.x) - x;
+                    var subY = toScaledY(t.y) - y;
                     if (subX < -cwh-(abs(subY)-chh-ch)/2) padPushL = 1;
                     if (subX >  cwh+(abs(subY)-chh-ch)/2) padPushR = 1;
                     if (subY < -chh-(abs(subX)-cwh-cw)/2) padPushU = 1;
@@ -447,8 +447,8 @@ extends Actor;
                 }
             } else {
                 if (!isOnRectWH(t.x, t.y, x-cwh, y-chh, cw, ch)) { // 十字キー中央範囲以外
-                    var subX = t.x - x;
-                    var subY = t.y - y;
+                    var subX = toScaledX(t.x) - x;
+                    var subY = toScaledY(t.y) - y;
                     if (subX <= -abs(subY)) padPushL = 1;
                     else if (subY <= -abs(subX)) padPushU = 1;
                     else if (subX >=  abs(subY)) padPushR = 1;
@@ -511,26 +511,63 @@ extends Actor;
 
 }
 
+// XY座標スケール変換 //
+\toScaledX(mx) {
+    return (mx * $Screen.scaleX + ($uiScreen.width - $Screen.width * $Screen.scaleX) / 2);
+}
+\toScaledY(my) {
+    return (my * $Screen.scaleX + ($uiScreen.height - $Screen.height * $Screen.scaleX) / 2);
+}
+
 // 範囲XY //
-\isOnRect(mx, my, rx, ry, rx2, ry2) {
+\isOnRect(_mx, _my, rx, ry, rx2, ry2) {
+    var mx, my;
+    mx = _mx;
+    my = _my;
+    if (layer == $uiLayer) {
+        mx = toScaledX(_mx);
+        my = toScaledY(_my);
+    }
     return (mx >= rx && mx < rx2 && my >= ry && my < ry2);
 }
 
 // 範囲WH //
-\isOnRectWH(mx, my, rx, ry, rw, rh) {
+\isOnRectWH(_mx, _my, rx, ry, rw, rh) {
+    var mx, my;
+    mx = _mx;
+    my = _my;
+    if (layer == $uiLayer) {
+        mx = toScaledX(_mx);
+        my = toScaledY(_my);
+    }
     return (mx >= rx && mx < rx+rw && my >= ry && my < ry+rh);
 }
 
 // 範囲Crash //
-\crashXY(mx, my) {
-    return (mx >= x-width/2 && mx < x+width/2 && my >= y-height/2 && my < y+height/2);
+\crashXY(_mx, _my) {
+    var w, h, mx, my;
+    w = width;
+    h = height;
+    mx = _mx;
+    my = _my;
+    if (layer == $uiLayer) {
+        mx = toScaledX(_mx);
+        my = toScaledY(_my);
+    }
+    return (mx >= x-w/2 && mx < x+w/2 && my >= y-h/2 && my < y+h/2);
 }
 
 // 範囲Crash10000 //
-\crashXY10000(mx, my) {
-    var w, h;
+\crashXY10000(_mx, _my) {
+    var w, h, mx, my;
     w = width  + 2;
     h = height + 2;
+    mx = _mx;
+    my = _my;
+    if (layer == $uiLayer) {
+        mx = toScaledX(_mx);
+        my = toScaledY(_my);
+    }
     return (mx >= x-w/2-1 && mx < x+w/2-1 && my >= y-h/2-1 && my < y+h/2-1);
 }
 
