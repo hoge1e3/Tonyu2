@@ -10,8 +10,8 @@ function (ResEditor,Klass,OggConverter,WebSite,R) {
             },
             builtins:WebSite.builtinAssetNames
         },
-        sound:{name:R("sound"),exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
-            extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav|mzo)$/i,contentType:/((audio\/(mpeg|mp3|ogg|x-m4a|midi?|wav|mzo))|(video\/mp4))/,
+        sound:{name:R("sound"),exts:["mp3","ogg","mp4","m4a","mid","wav","mzo","flac"],path:"sounds/",key:"sounds",
+            extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav|mzo|flac?)$/i,contentType:/((audio\/(mpeg|mp3|ogg|x-m4a|midi?|wav|mzo|flac?))|(video\/mp4))/,
             newItem:function (name) {
                 var r={};
                 if (name) r.name="$se_"+name;
