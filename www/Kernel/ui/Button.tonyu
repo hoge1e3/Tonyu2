@@ -98,7 +98,7 @@ on("touch") \(touchEvent) {
 \procAR() {
     updateEx(autoRepeat);
     while(true) {
-	    handleClickEvent();
+        handleClickEvent();
         update();
     }
 }

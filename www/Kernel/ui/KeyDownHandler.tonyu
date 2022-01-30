@@ -47,7 +47,7 @@ var handlers,pressState;
     };
 }
 \newListener(keyName, f) {
-    var keyCode=$Keys.codes[keyName];
+    var keyCode=typeof keyName==="number" ? keyName : $Keys.codes[keyName];
     var a;
     if (!f) {
         f=keyName;
