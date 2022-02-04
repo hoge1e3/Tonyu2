@@ -12,6 +12,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             var resFile=dir.rel("res.json");
             var resObj=resFile.obj();
             var scriptServer=WebSite.scriptServer||"https://edit.tonyu.jp/";
+            buf+=`<link rel="stylesheet" href="${scriptServer}/css/runtime.css"/>`;
             const genPath=scriptServer+"js/"+(options.IE?"gen":"g2")+"/";
             resObj.images.forEach(function (im) {
                 if (WebSite.builtinAssetNames[im.url]) {

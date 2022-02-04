@@ -1,0 +1,11 @@
+div[role="dialog"] {
+    font-size: 2.5vh;
+}
+div.ui-dialog-content>input {
+    margin-top: 1.0vh;
+    margin-bottom: 1.0vh;
+}
+div.ui-dialog-content>button {
+    margin: 0.0vh 5.0vh 0.0vh 0.0vh;
+    vertical-align: middle;
+}

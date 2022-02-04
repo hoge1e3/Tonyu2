@@ -84,6 +84,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
                 genFilesJS(),
                 copyScripts(),
                 copyPlugins(),
+                copyCSS(),
                 copyLibs(),
                 copyResources("images/"),
                 copyResources("sounds/"),
@@ -136,6 +137,12 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
                 }
                 htmlcont=htmlcont.replace(/TONYU_APP_VERSION/g,Math.floor(Math.random()*100000));
                 return dest.rel(htmlfile.name()).text(htmlcont);
+            });
+        }
+        function copyCSS() {
+            const cssfile=wwwDir.rel("css/runtime.css");
+            return cssfile.text(function (cont) {
+                return dest.rel("css/").rel(cssfile.name()).text(cont);
             });
         }
         async function copyScripts() {
