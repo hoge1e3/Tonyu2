@@ -275,186 +275,207 @@ root.Debugger={
     on:Events.on.bind(Events),
     fire:Events.fire.bind(Events)
 };
-try {
+/*try {
     //if (root.parent && root.parent.onTonyuDebuggerReady) <- fails CORS
     root.parent.onTonyuDebuggerReady(root.Debugger);
 } catch(e) {
     console.log(e);
-}
+}*/
 return root.Debugger;
 };//--------
 //});//--- end of define
 
 },{"../lang/SourceFiles":4,"../lang/StackDecoder":5,"../lang/langMod":6,"../lib/root":11,"../project/CompiledProject":12}],4:[function(require,module,exports){
+"use strict";
 //define(function (require,exports,module) {
 /*const root=require("root");*/
-const root=require("../lib/root");
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+const root_1 = __importDefault(require("../lib/root"));
 function timeout(t) {
-    return new Promise(s=>setTimeout(s,t));
+    return new Promise(s => setTimeout(s, t));
 }
 let vm;
 /*global global*/
-if (typeof global!=="undefined" && global.require && global.require.name!=="requirejs") {
-    vm=global.require("vm");
+if (typeof global !== "undefined" && global.require && global.require.name !== "requirejs") {
+    vm = global.require("vm");
 }
 class SourceFile {
     // var text, sourceMap:S.Sourcemap;
     constructor(text, sourceMap) {
-        if (typeof text==="object") {
-            const params=text;
-            sourceMap=params.sourceMap;
+        if (typeof text === "object") {
+            const params = text;
+            sourceMap = params.sourceMap;
             //functions=params.functions;
-            text=params.text;
+            text = params.text;
             if (params.url) {
-                this.url=params.url;
+                this.url = params.url;
             }
         }
-        this.text=text;
-        this.sourceMap=sourceMap && sourceMap.toString();
+        this.text = text;
+        this.sourceMap = sourceMap && sourceMap.toString();
         //this.functions=functions;
     }
     async saveAs(outf) {
-        const mapFile=outf.sibling(outf.name()+".map");
-        let text=this.text;
+        const mapFile = outf.sibling(outf.name() + ".map");
+        let text = this.text;
         //text+="\n//# traceFunctions="+JSON.stringify(this.functions);
         if (this.sourceMap) {
             await mapFile.text(this.sourceMap);
-            text+="\n//# sourceMappingURL="+mapFile.name();
+            text += "\n//# sourceMappingURL=" + mapFile.name();
         }
         await outf.text(text);
         //return Promise.resolve();
     }
     exec(options) {
-        return new Promise((resolve, reject)=>{
-            if (root.window) {
-                const document=root.document;
+        return new Promise((resolve, reject) => {
+            if (root_1.default.window) {
+                const document = root_1.default.document;
                 let u;
                 if (this.url) {
-                    u=this.url;
-                } else {
-                    const b=new root.Blob([this.text], {type: 'text/plain'});
-                    u=root.URL.createObjectURL(b);
+                    u = this.url;
                 }
-                const s=document.createElement("script");
-                console.log("load script",u);
-                s.setAttribute("src",u);
-                s.addEventListener("load",e=>{
+                else {
+                    const b = new root_1.default.Blob([this.text], { type: 'text/plain' });
+                    u = root_1.default.URL.createObjectURL(b);
+                }
+                const s = document.createElement("script");
+                console.log("load script", u);
+                s.setAttribute("src", u);
+                s.addEventListener("load", e => {
                     resolve(e);
                 });
-                this.parent.url2SourceFile[u]=this;
+                this.parent.url2SourceFile[u] = this;
                 document.body.appendChild(s);
-            } else if (options && options.tmpdir){
-                const tmpdir=options.tmpdir;
-                const uniqFile=tmpdir.rel(Math.random()+".js");
-                const mapFile=uniqFile.sibling(uniqFile.name()+".map");
-                let text=this.text;
-                text+="\n//# sourceMappingURL="+mapFile.name();
+            }
+            else if (options && options.tmpdir) {
+                const tmpdir = options.tmpdir;
+                const uniqFile = tmpdir.rel(Math.random() + ".js");
+                const mapFile = uniqFile.sibling(uniqFile.name() + ".map");
+                let text = this.text;
+                text += "\n//# sourceMappingURL=" + mapFile.name();
                 uniqFile.text(text);
                 mapFile.text(this.sourceMap);
                 //console.log("EX",uniqFile.exists());
                 require(uniqFile.path());
                 uniqFile.rm();
                 mapFile.rm();
-                resolve();
-            } else if (root.importScripts && this.url){
-                root.importScripts(this.url);
-                resolve();
-            } else {
-                const F=Function;
-                const f=(vm? vm.compileFunction(this.text) : new F(this.text));
+                resolve(void (0));
+            }
+            else if (root_1.default.importScripts && this.url) {
+                root_1.default.importScripts(this.url);
+                resolve(void (0));
+            }
+            else {
+                const F = Function;
+                const f = (vm ? vm.compileFunction(this.text) : new F(this.text));
                 resolve(f());
             }
         });
     }
     export() {
-        return {text:this.text, sourceMap:this.sourceMap, functions:this.functions};
+        return { text: this.text, sourceMap: this.sourceMap, functions: this.functions };
     }
 }
 class SourceFiles {
     constructor() {
-        this.url2SourceFile={};
+        this.url2SourceFile = {};
     }
     add(text, sourceMap) {
-        const sourceFile=new SourceFile(text, sourceMap);
+        const sourceFile = new SourceFile(text, sourceMap);
         /*if (sourceFile.functions) for (let k in sourceFile.functions) {
             this.functions[k]=sourceFile;
         }*/
-        sourceFile.parent=this;
+        sourceFile.parent = this;
         return sourceFile;
     }
-
 }
-module.exports=new SourceFiles();
+module.exports = new SourceFiles();
 //});/*--end of define--*/
 
 },{"../lib/root":11}],5:[function(require,module,exports){
-const S=require("./source-map");
-const StackTrace=require("./stacktrace");
-const SourceFiles=require("./SourceFiles");
-module.exports={
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+const source_map_1 = __importDefault(require("./source-map"));
+const SourceFiles_1 = __importDefault(require("./SourceFiles"));
+const stacktrace_1 = __importDefault(require("./stacktrace"));
+module.exports = {
     async decode(e) {
-        try{
-            const tr=await StackTrace.fromError(e,{offline:true});
-            tr.forEach(t=>{
+        try {
+            const tr = await stacktrace_1.default.fromError(e, { offline: true });
+            tr.forEach(t => {
                 try {
-                    const sf=SourceFiles.url2SourceFile[t.fileName];
+                    const sf = SourceFiles_1.default.url2SourceFile[t.fileName];
                     //console.log("sf", t.fileName, sf, SourceFiles.url2SourceFile);
                     if (sf) {
-                        const opt={
-                            line: t.lineNumber, column:t.columnNumber,
-                            bias:S.SourceMapConsumer.GREATEST_LOWER_BOUND
+                        const opt = {
+                            line: t.lineNumber, column: t.columnNumber,
+                            bias: source_map_1.default.SourceMapConsumer.GREATEST_LOWER_BOUND
                         };
-                        const pos=this.originalPositionFor(sf,opt);
-                        console.log("pos",opt,pos);
-                        if (pos.source) t.fileName=pos.source;
-                        if (pos.line) t.lineNumber=pos.line;
-                        if (pos.column) t.columnNumber=pos.column;
+                        const pos = this.originalPositionFor(sf, opt);
+                        console.log("pos", opt, pos);
+                        if (pos.source)
+                            t.fileName = pos.source;
+                        if (pos.line)
+                            t.lineNumber = pos.line;
+                        if (pos.column)
+                            t.columnNumber = pos.column;
                     }
-                }catch(ex) {
-                    console.log("Sourcemap error",ex);
+                }
+                catch (ex) {
+                    console.log("Sourcemap error", ex);
                 }
             });
-            console.log("Converted: ",tr);
+            console.log("Converted: ", tr);
             return tr;
-        } catch(ex) {
-            console.log("StackTrace error",ex);
+        }
+        catch (ex) {
+            console.log("StackTrace error", ex);
             if (!e || !e.stack) {
-                console.log("HennaError",e);
+                console.log("HennaError", e);
                 return [];
             }
             return e.stack.split("\n");
         }
     },
-    originalPositionFor(sf,opt) {
-        const s=this.getSourceMapConsumer(sf);
-        if (!s) return opt;
+    originalPositionFor(sf, opt) {
+        const s = this.getSourceMapConsumer(sf);
+        if (!s)
+            return opt;
         return s.originalPositionFor(opt);
     },
     getSourceMapConsumer(sf) {
-        if (sf.sourceMapConsumer) return sf.sourceMapConsumer;
-        sf.sourceMapConsumer=new S.SourceMapConsumer(JSON.parse(sf.sourceMap));
+        if (sf.sourceMapConsumer)
+            return sf.sourceMapConsumer;
+        sf.sourceMapConsumer = new source_map_1.default.SourceMapConsumer(JSON.parse(sf.sourceMap));
         //console.log(this.sourceMapConsumer);
         return sf.sourceMapConsumer;
     }
 };
 
 },{"./SourceFiles":4,"./source-map":7,"./stacktrace":8}],6:[function(require,module,exports){
-    module.exports={
-        getNamespace: function () {//override
-            var opt=this.getOptions();
-            if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
-            throw new Error("Namespace is not set");
-        },
-        async loadDependingClasses() {
-            const myNsp=this.getNamespace();
-            for (let p of this.getDependingProjects()) {
-                if (p.getNamespace()===myNsp) continue;
-                await p.loadClasses();
-            }
-        },
-        getEXT() {return ".tonyu";}
-        // loadClasses: stub
-    };
+"use strict";
+module.exports = {
+    getNamespace: function () {
+        var opt = this.getOptions();
+        if (opt.compiler && opt.compiler.namespace)
+            return opt.compiler.namespace;
+        throw new Error("Namespace is not set");
+    },
+    async loadDependingClasses() {
+        const myNsp = this.getNamespace();
+        for (let p of this.getDependingProjects()) {
+            if (p.getNamespace() === myNsp)
+                continue;
+            await p.loadClasses();
+        }
+    },
+    getEXT() { return ".tonyu"; }
+    // loadClasses: stub
+};
 
 },{}],7:[function(require,module,exports){
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -3517,105 +3538,115 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 },{}],9:[function(require,module,exports){
-class FileMap {
-    constructor(){this.sidesList=[];}
-    add(sides) {// {sideA:path, sideB:path}
+"use strict";
+module.exports = class FileMap {
+    constructor() { this.sidesList = []; }
+    add(sides) {
         this.sidesList.push(sides);
     }
     convert(path, fromSide, toSide) {
         for (let sides of this.sidesList) {
             if (path.startsWith(sides[fromSide])) {
-                return sides[toSide]+path.substring(sides[fromSide].length);
+                return sides[toSide] + path.substring(sides[fromSide].length);
             }
         }
         return path;
     }
-}
-module.exports=FileMap;
+};
 
 },{}],10:[function(require,module,exports){
+"use strict";
 /*global Worker*/
 // Browser Side
-let idseq=0;
+let idseq = 0;
 class Wrapper {
     constructor(worker) {
-        const t=this;
-        t.idseq=1;
-        t.queue={};
-        t.worker=worker;
-        t.readyQueue=[];
-        worker.addEventListener("message",function (e) {
-            var d=e.data;
+        this.isReady = false;
+        const t = this;
+        t.idseq = 1;
+        t.queue = {};
+        t.worker = worker;
+        t.readyQueue = [];
+        worker.addEventListener("message", function (e) {
+            var d = e.data;
             if (d.reverse) {
                 t.procReverse(e);
-            } else if (d.ready) {
+            }
+            else if (d.ready) {
                 t.ready();
-            } else if (d.id) {
+            }
+            else if (d.id) {
                 t.queue[d.id](d);
                 delete t.queue[d.id];
             }
         });
         t.run("WorkerService/isReady").then(function (r) {
-            if (r) t.ready();
+            if (r)
+                t.ready();
         });
     }
     procReverse(e) {
-        const t=this;
-        var d=e.data;
-        var id=d.id;
-        var path=d.path;
-        var params=d.params;
+        const t = this;
+        var d = e.data;
+        var id = d.id;
+        var path = d.path;
+        var params = d.params;
         try {
             Promise.resolve(paths[path](params)).then(function (r) {
                 t.worker.postMessage({
-                    reverse:true,
-                    status:"ok",
-                    id:id,
+                    reverse: true,
+                    status: "ok",
+                    id: id,
                     result: r
                 });
-            },sendError);
-        } catch(err) {
+            }, sendError);
+        }
+        catch (err) {
             sendError(err);
         }
         function sendError(e) {
-            e=Object.assign({name:e.name, message:e.message, stack:e.stack},e||{});
+            e = Object.assign({ name: e.name, message: e.message, stack: e.stack }, e || {});
             try {
-                const j=JSON.stringify(e);
-                e=JSON.parse(j);
-            } catch(je) {
-                e=e ? e.message || e+"" : "unknown";
+                const j = JSON.stringify(e);
+                e = JSON.parse(j);
+            }
+            catch (je) {
+                e = e ? e.message || e + "" : "unknown";
                 console.log("WorkerServiceW", je, e);
             }
             t.worker.postMessage({
                 reverse: true,
-                id:id, error:e, status:"error"
+                id: id, error: e, status: "error"
             });
         }
     }
     ready() {
-        const t=this;
-        if (t.isReady) return;
-        t.isReady=true;
+        const t = this;
+        if (t.isReady)
+            return;
+        t.isReady = true;
         console.log("Worker is ready!");
-        t.readyQueue.forEach(function (f){ f();});
+        t.readyQueue.forEach(function (f) { f(); });
     }
     readyPromise() {
-        const t=this;
+        const t = this;
         return new Promise(function (succ) {
-            if (t.isReady) return succ();
+            if (t.isReady)
+                return succ(undefined);
             t.readyQueue.push(succ);
         });
     }
-    run(path, params) {
-        const t=this;
-        return t.readyPromise().then(function() {
-            return new Promise(function (succ,err) {
-                var id=t.idseq++;
-                t.queue[id]=function (e) {
+    run(path, params = {}) {
+        const t = this;
+        return t.readyPromise().then(function () {
+            return new Promise(function (succ, err) {
+                var id = t.idseq++;
+                t.queue[id] = function (e) {
                     //console.log("Status",e);
-                    if (e.status=="ok") {
+                    if (e.status == "ok") {
                         succ(e.result);
-                    } else {
+                    }
+                    else {
                         err(e.error);
                     }
                 };
@@ -3628,39 +3659,41 @@ class Wrapper {
         });
     }
     terminate() {
-        const t=this;
+        const t = this;
         t.worker.terminate();
     }
 }
-var paths={};
-const WorkerService={
-    Wrapper:Wrapper,
+var paths = {};
+const WorkerService = {
+    Wrapper: Wrapper,
     load: function (src) {
-        var w=new Worker(src);
+        var w = new Worker(src);
         return new Wrapper(w);
     },
     install: function (path, func) {
-        paths[path]=func;
+        paths[path] = func;
     },
-    serv: function (path,func) {
-        this.install(path,func);
+    serv: function (path, func) {
+        this.install(path, func);
     }
 };
-WorkerService.serv("console/log", function (params){
-    console.log.apply(console,params);
+WorkerService.serv("console/log", function (params) {
+    console.log.apply(console, params);
 });
-module.exports=WorkerService;
+module.exports = WorkerService;
 
 },{}],11:[function(require,module,exports){
-/*global window,self,global*/
-(function (deps, factory) {
-    module.exports=factory();
-})([],function (){
-    if (typeof window!=="undefined") return window;
-    if (typeof self!=="undefined") return self;
-    if (typeof global!=="undefined") return global;
-    return (function (){return this;})();
-});
+"use strict";
+const root = (function () {
+    if (typeof window !== "undefined")
+        return window;
+    if (typeof self !== "undefined")
+        return self;
+    if (typeof global !== "undefined")
+        return global;
+    return (function () { return this; })();
+})();
+module.exports = root;
 
 },{}],12:[function(require,module,exports){
 /*define(function (require,exports,module) {
