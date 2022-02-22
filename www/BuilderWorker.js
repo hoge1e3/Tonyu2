@@ -106,6 +106,25 @@ WS.ready();
 
 },{"../lang/Builder":3,"../lang/langMod":15,"../lib/FS":25,"../lib/R":26,"../lib/WorkerServiceW":28,"../lib/root":30,"../project/CompiledProject":31,"../project/NS2DepSpec":32,"../project/ProjectFactory":33,"../runtime/TonyuRuntime":36}],3:[function(require,module,exports){
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -115,7 +134,7 @@ const R_1 = __importDefault(require("../lib/R"));
 const tonyu1_1 = require("./tonyu1");
 const JSGenerator = require("./JSGenerator");
 const IndentBuffer_1 = __importDefault(require("./IndentBuffer"));
-const Semantics_1 = __importDefault(require("./Semantics"));
+const Semantics = __importStar(require("./Semantics"));
 const SourceFiles_1 = __importDefault(require("./SourceFiles"));
 const TypeChecker_1 = __importDefault(require("./TypeChecker"));
 //const langMod=require("./langMod");
@@ -309,7 +328,7 @@ module.exports = class Builder {
     }
     parse(f) {
         const klass = this.addMetaFromFile(f);
-        return Semantics_1.default.parse(klass);
+        return Semantics.parse(klass);
     }
     fileToShortClassName(f) {
         const s = f.truncExt(this.getEXT());
@@ -389,7 +408,7 @@ module.exports = class Builder {
             for (var n in compilingClasses) {
                 console.log("initClassDecl: " + n);
                 // does parsing in Semantics
-                Semantics_1.default.initClassDecls(compilingClasses[n], env); /*ENVC*/
+                Semantics.initClassDecls(compilingClasses[n], env); /*ENVC*/
             }
             return this.showProgress("order");
         }).then(() => {
@@ -398,7 +417,7 @@ module.exports = class Builder {
             ord.forEach(c => {
                 if (compilingClasses[c.fullName]) {
                     console.log("annotate :" + c.fullName);
-                    Semantics_1.default.annotate(c, env);
+                    Semantics.annotate(c, env);
                 }
             });
             if (ctxOpt.typeCheck) {
@@ -1260,1125 +1279,1189 @@ module.exports = function IndentBuffer(options) {
 
 },{"../lib/StringBuilder":27,"./source-map":20}],7:[function(require,module,exports){
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-/*define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer",
-        "context", "Visitor","Tonyu.Compiler","assert"],
-function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer,
-        context, Visitor,cu,A) {*/
-/*
-const Tonyu=require("../runtime/TonyuRuntime");
-const IndentBuffer=require("./IndentBuffer");
-const ObjectMatcher=require("./ObjectMatcher");
-const TError=require("../runtime/TError");
-const context=require("./context");
-
-const cu=require("./compiler");
-const A=require("../lib/assert");
-import R=require("../lib/R");
-const tonyu1=require("./tonyu1");
-*/
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.genJS = void 0;
 const Visitor_1 = __importDefault(require("./Visitor"));
 const IndentBuffer_1 = __importDefault(require("./IndentBuffer"));
 const TError_1 = __importDefault(require("../runtime/TError"));
 const R_1 = __importDefault(require("../lib/R"));
 const assert_1 = __importDefault(require("../lib/assert"));
 const tonyu1_1 = require("./tonyu1");
-const ObjectMatcher_1 = __importDefault(require("./ObjectMatcher"));
-const compiler_1 = __importDefault(require("./compiler"));
-const context_1 = __importDefault(require("./context"));
-module.exports = compiler_1.default.JSGenerator = (function () {
-    // TonyuソースファイルをJavascriptに変換する
-    var TH = "_thread", THIZ = "_this", ARGS = "_arguments", FIBPRE = "fiber$", FRMPC = "__pc", LASTPOS = "$LASTPOS", CNTV = "__cnt", CNTC = 100; //G
-    var BINDF = "Tonyu.bindFunc";
-    var INVOKE_FUNC = "Tonyu.invokeMethod";
-    var CALL_FUNC = "Tonyu.callFunc";
-    var CHK_NN = "Tonyu.checkNonNull";
-    var CLASS_HEAD = "Tonyu.classes.", GLOBAL_HEAD = "Tonyu.globals.";
-    var GET_THIS = "this"; //"this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
-    var USE_STRICT = '"use strict";%n';
-    var ITER = "Tonyu.iterator";
-    var SUPER = "__superClass";
-    /*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
-            LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
-    var ScopeTypes = compiler_1.default.ScopeTypes;
-    //var genSt=cu.newScopeType;
-    var stype = compiler_1.default.getScopeType;
-    //var newScope=cu.newScope;
-    //var nc=cu.nullCheck;
-    //var genSym=cu.genSym;
-    var annotation3 = compiler_1.default.annotation;
-    var getMethod2 = compiler_1.default.getMethod;
-    var getDependingClasses = compiler_1.default.getDependingClasses;
-    var getParams = compiler_1.default.getParams;
-    //-----------
-    function genJS(klass, env, genOptions) {
-        var srcFile = klass.src.tonyu; //file object  //S
-        var srcCont = srcFile.text();
-        function getSource(node) {
-            return compiler_1.default.getSource(srcCont, node);
+const OM = __importStar(require("./ObjectMatcher"));
+const cu = __importStar(require("./compiler"));
+const context_1 = require("./context");
+//export=(cu as any).JSGenerator=(function () {
+// TonyuソースファイルをJavascriptに変換する
+var TH = "_thread", THIZ = "_this", ARGS = "_arguments", FIBPRE = "fiber$", FRMPC = "__pc", LASTPOS = "$LASTPOS", CNTV = "__cnt", CNTC = 100; //G
+var BINDF = "Tonyu.bindFunc";
+var INVOKE_FUNC = "Tonyu.invokeMethod";
+var CALL_FUNC = "Tonyu.callFunc";
+var CHK_NN = "Tonyu.checkNonNull";
+var CLASS_HEAD = "Tonyu.classes.", GLOBAL_HEAD = "Tonyu.globals.";
+var GET_THIS = "this"; //"this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
+var USE_STRICT = '"use strict";%n';
+var ITER = "Tonyu.iterator";
+var SUPER = "__superClass";
+/*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
+        LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
+var ScopeTypes = cu.ScopeTypes;
+//var genSt=cu.newScopeType;
+var stype = cu.getScopeType;
+//var newScope=cu.newScope;
+//var nc=cu.nullCheck;
+//var genSym=cu.genSym;
+var annotation3 = cu.annotation;
+var getMethod2 = cu.getMethod;
+var getDependingClasses = cu.getDependingClasses;
+var getParams = cu.getParams;
+//-----------
+function genJS(klass, env, genOptions) {
+    var srcFile = klass.src.tonyu; //file object  //S
+    var srcCont = srcFile.text();
+    function getSource(node) {
+        return cu.getSource(srcCont, node);
+    }
+    genOptions = genOptions || {};
+    // env.codeBuffer is not recommended(if generate in parallel...?)
+    var buf = genOptions.codeBuffer || env.codeBuffer || (0, IndentBuffer_1.default)({ fixLazyLength: 6 });
+    var traceIndex = genOptions.traceIndex || {};
+    buf.setSrcFile(srcFile);
+    var printf = buf.printf;
+    var ctx = (0, context_1.context)();
+    var debug = false;
+    //var traceTbl=env.traceTbl;
+    // method := fiber | function
+    var decls = klass.decls;
+    var fields = decls.fields, methods = decls.methods, natives = decls.natives;
+    // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数の集まり．親クラスの宣言は含まない
+    var ST = ScopeTypes;
+    var fnSeq = 0;
+    var diagnose = env.options.compiler.diagnose;
+    var genMod = env.options.compiler.genAMD;
+    var doLoopCheck = !env.options.compiler.noLoopCheck;
+    function annotation(node, aobj) {
+        return annotation3(klass.annotation, node, aobj);
+    }
+    function getMethod(name) {
+        return getMethod2(klass, name);
+    }
+    function getClassName(klass) {
+        if (typeof klass == "string")
+            return CLASS_HEAD + (env.aliases[klass] || klass); //CFN  CLASS_HEAD+env.aliases[klass](null check)
+        if (klass.builtin)
+            return klass.fullName; // CFN klass.fullName
+        return CLASS_HEAD + klass.fullName; // CFN  klass.fullName
+    }
+    function getClassNames(cs) {
+        var res = [];
+        cs.forEach(function (c) { res.push(getClassName(c)); });
+        return res;
+    }
+    function enterV(obj, node) {
+        return function (buf) {
+            ctx.enter(obj, function () {
+                v.visit(node);
+            });
+        };
+    }
+    function varAccess(n, si, an) {
+        var t = stype(si);
+        if (t == ST.THVAR) {
+            buf.printf("%s", TH);
         }
-        genOptions = genOptions || {};
-        // env.codeBuffer is not recommended(if generate in parallel...?)
-        var buf = genOptions.codeBuffer || env.codeBuffer || (0, IndentBuffer_1.default)({ fixLazyLength: 6 });
-        var traceIndex = genOptions.traceIndex || {};
-        buf.setSrcFile(srcFile);
-        var printf = buf.printf;
-        var ctx = (0, context_1.default)();
-        var debug = false;
-        //var traceTbl=env.traceTbl;
-        // method := fiber | function
-        var decls = klass.decls;
-        var fields = decls.fields, methods = decls.methods, natives = decls.natives;
-        // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数の集まり．親クラスの宣言は含まない
-        var ST = ScopeTypes;
-        var fnSeq = 0;
-        var diagnose = env.options.compiler.diagnose;
-        var genMod = env.options.compiler.genAMD;
-        var doLoopCheck = !env.options.compiler.noLoopCheck;
-        function annotation(node, aobj) {
-            return annotation3(klass.annotation, node, aobj);
+        else if (t == ST.FIELD || t == ST.PROP) {
+            buf.printf("%s.%s", THIZ, n);
         }
-        function getMethod(name) {
-            return getMethod2(klass, name);
-        }
-        function getClassName(klass) {
-            if (typeof klass == "string")
-                return CLASS_HEAD + (env.aliases[klass] || klass); //CFN  CLASS_HEAD+env.aliases[klass](null check)
-            if (klass.builtin)
-                return klass.fullName; // CFN klass.fullName
-            return CLASS_HEAD + klass.fullName; // CFN  klass.fullName
-        }
-        function getClassNames(cs) {
-            var res = [];
-            cs.forEach(function (c) { res.push(getClassName(c)); });
-            return res;
-        }
-        function enterV(obj, node) {
-            return function (buf) {
-                ctx.enter(obj, function () {
-                    v.visit(node);
-                });
-            };
-        }
-        function varAccess(n, si, an) {
-            var t = stype(si);
-            if (t == ST.THVAR) {
-                buf.printf("%s", TH);
-            }
-            else if (t == ST.FIELD || t == ST.PROP) {
+        else if (t == ST.METHOD) {
+            if (an && an.noBind) {
                 buf.printf("%s.%s", THIZ, n);
             }
-            else if (t == ST.METHOD) {
-                if (an && an.noBind) {
-                    buf.printf("%s.%s", THIZ, n);
-                }
-                else {
-                    buf.printf("%s(%s,%s.%s)", BINDF, THIZ, THIZ, n);
-                }
+            else {
+                buf.printf("%s(%s,%s.%s)", BINDF, THIZ, THIZ, n);
             }
-            else if (t == ST.CLASS) {
-                buf.printf("%s", getClassName(n));
-            }
-            else if (t == ST.GLOBAL) {
-                buf.printf("%s%s", GLOBAL_HEAD, n);
-            }
-            else if (t == ST.PARAM || t == ST.LOCAL || t == ST.NATIVE || t == ST.MODULE) {
-                if ((0, tonyu1_1.isTonyu1)(env.options) && t == ST.NATIVE) {
-                    buf.printf("%s.%s", THIZ, n);
-                }
-                else {
-                    buf.printf("%s", n);
-                }
+        }
+        else if (t == ST.CLASS) {
+            buf.printf("%s", getClassName(n));
+        }
+        else if (t == ST.GLOBAL) {
+            buf.printf("%s%s", GLOBAL_HEAD, n);
+        }
+        else if (t == ST.PARAM || t == ST.LOCAL || t == ST.NATIVE || t == ST.MODULE) {
+            if ((0, tonyu1_1.isTonyu1)(env.options) && t == ST.NATIVE) {
+                buf.printf("%s.%s", THIZ, n);
             }
             else {
-                console.log("Unknown scope type: ", t);
-                throw new Error("Unknown scope type: " + t);
-            }
-            return si;
-        }
-        function noSurroundCompoundF(node) {
-            return function () {
-                noSurroundCompound.apply(this, [node]);
-            };
-        }
-        function noSurroundCompound(node) {
-            if (node.type == "compound") {
-                ctx.enter({ noWait: true }, function () {
-                    buf.printf("%j%n", ["%n", node.stmts]);
-                    // buf.printf("%{%j%n%}", ["%n",node.stmts]);
-                });
-            }
-            else {
-                v.visit(node);
+                buf.printf("%s", n);
             }
         }
-        function lastPosF(node) {
-            return function () {
-                /*if (ctx.noLastPos) return;
-                buf.printf("%s%s=%s;//%s%n", (env.options.compiler.commentLastPos?"//":""),
-                        LASTPOS, traceTbl.add(klass,node.pos ), klass.fullName+":"+node.pos);*/
-            };
+        else {
+            console.log("Unknown scope type: ", t);
+            throw new Error("Unknown scope type: " + t);
         }
-        var THNode = { type: "THNode" }; //G
-        const v = buf.visitor = (0, Visitor_1.default)({
-            THNode: function (node) {
-                buf.printf(TH);
-            },
-            dummy: function (node) {
-                buf.printf("", node);
-            },
-            literal: function (node) {
-                buf.printf("%s", node.text);
-            },
-            paramDecl: function (node) {
-                buf.printf("%v", node.name);
-            },
-            paramDecls: function (node) {
-                buf.printf("(%j)", [", ", node.params]);
-            },
-            funcDeclHead: function (node) {
-                buf.printf("function %v %v", node.name, node.params);
-            },
-            funcDecl: function (node) {
-            },
-            "return": function (node) {
-                if (ctx.inTry)
-                    throw (0, TError_1.default)((0, R_1.default)("cannotWriteReturnInTryStatement"), srcFile, node.pos);
-                if (!ctx.noWait) {
-                    if (node.value) {
-                        var t = annotation(node.value).fiberCall;
-                        if (t) {
-                            buf.printf(//VDC
-                            "%s.%s%s(%j);%n" + //FIBERCALL
-                                "%s=%s;return;%n" +
-                                "%}case %d:%{" +
-                                "%s.exit(%s.retVal);return;%n", THIZ, FIBPRE, t.N, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++, TH, TH);
-                        }
-                        else {
-                            buf.printf("%s.exit(%v);return;", TH, node.value);
-                        }
-                    }
-                    else {
-                        buf.printf("%s.exit(%s);return;", TH, THIZ);
-                    }
-                }
-                else {
-                    if (ctx.threadAvail) {
-                        if (node.value) {
-                            buf.printf("%s.retVal=%v;return;%n", TH, node.value);
-                        }
-                        else {
-                            buf.printf("%s.retVal=%s;return;%n", TH, THIZ);
-                        }
-                    }
-                    else {
-                        if (node.value) {
-                            buf.printf("return %v;", node.value);
-                        }
-                        else {
-                            buf.printf("return %s;", THIZ);
-                        }
-                    }
-                }
-            },
-            /*program: function (node) {
-                genClass(node.stmts);
-            },*/
-            number: function (node) {
-                buf.printf("%s", node.value);
-            },
-            reservedConst: function (node) {
-                if (node.text == "this") {
-                    buf.printf("%s", THIZ);
-                }
-                else if (node.text == "arguments" && ctx.threadAvail) {
-                    buf.printf("%s", ARGS);
-                }
-                else if (node.text == TH) {
-                    buf.printf("%s", (ctx.threadAvail) ? TH : "null");
-                }
-                else {
-                    buf.printf("%s", node.text);
-                }
-            },
-            varDecl: function (node) {
-                var a = annotation(node);
-                var thisForVIM = a.varInMain ? THIZ + "." : "";
+        return si;
+    }
+    function noSurroundCompoundF(node) {
+        return function () {
+            noSurroundCompound.apply(this, [node]);
+        };
+    }
+    function noSurroundCompound(node) {
+        if (node.type == "compound") {
+            ctx.enter({ noWait: true }, function () {
+                buf.printf("%j%n", ["%n", node.stmts]);
+                // buf.printf("%{%j%n%}", ["%n",node.stmts]);
+            });
+        }
+        else {
+            v.visit(node);
+        }
+    }
+    function lastPosF(node) {
+        return function () {
+            /*if (ctx.noLastPos) return;
+            buf.printf("%s%s=%s;//%s%n", (env.options.compiler.commentLastPos?"//":""),
+                    LASTPOS, traceTbl.add(klass,node.pos ), klass.fullName+":"+node.pos);*/
+        };
+    }
+    var THNode = { type: "THNode" }; //G
+    const v = buf.visitor = (0, Visitor_1.default)({
+        THNode: function (node) {
+            buf.printf(TH);
+        },
+        dummy: function (node) {
+            buf.printf("", node);
+        },
+        literal: function (node) {
+            buf.printf("%s", node.text);
+        },
+        paramDecl: function (node) {
+            buf.printf("%v", node.name);
+        },
+        paramDecls: function (node) {
+            buf.printf("(%j)", [", ", node.params]);
+        },
+        funcDeclHead: function (node) {
+            buf.printf("function %v %v", node.name, node.params);
+        },
+        funcDecl: function (node) {
+        },
+        "return": function (node) {
+            if (ctx.inTry)
+                throw (0, TError_1.default)((0, R_1.default)("cannotWriteReturnInTryStatement"), srcFile, node.pos);
+            if (!ctx.noWait) {
                 if (node.value) {
-                    var t = (!ctx.noWait) && annotation(node).fiberCall;
+                    var t = annotation(node.value).fiberCall;
                     if (t) {
-                        assert_1.default.is(ctx.pc, Number);
                         buf.printf(//VDC
                         "%s.%s%s(%j);%n" + //FIBERCALL
-                            "%s=%s;return;%n" + /*B*/
+                            "%s=%s;return;%n" +
                             "%}case %d:%{" +
-                            "%s%v=%s.retVal;%n", THIZ, FIBPRE, t.N, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++, thisForVIM, node.name, TH);
+                            "%s.exit(%s.retVal);return;%n", THIZ, FIBPRE, t.N, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++, TH, TH);
                     }
                     else {
-                        buf.printf("%s%v = %v;%n", thisForVIM, node.name, node.value);
+                        buf.printf("%s.exit(%v);return;", TH, node.value);
                     }
                 }
                 else {
-                    //buf.printf("%v", node.name);
+                    buf.printf("%s.exit(%s);return;", TH, THIZ);
                 }
-            },
-            varsDecl: function (node) {
-                var decls = node.decls.filter(function (n) { return n.value; });
-                if (decls.length > 0) {
-                    lastPosF(node)();
-                    decls.forEach(function (decl) {
-                        buf.printf("%v", decl);
-                    });
-                }
-            },
-            jsonElem: function (node) {
-                if (node.value) {
-                    buf.printf("%v: %v", node.key, node.value);
+            }
+            else {
+                if (ctx.threadAvail) {
+                    if (node.value) {
+                        buf.printf("%s.retVal=%v;return;%n", TH, node.value);
+                    }
+                    else {
+                        buf.printf("%s.retVal=%s;return;%n", TH, THIZ);
+                    }
                 }
                 else {
-                    buf.printf("%v: %f", node.key, function () {
-                        var si = varAccess(node.key.text, annotation(node).scopeInfo, annotation(node));
-                    });
+                    if (node.value) {
+                        buf.printf("return %v;", node.value);
+                    }
+                    else {
+                        buf.printf("return %s;", THIZ);
+                    }
                 }
-            },
-            objlit: function (node) {
-                buf.printf("{%j}", [",", node.elems]);
-            },
-            arylit: function (node) {
-                buf.printf("[%j]", [",", node.elems]);
-            },
-            funcExpr: function (node) {
-                genFuncExpr(node);
-            },
-            parenExpr: function (node) {
-                buf.printf("(%v)", node.expr);
-            },
-            varAccess: function (node) {
-                var n = node.name.text;
-                var si = varAccess(n, annotation(node).scopeInfo, annotation(node));
-            },
-            exprstmt: function (node) {
-                var t = {};
-                lastPosF(node)();
-                if (!ctx.noWait) {
-                    t = annotation(node).fiberCall || {};
-                }
-                if (t.type == "noRet") {
-                    buf.printf("%s.%s%s(%j);%n" + //FIBERCALL
-                        "%s=%s;return;%n" + /*B*/
-                        "%}case %d:%{", THIZ, FIBPRE, t.N, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++);
-                }
-                else if (t.type == "ret") {
+            }
+        },
+        /*program: function (node) {
+            genClass(node.stmts);
+        },*/
+        number: function (node) {
+            buf.printf("%s", node.value);
+        },
+        reservedConst: function (node) {
+            if (node.text == "this") {
+                buf.printf("%s", THIZ);
+            }
+            else if (node.text == "arguments" && ctx.threadAvail) {
+                buf.printf("%s", ARGS);
+            }
+            else if (node.text == TH) {
+                buf.printf("%s", (ctx.threadAvail) ? TH : "null");
+            }
+            else {
+                buf.printf("%s", node.text);
+            }
+        },
+        varDecl: function (node) {
+            var a = annotation(node);
+            var thisForVIM = a.varInMain ? THIZ + "." : "";
+            if (node.value) {
+                var t = (!ctx.noWait) && annotation(node).fiberCall;
+                if (t) {
+                    assert_1.default.is(ctx.pc, Number);
                     buf.printf(//VDC
                     "%s.%s%s(%j);%n" + //FIBERCALL
                         "%s=%s;return;%n" + /*B*/
                         "%}case %d:%{" +
-                        "%v%v%s.retVal;%n", THIZ, FIBPRE, t.N, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++, t.L, t.O, TH);
-                }
-                else if (t.type == "noRetSuper") {
-                    const p = SUPER; //getClassName(klass.superclass);
-                    buf.printf("%s.prototype.%s%s.apply( %s, [%j]);%n" + //FIBERCALL
-                        "%s=%s;return;%n" + /*B*/
-                        "%}case %d:%{", p, FIBPRE, t.S.name.text, THIZ, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++);
-                }
-                else if (t.type == "retSuper") {
-                    const p = SUPER; //getClassName(klass.superclass);
-                    buf.printf("%s.prototype.%s%s.apply( %s, [%j]);%n" + //FIBERCALL
-                        "%s=%s;return;%n" + /*B*/
-                        "%}case %d:%{" +
-                        "%v%v%s.retVal;%n", p, FIBPRE, t.S.name.text, THIZ, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++, t.L, t.O, TH);
+                        "%s%v=%s.retVal;%n", THIZ, FIBPRE, t.N, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++, thisForVIM, node.name, TH);
                 }
                 else {
-                    buf.printf("%v;", node.expr);
+                    buf.printf("%s%v = %v;%n", thisForVIM, node.name, node.value);
                 }
-            },
-            infix: function (node) {
-                var opn = node.op.text;
-                /*if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
-                    checkLVal(node.left);
-                }*/
-                if (diagnose) {
-                    if (opn == "+" || opn == "-" || opn == "*" || opn == "/" || opn == "%") {
-                        buf.printf("%s(%v,%l)%v%s(%v,%l)", CHK_NN, node.left, getSource(node.left), node.op, CHK_NN, node.right, getSource(node.right));
-                        return;
-                    }
-                    if (opn == "+=" || opn == "-=" || opn == "*=" || opn == "/=" || opn == "%=") {
-                        buf.printf("%v%v%s(%v,%l)", node.left, node.op, CHK_NN, node.right, getSource(node.right));
-                        return;
-                    }
+            }
+            else {
+                //buf.printf("%v", node.name);
+            }
+        },
+        varsDecl: function (node) {
+            var decls = node.decls.filter(function (n) { return n.value; });
+            if (decls.length > 0) {
+                lastPosF(node)();
+                decls.forEach(function (decl) {
+                    buf.printf("%v", decl);
+                });
+            }
+        },
+        jsonElem: function (node) {
+            if (node.value) {
+                buf.printf("%v: %v", node.key, node.value);
+            }
+            else {
+                buf.printf("%v: %f", node.key, function () {
+                    var si = varAccess(node.key.text, annotation(node).scopeInfo, annotation(node));
+                });
+            }
+        },
+        objlit: function (node) {
+            buf.printf("{%j}", [",", node.elems]);
+        },
+        arylit: function (node) {
+            buf.printf("[%j]", [",", node.elems]);
+        },
+        funcExpr: function (node) {
+            genFuncExpr(node);
+        },
+        parenExpr: function (node) {
+            buf.printf("(%v)", node.expr);
+        },
+        varAccess: function (node) {
+            var n = node.name.text;
+            var si = varAccess(n, annotation(node).scopeInfo, annotation(node));
+        },
+        exprstmt: function (node) {
+            var t = {};
+            lastPosF(node)();
+            if (!ctx.noWait) {
+                t = annotation(node).fiberCall || {};
+            }
+            if (t.type == "noRet") {
+                buf.printf("%s.%s%s(%j);%n" + //FIBERCALL
+                    "%s=%s;return;%n" + /*B*/
+                    "%}case %d:%{", THIZ, FIBPRE, t.N, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++);
+            }
+            else if (t.type == "ret") {
+                buf.printf(//VDC
+                "%s.%s%s(%j);%n" + //FIBERCALL
+                    "%s=%s;return;%n" + /*B*/
+                    "%}case %d:%{" +
+                    "%v%v%s.retVal;%n", THIZ, FIBPRE, t.N, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++, t.L, t.O, TH);
+            }
+            else if (t.type == "noRetSuper") {
+                const p = SUPER; //getClassName(klass.superclass);
+                buf.printf("%s.prototype.%s%s.apply( %s, [%j]);%n" + //FIBERCALL
+                    "%s=%s;return;%n" + /*B*/
+                    "%}case %d:%{", p, FIBPRE, t.S.name.text, THIZ, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++);
+            }
+            else if (t.type == "retSuper") {
+                const p = SUPER; //getClassName(klass.superclass);
+                buf.printf("%s.prototype.%s%s.apply( %s, [%j]);%n" + //FIBERCALL
+                    "%s=%s;return;%n" + /*B*/
+                    "%}case %d:%{" +
+                    "%v%v%s.retVal;%n", p, FIBPRE, t.S.name.text, THIZ, [", ", [THNode].concat(t.A)], FRMPC, ctx.pc, ctx.pc++, t.L, t.O, TH);
+            }
+            else {
+                buf.printf("%v;", node.expr);
+            }
+        },
+        infix: function (node) {
+            var opn = node.op.text;
+            /*if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
+                checkLVal(node.left);
+            }*/
+            if (diagnose) {
+                if (opn == "+" || opn == "-" || opn == "*" || opn == "/" || opn == "%") {
+                    buf.printf("%s(%v,%l)%v%s(%v,%l)", CHK_NN, node.left, getSource(node.left), node.op, CHK_NN, node.right, getSource(node.right));
+                    return;
                 }
-                if (node.op.type === "is") {
-                    buf.printf("Tonyu.is(%v,%v)", node.left, node.right);
+                if (opn == "+=" || opn == "-=" || opn == "*=" || opn == "/=" || opn == "%=") {
+                    buf.printf("%v%v%s(%v,%l)", node.left, node.op, CHK_NN, node.right, getSource(node.right));
+                    return;
+                }
+            }
+            if (node.op.type === "is") {
+                buf.printf("Tonyu.is(%v,%v)", node.left, node.right);
+            }
+            else {
+                buf.printf("%v%v%v", node.left, node.op, node.right);
+            }
+        },
+        trifixr: function (node) {
+            buf.printf("%v%v%v%v%v", node.left, node.op1, node.mid, node.op2, node.right);
+        },
+        prefix: function (node) {
+            if (node.op.text === "__typeof") {
+                var a = annotation(node.right);
+                if (a.vtype) {
+                    buf.printf("%l", a.vtype.name || a.vtype.fullName || "No type name?");
                 }
                 else {
-                    buf.printf("%v%v%v", node.left, node.op, node.right);
+                    buf.printf("%l", "Any");
                 }
-            },
-            trifixr: function (node) {
-                buf.printf("%v%v%v%v%v", node.left, node.op1, node.mid, node.op2, node.right);
-            },
-            prefix: function (node) {
-                if (node.op.text === "__typeof") {
-                    var a = annotation(node.right);
-                    if (a.vtype) {
-                        buf.printf("%l", a.vtype.name || a.vtype.fullName || "No type name?");
+                return;
+            }
+            buf.printf("%v %v", node.op, node.right);
+        },
+        postfix: function (node) {
+            var a = annotation(node);
+            if (diagnose) {
+                if (a.myMethodCall) {
+                    const mc = a.myMethodCall;
+                    var si = mc.scopeInfo;
+                    var st = stype(si);
+                    if (st == ST.FIELD || st == ST.PROP || st == ST.METHOD) {
+                        buf.printf("%s(%s, %l, [%j], %l )", INVOKE_FUNC, THIZ, mc.name, [",", mc.args], "this");
                     }
                     else {
-                        buf.printf("%l", "Any");
+                        buf.printf("%s(%v, [%j], %l)", CALL_FUNC, node.left, [",", mc.args], getSource(node.left));
                     }
                     return;
                 }
-                buf.printf("%v %v", node.op, node.right);
-            },
-            postfix: function (node) {
-                var a = annotation(node);
-                if (diagnose) {
-                    if (a.myMethodCall) {
-                        const mc = a.myMethodCall;
-                        var si = mc.scopeInfo;
-                        var st = stype(si);
-                        if (st == ST.FIELD || st == ST.PROP || st == ST.METHOD) {
-                            buf.printf("%s(%s, %l, [%j], %l )", INVOKE_FUNC, THIZ, mc.name, [",", mc.args], "this");
-                        }
-                        else {
-                            buf.printf("%s(%v, [%j], %l)", CALL_FUNC, node.left, [",", mc.args], getSource(node.left));
-                        }
-                        return;
-                    }
-                    else if (a.othersMethodCall) {
-                        var oc = a.othersMethodCall;
-                        buf.printf("%s(%v, %l, [%j], %l )", INVOKE_FUNC, oc.target, oc.name, [",", oc.args], getSource(oc.target));
-                        return;
-                    }
-                    else if (a.memberAccess) {
-                        var ma = a.memberAccess;
-                        buf.printf("%s(%v,%l).%s", CHK_NN, ma.target, getSource(ma.target), ma.name);
-                        return;
-                    }
+                else if (a.othersMethodCall) {
+                    var oc = a.othersMethodCall;
+                    buf.printf("%s(%v, %l, [%j], %l )", INVOKE_FUNC, oc.target, oc.name, [",", oc.args], getSource(oc.target));
+                    return;
                 }
-                else if (a.myMethodCall) {
-                    const mc = a.myMethodCall;
-                    const si = mc.scopeInfo;
-                    const st = stype(si);
-                    if (st == ST.METHOD) {
-                        buf.printf("%s.%s(%j)", THIZ, mc.name, [",", mc.args]);
-                        return;
-                    }
+                else if (a.memberAccess) {
+                    var ma = a.memberAccess;
+                    buf.printf("%s(%v,%l).%s", CHK_NN, ma.target, getSource(ma.target), ma.name);
+                    return;
                 }
-                buf.printf("%v%v", node.left, node.op);
-            },
-            "break": function (node) {
-                if (!ctx.noWait) {
-                    if (ctx.inTry && ctx.exitTryOnJump)
-                        throw (0, TError_1.default)((0, R_1.default)("cannotWriteBreakInTryStatement"), srcFile, node.pos);
-                    if (ctx.closestBrk) {
-                        buf.printf("%s=%z; break;%n", FRMPC, ctx.closestBrk);
+            }
+            else if (a.myMethodCall) {
+                const mc = a.myMethodCall;
+                const si = mc.scopeInfo;
+                const st = stype(si);
+                if (st == ST.METHOD) {
+                    buf.printf("%s.%s(%j)", THIZ, mc.name, [",", mc.args]);
+                    return;
+                }
+            }
+            buf.printf("%v%v", node.left, node.op);
+        },
+        "break": function (node) {
+            if (!ctx.noWait) {
+                if (ctx.inTry && ctx.exitTryOnJump)
+                    throw (0, TError_1.default)((0, R_1.default)("cannotWriteBreakInTryStatement"), srcFile, node.pos);
+                if (ctx.closestBrk) {
+                    buf.printf("%s=%z; break;%n", FRMPC, ctx.closestBrk);
+                }
+                else {
+                    throw (0, TError_1.default)((0, R_1.default)("breakShouldBeUsedInIterationOrSwitchStatement"), srcFile, node.pos);
+                }
+            }
+            else {
+                buf.printf("break;%n");
+            }
+        },
+        "continue": function (node) {
+            if (!ctx.noWait) {
+                if (ctx.inTry && ctx.exitTryOnJump)
+                    throw (0, TError_1.default)((0, R_1.default)("cannotWriteContinueInTryStatement"), srcFile, node.pos);
+                if (typeof (ctx.closestCnt) == "number") {
+                    buf.printf("%s=%s; break;%n", FRMPC, ctx.closestCnt);
+                }
+                else if (ctx.closestCnt) {
+                    buf.printf("%s=%z; break;%n", FRMPC, ctx.closestCnt);
+                }
+                else {
+                    throw (0, TError_1.default)((0, R_1.default)("continueShouldBeUsedInIterationStatement"), srcFile, node.pos);
+                }
+            }
+            else {
+                buf.printf("continue;%n");
+            }
+        },
+        "try": function (node) {
+            var an = annotation(node);
+            if (!ctx.noWait &&
+                (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
+                //buf.printf("/*try catch in wait mode is not yet supported*/%n");
+                if (node.catches.length != 1 || node.catches[0].type != "catch") {
+                    throw (0, TError_1.default)((0, R_1.default)("cannotWriteTwoOrMoreCatch"), srcFile, node.pos);
+                }
+                var ct = node.catches[0];
+                var catchPos = {}, finPos = {};
+                buf.printf("%s.enterTry(%z);%n", TH, catchPos);
+                buf.printf("%f", enterV({ inTry: true, exitTryOnJump: true }, node.stmt));
+                buf.printf("%s.exitTry();%n", TH);
+                buf.printf("%s=%z;break;%n", FRMPC, finPos);
+                buf.printf("%}case %f:%{", function () {
+                    buf.print(catchPos.put(ctx.pc++));
+                });
+                buf.printf("%s=%s.startCatch();%n", ct.name.text, TH);
+                //buf.printf("%s.exitTry();%n",TH);
+                buf.printf("%v%n", ct.stmt);
+                buf.printf("%}case %f:%{", function () {
+                    buf.print(finPos.put(ctx.pc++));
+                });
+            }
+            else {
+                ctx.enter({ noWait: true }, function () {
+                    buf.printf("try {%{%f%n%}} ", noSurroundCompoundF(node.stmt));
+                    node.catches.forEach(v.visit);
+                });
+            }
+        },
+        "catch": function (node) {
+            buf.printf("catch (%s) {%{%f%n%}}", node.name.text, noSurroundCompoundF(node.stmt));
+        },
+        "throw": function (node) {
+            buf.printf("throw %v;%n", node.ex);
+        },
+        "switch": function (node) {
+            if (!ctx.noWait) {
+                var labels = node.cases.map(function (c) {
+                    return buf.lazy();
+                });
+                if (node.defs)
+                    labels.push(buf.lazy());
+                var brkpos = buf.lazy();
+                buf.printf("switch (%v) {%{" +
+                    "%f" +
+                    "%n%}}%n" +
+                    "break;%n", node.value, function setpc() {
+                    var i = 0;
+                    node.cases.forEach(function (c) {
+                        buf.printf("%}case %v:%{%s=%z;break;%n", c.value, FRMPC, labels[i]);
+                        i++;
+                    });
+                    if (node.defs) {
+                        buf.printf("%}default:%{%s=%z;break;%n", FRMPC, labels[i]);
                     }
                     else {
-                        throw (0, TError_1.default)((0, R_1.default)("breakShouldBeUsedInIterationOrSwitchStatement"), srcFile, node.pos);
+                        buf.printf("%}default:%{%s=%z;break;%n", FRMPC, brkpos);
                     }
-                }
-                else {
-                    buf.printf("break;%n");
-                }
-            },
-            "continue": function (node) {
-                if (!ctx.noWait) {
-                    if (ctx.inTry && ctx.exitTryOnJump)
-                        throw (0, TError_1.default)((0, R_1.default)("cannotWriteContinueInTryStatement"), srcFile, node.pos);
-                    if (typeof (ctx.closestCnt) == "number") {
-                        buf.printf("%s=%s; break;%n", FRMPC, ctx.closestCnt);
+                });
+                ctx.enter({ closestBrk: brkpos }, function () {
+                    var i = 0;
+                    node.cases.forEach(function (c) {
+                        buf.printf("%}case %f:%{" +
+                            "%j%n", function () { buf.print(labels[i].put(ctx.pc++)); }, ["%n", c.stmts]);
+                        i++;
+                    });
+                    if (node.defs) {
+                        buf.printf("%}case %f:%{" +
+                            "%j%n", function () { buf.print(labels[i].put(ctx.pc++)); }, ["%n", node.defs.stmts]);
                     }
-                    else if (ctx.closestCnt) {
-                        buf.printf("%s=%z; break;%n", FRMPC, ctx.closestCnt);
-                    }
-                    else {
-                        throw (0, TError_1.default)((0, R_1.default)("continueShouldBeUsedInIterationStatement"), srcFile, node.pos);
-                    }
-                }
-                else {
-                    buf.printf("continue;%n");
-                }
-            },
-            "try": function (node) {
-                var an = annotation(node);
-                if (!ctx.noWait &&
-                    (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
-                    //buf.printf("/*try catch in wait mode is not yet supported*/%n");
-                    if (node.catches.length != 1 || node.catches[0].type != "catch") {
-                        throw (0, TError_1.default)((0, R_1.default)("cannotWriteTwoOrMoreCatch"), srcFile, node.pos);
-                    }
-                    var ct = node.catches[0];
-                    var catchPos = {}, finPos = {};
-                    buf.printf("%s.enterTry(%z);%n", TH, catchPos);
-                    buf.printf("%f", enterV({ inTry: true, exitTryOnJump: true }, node.stmt));
-                    buf.printf("%s.exitTry();%n", TH);
-                    buf.printf("%s=%z;break;%n", FRMPC, finPos);
-                    buf.printf("%}case %f:%{", function () {
-                        buf.print(catchPos.put(ctx.pc++));
-                    });
-                    buf.printf("%s=%s.startCatch();%n", ct.name.text, TH);
-                    //buf.printf("%s.exitTry();%n",TH);
-                    buf.printf("%v%n", ct.stmt);
-                    buf.printf("%}case %f:%{", function () {
-                        buf.print(finPos.put(ctx.pc++));
-                    });
-                }
-                else {
-                    ctx.enter({ noWait: true }, function () {
-                        buf.printf("try {%{%f%n%}} ", noSurroundCompoundF(node.stmt));
-                        node.catches.forEach(v.visit);
-                    });
-                }
-            },
-            "catch": function (node) {
-                buf.printf("catch (%s) {%{%f%n%}}", node.name.text, noSurroundCompoundF(node.stmt));
-            },
-            "throw": function (node) {
-                buf.printf("throw %v;%n", node.ex);
-            },
-            "switch": function (node) {
-                if (!ctx.noWait) {
-                    var labels = node.cases.map(function (c) {
-                        return buf.lazy();
-                    });
-                    if (node.defs)
-                        labels.push(buf.lazy());
-                    var brkpos = buf.lazy();
-                    buf.printf("switch (%v) {%{" +
-                        "%f" +
-                        "%n%}}%n" +
-                        "break;%n", node.value, function setpc() {
-                        var i = 0;
-                        node.cases.forEach(function (c) {
-                            buf.printf("%}case %v:%{%s=%z;break;%n", c.value, FRMPC, labels[i]);
-                            i++;
-                        });
-                        if (node.defs) {
-                            buf.printf("%}default:%{%s=%z;break;%n", FRMPC, labels[i]);
-                        }
-                        else {
-                            buf.printf("%}default:%{%s=%z;break;%n", FRMPC, brkpos);
-                        }
-                    });
-                    ctx.enter({ closestBrk: brkpos }, function () {
-                        var i = 0;
-                        node.cases.forEach(function (c) {
-                            buf.printf("%}case %f:%{" +
-                                "%j%n", function () { buf.print(labels[i].put(ctx.pc++)); }, ["%n", c.stmts]);
-                            i++;
-                        });
-                        if (node.defs) {
-                            buf.printf("%}case %f:%{" +
-                                "%j%n", function () { buf.print(labels[i].put(ctx.pc++)); }, ["%n", node.defs.stmts]);
-                        }
-                        buf.printf("case %f:%n", function () { buf.print(brkpos.put(ctx.pc++)); });
-                    });
-                }
-                else {
-                    buf.printf("switch (%v) {%{" +
-                        "%j" +
-                        (node.defs ? "%n%v" : "%D") +
-                        "%n%}}", node.value, ["%n", node.cases], node.defs);
-                }
-            },
-            "case": function (node) {
-                buf.printf("%}case %v:%{%j", node.value, ["%n", node.stmts]);
-            },
-            "default": function (node) {
-                buf.printf("%}default:%{%j", ["%n", node.stmts]);
-            },
-            "while": function (node) {
-                lastPosF(node)();
-                var an = annotation(node);
+                    buf.printf("case %f:%n", function () { buf.print(brkpos.put(ctx.pc++)); });
+                });
+            }
+            else {
+                buf.printf("switch (%v) {%{" +
+                    "%j" +
+                    (node.defs ? "%n%v" : "%D") +
+                    "%n%}}", node.value, ["%n", node.cases], node.defs);
+            }
+        },
+        "case": function (node) {
+            buf.printf("%}case %v:%{%j", node.value, ["%n", node.stmts]);
+        },
+        "default": function (node) {
+            buf.printf("%}default:%{%j", ["%n", node.stmts]);
+        },
+        "while": function (node) {
+            lastPosF(node)();
+            var an = annotation(node);
+            if (!ctx.noWait &&
+                (an.fiberCallRequired || an.hasReturn)) {
+                var brkpos = buf.lazy();
+                var pc = ctx.pc++;
+                var isTrue = node.cond.type == "reservedConst" && node.cond.text == "true";
+                buf.printf(
+                /*B*/
+                "%}case %d:%{" +
+                    (isTrue ? "%D%D%D" : "if (!(%v)) { %s=%z; break; }%n") +
+                    "%f%n" +
+                    "%s=%s;break;%n" +
+                    "%}case %f:%{", pc, node.cond, FRMPC, brkpos, enterV({ closestBrk: brkpos, closestCnt: pc, exitTryOnJump: false }, node.loop), FRMPC, pc, function () { buf.print(brkpos.put(ctx.pc++)); });
+            }
+            else {
+                ctx.enter({ noWait: true }, function () {
+                    buf.printf("while (%v) {%{" +
+                        (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
+                        "%f%n" +
+                        "%}}", node.cond, noSurroundCompoundF(node.loop));
+                });
+            }
+        },
+        "do": function (node) {
+            lastPosF(node)();
+            var an = annotation(node);
+            if (!ctx.noWait &&
+                (an.fiberCallRequired || an.hasReturn)) {
+                var brkpos = buf.lazy();
+                var cntpos = buf.lazy();
+                var pc = ctx.pc++;
+                buf.printf("%}case %d:%{" +
+                    "%f%n" +
+                    "%}case %f:%{" +
+                    "if (%v) { %s=%s; break; }%n" +
+                    "%}case %f:%{", pc, enterV({ closestBrk: brkpos, closestCnt: cntpos, exitTryOnJump: false }, node.loop), function () { buf.print(cntpos.put(ctx.pc++)); }, node.cond, FRMPC, pc, function () { buf.print(brkpos.put(ctx.pc++)); });
+            }
+            else {
+                ctx.enter({ noWait: true }, function () {
+                    buf.printf("do {%{" +
+                        (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
+                        "%f%n" +
+                        "%}} while (%v);%n", noSurroundCompoundF(node.loop), node.cond);
+                });
+            }
+        },
+        "for": function (node) {
+            lastPosF(node)();
+            var an = annotation(node);
+            if (node.inFor.type == "forin") {
+                var itn = annotation(node.inFor).iterName;
                 if (!ctx.noWait &&
                     (an.fiberCallRequired || an.hasReturn)) {
                     var brkpos = buf.lazy();
                     var pc = ctx.pc++;
-                    var isTrue = node.cond.type == "reservedConst" && node.cond.text == "true";
-                    buf.printf(
-                    /*B*/
-                    "%}case %d:%{" +
-                        (isTrue ? "%D%D%D" : "if (!(%v)) { %s=%z; break; }%n") +
+                    buf.printf("%s=%s(%v,%s);%n" +
+                        "%}case %d:%{" +
+                        "if (!(%s.next())) { %s=%z; break; }%n" +
+                        "%f%n" +
                         "%f%n" +
                         "%s=%s;break;%n" +
-                        "%}case %f:%{", pc, node.cond, FRMPC, brkpos, enterV({ closestBrk: brkpos, closestCnt: pc, exitTryOnJump: false }, node.loop), FRMPC, pc, function () { buf.print(brkpos.put(ctx.pc++)); });
+                        "%}case %f:%{", itn, ITER, node.inFor.set, node.inFor.vars.length, pc, itn, FRMPC, brkpos, getElemF(itn, node.inFor.isVar, node.inFor.vars), enterV({ closestBrk: brkpos, closestCnt: pc, exitTryOnJump: false }, node.loop), //node.loop,
+                    FRMPC, pc, function (buf) { buf.print(brkpos.put(ctx.pc++)); });
                 }
                 else {
                     ctx.enter({ noWait: true }, function () {
-                        buf.printf("while (%v) {%{" +
-                            (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
+                        buf.printf("%s=%s(%v,%s);%n" +
+                            "while(%s.next()) {%{" +
                             "%f%n" +
-                            "%}}", node.cond, noSurroundCompoundF(node.loop));
+                            "%f%n" +
+                            "%}}", itn, ITER, node.inFor.set, node.inFor.vars.length, itn, getElemF(itn, node.inFor.isVar, node.inFor.vars), noSurroundCompoundF(node.loop));
                     });
                 }
-            },
-            "do": function (node) {
-                lastPosF(node)();
-                var an = annotation(node);
+            }
+            else {
                 if (!ctx.noWait &&
                     (an.fiberCallRequired || an.hasReturn)) {
-                    var brkpos = buf.lazy();
+                    const brkpos = buf.lazy();
                     var cntpos = buf.lazy();
-                    var pc = ctx.pc++;
-                    buf.printf("%}case %d:%{" +
+                    const pc = ctx.pc++;
+                    buf.printf("%v%n" +
+                        "%}case %d:%{" +
+                        "if (!(%v)) { %s=%z; break; }%n" +
                         "%f%n" +
                         "%}case %f:%{" +
-                        "if (%v) { %s=%s; break; }%n" +
-                        "%}case %f:%{", pc, enterV({ closestBrk: brkpos, closestCnt: cntpos, exitTryOnJump: false }, node.loop), function () { buf.print(cntpos.put(ctx.pc++)); }, node.cond, FRMPC, pc, function () { buf.print(brkpos.put(ctx.pc++)); });
+                        "%v;%n" +
+                        "%s=%s;break;%n" +
+                        "%}case %f:%{", node.inFor.init, pc, node.inFor.cond, FRMPC, brkpos, enterV({ closestBrk: brkpos, closestCnt: cntpos, exitTryOnJump: false }, node.loop), //node.loop,
+                    function (buf) { buf.print(cntpos.put(ctx.pc++)); }, node.inFor.next, FRMPC, pc, function (buf) { buf.print(brkpos.put(ctx.pc++)); });
                 }
                 else {
                     ctx.enter({ noWait: true }, function () {
-                        buf.printf("do {%{" +
-                            (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
-                            "%f%n" +
-                            "%}} while (%v);%n", noSurroundCompoundF(node.loop), node.cond);
-                    });
-                }
-            },
-            "for": function (node) {
-                lastPosF(node)();
-                var an = annotation(node);
-                if (node.inFor.type == "forin") {
-                    var itn = annotation(node.inFor).iterName;
-                    if (!ctx.noWait &&
-                        (an.fiberCallRequired || an.hasReturn)) {
-                        var brkpos = buf.lazy();
-                        var pc = ctx.pc++;
-                        buf.printf("%s=%s(%v,%s);%n" +
-                            "%}case %d:%{" +
-                            "if (!(%s.next())) { %s=%z; break; }%n" +
-                            "%f%n" +
-                            "%f%n" +
-                            "%s=%s;break;%n" +
-                            "%}case %f:%{", itn, ITER, node.inFor.set, node.inFor.vars.length, pc, itn, FRMPC, brkpos, getElemF(itn, node.inFor.isVar, node.inFor.vars), enterV({ closestBrk: brkpos, closestCnt: pc, exitTryOnJump: false }, node.loop), //node.loop,
-                        FRMPC, pc, function (buf) { buf.print(brkpos.put(ctx.pc++)); });
-                    }
-                    else {
-                        ctx.enter({ noWait: true }, function () {
-                            buf.printf("%s=%s(%v,%s);%n" +
-                                "while(%s.next()) {%{" +
-                                "%f%n" +
-                                "%f%n" +
-                                "%}}", itn, ITER, node.inFor.set, node.inFor.vars.length, itn, getElemF(itn, node.inFor.isVar, node.inFor.vars), noSurroundCompoundF(node.loop));
-                        });
-                    }
-                }
-                else {
-                    if (!ctx.noWait &&
-                        (an.fiberCallRequired || an.hasReturn)) {
-                        const brkpos = buf.lazy();
-                        var cntpos = buf.lazy();
-                        const pc = ctx.pc++;
-                        buf.printf("%v%n" +
-                            "%}case %d:%{" +
-                            "if (!(%v)) { %s=%z; break; }%n" +
-                            "%f%n" +
-                            "%}case %f:%{" +
-                            "%v;%n" +
-                            "%s=%s;break;%n" +
-                            "%}case %f:%{", node.inFor.init, pc, node.inFor.cond, FRMPC, brkpos, enterV({ closestBrk: brkpos, closestCnt: cntpos, exitTryOnJump: false }, node.loop), //node.loop,
-                        function (buf) { buf.print(cntpos.put(ctx.pc++)); }, node.inFor.next, FRMPC, pc, function (buf) { buf.print(brkpos.put(ctx.pc++)); });
-                    }
-                    else {
-                        ctx.enter({ noWait: true }, function () {
-                            if (node.inFor.init.type == "varsDecl" || node.inFor.init.type == "exprstmt") {
-                                buf.printf("%v" +
-                                    "for (; %v ; %v) {%{" +
-                                    (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
-                                    "%v%n" +
-                                    "%}}", 
-                                /*enterV({noLastPos:true},*/ node.inFor.init, node.inFor.cond, node.inFor.next, node.loop);
-                            }
-                            else {
-                                buf.printf("%v%n" +
-                                    "while(%v) {%{" +
-                                    (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
-                                    "%v%n" +
-                                    "%v;%n" +
-                                    "%}}", node.inFor.init, node.inFor.cond, node.loop, node.inFor.next);
-                            }
-                        });
-                    }
-                }
-                function getElemF(itn, isVar, vars) {
-                    return function () {
-                        vars.forEach(function (v, i) {
-                            var an = annotation(v);
-                            varAccess(v.text, an.scopeInfo, an);
-                            buf.printf("=%s[%s];%n", itn, i);
-                            //buf.printf("%s=%s[%s];%n", v.text, itn, i);
-                        });
-                    };
-                }
-            },
-            "if": function (node) {
-                lastPosF(node)();
-                //buf.printf("/*FBR=%s*/",!!annotation(node).fiberCallRequired);
-                var an = annotation(node);
-                if (!ctx.noWait &&
-                    (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
-                    var fipos = buf.lazy(), elpos = buf.lazy();
-                    if (node._else) {
-                        buf.printf("if (!(%v)) { %s=%z; break; }%n" +
-                            "%v%n" +
-                            "%s=%z;break;%n" +
-                            "%}case %f:%{" +
-                            "%v%n" +
-                            /*B*/
-                            "%}case %f:%{", node.cond, FRMPC, elpos, node.then, FRMPC, fipos, function () { buf.print(elpos.put(ctx.pc++)); }, node._else, function () { buf.print(fipos.put(ctx.pc++)); });
-                    }
-                    else {
-                        buf.printf("if (!(%v)) { %s=%z; break; }%n" +
-                            "%v%n" +
-                            /*B*/
-                            "%}case %f:%{", node.cond, FRMPC, fipos, node.then, function () { buf.print(fipos.put(ctx.pc++)); });
-                    }
-                }
-                else {
-                    ctx.enter({ noWait: true }, function () {
-                        if (node._else) {
-                            buf.printf("if (%v) {%{%f%n%}} else {%{%f%n%}}", node.cond, noSurroundCompoundF(node.then), noSurroundCompoundF(node._else));
+                        if (node.inFor.init.type == "varsDecl" || node.inFor.init.type == "exprstmt") {
+                            buf.printf("%v" +
+                                "for (; %v ; %v) {%{" +
+                                (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
+                                "%v%n" +
+                                "%}}", 
+                            /*enterV({noLastPos:true},*/ node.inFor.init, node.inFor.cond, node.inFor.next, node.loop);
                         }
                         else {
-                            buf.printf("if (%v) {%{%f%n%}}", node.cond, noSurroundCompoundF(node.then));
+                            buf.printf("%v%n" +
+                                "while(%v) {%{" +
+                                (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
+                                "%v%n" +
+                                "%v;%n" +
+                                "%}}", node.inFor.init, node.inFor.cond, node.loop, node.inFor.next);
                         }
                     });
                 }
-            },
-            ifWait: function (node) {
-                if (!ctx.noWait) {
-                    buf.printf("%v", node.then);
-                }
-                else {
-                    if (node._else) {
-                        buf.printf("%v", node._else);
-                    }
-                }
-            },
-            empty: function (node) {
-                buf.printf(";%n");
-            },
-            call: function (node) {
-                buf.printf("(%j)", [",", node.args]);
-            },
-            objlitArg: function (node) {
-                buf.printf("%v", node.obj);
-            },
-            argList: function (node) {
-                buf.printf("%j", [",", node.args]);
-            },
-            newExpr: function (node) {
-                var p = node.params;
-                if (p) {
-                    buf.printf("new %v%v", node.klass, p);
-                }
-                else {
-                    buf.printf("new %v", node.klass);
-                }
-            },
-            scall: function (node) {
-                buf.printf("[%j]", [",", node.args]);
-            },
-            superExpr: function (node) {
-                var name;
-                //if (!klass.superclass) throw new Error(klass.fullName+"には親クラスがありません");
-                if (node.name) {
-                    name = node.name.text;
-                    buf.printf("%s.prototype.%s.apply( %s, %v)", SUPER /*getClassName(klass.superclass)*/, name, THIZ, node.params);
-                }
-                else {
-                    buf.printf("%s.apply( %s, %v)", SUPER /*getClassName(klass.superclass)*/, THIZ, node.params);
-                }
-            },
-            arrayElem: function (node) {
-                buf.printf("[%v]", node.subscript);
-            },
-            member: function (node) {
-                buf.printf(".%s", node.name);
-            },
-            symbol: function (node) {
-                buf.print(node.text);
-            },
-            "normalFor": function (node) {
-                buf.printf("%v; %v; %v", node.init, node.cond, node.next);
-            },
-            compound: function (node) {
-                var an = annotation(node);
-                if (!ctx.noWait &&
-                    (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
-                    buf.printf("%j", ["%n", node.stmts]);
-                }
-                else {
-                    /*if (ctx.noSurroundBrace) {
-                        ctx.enter({noSurroundBrace:false,noWait:true},function () {
-                            buf.printf("%{%j%n%}", ["%n",node.stmts]);
-                        });
-                    } else {*/
-                    ctx.enter({ noWait: true }, function () {
-                        buf.printf("{%{%j%n%}}", ["%n", node.stmts]);
-                    });
-                    //}
-                }
-            },
-            "typeof": function (node) {
-                buf.printf("typeof ");
-            },
-            "instanceof": function (node) {
-                buf.printf(" instanceof ");
-            },
-            "is": function (node) {
-                buf.printf(" instanceof ");
-            },
-            regex: function (node) {
-                buf.printf("%s", node.text);
             }
-        });
-        var opTokens = ["++", "--", "!==", "===", "+=", "-=", "*=", "/=",
-            "%=", ">=", "<=",
-            "!=", "==", ">>>", ">>", "<<", "&&", "||", ">", "<", "+", "?", "=", "*",
-            "%", "/", "^", "~", "\\", ":", ";", ",", "!", "&", "|", "-", "delete"];
-        opTokens.forEach(function (opt) {
-            v.funcs[opt] = function (node) {
-                buf.printf("%s", opt);
-            };
-        });
-        //v.debug=debug;
-        v.def = function (node) {
-            console.log("Err node=");
-            console.log(node);
-            throw new Error(node.type + " is not defined in visitor:compiler2");
-        };
-        v.cnt = 0;
-        function genSource() {
-            ctx.enter({}, function () {
-                if (genMod) {
-                    printf("define(function (require) {%{");
-                    var reqs = { Tonyu: 1 };
-                    for (var mod in klass.decls.amds) {
-                        reqs[mod] = 1;
-                    }
-                    if (klass.superclass) {
-                        const mod = klass.superclass.shortName;
-                        reqs[mod] = 1;
-                    }
-                    (klass.includes || []).forEach(function (klass) {
-                        var mod = klass.shortName;
-                        reqs[mod] = 1;
+            function getElemF(itn, isVar, vars) {
+                return function () {
+                    vars.forEach(function (v, i) {
+                        var an = annotation(v);
+                        varAccess(v.text, an.scopeInfo, an);
+                        buf.printf("=%s[%s];%n", itn, i);
+                        //buf.printf("%s=%s[%s];%n", v.text, itn, i);
                     });
-                    for (let mod in klass.decls.softRefClasses) {
-                        reqs[mod] = 1;
-                    }
-                    for (let mod in reqs) {
-                        printf("var %s=require('%s');%n", mod, mod);
-                    }
-                }
-                printf((genMod ? "return " : "") + "Tonyu.klass.define({%{");
-                printf("fullName: %l,%n", klass.fullName);
-                printf("shortName: %l,%n", klass.shortName);
-                printf("namespace: %l,%n", klass.namespace);
-                if (klass.superclass)
-                    printf("superclass: %s,%n", getClassName(klass.superclass));
-                printf("includes: [%s],%n", getClassNames(klass.includes).join(","));
-                printf("methods: function (%s) {%{", SUPER);
-                printf("return {%{");
-                const procMethod = name => {
-                    if (debug)
-                        console.log("method1", name);
-                    var method = methods[name];
-                    if (!method.params) {
-                        console.log("MYSTERY2", method.params, methods, klass, env);
-                    }
-                    ctx.enter({ noWait: true, threadAvail: false }, function () {
-                        genFunc(method);
-                    });
-                    if (debug)
-                        console.log("method2", name);
-                    if (!method.nowait) {
-                        ctx.enter({ noWait: false, threadAvail: true }, function () {
-                            genFiber(method);
-                        });
-                    }
-                    if (debug)
-                        console.log("method3", name);
                 };
-                for (var name in methods)
-                    procMethod(name);
-                printf("__dummy: false%n");
-                printf("%}};%n");
-                printf("%}},%n");
-                printf("decls: %s%n", JSON.stringify(digestDecls(klass)));
-                printf("%}});");
-                if (genMod)
-                    printf("%n%}});");
-                printf("%n");
-                //printf("%}});%n");
-            });
-            //printf("Tonyu.klass.addMeta(%s,%s);%n",
-            //        getClassName(klass),JSON.stringify(digestMeta(klass)));
-            //if (env.options.compiler.asModule) {
-            //    printf("//%}});");
-            //}
-        }
-        function digestDecls(klass) {
-            var res = { methods: {}, fields: {} };
-            for (let i in klass.decls.methods) {
-                res.methods[i] =
-                    { nowait: !!klass.decls.methods[i].nowait };
             }
-            for (let i in klass.decls.fields) {
-                var src = klass.decls.fields[i];
-                var dst = {};
-                //console.log("digestDecls",src);
-                if (src.vtype) {
-                    if (typeof (src.vtype) === "string") {
-                        dst.vtype = src.vtype;
+        },
+        "if": function (node) {
+            lastPosF(node)();
+            //buf.printf("/*FBR=%s*/",!!annotation(node).fiberCallRequired);
+            var an = annotation(node);
+            if (!ctx.noWait &&
+                (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
+                var fipos = buf.lazy(), elpos = buf.lazy();
+                if (node._else) {
+                    buf.printf("if (!(%v)) { %s=%z; break; }%n" +
+                        "%v%n" +
+                        "%s=%z;break;%n" +
+                        "%}case %f:%{" +
+                        "%v%n" +
+                        /*B*/
+                        "%}case %f:%{", node.cond, FRMPC, elpos, node.then, FRMPC, fipos, function () { buf.print(elpos.put(ctx.pc++)); }, node._else, function () { buf.print(fipos.put(ctx.pc++)); });
+                }
+                else {
+                    buf.printf("if (!(%v)) { %s=%z; break; }%n" +
+                        "%v%n" +
+                        /*B*/
+                        "%}case %f:%{", node.cond, FRMPC, fipos, node.then, function () { buf.print(fipos.put(ctx.pc++)); });
+                }
+            }
+            else {
+                ctx.enter({ noWait: true }, function () {
+                    if (node._else) {
+                        buf.printf("if (%v) {%{%f%n%}} else {%{%f%n%}}", node.cond, noSurroundCompoundF(node.then), noSurroundCompoundF(node._else));
                     }
                     else {
-                        dst.vtype = src.vtype.fullName || src.vtype.name;
+                        buf.printf("if (%v) {%{%f%n%}}", node.cond, noSurroundCompoundF(node.then));
                     }
+                });
+            }
+        },
+        ifWait: function (node) {
+            if (!ctx.noWait) {
+                buf.printf("%v", node.then);
+            }
+            else {
+                if (node._else) {
+                    buf.printf("%v", node._else);
                 }
-                res.fields[i] = dst;
             }
-            return res;
+        },
+        empty: function (node) {
+            buf.printf(";%n");
+        },
+        call: function (node) {
+            buf.printf("(%j)", [",", node.args]);
+        },
+        objlitArg: function (node) {
+            buf.printf("%v", node.obj);
+        },
+        argList: function (node) {
+            buf.printf("%j", [",", node.args]);
+        },
+        newExpr: function (node) {
+            var p = node.params;
+            if (p) {
+                buf.printf("new %v%v", node.klass, p);
+            }
+            else {
+                buf.printf("new %v", node.klass);
+            }
+        },
+        scall: function (node) {
+            buf.printf("[%j]", [",", node.args]);
+        },
+        superExpr: function (node) {
+            var name;
+            //if (!klass.superclass) throw new Error(klass.fullName+"には親クラスがありません");
+            if (node.name) {
+                name = node.name.text;
+                buf.printf("%s.prototype.%s.apply( %s, %v)", SUPER /*getClassName(klass.superclass)*/, name, THIZ, node.params);
+            }
+            else {
+                buf.printf("%s.apply( %s, %v)", SUPER /*getClassName(klass.superclass)*/, THIZ, node.params);
+            }
+        },
+        arrayElem: function (node) {
+            buf.printf("[%v]", node.subscript);
+        },
+        member: function (node) {
+            buf.printf(".%s", node.name);
+        },
+        symbol: function (node) {
+            buf.print(node.text);
+        },
+        "normalFor": function (node) {
+            buf.printf("%v; %v; %v", node.init, node.cond, node.next);
+        },
+        compound: function (node) {
+            var an = annotation(node);
+            if (!ctx.noWait &&
+                (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
+                buf.printf("%j", ["%n", node.stmts]);
+            }
+            else {
+                /*if (ctx.noSurroundBrace) {
+                    ctx.enter({noSurroundBrace:false,noWait:true},function () {
+                        buf.printf("%{%j%n%}", ["%n",node.stmts]);
+                    });
+                } else {*/
+                ctx.enter({ noWait: true }, function () {
+                    buf.printf("{%{%j%n%}}", ["%n", node.stmts]);
+                });
+                //}
+            }
+        },
+        "typeof": function (node) {
+            buf.printf("typeof ");
+        },
+        "instanceof": function (node) {
+            buf.printf(" instanceof ");
+        },
+        "is": function (node) {
+            buf.printf(" instanceof ");
+        },
+        regex: function (node) {
+            buf.printf("%s", node.text);
         }
-        function digestMeta(klass) {
-            var res = {
-                fullName: klass.fullName,
-                namespace: klass.namespace,
-                shortName: klass.shortName,
-                decls: { methods: {} }
+    });
+    var opTokens = ["++", "--", "!==", "===", "+=", "-=", "*=", "/=",
+        "%=", ">=", "<=",
+        "!=", "==", ">>>", ">>", "<<", "&&", "||", ">", "<", "+", "?", "=", "*",
+        "%", "/", "^", "~", "\\", ":", ";", ",", "!", "&", "|", "-", "delete"];
+    opTokens.forEach(function (opt) {
+        v.funcs[opt] = function (node) {
+            buf.printf("%s", opt);
+        };
+    });
+    //v.debug=debug;
+    v.def = function (node) {
+        console.log("Err node=");
+        console.log(node);
+        throw new Error(node.type + " is not defined in visitor:compiler2");
+    };
+    v.cnt = 0;
+    function genSource() {
+        ctx.enter({}, function () {
+            if (genMod) {
+                printf("define(function (require) {%{");
+                var reqs = { Tonyu: 1 };
+                for (var mod in klass.decls.amds) {
+                    reqs[mod] = 1;
+                }
+                if (klass.superclass) {
+                    const mod = klass.superclass.shortName;
+                    reqs[mod] = 1;
+                }
+                (klass.includes || []).forEach(function (klass) {
+                    var mod = klass.shortName;
+                    reqs[mod] = 1;
+                });
+                for (let mod in klass.decls.softRefClasses) {
+                    reqs[mod] = 1;
+                }
+                for (let mod in reqs) {
+                    printf("var %s=require('%s');%n", mod, mod);
+                }
+            }
+            printf((genMod ? "return " : "") + "Tonyu.klass.define({%{");
+            printf("fullName: %l,%n", klass.fullName);
+            printf("shortName: %l,%n", klass.shortName);
+            printf("namespace: %l,%n", klass.namespace);
+            if (klass.superclass)
+                printf("superclass: %s,%n", getClassName(klass.superclass));
+            printf("includes: [%s],%n", getClassNames(klass.includes).join(","));
+            printf("methods: function (%s) {%{", SUPER);
+            printf("return {%{");
+            const procMethod = name => {
+                if (debug)
+                    console.log("method1", name);
+                var method = methods[name];
+                if (!method.params) {
+                    console.log("MYSTERY2", method.params, methods, klass, env);
+                }
+                ctx.enter({ noWait: true, threadAvail: false }, function () {
+                    genFunc(method);
+                });
+                if (debug)
+                    console.log("method2", name);
+                if (!method.nowait) {
+                    ctx.enter({ noWait: false, threadAvail: true }, function () {
+                        genFiber(method);
+                    });
+                }
+                if (debug)
+                    console.log("method3", name);
             };
-            for (var i in klass.decls.methods) {
-                res.decls.methods[i] =
-                    { nowait: !!klass.decls.methods[i].nowait };
-            }
-            return res;
-        }
-        function genFiber(fiber) {
-            if (isConstructor(fiber))
-                return;
-            var stmts = fiber.stmts;
-            var noWaitStmts = [], waitStmts = [], curStmts = noWaitStmts;
-            var opt = true;
-            if (opt) {
-                stmts.forEach(function (s) {
-                    if (annotation(s).fiberCallRequired) {
-                        curStmts = waitStmts;
-                    }
-                    curStmts.push(s);
-                });
-            }
-            else {
-                waitStmts = stmts;
-            }
-            printf("%s%s :function %s(%j) {%{" +
-                USE_STRICT +
-                "var %s=%s;%n" +
-                "%svar %s=%s;%n" +
-                "var %s=0;%n" +
-                "%f%n" +
-                "%f%n", FIBPRE, fiber.name, genFn(fiber.pos, "f_" + fiber.name), [",", [THNode].concat(fiber.params)], THIZ, GET_THIS, (fiber.useArgs ? "" : "//"), ARGS, "Tonyu.A(arguments)", FRMPC, genLocalsF(fiber), nfbody);
-            if (waitStmts.length > 0) {
-                printf("%s.enter(function %s(%s) {%{" +
-                    "if (%s.lastEx) %s=%s.catchPC;%n" +
-                    "for(var %s=%d ; %s--;) {%{" +
-                    "switch (%s) {%{" +
-                    "%}case 0:%{" +
-                    "%f" +
-                    "%s.exit(%s);return;%n" +
-                    "%}}%n" +
-                    "%}}%n" +
-                    "%}});%n", TH, genFn(fiber.pos, "ent_" + fiber.name), TH, TH, FRMPC, TH, CNTV, CNTC, CNTV, FRMPC, 
-                // case 0:
-                fbody, TH, THIZ);
-            }
-            else {
-                printf("%s.retVal=%s;return;%n", TH, THIZ);
-            }
+            for (var name in methods)
+                procMethod(name);
+            printf("__dummy: false%n");
+            printf("%}};%n");
             printf("%}},%n");
-            function nfbody() {
-                ctx.enter({ method: fiber, /*scope: fiber.scope,*/ noWait: true, threadAvail: true }, function () {
-                    noWaitStmts.forEach(function (stmt) {
-                        printf("%v%n", stmt);
-                    });
-                });
-            }
-            function fbody() {
-                ctx.enter({ method: fiber,
-                    finfo: fiber, pc: 1 }, function () {
-                    waitStmts.forEach(function (stmt) {
-                        printf("%v%n", stmt);
-                    });
-                });
-            }
+            printf("decls: %s%n", JSON.stringify(digestDecls(klass)));
+            printf("%}});");
+            if (genMod)
+                printf("%n%}});");
+            printf("%n");
+            //printf("%}});%n");
+        });
+        //printf("Tonyu.klass.addMeta(%s,%s);%n",
+        //        getClassName(klass),JSON.stringify(digestMeta(klass)));
+        //if (env.options.compiler.asModule) {
+        //    printf("//%}});");
+        //}
+    }
+    function digestDecls(klass) {
+        var res = { methods: {}, fields: {} };
+        for (let i in klass.decls.methods) {
+            res.methods[i] =
+                { nowait: !!klass.decls.methods[i].nowait };
         }
-        function genFunc(func) {
-            var fname = isConstructor(func) ? "initialize" : func.name;
-            if (!func.params) { //TODO
-                console.log("MYSTERY", func.params);
+        for (let i in klass.decls.fields) {
+            var src = klass.decls.fields[i];
+            var dst = {};
+            //console.log("digestDecls",src);
+            if (src.vtype) {
+                if (typeof (src.vtype) === "string") {
+                    dst.vtype = src.vtype;
+                }
+                else {
+                    dst.vtype = src.vtype.fullName || src.vtype.name;
+                }
             }
-            printf("%s :function %s(%j) {%{" +
-                USE_STRICT +
-                "var %s=%s;%n" +
-                "%f%n" +
-                "%f" +
-                "%}},%n", fname, genFn(func.pos, fname), [",", func.params], THIZ, GET_THIS, genLocalsF(func), fbody);
-            function fbody() {
-                ctx.enter({ method: func, finfo: func,
-                    /*scope: func.scope*/ 
-                }, function () {
-                    func.stmts.forEach(function (stmt) {
-                        printf("%v%n", stmt);
-                    });
-                });
-            }
+            res.fields[i] = dst;
         }
-        function genFuncExpr(node) {
-            var finfo = annotation(node).info; // annotateSubFuncExpr(node);
-            buf.printf("(function %s(%j) {%{" +
-                "%f%n" +
-                "%f" +
-                "%}})", finfo.name, [",", finfo.params], genLocalsF(finfo), fbody);
-            function fbody() {
-                ctx.enter({ noWait: true, threadAvail: false,
-                    finfo: finfo, /*scope: finfo.scope*/ }, function () {
-                    node.body.stmts.forEach(function (stmt) {
-                        printf("%v%n", stmt);
-                    });
-                });
-            }
+        return res;
+    }
+    function digestMeta(klass) {
+        var res = {
+            fullName: klass.fullName,
+            namespace: klass.namespace,
+            shortName: klass.shortName,
+            decls: { methods: {} }
+        };
+        for (var i in klass.decls.methods) {
+            res.decls.methods[i] =
+                { nowait: !!klass.decls.methods[i].nowait };
         }
-        function genFn(pos, name) {
-            if (!name)
-                name = (fnSeq++) + "";
-            let n = ("_trc_" + klass.shortName + "_" + name);
-            traceIndex[n] = 1;
-            return n;
-            //        return ("_trc_func_"+traceTbl.add(klass,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
-        }
-        function genSubFunc(node) {
-            var finfo = annotation(node).info; // annotateSubFuncExpr(node);
-            buf.printf("function %s(%j) {%{" +
-                "%f%n" +
-                "%f" +
-                "%}}", finfo.name, [",", finfo.params], genLocalsF(finfo), fbody);
-            function fbody() {
-                ctx.enter({ noWait: true, threadAvail: false,
-                    finfo: finfo, /*scope: finfo.scope*/ }, function () {
-                    node.body.stmts.forEach(function (stmt) {
-                        printf("%v%n", stmt);
-                    });
-                });
-            }
-        }
-        function genLocalsF(finfo) {
-            return f;
-            function f() {
-                ctx.enter({ /*scope:finfo.scope*/}, function () {
-                    for (let i in finfo.locals.varDecls) {
-                        buf.printf("var %s;%n", i);
-                    }
-                    for (let i in finfo.locals.subFuncDecls) {
-                        genSubFunc(finfo.locals.subFuncDecls[i]);
-                    }
-                });
-            }
-        }
-        function isConstructor(f) {
-            return ObjectMatcher_1.default.match(f, { ftype: "constructor" }) || ObjectMatcher_1.default.match(f, { name: "new" });
-        }
-        genSource(); //G
-        if (genMod) {
-            klass.src.js = klass.src.tonyu.up().rel(klass.src.tonyu.truncExt() + ".js");
-            klass.src.js.text(buf.buf);
+        return res;
+    }
+    function genFiber(fiber) {
+        if (isConstructor(fiber))
+            return;
+        var stmts = fiber.stmts;
+        var noWaitStmts = [], waitStmts = [], curStmts = noWaitStmts;
+        var opt = true;
+        if (opt) {
+            stmts.forEach(function (s) {
+                if (annotation(s).fiberCallRequired) {
+                    curStmts = waitStmts;
+                }
+                curStmts.push(s);
+            });
         }
         else {
-            klass.src.js = buf.buf; //G
+            waitStmts = stmts;
         }
-        delete klass.jsNotUpToDate;
-        if (debug) {
-            console.log("method4", buf.buf);
-            //throw "ERR";
+        printf("%s%s :function %s(%j) {%{" +
+            USE_STRICT +
+            "var %s=%s;%n" +
+            "%svar %s=%s;%n" +
+            "var %s=0;%n" +
+            "%f%n" +
+            "%f%n", FIBPRE, fiber.name, genFn(fiber.pos, "f_" + fiber.name), [",", [THNode].concat(fiber.params)], THIZ, GET_THIS, (fiber.useArgs ? "" : "//"), ARGS, "Tonyu.A(arguments)", FRMPC, genLocalsF(fiber), nfbody);
+        if (waitStmts.length > 0) {
+            printf("%s.enter(function %s(%s) {%{" +
+                "if (%s.lastEx) %s=%s.catchPC;%n" +
+                "for(var %s=%d ; %s--;) {%{" +
+                "switch (%s) {%{" +
+                "%}case 0:%{" +
+                "%f" +
+                "%s.exit(%s);return;%n" +
+                "%}}%n" +
+                "%}}%n" +
+                "%}});%n", TH, genFn(fiber.pos, "ent_" + fiber.name), TH, TH, FRMPC, TH, CNTV, CNTC, CNTV, FRMPC, 
+            // case 0:
+            fbody, TH, THIZ);
         }
-        //var bufres=buf.close();
-        klass.src.map = buf.mapStr;
-        return buf; //res;
-    } //B
-    return { genJS: genJS };
-})();
+        else {
+            printf("%s.retVal=%s;return;%n", TH, THIZ);
+        }
+        printf("%}},%n");
+        function nfbody() {
+            ctx.enter({ method: fiber, /*scope: fiber.scope,*/ noWait: true, threadAvail: true }, function () {
+                noWaitStmts.forEach(function (stmt) {
+                    printf("%v%n", stmt);
+                });
+            });
+        }
+        function fbody() {
+            ctx.enter({ method: fiber,
+                finfo: fiber, pc: 1 }, function () {
+                waitStmts.forEach(function (stmt) {
+                    printf("%v%n", stmt);
+                });
+            });
+        }
+    }
+    function genFunc(func) {
+        var fname = isConstructor(func) ? "initialize" : func.name;
+        if (!func.params) { //TODO
+            console.log("MYSTERY", func.params);
+        }
+        printf("%s :function %s(%j) {%{" +
+            USE_STRICT +
+            "var %s=%s;%n" +
+            "%f%n" +
+            "%f" +
+            "%}},%n", fname, genFn(func.pos, fname), [",", func.params], THIZ, GET_THIS, genLocalsF(func), fbody);
+        function fbody() {
+            ctx.enter({ method: func, finfo: func,
+                /*scope: func.scope*/ 
+            }, function () {
+                func.stmts.forEach(function (stmt) {
+                    printf("%v%n", stmt);
+                });
+            });
+        }
+    }
+    function genFuncExpr(node) {
+        var finfo = annotation(node).info; // annotateSubFuncExpr(node);
+        buf.printf("(function %s(%j) {%{" +
+            "%f%n" +
+            "%f" +
+            "%}})", finfo.name, [",", finfo.params], genLocalsF(finfo), fbody);
+        function fbody() {
+            ctx.enter({ noWait: true, threadAvail: false,
+                finfo: finfo, /*scope: finfo.scope*/ }, function () {
+                node.body.stmts.forEach(function (stmt) {
+                    printf("%v%n", stmt);
+                });
+            });
+        }
+    }
+    function genFn(pos, name) {
+        if (!name)
+            name = (fnSeq++) + "";
+        let n = ("_trc_" + klass.shortName + "_" + name);
+        traceIndex[n] = 1;
+        return n;
+        //        return ("_trc_func_"+traceTbl.add(klass,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
+    }
+    function genSubFunc(node) {
+        var finfo = annotation(node).info; // annotateSubFuncExpr(node);
+        buf.printf("function %s(%j) {%{" +
+            "%f%n" +
+            "%f" +
+            "%}}", finfo.name, [",", finfo.params], genLocalsF(finfo), fbody);
+        function fbody() {
+            ctx.enter({ noWait: true, threadAvail: false,
+                finfo: finfo, /*scope: finfo.scope*/ }, function () {
+                node.body.stmts.forEach(function (stmt) {
+                    printf("%v%n", stmt);
+                });
+            });
+        }
+    }
+    function genLocalsF(finfo) {
+        return f;
+        function f() {
+            ctx.enter({ /*scope:finfo.scope*/}, function () {
+                for (let i in finfo.locals.varDecls) {
+                    buf.printf("var %s;%n", i);
+                }
+                for (let i in finfo.locals.subFuncDecls) {
+                    genSubFunc(finfo.locals.subFuncDecls[i]);
+                }
+            });
+        }
+    }
+    function isConstructor(f) {
+        return OM.match(f, { ftype: "constructor" }) || OM.match(f, { name: "new" });
+    }
+    genSource(); //G
+    if (genMod) {
+        klass.src.js = klass.src.tonyu.up().rel(klass.src.tonyu.truncExt() + ".js");
+        klass.src.js.text(buf.buf);
+    }
+    else {
+        klass.src.js = buf.buf; //G
+    }
+    delete klass.jsNotUpToDate;
+    if (debug) {
+        console.log("method4", buf.buf);
+        //throw "ERR";
+    }
+    //var bufres=buf.close();
+    klass.src.map = buf.mapStr;
+    return buf; //res;
+} //B
+exports.genJS = genJS;
+//return {genJS:genJS};
+//})();
 
 },{"../lib/R":26,"../lib/assert":29,"../runtime/TError":34,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./tonyu1":22}],8:[function(require,module,exports){
 "use strict";
-var OM = {};
-var VAR = "$var", THIZ = "$this";
-OM.v = v;
-function v(name, cond = undefined) {
-    var res = {};
-    res[VAR] = name;
-    if (cond)
-        res[THIZ] = cond;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.match = exports.isVar = exports.Z = exports.Y = exports.X = exports.W = exports.V = exports.U = exports.T = exports.S = exports.R = exports.Q = exports.P = exports.O = exports.N = exports.M = exports.L = exports.K = exports.J = exports.I = exports.H = exports.G = exports.F = exports.E = exports.D = exports.C = exports.B = exports.A = exports.v = void 0;
+//var OM:any={};
+const VAR = Symbol("$var"); //,THIZ="$this";
+function v(name, cond = {}) {
+    const res = function (cond2) {
+        const cond3 = { ...cond };
+        Object.assign(cond3, cond2);
+        return v(name, cond3);
+    };
+    res.vname = name;
+    res.cond = cond;
+    res[VAR] = true;
+    //if (cond) res[THIZ]=cond;
     return res;
 }
-OM.isVar = isVar;
-var names = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-for (var i = 0; i < names.length; i++) {
-    var c = names.substring(i, i + 1);
-    OM[c] = v(c);
+exports.v = v;
+function isVariable(a) {
+    return a[VAR];
 }
+//OM.isVar=isVar;
+exports.A = v("A");
+exports.B = v("B");
+exports.C = v("C");
+exports.D = v("D");
+exports.E = v("E");
+exports.F = v("F");
+exports.G = v("G");
+exports.H = v("H");
+exports.I = v("I");
+exports.J = v("J");
+exports.K = v("K");
+exports.L = v("L");
+exports.M = v("M");
+exports.N = v("N");
+exports.O = v("O");
+exports.P = v("P");
+exports.Q = v("Q");
+exports.R = v("R");
+exports.S = v("S");
+exports.T = v("T");
+exports.U = v("U");
+exports.V = v("V");
+exports.W = v("W");
+exports.X = v("X");
+exports.Y = v("Y");
+exports.Z = v("Z");
+/*var names="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+for (var i =0 ; i<names.length ; i++) {
+    var c=names.substring(i,i+1);
+    OM[c]=v(c);
+}*/
 function isVar(o) {
     return o && o[VAR];
 }
-OM.match = function (obj, tmpl) {
+exports.isVar = isVar;
+function match(obj, tmpl) {
     var res = {};
     if (m(obj, tmpl, res))
         return res;
     return null;
-};
+}
+exports.match = match;
+;
 function m(obj, tmpl, res) {
     if (obj === tmpl)
         return true;
-    if (obj == null)
+    else if (obj == null)
         return false;
-    if (typeof obj == "string" && tmpl instanceof RegExp) {
+    else if (isVariable(tmpl)) {
+        if (!m(obj, tmpl.cond, res))
+            return false;
+        res[tmpl.vname] = obj;
+        return true;
+    }
+    else if (typeof obj == "string" && tmpl instanceof RegExp) {
         return obj.match(tmpl);
     }
-    if (typeof tmpl == "function") {
+    else if (typeof tmpl == "function") {
         return tmpl(obj, res);
     }
-    if (typeof tmpl == "object") {
+    else if (typeof tmpl == "object") {
         //if (typeof obj!="object") obj={$this:obj};
         for (var i in tmpl) {
-            if (i == VAR)
-                continue;
-            var oe = (i == THIZ ? obj : obj[i]);
+            //if (i==VAR) continue;
+            var oe = obj[i]; //(i==THIZ? obj :  obj[i] );
             var te = tmpl[i];
             if (!m(oe, te, res))
                 return false;
         }
-        if (tmpl[VAR]) {
-            res[tmpl[VAR]] = obj;
-        }
+        /*if (tmpl[VAR]) {
+            res[tmpl[VAR]]=obj;
+        }*/
         return true;
     }
     return false;
 }
-module.exports = OM;
+//export= OM;
 
 },{}],9:[function(require,module,exports){
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-/*if (typeof define!=="function") {//B
-    define=require("requirejs").define;
-}
-define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer",
-        "context", "Visitor","Tonyu.Compiler"],
-function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer,
-        context, Visitor,cu) {*/
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.annotate = exports.initClassDecls = exports.parse = void 0;
 const TonyuRuntime_1 = __importDefault(require("../runtime/TonyuRuntime"));
 const R_1 = __importDefault(require("../lib/R"));
 const TError_1 = __importDefault(require("../runtime/TError"));
@@ -2389,827 +2472,783 @@ const OM = ObjectMatcher;
 const parse_tonyu1_1 = __importDefault(require("./parse_tonyu1"));
 const parse_tonyu2_1 = __importDefault(require("./parse_tonyu2"));
 const assert_1 = __importDefault(require("../lib/assert"));
-const compiler_1 = __importDefault(require("./compiler"));
+const cu = __importStar(require("./compiler"));
 const Visitor_1 = __importDefault(require("./Visitor"));
-const context_1 = __importDefault(require("./context"));
+const context_1 = require("./context");
 const Grammar_1 = __importDefault(require("./Grammar"));
-/*const tonyu1=require("./tonyu1");
-const TonyuLang2=require("./parse_tonyu2");
-const TonyuLang1=require("./parse_tonyu1");
-const IndentBuffer=require("./IndentBuffer");
-const ObjectMatcher=require("./ObjectMatcher");
-const TError=require("../runtime/TError");
-const context=require("./context");
-const Visitor=require("./Visitor");
-const cu=require("./compiler");
-const A=require("../lib/assert");
-const Grammar=require("./Grammar");
-const root=require("../lib/root");
-import R=require("../lib/R");
-*/
-const Semantics = (function () {
-    /*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
-            LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
-    var ScopeTypes = compiler_1.default.ScopeTypes;
-    var genSt = compiler_1.default.newScopeType;
-    var stype = compiler_1.default.getScopeType;
-    var newScope = compiler_1.default.newScope;
-    //var nc=cu.nullCheck;
-    var genSym = compiler_1.default.genSym;
-    var annotation3 = compiler_1.default.annotation;
-    var getMethod2 = compiler_1.default.getMethod;
-    var getDependingClasses = compiler_1.default.getDependingClasses;
-    var getParams = compiler_1.default.getParams;
-    var JSNATIVES = { Array: 1, String: 1, Boolean: 1, Number: 1, Void: 1, Object: 1, RegExp: 1, Error: 1, Date: 1 };
-    function visitSub(node) {
-        var t = this;
-        if (!node || typeof node != "object")
-            return;
-        var es;
-        if (node instanceof Array)
-            es = node;
-        else
-            es = node[Grammar_1.default.SUBELEMENTS];
-        if (!es) {
-            es = [];
-            for (var i in node) {
-                es.push(node[i]);
-            }
+var ScopeTypes = cu.ScopeTypes;
+//var genSt=cu.newScopeType;
+var stype = cu.getScopeType;
+var newScope = cu.newScope;
+const SI = cu.ScopeInfo;
+//var nc=cu.nullCheck;
+var genSym = cu.genSym;
+var annotation3 = cu.annotation;
+var getMethod2 = cu.getMethod;
+var getDependingClasses = cu.getDependingClasses;
+var getParams = cu.getParams;
+var JSNATIVES = { Array: 1, String: 1, Boolean: 1, Number: 1, Void: 1, Object: 1, RegExp: 1, Error: 1, Date: 1 };
+function visitSub(node) {
+    var t = this;
+    if (!node || typeof node != "object")
+        return;
+    var es;
+    if (node instanceof Array)
+        es = node;
+    else
+        es = node[Grammar_1.default.SUBELEMENTS];
+    if (!es) {
+        es = [];
+        for (var i in node) {
+            es.push(node[i]);
         }
-        es.forEach(function (e) {
-            t.visit(e);
-        });
     }
-    function getSourceFile(klass) {
-        return (0, assert_1.default)(klass.src && klass.src.tonyu, "File for " + klass.fullName + " not found.");
+    es.forEach(function (e) {
+        t.visit(e);
+    });
+}
+function getSourceFile(klass) {
+    return (0, assert_1.default)(klass.src && klass.src.tonyu, "File for " + klass.fullName + " not found.");
+}
+function parse(klass, options = {}) {
+    const s = getSourceFile(klass); //.src.tonyu; //file object
+    let node;
+    if (klass.node && klass.nodeTimestamp == s.lastUpdate()) {
+        node = klass.node;
     }
-    function parse(klass, options = {}) {
-        const s = getSourceFile(klass); //.src.tonyu; //file object
-        let node;
-        if (klass.node && klass.nodeTimestamp == s.lastUpdate()) {
-            node = klass.node;
+    if (!node) {
+        //console.log("Parse "+s);
+        if ((0, tonyu1_1.isTonyu1)(options)) {
+            node = parse_tonyu1_1.default.parse(s);
         }
-        if (!node) {
-            //console.log("Parse "+s);
-            if ((0, tonyu1_1.isTonyu1)(options)) {
-                node = parse_tonyu1_1.default.parse(s);
-            }
-            else {
-                node = parse_tonyu2_1.default.parse(s);
-            }
-            klass.nodeTimestamp = s.lastUpdate();
+        else {
+            node = parse_tonyu2_1.default.parse(s);
         }
-        return node;
+        klass.nodeTimestamp = s.lastUpdate();
     }
-    //-----------
-    function initClassDecls(klass, env) {
-        // The main task of initClassDecls is resolve 'dependency', it calls before orderByInheritance
-        var s = getSourceFile(klass); //file object
-        klass.hasSemanticError = true;
-        if (klass.src && klass.src.js) {
-            // falsify on generateJS. if some class hasSemanticError, it remains true
-            klass.jsNotUpToDate = true;
+    return node;
+}
+exports.parse = parse;
+//-----------
+function initClassDecls(klass, env) {
+    // The main task of initClassDecls is resolve 'dependency', it calls before orderByInheritance
+    var s = getSourceFile(klass); //file object
+    klass.hasSemanticError = true;
+    if (klass.src && klass.src.js) {
+        // falsify on generateJS. if some class hasSemanticError, it remains true
+        klass.jsNotUpToDate = true;
+    }
+    const node = parse(klass, env.options);
+    var MAIN = { name: "main", stmts: [], pos: 0, isMain: true };
+    // method := fiber | function
+    var fields = {}, methods = { main: MAIN }, natives = {}, amds = {}, softRefClasses = {};
+    klass.decls = { fields: fields, methods: methods, natives: natives, amds: amds,
+        softRefClasses: softRefClasses };
+    // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，AMDモジュール変数
+    //   extends/includes以外から参照してれるクラス の集まり．親クラスの宣言は含まない
+    klass.node = node;
+    function initMethods(program) {
+        var spcn = env.options.compiler.defaultSuperClass;
+        var pos = 0;
+        var t = OM.match(program, { ext: { superclassName: { text: OM.N, pos: OM.P } } });
+        if (t) {
+            spcn = t.N;
+            pos = t.P;
+            if (spcn == "null")
+                spcn = null;
         }
-        const node = parse(klass, env.options);
-        /*if (klass.node && klass.nodeTimestamp==s.lastUpdate()) {
-            node=klass.node;
-        }
-        if (!node) {
-            console.log("Parse "+s);
-            node=TonyuLang.parse(s);
-            klass.nodeTimestamp=s.lastUpdate();
-        }*/
-        //console.log(s+"",  !!klass.node, klass.nodeTimestamp, s.lastUpdate());
-        //if (!klass.testid) klass.testid=Math.random();
-        //console.log(klass.testid);
-        var MAIN = { name: "main", stmts: [], pos: 0, isMain: true };
-        // method := fiber | function
-        var fields = {}, methods = { main: MAIN }, natives = {}, amds = {}, softRefClasses = {};
-        klass.decls = { fields: fields, methods: methods, natives: natives, amds: amds,
-            softRefClasses: softRefClasses };
-        // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，AMDモジュール変数
-        //   extends/includes以外から参照してれるクラス の集まり．親クラスの宣言は含まない
-        klass.node = node;
-        /*function nc(o, mesg) {
-            if (!o) throw mesg+" is null";
-            return o;
-        }*/
-        function initMethods(program) {
-            var spcn = env.options.compiler.defaultSuperClass;
-            var pos = 0;
-            var t = OM.match(program, { ext: { superclassName: { text: OM.N, pos: OM.P } } });
-            if (t) {
-                spcn = t.N;
-                pos = t.P;
-                if (spcn == "null")
-                    spcn = null;
-            }
-            klass.includes = [];
-            t = OM.match(program, { incl: { includeClassNames: OM.C } });
-            if (t) {
-                t.C.forEach(function (i) {
-                    var n = i.text; /*ENVC*/
-                    var p = i.pos;
-                    var incc = env.classes[env.aliases[n] || n]; /*ENVC*/ //CFN env.classes[env.aliases[n]]
-                    if (!incc)
-                        throw (0, TError_1.default)((0, R_1.default)("classIsUndefined", n), s, p);
-                    klass.includes.push(incc);
-                });
-            }
-            if (spcn == "Array") {
-                klass.superclass = { name: "Array", fullName: "Array", builtin: true };
-            }
-            else if (spcn) {
-                var spc = env.classes[env.aliases[spcn] || spcn]; /*ENVC*/ //CFN env.classes[env.aliases[spcn]]
-                if (!spc) {
-                    throw (0, TError_1.default)((0, R_1.default)("superClassIsUndefined", spcn), s, pos);
-                }
-                klass.superclass = spc;
-            }
-            else {
-                delete klass.superclass;
-            }
-            klass.directives = {};
-            //--
-            function addField(name, node = undefined) {
-                node = node || name;
-                fields[name + ""] = {
-                    node: node,
-                    klass: klass.fullName,
-                    name: name + "",
-                    pos: node.pos
-                };
-            }
-            var fieldsCollector = (0, Visitor_1.default)({
-                varDecl: function (node) {
-                    addField(node.name, node);
-                },
-                nativeDecl: function (node) {
-                },
-                funcDecl: function (node) {
-                },
-                funcExpr: function (node) {
-                },
-                "catch": function (node) {
-                },
-                exprstmt: function (node) {
-                    if (node.expr.type === "literal" &&
-                        node.expr.text.match(/^.field strict.$/)) {
-                        klass.directives.field_strict = true;
-                    }
-                },
-                "forin": function (node) {
-                    var isVar = node.isVar;
-                    if (isVar) {
-                        node.vars.forEach(function (v) {
-                            addField(v);
-                        });
-                    }
-                }
-            });
-            fieldsCollector.def = visitSub;
-            fieldsCollector.visit(program.stmts);
-            //-- end of fieldsCollector
-            program.stmts.forEach(function (stmt) {
-                if (stmt.type == "funcDecl") {
-                    var head = stmt.head;
-                    var ftype = "function";
-                    if (head.ftype) {
-                        ftype = head.ftype.text;
-                        //console.log("head.ftype:",stmt);
-                    }
-                    var name = head.name.text;
-                    var propHead = (head.params ? "" : head.setter ? "__setter__" : "__getter__");
-                    name = propHead + name;
-                    methods[name] = {
-                        nowait: (!!head.nowait || propHead !== ""),
-                        ftype: ftype,
-                        name: name,
-                        klass: klass.fullName,
-                        head: head,
-                        pos: head.pos,
-                        stmts: stmt.body.stmts,
-                        node: stmt
-                    };
-                    //annotation(stmt,methods[name]);
-                    //annotation(stmt,{finfo:methods[name]});
-                }
-                else if (stmt.type == "nativeDecl") {
-                    natives[stmt.name.text] = stmt;
-                }
-                else {
-                    /*if (stmt.type=="varsDecl") {
-                        stmt.decls.forEach(function (d) {
-                            //console.log("varDecl", d.name.text);
-                            //fields[d.name.text]=d;
-                            fields[d.name.text]={
-                                node:d,
-                                klass:klass.fullName,
-                                name:d.name.text,
-                                pos:d.pos
-                            };
-                        });
-                    }*/
-                    MAIN.stmts.push(stmt);
-                }
+        klass.includes = [];
+        t = OM.match(program, { incl: { includeClassNames: OM.C } });
+        if (t) {
+            t.C.forEach(function (i) {
+                var n = i.text; /*ENVC*/
+                var p = i.pos;
+                var incc = env.classes[env.aliases[n] || n]; /*ENVC*/ //CFN env.classes[env.aliases[n]]
+                if (!incc)
+                    throw (0, TError_1.default)((0, R_1.default)("classIsUndefined", n), s, p);
+                klass.includes.push(incc);
             });
         }
-        initMethods(node); // node=program
-        //delete klass.hasSemanticError;
-        // Why delete deleted? because decls.methods.params is still undef
-    } // of initClassDecls
-    function annotateSource2(klass, env) {
-        // annotateSource2 is call after orderByInheritance
-        klass.hasSemanticError = true;
-        var srcFile = klass.src.tonyu; //file object  //S
-        var srcCont = srcFile.text();
-        function getSource(node) {
-            return compiler_1.default.getSource(srcCont, node);
+        if (spcn == "Array") {
+            klass.superclass = { name: "Array", fullName: "Array", builtin: true };
         }
-        //var traceTbl=env.traceTbl;
-        // method := fiber | function
-        var decls = klass.decls;
-        var fields = decls.fields, methods = decls.methods, natives = decls.natives, amds = decls.amds;
-        // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，モジュール変数の集まり．親クラスの宣言は含まない
-        var ST = ScopeTypes;
-        var topLevelScope = {};
-        // ↑ このソースコードのトップレベル変数の種類 ，親クラスの宣言を含む
-        //  キー： 変数名   値： ScopeTypesのいずれか
-        var v = null;
-        var ctx = (0, context_1.default)();
-        var debug = false;
-        var othersMethodCallTmpl = {
-            type: "postfix",
-            left: {
-                type: "postfix",
-                left: OM.T,
-                op: { type: "member", name: { text: OM.N } }
-            },
-            op: { type: "call", args: OM.A }
-        };
-        var memberAccessTmpl = {
-            type: "postfix",
-            left: OM.T,
-            op: { type: "member", name: { text: OM.N } }
-        };
-        // These has same value but different purposes:
-        //  myMethodCallTmpl: avoid using bounded field for normal method(); call
-        //  fiberCallTmpl: detect fiber call
-        var myMethodCallTmpl, fiberCallTmpl;
-        myMethodCallTmpl = fiberCallTmpl = {
-            type: "postfix",
-            left: { type: "varAccess", name: { text: OM.N } },
-            op: { type: "call", args: OM.A }
-        };
-        var noRetFiberCallTmpl = {
-            expr: fiberCallTmpl
-        };
-        var retFiberCallTmpl = {
-            expr: {
-                type: "infix",
-                op: OM.O,
-                left: OM.L,
-                right: fiberCallTmpl
+        else if (spcn) {
+            var spc = env.classes[env.aliases[spcn] || spcn]; /*ENVC*/ //CFN env.classes[env.aliases[spcn]]
+            if (!spc) {
+                throw (0, TError_1.default)((0, R_1.default)("superClassIsUndefined", spcn), s, pos);
             }
-        };
-        var noRetSuperFiberCallTmpl = {
-            expr: { type: "superExpr", params: { args: OM.A }, $var: "S" }
-        };
-        var retSuperFiberCallTmpl = {
-            expr: {
-                type: "infix",
-                op: OM.O,
-                left: OM.L,
-                right: { type: "superExpr", params: { args: OM.A }, $var: "S" }
-            }
-        };
-        klass.annotation = {};
-        function annotation(node, aobj = undefined) {
-            return annotation3(klass.annotation, node, aobj);
+            klass.superclass = spc;
         }
-        /*function assertAnnotated(node, si) {//B
-            var a=annotation(node);
-            if (!a.scopeInfo) {
-                console.log(srcCont.substring(node.pos-5,node.pos+20));
-                console.log(node, si);
-                throw "Scope info not set";
-            }
-            if (si.type!=a.scopeInfo.type){
-                console.log(srcCont.substring(node.pos-5,node.pos+20));
-                console.log(node, si , a.scopeInfo);
-                throw "Scope info not match";
-            }
-        }*/
-        function initTopLevelScope2(klass) {
-            if (klass.builtin)
-                return;
-            var s = topLevelScope;
-            var decls = klass.decls;
-            if (!decls) {
-                console.log("DECLNUL", klass);
-            }
-            var i;
-            for (i in decls.fields) {
-                const info = decls.fields[i];
-                s[i] = genSt(ST.FIELD, { klass: klass.fullName, name: i, info: info });
-                if (info.node) {
-                    annotation(info.node, { info: info });
-                }
-            }
-            for (i in decls.methods) {
-                const info = decls.methods[i];
-                var r = TonyuRuntime_1.default.klass.propReg.exec(i);
-                if (r) {
-                    s[r[2]] = genSt(ST.PROP, { klass: klass.fullName, name: r[2], info: info });
-                }
-                else {
-                    s[i] = genSt(ST.METHOD, { klass: klass.fullName, name: i, info: info });
-                }
-                if (info.node) {
-                    annotation(info.node, { info: info });
-                }
-            }
+        else {
+            delete klass.superclass;
         }
-        function initTopLevelScope() {
-            var s = topLevelScope;
-            getDependingClasses(klass).forEach(initTopLevelScope2);
-            var decls = klass.decls; // Do not inherit parents' natives
-            if (!(0, tonyu1_1.isTonyu1)(env.options)) {
-                for (let i in JSNATIVES) {
-                    s[i] = genSt(ST.NATIVE, { name: "native::" + i, value: root_1.default[i] });
-                }
-            }
-            for (let i in env.aliases) { /*ENVC*/ //CFN  env.classes->env.aliases
-                var fullName = env.aliases[i];
-                s[i] = genSt(ST.CLASS, { name: i, fullName: fullName, info: env.classes[fullName] });
-            }
-            for (let i in decls.natives) {
-                s[i] = genSt(ST.NATIVE, { name: "native::" + i, value: root_1.default[i] });
-            }
+        klass.directives = {};
+        //--
+        function addField(name, node = undefined) {
+            node = node || name;
+            fields[name + ""] = {
+                node: node,
+                klass: klass.fullName,
+                name: name + "",
+                pos: node.pos
+            };
         }
-        function inheritSuperMethod() {
-            var d = getDependingClasses(klass);
-            for (var n in klass.decls.methods) {
-                var m2 = klass.decls.methods[n];
-                for (let k of d) {
-                    var m = k.decls.methods[n];
-                    if (m && m.nowait) {
-                        m2.nowait = true;
-                    }
-                }
-            }
-        }
-        function getMethod(name) {
-            return getMethod2(klass, name);
-        }
-        function isFiberMethod(name) {
-            return stype(ctx.scope[name]) == ST.METHOD &&
-                !getMethod(name).nowait;
-        }
-        function checkLVal(node) {
-            if (node.type == "varAccess" ||
-                node.type == "postfix" && (node.op.type == "member" || node.op.type == "arrayElem")) {
-                if (node.type == "varAccess") {
-                    annotation(node, { noBind: true });
-                }
-                return true;
-            }
-            console.log("LVal", node);
-            throw (0, TError_1.default)((0, R_1.default)("invalidLeftValue", getSource(node)), srcFile, node.pos);
-        }
-        function getScopeInfo(n) {
-            var node = n;
-            n = n + "";
-            var si = ctx.scope[n];
-            var t = stype(si);
-            if (!t) {
-                if (env.amdPaths && env.amdPaths[n]) {
-                    t = ST.MODULE;
-                    klass.decls.amds[n] = env.amdPaths[n];
-                    //console.log(n,"is module");
-                }
-                else {
-                    var isg = n.match(/^\$/);
-                    if (env.options.compiler.field_strict || klass.directives.field_strict) {
-                        if (!isg)
-                            throw (0, TError_1.default)((0, R_1.default)("fieldDeclarationRequired", n), srcFile, node.pos);
-                    }
-                    t = isg ? ST.GLOBAL : ST.FIELD;
-                }
-                var opt = { name: n };
-                if (t == ST.FIELD) {
-                    opt.klass = klass.name;
-                    klass.decls.fields[n] = klass.decls.fields[n] || {};
-                    compiler_1.default.extend(klass.decls.fields[n], {
-                        klass: klass.fullName,
-                        name: n
-                    }); //si;
-                }
-                si = topLevelScope[n] = genSt(t, opt);
-            }
-            if (t == ST.CLASS) {
-                klass.decls.softRefClasses[n] = si;
-            }
-            return si;
-        }
-        var localsCollector = (0, Visitor_1.default)({
+        var fieldsCollector = (0, Visitor_1.default)({
             varDecl: function (node) {
-                if (ctx.isMain) {
-                    annotation(node, { varInMain: true });
-                    annotation(node, { declaringClass: klass });
-                    //console.log("var in main",node.name.text);
-                }
-                else {
-                    ctx.locals.varDecls[node.name.text] = node;
-                    //console.log("DeclaringFunc of ",node.name.text,ctx.finfo);
-                    annotation(node, { declaringFunc: ctx.finfo });
-                }
+                addField(node.name, node);
+            },
+            nativeDecl: function (node) {
             },
             funcDecl: function (node) {
-                ctx.locals.subFuncDecls[node.head.name.text] = node;
-                //initParamsLocals(node);??
             },
             funcExpr: function (node) {
-                //initParamsLocals(node);??
             },
             "catch": function (node) {
-                ctx.locals.varDecls[node.name.text] = node;
             },
             exprstmt: function (node) {
+                if (node.expr.type === "literal" &&
+                    node.expr.text.match(/^.field strict.$/)) {
+                    klass.directives.field_strict = true;
+                }
             },
             "forin": function (node) {
                 var isVar = node.isVar;
-                node.vars.forEach(function (v) {
-                    if (isVar) {
-                        if (ctx.isMain) {
-                            annotation(v, { varInMain: true });
-                            annotation(v, { declaringClass: klass });
-                        }
-                        else {
-                            ctx.locals.varDecls[v.text] = v; //node??;
-                            annotation(v, { declaringFunc: ctx.finfo });
-                        }
-                    }
-                });
-                var n = genSym("_it_");
-                annotation(node, { iterName: n });
-                ctx.locals.varDecls[n] = node; // ??
+                if (isVar) {
+                    node.vars.forEach(function (v) {
+                        addField(v);
+                    });
+                }
             }
         });
-        localsCollector.def = visitSub; //S
-        function collectLocals(node) {
-            var locals = { varDecls: {}, subFuncDecls: {} };
-            ctx.enter({ locals: locals }, function () {
-                localsCollector.visit(node);
-            });
-            return locals;
-        }
-        function annotateParents(path, data) {
-            path.forEach(function (n) {
-                annotation(n, data);
-            });
-        }
-        function fiberCallRequired(path) {
-            if (ctx.method)
-                ctx.method.fiberCallRequired = true;
-            annotateParents(path, { fiberCallRequired: true });
-        }
-        var varAccessesAnnotator = (0, Visitor_1.default)({
-            varAccess: function (node) {
-                var si = getScopeInfo(node.name);
-                var t = stype(si);
-                annotation(node, { scopeInfo: si });
-            },
-            funcDecl: function (node) {
-            },
-            funcExpr: function (node) {
-                annotateSubFuncExpr(node);
-            },
-            objlit: function (node) {
-                var t = this;
-                var dup = {};
-                node.elems.forEach(function (e) {
-                    var kn;
-                    if (e.key.type == "literal") {
-                        kn = e.key.text.substring(1, e.key.text.length - 1);
-                    }
-                    else {
-                        kn = e.key.text;
-                    }
-                    if (dup[kn]) {
-                        throw (0, TError_1.default)((0, R_1.default)("duplicateKeyInObjectLiteral", kn), srcFile, e.pos);
-                    }
-                    dup[kn] = 1;
-                    //console.log("objlit",e.key.text);
-                    t.visit(e);
-                });
-            },
-            jsonElem: function (node) {
-                if (node.value) {
-                    this.visit(node.value);
+        fieldsCollector.def = visitSub;
+        fieldsCollector.visit(program.stmts);
+        //-- end of fieldsCollector
+        program.stmts.forEach(function (stmt) {
+            if (stmt.type == "funcDecl") {
+                var head = stmt.head;
+                var ftype = "function";
+                if (head.ftype) {
+                    ftype = head.ftype.text;
+                    //console.log("head.ftype:",stmt);
                 }
-                else {
-                    if (node.key.type == "literal") {
-                        throw (0, TError_1.default)((0, R_1.default)("cannotUseStringLiteralAsAShorthandOfObjectValue"), srcFile, node.pos);
-                    }
-                    var si = getScopeInfo(node.key);
-                    annotation(node, { scopeInfo: si });
-                }
-            },
-            "do": function (node) {
-                var t = this;
-                ctx.enter({ brkable: true, contable: true }, function () {
-                    t.def(node);
-                });
-            },
-            "switch": function (node) {
-                var t = this;
-                ctx.enter({ brkable: true }, function () {
-                    t.def(node);
-                });
-            },
-            "while": function (node) {
-                var t = this;
-                ctx.enter({ brkable: true, contable: true }, function () {
-                    t.def(node);
-                });
-                fiberCallRequired(this.path); //option
-            },
-            "for": function (node) {
-                var t = this;
-                ctx.enter({ brkable: true, contable: true }, function () {
-                    t.def(node);
-                });
-            },
-            "forin": function (node) {
-                node.vars.forEach(function (v) {
-                    var si = getScopeInfo(v);
-                    annotation(v, { scopeInfo: si });
-                });
-                this.visit(node.set);
-            },
-            ifWait: function (node) {
-                var TH = "_thread";
-                var t = this;
-                var ns = newScope(ctx.scope);
-                ns[TH] = genSt(ST.THVAR);
-                ctx.enter({ scope: ns }, function () {
-                    t.visit(node.then);
-                });
-                if (node._else) {
-                    t.visit(node._else);
-                }
-                fiberCallRequired(this.path);
-            },
-            "try": function (node) {
-                ctx.finfo.useTry = true;
-                this.def(node);
-            },
-            "return": function (node) {
-                var t;
-                if (!ctx.noWait) {
-                    if ((t = OM.match(node.value, fiberCallTmpl)) &&
-                        isFiberMethod(t.N)) {
-                        annotation(node.value, { fiberCall: t });
-                        fiberCallRequired(this.path);
-                    }
-                    annotateParents(this.path, { hasReturn: true });
-                }
-                this.visit(node.value);
-            },
-            "break": function (node) {
-                if (!ctx.brkable)
-                    throw (0, TError_1.default)((0, R_1.default)("breakShouldBeUsedInIterationOrSwitchStatement"), srcFile, node.pos);
-                if (!ctx.noWait)
-                    annotateParents(this.path, { hasJump: true });
-            },
-            "continue": function (node) {
-                if (!ctx.contable)
-                    throw (0, TError_1.default)((0, R_1.default)("continueShouldBeUsedInIterationStatement"), srcFile, node.pos);
-                if (!ctx.noWait)
-                    annotateParents(this.path, { hasJump: true });
-            },
-            "reservedConst": function (node) {
-                if (node.text == "arguments") {
-                    ctx.finfo.useArgs = true;
-                }
-            },
-            postfix: function (node) {
-                var t;
-                function match(node, tmpl) {
-                    t = OM.match(node, tmpl);
-                    return t;
-                }
-                this.visit(node.left);
-                this.visit(node.op);
-                if (match(node, myMethodCallTmpl)) {
-                    var si = annotation(node.left).scopeInfo;
-                    annotation(node, { myMethodCall: { name: t.N, args: t.A, scopeInfo: si } });
-                }
-                else if (match(node, othersMethodCallTmpl)) {
-                    annotation(node, { othersMethodCall: { target: t.T, name: t.N, args: t.A } });
-                }
-                else if (match(node, memberAccessTmpl)) {
-                    annotation(node, { memberAccess: { target: t.T, name: t.N } });
-                }
-            },
-            infix: function (node) {
-                var opn = node.op.text;
-                if (opn == "=" || opn == "+=" || opn == "-=" || opn == "*=" || opn == "/=" || opn == "%=") {
-                    checkLVal(node.left);
-                }
-                this.def(node);
-            },
-            exprstmt: function (node) {
-                var t, m;
-                if (node.expr.type === "objlit") {
-                    throw (0, TError_1.default)((0, R_1.default)("cannotUseObjectLiteralAsTheExpressionOfStatement"), srcFile, node.pos);
-                }
-                if (!ctx.noWait &&
-                    (t = OM.match(node, noRetFiberCallTmpl)) &&
-                    isFiberMethod(t.N)) {
-                    t.type = "noRet";
-                    annotation(node, { fiberCall: t });
-                    fiberCallRequired(this.path);
-                }
-                else if (!ctx.noWait &&
-                    (t = OM.match(node, retFiberCallTmpl)) &&
-                    isFiberMethod(t.N)) {
-                    t.type = "ret";
-                    annotation(node, { fiberCall: t });
-                    fiberCallRequired(this.path);
-                }
-                else if (!ctx.noWait &&
-                    (t = OM.match(node, noRetSuperFiberCallTmpl)) &&
-                    t.S.name) {
-                    m = getMethod(t.S.name.text);
-                    if (!m)
-                        throw new Error((0, R_1.default)("undefinedMethod", t.S.name.text));
-                    if (!m.nowait) {
-                        t.type = "noRetSuper";
-                        t.superclass = klass.superclass;
-                        annotation(node, { fiberCall: t });
-                        fiberCallRequired(this.path);
-                    }
-                }
-                else if (!ctx.noWait &&
-                    (t = OM.match(node, retSuperFiberCallTmpl)) &&
-                    t.S.name) {
-                    m = getMethod(t.S.name.text);
-                    if (!m)
-                        throw new Error((0, R_1.default)("undefinedMethod", t.S.name.text));
-                    if (!m.nowait) {
-                        t.type = "retSuper";
-                        t.superclass = klass.superclass;
-                        annotation(node, { fiberCall: t });
-                        fiberCallRequired(this.path);
-                    }
-                }
-                this.visit(node.expr);
-            },
-            varDecl: function (node) {
-                var t;
-                if (!ctx.noWait &&
-                    (t = OM.match(node.value, fiberCallTmpl)) &&
-                    isFiberMethod(t.N)) {
-                    t.type = "varDecl";
-                    annotation(node, { fiberCall: t });
-                    fiberCallRequired(this.path);
-                }
-                this.visit(node.value);
-                this.visit(node.typeDecl);
-            },
-            typeExpr: function (node) {
-                resolveType(node);
+                var name = head.name.text;
+                var propHead = (head.params ? "" : head.setter ? "__setter__" : "__getter__");
+                name = propHead + name;
+                methods[name] = {
+                    nowait: (!!head.nowait || propHead !== ""),
+                    ftype: ftype,
+                    name: name,
+                    klass: klass.fullName,
+                    head: head,
+                    pos: head.pos,
+                    stmts: stmt.body.stmts,
+                    node: stmt
+                };
             }
-        });
-        function resolveType(node) {
-            var name = node.name + "";
-            var si = getScopeInfo(node.name);
-            var t = stype(si);
-            //console.log("TExpr",name,si,t);
-            if (t === ST.NATIVE) {
-                annotation(node, { resolvedType: si.value });
-            }
-            else if (t === ST.CLASS) {
-                annotation(node, { resolvedType: si.info });
-            }
-        }
-        varAccessesAnnotator.def = visitSub; //S
-        function annotateVarAccesses(node, scope) {
-            ctx.enter({ scope: scope }, function () {
-                varAccessesAnnotator.visit(node);
-            });
-        }
-        function copyLocals(finfo, scope) {
-            var locals = finfo.locals;
-            for (var i in locals.varDecls) {
-                //console.log("LocalVar ",i,"declared by ",finfo);
-                var si = genSt(ST.LOCAL, { declaringFunc: finfo });
-                scope[i] = si;
-                annotation(locals.varDecls[i], { scopeInfo: si });
-            }
-            for (let i in locals.subFuncDecls) {
-                const si = genSt(ST.LOCAL, { declaringFunc: finfo });
-                scope[i] = si;
-                annotation(locals.subFuncDecls[i], { scopeInfo: si });
-            }
-        }
-        function resolveTypesOfParams(params) {
-            params.forEach(function (param) {
-                if (param.typeDecl) {
-                    //console.log("restype",param);
-                    resolveType(param.typeDecl.vtype);
-                }
-            });
-        }
-        function initParamsLocals(f) {
-            //console.log("IS_MAIN", f.name, f.isMain);
-            ctx.enter({ isMain: f.isMain, finfo: f }, function () {
-                f.locals = collectLocals(f.stmts);
-                f.params = getParams(f);
-            });
-            resolveTypesOfParams(f.params);
-        }
-        function annotateSubFuncExpr(node) {
-            var m, ps;
-            var body = node.body;
-            var name = (node.head.name ? node.head.name.text : "anonymous_" + node.pos);
-            m = OM.match(node, { head: { params: { params: OM.P } } });
-            if (m) {
-                ps = m.P;
+            else if (stmt.type == "nativeDecl") {
+                natives[stmt.name.text] = stmt;
             }
             else {
-                ps = [];
+                MAIN.stmts.push(stmt);
             }
-            var finfo = {};
-            var ns = newScope(ctx.scope);
-            //var locals;
-            ctx.enter({ finfo: finfo }, function () {
-                ps.forEach(function (p) {
-                    var si = genSt(ST.PARAM, { declaringFunc: finfo });
-                    annotation(p, { scopeInfo: si });
-                    ns[p.name.text] = si;
-                });
-                finfo.locals = collectLocals(body);
-                copyLocals(finfo, ns);
-                annotateVarAccesses(body, ns);
-            });
-            finfo.scope = ns;
-            finfo.name = name;
-            finfo.params = ps;
-            //var res={scope:ns, locals:finfo.locals, name:name, params:ps};
-            resolveTypesOfParams(finfo.params);
-            //annotation(node,res);
-            annotation(node, { info: finfo });
-            annotateSubFuncExprs(finfo.locals, ns);
-            return finfo;
+        });
+    }
+    initMethods(node); // node=program
+    //delete klass.hasSemanticError;
+    // Why delete deleted? because decls.methods.params is still undef
+} // of initClassDecls
+exports.initClassDecls = initClassDecls;
+function annotateSource2(klass, env) {
+    // annotateSource2 is call after orderByInheritance
+    klass.hasSemanticError = true;
+    var srcFile = klass.src.tonyu; //file object  //S
+    var srcCont = srcFile.text();
+    function getSource(node) {
+        return cu.getSource(srcCont, node);
+    }
+    //var traceTbl=env.traceTbl;
+    // method := fiber | function
+    var decls = klass.decls;
+    var fields = decls.fields, methods = decls.methods, natives = decls.natives, amds = decls.amds;
+    // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，モジュール変数の集まり．親クラスの宣言は含まない
+    var ST = ScopeTypes;
+    var topLevelScope = {};
+    // ↑ このソースコードのトップレベル変数の種類 ，親クラスの宣言を含む
+    //  キー： 変数名   値： ScopeTypesのいずれか
+    var v = null;
+    const ctx = (0, context_1.context)();
+    var debug = false;
+    var othersMethodCallTmpl = {
+        type: "postfix",
+        left: {
+            type: "postfix",
+            left: OM.T,
+            op: { type: "member", name: { text: OM.N } }
+        },
+        op: { type: "call", args: OM.A }
+    };
+    var memberAccessTmpl = {
+        type: "postfix",
+        left: OM.T,
+        op: { type: "member", name: { text: OM.N } }
+    };
+    // These has same value but different purposes:
+    //  myMethodCallTmpl: avoid using bounded field for normal method(); call
+    //  fiberCallTmpl: detect fiber call
+    var myMethodCallTmpl, fiberCallTmpl;
+    myMethodCallTmpl = fiberCallTmpl = {
+        type: "postfix",
+        left: { type: "varAccess", name: { text: OM.N } },
+        op: { type: "call", args: OM.A }
+    };
+    var noRetFiberCallTmpl = {
+        expr: fiberCallTmpl
+    };
+    var retFiberCallTmpl = {
+        expr: {
+            type: "infix",
+            op: OM.O,
+            left: OM.L,
+            right: fiberCallTmpl
         }
-        function annotateSubFuncExprs(locals, scope) {
-            ctx.enter({ scope: scope }, function () {
-                for (var n in locals.subFuncDecls) {
-                    annotateSubFuncExpr(locals.subFuncDecls[n]);
+    };
+    var noRetSuperFiberCallTmpl = {
+        expr: OM.S({ type: "superExpr", params: { args: OM.A } })
+    };
+    var retSuperFiberCallTmpl = {
+        expr: {
+            type: "infix",
+            op: OM.O,
+            left: OM.L,
+            right: OM.S({ type: "superExpr", params: { args: OM.A } })
+        }
+    };
+    klass.annotation = {};
+    function annotation(node, aobj = undefined) {
+        return annotation3(klass.annotation, node, aobj);
+    }
+    function initTopLevelScope2(klass) {
+        if (klass.builtin)
+            return;
+        var s = topLevelScope;
+        var decls = klass.decls;
+        if (!decls) {
+            console.log("DECLNUL", klass);
+        }
+        var i;
+        for (i in decls.fields) {
+            const info = decls.fields[i];
+            s[i] = new SI.FIELD(klass, i, info); //genSt(ST.FIELD,{klass:klass.fullName,name:i,info:info});
+            if (info.node) {
+                annotation(info.node, { info: info });
+            }
+        }
+        for (i in decls.methods) {
+            const info = decls.methods[i];
+            var r = TonyuRuntime_1.default.klass.propReg.exec(i);
+            if (r) {
+                const name = r[2];
+                s[name] = new SI.PROP(klass.fullName, name, info); // genSt(ST.PROP,{klass:klass.fullName,name:r[2],info:info});
+            }
+            else {
+                s[i] = new SI.METHOD(klass.fullName, i, info); //genSt(ST.METHOD,{klass:klass.fullName,name:i,info:info});
+            }
+            if (info.node) {
+                annotation(info.node, { info: info });
+            }
+        }
+    }
+    function initTopLevelScope() {
+        var s = topLevelScope;
+        getDependingClasses(klass).forEach(initTopLevelScope2);
+        var decls = klass.decls; // Do not inherit parents' natives
+        if (!(0, tonyu1_1.isTonyu1)(env.options)) {
+            for (let i in JSNATIVES) {
+                s[i] = new SI.NATIVE("native::" + i, root_1.default[i]);
+            }
+        }
+        for (let i in env.aliases) { /*ENVC*/ //CFN  env.classes->env.aliases
+            var fullName = env.aliases[i];
+            s[i] = new SI.CLASS(i, fullName, env.classes[fullName]); //,{name:i,fullName:fullName,info:env.classes[fullName]});
+        }
+        for (let i in decls.natives) {
+            s[i] = new SI.NATIVE("native::" + i, root_1.default[i]);
+            //s[i]=genSt(ST.NATIVE,{name:"native::"+i,value:root[i]});
+        }
+    }
+    function inheritSuperMethod() {
+        var d = getDependingClasses(klass);
+        for (var n in klass.decls.methods) {
+            var m2 = klass.decls.methods[n];
+            for (let k of d) {
+                var m = k.decls.methods[n];
+                if (m && m.nowait) {
+                    m2.nowait = true;
+                }
+            }
+        }
+    }
+    function getMethod(name) {
+        return getMethod2(klass, name);
+    }
+    function isFiberMethod(name) {
+        return stype(ctx.scope[name]) == ST.METHOD &&
+            !getMethod(name).nowait;
+    }
+    function checkLVal(node) {
+        if (node.type == "varAccess" ||
+            node.type == "postfix" && (node.op.type == "member" || node.op.type == "arrayElem")) {
+            if (node.type == "varAccess") {
+                annotation(node, { noBind: true });
+            }
+            return true;
+        }
+        console.log("LVal", node);
+        throw (0, TError_1.default)((0, R_1.default)("invalidLeftValue", getSource(node)), srcFile, node.pos);
+    }
+    function getScopeInfo(n) {
+        const node = n;
+        n = n + "";
+        const si = ctx.scope[n];
+        const t = stype(si);
+        if (!t) {
+            if (env.amdPaths && env.amdPaths[n]) {
+                //t=ST.MODULE;
+                klass.decls.amds[n] = env.amdPaths[n];
+                topLevelScope[n] = new SI.MODULE(n);
+                //console.log(n,"is module");
+            }
+            else {
+                var isg = n.match(/^\$/);
+                if (env.options.compiler.field_strict || klass.directives.field_strict) {
+                    if (!isg)
+                        throw (0, TError_1.default)((0, R_1.default)("fieldDeclarationRequired", n), srcFile, node.pos);
+                }
+                if (isg) {
+                    topLevelScope[n] = new SI.GLOBAL(n);
+                }
+                else {
+                    //opt.klass=klass.name;
+                    klass.decls.fields[n] = klass.decls.fields[n] || {};
+                    Object.assign(klass.decls.fields[n], {
+                        klass: klass.fullName,
+                        name: n
+                    }); //si;
+                    topLevelScope[n] = new SI.FIELD(klass, n, klass.decls.fields[n]);
+                }
+            }
+            return topLevelScope[n];
+            //var opt:any={name:n};
+            /*if (t==ST.FIELD) {
+                opt.klass=klass.name;
+                klass.decls.fields[n]=klass.decls.fields[n]||{};
+                Object.assign(klass.decls.fields[n],{
+                    klass:klass.fullName,
+                    name:n
+                });//si;
+            }*/
+            //topLevelScope[n]=si;//genSt(t,opt);
+        }
+        if (t == ST.CLASS) {
+            klass.decls.softRefClasses[n] = si;
+        }
+        return si;
+    }
+    var localsCollector = (0, Visitor_1.default)({
+        varDecl: function (node) {
+            if (ctx.isMain) {
+                annotation(node, { varInMain: true });
+                annotation(node, { declaringClass: klass });
+                //console.log("var in main",node.name.text);
+            }
+            else {
+                ctx.locals.varDecls[node.name.text] = node;
+                //console.log("DeclaringFunc of ",node.name.text,ctx.finfo);
+                annotation(node, { declaringFunc: ctx.finfo });
+            }
+        },
+        funcDecl: function (node) {
+            ctx.locals.subFuncDecls[node.head.name.text] = node;
+            //initParamsLocals(node);??
+        },
+        funcExpr: function (node) {
+            //initParamsLocals(node);??
+        },
+        "catch": function (node) {
+            ctx.locals.varDecls[node.name.text] = node;
+        },
+        exprstmt: function (node) {
+        },
+        "forin": function (node) {
+            var isVar = node.isVar;
+            node.vars.forEach(function (v) {
+                if (isVar) {
+                    if (ctx.isMain) {
+                        annotation(v, { varInMain: true });
+                        annotation(v, { declaringClass: klass });
+                    }
+                    else {
+                        ctx.locals.varDecls[v.text] = v; //node??;
+                        annotation(v, { declaringFunc: ctx.finfo });
+                    }
                 }
             });
+            var n = genSym("_it_");
+            annotation(node, { iterName: n });
+            ctx.locals.varDecls[n] = node; // ??
         }
-        function annotateMethodFiber(f) {
-            //f:info  (of method)
+    });
+    localsCollector.def = visitSub; //S
+    function collectLocals(node) {
+        var locals = { varDecls: {}, subFuncDecls: {} };
+        ctx.enter({ locals: locals }, function () {
+            localsCollector.visit(node);
+        });
+        return locals;
+    }
+    function annotateParents(path, data) {
+        path.forEach(function (n) {
+            annotation(n, data);
+        });
+    }
+    function fiberCallRequired(path) {
+        if (ctx.method)
+            ctx.method.fiberCallRequired = true;
+        annotateParents(path, { fiberCallRequired: true });
+    }
+    var varAccessesAnnotator = (0, Visitor_1.default)({
+        varAccess: function (node) {
+            var si = getScopeInfo(node.name);
+            var t = stype(si);
+            annotation(node, { scopeInfo: si });
+        },
+        funcDecl: function (node) {
+        },
+        funcExpr: function (node) {
+            annotateSubFuncExpr(node);
+        },
+        objlit: function (node) {
+            var t = this;
+            var dup = {};
+            node.elems.forEach(function (e) {
+                var kn;
+                if (e.key.type == "literal") {
+                    kn = e.key.text.substring(1, e.key.text.length - 1);
+                }
+                else {
+                    kn = e.key.text;
+                }
+                if (dup[kn]) {
+                    throw (0, TError_1.default)((0, R_1.default)("duplicateKeyInObjectLiteral", kn), srcFile, e.pos);
+                }
+                dup[kn] = 1;
+                //console.log("objlit",e.key.text);
+                t.visit(e);
+            });
+        },
+        jsonElem: function (node) {
+            if (node.value) {
+                this.visit(node.value);
+            }
+            else {
+                if (node.key.type == "literal") {
+                    throw (0, TError_1.default)((0, R_1.default)("cannotUseStringLiteralAsAShorthandOfObjectValue"), srcFile, node.pos);
+                }
+                var si = getScopeInfo(node.key);
+                annotation(node, { scopeInfo: si });
+            }
+        },
+        "do": function (node) {
+            var t = this;
+            ctx.enter({ brkable: true, contable: true }, function () {
+                t.def(node);
+            });
+        },
+        "switch": function (node) {
+            var t = this;
+            ctx.enter({ brkable: true }, function () {
+                t.def(node);
+            });
+        },
+        "while": function (node) {
+            var t = this;
+            ctx.enter({ brkable: true, contable: true }, function () {
+                t.def(node);
+            });
+            fiberCallRequired(this.path); //option
+        },
+        "for": function (node) {
+            var t = this;
+            ctx.enter({ brkable: true, contable: true }, function () {
+                t.def(node);
+            });
+        },
+        "forin": function (node) {
+            node.vars.forEach(function (v) {
+                var si = getScopeInfo(v);
+                annotation(v, { scopeInfo: si });
+            });
+            this.visit(node.set);
+        },
+        ifWait: function (node) {
+            var TH = "_thread";
+            var t = this;
             var ns = newScope(ctx.scope);
-            f.params.forEach(function (p, cnt) {
-                var si = genSt(ST.PARAM, {
-                    klass: klass.name, name: f.name, no: cnt, declaringFunc: f
-                });
+            ns[TH] = new SI.THVAR(); //genSt(ST.THVAR);
+            ctx.enter({ scope: ns }, function () {
+                t.visit(node.then);
+            });
+            if (node._else) {
+                t.visit(node._else);
+            }
+            fiberCallRequired(this.path);
+        },
+        "try": function (node) {
+            ctx.finfo.useTry = true;
+            this.def(node);
+        },
+        "return": function (node) {
+            var t;
+            if (!ctx.noWait) {
+                if ((t = OM.match(node.value, fiberCallTmpl)) &&
+                    isFiberMethod(t.N)) {
+                    annotation(node.value, { fiberCall: t });
+                    fiberCallRequired(this.path);
+                }
+                annotateParents(this.path, { hasReturn: true });
+            }
+            this.visit(node.value);
+        },
+        "break": function (node) {
+            if (!ctx.brkable)
+                throw (0, TError_1.default)((0, R_1.default)("breakShouldBeUsedInIterationOrSwitchStatement"), srcFile, node.pos);
+            if (!ctx.noWait)
+                annotateParents(this.path, { hasJump: true });
+        },
+        "continue": function (node) {
+            if (!ctx.contable)
+                throw (0, TError_1.default)((0, R_1.default)("continueShouldBeUsedInIterationStatement"), srcFile, node.pos);
+            if (!ctx.noWait)
+                annotateParents(this.path, { hasJump: true });
+        },
+        "reservedConst": function (node) {
+            if (node.text == "arguments") {
+                ctx.finfo.useArgs = true;
+            }
+        },
+        postfix: function (node) {
+            var t;
+            function match(node, tmpl) {
+                t = OM.match(node, tmpl);
+                return t;
+            }
+            this.visit(node.left);
+            this.visit(node.op);
+            if (match(node, myMethodCallTmpl)) {
+                var si = annotation(node.left).scopeInfo;
+                annotation(node, { myMethodCall: { name: t.N, args: t.A, scopeInfo: si } });
+            }
+            else if (match(node, othersMethodCallTmpl)) {
+                annotation(node, { othersMethodCall: { target: t.T, name: t.N, args: t.A } });
+            }
+            else if (match(node, memberAccessTmpl)) {
+                annotation(node, { memberAccess: { target: t.T, name: t.N } });
+            }
+        },
+        infix: function (node) {
+            var opn = node.op.text;
+            if (opn == "=" || opn == "+=" || opn == "-=" || opn == "*=" || opn == "/=" || opn == "%=") {
+                checkLVal(node.left);
+            }
+            this.def(node);
+        },
+        exprstmt: function (node) {
+            var t, m;
+            if (node.expr.type === "objlit") {
+                throw (0, TError_1.default)((0, R_1.default)("cannotUseObjectLiteralAsTheExpressionOfStatement"), srcFile, node.pos);
+            }
+            if (!ctx.noWait &&
+                (t = OM.match(node, noRetFiberCallTmpl)) &&
+                isFiberMethod(t.N)) {
+                t.type = "noRet";
+                annotation(node, { fiberCall: t });
+                fiberCallRequired(this.path);
+            }
+            else if (!ctx.noWait &&
+                (t = OM.match(node, retFiberCallTmpl)) &&
+                isFiberMethod(t.N)) {
+                t.type = "ret";
+                annotation(node, { fiberCall: t });
+                fiberCallRequired(this.path);
+            }
+            else if (!ctx.noWait &&
+                (t = OM.match(node, noRetSuperFiberCallTmpl)) &&
+                t.S.name) {
+                m = getMethod(t.S.name.text);
+                if (!m)
+                    throw new Error((0, R_1.default)("undefinedMethod", t.S.name.text));
+                if (!m.nowait) {
+                    t.type = "noRetSuper";
+                    t.superclass = klass.superclass;
+                    annotation(node, { fiberCall: t });
+                    fiberCallRequired(this.path);
+                }
+            }
+            else if (!ctx.noWait &&
+                (t = OM.match(node, retSuperFiberCallTmpl)) &&
+                t.S.name) {
+                m = getMethod(t.S.name.text);
+                if (!m)
+                    throw new Error((0, R_1.default)("undefinedMethod", t.S.name.text));
+                if (!m.nowait) {
+                    t.type = "retSuper";
+                    t.superclass = klass.superclass;
+                    annotation(node, { fiberCall: t });
+                    fiberCallRequired(this.path);
+                }
+            }
+            this.visit(node.expr);
+        },
+        varDecl: function (node) {
+            var t;
+            if (!ctx.noWait &&
+                (t = OM.match(node.value, fiberCallTmpl)) &&
+                isFiberMethod(t.N)) {
+                t.type = "varDecl";
+                annotation(node, { fiberCall: t });
+                fiberCallRequired(this.path);
+            }
+            this.visit(node.value);
+            this.visit(node.typeDecl);
+        },
+        typeExpr: function (node) {
+            resolveType(node);
+        }
+    });
+    function resolveType(node) {
+        var name = node.name + "";
+        var si = getScopeInfo(node.name);
+        var t = stype(si);
+        //console.log("TExpr",name,si,t);
+        if (t === ST.NATIVE) {
+            annotation(node, { resolvedType: si.value });
+        }
+        else if (t === ST.CLASS) {
+            annotation(node, { resolvedType: si.info });
+        }
+    }
+    varAccessesAnnotator.def = visitSub; //S
+    function annotateVarAccesses(node, scope) {
+        ctx.enter({ scope: scope }, function () {
+            varAccessesAnnotator.visit(node);
+        });
+    }
+    function copyLocals(finfo, scope) {
+        var locals = finfo.locals;
+        for (var i in locals.varDecls) {
+            //console.log("LocalVar ",i,"declared by ",finfo);
+            var si = new SI.LOCAL(finfo); //genSt(ST.LOCAL,{declaringFunc:finfo});
+            scope[i] = si;
+            annotation(locals.varDecls[i], { scopeInfo: si });
+        }
+        for (let i in locals.subFuncDecls) {
+            const si = new SI.LOCAL(finfo); //genSt(ST.LOCAL,{declaringFunc:finfo});
+            scope[i] = si;
+            annotation(locals.subFuncDecls[i], { scopeInfo: si });
+        }
+    }
+    function resolveTypesOfParams(params) {
+        params.forEach(function (param) {
+            if (param.typeDecl) {
+                //console.log("restype",param);
+                resolveType(param.typeDecl.vtype);
+            }
+        });
+    }
+    function initParamsLocals(f) {
+        //console.log("IS_MAIN", f.name, f.isMain);
+        ctx.enter({ isMain: f.isMain, finfo: f }, function () {
+            f.locals = collectLocals(f.stmts);
+            f.params = getParams(f);
+        });
+        resolveTypesOfParams(f.params);
+    }
+    function annotateSubFuncExpr(node) {
+        var m, ps;
+        var body = node.body;
+        var name = (node.head.name ? node.head.name.text : "anonymous_" + node.pos);
+        m = OM.match(node, { head: { params: { params: OM.P } } });
+        if (m) {
+            ps = m.P;
+        }
+        else {
+            ps = [];
+        }
+        var finfo = {};
+        var ns = newScope(ctx.scope);
+        //var locals;
+        ctx.enter({ finfo: finfo }, function () {
+            ps.forEach(function (p) {
+                var si = new SI.PARAM(finfo); //genSt(ST.PARAM,{declaringFunc:finfo});
+                annotation(p, { scopeInfo: si });
                 ns[p.name.text] = si;
-                annotation(p, { scopeInfo: si, declaringFunc: f });
             });
-            copyLocals(f, ns);
-            ctx.enter({ method: f, finfo: f, noWait: false }, function () {
-                annotateVarAccesses(f.stmts, ns);
-            });
-            f.scope = ns;
-            annotateSubFuncExprs(f.locals, ns);
-            return ns;
-        }
-        function annotateSource() {
-            ctx.enter({ scope: topLevelScope }, function () {
-                for (var name in methods) {
-                    if (debug)
-                        console.log("anon method1", name);
-                    var method = methods[name];
-                    initParamsLocals(method); //MAINVAR
-                    annotateMethodFiber(method);
-                }
-            });
-        }
-        initTopLevelScope(); //S
-        inheritSuperMethod(); //S
-        annotateSource();
-        delete klass.hasSemanticError;
-    } //B  end of annotateSource2
-    return { initClassDecls: initClassDecls, annotate: annotateSource2, parse };
-})();
-compiler_1.default.Semantics = Semantics;
-module.exports = Semantics;
+            finfo.locals = collectLocals(body);
+            copyLocals(finfo, ns);
+            annotateVarAccesses(body, ns);
+        });
+        finfo.scope = ns;
+        finfo.name = name;
+        finfo.params = ps;
+        //var res={scope:ns, locals:finfo.locals, name:name, params:ps};
+        resolveTypesOfParams(finfo.params);
+        //annotation(node,res);
+        annotation(node, { info: finfo });
+        annotateSubFuncExprs(finfo.locals, ns);
+        return finfo;
+    }
+    function annotateSubFuncExprs(locals, scope) {
+        ctx.enter({ scope: scope }, function () {
+            for (var n in locals.subFuncDecls) {
+                annotateSubFuncExpr(locals.subFuncDecls[n]);
+            }
+        });
+    }
+    function annotateMethodFiber(f) {
+        //f:info  (of method)
+        var ns = newScope(ctx.scope);
+        f.params.forEach(function (p, cnt) {
+            var si = new SI.PARAM(f);
+            //	klass:klass.name, name:f.name, no:cnt, declaringFunc:f
+            //});
+            ns[p.name.text] = si;
+            annotation(p, { scopeInfo: si, declaringFunc: f });
+        });
+        copyLocals(f, ns);
+        ctx.enter({ method: f, finfo: f, noWait: false }, function () {
+            annotateVarAccesses(f.stmts, ns);
+        });
+        f.scope = ns;
+        annotateSubFuncExprs(f.locals, ns);
+        return ns;
+    }
+    function annotateSource() {
+        ctx.enter({ scope: topLevelScope }, function () {
+            for (var name in methods) {
+                if (debug)
+                    console.log("anon method1", name);
+                var method = methods[name];
+                initParamsLocals(method); //MAINVAR
+                annotateMethodFiber(method);
+            }
+        });
+    }
+    initTopLevelScope(); //S
+    inheritSuperMethod(); //S
+    annotateSource();
+    delete klass.hasSemanticError;
+} //B  end of annotateSource2
+exports.annotate = annotateSource2;
 
 },{"../lib/R":26,"../lib/assert":29,"../lib/root":30,"../runtime/TError":34,"../runtime/TonyuRuntime":36,"./Grammar":5,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./parse_tonyu1":16,"./parse_tonyu2":17,"./tonyu1":22}],10:[function(require,module,exports){
 "use strict";
@@ -3331,24 +3370,43 @@ const Grammar=require("./Grammar");
 const cu=require("./compiler");
 const context=require("./context");
 */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-const compiler_1 = __importDefault(require("./compiler"));
-const context_1 = __importDefault(require("./context"));
+const cu = __importStar(require("./compiler"));
+const context_1 = require("./context");
 const Grammar_1 = __importDefault(require("./Grammar"));
 const Visitor_1 = __importDefault(require("./Visitor"));
 //var ex={"[SUBELEMENTS]":1,pos:1,len:1};
-var ScopeTypes = compiler_1.default.ScopeTypes;
-var genSt = compiler_1.default.newScopeType;
-var stype = compiler_1.default.getScopeType;
-var newScope = compiler_1.default.newScope;
+var ScopeTypes = cu.ScopeTypes;
+//var genSt=cu.newScopeType;
+var stype = cu.getScopeType;
+var newScope = cu.newScope;
 //var nc=cu.nullCheck;
-var genSym = compiler_1.default.genSym;
-var annotation3 = compiler_1.default.annotation;
-var getMethod2 = compiler_1.default.getMethod;
-var getDependingClasses = compiler_1.default.getDependingClasses;
-var getParams = compiler_1.default.getParams;
+var genSym = cu.genSym;
+var annotation3 = cu.annotation;
+var getMethod2 = cu.getMethod;
+var getDependingClasses = cu.getDependingClasses;
+var getParams = cu.getParams;
 var JSNATIVES = { Array: 1, String: 1, Boolean: 1, Number: 1, Void: 1, Object: 1, RegExp: 1, Error: 1 };
 var TypeChecker = {};
 function visitSub(node) {
@@ -3444,7 +3502,7 @@ TypeChecker.checkExpr = function (klass, env) {
                 var m = a.memberAccess;
                 var vtype = visitExpr(m.target);
                 if (vtype) {
-                    var f = compiler_1.default.getField(vtype, m.name);
+                    var f = cu.getField(vtype, m.name);
                     console.log("GETF", vtype, m.name, f);
                     if (f && f.vtype) {
                         annotation(node, { vtype: f.vtype });
@@ -3487,7 +3545,7 @@ TypeChecker.checkExpr = function (klass, env) {
             }
         }
     });
-    var ctx = (0, context_1.default)();
+    var ctx = (0, context_1.context)();
     typeAnnotationVisitor.def = visitSub;
     typeAnnotationVisitor.visit(klass.node);
     function visitExpr(node) {
@@ -3540,60 +3598,139 @@ module.exports = function Visitor(funcs) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getParams = exports.getDependingClasses = exports.getMethod = exports.getField = exports.getSource = exports.annotation = exports.genSym = exports.nullCheck = exports.newScope = exports.getScopeType = exports.ScopeInfo = exports.ScopeTypes = void 0;
 const TonyuRuntime_1 = __importDefault(require("../runtime/TonyuRuntime"));
 const root_1 = __importDefault(require("../lib/root"));
-/*import Tonyu = require("../runtime/TonyuRuntime");
-const ObjectMatcher=require("./ObjectMatcher");
-//const TError=require("TError");
-const root=require("../lib/root");*/
-const cu = {};
-TonyuRuntime_1.default.Compiler = cu;
-var ScopeTypes = {
+exports.ScopeTypes = {
     FIELD: "field", METHOD: "method", NATIVE: "native",
     LOCAL: "local", THVAR: "threadvar", PROP: "property",
     PARAM: "param", GLOBAL: "global",
     CLASS: "class", MODULE: "module"
 };
-cu.ScopeTypes = ScopeTypes;
-var nodeIdSeq = 1;
-var symSeq = 1; //B
-function genSt(st, options) {
-    var res = { type: st };
-    if (options) {
-        for (var k in options)
-            res[k] = options[k];
+var ScopeInfo;
+(function (ScopeInfo) {
+    class LOCAL {
+        constructor(declaringFunc) {
+            this.declaringFunc = declaringFunc;
+            this.type = exports.ScopeTypes.LOCAL;
+        }
     }
-    if (!res.name)
-        res.name = genSym("_" + st + "_");
+    ScopeInfo.LOCAL = LOCAL;
+    class PARAM {
+        constructor(declaringFunc) {
+            this.declaringFunc = declaringFunc;
+            this.type = exports.ScopeTypes.PARAM;
+        }
+    }
+    ScopeInfo.PARAM = PARAM;
+    class FIELD {
+        constructor(klass, name, info) {
+            this.klass = klass;
+            this.name = name;
+            this.info = info;
+            this.type = exports.ScopeTypes.FIELD;
+        }
+    }
+    ScopeInfo.FIELD = FIELD;
+    class PROP {
+        constructor(klass, name, info) {
+            this.klass = klass;
+            this.name = name;
+            this.info = info;
+            this.type = exports.ScopeTypes.PROP;
+        }
+    }
+    ScopeInfo.PROP = PROP;
+    class METHOD {
+        constructor(klass, name, info) {
+            this.klass = klass;
+            this.name = name;
+            this.info = info;
+            this.type = exports.ScopeTypes.METHOD;
+        }
+    }
+    ScopeInfo.METHOD = METHOD;
+    class THVAR {
+        constructor() {
+            this.type = exports.ScopeTypes.THVAR;
+        }
+    }
+    ScopeInfo.THVAR = THVAR;
+    class NATIVE {
+        constructor(name, value) {
+            this.name = name;
+            this.value = value;
+            this.type = exports.ScopeTypes.NATIVE;
+        }
+    }
+    ScopeInfo.NATIVE = NATIVE;
+    class CLASS {
+        constructor(name, fullName, info) {
+            this.name = name;
+            this.fullName = fullName;
+            this.info = info;
+            this.type = exports.ScopeTypes.CLASS;
+        }
+    }
+    ScopeInfo.CLASS = CLASS;
+    class GLOBAL {
+        constructor(name) {
+            this.name = name;
+            this.type = exports.ScopeTypes.GLOBAL;
+        }
+    }
+    ScopeInfo.GLOBAL = GLOBAL;
+    class MODULE {
+        constructor(name) {
+            this.name = name;
+            this.type = exports.ScopeTypes.MODULE;
+        }
+    }
+    ScopeInfo.MODULE = MODULE;
+})(ScopeInfo = exports.ScopeInfo || (exports.ScopeInfo = {}));
+;
+let nodeIdSeq = 1;
+let symSeq = 1; //B
+/*export function newScopeType(st, options?) {//B
+    const res:any={type:st};
+    if (options) {
+        for (let k in options) res[k]=options[k];
+    }
+    if (!res.name) res.name=genSym("_"+st+"_");
     return res;
-}
-cu.newScopeType = genSt;
-function stype(st) {
+}*/
+//cu.newScopeType=genSt;
+function getScopeType(st) {
     return st ? st.type : null;
 }
-cu.getScopeType = stype;
+exports.getScopeType = getScopeType;
+//cu.getScopeType=stype;
 function newScope(s) {
-    var f = function () { };
+    const f = function () { };
     f.prototype = s;
     return new f();
 }
-cu.newScope = newScope;
-function nc(o, mesg) {
+exports.newScope = newScope;
+//cu.newScope=newScope;
+function nullCheck(o, mesg) {
     if (!o)
         throw mesg + " is null";
     return o;
 }
-cu.nullCheck = nc;
+exports.nullCheck = nullCheck;
+//cu.nullCheck=nc;
 function genSym(prefix) {
     return prefix + ((symSeq++) + "").replace(/\./g, "");
 }
-cu.genSym = genSym;
-function annotation3(aobjs, node, aobj = undefined) {
+exports.genSym = genSym;
+//cu.genSym=genSym;
+function annotation(aobjs, node, aobj = undefined) {
     if (!node._id) {
         //if (!aobjs._idseq) aobjs._idseq=0;
         node._id = ++nodeIdSeq;
     }
-    var res = aobjs[node._id];
+    let res = aobjs[node._id];
     if (!res)
         res = aobjs[node._id] = { node: node };
     if (res.node !== node) {
@@ -3601,25 +3738,28 @@ function annotation3(aobjs, node, aobj = undefined) {
         throw new Error("annotation node not match!");
     }
     if (aobj) {
-        for (var i in aobj)
+        for (let i in aobj)
             res[i] = aobj[i];
     }
     return res;
 }
-cu.extend = function (res, aobj) {
-    for (var i in aobj)
-        res[i] = aobj[i];
+exports.annotation = annotation;
+//cu.extend=extend;
+/*function extend(res,aobj) {
+    for (let i in aobj) res[i]=aobj[i];
     return res;
-};
-cu.annotation = annotation3;
+};*/
+//cu.annotation=annotation3;
 function getSource(srcCont, node) {
     return srcCont.substring(node.pos, node.pos + node.len);
 }
-cu.getSource = getSource;
-cu.getField = function (klass, name) {
+exports.getSource = getSource;
+//cu.getSource=getSource;
+//cu.getField=getField;
+function getField(klass, name) {
     if (klass instanceof Function)
         return null;
-    var res = null;
+    let res = null;
     getDependingClasses(klass).forEach(function (k) {
         if (res)
             return;
@@ -3629,9 +3769,11 @@ cu.getField = function (klass, name) {
         res.vtype = TonyuRuntime_1.default.classMetas[res.vtype] || root_1.default[res.vtype];
     }
     return res;
-};
-function getMethod2(klass, name) {
-    var res = null;
+}
+exports.getField = getField;
+;
+function getMethod(klass, name) {
+    let res = null;
     getDependingClasses(klass).forEach(function (k) {
         if (res)
             return;
@@ -3639,10 +3781,11 @@ function getMethod2(klass, name) {
     });
     return res;
 }
-cu.getMethod = getMethod2;
+exports.getMethod = getMethod;
+//cu.getMethod=getMethod2;
 function getDependingClasses(klass) {
-    var visited = {};
-    var res = [];
+    const visited = {};
+    const res = [];
     function loop(k) {
         if (visited[k.fullName])
             return;
@@ -3660,63 +3803,74 @@ function getDependingClasses(klass) {
     loop(klass);
     return res;
 }
-cu.getDependingClasses = getDependingClasses;
+exports.getDependingClasses = getDependingClasses;
+//cu.getDependingClasses=getDependingClasses;
 function getParams(method) {
-    var res = [];
+    let res = [];
     if (!method.head)
         return res;
     if (method.head.setter)
         res.push(method.head.setter.value);
-    var ps = method.head.params ? method.head.params.params : null;
+    const ps = method.head.params ? method.head.params.params : null;
     if (ps && !ps.forEach)
         throw new Error(method + " is not array ");
     if (ps)
         res = res.concat(ps);
     return res;
 }
-cu.getParams = getParams;
-module.exports = cu;
+exports.getParams = getParams;
+//cu.getParams=getParams;
+//export= cu;
 
 },{"../lib/root":30,"../runtime/TonyuRuntime":36}],14:[function(require,module,exports){
 "use strict";
-module.exports = function context() {
-    var c = {};
-    c.ovrFunc = function (from, to) {
-        to.parent = from;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.context = exports.RawContext = void 0;
+/*export= function context() {
+    var c:any={};
+    c.ovrFunc=function (from , to) {
+        to.parent=from;
         return to;
     };
-    c.enter = enter;
-    var builtins = {};
-    c.clear = function () {
-        for (var k in c) {
-            if (!builtins[k])
-                delete c[k];
-        }
-    };
-    for (var k in c) {
-        builtins[k] = true;
+    c.enter=enter;
+    var builtins={};*/
+class RawContext {
+    constructor() {
+        this.value = {};
     }
-    return c;
-    function enter(val, act) {
-        var sv = {};
-        for (let k in val) {
-            if (k[0] === "$") {
-                k = k.substring(1);
-                sv[k] = c[k];
-                c[k] = c.ovrFunc(c[k], val[k]);
-            }
-            else {
-                sv[k] = c[k];
-                c[k] = val[k];
-            }
+    clear() {
+        const value = this.value;
+        for (let k in value) {
+            delete value[k];
         }
-        var res = act(c);
+    }
+    enter(newval, act) {
+        const sv = {};
+        const curval = this.value;
+        for (let k in newval) {
+            /*if (k[0]==="$") {
+                k=k.substring(1);
+                sv[k]=c[k];
+                c[k]=c.ovrFunc(c[k], val[k]);
+            } else {*/
+            sv[k] = curval[k];
+            curval[k] = newval[k];
+            //}
+        }
+        const res = act(this);
         for (let k in sv) {
-            c[k] = sv[k];
+            curval[k] = sv[k];
         }
         return res;
     }
-};
+}
+exports.RawContext = RawContext;
+function context() {
+    const res = new RawContext();
+    res.value = res;
+    return res;
+}
+exports.context = context;
 
 },{}],15:[function(require,module,exports){
 "use strict";
