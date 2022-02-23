@@ -409,8 +409,13 @@ var T2MediaLib = (function(){
     };
 
     // SEメソッド郡 //
-
     T2MediaLib.prototype.playSE = function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration) {//add start,duration by @hoge1e3
+        this._playSE(idx,
+            vol * this.seMasterVolume * this.masterVolume,
+            pan, rate, offset, loop, loopStart, loopEnd,start,duration);
+    }
+
+    T2MediaLib.prototype._playSE = function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration) {//add start,duration by @hoge1e3
         if (!this.context) return null;
         var soundData = this.soundDataAry[idx];
         if (soundData == null) return null;
@@ -418,7 +423,7 @@ var T2MediaLib = (function(){
             var that = this;
             var callbacks = {};
             callbacks.succ = function(idx) {
-                that.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration);//@hoge1e3
+                that._playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration);//@hoge1e3
             };
             callbacks.err = function() {
             };
@@ -500,7 +505,7 @@ var T2MediaLib = (function(){
         // 左右どちらかにパンがよると、音量が大きくなるので半減する
         //gainNode.gain.value = vol / (1 + Math.abs(pan));
         // ↑パンはそいうものらしいので、音量はそのままにする
-        gainNode.gain.value = vol * this.seMasterVolume * this.masterVolume;
+        gainNode.gain.value = vol;
 
         // ループ開始位置修正
         var offset_adj;
@@ -1002,7 +1007,9 @@ var T2MediaLib_BGMPlayer = (function(){
                 loopStart = loopStart||soundData.tagLoopStart;
                 loopEnd = loopEnd||soundData.tagLoopEnd;
             }
-            this.playingBGM = this.t2MediaLib.playSE(idx, this.bgmVolume, this.bgmPan, this.bgmTempo, offset, loop, loopStart, loopEnd);
+            this.playingBGM = this.t2MediaLib._playSE(idx,
+                this.bgmVolume * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume,
+                this.bgmPan, this.bgmTempo, offset, loop, loopStart, loopEnd);
         } else if (decodedData instanceof Object) {
             // Midi
             this._initPicoAudio();
@@ -1127,7 +1134,7 @@ var T2MediaLib_BGMPlayer = (function(){
         var bgm = this.playingBGM;
         this.bgmVolume = vol;
         if (isMezonetPlayback(bgm)){
-            bgm.setVolume(vol);
+            bgm.setVolume(vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
         } else if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
