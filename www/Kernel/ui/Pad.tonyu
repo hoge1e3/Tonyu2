@@ -144,8 +144,17 @@ extends Actor;
 }
 
 \initButtonLayout1() {
-    var screenSize = $screenWidth;
-    if ($screenWidth > $screenHeight) screenSize = $screenHeight;
+    var screenSize, sw, sh;
+    if (layer == $uiLayer) {
+        sw = $uiScreen.width;
+        sh = $uiScreen.height;
+    } else {
+        sw = $screenWidth;
+        sh = $screenHeight;
+    }
+    screenSize = sw;
+    if (sw > sh) screenSize = sh;
+    
     padScaleX = screenSize / 465;
     oldPadScaleX = padScaleX;
     oldButtonCnt = buttonCnt;
@@ -162,7 +171,7 @@ extends Actor;
         pad:this,
         mode:10001,
         x:101,
-        y:$screenHeight-101,
+        y:sh-101,
         alpha,
         layer,
         width:tempJujiPadWidth,
@@ -287,8 +296,17 @@ extends Actor;
 
 \drawPanel() {
     if (layout == 1) {
-        var screenSize = $screenWidth;
-        if ($screenWidth > $screenHeight) screenSize = $screenHeight;
+        var screenSize, sw, sh;
+        if (layer == $uiLayer) {
+            sw = $uiScreen.width;
+            sh = $uiScreen.height;
+        } else {
+            sw = $screenWidth;
+            sh = $screenHeight;
+        }
+        screenSize = sw;
+        if (sw > sh) screenSize = sh;
+
         jujiPads[0].width = trunc(72 * screenSize / DEFALT_SCREEN_WIDTH) * 3;
         jujiPads[0].height = trunc(72 * screenSize / DEFALT_SCREEN_WIDTH) * 3;
         jujiPads[0].padBorder = 1 * padScaleX;
@@ -341,32 +359,41 @@ extends Actor;
 }
 
 \setXYPanelLayout1() {
+    var sw, sh;
+    if (layer == $uiLayer) {
+        sw = $uiScreen.width;
+        sh = $uiScreen.height;
+    } else {
+        sw = $screenWidth;
+        sh = $screenHeight;
+    }
+    
     jujiPads[0].x = 112*trunc(padScaleX*64)/64;
-    jujiPads[0].y = $screenHeight-112*trunc(padScaleX*64)/64;
+    jujiPads[0].y = sh-112*trunc(padScaleX*64)/64;
     if (buttonCnt == 1) {
-        buttons[0].x = $screenWidth  -  84 * padScaleX;
-        buttons[0].y = $screenHeight -  84 * padScaleX;
+        buttons[0].x = sw  -  84 * padScaleX;
+        buttons[0].y = sh -  84 * padScaleX;
     } else if (buttonCnt == 2) {
-        buttons[0].x = $screenWidth  -  52 * padScaleX;
-        buttons[0].y = $screenHeight -  52 * padScaleX;
-        buttons[1].x = $screenWidth  - 150 * padScaleX;
-        buttons[1].y = $screenHeight -  52 * padScaleX;
+        buttons[0].x = sw  -  52 * padScaleX;
+        buttons[0].y = sh -  52 * padScaleX;
+        buttons[1].x = sw  - 150 * padScaleX;
+        buttons[1].y = sh -  52 * padScaleX;
     } else if (buttonCnt == 3) {
-        buttons[0].x = $screenWidth  -  52 * padScaleX;
-        buttons[0].y = $screenHeight -  52 * padScaleX;
-        buttons[1].x = $screenWidth  - 150 * padScaleX;
-        buttons[1].y = $screenHeight -  52 * padScaleX;
-        buttons[2].x = $screenWidth  - 101 * padScaleX;
-        buttons[2].y = $screenHeight - 150 * padScaleX;
+        buttons[0].x = sw  -  52 * padScaleX;
+        buttons[0].y = sh -  52 * padScaleX;
+        buttons[1].x = sw  - 150 * padScaleX;
+        buttons[1].y = sh -  52 * padScaleX;
+        buttons[2].x = sw  - 101 * padScaleX;
+        buttons[2].y = sh - 150 * padScaleX;
     } else if (buttonCnt >= 4) {
-        buttons[0].x = $screenWidth  -  52 * padScaleX;
-        buttons[0].y = $screenHeight -  52 * padScaleX;
-        buttons[1].x = $screenWidth  - 150 * padScaleX;
-        buttons[1].y = $screenHeight -  52 * padScaleX;
-        buttons[2].x = $screenWidth  -  52 * padScaleX;
-        buttons[2].y = $screenHeight - 150 * padScaleX;
-        buttons[3].x = $screenWidth  - 150 * padScaleX;
-        buttons[3].y = $screenHeight - 150 * padScaleX;
+        buttons[0].x = sw  -  52 * padScaleX;
+        buttons[0].y = sh -  52 * padScaleX;
+        buttons[1].x = sw  - 150 * padScaleX;
+        buttons[1].y = sh -  52 * padScaleX;
+        buttons[2].x = sw  -  52 * padScaleX;
+        buttons[2].y = sh - 150 * padScaleX;
+        buttons[3].x = sw  - 150 * padScaleX;
+        buttons[3].y = sh - 150 * padScaleX;
     }
 }
 
@@ -385,8 +412,17 @@ extends Actor;
     padsUpdateV2();
 
     // 画面サイズ変更でパネル画像を再描画 //
-    var screenSize = $screenWidth;
-    if ($screenWidth > $screenHeight) screenSize = $screenHeight;
+    var screenSize, sw, sh;
+    if (layer == $uiLayer) {
+        sw = $uiScreen.width;
+        sh = $uiScreen.height;
+    } else {
+        sw = $screenWidth;
+        sh = $screenHeight;
+    }
+    screenSize = sw;
+    if (sw > sh) screenSize = sh;
+
     padScaleX = screenSize / 465;
     if (padScaleX != oldPadScaleX/* || oldButtonCnt != buttonCnt*/) {
         if (autoMove) drawPanel();
@@ -394,10 +430,10 @@ extends Actor;
     }
 
     // 画面サイズ変更でパネル表示位置を変更 //
-    if ($screenWidth != oldScreenWidth || $screenHeight != oldScreenHeight/* || oldButtonCnt != buttonCnt*/) {
+    if (sw != oldScreenWidth || sh != oldScreenHeight/* || oldButtonCnt != buttonCnt*/) {
         if (autoMove) setXYPanel();
-        oldScreenWidth = $screenWidth;
-        oldScreenHeight = $screenHeight;
+        oldScreenWidth = sw;
+        oldScreenHeight = sh;
         oldButtonCnt = buttonCnt;
     }
 }
@@ -526,6 +562,10 @@ extends Actor;
         if (!i) i = 1;
         i--;
         if (i >= 0 && i < buttons.length) value = buttons[i].padCnt;
+        else if (i == -37 || i == "left") getLeft();
+        else if (i == -38 || i == "up") getUp();
+        else if (i == -39 || i == "right") getRight();
+        else if (i == -40 || i == "down") getDown();
     }
     return value;
 }

@@ -9,6 +9,8 @@ define([], function () {
       ".ogg":"audio/ogg",
       ".mp4":"video/mp4",
       ".m4a":"audio/x-m4a",
+      ".flac":"audio/x-flac",
+      ".fla":"audio/x-flac",
       ".mid":"audio/mid",
       ".midi":"audio/mid",
       ".wav":"audio/wav",
