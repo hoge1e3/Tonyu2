@@ -410,7 +410,7 @@ var T2MediaLib = (function(){
 
     // SEメソッド郡 //
     T2MediaLib.prototype.playSE = function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration) {//add start,duration by @hoge1e3
-        this._playSE(idx,
+        return this._playSE(idx,
             vol * this.seMasterVolume * this.masterVolume,
             pan, rate, offset, loop, loopStart, loopEnd,start,duration);
     }
