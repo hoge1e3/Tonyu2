@@ -28,8 +28,8 @@ define(function (require,exports, module) {
         async function check(inf) {
             const curVal=inf.editor.getValue();
             //console.log("Parse");
+            const c=ide.project.compiler;
             try {
-                const c=ide.project.compiler;
                 await c.parse(inf.file, curVal);
                 console.log("rs",ide.project.readyState);
                 if (ide.project.readyState===true) {
@@ -38,6 +38,9 @@ define(function (require,exports, module) {
                 }
                 clearMark(inf);
             }catch (e) {
+                if (typeof e.src==="string") {
+                    c.convertError(e);
+                }
                 mark(inf, e);
             }
             console.log("Parse Done");
@@ -51,14 +54,15 @@ define(function (require,exports, module) {
         }
         function mark(inf, e) {
             clearMark(inf);
-            if (typeof e.row==="number" && typeof e.col==="number") {
+            console.log("Mark!ERROR!",e, inf.markers.length);
+            if (typeof e.row==="number" && typeof e.col==="number" && 
+            inf.file && e.src && inf.file.path()===e.src.path()) {
                 if (e.col==0) e.col=1;
                 const len=e.len||1;
                 const range=new Range(e.row-1,e.col-1,e.row-1,e.col-1+len);
                 const marker=EditorPopupMarker.mark(inf.editor, range,"errorMarker",e.message);
                 inf.markers.push(marker);
             }
-            console.log("Mark!ERROR!",e, inf.markers.length);
         }
         return {
             check, clearMark, mark
