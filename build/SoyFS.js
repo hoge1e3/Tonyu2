@@ -501,6 +501,8 @@ define('MIMETypes',[], function () {
       ".wav":"audio/x-wav",
       ".mp3":"audio/mp3",
       ".ogg":"audio/ogg",
+      ".flac":"audio/x-flac",
+      ".fla":"audio/x-flac",
       ".midi":"audio/midi",
       ".mid":"audio/midi",
       ".mzo":"audio/mzo",
