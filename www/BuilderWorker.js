@@ -104,7 +104,7 @@ function convertTError(e) {
 }
 WS.ready();
 
-},{"../lang/Builder":3,"../lang/langMod":16,"../lib/FS":26,"../lib/R":27,"../lib/WorkerServiceW":29,"../lib/root":31,"../project/CompiledProject":32,"../project/NS2DepSpec":33,"../project/ProjectFactory":34,"../runtime/TonyuRuntime":37}],3:[function(require,module,exports){
+},{"../lang/Builder":3,"../lang/langMod":17,"../lib/FS":27,"../lib/R":28,"../lib/WorkerServiceW":30,"../lib/root":32,"../project/CompiledProject":33,"../project/NS2DepSpec":34,"../project/ProjectFactory":35,"../runtime/TonyuRuntime":38}],3:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -339,8 +339,7 @@ module.exports = class Builder {
         const shortCn = this.fileToShortClassName(f);
         const myNsp = this.getNamespace();
         const fullCn = myNsp + "." + shortCn;
-        var m = TonyuRuntime_1.default.klass.getMeta(fullCn);
-        TonyuRuntime_1.default.extend(m, {
+        const m = TonyuRuntime_1.default.klass.addMeta(fullCn, {
             fullName: fullCn,
             shortName: shortCn,
             namespace: myNsp
@@ -552,7 +551,7 @@ module.exports = class Builder {
     }
 };
 
-},{"../lib/R":27,"../runtime/TError":35,"../runtime/TonyuRuntime":37,"./IndentBuffer":6,"./JSGenerator":7,"./Semantics":10,"./SourceFiles":11,"./TypeChecker":12,"./tonyu1":23}],4:[function(require,module,exports){
+},{"../lib/R":28,"../runtime/TError":36,"../runtime/TonyuRuntime":38,"./IndentBuffer":6,"./JSGenerator":7,"./Semantics":11,"./SourceFiles":12,"./TypeChecker":13,"./tonyu1":24}],4:[function(require,module,exports){
 "use strict";
 // parser.js の補助ライブラリ．式の解析を担当する
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -856,7 +855,7 @@ function ExpressionParser(context, name = "Expression") {
 exports.ExpressionParser = ExpressionParser;
 ;
 
-},{"./parser":19}],5:[function(require,module,exports){
+},{"./parser":20}],5:[function(require,module,exports){
 "use strict";
 //import * as Parser from "./parser";
 const parser_1 = require("./parser");
@@ -1110,7 +1109,7 @@ const Grammar = function (context) {
 };
 module.exports = Grammar;
 
-},{"./parser":19}],6:[function(require,module,exports){
+},{"./parser":20}],6:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -1441,7 +1440,7 @@ module.exports = function IndentBuffer(options) {
     return $;
 };
 
-},{"../lib/StringBuilder":28,"./source-map":21}],7:[function(require,module,exports){
+},{"../lib/StringBuilder":29,"./source-map":22}],7:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -2499,7 +2498,7 @@ exports.genJS = genJS;
 //return {genJS:genJS};
 //})();
 
-},{"../lib/R":27,"../lib/assert":30,"../runtime/TError":35,"./IndentBuffer":6,"./ObjectMatcher":9,"./Visitor":13,"./compiler":14,"./context":15,"./tonyu1":23}],8:[function(require,module,exports){
+},{"../lib/R":28,"../lib/assert":31,"../runtime/TError":36,"./IndentBuffer":6,"./ObjectMatcher":9,"./Visitor":14,"./compiler":15,"./context":16,"./tonyu1":24}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isArylit = exports.isObjlit = exports.isJsonElem = exports.isFuncExpr = exports.isFuncExprHead = exports.isEmpty = exports.isIfWait = exports.isNativeDecl = exports.isFuncDecl = exports.isFuncDeclHead = exports.isSetterDecl = exports.isParamDecls = exports.isParamDecl = exports.isVarsDecl = exports.isVarDecl = exports.isTypeDecl = exports.isTypeExpr = exports.isThrow = exports.isTry = exports.isCatch = exports.isFinally = exports.isContinue = exports.isBreak = exports.isSwitch = exports.isDefault = exports.isCase = exports.isDo = exports.isWhile = exports.isFor = exports.isNormalFor = exports.isForin = exports.isIf = exports.isReturn = exports.isCompound = exports.isExprstmt = exports.isSuperExpr = exports.isNewExpr = exports.isScall = exports.isCall = exports.isObjlitArg = exports.isFuncExprArg = exports.isVarAccess = exports.isParenExpr = exports.isMember = exports.isArgList = exports.isArrayElem = exports.isTrifix = exports.isInfix = exports.isPostfix = exports.isPrefix = void 0;
@@ -2820,6 +2819,15 @@ function m(obj, tmpl, res) {
 
 },{}],10:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isTonyuClass = void 0;
+function isTonyuClass(v) {
+    return typeof v === "function" && v.meta;
+}
+exports.isTonyuClass = isTonyuClass;
+
+},{}],11:[function(require,module,exports){
+"use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -2859,15 +2867,6 @@ const Visitor_1 = __importDefault(require("./Visitor"));
 const context_1 = require("./context");
 const parser_1 = require("./parser");
 const NodeTypes_1 = require("./NodeTypes");
-/*type NodeBase={type:string, pos:{}};
-type TextNode={text:string};
-type Program=NodeBase & {stmts: Statement[]};
-type Statement=NodeBase &{name: TextNode, head:any, body:{stmts:Statement[]}};
-type Postfix=NodeBase & {op:Node};
-type Node=Program | Statement | Postfix;
-function isPostfix(n:Node): n is Postfix {
-    return n.type=="postfix";
-}*/
 var ScopeTypes = cu.ScopeTypes;
 //var genSt=cu.newScopeType;
 var stype = cu.getScopeType;
@@ -2931,11 +2930,10 @@ function initClassDecls(klass, env) {
         klass.jsNotUpToDate = true;
     }
     const node = parse(klass, env.options);
-    var MAIN = { name: "main", stmts: [], pos: 0, isMain: true };
+    var MAIN = { name: "main", stmts: [], pos: 0, isMain: true, nowait: false };
     // method := fiber | function
-    var fields = {}, methods = { main: MAIN }, natives = {}, amds = {}, softRefClasses = {};
-    klass.decls = { fields: fields, methods: methods, natives: natives, amds: amds,
-        softRefClasses: softRefClasses };
+    const fields = {}, methods = { main: MAIN }, natives = {}, amds = {}, softRefClasses = {};
+    klass.decls = { fields, methods, natives, amds, softRefClasses };
     // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，AMDモジュール変数
     //   extends/includes以外から参照してれるクラス の集まり．親クラスの宣言は含まない
     klass.node = node;
@@ -2962,7 +2960,7 @@ function initClassDecls(klass, env) {
             });
         }
         if (spcn == "Array") {
-            klass.superclass = { name: "Array", fullName: "Array", builtin: true };
+            klass.superclass = { shortName: "Array", fullName: "Array", builtin: true };
         }
         else if (spcn) {
             var spc = env.classes[env.aliases[spcn] || spcn]; /*ENVC*/ //CFN env.classes[env.aliases[spcn]]
@@ -3006,7 +3004,7 @@ function initClassDecls(klass, env) {
             "forin": function (node) {
                 var isVar = node.isVar;
                 if (isVar) {
-                    node.vars.forEach(function (v) {
+                    node.vars.forEach((v) => {
                         addField(v);
                     });
                 }
@@ -3637,7 +3635,7 @@ function annotateSource2(klass, env) {
 } //B  end of annotateSource2
 exports.annotate = annotateSource2;
 
-},{"../lib/R":27,"../lib/assert":30,"../lib/root":31,"../runtime/TError":35,"../runtime/TonyuRuntime":37,"./NodeTypes":8,"./ObjectMatcher":9,"./Visitor":13,"./compiler":14,"./context":15,"./parse_tonyu1":17,"./parse_tonyu2":18,"./parser":19,"./tonyu1":23}],11:[function(require,module,exports){
+},{"../lib/R":28,"../lib/assert":31,"../lib/root":32,"../runtime/TError":36,"../runtime/TonyuRuntime":38,"./NodeTypes":8,"./ObjectMatcher":9,"./Visitor":14,"./compiler":15,"./context":16,"./parse_tonyu1":18,"./parse_tonyu2":19,"./parser":20,"./tonyu1":24}],12:[function(require,module,exports){
 "use strict";
 //define(function (require,exports,module) {
 /*const root=require("root");*/
@@ -3746,7 +3744,7 @@ class SourceFiles {
 module.exports = new SourceFiles();
 //});/*--end of define--*/
 
-},{"../lib/root":31}],12:[function(require,module,exports){
+},{"../lib/root":32}],13:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -3934,7 +3932,7 @@ TypeChecker.checkExpr = function (klass, env) {
 };
 module.exports = TypeChecker;
 
-},{"./Visitor":13,"./compiler":14,"./context":15,"./parser":19}],13:[function(require,module,exports){
+},{"./Visitor":14,"./compiler":15,"./context":16,"./parser":20}],14:[function(require,module,exports){
 "use strict";
 module.exports = function Visitor(funcs) {
     var $ = { funcs: funcs, path: [] };
@@ -3971,7 +3969,7 @@ module.exports = function Visitor(funcs) {
     return $;
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -4200,7 +4198,7 @@ exports.getParams = getParams;
 //cu.getParams=getParams;
 //export= cu;
 
-},{"../lib/root":31,"../runtime/TonyuRuntime":37}],15:[function(require,module,exports){
+},{"../lib/root":32,"../runtime/TonyuRuntime":38}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.context = exports.RawContext = void 0;
@@ -4250,7 +4248,7 @@ function context() {
 }
 exports.context = context;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 module.exports = {
     getNamespace: function () {
@@ -4271,7 +4269,7 @@ module.exports = {
     // loadClasses: stub
 };
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -4281,7 +4279,7 @@ const tonyu1_token_1 = __importDefault(require("./tonyu1_token"));
 const Tonyu1Lang = (0, parserFactory_1.default)({ TT: tonyu1_token_1.default });
 module.exports = Tonyu1Lang;
 
-},{"./parserFactory":20,"./tonyu1_token":24}],18:[function(require,module,exports){
+},{"./parserFactory":21,"./tonyu1_token":25}],19:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -4291,10 +4289,14 @@ const tonyu2_token_1 = __importDefault(require("./tonyu2_token"));
 const Tonyu2Lang = (0, parserFactory_1.default)({ TT: tonyu2_token_1.default });
 module.exports = Tonyu2Lang;
 
-},{"./parserFactory":20,"./tonyu2_token":25}],19:[function(require,module,exports){
+},{"./parserFactory":21,"./tonyu2_token":26}],20:[function(require,module,exports){
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getRange = exports.setRange = exports.addRange = exports.lazy = exports.TokensParser = exports.tokensParserContext = exports.StringParser = exports.State = exports.Parser = exports.ParserContext = exports.SUBELEMENTS = exports.ALL = void 0;
+const R_1 = __importDefault(require("../lib/R"));
 exports.ALL = Symbol("ALL");
 exports.SUBELEMENTS = Symbol("SUBELEMENTS");
 const options = { traceTap: false, optimizeFirst: true, profile: false,
@@ -4354,7 +4356,7 @@ class ParserContext {
                 }
                 if (tbl[exports.ALL])
                     return tbl[exports.ALL].parse(s);
-                return s.withError(`Read: '${f}', Expected: ${Object.keys(tbl).join("")}.`);
+                return s.withError((0, R_1.default)("expected", Object.keys(tbl).join("")));
             });
             res._first = tbl; //{space:space,tbl:tbl};
             //res.checkTbl();
@@ -4374,7 +4376,7 @@ class ParserContext {
             }
             if (tbl[exports.ALL])
                 return tbl[exports.ALL].parse(s);
-            return s.withError(`Read: '${t ? f : "EOF"}', Expected: ${Object.keys(tbl).join(", ")}.`);
+            return s.withError((0, R_1.default)("expected", Object.keys(tbl).join(", ")));
         });
         res._first = tbl; //{space:"TOKEN",tbl:tbl};
         //res.checkTbl();
@@ -5087,7 +5089,7 @@ exports.TokensParser = {
                 s.result = [t];
             }
             else {
-                s = s.withError(`Reading ${t ? t.type : "EOF"}, expected ${type}.`);
+                s = s.withError((0, R_1.default)("expected", type));
             }
             return s;
         }).setName("'" + type + "'", { type: "primitive", name: type }).firstTokens(type);
@@ -5179,7 +5181,7 @@ exports.getRange = getRange;
 //})();
 //export= Parser;
 
-},{}],20:[function(require,module,exports){
+},{"../lib/R":28}],21:[function(require,module,exports){
 "use strict";
 /*
 * Tonyu2 の構文解析を行う．
@@ -5517,7 +5519,7 @@ module.exports = function PF({ TT }) {
     return $;
 };
 
-},{"../lib/R":27,"../runtime/TError":35,"./ExpressionParser2":4,"./Grammar":5,"./parser":19}],21:[function(require,module,exports){
+},{"../lib/R":28,"../runtime/TError":36,"./ExpressionParser2":4,"./Grammar":5,"./parser":20}],22:[function(require,module,exports){
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -8573,7 +8575,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 /*define(["Grammar", "XMLBuffer", "IndentBuffer","disp", "Parser","TError"],
 function (Grammar, XMLBuffer, IndentBuffer, disp, Parser,TError) {
@@ -8849,14 +8851,14 @@ function tokenizerFactory({ reserved, caseInsensitive }) {
 exports.tokenizerFactory = tokenizerFactory;
 ;
 
-},{"./parser":19}],23:[function(require,module,exports){
+},{"./parser":20}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isTonyu1 = void 0;
 function isTonyu1(options) { return options && options.tonyu1; }
 exports.isTonyu1 = isTonyu1;
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 /*define(["Grammar", "XMLBuffer", "IndentBuffer","disp", "Parser","TError"],
 function (Grammar, XMLBuffer, IndentBuffer, disp, Parser,TError) {
@@ -8888,7 +8890,7 @@ module.exports = (0, tokenizerFactory_1.tokenizerFactory)({
     }
 });
 
-},{"./tokenizerFactory":22}],25:[function(require,module,exports){
+},{"./tokenizerFactory":23}],26:[function(require,module,exports){
 "use strict";
 const tokenizerFactory_1 = require("./tokenizerFactory");
 module.exports = (0, tokenizerFactory_1.tokenizerFactory)({
@@ -8934,7 +8936,7 @@ module.exports = (0, tokenizerFactory_1.tokenizerFactory)({
     }
 });
 
-},{"./tokenizerFactory":22}],26:[function(require,module,exports){
+},{"./tokenizerFactory":23}],27:[function(require,module,exports){
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
 (function (d,f) {
@@ -12678,9 +12680,10 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
 });
 //})(window);
 
-},{"fs":1}],27:[function(require,module,exports){
+},{"fs":1}],28:[function(require,module,exports){
 "use strict";
 const ja = {
+    expected: "ここには{1}などが入ることが予想されます",
     superClassIsUndefined: "親クラス {1}は定義されていません",
     classIsUndefined: "クラス {1}は定義されていません",
     invalidLeftValue: "'{1}'は左辺には書けません．",
@@ -12711,6 +12714,7 @@ const ja = {
         "   [参考]https://edit.tonyu.jp/doc/options.html\n",
 };
 const en = {
+    "expected": "Expected: {1}",
     "superClassIsUndefined": "Super Class '{1}' is not defined",
     "classIsUndefined": "Class {1} is Undefined",
     "invalidLeftValue": "{1} is not a valid Left Value",
@@ -12777,7 +12781,7 @@ R.setLocale = locale => {
 module.exports = R;
 //module.exports=R;
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 "use strict";
 module.exports = function StringBuilder(bufSize = 1024) {
     const buf = [""];
@@ -12874,7 +12878,7 @@ module.exports = function StringBuilder(bufSize = 1024) {
     return { append, replace, truncate, toString, getLength, last };
 };
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 "use strict";
 var idseq = 1;
 var paths = {}, queue = {}, root = self;
@@ -12956,7 +12960,7 @@ if (!root.console) {
 module.exports = root.WorkerService;
 //module.exports=self.WorkerService;
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 "use strict";
 const Assertion = function (failMesg = "Assertion failed: ") {
     this.failMesg = flatten(failMesg);
@@ -13162,7 +13166,7 @@ function isArg(a) {
 }
 module.exports = assert;
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 "use strict";
 const root = (function () {
     if (typeof window !== "undefined")
@@ -13175,7 +13179,7 @@ const root = (function () {
 })();
 module.exports = root;
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 /*define(function (require,exports,module) {
     const F=require("ProjectFactory");
     const root=require("root");
@@ -13270,7 +13274,7 @@ module.exports = root;
     });
 //});/*--end of define--*/
 
-},{"../lang/SourceFiles":11,"../lang/langMod":16,"../lib/root":31,"./ProjectFactory":34}],33:[function(require,module,exports){
+},{"../lang/SourceFiles":12,"../lang/langMod":17,"../lib/root":32,"./ProjectFactory":35}],34:[function(require,module,exports){
 
 class NS2DepSpec {
     constructor(hashOrArray) {
@@ -13295,7 +13299,7 @@ function isArray(o) {
 }
 module.exports=NS2DepSpec;
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 //define(function (require,exports,module) {
     // This factory will be widely used, even BitArrow.
 
@@ -13426,7 +13430,7 @@ module.exports=NS2DepSpec;
     };
 //});/*--end of define--*/
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 "use strict";
 function TError(message, src, pos, len = 0) {
     let rc;
@@ -13479,6 +13483,7 @@ pp = 4  7   11
 row=2  pp=11  pos=9
 lines[row].length=4
     */
+    col = 0;
     for (row = 0; row < lines.length; row++) {
         const ppp = pp;
         pp += lines[row].length + 1;
@@ -13492,7 +13497,7 @@ lines[row].length=4
 module.exports = TError;
 //module.exports=TError;
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 "use strict";
 //define(["Klass"], function (Klass) {
 //var Klass=require("../lib/Klass");
@@ -13604,16 +13609,17 @@ module.exports = function IT(set, arity) {
 //	return IT;
 //});
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const R_1 = __importDefault(require("../lib/R"));
 const TonyuIterator_1 = __importDefault(require("./TonyuIterator"));
-const TonyuThread_1 = __importDefault(require("./TonyuThread"));
+const TonyuThread_1 = require("./TonyuThread");
 const root_1 = __importDefault(require("../lib/root"));
 const assert_1 = __importDefault(require("../lib/assert"));
+const RuntimeTypes_1 = require("../lang/RuntimeTypes");
 // old browser support
 if (!root_1.default.performance) {
     root_1.default.performance = {};
@@ -13623,10 +13629,8 @@ if (!root_1.default.performance.now) {
         return Date.now();
     };
 }
-var preemptionTime = 60;
-var Tonyu, TT;
 function thread() {
-    var t = new TT();
+    var t = new TonyuThread_1.TonyuThread(Tonyu);
     t.handleEx = handleEx;
     return t;
 }
@@ -13650,16 +13654,7 @@ const property = {
     }
 };
 function handleEx(e) {
-    if (Tonyu.onRuntimeError) {
-        Tonyu.onRuntimeError(e);
-    }
-    else {
-        //if (typeof $LASTPOS=="undefined") $LASTPOS=0;
-        if (root_1.default.alert)
-            root_1.default.alert("Error: " + e);
-        console.log(e.stack);
-        throw e;
-    }
+    Tonyu.onRuntimeError(e);
 }
 function addMeta(fn, m) {
     // why use addMeta?
@@ -13908,10 +13903,7 @@ function extend(dst, src) {
     return dst;
 }
 //alert("init");
-var globals = {};
-function isConstructor(v) {
-    return typeof v === "function";
-}
+const globals = {};
 var classes = {}; // classes.namespace.classname= function
 var classMetas = {}; // classes.namespace.classname.meta ( or env.classes / ctx.classes)
 function setGlobal(n, v) {
@@ -13999,7 +13991,7 @@ function hasKey(k, obj) {
 }
 function run(bootClassName) {
     var bootClass = getClass(bootClassName);
-    if (!isConstructor(bootClass))
+    if (!(0, RuntimeTypes_1.isTonyuClass)(bootClass))
         throw new Error((0, R_1.default)("bootClassIsNotFound", bootClassName));
     Tonyu.runMode = true;
     var boot = new bootClass();
@@ -14029,24 +14021,35 @@ function resetLoopCheck(disableTime) {
 function is(obj, klass) {
     if (!obj)
         return false;
+    if (!klass)
+        return false;
     if (obj instanceof klass)
         return true;
-    if (typeof obj.getClassInfo === "function" && klass.meta) {
+    if (typeof obj.getClassInfo === "function" && (0, RuntimeTypes_1.isTonyuClass)(klass)) {
         return obj.getClassInfo().includesRec[klass.meta.fullName];
     }
     return false;
 }
 //setInterval(resetLoopCheck,16);
-Tonyu = { thread: thread,
-    klass: klass, bless: bless, extend: extend,
-    globals: globals, classes: classes, classMetas: classMetas, setGlobal: setGlobal, getGlobal: getGlobal, getClass: getClass,
-    timeout: timeout,
-    bindFunc: bindFunc, not_a_tonyu_object: not_a_tonyu_object, is: is,
-    hasKey: hasKey, invokeMethod: invokeMethod, callFunc: callFunc, checkNonNull: checkNonNull,
-    iterator: TonyuIterator_1.default, run: run, checkLoop: checkLoop, resetLoopCheck: resetLoopCheck,
+const Tonyu = { thread,
+    klass, bless, extend,
+    globals, classes, classMetas, setGlobal, getGlobal, getClass,
+    timeout,
+    bindFunc, not_a_tonyu_object, is,
+    hasKey, invokeMethod, callFunc, checkNonNull,
+    iterator: TonyuIterator_1.default, run, checkLoop, resetLoopCheck,
+    currentProject: null,
+    currentThread: null,
+    runMode: false,
+    onRuntimeError: (e) => {
+        if (root_1.default.alert)
+            root_1.default.alert("Error: " + e);
+        console.log(e.stack);
+        throw e;
+    },
     VERSION: 1560828115159,
-    A: A, ID: Math.random() };
-TT = (0, TonyuThread_1.default)(Tonyu);
+    A, ID: Math.random() };
+//const TT=TonyuThreadF(Tonyu);
 if (root_1.default.Tonyu) {
     console.error("Tonyu called twice!");
     throw new Error("Tonyu called twice!");
@@ -14054,291 +14057,291 @@ if (root_1.default.Tonyu) {
 root_1.default.Tonyu = Tonyu;
 module.exports = Tonyu;
 
-},{"../lib/R":27,"../lib/assert":30,"../lib/root":31,"./TonyuIterator":36,"./TonyuThread":38}],38:[function(require,module,exports){
+},{"../lang/RuntimeTypes":10,"../lib/R":28,"../lib/assert":31,"../lib/root":32,"./TonyuIterator":37,"./TonyuThread":39}],39:[function(require,module,exports){
 "use strict";
 //	var Klass=require("../lib/Klass");
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TonyuThread = void 0;
 const R_1 = __importDefault(require("../lib/R"));
-module.exports = function TonyuThreadF(Tonyu) {
-    var cnts = { enterC: {}, exitC: 0 };
-    var idSeq = 1;
-    //try {window.cnts=cnts;}catch(e){}
-    class TonyuThread {
-        constructor() {
-            this.preempted = false;
-            this.frame = null;
-            this._isDead = false;
-            //this._isAlive=true;
-            this.cnt = 0;
-            this._isWaiting = false;
-            this.fSuspended = false;
-            this.tryStack = [];
-            this.preemptionTime = 60;
-            this.onEndHandlers = [];
-            this.onTerminateHandlers = [];
-            this.id = idSeq++;
-            this.age = 0; // inc if object pooled
-        }
-        isAlive() {
-            return !this.isDead();
-            //return this.frame!=null && this._isAlive;
-        }
-        isDead() {
-            this._isDead = this._isDead || (this.frame == null) ||
-                (this._threadGroup && (this._threadGroup.objectPoolAge != this.tGrpObjectPoolAge ||
-                    this._threadGroup.isDeadThreadGroup()));
-            return this._isDead;
-        }
-        setThreadGroup(g) {
-            this._threadGroup = g;
-            this.tGrpObjectPoolAge = g.objectPoolAge;
-            //if (g) g.add(fb);
-        }
-        isWaiting() {
-            return this._isWaiting;
-        }
-        suspend() {
-            this.fSuspended = true;
-            this.cnt = 0;
-        }
-        enter(frameFunc) {
-            //var n=frameFunc.name;
-            //cnts.enterC[n]=(cnts.enterC[n]||0)+1;
-            this.frame = { prev: this.frame, func: frameFunc };
-        }
-        apply(obj, methodName, args) {
-            if (!args)
-                args = [];
-            var method;
-            if (typeof methodName == "string") {
-                method = obj["fiber$" + methodName];
-                if (!method) {
-                    throw new Error((0, R_1.default)("undefinedMethod", methodName));
-                }
-            }
-            if (typeof methodName == "function") {
-                method = methodName.fiber;
-                if (!method) {
-                    var n = methodName.methodInfo ? methodName.methodInfo.name : methodName.name;
-                    throw new Error((0, R_1.default)("notAWaitableMethod", n));
-                }
-            }
-            args = [this].concat(args);
-            var pc = 0;
-            return this.enter(function (th) {
-                switch (pc) {
-                    case 0:
-                        method.apply(obj, args);
-                        pc = 1;
-                        break;
-                    case 1:
-                        th.termStatus = "success";
-                        th.notifyEnd(th.retVal);
-                        args[0].exit();
-                        pc = 2;
-                        break;
-                }
-            });
-        }
-        notifyEnd(r) {
-            this.onEndHandlers.forEach(function (e) {
-                e(r);
-            });
-            this.notifyTermination({ status: "success", value: r });
-        }
-        notifyTermination(tst) {
-            this.onTerminateHandlers.forEach(function (e) {
-                e(tst);
-            });
-        }
-        on(type, f) {
-            if (type === "end" || type === "success")
-                this.onEndHandlers.push(f);
-            if (type === "terminate") {
-                this.onTerminateHandlers.push(f);
-                if (this.handleEx)
-                    delete this.handleEx;
+//export= function TonyuThreadF(Tonyu) {
+let idSeq = 1;
+//try {window.cnts=cnts;}catch(e){}
+class TonyuThread {
+    constructor(Tonyu) {
+        this.Tonyu = Tonyu;
+        this.preempted = false;
+        this.frame = null;
+        this._isDead = false;
+        //this._isAlive=true;
+        this.cnt = 0;
+        this._isWaiting = false;
+        this.fSuspended = false;
+        this.tryStack = [];
+        this.preemptionTime = 60;
+        this.onEndHandlers = [];
+        this.onTerminateHandlers = [];
+        this.id = idSeq++;
+        this.age = 0; // inc if object pooled
+    }
+    isAlive() {
+        return !this.isDead();
+        //return this.frame!=null && this._isAlive;
+    }
+    isDead() {
+        this._isDead = this._isDead || (this.frame == null) ||
+            (this._threadGroup && (this._threadGroup.objectPoolAge != this.tGrpObjectPoolAge ||
+                this._threadGroup.isDeadThreadGroup()));
+        return this._isDead;
+    }
+    setThreadGroup(g) {
+        this._threadGroup = g;
+        this.tGrpObjectPoolAge = g.objectPoolAge;
+        //if (g) g.add(fb);
+    }
+    isWaiting() {
+        return this._isWaiting;
+    }
+    suspend() {
+        this.fSuspended = true;
+        this.cnt = 0;
+    }
+    enter(frameFunc) {
+        //var n=frameFunc.name;
+        //cnts.enterC[n]=(cnts.enterC[n]||0)+1;
+        this.frame = { prev: this.frame, func: frameFunc };
+    }
+    apply(obj, methodName, args) {
+        if (!args)
+            args = [];
+        let method;
+        if (typeof methodName == "string") {
+            method = obj["fiber$" + methodName];
+            if (!method) {
+                throw new Error((0, R_1.default)("undefinedMethod", methodName));
             }
         }
-        promise() {
-            var fb = this;
-            return new Promise(function (succ, err) {
-                fb.on("terminate", function (st) {
-                    if (st.status === "success") {
-                        succ(st.value);
-                    }
-                    else if (st.status === "exception") {
-                        err(st.exception);
-                    }
-                    else {
-                        err(new Error(st.status));
-                    }
-                });
-            });
-        }
-        then(succ, err) {
-            if (err)
-                return this.promise().then(succ, err);
-            else
-                return this.promise().then(succ);
-        }
-        fail(err) {
-            return this.promise().then(e => e, err);
-        }
-        gotoCatch(e) {
-            var fb = this;
-            if (fb.tryStack.length == 0) {
-                fb.termStatus = "exception";
-                fb.kill();
-                if (fb.handleEx)
-                    fb.handleEx(e);
-                else
-                    fb.notifyTermination({ status: "exception", exception: e });
-                return;
+        if (typeof methodName == "function") {
+            const fmethod = methodName;
+            method = fmethod.fiber;
+            if (!method) {
+                var n = fmethod.methodInfo ? fmethod.methodInfo.name : fmethod.name;
+                throw new Error((0, R_1.default)("notAWaitableMethod", n));
             }
-            fb.lastEx = e;
-            var s = fb.tryStack.pop();
-            while (fb.frame) {
-                if (s.frame === fb.frame) {
-                    fb.catchPC = s.catchPC;
+        }
+        args = [this].concat(args);
+        var pc = 0;
+        return this.enter(function (th) {
+            switch (pc) {
+                case 0:
+                    method.apply(obj, args);
+                    pc = 1;
                     break;
-                }
-                else {
-                    fb.frame = fb.frame.prev;
-                }
+                case 1:
+                    th.termStatus = "success";
+                    th.notifyEnd(th.retVal);
+                    args[0].exit();
+                    pc = 2;
+                    break;
             }
-        }
-        startCatch() {
-            var fb = this;
-            var e = fb.lastEx;
-            fb.lastEx = null;
-            return e;
-        }
-        exit(res) {
-            //cnts.exitC++;
-            this.frame = (this.frame ? this.frame.prev : null);
-            this.retVal = res;
-        }
-        enterTry(catchPC) {
-            var fb = this;
-            fb.tryStack.push({ frame: fb.frame, catchPC: catchPC });
-        }
-        exitTry() {
-            var fb = this;
-            fb.tryStack.pop();
-        }
-        waitEvent(obj, eventSpec) {
-            var fb = this;
-            fb.suspend();
-            if (!obj.on)
-                return;
-            var h;
-            eventSpec = eventSpec.concat(function () {
-                fb.lastEvent = arguments;
-                fb.retVal = arguments[0];
-                h.remove();
-                fb.steps();
-            });
-            h = obj.on.apply(obj, eventSpec);
-        }
-        runAsync(f) {
-            var fb = this;
-            var succ = function () {
-                fb.retVal = arguments;
-                fb.steps();
-            };
-            var err = function () {
-                var msg = "";
-                for (var i = 0; i < arguments.length; i++) {
-                    msg += arguments[i] + ",";
-                }
-                if (msg.length == 0)
-                    msg = "Async fail";
-                var e = new Error(msg);
-                e.args = arguments;
-                fb.gotoCatch(e);
-                fb.steps();
-            };
-            fb.suspend();
-            setTimeout(function () {
-                f(succ, err);
-            }, 0);
-        }
-        waitFor(j) {
-            var fb = this;
-            fb._isWaiting = true;
-            fb.suspend();
-            if (j instanceof TonyuThread)
-                j = j.promise();
-            return Promise.resolve(j).then(function (r) {
-                fb.retVal = r;
-                fb.stepsLoop();
-            }).then(e => e, function (e) {
-                fb.gotoCatch(fb.wrapError(e));
-                fb.stepsLoop();
-            });
-        }
-        wrapError(e) {
-            if (e instanceof Error)
-                return e;
-            var re = new Error(e);
-            re.original = e;
-            return re;
-        }
-        resume(retVal) {
-            this.retVal = retVal;
-            this.steps();
-        }
-        steps() {
-            var fb = this;
-            if (fb.isDead())
-                return;
-            var sv = Tonyu.currentThread;
-            Tonyu.currentThread = fb;
-            fb.cnt = fb.preemptionTime;
-            fb.preempted = false;
-            fb.fSuspended = false;
-            while (fb.cnt > 0 && fb.frame) {
-                try {
-                    //while (new Date().getTime()<lim) {
-                    while (fb.cnt-- > 0 && fb.frame) {
-                        fb.frame.func(fb);
-                    }
-                    fb.preempted = (!fb.fSuspended) && fb.isAlive();
-                }
-                catch (e) {
-                    fb.gotoCatch(e);
-                }
-            }
-            Tonyu.currentThread = sv;
-        }
-        stepsLoop() {
-            var fb = this;
-            fb.steps();
-            if (fb.preempted) {
-                setTimeout(function () {
-                    fb.stepsLoop();
-                }, 0);
-            }
-        }
-        kill() {
-            var fb = this;
-            //fb._isAlive=false;
-            fb._isDead = true;
-            fb.frame = null;
-            if (!fb.termStatus) {
-                fb.termStatus = "killed";
-                fb.notifyTermination({ status: "killed" });
-            }
-        }
-        clearFrame() {
-            this.frame = null;
-            this.tryStack = [];
+        });
+    }
+    notifyEnd(r) {
+        this.onEndHandlers.forEach(function (e) {
+            e(r);
+        });
+        this.notifyTermination({ status: "success", value: r });
+    }
+    notifyTermination(tst) {
+        this.onTerminateHandlers.forEach(function (e) {
+            e(tst);
+        });
+    }
+    on(type, f) {
+        if (type === "end" || type === "success")
+            this.onEndHandlers.push(f);
+        if (type === "terminate") {
+            this.onTerminateHandlers.push(f);
+            if (this.handleEx)
+                delete this.handleEx;
         }
     }
-    return TonyuThread;
-};
+    promise() {
+        var fb = this;
+        return new Promise(function (succ, err) {
+            fb.on("terminate", function (st) {
+                if (st.status === "success") {
+                    succ(st.value);
+                }
+                else if (st.status === "exception") {
+                    err(st.exception);
+                }
+                else {
+                    err(new Error(st.status));
+                }
+            });
+        });
+    }
+    then(succ, err) {
+        if (err)
+            return this.promise().then(succ, err);
+        else
+            return this.promise().then(succ);
+    }
+    fail(err) {
+        return this.promise().then(e => e, err);
+    }
+    gotoCatch(e) {
+        var fb = this;
+        if (fb.tryStack.length == 0) {
+            fb.termStatus = "exception";
+            fb.kill();
+            if (fb.handleEx)
+                fb.handleEx(e);
+            else
+                fb.notifyTermination({ status: "exception", exception: e });
+            return;
+        }
+        fb.lastEx = e;
+        var s = fb.tryStack.pop();
+        while (fb.frame) {
+            if (s.frame === fb.frame) {
+                fb.catchPC = s.catchPC;
+                break;
+            }
+            else {
+                fb.frame = fb.frame.prev;
+            }
+        }
+    }
+    startCatch() {
+        var fb = this;
+        var e = fb.lastEx;
+        fb.lastEx = null;
+        return e;
+    }
+    exit(res) {
+        //cnts.exitC++;
+        this.frame = (this.frame ? this.frame.prev : null);
+        this.retVal = res;
+    }
+    enterTry(catchPC) {
+        var fb = this;
+        fb.tryStack.push({ frame: fb.frame, catchPC: catchPC });
+    }
+    exitTry() {
+        var fb = this;
+        fb.tryStack.pop();
+    }
+    waitEvent(obj, eventSpec) {
+        const fb = this;
+        fb.suspend();
+        if (typeof obj.on !== "function")
+            return;
+        let h = obj.on(...eventSpec, (...args) => {
+            fb.lastEvent = args;
+            fb.retVal = args[0];
+            h.remove();
+            fb.steps();
+        });
+    }
+    runAsync(f) {
+        var fb = this;
+        var succ = function () {
+            fb.retVal = arguments;
+            fb.steps();
+        };
+        var err = function () {
+            var msg = "";
+            for (var i = 0; i < arguments.length; i++) {
+                msg += arguments[i] + ",";
+            }
+            if (msg.length == 0)
+                msg = "Async fail";
+            var e = new Error(msg);
+            e.args = arguments;
+            fb.gotoCatch(e);
+            fb.steps();
+        };
+        fb.suspend();
+        setTimeout(function () {
+            f(succ, err);
+        }, 0);
+    }
+    waitFor(j) {
+        var fb = this;
+        fb._isWaiting = true;
+        fb.suspend();
+        if (j instanceof TonyuThread)
+            j = j.promise();
+        return Promise.resolve(j).then(function (r) {
+            fb.retVal = r;
+            fb.stepsLoop();
+        }).then(e => e, function (e) {
+            fb.gotoCatch(fb.wrapError(e));
+            fb.stepsLoop();
+        });
+    }
+    wrapError(e) {
+        if (e instanceof Error)
+            return e;
+        var re = new Error(e);
+        re.original = e;
+        return re;
+    }
+    resume(retVal) {
+        this.retVal = retVal;
+        this.steps();
+    }
+    steps() {
+        const fb = this;
+        if (fb.isDead())
+            return;
+        const sv = this.Tonyu.currentThread;
+        this.Tonyu.currentThread = fb;
+        fb.cnt = fb.preemptionTime;
+        fb.preempted = false;
+        fb.fSuspended = false;
+        while (fb.cnt > 0 && fb.frame) {
+            try {
+                //while (new Date().getTime()<lim) {
+                while (fb.cnt-- > 0 && fb.frame) {
+                    fb.frame.func(fb);
+                }
+                fb.preempted = (!fb.fSuspended) && fb.isAlive();
+            }
+            catch (e) {
+                fb.gotoCatch(e);
+            }
+        }
+        this.Tonyu.currentThread = sv;
+    }
+    stepsLoop() {
+        var fb = this;
+        fb.steps();
+        if (fb.preempted) {
+            setTimeout(function () {
+                fb.stepsLoop();
+            }, 0);
+        }
+    }
+    kill() {
+        var fb = this;
+        //fb._isAlive=false;
+        fb._isDead = true;
+        fb.frame = null;
+        if (!fb.termStatus) {
+            fb.termStatus = "killed";
+            fb.notifyTermination({ status: "killed" });
+        }
+    }
+    clearFrame() {
+        this.frame = null;
+        this.tryStack = [];
+    }
+}
+exports.TonyuThread = TonyuThread;
 
-},{"../lib/R":27}]},{},[2]);
+},{"../lib/R":28}]},{},[2]);

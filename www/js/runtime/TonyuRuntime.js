@@ -1,6 +1,16 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isTonyuClass = void 0;
+function isTonyuClass(v) {
+    return typeof v === "function" && v.meta;
+}
+exports.isTonyuClass = isTonyuClass;
+
+},{}],2:[function(require,module,exports){
+"use strict";
 const ja = {
+    expected: "ここには{1}などが入ることが予想されます",
     superClassIsUndefined: "親クラス {1}は定義されていません",
     classIsUndefined: "クラス {1}は定義されていません",
     invalidLeftValue: "'{1}'は左辺には書けません．",
@@ -31,6 +41,7 @@ const ja = {
         "   [参考]https://edit.tonyu.jp/doc/options.html\n",
 };
 const en = {
+    "expected": "Expected: {1}",
     "superClassIsUndefined": "Super Class '{1}' is not defined",
     "classIsUndefined": "Class {1} is Undefined",
     "invalidLeftValue": "{1} is not a valid Left Value",
@@ -97,7 +108,7 @@ R.setLocale = locale => {
 module.exports = R;
 //module.exports=R;
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 const Assertion = function (failMesg = "Assertion failed: ") {
     this.failMesg = flatten(failMesg);
@@ -303,7 +314,7 @@ function isArg(a) {
 }
 module.exports = assert;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 const root = (function () {
     if (typeof window !== "undefined")
@@ -316,7 +327,7 @@ const root = (function () {
 })();
 module.exports = root;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 //define(["Klass"], function (Klass) {
 //var Klass=require("../lib/Klass");
@@ -428,16 +439,17 @@ module.exports = function IT(set, arity) {
 //	return IT;
 //});
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const R_1 = __importDefault(require("../lib/R"));
 const TonyuIterator_1 = __importDefault(require("./TonyuIterator"));
-const TonyuThread_1 = __importDefault(require("./TonyuThread"));
+const TonyuThread_1 = require("./TonyuThread");
 const root_1 = __importDefault(require("../lib/root"));
 const assert_1 = __importDefault(require("../lib/assert"));
+const RuntimeTypes_1 = require("../lang/RuntimeTypes");
 // old browser support
 if (!root_1.default.performance) {
     root_1.default.performance = {};
@@ -447,10 +459,8 @@ if (!root_1.default.performance.now) {
         return Date.now();
     };
 }
-var preemptionTime = 60;
-var Tonyu, TT;
 function thread() {
-    var t = new TT();
+    var t = new TonyuThread_1.TonyuThread(Tonyu);
     t.handleEx = handleEx;
     return t;
 }
@@ -474,16 +484,7 @@ const property = {
     }
 };
 function handleEx(e) {
-    if (Tonyu.onRuntimeError) {
-        Tonyu.onRuntimeError(e);
-    }
-    else {
-        //if (typeof $LASTPOS=="undefined") $LASTPOS=0;
-        if (root_1.default.alert)
-            root_1.default.alert("Error: " + e);
-        console.log(e.stack);
-        throw e;
-    }
+    Tonyu.onRuntimeError(e);
 }
 function addMeta(fn, m) {
     // why use addMeta?
@@ -732,10 +733,7 @@ function extend(dst, src) {
     return dst;
 }
 //alert("init");
-var globals = {};
-function isConstructor(v) {
-    return typeof v === "function";
-}
+const globals = {};
 var classes = {}; // classes.namespace.classname= function
 var classMetas = {}; // classes.namespace.classname.meta ( or env.classes / ctx.classes)
 function setGlobal(n, v) {
@@ -823,7 +821,7 @@ function hasKey(k, obj) {
 }
 function run(bootClassName) {
     var bootClass = getClass(bootClassName);
-    if (!isConstructor(bootClass))
+    if (!(0, RuntimeTypes_1.isTonyuClass)(bootClass))
         throw new Error((0, R_1.default)("bootClassIsNotFound", bootClassName));
     Tonyu.runMode = true;
     var boot = new bootClass();
@@ -853,24 +851,35 @@ function resetLoopCheck(disableTime) {
 function is(obj, klass) {
     if (!obj)
         return false;
+    if (!klass)
+        return false;
     if (obj instanceof klass)
         return true;
-    if (typeof obj.getClassInfo === "function" && klass.meta) {
+    if (typeof obj.getClassInfo === "function" && (0, RuntimeTypes_1.isTonyuClass)(klass)) {
         return obj.getClassInfo().includesRec[klass.meta.fullName];
     }
     return false;
 }
 //setInterval(resetLoopCheck,16);
-Tonyu = { thread: thread,
-    klass: klass, bless: bless, extend: extend,
-    globals: globals, classes: classes, classMetas: classMetas, setGlobal: setGlobal, getGlobal: getGlobal, getClass: getClass,
-    timeout: timeout,
-    bindFunc: bindFunc, not_a_tonyu_object: not_a_tonyu_object, is: is,
-    hasKey: hasKey, invokeMethod: invokeMethod, callFunc: callFunc, checkNonNull: checkNonNull,
-    iterator: TonyuIterator_1.default, run: run, checkLoop: checkLoop, resetLoopCheck: resetLoopCheck,
+const Tonyu = { thread,
+    klass, bless, extend,
+    globals, classes, classMetas, setGlobal, getGlobal, getClass,
+    timeout,
+    bindFunc, not_a_tonyu_object, is,
+    hasKey, invokeMethod, callFunc, checkNonNull,
+    iterator: TonyuIterator_1.default, run, checkLoop, resetLoopCheck,
+    currentProject: null,
+    currentThread: null,
+    runMode: false,
+    onRuntimeError: (e) => {
+        if (root_1.default.alert)
+            root_1.default.alert("Error: " + e);
+        console.log(e.stack);
+        throw e;
+    },
     VERSION: 1560828115159,
-    A: A, ID: Math.random() };
-TT = (0, TonyuThread_1.default)(Tonyu);
+    A, ID: Math.random() };
+//const TT=TonyuThreadF(Tonyu);
 if (root_1.default.Tonyu) {
     console.error("Tonyu called twice!");
     throw new Error("Tonyu called twice!");
@@ -878,291 +887,291 @@ if (root_1.default.Tonyu) {
 root_1.default.Tonyu = Tonyu;
 module.exports = Tonyu;
 
-},{"../lib/R":1,"../lib/assert":2,"../lib/root":3,"./TonyuIterator":4,"./TonyuThread":6}],6:[function(require,module,exports){
+},{"../lang/RuntimeTypes":1,"../lib/R":2,"../lib/assert":3,"../lib/root":4,"./TonyuIterator":5,"./TonyuThread":7}],7:[function(require,module,exports){
 "use strict";
 //	var Klass=require("../lib/Klass");
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TonyuThread = void 0;
 const R_1 = __importDefault(require("../lib/R"));
-module.exports = function TonyuThreadF(Tonyu) {
-    var cnts = { enterC: {}, exitC: 0 };
-    var idSeq = 1;
-    //try {window.cnts=cnts;}catch(e){}
-    class TonyuThread {
-        constructor() {
-            this.preempted = false;
-            this.frame = null;
-            this._isDead = false;
-            //this._isAlive=true;
-            this.cnt = 0;
-            this._isWaiting = false;
-            this.fSuspended = false;
-            this.tryStack = [];
-            this.preemptionTime = 60;
-            this.onEndHandlers = [];
-            this.onTerminateHandlers = [];
-            this.id = idSeq++;
-            this.age = 0; // inc if object pooled
-        }
-        isAlive() {
-            return !this.isDead();
-            //return this.frame!=null && this._isAlive;
-        }
-        isDead() {
-            this._isDead = this._isDead || (this.frame == null) ||
-                (this._threadGroup && (this._threadGroup.objectPoolAge != this.tGrpObjectPoolAge ||
-                    this._threadGroup.isDeadThreadGroup()));
-            return this._isDead;
-        }
-        setThreadGroup(g) {
-            this._threadGroup = g;
-            this.tGrpObjectPoolAge = g.objectPoolAge;
-            //if (g) g.add(fb);
-        }
-        isWaiting() {
-            return this._isWaiting;
-        }
-        suspend() {
-            this.fSuspended = true;
-            this.cnt = 0;
-        }
-        enter(frameFunc) {
-            //var n=frameFunc.name;
-            //cnts.enterC[n]=(cnts.enterC[n]||0)+1;
-            this.frame = { prev: this.frame, func: frameFunc };
-        }
-        apply(obj, methodName, args) {
-            if (!args)
-                args = [];
-            var method;
-            if (typeof methodName == "string") {
-                method = obj["fiber$" + methodName];
-                if (!method) {
-                    throw new Error((0, R_1.default)("undefinedMethod", methodName));
-                }
-            }
-            if (typeof methodName == "function") {
-                method = methodName.fiber;
-                if (!method) {
-                    var n = methodName.methodInfo ? methodName.methodInfo.name : methodName.name;
-                    throw new Error((0, R_1.default)("notAWaitableMethod", n));
-                }
-            }
-            args = [this].concat(args);
-            var pc = 0;
-            return this.enter(function (th) {
-                switch (pc) {
-                    case 0:
-                        method.apply(obj, args);
-                        pc = 1;
-                        break;
-                    case 1:
-                        th.termStatus = "success";
-                        th.notifyEnd(th.retVal);
-                        args[0].exit();
-                        pc = 2;
-                        break;
-                }
-            });
-        }
-        notifyEnd(r) {
-            this.onEndHandlers.forEach(function (e) {
-                e(r);
-            });
-            this.notifyTermination({ status: "success", value: r });
-        }
-        notifyTermination(tst) {
-            this.onTerminateHandlers.forEach(function (e) {
-                e(tst);
-            });
-        }
-        on(type, f) {
-            if (type === "end" || type === "success")
-                this.onEndHandlers.push(f);
-            if (type === "terminate") {
-                this.onTerminateHandlers.push(f);
-                if (this.handleEx)
-                    delete this.handleEx;
+//export= function TonyuThreadF(Tonyu) {
+let idSeq = 1;
+//try {window.cnts=cnts;}catch(e){}
+class TonyuThread {
+    constructor(Tonyu) {
+        this.Tonyu = Tonyu;
+        this.preempted = false;
+        this.frame = null;
+        this._isDead = false;
+        //this._isAlive=true;
+        this.cnt = 0;
+        this._isWaiting = false;
+        this.fSuspended = false;
+        this.tryStack = [];
+        this.preemptionTime = 60;
+        this.onEndHandlers = [];
+        this.onTerminateHandlers = [];
+        this.id = idSeq++;
+        this.age = 0; // inc if object pooled
+    }
+    isAlive() {
+        return !this.isDead();
+        //return this.frame!=null && this._isAlive;
+    }
+    isDead() {
+        this._isDead = this._isDead || (this.frame == null) ||
+            (this._threadGroup && (this._threadGroup.objectPoolAge != this.tGrpObjectPoolAge ||
+                this._threadGroup.isDeadThreadGroup()));
+        return this._isDead;
+    }
+    setThreadGroup(g) {
+        this._threadGroup = g;
+        this.tGrpObjectPoolAge = g.objectPoolAge;
+        //if (g) g.add(fb);
+    }
+    isWaiting() {
+        return this._isWaiting;
+    }
+    suspend() {
+        this.fSuspended = true;
+        this.cnt = 0;
+    }
+    enter(frameFunc) {
+        //var n=frameFunc.name;
+        //cnts.enterC[n]=(cnts.enterC[n]||0)+1;
+        this.frame = { prev: this.frame, func: frameFunc };
+    }
+    apply(obj, methodName, args) {
+        if (!args)
+            args = [];
+        let method;
+        if (typeof methodName == "string") {
+            method = obj["fiber$" + methodName];
+            if (!method) {
+                throw new Error((0, R_1.default)("undefinedMethod", methodName));
             }
         }
-        promise() {
-            var fb = this;
-            return new Promise(function (succ, err) {
-                fb.on("terminate", function (st) {
-                    if (st.status === "success") {
-                        succ(st.value);
-                    }
-                    else if (st.status === "exception") {
-                        err(st.exception);
-                    }
-                    else {
-                        err(new Error(st.status));
-                    }
-                });
-            });
-        }
-        then(succ, err) {
-            if (err)
-                return this.promise().then(succ, err);
-            else
-                return this.promise().then(succ);
-        }
-        fail(err) {
-            return this.promise().then(e => e, err);
-        }
-        gotoCatch(e) {
-            var fb = this;
-            if (fb.tryStack.length == 0) {
-                fb.termStatus = "exception";
-                fb.kill();
-                if (fb.handleEx)
-                    fb.handleEx(e);
-                else
-                    fb.notifyTermination({ status: "exception", exception: e });
-                return;
+        if (typeof methodName == "function") {
+            const fmethod = methodName;
+            method = fmethod.fiber;
+            if (!method) {
+                var n = fmethod.methodInfo ? fmethod.methodInfo.name : fmethod.name;
+                throw new Error((0, R_1.default)("notAWaitableMethod", n));
             }
-            fb.lastEx = e;
-            var s = fb.tryStack.pop();
-            while (fb.frame) {
-                if (s.frame === fb.frame) {
-                    fb.catchPC = s.catchPC;
+        }
+        args = [this].concat(args);
+        var pc = 0;
+        return this.enter(function (th) {
+            switch (pc) {
+                case 0:
+                    method.apply(obj, args);
+                    pc = 1;
                     break;
-                }
-                else {
-                    fb.frame = fb.frame.prev;
-                }
+                case 1:
+                    th.termStatus = "success";
+                    th.notifyEnd(th.retVal);
+                    args[0].exit();
+                    pc = 2;
+                    break;
             }
-        }
-        startCatch() {
-            var fb = this;
-            var e = fb.lastEx;
-            fb.lastEx = null;
-            return e;
-        }
-        exit(res) {
-            //cnts.exitC++;
-            this.frame = (this.frame ? this.frame.prev : null);
-            this.retVal = res;
-        }
-        enterTry(catchPC) {
-            var fb = this;
-            fb.tryStack.push({ frame: fb.frame, catchPC: catchPC });
-        }
-        exitTry() {
-            var fb = this;
-            fb.tryStack.pop();
-        }
-        waitEvent(obj, eventSpec) {
-            var fb = this;
-            fb.suspend();
-            if (!obj.on)
-                return;
-            var h;
-            eventSpec = eventSpec.concat(function () {
-                fb.lastEvent = arguments;
-                fb.retVal = arguments[0];
-                h.remove();
-                fb.steps();
-            });
-            h = obj.on.apply(obj, eventSpec);
-        }
-        runAsync(f) {
-            var fb = this;
-            var succ = function () {
-                fb.retVal = arguments;
-                fb.steps();
-            };
-            var err = function () {
-                var msg = "";
-                for (var i = 0; i < arguments.length; i++) {
-                    msg += arguments[i] + ",";
-                }
-                if (msg.length == 0)
-                    msg = "Async fail";
-                var e = new Error(msg);
-                e.args = arguments;
-                fb.gotoCatch(e);
-                fb.steps();
-            };
-            fb.suspend();
-            setTimeout(function () {
-                f(succ, err);
-            }, 0);
-        }
-        waitFor(j) {
-            var fb = this;
-            fb._isWaiting = true;
-            fb.suspend();
-            if (j instanceof TonyuThread)
-                j = j.promise();
-            return Promise.resolve(j).then(function (r) {
-                fb.retVal = r;
-                fb.stepsLoop();
-            }).then(e => e, function (e) {
-                fb.gotoCatch(fb.wrapError(e));
-                fb.stepsLoop();
-            });
-        }
-        wrapError(e) {
-            if (e instanceof Error)
-                return e;
-            var re = new Error(e);
-            re.original = e;
-            return re;
-        }
-        resume(retVal) {
-            this.retVal = retVal;
-            this.steps();
-        }
-        steps() {
-            var fb = this;
-            if (fb.isDead())
-                return;
-            var sv = Tonyu.currentThread;
-            Tonyu.currentThread = fb;
-            fb.cnt = fb.preemptionTime;
-            fb.preempted = false;
-            fb.fSuspended = false;
-            while (fb.cnt > 0 && fb.frame) {
-                try {
-                    //while (new Date().getTime()<lim) {
-                    while (fb.cnt-- > 0 && fb.frame) {
-                        fb.frame.func(fb);
-                    }
-                    fb.preempted = (!fb.fSuspended) && fb.isAlive();
-                }
-                catch (e) {
-                    fb.gotoCatch(e);
-                }
-            }
-            Tonyu.currentThread = sv;
-        }
-        stepsLoop() {
-            var fb = this;
-            fb.steps();
-            if (fb.preempted) {
-                setTimeout(function () {
-                    fb.stepsLoop();
-                }, 0);
-            }
-        }
-        kill() {
-            var fb = this;
-            //fb._isAlive=false;
-            fb._isDead = true;
-            fb.frame = null;
-            if (!fb.termStatus) {
-                fb.termStatus = "killed";
-                fb.notifyTermination({ status: "killed" });
-            }
-        }
-        clearFrame() {
-            this.frame = null;
-            this.tryStack = [];
+        });
+    }
+    notifyEnd(r) {
+        this.onEndHandlers.forEach(function (e) {
+            e(r);
+        });
+        this.notifyTermination({ status: "success", value: r });
+    }
+    notifyTermination(tst) {
+        this.onTerminateHandlers.forEach(function (e) {
+            e(tst);
+        });
+    }
+    on(type, f) {
+        if (type === "end" || type === "success")
+            this.onEndHandlers.push(f);
+        if (type === "terminate") {
+            this.onTerminateHandlers.push(f);
+            if (this.handleEx)
+                delete this.handleEx;
         }
     }
-    return TonyuThread;
-};
+    promise() {
+        var fb = this;
+        return new Promise(function (succ, err) {
+            fb.on("terminate", function (st) {
+                if (st.status === "success") {
+                    succ(st.value);
+                }
+                else if (st.status === "exception") {
+                    err(st.exception);
+                }
+                else {
+                    err(new Error(st.status));
+                }
+            });
+        });
+    }
+    then(succ, err) {
+        if (err)
+            return this.promise().then(succ, err);
+        else
+            return this.promise().then(succ);
+    }
+    fail(err) {
+        return this.promise().then(e => e, err);
+    }
+    gotoCatch(e) {
+        var fb = this;
+        if (fb.tryStack.length == 0) {
+            fb.termStatus = "exception";
+            fb.kill();
+            if (fb.handleEx)
+                fb.handleEx(e);
+            else
+                fb.notifyTermination({ status: "exception", exception: e });
+            return;
+        }
+        fb.lastEx = e;
+        var s = fb.tryStack.pop();
+        while (fb.frame) {
+            if (s.frame === fb.frame) {
+                fb.catchPC = s.catchPC;
+                break;
+            }
+            else {
+                fb.frame = fb.frame.prev;
+            }
+        }
+    }
+    startCatch() {
+        var fb = this;
+        var e = fb.lastEx;
+        fb.lastEx = null;
+        return e;
+    }
+    exit(res) {
+        //cnts.exitC++;
+        this.frame = (this.frame ? this.frame.prev : null);
+        this.retVal = res;
+    }
+    enterTry(catchPC) {
+        var fb = this;
+        fb.tryStack.push({ frame: fb.frame, catchPC: catchPC });
+    }
+    exitTry() {
+        var fb = this;
+        fb.tryStack.pop();
+    }
+    waitEvent(obj, eventSpec) {
+        const fb = this;
+        fb.suspend();
+        if (typeof obj.on !== "function")
+            return;
+        let h = obj.on(...eventSpec, (...args) => {
+            fb.lastEvent = args;
+            fb.retVal = args[0];
+            h.remove();
+            fb.steps();
+        });
+    }
+    runAsync(f) {
+        var fb = this;
+        var succ = function () {
+            fb.retVal = arguments;
+            fb.steps();
+        };
+        var err = function () {
+            var msg = "";
+            for (var i = 0; i < arguments.length; i++) {
+                msg += arguments[i] + ",";
+            }
+            if (msg.length == 0)
+                msg = "Async fail";
+            var e = new Error(msg);
+            e.args = arguments;
+            fb.gotoCatch(e);
+            fb.steps();
+        };
+        fb.suspend();
+        setTimeout(function () {
+            f(succ, err);
+        }, 0);
+    }
+    waitFor(j) {
+        var fb = this;
+        fb._isWaiting = true;
+        fb.suspend();
+        if (j instanceof TonyuThread)
+            j = j.promise();
+        return Promise.resolve(j).then(function (r) {
+            fb.retVal = r;
+            fb.stepsLoop();
+        }).then(e => e, function (e) {
+            fb.gotoCatch(fb.wrapError(e));
+            fb.stepsLoop();
+        });
+    }
+    wrapError(e) {
+        if (e instanceof Error)
+            return e;
+        var re = new Error(e);
+        re.original = e;
+        return re;
+    }
+    resume(retVal) {
+        this.retVal = retVal;
+        this.steps();
+    }
+    steps() {
+        const fb = this;
+        if (fb.isDead())
+            return;
+        const sv = this.Tonyu.currentThread;
+        this.Tonyu.currentThread = fb;
+        fb.cnt = fb.preemptionTime;
+        fb.preempted = false;
+        fb.fSuspended = false;
+        while (fb.cnt > 0 && fb.frame) {
+            try {
+                //while (new Date().getTime()<lim) {
+                while (fb.cnt-- > 0 && fb.frame) {
+                    fb.frame.func(fb);
+                }
+                fb.preempted = (!fb.fSuspended) && fb.isAlive();
+            }
+            catch (e) {
+                fb.gotoCatch(e);
+            }
+        }
+        this.Tonyu.currentThread = sv;
+    }
+    stepsLoop() {
+        var fb = this;
+        fb.steps();
+        if (fb.preempted) {
+            setTimeout(function () {
+                fb.stepsLoop();
+            }, 0);
+        }
+    }
+    kill() {
+        var fb = this;
+        //fb._isAlive=false;
+        fb._isDead = true;
+        fb.frame = null;
+        if (!fb.termStatus) {
+            fb.termStatus = "killed";
+            fb.notifyTermination({ status: "killed" });
+        }
+    }
+    clearFrame() {
+        this.frame = null;
+        this.tryStack = [];
+    }
+}
+exports.TonyuThread = TonyuThread;
 
-},{"../lib/R":1}]},{},[5]);
+},{"../lib/R":2}]},{},[6]);
