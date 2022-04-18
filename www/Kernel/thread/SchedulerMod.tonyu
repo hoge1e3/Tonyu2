@@ -52,7 +52,7 @@ nowait \currentThreadGroup() {//@deprecated
 nowait \notify() {
     if (_th) {
         if (_th.scheduled) {
-             _th.waitCount=0;
+            _th.waitCount=0;
         } else {
             if (_scheduler) _scheduler.addToCur(_th);
         }
