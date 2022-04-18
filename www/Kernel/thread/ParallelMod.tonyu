@@ -3,15 +3,16 @@ extends null;
 "field strict";
 
 nowait \parallel() {
-     var args=[];
-     for (var i=1; i<arguments.length; i++) {
-         args.push(arguments[i]);
-     }
-     var name=arguments[0];
-     var th;
-     th=$Boot.schedule(this,name,args);
-     return th;
+    var args=[];
+    for (var i=1; i<arguments.length; i++) {
+        args.push(arguments[i]);
+    }
+    var name=arguments[0];
+    var th;
+    th=$Boot.schedule(this,name,args);
+    return th;
 }
+\para_no_op(){}
 \call() {
     if (!_thread) throw new Error("callは待機可能モードで呼び出してください");
     var a=new ArgParser(arguments);
@@ -23,5 +24,18 @@ nowait \parallel() {
     }
     var ag2=a.toArray();
     ag2.unshift(_thread);
-    return f.apply(t,ag2);
+    para_no_op();
+    var pc=1,r;
+    _thread.enter \(th) {
+        if (pc==1) {
+            f.apply(t,ag2);
+            pc=2;
+        } else {
+            r=th.retVal;
+            th.exit();
+        }
+    };
+    para_no_op();
+    return r;
+    //return f.apply(t,ag2);
 }
