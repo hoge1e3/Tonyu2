@@ -56,6 +56,13 @@ includes MathMod,EventMod,FileMod;
     }
     return r;
 }
+\clone() {
+    var nm=new Matrix;
+    for (var x,y,c in this) {
+        nm.set(x,y,c);
+    }
+    return nm;
+}
 \crop() {
     var a=new ArgParser(arguments);
     var o=a.parseOptions("left,top,right,bottom,width,height,keepXY");
