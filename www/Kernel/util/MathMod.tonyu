@@ -120,3 +120,6 @@ nowait \max() {
 nowait \amod(v,d) {
     return (v % d + d) % d;
 }
+\log(n) {
+    return Math.log(n);
+}
