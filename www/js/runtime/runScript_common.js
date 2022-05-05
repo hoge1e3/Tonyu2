@@ -18,10 +18,18 @@ define(["root","WebSite"], function (root,WebSite) {
 
             var u = navigator.userAgent.toLowerCase();
             if (doResize==null) {
-                doResize=(u.indexOf("iphone") == -1 &&
-                    u.indexOf("ipad") == -1 &&
-                    u.indexOf("ipod") == -1
-                ) && (!window.parent || window === window.parent);
+                doResize = true;
+                // "…(iPhone; CPU iPhone OS 15_4 like Mac OS X)…"の"15"を抜き出す
+                var iOSver = parseInt(u.substring(u.lastIndexOf(" ", u.indexOf("_")-1)+1, u.indexOf("_"))); // iOSのバージョン
+                if (isNaN(iOSver)) iOSver = 15;
+
+                // iOSの12まではiframe内でresizeするとバグるので無効化(heightが永遠と伸びるバグ)
+                if ((u.indexOf("iphone") != -1 || u.indexOf("ipad") != -1 || u.indexOf("ipod") != -1) &&
+                    iOSver <= 12 &&
+                    (!window.parent || window != window.parent) // iframe時(一応window.parentが有効かもチェック)
+                ) {
+                    doResize = false;
+                }
                 if (WebSite.doResize!=null) doResize=WebSite.doResize;
             }
             if (doResize) {
