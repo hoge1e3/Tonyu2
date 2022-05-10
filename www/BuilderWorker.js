@@ -104,7 +104,7 @@ function convertTError(e) {
 }
 WS.ready();
 
-},{"../lang/Builder":3,"../lang/langMod":17,"../lib/FS":27,"../lib/R":28,"../lib/WorkerServiceW":30,"../lib/root":32,"../project/CompiledProject":33,"../project/NS2DepSpec":34,"../project/ProjectFactory":35,"../runtime/TonyuRuntime":38}],3:[function(require,module,exports){
+},{"../lang/Builder":3,"../lang/langMod":17,"../lib/FS":27,"../lib/R":28,"../lib/WorkerServiceW":30,"../lib/root":32,"../project/CompiledProject":33,"../project/NS2DepSpec":34,"../project/ProjectFactory":35,"../runtime/TonyuRuntime":39}],3:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -136,12 +136,14 @@ const JSGenerator = require("./JSGenerator");
 const IndentBuffer_1 = __importDefault(require("./IndentBuffer"));
 const Semantics = __importStar(require("./Semantics"));
 const SourceFiles_1 = __importDefault(require("./SourceFiles"));
-const TypeChecker_1 = __importDefault(require("./TypeChecker"));
+const TypeChecker_1 = require("./TypeChecker");
+const CompilerTypes_1 = require("./CompilerTypes");
+//type ClassMap={[key: string]:Meta};
 //const langMod=require("./langMod");
 function orderByInheritance(classes) {
     var added = {};
     var res = [];
-    var crumbs = {};
+    //var crumbs={};
     var ccnt = 0;
     for (var n in classes) { /*ENVC*/
         added[n] = false;
@@ -272,10 +274,9 @@ module.exports = class Builder {
         // metaはFunctionより先に作られるから
         var env = this.getEnv();
         //if (!ctx) ctx={};
-        if (!ctx.visited) {
-            ctx = { visited: {}, classes: (env.classes = env.classes || TonyuRuntime_1.default.classMetas), options: ctx };
-        }
-        return ctx;
+        if ((0, CompilerTypes_1.isBuilderContext)(ctx))
+            return ctx;
+        return { visited: {}, classes: (env.classes = env.classes || TonyuRuntime_1.default.classMetas), options: ctx };
     }
     fileToClass(file) {
         const shortName = this.fileToShortClassName(file);
@@ -308,7 +309,7 @@ module.exports = class Builder {
         // TODO: cache
         const dep = {};
         dep[klass.fullName] = klass;
-        let mod;
+        let mod = false;
         do {
             mod = false;
             for (let k of this.getMyClasses()) {
@@ -422,10 +423,10 @@ module.exports = class Builder {
             if (ctxOpt.typeCheck) {
                 console.log("Type check");
                 for (let n in compilingClasses) {
-                    TypeChecker_1.default.checkTypeDecl(compilingClasses[n], env);
+                    (0, TypeChecker_1.checkTypeDecl)(compilingClasses[n], env);
                 }
                 for (let n in compilingClasses) {
-                    TypeChecker_1.default.checkExpr(compilingClasses[n], env);
+                    (0, TypeChecker_1.checkExpr)(compilingClasses[n], env);
                 }
             }
             return this.showProgress("genJS");
@@ -440,11 +441,11 @@ module.exports = class Builder {
         }).then(() => {
             const s = SourceFiles_1.default.add(buf.close(), buf.srcmap /*, buf.traceIndex */);
             let task = Promise.resolve();
-            if (destinations.file) {
+            if ((0, CompilerTypes_1.isFileDest)(destinations)) {
                 const outf = this.getOutputFile();
                 task = s.saveAs(outf);
             }
-            if (destinations.memory) {
+            if ((0, CompilerTypes_1.isMemoryDest)(destinations)) {
                 task = task.then(e => s);
             }
             return task;
@@ -551,7 +552,24 @@ module.exports = class Builder {
     }
 };
 
-},{"../lib/R":28,"../runtime/TError":36,"../runtime/TonyuRuntime":38,"./IndentBuffer":6,"./JSGenerator":7,"./Semantics":11,"./SourceFiles":12,"./TypeChecker":13,"./tonyu1":24}],4:[function(require,module,exports){
+},{"../lib/R":28,"../runtime/TError":37,"../runtime/TonyuRuntime":39,"./CompilerTypes":4,"./IndentBuffer":7,"./JSGenerator":8,"./Semantics":11,"./SourceFiles":12,"./TypeChecker":13,"./tonyu1":24}],4:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isMemoryDest = exports.isFileDest = exports.isBuilderContext = void 0;
+function isBuilderContext(c) {
+    return c && c.visited;
+}
+exports.isBuilderContext = isBuilderContext;
+function isFileDest(d) {
+    return d.file;
+}
+exports.isFileDest = isFileDest;
+function isMemoryDest(d) {
+    return d.memory;
+}
+exports.isMemoryDest = isMemoryDest;
+
+},{}],5:[function(require,module,exports){
 "use strict";
 // parser.js の補助ライブラリ．式の解析を担当する
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -855,7 +873,7 @@ function ExpressionParser(context, name = "Expression") {
 exports.ExpressionParser = ExpressionParser;
 ;
 
-},{"./parser":20}],5:[function(require,module,exports){
+},{"./parser":20}],6:[function(require,module,exports){
 "use strict";
 //import * as Parser from "./parser";
 const parser_1 = require("./parser");
@@ -1109,7 +1127,7 @@ const Grammar = function (context) {
 };
 module.exports = Grammar;
 
-},{"./parser":20}],6:[function(require,module,exports){
+},{"./parser":20}],7:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -1440,7 +1458,7 @@ module.exports = function IndentBuffer(options) {
     return $;
 };
 
-},{"../lib/StringBuilder":29,"./source-map":22}],7:[function(require,module,exports){
+},{"../lib/StringBuilder":29,"./source-map":22}],8:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -2498,7 +2516,7 @@ exports.genJS = genJS;
 //return {genJS:genJS};
 //})();
 
-},{"../lib/R":28,"../lib/assert":31,"../runtime/TError":36,"./IndentBuffer":6,"./ObjectMatcher":9,"./Visitor":14,"./compiler":15,"./context":16,"./tonyu1":24}],8:[function(require,module,exports){
+},{"../lib/R":28,"../lib/assert":31,"../runtime/TError":37,"./IndentBuffer":7,"./ObjectMatcher":10,"./Visitor":14,"./compiler":15,"./context":16,"./tonyu1":24}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isArylit = exports.isObjlit = exports.isJsonElem = exports.isFuncExpr = exports.isFuncExprHead = exports.isEmpty = exports.isIfWait = exports.isNativeDecl = exports.isFuncDecl = exports.isFuncDeclHead = exports.isSetterDecl = exports.isParamDecls = exports.isParamDecl = exports.isVarsDecl = exports.isVarDecl = exports.isTypeDecl = exports.isTypeExpr = exports.isThrow = exports.isTry = exports.isCatch = exports.isFinally = exports.isContinue = exports.isBreak = exports.isSwitch = exports.isDefault = exports.isCase = exports.isDo = exports.isWhile = exports.isFor = exports.isNormalFor = exports.isForin = exports.isIf = exports.isReturn = exports.isCompound = exports.isExprstmt = exports.isSuperExpr = exports.isNewExpr = exports.isScall = exports.isCall = exports.isObjlitArg = exports.isFuncExprArg = exports.isVarAccess = exports.isParenExpr = exports.isMember = exports.isArgList = exports.isArrayElem = exports.isTrifix = exports.isInfix = exports.isPostfix = exports.isPrefix = void 0;
@@ -2716,7 +2734,7 @@ function isProgram(n) {
 }
 exports.isProgram = isProgram;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.match = exports.isVar = exports.Z = exports.Y = exports.X = exports.W = exports.V = exports.U = exports.T = exports.S = exports.R = exports.Q = exports.P = exports.O = exports.N = exports.M = exports.L = exports.K = exports.J = exports.I = exports.H = exports.G = exports.F = exports.E = exports.D = exports.C = exports.B = exports.A = exports.v = void 0;
@@ -2816,15 +2834,6 @@ function m(obj, tmpl, res) {
     return false;
 }
 //export= OM;
-
-},{}],10:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isTonyuClass = void 0;
-function isTonyuClass(v) {
-    return typeof v === "function" && v.meta;
-}
-exports.isTonyuClass = isTonyuClass;
 
 },{}],11:[function(require,module,exports){
 "use strict";
@@ -2930,7 +2939,7 @@ function initClassDecls(klass, env) {
         klass.jsNotUpToDate = true;
     }
     const node = parse(klass, env.options);
-    var MAIN = { name: "main", stmts: [], pos: 0, isMain: true, nowait: false };
+    var MAIN = { name: "main", stmts: [], pos: 0, isMain: true, nowait: false, klass: klass.fullName };
     // method := fiber | function
     const fields = {}, methods = { main: MAIN }, natives = {}, amds = {}, softRefClasses = {};
     klass.decls = { fields, methods, natives, amds, softRefClasses };
@@ -2938,7 +2947,7 @@ function initClassDecls(klass, env) {
     //   extends/includes以外から参照してれるクラス の集まり．親クラスの宣言は含まない
     klass.node = node;
     function initMethods(program) {
-        var spcn = env.options.compiler.defaultSuperClass;
+        let spcn = env.options.compiler.defaultSuperClass;
         var pos = 0;
         var t = OM.match(program, { ext: { superclassName: { text: OM.N, pos: OM.P } } });
         if (t) {
@@ -3026,10 +3035,10 @@ function initClassDecls(klass, env) {
                 name = propHead + name;
                 methods[name] = {
                     nowait: (!!head.nowait || propHead !== ""),
-                    ftype: ftype,
-                    name: name,
+                    ftype,
+                    name,
                     klass: klass.fullName,
-                    head: head,
+                    head,
                     pos: head.pos,
                     stmts: stmt.body.stmts,
                     node: stmt
@@ -3215,11 +3224,16 @@ function annotateSource2(klass, env) {
                 }
                 else {
                     //opt.klass=klass.name;
-                    klass.decls.fields[n] = klass.decls.fields[n] || {};
-                    Object.assign(klass.decls.fields[n], {
+                    const fi = {
                         klass: klass.fullName,
                         name: n
-                    }); //si;
+                    };
+                    if (!klass.decls.fields[n]) {
+                        klass.decls.fields[n] = fi;
+                    }
+                    else {
+                        Object.assign(klass.decls.fields[n], fi); //si;
+                    }
                     topLevelScope[n] = new SI.FIELD(klass, n, klass.decls.fields[n]);
                 }
             }
@@ -3551,7 +3565,7 @@ function annotateSource2(klass, env) {
         });
     }
     function initParamsLocals(f) {
-        //console.log("IS_MAIN", f.name, f.isMain);
+        console.log("IS_MAIN", f, f.name, f.isMain);
         ctx.enter({ isMain: f.isMain, finfo: f }, function () {
             f.locals = collectLocals(f.stmts);
             f.params = getParams(f);
@@ -3635,7 +3649,7 @@ function annotateSource2(klass, env) {
 } //B  end of annotateSource2
 exports.annotate = annotateSource2;
 
-},{"../lib/R":28,"../lib/assert":31,"../lib/root":32,"../runtime/TError":36,"../runtime/TonyuRuntime":38,"./NodeTypes":8,"./ObjectMatcher":9,"./Visitor":14,"./compiler":15,"./context":16,"./parse_tonyu1":18,"./parse_tonyu2":19,"./parser":20,"./tonyu1":24}],12:[function(require,module,exports){
+},{"../lib/R":28,"../lib/assert":31,"../lib/root":32,"../runtime/TError":37,"../runtime/TonyuRuntime":39,"./NodeTypes":9,"./ObjectMatcher":10,"./Visitor":14,"./compiler":15,"./context":16,"./parse_tonyu1":18,"./parse_tonyu2":19,"./parser":20,"./tonyu1":24}],12:[function(require,module,exports){
 "use strict";
 //define(function (require,exports,module) {
 /*const root=require("root");*/
@@ -3768,23 +3782,26 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.checkExpr = exports.checkTypeDecl = void 0;
 const cu = __importStar(require("./compiler"));
 const context_1 = require("./context");
+//import Grammar from "./Grammar";
 const parser_1 = require("./parser");
 const Visitor_1 = __importDefault(require("./Visitor"));
 //var ex={"[SUBELEMENTS]":1,pos:1,len:1};
-var ScopeTypes = cu.ScopeTypes;
+const ScopeTypes = cu.ScopeTypes;
 //var genSt=cu.newScopeType;
-var stype = cu.getScopeType;
-var newScope = cu.newScope;
+const stype = cu.getScopeType;
+const newScope = cu.newScope;
 //var nc=cu.nullCheck;
-var genSym = cu.genSym;
-var annotation3 = cu.annotation;
-var getMethod2 = cu.getMethod;
-var getDependingClasses = cu.getDependingClasses;
-var getParams = cu.getParams;
-var JSNATIVES = { Array: 1, String: 1, Boolean: 1, Number: 1, Void: 1, Object: 1, RegExp: 1, Error: 1 };
-var TypeChecker = {};
+const genSym = cu.genSym;
+const annotation3 = cu.annotation;
+const getMethod2 = cu.getMethod;
+const getDependingClasses = cu.getDependingClasses;
+const getParams = cu.getParams;
+//const JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1,Error:1};
+//var TypeChecker:any={};
 function visitSub(node) {
     var t = this;
     if (!node || typeof node != "object")
@@ -3805,7 +3822,7 @@ function visitSub(node) {
         t.visit(e);
     });
 }
-TypeChecker.checkTypeDecl = function (klass, env) {
+function checkTypeDecl(klass, env) {
     function annotation(node, aobj) {
         return annotation3(klass.annotation, node, aobj);
     }
@@ -3860,8 +3877,9 @@ TypeChecker.checkTypeDecl = function (klass, env) {
     });
     typeDeclVisitor.def = visitSub; //S
     typeDeclVisitor.visit(klass.node);
-};
-TypeChecker.checkExpr = function (klass, env) {
+}
+exports.checkTypeDecl = checkTypeDecl;
+function checkExpr(klass, env) {
     function annotation(node, aobj) {
         return annotation3(klass.annotation, node, aobj);
     }
@@ -3899,8 +3917,7 @@ TypeChecker.checkExpr = function (klass, env) {
                     annotation(node, { vtype: si.vtype });
                 }
                 else if (si.type === ScopeTypes.FIELD) {
-                    var fld;
-                    fld = klass.decls.fields[node.name + ""];
+                    const fld = klass.decls.fields[node.name + ""];
                     if (!fld) {
                         // because parent field does not contain...
                         console.log("TC Warning: fld not found", klass, node.name + "");
@@ -3911,7 +3928,7 @@ TypeChecker.checkExpr = function (klass, env) {
                         console.log("VA vtype not found", node.name + ":", fld);
                     }
                     else {
-                        annotation(node, { vtype: vtype });
+                        annotation(node, { vtype });
                         console.log("VA typeof", node.name + ":", vtype);
                     }
                 }
@@ -3929,8 +3946,9 @@ TypeChecker.checkExpr = function (klass, env) {
         var va = annotation(node);
         return va.vtype;
     }
-};
-module.exports = TypeChecker;
+}
+exports.checkExpr = checkExpr;
+;
 
 },{"./Visitor":14,"./compiler":15,"./context":16,"./parser":20}],14:[function(require,module,exports){
 "use strict";
@@ -4181,7 +4199,7 @@ function getDependingClasses(klass) {
 }
 exports.getDependingClasses = getDependingClasses;
 //cu.getDependingClasses=getDependingClasses;
-function getParams(method) {
+function getParams(method /*: FuncDecl*/) {
     let res = [];
     if (!method.head)
         return res;
@@ -4198,7 +4216,7 @@ exports.getParams = getParams;
 //cu.getParams=getParams;
 //export= cu;
 
-},{"../lib/root":32,"../runtime/TonyuRuntime":38}],16:[function(require,module,exports){
+},{"../lib/root":32,"../runtime/TonyuRuntime":39}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.context = exports.RawContext = void 0;
@@ -5519,7 +5537,7 @@ module.exports = function PF({ TT }) {
     return $;
 };
 
-},{"../lib/R":28,"../runtime/TError":36,"./ExpressionParser2":4,"./Grammar":5,"./parser":20}],22:[function(require,module,exports){
+},{"../lib/R":28,"../runtime/TError":37,"./ExpressionParser2":5,"./Grammar":6,"./parser":20}],22:[function(require,module,exports){
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -13432,6 +13450,15 @@ module.exports=NS2DepSpec;
 
 },{}],36:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isTonyuClass = void 0;
+function isTonyuClass(v) {
+    return typeof v === "function" && v.meta && !v.meta.isShim;
+}
+exports.isTonyuClass = isTonyuClass;
+
+},{}],37:[function(require,module,exports){
+"use strict";
 function TError(message, src, pos, len = 0) {
     let rc;
     const extend = (dst, src) => { for (var k in src)
@@ -13497,7 +13524,7 @@ lines[row].length=4
 module.exports = TError;
 //module.exports=TError;
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 //define(["Klass"], function (Klass) {
 //var Klass=require("../lib/Klass");
@@ -13609,7 +13636,7 @@ module.exports = function IT(set, arity) {
 //	return IT;
 //});
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -13619,7 +13646,7 @@ const TonyuIterator_1 = __importDefault(require("./TonyuIterator"));
 const TonyuThread_1 = require("./TonyuThread");
 const root_1 = __importDefault(require("../lib/root"));
 const assert_1 = __importDefault(require("../lib/assert"));
-const RuntimeTypes_1 = require("../lang/RuntimeTypes");
+const RuntimeTypes_1 = require("./RuntimeTypes");
 // old browser support
 if (!root_1.default.performance) {
     root_1.default.performance = {};
@@ -13662,6 +13689,11 @@ function addMeta(fn, m) {
     // k.meta={...} erases these info
     assert_1.default.is(arguments, [String, Object]);
     return extend(klass.getMeta(fn), m);
+}
+function getMeta(klass) {
+    if ((0, RuntimeTypes_1.isTonyuClass)(klass))
+        return klass.meta;
+    return klass;
 }
 var klass = {
     addMeta,
@@ -13713,12 +13745,11 @@ var klass = {
         var methodsF = params.methods;
         var decls = params.decls;
         var nso = klass.ensureNamespace(Tonyu.classes, namespace);
-        var outerRes;
+        //type ShimMeta=Meta & {isShim?:boolean, extenderFullName?:string};
         function chkmeta(m, ctx) {
-            ctx = ctx || {};
-            if (ctx.isShim)
-                return m;
-            ctx.path = ctx.path || [];
+            ctx = ctx || { path: [] };
+            //if (ctx.isShim) return m;
+            //ctx.path=ctx.path||[];
             ctx.path.push(m);
             if (m.isShim) {
                 console.log("chkmeta::ctx", ctx);
@@ -13762,36 +13793,33 @@ var klass = {
             }*/
             var init = methods.initialize;
             delete methods.initialize;
-            var res;
-            res = (init ?
-                function () {
-                    if (!(this instanceof res))
-                        useNew(fullName);
-                    init.apply(this, arguments);
-                } :
-                (parent ? function () {
-                    if (!(this instanceof res))
-                        useNew(fullName);
-                    parent.apply(this, arguments);
-                } : function () {
-                    if (!(this instanceof res))
-                        useNew(fullName);
-                }));
+            function exprWithName(name, expr, bindings) {
+                const bnames = Object.keys(bindings);
+                const f = new Function(...bnames, `const ${name}=${expr}; return ${name};`);
+                return f(...bnames.map((k) => bindings[k]));
+            }
+            const chkT = (obj) => {
+                if (!(obj instanceof res))
+                    useNew(fullName);
+            };
+            const superInit = (init ? `init.apply(this,arguments);` :
+                parent ? `parent.apply(this,arguments);` : "");
+            const res = exprWithName(shortName, `function() {chkT(this);${superInit}}`, { chkT, init, parent });
             res.prototype = bless(parent, { constructor: res });
             if (isShim) {
-                res.meta = { isShim: true, extenderFullName: fullName };
+                res.meta = { isShim: true, extenderFullName: fullName, func: res };
             }
             else {
                 res.meta = addMeta(fullName, {
-                    fullName: fullName, shortName: shortName, namespace: namespace, decls: decls,
+                    fullName, shortName, namespace, decls,
                     superclass: ctx.nonShimParent ? ctx.nonShimParent.meta : null,
-                    includesRec: includesRec,
-                    includes: includes.map(function (c) { return c.meta; })
+                    includesRec,
+                    includes: includes.map(function (c) { return c.meta; }),
+                    func: res
                 });
             }
-            res.meta.func = res;
             // methods: res's own methods(no superclass/modules)
-            res.methods = methods;
+            //res.methods=methods;
             var prot = res.prototype;
             var props = {};
             //var propReg=klass.propReg;//^__([gs]et)ter__(.*)$/;
@@ -13842,23 +13870,26 @@ var klass = {
             prot.getClassInfo = function () {
                 return res.meta;
             };
-            return chkclass(res, { isShim: isShim });
+            if ((0, RuntimeTypes_1.isTonyuClass)(res))
+                chkclass(res);
+            return res; //chkclass(res,{isShim, init:false, includesRec:{}});
         }
-        var res = extender(parent, {
+        const res = extender(parent, {
+            //isShim: false,
             init: true,
-            initFullName: fullName,
+            //initFullName:fullName,
             includesRec: (parent ? extend({}, parent.meta.includesRec) : {}),
             nonShimParent: parent
         });
         res.extendFrom = extender;
         //addMeta(fullName, res.meta);
         nso[shortName] = res;
-        outerRes = res;
+        //outerRes=res;
         //console.log("defined", fullName, Tonyu.classes,Tonyu.ID);
-        return chkclass(res, { isShim: false });
+        return chkclass(res); //,{isShim:false, init:false, includesRec:{}});
     },
-    isSourceChanged(k) {
-        k = k.meta || k;
+    isSourceChanged(_k) {
+        const k = getMeta(_k);
         if (k.src && k.src.tonyu) {
             if (!k.nodeTimestamp)
                 return true;
@@ -13866,8 +13897,8 @@ var klass = {
         }
         return false;
     },
-    shouldCompile(k) {
-        k = k.meta || k;
+    shouldCompile(_k) {
+        const k = getMeta(_k);
         if (k.hasSemanticError)
             return true;
         if (klass.isSourceChanged(k))
@@ -13878,8 +13909,8 @@ var klass = {
                 return true;
         }
     },
-    getDependingClasses(k) {
-        k = k.meta || k;
+    getDependingClasses(_k) {
+        const k = getMeta(_k);
         var res = [];
         if (k.superclass)
             res = [k.superclass];
@@ -14057,7 +14088,7 @@ if (root_1.default.Tonyu) {
 root_1.default.Tonyu = Tonyu;
 module.exports = Tonyu;
 
-},{"../lang/RuntimeTypes":10,"../lib/R":28,"../lib/assert":31,"../lib/root":32,"./TonyuIterator":37,"./TonyuThread":39}],39:[function(require,module,exports){
+},{"../lib/R":28,"../lib/assert":31,"../lib/root":32,"./RuntimeTypes":36,"./TonyuIterator":38,"./TonyuThread":40}],40:[function(require,module,exports){
 "use strict";
 //	var Klass=require("../lib/Klass");
 var __importDefault = (this && this.__importDefault) || function (mod) {

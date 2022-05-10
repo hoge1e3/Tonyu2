@@ -17,10 +17,10 @@ function add(s) {
     if ($Boot.newLimit) {
         $Boot.newLimitCount--;
         if ($Boot.newLimitCount<=0) throw new Error("一度にたくさんのオブジェクトを作りすぎています\n"
-            +"       $Boot.newLimitの値を変更すると、1フレーム間に生成できる オブジェクト+スレッドの合計数 を変更できます\n"
-            +"       $Boot.newLimit="+$Boot.newLimit+"; // 現在の オブジェクト数+スレッド数 の限度\n"
-            +"       update(); // 次フレームから適用されます\n"
-            +"       [参考] https://edit.tonyu.jp/doc/limitations.html\n");
+        +"       $Boot.newLimitの値を変更すると、1フレーム間に生成できる オブジェクト+スレッドの合計数 を変更できます\n"
+        +"       $Boot.newLimit="+$Boot.newLimit+"; // 現在の オブジェクト数+スレッド数 の限度\n"
+        +"       update(); // 次フレームから適用されます\n"
+        +"       [参考] https://edit.tonyu.jp/doc/limitations.html\n");
     }
     if (s.__addedToSprites) return;
     if (s instanceof PlainChar) {

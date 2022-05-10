@@ -1,14 +1,5 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isTonyuClass = void 0;
-function isTonyuClass(v) {
-    return typeof v === "function" && v.meta;
-}
-exports.isTonyuClass = isTonyuClass;
-
-},{}],2:[function(require,module,exports){
-"use strict";
 const ja = {
     expected: "ここには{1}などが入ることが予想されます",
     superClassIsUndefined: "親クラス {1}は定義されていません",
@@ -108,7 +99,7 @@ R.setLocale = locale => {
 module.exports = R;
 //module.exports=R;
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 "use strict";
 const Assertion = function (failMesg = "Assertion failed: ") {
     this.failMesg = flatten(failMesg);
@@ -314,7 +305,7 @@ function isArg(a) {
 }
 module.exports = assert;
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 const root = (function () {
     if (typeof window !== "undefined")
@@ -326,6 +317,15 @@ const root = (function () {
     return (function () { return this; })();
 })();
 module.exports = root;
+
+},{}],4:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isTonyuClass = void 0;
+function isTonyuClass(v) {
+    return typeof v === "function" && v.meta && !v.meta.isShim;
+}
+exports.isTonyuClass = isTonyuClass;
 
 },{}],5:[function(require,module,exports){
 "use strict";
@@ -449,7 +449,7 @@ const TonyuIterator_1 = __importDefault(require("./TonyuIterator"));
 const TonyuThread_1 = require("./TonyuThread");
 const root_1 = __importDefault(require("../lib/root"));
 const assert_1 = __importDefault(require("../lib/assert"));
-const RuntimeTypes_1 = require("../lang/RuntimeTypes");
+const RuntimeTypes_1 = require("./RuntimeTypes");
 // old browser support
 if (!root_1.default.performance) {
     root_1.default.performance = {};
@@ -492,6 +492,11 @@ function addMeta(fn, m) {
     // k.meta={...} erases these info
     assert_1.default.is(arguments, [String, Object]);
     return extend(klass.getMeta(fn), m);
+}
+function getMeta(klass) {
+    if ((0, RuntimeTypes_1.isTonyuClass)(klass))
+        return klass.meta;
+    return klass;
 }
 var klass = {
     addMeta,
@@ -543,12 +548,11 @@ var klass = {
         var methodsF = params.methods;
         var decls = params.decls;
         var nso = klass.ensureNamespace(Tonyu.classes, namespace);
-        var outerRes;
+        //type ShimMeta=Meta & {isShim?:boolean, extenderFullName?:string};
         function chkmeta(m, ctx) {
-            ctx = ctx || {};
-            if (ctx.isShim)
-                return m;
-            ctx.path = ctx.path || [];
+            ctx = ctx || { path: [] };
+            //if (ctx.isShim) return m;
+            //ctx.path=ctx.path||[];
             ctx.path.push(m);
             if (m.isShim) {
                 console.log("chkmeta::ctx", ctx);
@@ -592,36 +596,33 @@ var klass = {
             }*/
             var init = methods.initialize;
             delete methods.initialize;
-            var res;
-            res = (init ?
-                function () {
-                    if (!(this instanceof res))
-                        useNew(fullName);
-                    init.apply(this, arguments);
-                } :
-                (parent ? function () {
-                    if (!(this instanceof res))
-                        useNew(fullName);
-                    parent.apply(this, arguments);
-                } : function () {
-                    if (!(this instanceof res))
-                        useNew(fullName);
-                }));
+            function exprWithName(name, expr, bindings) {
+                const bnames = Object.keys(bindings);
+                const f = new Function(...bnames, `const ${name}=${expr}; return ${name};`);
+                return f(...bnames.map((k) => bindings[k]));
+            }
+            const chkT = (obj) => {
+                if (!(obj instanceof res))
+                    useNew(fullName);
+            };
+            const superInit = (init ? `init.apply(this,arguments);` :
+                parent ? `parent.apply(this,arguments);` : "");
+            const res = exprWithName(shortName, `function() {chkT(this);${superInit}}`, { chkT, init, parent });
             res.prototype = bless(parent, { constructor: res });
             if (isShim) {
-                res.meta = { isShim: true, extenderFullName: fullName };
+                res.meta = { isShim: true, extenderFullName: fullName, func: res };
             }
             else {
                 res.meta = addMeta(fullName, {
-                    fullName: fullName, shortName: shortName, namespace: namespace, decls: decls,
+                    fullName, shortName, namespace, decls,
                     superclass: ctx.nonShimParent ? ctx.nonShimParent.meta : null,
-                    includesRec: includesRec,
-                    includes: includes.map(function (c) { return c.meta; })
+                    includesRec,
+                    includes: includes.map(function (c) { return c.meta; }),
+                    func: res
                 });
             }
-            res.meta.func = res;
             // methods: res's own methods(no superclass/modules)
-            res.methods = methods;
+            //res.methods=methods;
             var prot = res.prototype;
             var props = {};
             //var propReg=klass.propReg;//^__([gs]et)ter__(.*)$/;
@@ -672,23 +673,26 @@ var klass = {
             prot.getClassInfo = function () {
                 return res.meta;
             };
-            return chkclass(res, { isShim: isShim });
+            if ((0, RuntimeTypes_1.isTonyuClass)(res))
+                chkclass(res);
+            return res; //chkclass(res,{isShim, init:false, includesRec:{}});
         }
-        var res = extender(parent, {
+        const res = extender(parent, {
+            //isShim: false,
             init: true,
-            initFullName: fullName,
+            //initFullName:fullName,
             includesRec: (parent ? extend({}, parent.meta.includesRec) : {}),
             nonShimParent: parent
         });
         res.extendFrom = extender;
         //addMeta(fullName, res.meta);
         nso[shortName] = res;
-        outerRes = res;
+        //outerRes=res;
         //console.log("defined", fullName, Tonyu.classes,Tonyu.ID);
-        return chkclass(res, { isShim: false });
+        return chkclass(res); //,{isShim:false, init:false, includesRec:{}});
     },
-    isSourceChanged(k) {
-        k = k.meta || k;
+    isSourceChanged(_k) {
+        const k = getMeta(_k);
         if (k.src && k.src.tonyu) {
             if (!k.nodeTimestamp)
                 return true;
@@ -696,8 +700,8 @@ var klass = {
         }
         return false;
     },
-    shouldCompile(k) {
-        k = k.meta || k;
+    shouldCompile(_k) {
+        const k = getMeta(_k);
         if (k.hasSemanticError)
             return true;
         if (klass.isSourceChanged(k))
@@ -708,8 +712,8 @@ var klass = {
                 return true;
         }
     },
-    getDependingClasses(k) {
-        k = k.meta || k;
+    getDependingClasses(_k) {
+        const k = getMeta(_k);
         var res = [];
         if (k.superclass)
             res = [k.superclass];
@@ -887,7 +891,7 @@ if (root_1.default.Tonyu) {
 root_1.default.Tonyu = Tonyu;
 module.exports = Tonyu;
 
-},{"../lang/RuntimeTypes":1,"../lib/R":2,"../lib/assert":3,"../lib/root":4,"./TonyuIterator":5,"./TonyuThread":7}],7:[function(require,module,exports){
+},{"../lib/R":1,"../lib/assert":2,"../lib/root":3,"./RuntimeTypes":4,"./TonyuIterator":5,"./TonyuThread":7}],7:[function(require,module,exports){
 "use strict";
 //	var Klass=require("../lib/Klass");
 var __importDefault = (this && this.__importDefault) || function (mod) {
@@ -1174,4 +1178,4 @@ class TonyuThread {
 }
 exports.TonyuThread = TonyuThread;
 
-},{"../lib/R":2}]},{},[6]);
+},{"../lib/R":1}]},{},[6]);

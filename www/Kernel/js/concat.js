@@ -3472,10 +3472,27 @@ Tonyu.klass.define({
         
         return (v%d+d)%d;
       },
+      log :function _trc_MathMod_log(n) {
+        "use strict";
+        var _this=this;
+        
+        return Math.log(n);
+      },
+      fiber$log :function _trc_MathMod_f_log(_thread,n) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var __pc=0;
+        
+        _thread.retVal=Math.log(n);return;
+        
+        
+        _thread.retVal=_this;return;
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"sin":{"nowait":true},"cos":{"nowait":true},"rad":{"nowait":true},"deg":{"nowait":true},"abs":{"nowait":true},"sgn":{"nowait":true},"atan2":{"nowait":true},"atanxy":{"nowait":true},"floor":{"nowait":true},"angleDiff":{"nowait":true},"sqrt":{"nowait":true},"dist":{"nowait":true},"trunc":{"nowait":true},"ceil":{"nowait":true},"rndFloat":{"nowait":true},"rnd":{"nowait":true},"randomize":{"nowait":true},"parseFloat":{"nowait":true},"clamp":{"nowait":true},"clamped":{"nowait":true},"min":{"nowait":true},"max":{"nowait":true},"amod":{"nowait":true}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false},"sin":{"nowait":true},"cos":{"nowait":true},"rad":{"nowait":true},"deg":{"nowait":true},"abs":{"nowait":true},"sgn":{"nowait":true},"atan2":{"nowait":true},"atanxy":{"nowait":true},"floor":{"nowait":true},"angleDiff":{"nowait":true},"sqrt":{"nowait":true},"dist":{"nowait":true},"trunc":{"nowait":true},"ceil":{"nowait":true},"rndFloat":{"nowait":true},"rnd":{"nowait":true},"randomize":{"nowait":true},"parseFloat":{"nowait":true},"clamp":{"nowait":true},"clamped":{"nowait":true},"min":{"nowait":true},"max":{"nowait":true},"amod":{"nowait":true},"log":{"nowait":false}},"fields":{}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Navigator',
@@ -3519,10 +3536,13 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var u;
+        var isIPad;
         
         u = _this.getUserAgent().toLowerCase();
         
-        return ((u.indexOf("windows")!=- 1&&u.indexOf("touch")!=- 1&&u.indexOf("tablet pc")==- 1)||u.indexOf("ipad")!=- 1||(u.indexOf("android")!=- 1&&u.indexOf("windows")==- 1&&u.indexOf("mobile")==- 1)||(u.indexOf("firefox")!=- 1&&u.indexOf("tablet")!=- 1)||u.indexOf("kindle")!=- 1||u.indexOf("silk")!=- 1||u.indexOf("playbook")!=- 1||u.indexOf('a1_07')!=- 1||u.indexOf('sc-01c')!=- 1);
+        isIPad = u.indexOf("ipad")!=- 1||(u.indexOf("macintosh")!=- 1&&document.ontouchend);
+        
+        return ((u.indexOf("windows")!=- 1&&u.indexOf("touch")!=- 1&&u.indexOf("tablet pc")==- 1)||isIPad!=- 1||(u.indexOf("android")!=- 1&&u.indexOf("windows")==- 1&&u.indexOf("mobile")==- 1)||(u.indexOf("firefox")!=- 1&&u.indexOf("tablet")!=- 1)||u.indexOf("kindle")!=- 1||u.indexOf("silk")!=- 1||u.indexOf("playbook")!=- 1||u.indexOf('a1_07')!=- 1||u.indexOf('sc-01c')!=- 1);
       },
       fiber$isTablet :function _trc_Navigator_f_isTablet(_thread) {
         "use strict";
@@ -3530,10 +3550,13 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var u;
+        var isIPad;
         
         u = _this.getUserAgent().toLowerCase();
         
-        _thread.retVal=((u.indexOf("windows")!=- 1&&u.indexOf("touch")!=- 1&&u.indexOf("tablet pc")==- 1)||u.indexOf("ipad")!=- 1||(u.indexOf("android")!=- 1&&u.indexOf("windows")==- 1&&u.indexOf("mobile")==- 1)||(u.indexOf("firefox")!=- 1&&u.indexOf("tablet")!=- 1)||u.indexOf("kindle")!=- 1||u.indexOf("silk")!=- 1||u.indexOf("playbook")!=- 1||u.indexOf('a1_07')!=- 1||u.indexOf('sc-01c')!=- 1);return;
+        isIPad = u.indexOf("ipad")!=- 1||(u.indexOf("macintosh")!=- 1&&document.ontouchend);
+        
+        _thread.retVal=((u.indexOf("windows")!=- 1&&u.indexOf("touch")!=- 1&&u.indexOf("tablet pc")==- 1)||isIPad!=- 1||(u.indexOf("android")!=- 1&&u.indexOf("windows")==- 1&&u.indexOf("mobile")==- 1)||(u.indexOf("firefox")!=- 1&&u.indexOf("tablet")!=- 1)||u.indexOf("kindle")!=- 1||u.indexOf("silk")!=- 1||u.indexOf("playbook")!=- 1||u.indexOf('a1_07')!=- 1||u.indexOf('sc-01c')!=- 1);return;
         
         
         _thread.retVal=_this;return;
@@ -3611,10 +3634,13 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var u;
+        var isIPad;
         
         u = _this.getUserAgent().toLowerCase();
         
-        return (u.indexOf("iphone")!=- 1||u.indexOf("ipad")!=- 1||u.indexOf("ipod")!=- 1);
+        isIPad = u.indexOf("ipad")!=- 1||(u.indexOf("macintosh")!=- 1&&document.ontouchend);
+        
+        return (u.indexOf("iphone")!=- 1||isIPad||u.indexOf("ipod")!=- 1);
       },
       fiber$isIOS :function _trc_Navigator_f_isIOS(_thread) {
         "use strict";
@@ -3622,10 +3648,13 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         var u;
+        var isIPad;
         
         u = _this.getUserAgent().toLowerCase();
         
-        _thread.retVal=(u.indexOf("iphone")!=- 1||u.indexOf("ipad")!=- 1||u.indexOf("ipod")!=- 1);return;
+        isIPad = u.indexOf("ipad")!=- 1||(u.indexOf("macintosh")!=- 1&&document.ontouchend);
+        
+        _thread.retVal=(u.indexOf("iphone")!=- 1||isIPad||u.indexOf("ipod")!=- 1);return;
         
         
         _thread.retVal=_this;return;
@@ -13049,14 +13078,14 @@ Tonyu.klass.define({
         orderArray = [];
         
         if (_this.t1Sprites) {
-          _this.sprites.forEach((function anonymous_2257(s) {
+          _this.sprites.forEach((function anonymous_2241(s) {
             
             if (s instanceof Tonyu.classes.kernel.PlainChar) {
               s.draw();
               
             }
           }));
-          _this.sprites.forEach((function anonymous_2386(s) {
+          _this.sprites.forEach((function anonymous_2370(s) {
             
             if (s instanceof Tonyu.classes.kernel.PlainChar) {
               
@@ -13073,7 +13102,7 @@ Tonyu.klass.define({
         orderArray.sort(Tonyu.bindFunc(_this,_this.compOrder));
         ctx.translate(- _this.sx,- _this.sy);
         _this.drawing=ctx;
-        orderArray.forEach((function anonymous_2650(s) {
+        orderArray.forEach((function anonymous_2634(s) {
           
           s.draw(ctx,camera);
         }));
@@ -13091,14 +13120,14 @@ Tonyu.klass.define({
         orderArray = [];
         
         if (_this.t1Sprites) {
-          _this.sprites.forEach((function anonymous_2257(s) {
+          _this.sprites.forEach((function anonymous_2241(s) {
             
             if (s instanceof Tonyu.classes.kernel.PlainChar) {
               s.draw();
               
             }
           }));
-          _this.sprites.forEach((function anonymous_2386(s) {
+          _this.sprites.forEach((function anonymous_2370(s) {
             
             if (s instanceof Tonyu.classes.kernel.PlainChar) {
               
@@ -13115,7 +13144,7 @@ Tonyu.klass.define({
         orderArray.sort(Tonyu.bindFunc(_this,_this.compOrder));
         ctx.translate(- _this.sx,- _this.sy);
         _this.drawing=ctx;
-        orderArray.forEach((function anonymous_2650(s) {
+        orderArray.forEach((function anonymous_2634(s) {
           
           s.draw(ctx,camera);
         }));
@@ -13128,9 +13157,9 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        _this.hitWatchers.forEach((function anonymous_2785(w) {
+        _this.hitWatchers.forEach((function anonymous_2769(w) {
           
-          _this.sprites.forEach((function anonymous_2825(a) {
+          _this.sprites.forEach((function anonymous_2809(a) {
             var a_owner;
             
             a_owner = a;
@@ -13138,7 +13167,7 @@ Tonyu.klass.define({
             if (! (a_owner instanceof w.A)) {
               return _this;
             }
-            _this.sprites.forEach((function anonymous_3008(b) {
+            _this.sprites.forEach((function anonymous_2992(b) {
               var b_owner;
               
               b_owner = b;
@@ -13163,9 +13192,9 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         
-        _this.hitWatchers.forEach((function anonymous_2785(w) {
+        _this.hitWatchers.forEach((function anonymous_2769(w) {
           
-          _this.sprites.forEach((function anonymous_2825(a) {
+          _this.sprites.forEach((function anonymous_2809(a) {
             var a_owner;
             
             a_owner = a;
@@ -13173,7 +13202,7 @@ Tonyu.klass.define({
             if (! (a_owner instanceof w.A)) {
               return _this;
             }
-            _this.sprites.forEach((function anonymous_3008(b) {
+            _this.sprites.forEach((function anonymous_2992(b) {
               var b_owner;
               
               b_owner = b;
@@ -13347,7 +13376,7 @@ Tonyu.klass.define({
           return res;
           
         }
-        _this.sprites.forEach((function anonymous_4621(s) {
+        _this.sprites.forEach((function anonymous_4605(s) {
           
           if (s===_this) {
             return _this;
