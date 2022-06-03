@@ -6,6 +6,7 @@ define(function (require,exports, module) {
         const interval=200;
         setTimeout(checkLoop,interval);
         let charge=0;
+        let prevInf;
         async function checkLoop() {
             const inf=ide.getCurrentEditorInfo();
             if (inf) {
@@ -18,11 +19,12 @@ define(function (require,exports, module) {
                 } else {
                     charge+=interval;
                 }
-                if (charge>500) {
+                if (charge>500 || prevInf!==inf) {
                     charge=0;
                     check(inf);
                 }
             }
+            prevInf=inf;
             setTimeout(checkLoop,interval);
         }
         async function check(inf) {
