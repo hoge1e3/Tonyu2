@@ -185,3 +185,6 @@ iframe.wikiDialog {
 	width: 100px; /* 幅を指定する */
 	border: 3px solid #326693; /* ボーダーを指定する */
 }
+.compileState.error {
+    border: 4px solid #ff0000;
+}

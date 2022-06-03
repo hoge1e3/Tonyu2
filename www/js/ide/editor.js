@@ -489,7 +489,11 @@ $(function () {
         const s=(e.state===true ? "Ready" : (typeof e.state)==="string" ? e.state :"Error");
         console.log(e.state);
         cs.text(s);
-
+        if (s==="Error") {
+            cs.addClass("error").css({cursor:"pointer"});
+        } else {
+            cs.removeClass("error").css({cursor:"auto"});
+        }
     });
     curPrj.fullCompile();
 });
