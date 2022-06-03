@@ -60,13 +60,17 @@ define(function (require,exports) {
             this.readyState=state;
             this.fire("readyState",{state});
         };
-        res.waitReady=function (g=true) {
+        res.isReady=function (s) {
+            if (s==null) s=this.readyState;
+            return s && typeof s!=="string";
+        };
+        res.waitReady=function () {
             return new Promise(s=>{
-                if (this.readyState===g) s(g);
-                console.log("wait until ",this.readyState,"->",g);
+                if (res.isReady()) s(this.readyState);
+                console.log("waiting for end of ",this.readyState);
                 const r=this.on("readyState", e=>{
                     console.log("State change",e);
-                    if (e.state===g) {
+                    if (res.isReady(e.state)) {
                         r.remove();
                         s(e);
                     }
@@ -80,9 +84,11 @@ define(function (require,exports) {
                 try {
                     this.setReadyState(cMethod);
                     const res=await c[cMethod](...args);
-                    return res;
-                } finally {
                     this.setReadyState(true);
+                    return res;
+                } catch(e) {
+                    this.setReadyState(e);
+                    throw e;
                 }
             };
         }

@@ -479,9 +479,17 @@ $(function () {
         }
     }
     const cs=$("<div>").attr({"id":"compileState"}).addClass("compileState").text("").appendTo("body");
-	curPrj.on("readyState", e=>{
-        const s=(e.state===true ? "Ready" : e.state);
+    cs.click(()=>{
+        const s=curPrj.readyState;
+        if (s.src && s.row && s.col) {
+            ide.jump(s.src, s.row, s.col);
+        }
+    });
+    curPrj.on("readyState", e=>{
+        const s=(e.state===true ? "Ready" : (typeof e.state)==="string" ? e.state :"Error");
+        console.log(e.state);
         cs.text(s);
+
     });
     curPrj.fullCompile();
 });
