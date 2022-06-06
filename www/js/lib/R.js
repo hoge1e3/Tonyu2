@@ -5,6 +5,7 @@ $(".dropdown-toggle");
 */
     const root=require("root");
     const ja={
+        "doTypeCheck": "型チェックを行う",
         "socialEditor": "アプリ情報",
         "title": "タイトル",
         "importOption":"インポート設定",

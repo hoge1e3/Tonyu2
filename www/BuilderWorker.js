@@ -283,6 +283,7 @@ module.exports = class Builder {
         var env = this.getEnv();
         env.options = this.getOptions();
         for (let k of this.getMyClasses()) {
+            console.log("RMMeta", k);
             delete env.classes[k];
         }
         const myNsp = this.getNamespace();
@@ -2226,7 +2227,9 @@ function genJS(klass, env, genOptions) {
             else {
                 ctx.enter({ noWait: true }, function () {
                     buf.printf("try {%{%f%n%}} ", noSurroundCompoundF(node.stmt));
-                    node.catches.forEach(v.visit);
+                    for (let c of node.catches) {
+                        v.visit(c);
+                    }
                 });
             }
         },
@@ -3514,6 +3517,16 @@ function annotateSource2(klass, env) {
     function getMethod(name) {
         return getMethod2(klass, name);
     }
+    function getSuperMethod(name) {
+        for (let c of getDependingClasses(klass)) {
+            if (c === klass)
+                continue;
+            const r = getMethod2(c, name);
+            if (r)
+                return r;
+        }
+        //return getMethod2(klass,name);
+    }
     function isFiberMethod(name) {
         return stype(ctx.scope[name]) == ST.METHOD &&
             !getMethod(name).nowait;
@@ -3620,7 +3633,7 @@ function annotateSource2(klass, env) {
                     }
                 }
             });
-            var n = genSym("_it_");
+            var n = `_it_${Object.keys(ctx.locals.varDecls).length}`; //genSym("_it_");
             annotation(node, { iterName: n });
             ctx.locals.varDecls[n] = node; // ??
         }
@@ -3731,8 +3744,8 @@ function annotateSource2(klass, env) {
         },
         "return": function (node) {
             var t;
-            if (!ctx.noWait && node.value) {
-                if ((t = OM.match(node.value, fiberCallTmpl)) &&
+            if (!ctx.noWait) {
+                if (node.value && (t = OM.match(node.value, fiberCallTmpl)) &&
                     isFiberMethod(t.N)) {
                     annotation(node.value, { fiberCall: t });
                     fiberCallRequired(this.path);
@@ -3823,9 +3836,9 @@ function annotateSource2(klass, env) {
             else if (!ctx.noWait &&
                 (t = OM.match(node, noRetSuperFiberCallTmpl)) &&
                 t.S.name) {
-                m = getMethod(t.S.name.text);
+                const m = getSuperMethod(t.S.name.text);
                 if (!m)
-                    throw new Error((0, R_1.default)("undefinedMethod", t.S.name.text));
+                    throw new Error((0, R_1.default)("undefinedSuperMethod", t.S.name.text));
                 if (!m.nowait) {
                     t.type = "noRetSuper";
                     t.superclass = klass.superclass;
@@ -3836,9 +3849,12 @@ function annotateSource2(klass, env) {
             else if (!ctx.noWait &&
                 (t = OM.match(node, retSuperFiberCallTmpl)) &&
                 t.S.name) {
-                m = getMethod(t.S.name.text);
+                if (!klass.superclass) {
+                    throw new Error((0, R_1.default)("Class {1} has no superclass", klass.shortName));
+                }
+                m = getSuperMethod(t.S.name.text);
                 if (!m)
-                    throw new Error((0, R_1.default)("undefinedMethod", t.S.name.text));
+                    throw new Error((0, R_1.default)("undefinedSuperMethod", t.S.name.text));
                 if (!m.nowait) {
                     t.type = "retSuper";
                     t.superclass = klass.superclass;
@@ -3881,6 +3897,7 @@ function annotateSource2(klass, env) {
             annotation(node, { resolvedType });
         }
         else if (env.options.compiler.typeCheck) {
+            console.log("typeNotFound: topLevelScope", topLevelScope, si, env.classes);
             throw (0, TError_1.default)((0, R_1.default)("typeNotFound", node.name), srcFile, node.pos);
         }
         return resolvedType;
@@ -4224,12 +4241,12 @@ function checkTypeDecl(klass, env) {
         },
         paramDecl: function (node) {
             if (node.name && node.typeDecl) {
-                console.log("param typeis", node.name + "", node.typeDecl.vtype + "");
+                //console.log("param typeis",node.name+"", node.typeDecl.vtype+"");
                 var va = annotation(node.typeDecl.vtype);
                 var a = annotation(node);
                 var si = a.scopeInfo;
                 if (si && va.resolvedType) {
-                    console.log("set param type", node.name + "", node.typeDecl.vtype + "");
+                    //console.log("set param type",node.name+"", node.typeDecl.vtype+"");
                     si.resolvedType = va.resolvedType;
                 }
             }
@@ -4276,7 +4293,7 @@ function checkExpr(klass, env) {
                     const field = cu.getField(vtype, name);
                     const method = cu.getMethod(vtype, name);
                     if (!field && !method) {
-                        throw (0, TError_1.default)((0, R_1.default)("memberNotFoundInClass", vtype.shortName, name), srcFile, node.pos);
+                        throw (0, TError_1.default)((0, R_1.default)("memberNotFoundInClass", vtype.shortName, name), srcFile, node.op.name.pos);
                     }
                     //console.log("GETF",vtype,m.name,f);
                     // fail if f is not set when strict check
@@ -4290,13 +4307,13 @@ function checkExpr(klass, env) {
             }
             else if ((0, NodeTypes_1.isCall)(node.op)) {
                 const leftA = annotation(node.left);
-                console.log("OPCALL1", leftA);
+                //console.log("OPCALL1", leftA);
                 if (leftA && leftA.resolvedType) {
                     const leftT = leftA.resolvedType;
                     if (!(0, CompilerTypes_1.isMethodType)(leftT)) {
                         throw (0, TError_1.default)((0, R_1.default)("cannotCallNonFunctionType"), srcFile, node.op.pos);
                     }
-                    console.log("OPCALL", leftT);
+                    //console.log("OPCALL", leftT);
                     annotation(node, { resolvedType: leftT.method.returnType });
                 }
             }
@@ -4313,7 +4330,7 @@ function checkExpr(klass, env) {
                     const fld = klass.decls.fields[node.name + ""];
                     if (!fld) {
                         // because parent field does not contain...
-                        console.log("TC Warning: fld not found", klass, node.name + "");
+                        //console.log("TC Warning: fld not found",klass,node.name+"");
                         return;
                     }
                     var rtype = fld.resolvedType;
@@ -4543,14 +4560,6 @@ var ScopeInfos;
 ;
 let nodeIdSeq = 1;
 let symSeq = 1; //B
-/*export function newScopeType(st, options?) {//B
-    const res:any={type:st};
-    if (options) {
-        for (let k in options) res[k]=options[k];
-    }
-    if (!res.name) res.name=genSym("_"+st+"_");
-    return res;
-}*/
 //cu.newScopeType=genSt;
 function getScopeType(st) {
     return st ? st.type : null;
@@ -4644,6 +4653,7 @@ function getMethod(klass, name) {
 }
 exports.getMethod = getMethod;
 //cu.getMethod=getMethod2;
+// includes klass itself
 function getDependingClasses(klass) {
     const visited = {};
     const res = [];
@@ -13172,6 +13182,7 @@ const ja = {
     continueShouldBeUsedInIterationStatement: "continue； は繰り返しの中で使います.",
     cannotUseObjectLiteralAsTheExpressionOfStatement: "オブジェクトリテラル単独の式文は書けません．",
     undefinedMethod: "メソッド{1}はありません．",
+    undefinedSuperMethod: "親クラスまたは参照モジュールにメソッド'{1}'がありません．",
     notAWaitableMethod: "メソッド{1}は待機可能メソッドではありません",
     circularDependencyDetected: "次のクラス間に循環参照があります: {1}",
     cannotWriteReturnInTryStatement: "現実装では、tryの中にreturnは書けません",
@@ -13206,6 +13217,7 @@ const en = {
     "continueShouldBeUsedInIterationStatement": "continue; Should be Used In Iteration Statement",
     "cannotUseObjectLiteralAsTheExpressionOfStatement": "Cannot Use Object Literal As The Expression Of Statement",
     "undefinedMethod": "Undefined Method: '{1}'",
+    undefinedSuperMethod: "Method '{1}' is defined in neigher superclass or including modules.",
     "notAWaitableMethod": "Not A Waitable Method: '{1}'",
     "circularDependencyDetected": "Circular Dependency Detected: {1}",
     "cannotWriteReturnInTryStatement": "Cannot Write Return In Try Statement",
@@ -14527,7 +14539,7 @@ function is(obj, klass) {
 }
 //setInterval(resetLoopCheck,16);
 const Tonyu = { thread,
-    klass, bless, extend,
+    klass, bless, extend, messages: R_1.default,
     globals, classes, classMetas, setGlobal, getGlobal, getClass,
     timeout,
     bindFunc, not_a_tonyu_object, is,

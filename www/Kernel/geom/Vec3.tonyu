@@ -125,12 +125,12 @@ function set() {
 }
 \normalizeX(len) {
     var l=length;
-	if (l==0) return this;
-	len=(typeof len==="number")?len:1;
+    if (l==0) return this;
+    len=(typeof len==="number")?len:1;
     x*=len/l;
     y*=len/l;
     z*=len/l;
-	return this;
+    return this;
 }
 \normalize(len) {
     return clone().normalizeX(len);
@@ -186,5 +186,5 @@ function set() {
     return this;
 }
 \toString() {
-	return "("+[x,y,z].join(",")+")";
+    return "("+[x,y,z].join(",")+")";
 }

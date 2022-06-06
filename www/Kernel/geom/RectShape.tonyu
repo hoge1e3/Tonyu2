@@ -19,7 +19,7 @@ var x,y,width,height;// (x,y): center
 \intersectsRaw(s:RectShape) {
     if (s is RectShape) {
         return Math.abs(x-s.x)*2<width+s.width &&
-            Math.abs(y-s.y)*2<height+s.height;
+        Math.abs(y-s.y)*2<height+s.height;
     }
     return containsRaw(s);
 }
