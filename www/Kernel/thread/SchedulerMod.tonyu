@@ -17,8 +17,9 @@ native Array;
 \update() {
     onUpdate();
     if(_thread) {
-        _thread.suspend();
         if (_scheduler) _scheduler.addToNext(_thread);
+        _thread.suspend();
+        __await null;
     } else {
         _scheduler.checkTimeout();
     }
@@ -41,6 +42,7 @@ nowait \currentThreadGroup() {//@deprecated
             _thread.waitCount=t;
             if (_scheduler) _scheduler.addToNext(_thread);
         }
+        __await null;
     } else if (_th) {
         if (t) {
             _th.waitCount=t;

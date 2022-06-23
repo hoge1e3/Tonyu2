@@ -4,54 +4,54 @@ native Tonyu;
 "field strict";
 var _eventHandlers;
 nowait \initEventMod() {
-   if (_eventHandlers) return;
+    if (_eventHandlers) return;
    //console.log("initEventMod" , getClassInfo().fullName);
-   _eventHandlers={};
-   on ("die",releaseEventMod);
+    _eventHandlers={};
+    on ("die",releaseEventMod);
 }
 nowait \releaseEventMod() {
-   for (var k,v in _eventHandlers) {
-       v.release();
-   }
+    for (var k,v in _eventHandlers) {
+        v.release();
+    }
 }
 nowait \parseEventArgs(a) {
-   var res={type:a[0], args:[]};
-   for (var i=1 ; i<a.length ; i++) {
-       res.args.push(a[i]);
-   }
-   return res;
+    var res={type:a[0], args:[]};
+    for (var i=1 ; i<a.length ; i++) {
+        res.args.push(a[i]);
+    }
+    return res;
 }
 nowait \findEventHandlerClass(type) {
     return EventHandler;
 }
 nowait \registerEventHandler(type, obj) {
    // obj:{ attach, fire }
-   initEventMod();
-   if (typeof type=="function") {
-       obj=obj||new type{target:this};
-       type=obj.getClassInfo().fullName;
-   } else {
-       if (!obj) {
-           var cl=findEventHandlerClass(type); //$Boot.eventTypes[type] || EventHandler;
-           obj=new cl{target:this};
-       }
+    initEventMod();
+    if (typeof type=="function") {
+        obj=obj||new type{target:this};
+        type=obj.getClassInfo().fullName;
+    } else {
+        if (!obj) {
+            var cl=findEventHandlerClass(type); //$Boot.eventTypes[type] || EventHandler;
+            obj=new cl{target:this};
+        }
        //obj.target=this;
        //print("regEvt", type, getClassInfo().fullName, obj.id);
-   }
-   return _eventHandlers[type]=obj;
+    }
+    return _eventHandlers[type]=obj;
 }
 
 nowait \getEventHandler(type) {
-   initEventMod();
-   if (typeof type=="function") {
-       type=type.meta.fullName;
-   }
-   var res=_eventHandlers[type];
-   return res;
+    initEventMod();
+    if (typeof type=="function") {
+        type=type.meta.fullName;
+    }
+    var res=_eventHandlers[type];
+    return res;
 }
 nowait \getOrRegisterEventHandler(type) {
-   var res=getEventHandler(type) || registerEventHandler(type);
-   return res;
+    var res=getEventHandler(type) || registerEventHandler(type);
+    return res;
 }
 
 nowait \on() {
@@ -81,6 +81,9 @@ nowait \sendEvent(type, arg) {
 
 \waitFor(f) {
     if (_thread) {
+        if (Tonyu.supports_await) {
+            return __await f;
+        }
         var r=_thread.waitFor(f);
         return r;
     }

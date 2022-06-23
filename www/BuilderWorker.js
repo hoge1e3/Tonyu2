@@ -2128,6 +2128,10 @@ function genJS(klass, env, genOptions) {
                 }
                 return;
             }
+            else if (node.op.text === "__await") {
+                buf.printf("%v", node.right);
+                return;
+            }
             buf.printf("%v %v", node.op, node.right);
         },
         postfix: function (node) {
@@ -5866,6 +5870,7 @@ module.exports = function PF({ TT }) {
     prio++;
     e.prefix(prio, tk("typeof"));
     e.prefix(prio, tk("__typeof"));
+    e.prefix(prio, tk("__await"));
     e.prefix(prio, tk("delete"));
     e.prefix(prio, tk("++"));
     e.prefix(prio, tk("--"));
@@ -9382,7 +9387,7 @@ module.exports = (0, tokenizerFactory_1.tokenizerFactory)({
     caseInsensitive: false,
     reserved: {
         "function": true, "var": true, "return": true, "typeof": true, "if": true,
-        "__typeof": true,
+        "__typeof": true, "__await": true,
         "for": true,
         "else": true,
         "super": true,

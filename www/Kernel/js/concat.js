@@ -251,6 +251,10 @@ Tonyu.klass.define({
         var r;
         
         if (null) {
+          if (Tonyu.supports_await) {
+            return f;
+            
+          }
           r = null.waitFor(f);
           
           return r;
@@ -266,6 +270,11 @@ Tonyu.klass.define({
         var r;
         
         if (_thread) {
+          if (Tonyu.supports_await) {
+            _thread.retVal=f;return;
+            
+            
+          }
           r = _thread.waitFor(f);
           
           _thread.retVal=r;return;
@@ -1743,10 +1752,11 @@ Tonyu.klass.define({
         
         _this.onUpdate();
         if (null) {
-          null.suspend();
           if (_this._scheduler) {
             _this._scheduler.addToNext(null);
           }
+          null.suspend();
+          null;
           
         } else {
           _this._scheduler.checkTimeout();
@@ -1761,10 +1771,11 @@ Tonyu.klass.define({
         
         _this.onUpdate();
         if (_thread) {
-          _thread.suspend();
           if (_this._scheduler) {
             _this._scheduler.addToNext(_thread);
           }
+          _thread.suspend();
+          null;
           
         } else {
           _this._scheduler.checkTimeout();
@@ -1840,6 +1851,7 @@ Tonyu.klass.define({
             }
             
           }
+          null;
           
         } else {
           if (_this._th) {
@@ -1871,6 +1883,7 @@ Tonyu.klass.define({
             }
             
           }
+          null;
           
         } else {
           if (_this._th) {
