@@ -911,10 +911,8 @@ function (extend, P, M,assert,DU){
                 return DU.resolve(t.setContent(path,content,options));
             });
         },
-        appendContent: function (path, content, options) {
-            //var nc=this.getContent(path,options).toPlainText()+content.toPlainText();
-            //return this.setContent(path, Content.fromPlainText(nc) , options);
-            stub("");
+        appendContent: function (/*path,content*/) {
+            stub("appendContent");
         },
         appendContentAsync: function (path, content, options) {
             var t=this;
@@ -2199,6 +2197,11 @@ define('LSFS',["FSClass","PathUtil","extend","assert","Util","Content"],
                 this.setItem(path, content.toURL());
             }
             this.touch(path);
+        },
+        appendContent: function (path,content) {
+            var c="";
+            if (this.exists(path)) c=this.getContent(path).toPlainText();
+            return this.setContent(path, Content.plainText(c+content.toPlainText()));
         },
         getMetaInfo: function(path, options) {
             this.assertExist(path, {includeTrashed:true});
