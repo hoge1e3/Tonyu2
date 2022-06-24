@@ -302,6 +302,8 @@ mainLoop();
         arg=undefined;
         break;
     }
+    if (typeof options==="boolean") options={push:options};
+    if (typeof options==="function") options={onLoad:options};
     options=options||{};
     var push=(options.push);
     var pass=(options.pass||[]).concat($excludeFromAll.toArray());
