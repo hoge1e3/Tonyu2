@@ -25,7 +25,9 @@ includes MathMod;
         p.y=a.shift();
         p.z=a.shift();
     }
-    p.z=p.z||0;
+    if (typeof p.z!=="number" || p.z!==p.z) {
+        p.z=0;
+    }
     return p;
 }
 function addX() {
