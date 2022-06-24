@@ -304,6 +304,7 @@ mainLoop();
         arg=undefined;
         break;
     }
+    if (typeof options==="boolean") options={push:options};
     options=options||{};
     var push=(options.push);
     var pass=(options.pass||[]).concat($excludeFromAll.toArray());
