@@ -37622,6 +37622,12 @@ Tonyu.klass.define({
           break;
           
         }
+        if (typeof  options==="boolean") {
+          options={push: options};
+        }
+        if (typeof  options==="function") {
+          options={onLoad: options};
+        }
         options=options||{};
         push = (options.push);
         
@@ -37670,7 +37676,7 @@ Tonyu.klass.define({
           } else {
             a = Tonyu.globals.$Screen.all();
             
-            a=a.find((function anonymous_9150(e) {
+            a=a.find((function anonymous_9275(e) {
               
               return pass.indexOf(e)<0;
             }));
@@ -37709,6 +37715,12 @@ Tonyu.klass.define({
           arg=undefined;
           break;
           
+        }
+        if (typeof  options==="boolean") {
+          options={push: options};
+        }
+        if (typeof  options==="function") {
+          options={onLoad: options};
         }
         options=options||{};
         push = (options.push);
@@ -37762,7 +37774,7 @@ Tonyu.klass.define({
           } else {
             a = Tonyu.globals.$Screen.all();
             
-            a=a.find((function anonymous_9150(e) {
+            a=a.find((function anonymous_9275(e) {
               
               return pass.indexOf(e)<0;
             }));
@@ -37786,11 +37798,11 @@ Tonyu.klass.define({
         
         res = new $.Deferred();
         
-        evt = {die: (function anonymous_9384() {
+        evt = {die: (function anonymous_9509() {
           
           _this.die();
           res.resolve();
-        }),preventDefault: (function anonymous_9513() {
+        }),preventDefault: (function anonymous_9638() {
           
           evt.defaultPrevented=true;
         })};
@@ -37822,11 +37834,11 @@ Tonyu.klass.define({
         
         res = new $.Deferred();
         
-        evt = {die: (function anonymous_9384() {
+        evt = {die: (function anonymous_9509() {
           
           _this.die();
           res.resolve();
-        }),preventDefault: (function anonymous_9513() {
+        }),preventDefault: (function anonymous_9638() {
           
           evt.defaultPrevented=true;
         })};
@@ -38396,7 +38408,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16028() {
+        requestAnimationFrame((function anonymous_16153() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -38414,7 +38426,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16028() {
+        requestAnimationFrame((function anonymous_16153() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
