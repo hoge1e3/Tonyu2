@@ -6973,7 +6973,10 @@ Tonyu.klass.define({
           p.z=a.shift();
           
         }
-        p.z=p.z||0;
+        if (typeof  p.z!=="number"||p.z!==p.z) {
+          p.z=0;
+          
+        }
         return p;
       },
       fiber$parsePointArgs :function* _trc_Vec3_f_parsePointArgs(_thread,args) {
@@ -6994,7 +6997,10 @@ Tonyu.klass.define({
           p.z=a.shift();
           
         }
-        p.z=p.z||0;
+        if (typeof  p.z!=="number"||p.z!==p.z) {
+          p.z=0;
+          
+        }
         return p;
         
       },
