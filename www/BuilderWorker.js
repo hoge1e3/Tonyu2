@@ -2165,13 +2165,13 @@ function genJS(klass, env, genOptions) {
         },
         "while": function (node) {
             buf.printf("while (%v) {%{" +
-                (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
+                checkLoopCode() +
                 "%f%n" +
                 "%}}", node.cond, noSurroundCompoundF(node.loop));
         },
         "do": function (node) {
             buf.printf("do {%{" +
-                (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
+                checkLoopCode() +
                 "%f%n" +
                 "%}} while (%v);%n", noSurroundCompoundF(node.loop), node.cond);
         },
@@ -2191,7 +2191,7 @@ function genJS(klass, env, genOptions) {
                 if (inFor.init.type == "varsDecl" || inFor.init.type == "exprstmt") {
                     buf.printf("%v" +
                         "for (; %v ; %v) {%{" +
-                        (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
+                        checkLoopCode() +
                         "%v%n" +
                         "%}}", 
                     /*enterV({noLastPos:true},*/ inFor.init, inFor.cond, inFor.next, node.loop);
@@ -2199,7 +2199,7 @@ function genJS(klass, env, genOptions) {
                 else {
                     buf.printf("%v%n" +
                         "while(%v) {%{" +
-                        (doLoopCheck ? "Tonyu.checkLoop();%n" : "") +
+                        checkLoopCode() +
                         "%v%n" +
                         "%v;%n" +
                         "%}}", inFor.init, inFor.cond, node.loop, inFor.next);
@@ -2487,6 +2487,16 @@ function genJS(klass, env, genOptions) {
                     printf("%v%n", stmt);
                 });
             });
+        }
+    }
+    function checkLoopCode() {
+        if (!doLoopCheck)
+            return "";
+        if (ctx.noWait) {
+            return "Tonyu.checkLoop();%n";
+        }
+        else {
+            return "yield null;%n";
         }
     }
     function genFn(/*pos:number ,*/ name) {
