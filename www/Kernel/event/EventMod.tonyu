@@ -77,6 +77,7 @@ nowait \sendEvent(type, arg) {
         args.trimUndefs();
         _thread.waitEvent(act, args.toArray());
         __await null;
+        return _thread.retVal;
     }
 }
 

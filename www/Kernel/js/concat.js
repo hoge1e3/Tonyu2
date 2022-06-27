@@ -217,6 +217,7 @@ Tonyu.klass.define({
           args.trimUndefs();
           null.waitEvent(act,args.toArray());
           null;
+          return null.retVal;
           
         }
       },
@@ -235,6 +236,7 @@ Tonyu.klass.define({
           args.trimUndefs();
           _thread.waitEvent(act,args.toArray());
           (yield* _thread.await(null));
+          return _thread.retVal;
           
         }
         
