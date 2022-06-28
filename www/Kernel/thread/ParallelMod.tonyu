@@ -1,5 +1,6 @@
 //extends BaseActor;
 extends null;
+native Tonyu;
 "field strict";
 
 nowait \parallel() {
@@ -22,20 +23,15 @@ nowait \parallel() {
     if (!f) {
         throw new Error("メソッド"+n+"が見つかりません");
     }
+    var th=Tonyu.thread();
     var ag2=a.toArray();
-    ag2.unshift(_thread);
-    para_no_op();
-    var pc=1,r;
-    _thread.enter \(th) {
-        if (pc==1) {
-            f.apply(t,ag2);
-            pc=2;
-        } else {
-            r=th.retVal;
-            th.exit();
-        }
-    };
-    para_no_op();
-    return r;
-    //return f.apply(t,ag2);
+    th.apply(t,n,ag2);
+    th.setThreadGroup(_thread);
+    try {
+        th.stepsLoop();
+        return __await th.promise();
+    } catch (e) {
+        if (e.isKilled) _thread.kill();
+        else throw e;
+    }
 }

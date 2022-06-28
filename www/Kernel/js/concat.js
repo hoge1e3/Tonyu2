@@ -1418,9 +1418,9 @@ Tonyu.klass.define({
         var t;
         var n;
         var f;
+        var th;
         var ag2;
-        var pc;
-        var r;
+        var e;
         
         if (! null) {
           throw new Error("callは待機可能モードで呼び出してください");
@@ -1439,26 +1439,25 @@ Tonyu.klass.define({
           
           
         }
+        th = Tonyu.thread();
+        
         ag2 = a.toArray();
         
-        ag2.unshift(null);
-        _this.para_no_op();
-        pc = 1;
-        
-        null.enter((function anonymous_656(th) {
+        th.apply(t,n,ag2);
+        th.setThreadGroup(null);
+        try {
+          th.stepsLoop();
+          return th.promise();
           
-          if (pc==1) {
-            f.apply(t,ag2);
-            pc=2;
-            
+        } catch (e) {
+          if (e.isKilled) {
+            null.kill();
           } else {
-            r=th.retVal;
-            th.exit();
+            throw e;
             
           }
-        }));
-        _this.para_no_op();
-        return r;
+          
+        }
       },
       fiber$call :function* _trc_ParallelMod_f_call(_thread) {
         "use strict";
@@ -1468,9 +1467,9 @@ Tonyu.klass.define({
         var t;
         var n;
         var f;
+        var th;
         var ag2;
-        var pc;
-        var r;
+        var e;
         
         if (! _thread) {
           throw new Error("callは待機可能モードで呼び出してください");
@@ -1489,28 +1488,25 @@ Tonyu.klass.define({
           
           
         }
+        th = Tonyu.thread();
+        
         ag2 = a.toArray();
         
-        ag2.unshift(_thread);
-        (yield* _this.fiber$para_no_op(_thread));
-        
-        pc = 1;
-        
-        _thread.enter((function anonymous_656(th) {
+        th.apply(t,n,ag2);
+        th.setThreadGroup(_thread);
+        try {
+          th.stepsLoop();
+          return (yield* _thread.await(th.promise()));
           
-          if (pc==1) {
-            f.apply(t,ag2);
-            pc=2;
-            
+        } catch (e) {
+          if (e.isKilled) {
+            _thread.kill();
           } else {
-            r=th.retVal;
-            th.exit();
+            throw e;
             
           }
-        }));
-        (yield* _this.fiber$para_no_op(_thread));
-        
-        return r;
+          
+        }
         
       },
       __dummy: false

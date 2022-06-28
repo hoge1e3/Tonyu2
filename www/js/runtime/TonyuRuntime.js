@@ -917,6 +917,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TonyuThread = void 0;
 const R_1 = __importDefault(require("../lib/R"));
+class KilledError extends Error {
+}
 /*type Frame={
     prev?:Frame, func:Function,
 };*/
@@ -949,6 +951,12 @@ class TonyuThread {
             (this._threadGroup && (this._threadGroup.objectPoolAge != this.tGrpObjectPoolAge ||
                 this._threadGroup.isDeadThreadGroup()));
         return this._isDead;
+    }
+    isDeadThreadGroup() {
+        return this.isDead();
+    }
+    killThreadGroup() {
+        this.kill();
     }
     setThreadGroup(g) {
         this._threadGroup = g;
@@ -1008,9 +1016,7 @@ class TonyuThread {
         this.notifyTermination({ status: "success", value: r });
     }
     notifyTermination(tst) {
-        this.onTerminateHandlers.forEach(function (e) {
-            e(tst);
-        });
+        this.onTerminateHandlers.forEach((e) => e(tst));
     }
     on(type, f) {
         if (type === "end" || type === "success")
@@ -1022,9 +1028,17 @@ class TonyuThread {
         }
     }
     promise() {
-        var fb = this;
-        return new Promise(function (succ, err) {
-            fb.on("terminate", function (st) {
+        switch (this.termStatus) {
+            case "success":
+                return Promise.resolve(this.retVal);
+            case "exception":
+                return Promise.reject(this.lastEx);
+            case "killed":
+                return Promise.reject(new KilledError(this.termStatus));
+            default:
+        }
+        return new Promise((succ, err) => {
+            this.on("terminate", (st) => {
                 if (st.status === "success") {
                     succ(st.value);
                 }
@@ -1032,7 +1046,7 @@ class TonyuThread {
                     err(st.exception);
                 }
                 else {
-                    err(new Error(st.status));
+                    err(new KilledError(st.status));
                 }
             });
         });
@@ -1194,6 +1208,7 @@ class TonyuThread {
     }
     exception(e) {
         this.termStatus = "exception";
+        this.lastEx = e;
         this.kill();
         if (this.handleEx)
             this.handleEx(e);
