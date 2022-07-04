@@ -174,7 +174,7 @@ function orderByInheritance(classes) {
                     break;
                 }
             }
-            throw (0, TError_1.default)((0, R_1.default)("circularDependencyDetected", ""), "Unknown", 0);
+            throw TError_1.default(R_1.default("circularDependencyDetected", ""), "Unknown", 0);
         }
     }
     function dep1(c) {
@@ -193,7 +193,7 @@ function orderByInheritance(classes) {
         function pushPath(c) {
             path.push(c.fullName);
             if (visited[c.fullName]) {
-                throw (0, TError_1.default)((0, R_1.default)("circularDependencyDetected", path.join("->")), "Unknown", 0);
+                throw TError_1.default(R_1.default("circularDependencyDetected", path.join("->")), "Unknown", 0);
             }
             visited[c.fullName] = true;
         }
@@ -239,7 +239,7 @@ module.exports = class Builder {
     }
     isTonyu1() {
         const options = this.getOptions();
-        return (0, tonyu1_1.isTonyu1)(options);
+        return tonyu1_1.isTonyu1(options);
     }
     getOptions() { return this.prj.getOptions(); }
     getOutputFile(...f) { return this.prj.getOutputFile(...f); }
@@ -444,10 +444,10 @@ module.exports = class Builder {
         if (env.options.compiler.typeCheck) {
             console.log("Type check");
             for (let n_1 in compilingClasses) {
-                (0, TypeChecker_1.checkTypeDecl)(compilingClasses[n_1], env);
+                TypeChecker_1.checkTypeDecl(compilingClasses[n_1], env);
             }
             for (let n_2 in compilingClasses) {
-                (0, TypeChecker_1.checkExpr)(compilingClasses[n_2], env);
+                TypeChecker_1.checkExpr(compilingClasses[n_2], env);
             }
         }
         await this.showProgress("genJS");
@@ -459,7 +459,7 @@ module.exports = class Builder {
             traceIndex: buf.traceIndex,
         });
         const s = SourceFiles_1.sourceFiles.add(buf.close(), buf.srcmap /*, buf.traceIndex */);
-        if ((0, CompilerTypes_1.isFileDest)(destinations)) {
+        if (CompilerTypes_1.isFileDest(destinations)) {
             const outf = this.getOutputFile();
             await s.saveAs(outf);
         }
@@ -707,22 +707,22 @@ function ExpressionParser(context, name = "Expression") {
             return built;
         },
         mkInfix_def(left, op, right) {
-            return (0, parser_1.setRange)({ type: "infix", op, left, right, toString: toStrF("left", "op", "right") });
+            return parser_1.setRange({ type: "infix", op, left, right, toString: toStrF("left", "op", "right") });
         },
         mkInfixl_def(left, op, right) {
-            return (0, parser_1.setRange)({ type: "infixl", op, left, right, toString: toStrF("left", "op", "right") });
+            return parser_1.setRange({ type: "infixl", op, left, right, toString: toStrF("left", "op", "right") });
         },
         mkInfixr_def(left, op, right) {
-            return (0, parser_1.setRange)({ type: "infixr", op, left, right, toString: toStrF("left", "op", "right") });
+            return parser_1.setRange({ type: "infixr", op, left, right, toString: toStrF("left", "op", "right") });
         },
         mkPrefix_def(op, right) {
-            return (0, parser_1.setRange)({ type: "prefix", op, right, toString: toStrF("op", "right") });
+            return parser_1.setRange({ type: "prefix", op, right, toString: toStrF("op", "right") });
         },
         mkPostfix_def(left, op) {
-            return (0, parser_1.setRange)({ type: "postfix", left, op, toString: toStrF("left", "op") });
+            return parser_1.setRange({ type: "postfix", left, op, toString: toStrF("left", "op") });
         },
         mkTrifixr_def(left, op1, mid, op2, right) {
-            return (0, parser_1.setRange)({ type: "trifixr", left, op1, mid, op2, right, toString: toStrF("left", "op1", "mid", "op2", "right") });
+            return parser_1.setRange({ type: "trifixr", left, op1, mid, op2, right, toString: toStrF("left", "op1", "mid", "op2", "right") });
         },
         lazy() {
             return context.create((st) => $.built.parse(st)).setName(name, { type: "lazy", name });
@@ -1192,7 +1192,7 @@ class IndentBuffer {
         this.lazyOverflow = false;
         this.traceIndex = {};
         //$.printf=$;
-        this.buf = (0, StringBuilder_1.default)();
+        this.buf = StringBuilder_1.default();
         this.bufRow = 1;
         this.bufCol = 1;
         this.srcmap = new source_map_1.default.SourceMapGenerator();
@@ -1762,7 +1762,7 @@ var CHK_NN = "Tonyu.checkNonNull";
 var CLASS_HEAD = "Tonyu.classes.", GLOBAL_HEAD = "Tonyu.globals.";
 var GET_THIS = "this"; //"this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
 var USE_STRICT = '"use strict";%n';
-var ITER = "Tonyu.iterator";
+var ITER2 = "Tonyu.iterator2";
 var SUPER = "__superClass";
 /*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
         LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
@@ -1789,7 +1789,7 @@ function genJS(klass, env, genOptions) {
     var traceIndex = genOptions.traceIndex || {};
     buf.setSrcFile(srcFile);
     var printf = buf.printf;
-    var ctx = (0, context_1.context)();
+    var ctx = context_1.context();
     var debug = false;
     //var traceTbl=env.traceTbl;
     // method := fiber | function
@@ -1847,7 +1847,7 @@ function genJS(klass, env, genOptions) {
             buf.printf("%s%s", GLOBAL_HEAD, n);
         }
         else if (t == ST.PARAM || t == ST.LOCAL || t == ST.NATIVE || t == ST.MODULE) {
-            if ((0, tonyu1_1.isTonyu1)(env.options) && t == ST.NATIVE) {
+            if (tonyu1_1.isTonyu1(env.options) && t == ST.NATIVE) {
                 buf.printf("%s.%s", THIZ, n);
             }
             else {
@@ -2070,10 +2070,10 @@ function genJS(klass, env, genOptions) {
                 console.log("__typeof", a);
                 if (a.resolvedType) {
                     const t = a.resolvedType;
-                    if ((0, CompilerTypes_1.isMethodType)(t)) {
+                    if (CompilerTypes_1.isMethodType(t)) {
                         buf.printf("Tonyu.classMetas[%l].decls.methods.%s", t.method.klass.fullName, t.method.name);
                     }
-                    else if ((0, CompilerTypes_1.isMeta)(t)) {
+                    else if (CompilerTypes_1.isMeta(t)) {
                         buf.printf("Tonyu.classMetas[%l]", t.fullName);
                     }
                     else {
@@ -2179,18 +2179,29 @@ function genJS(klass, env, genOptions) {
             var an = annotation(node);
             if (node.inFor.type == "forin") {
                 const inFor = node.inFor;
-                var itn = annotation(node.inFor).iterName;
-                buf.printf("%s=%s(%v,%s);%n" +
+                buf.printf("for ([%f] of %s(%v,%s)) {%{" +
+                    "%f%n" +
+                    "%}}", loopVarsF(inFor.isVar, inFor.vars), ITER2, inFor.set, inFor.vars.length, noSurroundCompoundF(node.loop));
+                /*var itn=annotation(node.inFor).iterName;
+                buf.printf(
+                    "%s=%s(%v,%s);%n"+
                     "while(%s.next()) {%{" +
+                    "%f%n"+
                     "%f%n" +
-                    "%f%n" +
-                    "%}}", itn, ITER, inFor.set, inFor.vars.length, itn, getElemF(itn, inFor.isVar, inFor.vars), noSurroundCompoundF(node.loop));
+                    "%}}",
+                    itn, ITER, inFor.set, inFor.vars.length,
+                    itn,
+                    getElemF(itn, inFor.isVar, inFor.vars),
+                    noSurroundCompoundF(node.loop)
+                );
+                */
             }
             else {
                 const inFor = node.inFor;
-                if (inFor.init.type == "varsDecl" || inFor.init.type == "exprstmt") {
-                    buf.printf("%v" +
-                        "for (; %v ; %v) {%{" +
+                if ((inFor.init.type == "varsDecl" && inFor.init.decls.length == 1) || inFor.init.type == "exprstmt") {
+                    buf.printf(
+                    //"%v"+
+                    "for (%v %v ; %v) {%{" +
                         checkLoopCode() +
                         "%v%n" +
                         "%}}", 
@@ -2204,6 +2215,16 @@ function genJS(klass, env, genOptions) {
                         "%v;%n" +
                         "%}}", inFor.init, inFor.cond, node.loop, inFor.next);
                 }
+            }
+            function loopVarsF(isVar, vars) {
+                return function () {
+                    vars.forEach((v, i) => {
+                        var an = annotation(v);
+                        if (i > 0)
+                            buf.printf(", ");
+                        varAccess(v.text, an.scopeInfo, an);
+                    });
+                };
             }
             function getElemF(itn, isVar, vars) {
                 return function () {
@@ -2392,10 +2413,10 @@ function genJS(klass, env, genOptions) {
         return t.fullName || t.class.name;
     }
     function klass2name(t) {
-        if ((0, CompilerTypes_1.isMethodType)(t)) {
+        if (CompilerTypes_1.isMethodType(t)) {
             return `${t.method.klass.fullName}.${t.method.name}()`;
         }
-        else if ((0, CompilerTypes_1.isMeta)(t)) {
+        else if (CompilerTypes_1.isMeta(t)) {
             return t.fullName;
         }
         else {
@@ -2949,7 +2970,7 @@ function visitSub(node) {
     es.forEach((e) => t.visit(e));
 }
 function getSourceFile(klass) {
-    return (0, assert_1.default)(klass.src && klass.src.tonyu, "File for " + klass.fullName + " not found.");
+    return assert_1.default(klass.src && klass.src.tonyu, "File for " + klass.fullName + " not found.");
 }
 function parse(klass, options = {}) {
     const s = getSourceFile(klass); //.src.tonyu; //file object
@@ -2959,7 +2980,7 @@ function parse(klass, options = {}) {
     }
     if (!node) {
         //console.log("Parse "+s);
-        if ((0, tonyu1_1.isTonyu1)(options)) {
+        if (tonyu1_1.isTonyu1(options)) {
             node = parse_tonyu1_1.default.parse(s);
         }
         else {
@@ -3005,7 +3026,7 @@ function initClassDecls(klass, env) {
                 var p = i.pos;
                 var incc = env.classes[env.aliases[n] || n]; /*ENVC*/ //CFN env.classes[env.aliases[n]]
                 if (!incc)
-                    throw (0, TError_1.default)((0, R_1.default)("classIsUndefined", n), s, p);
+                    throw TError_1.default(R_1.default("classIsUndefined", n), s, p);
                 klass.includes.push(incc);
             });
         }
@@ -3015,7 +3036,7 @@ function initClassDecls(klass, env) {
         else if (spcn) {
             var spc = env.classes[env.aliases[spcn] || spcn]; /*ENVC*/ //CFN env.classes[env.aliases[spcn]]
             if (!spc) {
-                throw (0, TError_1.default)((0, R_1.default)("superClassIsUndefined", spcn), s, pos);
+                throw TError_1.default(R_1.default("superClassIsUndefined", spcn), s, pos);
             }
             klass.superclass = spc;
         }
@@ -3118,7 +3139,7 @@ function annotateSource2(klass, env) {
     // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，モジュール変数の集まり．親クラスの宣言は含まない
     var ST = ScopeTypes;
     var topLevelScope = {};
-    const ctx = (0, context_1.context)();
+    const ctx = context_1.context();
     const debug = false;
     const othersMethodCallTmpl = {
         type: "postfix",
@@ -3226,7 +3247,7 @@ function annotateSource2(klass, env) {
         var s = topLevelScope;
         getDependingClasses(klass).forEach(initTopLevelScope2);
         var decls = klass.decls; // Do not inherit parents' natives
-        if (!(0, tonyu1_1.isTonyu1)(env.options)) {
+        if (!tonyu1_1.isTonyu1(env.options)) {
             for (let i in JSNATIVES) {
                 s[i] = new SI.NATIVE("native::" + i, { class: root_1.default[i] });
             }
@@ -3269,15 +3290,15 @@ function annotateSource2(klass, env) {
             !getMethod(name).nowait;
     }
     function checkLVal(node) {
-        if ((0, NodeTypes_1.isVarAccess)(node) ||
-            (0, NodeTypes_1.isPostfix)(node) && (node.op.type == "member" || node.op.type == "arrayElem")) {
+        if (NodeTypes_1.isVarAccess(node) ||
+            NodeTypes_1.isPostfix(node) && (node.op.type == "member" || node.op.type == "arrayElem")) {
             if (node.type == "varAccess") {
                 annotation(node, { noBind: true });
             }
             return true;
         }
         console.log("LVal", node);
-        throw (0, TError_1.default)((0, R_1.default)("invalidLeftValue", getSource(node)), srcFile, node.pos);
+        throw TError_1.default(R_1.default("invalidLeftValue", getSource(node)), srcFile, node.pos);
     }
     function getScopeInfo(node) {
         const n = node + "";
@@ -3293,7 +3314,7 @@ function annotateSource2(klass, env) {
             var isg = n.match(/^\$/);
             if (env.options.compiler.field_strict || klass.directives.field_strict) {
                 if (!isg)
-                    throw (0, TError_1.default)((0, R_1.default)("fieldDeclarationRequired", n), srcFile, node.pos);
+                    throw TError_1.default(R_1.default("fieldDeclarationRequired", n), srcFile, node.pos);
             }
             if (isg) {
                 topLevelScope[n] = new SI.GLOBAL(n);
@@ -3410,7 +3431,7 @@ function annotateSource2(klass, env) {
                     e.key.text.substring(1, e.key.text.length - 1) :
                     e.key.text;
                 if (dup.hasOwnProperty(kn)) {
-                    throw (0, TError_1.default)((0, R_1.default)("duplicateKeyInObjectLiteral", kn), srcFile, e.pos);
+                    throw TError_1.default(R_1.default("duplicateKeyInObjectLiteral", kn), srcFile, e.pos);
                 }
                 dup[kn] = 1;
                 //console.log("objlit",e.key.text);
@@ -3423,7 +3444,7 @@ function annotateSource2(klass, env) {
             }
             else {
                 if (node.key.type == "literal") {
-                    throw (0, TError_1.default)((0, R_1.default)("cannotUseStringLiteralAsAShorthandOfObjectValue"), srcFile, node.pos);
+                    throw TError_1.default(R_1.default("cannotUseStringLiteralAsAShorthandOfObjectValue"), srcFile, node.pos);
                 }
                 var si = getScopeInfo(node.key);
                 annotation(node, { scopeInfo: si });
@@ -3492,13 +3513,13 @@ function annotateSource2(klass, env) {
         },
         "break": function (node) {
             if (!ctx.brkable)
-                throw (0, TError_1.default)((0, R_1.default)("breakShouldBeUsedInIterationOrSwitchStatement"), srcFile, node.pos);
+                throw TError_1.default(R_1.default("breakShouldBeUsedInIterationOrSwitchStatement"), srcFile, node.pos);
             if (!ctx.noWait)
                 annotateParents(this.path, { hasJump: true });
         },
         "continue": function (node) {
             if (!ctx.contable)
-                throw (0, TError_1.default)((0, R_1.default)("continueShouldBeUsedInIterationStatement"), srcFile, node.pos);
+                throw TError_1.default(R_1.default("continueShouldBeUsedInIterationStatement"), srcFile, node.pos);
             if (!ctx.noWait)
                 annotateParents(this.path, { hasJump: true });
         },
@@ -3536,7 +3557,7 @@ function annotateSource2(klass, env) {
         exprstmt: function (node) {
             var t, m;
             if (node.expr.type === "objlit") {
-                throw (0, TError_1.default)((0, R_1.default)("cannotUseObjectLiteralAsTheExpressionOfStatement"), srcFile, node.pos);
+                throw TError_1.default(R_1.default("cannotUseObjectLiteralAsTheExpressionOfStatement"), srcFile, node.pos);
             }
             const path = this.path.slice();
             /*if (klass.fullName==="user.Main") {
@@ -3574,7 +3595,7 @@ function annotateSource2(klass, env) {
                 t.S.name) {
                 const m = getSuperMethod(t.S.name.text);
                 if (!m)
-                    throw new Error((0, R_1.default)("undefinedSuperMethod", t.S.name.text));
+                    throw new Error(R_1.default("undefinedSuperMethod", t.S.name.text));
                 if (!m.nowait) {
                     t.type = "noRetSuper";
                     t.superclass = klass.superclass;
@@ -3586,11 +3607,11 @@ function annotateSource2(klass, env) {
                 (t = OM.match(node, retSuperFiberCallTmpl)) &&
                 t.S.name) {
                 if (!klass.superclass) {
-                    throw new Error((0, R_1.default)("Class {1} has no superclass", klass.shortName));
+                    throw new Error(R_1.default("Class {1} has no superclass", klass.shortName));
                 }
                 m = getSuperMethod(t.S.name.text);
                 if (!m)
-                    throw new Error((0, R_1.default)("undefinedSuperMethod", t.S.name.text));
+                    throw new Error(R_1.default("undefinedSuperMethod", t.S.name.text));
                 if (!m.nowait) {
                     t.type = "retSuper";
                     t.superclass = klass.superclass;
@@ -3634,7 +3655,7 @@ function annotateSource2(klass, env) {
         }
         else if (env.options.compiler.typeCheck) {
             console.log("typeNotFound: topLevelScope", topLevelScope, si, env.classes);
-            throw (0, TError_1.default)((0, R_1.default)("typeNotFound", node.name), srcFile, node.pos);
+            throw TError_1.default(R_1.default("typeNotFound", node.name), srcFile, node.pos);
         }
         return resolvedType;
         /*if (si instanceof SI.NATIVE) {
@@ -4020,16 +4041,16 @@ function checkExpr(klass, env) {
             //var a=annotation(node);
             this.visit(node.left);
             this.visit(node.op);
-            if ((0, NodeTypes_1.isMember)(node.op)) {
+            if (NodeTypes_1.isMember(node.op)) {
                 //var m=a.memberAccess;
                 const a = annotation(node.left);
                 var vtype = a.resolvedType; // visitExpr(m.target);
                 const name = node.op.name.text;
-                if (vtype && (0, CompilerTypes_1.isMeta)(vtype)) {
+                if (vtype && CompilerTypes_1.isMeta(vtype)) {
                     const field = cu.getField(vtype, name);
                     const method = cu.getMethod(vtype, name);
                     if (!field && !method) {
-                        throw (0, TError_1.default)((0, R_1.default)("memberNotFoundInClass", vtype.shortName, name), srcFile, node.op.name.pos);
+                        throw TError_1.default(R_1.default("memberNotFoundInClass", vtype.shortName, name), srcFile, node.op.name.pos);
                     }
                     //console.log("GETF",vtype,m.name,f);
                     // fail if f is not set when strict check
@@ -4041,13 +4062,13 @@ function checkExpr(klass, env) {
                     }
                 }
             }
-            else if ((0, NodeTypes_1.isCall)(node.op)) {
+            else if (NodeTypes_1.isCall(node.op)) {
                 const leftA = annotation(node.left);
                 //console.log("OPCALL1", leftA);
                 if (leftA && leftA.resolvedType) {
                     const leftT = leftA.resolvedType;
-                    if (!(0, CompilerTypes_1.isMethodType)(leftT)) {
-                        throw (0, TError_1.default)((0, R_1.default)("cannotCallNonFunctionType"), srcFile, node.op.pos);
+                    if (!CompilerTypes_1.isMethodType(leftT)) {
+                        throw TError_1.default(R_1.default("cannotCallNonFunctionType"), srcFile, node.op.pos);
                     }
                     //console.log("OPCALL", leftT);
                     annotation(node, { resolvedType: leftT.method.returnType });
@@ -4102,13 +4123,13 @@ function checkExpr(klass, env) {
         if (a.otherFiberCall) {
             const o = a.otherFiberCall;
             const ta = annotation(o.T);
-            if (ta.resolvedType && (0, CompilerTypes_1.isMethodType)(ta.resolvedType) && !ta.resolvedType.method.nowait) {
+            if (ta.resolvedType && CompilerTypes_1.isMethodType(ta.resolvedType) && !ta.resolvedType.method.nowait) {
                 //o.fiberCallRequired_lazy();
                 o.fiberType = ta.resolvedType;
             }
         }
     }
-    const ctx = (0, context_1.context)();
+    const ctx = context_1.context();
     typeAnnotationVisitor.def = visitSub;
     typeAnnotationVisitor.visit(klass.node);
     function visitExpr(node) {
@@ -4507,7 +4528,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const parserFactory_1 = __importDefault(require("./parserFactory"));
 const tonyu1_token_1 = __importDefault(require("./tonyu1_token"));
-const Tonyu1Lang = (0, parserFactory_1.default)({ TT: tonyu1_token_1.default });
+const Tonyu1Lang = parserFactory_1.default({ TT: tonyu1_token_1.default });
 module.exports = Tonyu1Lang;
 
 },{"./parserFactory":21,"./tonyu1_token":25}],19:[function(require,module,exports){
@@ -4517,7 +4538,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const parserFactory_1 = __importDefault(require("./parserFactory"));
 const tonyu2_token_1 = __importDefault(require("./tonyu2_token"));
-const Tonyu2Lang = (0, parserFactory_1.default)({ TT: tonyu2_token_1.default });
+const Tonyu2Lang = parserFactory_1.default({ TT: tonyu2_token_1.default });
 module.exports = Tonyu2Lang;
 
 },{"./parserFactory":21,"./tonyu2_token":26}],20:[function(require,module,exports){
@@ -4587,7 +4608,7 @@ class ParserContext {
                 }
                 if (tbl[exports.ALL])
                     return tbl[exports.ALL].parse(s);
-                return s.withError((0, R_1.default)("expected", Object.keys(tbl).join("")));
+                return s.withError(R_1.default("expected", Object.keys(tbl).join("")));
             });
             res._first = tbl; //{space:space,tbl:tbl};
             //res.checkTbl();
@@ -4607,7 +4628,7 @@ class ParserContext {
             }
             if (tbl[exports.ALL])
                 return tbl[exports.ALL].parse(s);
-            return s.withError((0, R_1.default)("expected", Object.keys(tbl).join(", ")));
+            return s.withError(R_1.default("expected", Object.keys(tbl).join(", ")));
         });
         res._first = tbl; //{space:"TOKEN",tbl:tbl};
         //res.checkTbl();
@@ -5320,7 +5341,7 @@ exports.TokensParser = {
                 s.result = [t];
             }
             else {
-                s = s.withError((0, R_1.default)("expected", type));
+                s = s.withError(R_1.default("expected", type));
             }
             return s;
         }).setName("'" + type + "'", { type: "primitive", name: type }).firstTokens(type);
@@ -5431,7 +5452,7 @@ const parser_1 = require("./parser");
 module.exports = function PF({ TT }) {
     //var p:any=Parser;
     var $ = {};
-    var g = (0, Grammar_1.default)(parser_1.TokensParser.context);
+    var g = Grammar_1.default(parser_1.TokensParser.context);
     var G = g.get;
     var tk = parser_1.TokensParser.token;
     function disp(n) { return JSON.stringify(n); }
@@ -5488,7 +5509,7 @@ module.exports = function PF({ TT }) {
     function comLastOpt(p) {
         return p.sep0(tk(",")).and(tk(",").opt()).retN(0).setName(`(comLastOpt ${p.name})`, { type: "rept", elem: p });
     }
-    var e = (0, ExpressionParser2_1.ExpressionParser)(parser_1.TokensParser.context);
+    var e = ExpressionParser2_1.ExpressionParser(parser_1.TokensParser.context);
     var explz = e.lazy(); //.firstTokens(ALL);
     var arrayElem = g("arrayElem").ands(tk("["), explz, tk("]")).ret(null, "subscript");
     var argList = g("argList").ands(tk("("), comLastOpt(explz), tk(")")).ret(null, "args");
@@ -5506,15 +5527,15 @@ module.exports = function PF({ TT }) {
             throw disp(argList);
         }
         if (argList) {
-            var rg = (0, parser_1.getRange)(argList);
-            (0, parser_1.addRange)(res, rg);
+            var rg = parser_1.getRange(argList);
+            parser_1.addRange(res, rg);
             argList.args.forEach(function (arg) {
                 res.push(arg);
             });
         }
         oof.forEach(function (o) {
-            var rg = (0, parser_1.getRange)(o);
-            (0, parser_1.addRange)(res, rg);
+            var rg = parser_1.getRange(o);
+            parser_1.addRange(res, rg);
             res.push(o.obj);
         });
         return res;
@@ -5619,7 +5640,7 @@ module.exports = function PF({ TT }) {
     e.postfix(prio, arrayElem);
     function mki(left, op, right) {
         const res = { type: "infix", left, op, right };
-        (0, parser_1.setRange)(res);
+        parser_1.setRange(res);
         res.toString = function () {
             return "(" + left + op + right + ")";
         };
@@ -5713,7 +5734,7 @@ module.exports = function PF({ TT }) {
         if (!tokenRes.isSuccess()) {
             //return "ERROR\nToken error at "+tokenRes.src.maxPos+"\n"+
             //	str.substring(0,tokenRes.src.maxPos)+"!!HERE!!"+str.substring(tokenRes.src.maxPos);
-            throw (0, TError_1.default)((0, R_1.default)("lexicalError") + ": " + tokenRes.error, file, tokenRes.src.maxErrors.pos);
+            throw TError_1.default(R_1.default("lexicalError") + ": " + tokenRes.error, file, tokenRes.src.maxErrors.pos);
         }
         var tokens = tokenRes.result[0];
         //console.log("Tokens: "+tokens.join(","));
@@ -5732,7 +5753,7 @@ module.exports = function PF({ TT }) {
         var lt = tokens[maxErrors.pos];
         var mp = (lt ? lt.pos : str.length);
         const len = (lt ? lt.len : 0);
-        throw (0, TError_1.default)((0, R_1.default)("parseError") + `: ${maxErrors.errors.join(", ")}`, file, mp, len);
+        throw TError_1.default(R_1.default("parseError") + `: ${maxErrors.errors.join(", ")}`, file, mp, len);
         /*return "ERROR\nSyntax error at "+mp+"\n"+
         str.substring(0,mp)+"!!HERE!!"+str.substring(mp);*/
     };
@@ -9086,7 +9107,7 @@ exports.isTonyu1 = isTonyu1;
 },{}],25:[function(require,module,exports){
 "use strict";
 const tokenizerFactory_1 = require("./tokenizerFactory");
-module.exports = (0, tokenizerFactory_1.tokenizerFactory)({
+module.exports = tokenizerFactory_1.tokenizerFactory({
     caseInsensitive: true,
     reserved: {
         'while': true,
@@ -9115,7 +9136,7 @@ module.exports = (0, tokenizerFactory_1.tokenizerFactory)({
 },{"./tokenizerFactory":23}],26:[function(require,module,exports){
 "use strict";
 const tokenizerFactory_1 = require("./tokenizerFactory");
-module.exports = (0, tokenizerFactory_1.tokenizerFactory)({
+module.exports = tokenizerFactory_1.tokenizerFactory({
     caseInsensitive: false,
     reserved: {
         "function": true, "var": true, "return": true, "typeof": true, "if": true,
@@ -13733,6 +13754,8 @@ module.exports = TError;
 
 },{}],38:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IT2 = exports.IT = void 0;
 //define(["Klass"], function (Klass) {
 //var Klass=require("../lib/Klass");
 const SYMIT = typeof Symbol !== "undefined" && Symbol.iterator;
@@ -13809,7 +13832,7 @@ class NativeIteratorWrapper {
         return true;
     }
 }
-module.exports = function IT(set, arity) {
+function IT(set, arity) {
     if (set && typeof set.tonyuIterator === "function") {
         // TODO: the prototype of class having tonyuIterator will iterate infinitively
         return set.tonyuIterator(arity);
@@ -13837,7 +13860,21 @@ module.exports = function IT(set, arity) {
         console.log(set);
         throw new Error(set + " is not iterable");
     }
-};
+}
+exports.IT = IT;
+function IT2(set, arity) {
+    const it = IT(set, arity);
+    return function* () {
+        while (it.next()) {
+            const yielded = [];
+            for (let i = 0; i < arity; i++) {
+                yielded[i] = it[i];
+            }
+            yield yielded;
+        }
+    }();
+}
+exports.IT2 = IT2;
 //	module.exports=IT;
 //   Tonyu.iterator=IT;
 //	return IT;
@@ -13849,7 +13886,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const R_1 = __importDefault(require("../lib/R"));
-const TonyuIterator_1 = __importDefault(require("./TonyuIterator"));
+const TonyuIterator_1 = require("./TonyuIterator");
 const TonyuThread_1 = require("./TonyuThread");
 const root_1 = __importDefault(require("../lib/root"));
 const assert_1 = __importDefault(require("../lib/assert"));
@@ -13898,7 +13935,7 @@ function addMeta(fn, m) {
     return extend(klass.getMeta(fn), m);
 }
 function getMeta(klass) {
-    if ((0, RuntimeTypes_1.isTonyuClass)(klass))
+    if (RuntimeTypes_1.isTonyuClass(klass))
         return klass.meta;
     return klass;
 }
@@ -14086,7 +14123,7 @@ var klass = {
             prot.getClassInfo = function () {
                 return res.meta;
             };
-            if ((0, RuntimeTypes_1.isTonyuClass)(res))
+            if (RuntimeTypes_1.isTonyuClass(res))
                 chkclass(res);
             return res; //chkclass(res,{isShim, init:false, includesRec:{}});
         }
@@ -14175,7 +14212,7 @@ function getClass(n) {
                     found = nn + "." + n;
                 }
                 else
-                    throw new Error((0, R_1.default)("ambiguousClassName", nn, n, found));
+                    throw new Error(R_1.default("ambiguousClassName", nn, n, found));
             }
         }
     }
@@ -14200,20 +14237,20 @@ function bindFunc(t, meth) {
 }
 function invokeMethod(t, name, args, objName) {
     if (!t)
-        throw new Error((0, R_1.default)("cannotInvokeMethod", objName, t, name));
+        throw new Error(R_1.default("cannotInvokeMethod", objName, t, name));
     var f = t[name];
     if (typeof f != "function")
-        throw new Error((0, R_1.default)("notAMethod", (objName == "this" ? "" : objName + "."), name, f));
+        throw new Error(R_1.default("notAMethod", (objName == "this" ? "" : objName + "."), name, f));
     return f.apply(t, args);
 }
 function callFunc(f, args, fName) {
     if (typeof f != "function")
-        throw new Error((0, R_1.default)("notAFunction", fName));
+        throw new Error(R_1.default("notAFunction", fName));
     return f.apply({}, args);
 }
 function checkNonNull(v, name) {
     if (v != v || v == null)
-        throw new Error((0, R_1.default)("uninitialized", name, v));
+        throw new Error(R_1.default("uninitialized", name, v));
     return v;
 }
 function A(args) {
@@ -14224,7 +14261,7 @@ function A(args) {
     return res;
 }
 function useNew(c) {
-    throw new Error((0, R_1.default)("newIsRequiredOnInstanciate", c));
+    throw new Error(R_1.default("newIsRequiredOnInstanciate", c));
 }
 function not_a_tonyu_object(o) {
     console.log("Not a tonyu object: ", o);
@@ -14235,8 +14272,8 @@ function hasKey(k, obj) {
 }
 function run(bootClassName) {
     var bootClass = getClass(bootClassName);
-    if (!(0, RuntimeTypes_1.isTonyuClass)(bootClass))
-        throw new Error((0, R_1.default)("bootClassIsNotFound", bootClassName));
+    if (!RuntimeTypes_1.isTonyuClass(bootClass))
+        throw new Error(R_1.default("bootClassIsNotFound", bootClassName));
     Tonyu.runMode = true;
     var boot = new bootClass();
     //var th=thread();
@@ -14255,7 +14292,7 @@ function checkLoop() {
     var now = root_1.default.performance.now();
     if (now - lastLoopCheck > 1000) {
         resetLoopCheck(10000);
-        throw new Error((0, R_1.default)("infiniteLoopDetected"));
+        throw new Error(R_1.default("infiniteLoopDetected"));
     }
     prevCheckLoopCalled = now;
 }
@@ -14269,7 +14306,7 @@ function is(obj, klass) {
         return false;
     if (obj instanceof klass)
         return true;
-    if (typeof obj.getClassInfo === "function" && (0, RuntimeTypes_1.isTonyuClass)(klass)) {
+    if (typeof obj.getClassInfo === "function" && RuntimeTypes_1.isTonyuClass(klass)) {
         return obj.getClassInfo().includesRec[klass.meta.fullName];
     }
     return false;
@@ -14283,7 +14320,7 @@ const Tonyu = {
     timeout,
     bindFunc, not_a_tonyu_object, is,
     hasKey, invokeMethod, callFunc, checkNonNull,
-    iterator: TonyuIterator_1.default, run, checkLoop, resetLoopCheck,
+    iterator: TonyuIterator_1.IT, iterator2: TonyuIterator_1.IT2, run, checkLoop, resetLoopCheck,
     currentProject: null,
     currentThread: null,
     runMode: false,
@@ -14379,7 +14416,7 @@ class TonyuThread {
         if (typeof methodName == "string") {
             method = obj["fiber$" + methodName];
             if (!method) {
-                throw new Error((0, R_1.default)("undefinedMethod", methodName));
+                throw new Error(R_1.default("undefinedMethod", methodName));
             }
         }
         if (typeof methodName == "function") {
@@ -14387,7 +14424,7 @@ class TonyuThread {
             method = fmethod.fiber;
             if (!method) {
                 var n = fmethod.methodInfo ? fmethod.methodInfo.name : fmethod.name;
-                throw new Error((0, R_1.default)("notAWaitableMethod", n));
+                throw new Error(R_1.default("notAWaitableMethod", n));
             }
         }
         args = [this].concat(args);
