@@ -14,17 +14,15 @@ Tonyu.klass.define({
         
         
       },
-      fiber$main :function _trc_Cursor_f_main(_thread) {
+      fiber$main :function* _trc_Cursor_f_main(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         
         
         
         
-        _thread.retVal=_this;return;
       },
       onAppear :function _trc_Cursor_onAppear() {
         "use strict";
@@ -32,15 +30,13 @@ Tonyu.klass.define({
         
         _this.undos=[];
       },
-      fiber$onAppear :function _trc_Cursor_f_onAppear(_thread) {
+      fiber$onAppear :function* _trc_Cursor_f_onAppear(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         _this.undos=[];
         
-        _thread.retVal=_this;return;
       },
       draw :function _trc_Cursor_draw(ctx) {
         "use strict";
@@ -48,6 +44,7 @@ Tonyu.klass.define({
         var w;
         var h;
         
+        ctx.save();
         ctx.beginPath();
         ctx.strokeStyle="white";
         if (_this.dx==null) {
@@ -65,6 +62,7 @@ Tonyu.klass.define({
         ctx.lineTo(_this.x*w,(_this.dy+1)*h-1);
         ctx.closePath();
         ctx.stroke();
+        ctx.restore();
       },
       move :function _trc_Cursor_move(dx,dy) {
         "use strict";
@@ -77,11 +75,10 @@ Tonyu.klass.define({
         dx=_this.x;
         dy=_this.y;
       },
-      fiber$move :function _trc_Cursor_f_move(_thread,dx,dy) {
+      fiber$move :function* _trc_Cursor_f_move(_thread,dx,dy) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         _this.x+=dx;
         _this.y+=dy;
@@ -90,7 +87,6 @@ Tonyu.klass.define({
         dx=_this.x;
         dy=_this.y;
         
-        _thread.retVal=_this;return;
       },
       moveTo :function _trc_Cursor_moveTo(xx,yy) {
         "use strict";
@@ -105,24 +101,20 @@ Tonyu.klass.define({
         _this.dy=_this.y;
         return true;
       },
-      fiber$moveTo :function _trc_Cursor_f_moveTo(_thread,xx,yy) {
+      fiber$moveTo :function* _trc_Cursor_f_moveTo(_thread,xx,yy) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         if (_this.x==xx&&_this.y==yy) {
-          _thread.retVal=false;return;
-          
+          return false;
         }
         _this.x=xx;
         _this.y=yy;
         _this.dx=_this.x;
         _this.dy=_this.y;
-        _thread.retVal=true;return;
+        return true;
         
-        
-        _thread.retVal=_this;return;
       },
       clearUndos :function _trc_Cursor_clearUndos() {
         "use strict";
@@ -130,15 +122,13 @@ Tonyu.klass.define({
         
         _this.undos=[];
       },
-      fiber$clearUndos :function _trc_Cursor_f_clearUndos(_thread) {
+      fiber$clearUndos :function* _trc_Cursor_f_clearUndos(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         _this.undos=[];
         
-        _thread.retVal=_this;return;
       },
       rollbacker :function _trc_Cursor_rollbacker() {
         "use strict";
@@ -147,7 +137,7 @@ Tonyu.klass.define({
         
         c = _this.undos.length;
         
-        return {rollback: (function anonymous_795() {
+        return {rollback: (function anonymous_873() {
           
           while (_this.undos.length>c) {
             _this.undo();
@@ -155,32 +145,22 @@ Tonyu.klass.define({
           }
         })};
       },
-      fiber$rollbacker :function _trc_Cursor_f_rollbacker(_thread) {
+      fiber$rollbacker :function* _trc_Cursor_f_rollbacker(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var c;
         
         c = _this.undos.length;
         
-        
-        _thread.enter(function _trc_Cursor_ent_rollbacker(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _thread.exit({rollback: (function anonymous_795() {
-                
-                while (_this.undos.length>c) {
-                  _this.undo();
-                  
-                }
-              })});return;
-              _thread.exit(_this);return;
-            }
+        return {rollback: (function anonymous_873() {
+          
+          while (_this.undos.length>c) {
+            _this.undo();
+            
           }
-        });
+        })};
+        
       },
       __getter__curLayerName :function _trc_Cursor___getter__curLayerName() {
         "use strict";
@@ -206,22 +186,19 @@ Tonyu.klass.define({
         }
         Tonyu.globals.$map.chip(u.x,u.y,u.layer.name).p=u.was;
       },
-      fiber$undo :function _trc_Cursor_f_undo(_thread) {
+      fiber$undo :function* _trc_Cursor_f_undo(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var u;
         
         u = _this.undos.pop();
         
         if (! u) {
-          _thread.retVal=_this;return;
-          
+          return _this;
         }
         Tonyu.globals.$map.chip(u.x,u.y,u.layer.name).p=u.was;
         
-        _thread.retVal=_this;return;
       },
       put :function _trc_Cursor_put(curP) {
         "use strict";
@@ -237,11 +214,10 @@ Tonyu.klass.define({
         _this.undos.push({x: _this.x,y: _this.y,was: was,layer: _this.curLayer});
         Tonyu.globals.$editor.modified();
       },
-      fiber$put :function _trc_Cursor_f_put(_thread,curP) {
+      fiber$put :function* _trc_Cursor_f_put(_thread,curP) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var chip;
         var was;
         
@@ -253,7 +229,6 @@ Tonyu.klass.define({
         _this.undos.push({x: _this.x,y: _this.y,was: was,layer: _this.curLayer});
         Tonyu.globals.$editor.modified();
         
-        _thread.retVal=_this;return;
       },
       pick :function _trc_Cursor_pick(curP) {
         "use strict";
@@ -265,20 +240,17 @@ Tonyu.klass.define({
         curP.set(chip.p);
         return true;
       },
-      fiber$pick :function _trc_Cursor_f_pick(_thread,curP) {
+      fiber$pick :function* _trc_Cursor_f_pick(_thread,curP) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var chip;
         
         chip = Tonyu.globals.$map.chip(_this.x,_this.y,_this.curLayerName);
         
         curP.set(chip.p);
-        _thread.retVal=true;return;
+        return true;
         
-        
-        _thread.retVal=_this;return;
       },
       sel :function _trc_Cursor_sel(dx,dy) {
         "use strict";
@@ -305,15 +277,13 @@ Tonyu.klass.define({
         }
         return true;
       },
-      fiber$sel :function _trc_Cursor_f_sel(_thread,dx,dy) {
+      fiber$sel :function* _trc_Cursor_f_sel(_thread,dx,dy) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         if (dx==_this.x&&dy==_this.y) {
-          _thread.retVal=false;return;
-          
+          return false;
         }
         if (dx>_this.x) {
           _this.dx=dx;
@@ -331,10 +301,8 @@ Tonyu.klass.define({
           _this.y=dy;
           
         }
-        _thread.retVal=true;return;
+        return true;
         
-        
-        _thread.retVal=_this;return;
       },
       __dummy: false
     };
@@ -355,20 +323,19 @@ Tonyu.klass.define({
         
         
       },
-      fiber$main :function _trc_DstCur_f_main(_thread) {
+      fiber$main :function* _trc_DstCur_f_main(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         
         
-        _thread.retVal=_this;return;
       },
       draw :function _trc_DstCur_draw(ctx) {
         "use strict";
         var _this=this;
         
+        ctx.save();
         ctx.beginPath();
         ctx.strokeStyle="red";
         ctx.moveTo(_this.x*32,_this.y*32);
@@ -377,6 +344,7 @@ Tonyu.klass.define({
         ctx.lineTo(_this.x*32,(_this.y+_this.row)*32-1);
         ctx.closePath();
         ctx.stroke();
+        ctx.restore();
       },
       setFrom :function _trc_DstCur_setFrom(cur) {
         "use strict";
@@ -387,18 +355,16 @@ Tonyu.klass.define({
         _this.col=cur.dx-cur.x+1;
         _this.row=cur.dy-cur.y+1;
       },
-      fiber$setFrom :function _trc_DstCur_f_setFrom(_thread,cur) {
+      fiber$setFrom :function* _trc_DstCur_f_setFrom(_thread,cur) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         _this.x=cur.x;
         _this.y=cur.y;
         _this.col=cur.dx-cur.x+1;
         _this.row=cur.dy-cur.y+1;
         
-        _thread.retVal=_this;return;
       },
       doCopy :function _trc_DstCur_doCopy(cur) {
         "use strict";
@@ -410,11 +376,11 @@ Tonyu.klass.define({
         
         a = [];
         
-        i = 0;
-        for (; i<_this.row ; i++) {
+        for (i = 0;
+         i<_this.row ; i++) {
           {
-            j = 0;
-            for (; j<_this.col ; j++) {
+            for (j = 0;
+             j<_this.col ; j++) {
               {
                 p = Tonyu.globals.$map.get(cur.x+j,cur.y+i);
                 
@@ -426,11 +392,11 @@ Tonyu.klass.define({
             }
           }
         }
-        i = 0;
-        for (; i<_this.row ; i++) {
+        for (i = 0;
+         i<_this.row ; i++) {
           {
-            j = 0;
-            for (; j<_this.col ; j++) {
+            for (j = 0;
+             j<_this.col ; j++) {
               {
                 Tonyu.globals.$map.set(_this.x+j,_this.y+i,a.shift());
                 Tonyu.globals.$map.setOn(_this.x+j,_this.y+i,a.shift());
@@ -439,11 +405,10 @@ Tonyu.klass.define({
           }
         }
       },
-      fiber$doCopy :function _trc_DstCur_f_doCopy(_thread,cur) {
+      fiber$doCopy :function* _trc_DstCur_f_doCopy(_thread,cur) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var a;
         var i;
         var j;
@@ -451,11 +416,11 @@ Tonyu.klass.define({
         
         a = [];
         
-        i = 0;
-        for (; i<_this.row ; i++) {
+        for (i = 0;
+         i<_this.row ; i++) {
           {
-            j = 0;
-            for (; j<_this.col ; j++) {
+            for (j = 0;
+             j<_this.col ; j++) {
               {
                 p = Tonyu.globals.$map.get(cur.x+j,cur.y+i);
                 
@@ -467,11 +432,11 @@ Tonyu.klass.define({
             }
           }
         }
-        i = 0;
-        for (; i<_this.row ; i++) {
+        for (i = 0;
+         i<_this.row ; i++) {
           {
-            j = 0;
-            for (; j<_this.col ; j++) {
+            for (j = 0;
+             j<_this.col ; j++) {
               {
                 Tonyu.globals.$map.set(_this.x+j,_this.y+i,a.shift());
                 Tonyu.globals.$map.setOn(_this.x+j,_this.y+i,a.shift());
@@ -480,7 +445,6 @@ Tonyu.klass.define({
           }
         }
         
-        _thread.retVal=_this;return;
       },
       __dummy: false
     };
@@ -585,9 +549,12 @@ Tonyu.klass.define({
           _this.scrollTo(_this.sx,_this.sy-32,_this.zoom);
         }));
         
-        _this.mmove = Tonyu.globals.$InputDevice.on("mouseMove",(function anonymous_2374(e) {
-          var csz;
+        
+        _this.mmove = Tonyu.globals.$InputDevice.on("mouseMove",(function anonymous_2600(e) {
           var cv;
+          var csz;
+          
+          cv = Tonyu.globals.$Screen.convert(e,Tonyu.globals.$mainLayer);
           
           if (_this.dstCur) {
             csz = _this.getChipSize(_this.curP.p);
@@ -596,15 +563,14 @@ Tonyu.klass.define({
               return _this;
             }
             e.layer=Tonyu.globals.$frontLayer;
-            cv = Tonyu.globals.$Screen.convert(e,Tonyu.globals.$mainLayer);
-            
             _this.dstCur.x=_this.floor(cv.x/csz.w);
             _this.dstCur.y=_this.floor(cv.y/csz.h);
             
           }
+          _this.lastMousePos={x: cv.x,y: cv.y};
         }));
         
-        _this.on("die",(function anonymous_2659() {
+        _this.on("die",(function anonymous_2907() {
           
           _this.mmove.remove();
         }));
@@ -615,7 +581,7 @@ Tonyu.klass.define({
         _this.mapToucher = new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$screenWidth,height: _this.h-_this.menuPanel.height,layer: Tonyu.globals.$frontLayer});
         
         
-        _this.mapToucher.on("touch",(function anonymous_3100(e) {
+        _this.mapToucher.on("touch",(function anonymous_3348(e) {
           var f;
           var csz;
           var s;
@@ -639,14 +605,14 @@ Tonyu.klass.define({
             return _this;
             
           } else {
-            s = {rollbacker: _this.c.rollbacker(),finger: f,rollback: (function anonymous_3673() {
+            s = {rollbacker: _this.c.rollbacker(),finger: f,rollback: (function anonymous_3921() {
               
               s.rollbacker.rollback();
               s.endEvent.remove();
               if (s.moveEvent) {
                 s.moveEvent.remove();
               }
-            }),endEvent: f.on("end",(function anonymous_3862() {
+            }),endEvent: f.on("end",(function anonymous_4110() {
               
               _this.singleTouchState=null;
             }))};
@@ -662,7 +628,7 @@ Tonyu.klass.define({
               
             }
             _this.pick();
-            f.on("move",(function anonymous_4231(e) {
+            f.on("move",(function anonymous_4479(e) {
               var moved;
               
               moved = _this.c.sel(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
@@ -688,7 +654,7 @@ Tonyu.klass.define({
               moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
               
               _this.put();
-              _this.singleTouchState.moveEvent=f.on("move",(function anonymous_4840(e) {
+              _this.singleTouchState.moveEvent=f.on("move",(function anonymous_5088(e) {
                 var moved;
                 
                 moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
@@ -703,11 +669,10 @@ Tonyu.klass.define({
           }
         }));
       },
-      fiber$main :function _trc_Edit_f_main(_thread) {
+      fiber$main :function* _trc_Edit_f_main(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         
         _this.config = _this.config||Tonyu.globals.$editorConfig;
@@ -778,150 +743,143 @@ Tonyu.klass.define({
           
           _this.curP.changeLayer();
         }));
+        _this.on("keyDown","d",(function anonymous_1894() {
+          
+          _this.scrollTo(_this.sx+32,_this.sy,_this.zoom);
+        }));
+        _this.on("keyDown","a",(function anonymous_1947() {
+          
+          _this.scrollTo(_this.sx-32,_this.sy,_this.zoom);
+        }));
+        _this.on("keyDown","s",(function anonymous_2000() {
+          
+          _this.scrollTo(_this.sx,_this.sy+32,_this.zoom);
+        }));
+        _this.on("keyDown","w",(function anonymous_2053() {
+          
+          _this.scrollTo(_this.sx,_this.sy-32,_this.zoom);
+        }));
         
-        _thread.enter(function _trc_Edit_ent_main(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _this.on("keyDown","d",(function anonymous_1894() {
-                
-                _this.scrollTo(_this.sx+32,_this.sy,_this.zoom);
-              }));
-              _this.on("keyDown","a",(function anonymous_1947() {
-                
-                _this.scrollTo(_this.sx-32,_this.sy,_this.zoom);
-              }));
-              _this.on("keyDown","s",(function anonymous_2000() {
-                
-                _this.scrollTo(_this.sx,_this.sy+32,_this.zoom);
-              }));
-              _this.on("keyDown","w",(function anonymous_2053() {
-                
-                _this.scrollTo(_this.sx,_this.sy-32,_this.zoom);
-              }));
+        
+        _this.mmove = Tonyu.globals.$InputDevice.on("mouseMove",(function anonymous_2600(e) {
+          var cv;
+          var csz;
+          
+          cv = Tonyu.globals.$Screen.convert(e,Tonyu.globals.$mainLayer);
+          
+          if (_this.dstCur) {
+            csz = _this.getChipSize(_this.curP.p);
+            
+            if (! csz) {
+              return _this;
+            }
+            e.layer=Tonyu.globals.$frontLayer;
+            _this.dstCur.x=_this.floor(cv.x/csz.w);
+            _this.dstCur.y=_this.floor(cv.y/csz.h);
+            
+          }
+          _this.lastMousePos={x: cv.x,y: cv.y};
+        }));
+        
+        _this.on("die",(function anonymous_2907() {
+          
+          _this.mmove.remove();
+        }));
+        _this.menuPanel = new Tonyu.classes.kernel.Panel({width: _this.w,height: _this.menuPanelHeight,x: _this.w/2,y: _this.h-_this.menuPanelHeight/2,alpha: 180,zOrder: 100,layer: Tonyu.globals.$frontLayer});
+        
+        _this.menuPanel.fillStyle="gray";
+        _this.menuPanel.fillRect(0,0,_this.menuPanel.width,_this.menuPanel.height);
+        _this.mapToucher = new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$screenWidth,height: _this.h-_this.menuPanel.height,layer: Tonyu.globals.$frontLayer});
+        
+        
+        _this.mapToucher.on("touch",(function anonymous_3348(e) {
+          var f;
+          var csz;
+          var s;
+          var moved;
+          
+          f = e.finger;
+          
+          csz = _this.getChipSize(_this.curP.p);
+          
+          if (! csz) {
+            return _this;
+          }
+          f.layer=Tonyu.globals.$mainLayer;
+          if (_this.singleTouchState) {
+            if (! _this.multiTouchState) {
+              _this.singleTouchState.rollback();
+              _this.multiTouchState={finger1: _this.singleTouchState.finger,finger2: f};
+              _this.procMulti(_this.multiTouchState);
               
-              _this.mmove = Tonyu.globals.$InputDevice.on("mouseMove",(function anonymous_2374(e) {
-                var csz;
-                var cv;
-                
-                if (_this.dstCur) {
-                  csz = _this.getChipSize(_this.curP.p);
-                  
-                  if (! csz) {
-                    return _this;
-                  }
-                  e.layer=Tonyu.globals.$frontLayer;
-                  cv = Tonyu.globals.$Screen.convert(e,Tonyu.globals.$mainLayer);
-                  
-                  _this.dstCur.x=_this.floor(cv.x/csz.w);
-                  _this.dstCur.y=_this.floor(cv.y/csz.h);
-                  
-                }
-              }));
+            }
+            return _this;
+            
+          } else {
+            s = {rollbacker: _this.c.rollbacker(),finger: f,rollback: (function anonymous_3921() {
               
-              _this.on("die",(function anonymous_2659() {
-                
-                _this.mmove.remove();
-              }));
-              _this.menuPanel = new Tonyu.classes.kernel.Panel({width: _this.w,height: _this.menuPanelHeight,x: _this.w/2,y: _this.h-_this.menuPanelHeight/2,alpha: 180,zOrder: 100,layer: Tonyu.globals.$frontLayer});
+              s.rollbacker.rollback();
+              s.endEvent.remove();
+              if (s.moveEvent) {
+                s.moveEvent.remove();
+              }
+            }),endEvent: f.on("end",(function anonymous_4110() {
               
-              _this.menuPanel.fillStyle="gray";
-              _this.menuPanel.fillRect(0,0,_this.menuPanel.width,_this.menuPanel.height);
-              _this.mapToucher = new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$screenWidth,height: _this.h-_this.menuPanel.height,layer: Tonyu.globals.$frontLayer});
+              _this.singleTouchState=null;
+            }))};
+            
+            _this.singleTouchState=s;
+            
+          }
+          if (e.byMouse==2) {
+            moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
+            
+            if (! moved) {
+              _this.curP.changeLayer();
+              
+            }
+            _this.pick();
+            f.on("move",(function anonymous_4479(e) {
+              var moved;
+              
+              moved = _this.c.sel(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
+              
+              if (! moved) {
+                return _this;
+              }
+              if (! _this.dstCur) {
+                _this.dstCur=new Tonyu.classes.mapEditor2.DstCur;
+              }
+              _this.dstCur.setFrom(_this.c);
+            }));
+            
+          } else {
+            if (_this.dstCur) {
+              _this.dstCur.doCopy(_this.c);
+              _this.dstCur.die();
+              _this.dstCur=null;
+              moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
               
               
-              _this.mapToucher.on("touch",(function anonymous_3100(e) {
-                var f;
-                var csz;
-                var s;
+            } else {
+              moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
+              
+              _this.put();
+              _this.singleTouchState.moveEvent=f.on("move",(function anonymous_5088(e) {
                 var moved;
                 
-                f = e.finger;
+                moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
                 
-                csz = _this.getChipSize(_this.curP.p);
-                
-                if (! csz) {
-                  return _this;
-                }
-                f.layer=Tonyu.globals.$mainLayer;
-                if (_this.singleTouchState) {
-                  if (! _this.multiTouchState) {
-                    _this.singleTouchState.rollback();
-                    _this.multiTouchState={finger1: _this.singleTouchState.finger,finger2: f};
-                    _this.procMulti(_this.multiTouchState);
-                    
-                  }
-                  return _this;
-                  
-                } else {
-                  s = {rollbacker: _this.c.rollbacker(),finger: f,rollback: (function anonymous_3673() {
-                    
-                    s.rollbacker.rollback();
-                    s.endEvent.remove();
-                    if (s.moveEvent) {
-                      s.moveEvent.remove();
-                    }
-                  }),endEvent: f.on("end",(function anonymous_3862() {
-                    
-                    _this.singleTouchState=null;
-                  }))};
-                  
-                  _this.singleTouchState=s;
-                  
-                }
-                if (e.byMouse==2) {
-                  moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
-                  
-                  if (! moved) {
-                    _this.curP.changeLayer();
-                    
-                  }
-                  _this.pick();
-                  f.on("move",(function anonymous_4231(e) {
-                    var moved;
-                    
-                    moved = _this.c.sel(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
-                    
-                    if (! moved) {
-                      return _this;
-                    }
-                    if (! _this.dstCur) {
-                      _this.dstCur=new Tonyu.classes.mapEditor2.DstCur;
-                    }
-                    _this.dstCur.setFrom(_this.c);
-                  }));
-                  
-                } else {
-                  if (_this.dstCur) {
-                    _this.dstCur.doCopy(_this.c);
-                    _this.dstCur.die();
-                    _this.dstCur=null;
-                    moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
-                    
-                    
-                  } else {
-                    moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
-                    
-                    _this.put();
-                    _this.singleTouchState.moveEvent=f.on("move",(function anonymous_4840(e) {
-                      var moved;
-                      
-                      moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
-                      
-                      if (moved) {
-                        _this.put();
-                      }
-                    }));
-                    
-                  }
-                  
+                if (moved) {
+                  _this.put();
                 }
               }));
-              _thread.exit(_this);return;
+              
             }
+            
           }
-        });
+        }));
+        
       },
       scrollTo :function _trc_Edit_scrollTo(sx,sy,zoom) {
         "use strict";
@@ -939,37 +897,53 @@ Tonyu.klass.define({
         Tonyu.globals.$Screen.scrollTo(sx,sy,zoom);
         _this.extend({sx: sx,sy: sy,zoom: zoom});
       },
-      fiber$scrollTo :function _trc_Edit_f_scrollTo(_thread,sx,sy,zoom) {
+      fiber$scrollTo :function* _trc_Edit_f_scrollTo(_thread,sx,sy,zoom) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var csz;
         
+        csz=yield* _this.fiber$getChipSize(_thread, _this.curP.p);
         
-        _thread.enter(function _trc_Edit_ent_scrollTo(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _this.fiber$getChipSize(_thread, _this.curP.p);
-              __pc=1;return;
-            case 1:
-              csz=_thread.retVal;
-              
-              if (!(! csz)) { __pc=2     ; break; }
-              _thread.exit(_this);return;
-            case 2     :
-              
-              sx=_this.clamp(sx,0,240*32-_this.w/2);
-              sy=_this.clamp(sy,0,240*32-_this.h/2);
-              zoom=_this.clamp(zoom,0.1,5);
-              Tonyu.globals.$Screen.scrollTo(sx,sy,zoom);
-              _this.extend({sx: sx,sy: sy,zoom: zoom});
-              _thread.exit(_this);return;
-            }
-          }
-        });
+        if (! csz) {
+          return _this;
+        }
+        sx=_this.clamp(sx,0,240*32-_this.w/2);
+        sy=_this.clamp(sy,0,240*32-_this.h/2);
+        zoom=_this.clamp(zoom,0.1,5);
+        Tonyu.globals.$Screen.scrollTo(sx,sy,zoom);
+        _this.extend({sx: sx,sy: sy,zoom: zoom});
+        
+      },
+      zoomAt :function _trc_Edit_zoomAt(px,py,zoom) {
+        "use strict";
+        var _this=this;
+        var p;
+        var s;
+        var d;
+        
+        p = new Tonyu.classes.kernel.Vec3(px,py);
+        
+        s = new Tonyu.classes.kernel.Vec3(_this.sx,_this.sy);
+        
+        d = s.sub(p);
+        
+      },
+      fiber$zoomAt :function* _trc_Edit_f_zoomAt(_thread,px,py,zoom) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var p;
+        var s;
+        var d;
+        
+        p = new Tonyu.classes.kernel.Vec3(px,py);
+        
+        s = new Tonyu.classes.kernel.Vec3(_this.sx,_this.sy);
+        
+        d = s.sub(p);
+        
+        
       },
       procMulti :function _trc_Edit_procMulti(m) {
         "use strict";
@@ -997,12 +971,9 @@ Tonyu.klass.define({
           _this.scrollTo(ssx-(nx-ox)/_this.zoom,ssy-(ny-oy)/_this.zoom,sz*(d/od));
         }function ed() {
           var e;
-          var _it_905;
+          var _it_1;
           
-          _it_905=Tonyu.iterator(h,1);
-          while(_it_905.next()) {
-            e=_it_905[0];
-            
+          for ([e] of Tonyu.iterator2(h,1)) {
             e.remove();
           }
           _this.singleTouchState=_this.multiTouchState=null;
@@ -1029,11 +1000,10 @@ Tonyu.klass.define({
         
         
       },
-      fiber$procMulti :function _trc_Edit_f_procMulti(_thread,m) {
+      fiber$procMulti :function* _trc_Edit_f_procMulti(_thread,m) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var f1;
         var f2;
         var ox;
@@ -1057,12 +1027,9 @@ Tonyu.klass.define({
           _this.scrollTo(ssx-(nx-ox)/_this.zoom,ssy-(ny-oy)/_this.zoom,sz*(d/od));
         }function ed() {
           var e;
-          var _it_905;
+          var _it_1;
           
-          _it_905=Tonyu.iterator(h,1);
-          while(_it_905.next()) {
-            e=_it_905[0];
-            
+          for ([e] of Tonyu.iterator2(h,1)) {
             e.remove();
           }
           _this.singleTouchState=_this.multiTouchState=null;
@@ -1089,7 +1056,6 @@ Tonyu.klass.define({
         
         
         
-        _thread.retVal=_this;return;
       },
       moveC :function _trc_Edit_moveC(b) {
         "use strict";
@@ -1126,82 +1092,46 @@ Tonyu.klass.define({
           
         }
       },
-      fiber$moveC :function _trc_Edit_f_moveC(_thread,b) {
+      fiber$moveC :function* _trc_Edit_f_moveC(_thread,b) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
-        
-        _thread.enter(function _trc_Edit_ent_moveC(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              switch (b.key) {
-              case "up":
-                __pc=1     ;break;
-              case "down":
-                __pc=4     ;break;
-              case "left":
-                __pc=7     ;break;
-              case "right":
-                __pc=10    ;break;
-              default:
-                __pc=13    ;break;
-                
-              }
-              break;
-            case 1     :
-              _this.c.move(0,- 1);
-              if (!(_this.putB.clicked)) { __pc=3     ; break; }
-              _this.fiber$put(_thread);
-              __pc=2;return;
-            case 2:
-              
-            case 3     :
-              
-              __pc=13    ; break;
-              
-            case 4     :
-              _this.c.move(0,1);
-              if (!(_this.putB.clicked)) { __pc=6     ; break; }
-              _this.fiber$put(_thread);
-              __pc=5;return;
-            case 5:
-              
-            case 6     :
-              
-              __pc=13    ; break;
-              
-            case 7     :
-              _this.c.move(- 1,0);
-              if (!(_this.putB.clicked)) { __pc=9     ; break; }
-              _this.fiber$put(_thread);
-              __pc=8;return;
-            case 8:
-              
-            case 9     :
-              
-              __pc=13    ; break;
-              
-            case 10    :
-              _this.c.move(1,0);
-              if (!(_this.putB.clicked)) { __pc=12    ; break; }
-              _this.fiber$put(_thread);
-              __pc=11;return;
-            case 11:
-              
-            case 12    :
-              
-              __pc=13    ; break;
-              
-              case 13    :
-              
-              _thread.exit(_this);return;
-            }
+        switch (b.key) {
+        case "up":
+          _this.c.move(0,- 1);
+          if (_this.putB.clicked) {
+            (yield* _this.fiber$put(_thread));
+            
           }
-        });
+          break;
+          
+        case "down":
+          _this.c.move(0,1);
+          if (_this.putB.clicked) {
+            (yield* _this.fiber$put(_thread));
+            
+          }
+          break;
+          
+        case "left":
+          _this.c.move(- 1,0);
+          if (_this.putB.clicked) {
+            (yield* _this.fiber$put(_thread));
+            
+          }
+          break;
+          
+        case "right":
+          _this.c.move(1,0);
+          if (_this.putB.clicked) {
+            (yield* _this.fiber$put(_thread));
+            
+          }
+          break;
+          
+        }
+        
       },
       getChipSize :function _trc_Edit_getChipSize(p) {
         "use strict";
@@ -1228,11 +1158,10 @@ Tonyu.klass.define({
         }
         return null;
       },
-      fiber$getChipSize :function _trc_Edit_f_getChipSize(_thread,p) {
+      fiber$getChipSize :function* _trc_Edit_f_getChipSize(_thread,p) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var chipWidth;
         var chipHeight;
         var pImg;
@@ -1242,8 +1171,7 @@ Tonyu.klass.define({
         chipHeight = Tonyu.globals.$map.chipHeight;
         
         if (chipWidth&&chipHeight) {
-          _thread.retVal={w: chipWidth,h: chipHeight};return;
-          
+          return {w: chipWidth,h: chipHeight};
           
         }
         pImg = Tonyu.globals.$imageList[p];
@@ -1251,14 +1179,11 @@ Tonyu.klass.define({
         if (pImg) {
           chipWidth=pImg.width||32;
           chipHeight=pImg.height||32;
-          _thread.retVal={w: chipWidth,h: chipHeight};return;
-          
+          return {w: chipWidth,h: chipHeight};
           
         }
-        _thread.retVal=null;return;
+        return null;
         
-        
-        _thread.retVal=_this;return;
       },
       put :function _trc_Edit_put() {
         "use strict";
@@ -1266,15 +1191,13 @@ Tonyu.klass.define({
         
         _this.c.put(_this.curP);
       },
-      fiber$put :function _trc_Edit_f_put(_thread) {
+      fiber$put :function* _trc_Edit_f_put(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         _this.c.put(_this.curP);
         
-        _thread.retVal=_this;return;
       },
       pick :function _trc_Edit_pick() {
         "use strict";
@@ -1282,15 +1205,13 @@ Tonyu.klass.define({
         
         _this.c.pick(_this.curP);
       },
-      fiber$pick :function _trc_Edit_f_pick(_thread) {
+      fiber$pick :function* _trc_Edit_f_pick(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         _this.c.pick(_this.curP);
         
-        _thread.retVal=_this;return;
       },
       save :function _trc_Edit_save() {
         "use strict";
@@ -1298,15 +1219,13 @@ Tonyu.klass.define({
         
         Tonyu.globals.$map.save(_this.mapFile);
       },
-      fiber$save :function _trc_Edit_f_save(_thread) {
+      fiber$save :function* _trc_Edit_f_save(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         Tonyu.globals.$map.save(_this.mapFile);
         
-        _thread.retVal=_this;return;
       },
       play :function _trc_Edit_play() {
         "use strict";
@@ -1315,30 +1234,16 @@ Tonyu.klass.define({
         _this.save();
         _this.loadPage(_this.config.mainPage,{mapFile: _this.mapFile});
       },
-      fiber$play :function _trc_Edit_f_play(_thread) {
+      fiber$play :function* _trc_Edit_f_play(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
+        
+        (yield* _this.fiber$save(_thread));
+        
+        (yield* _this.fiber$loadPage(_thread, _this.config.mainPage, {mapFile: _this.mapFile}));
         
         
-        _thread.enter(function _trc_Edit_ent_play(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _this.fiber$save(_thread);
-              __pc=1;return;
-            case 1:
-              
-              _this.fiber$loadPage(_thread, _this.config.mainPage, {mapFile: _this.mapFile});
-              __pc=2;return;
-            case 2:
-              
-              _thread.exit(_this);return;
-            }
-          }
-        });
       },
       back :function _trc_Edit_back() {
         "use strict";
@@ -1347,49 +1252,33 @@ Tonyu.klass.define({
         _this.save();
         _this.loadPage(Tonyu.classes.mapEditor2.MapFiles,{config: _this.config});
       },
-      fiber$back :function _trc_Edit_f_back(_thread) {
+      fiber$back :function* _trc_Edit_f_back(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
+        
+        (yield* _this.fiber$save(_thread));
+        
+        (yield* _this.fiber$loadPage(_thread, Tonyu.classes.mapEditor2.MapFiles, {config: _this.config}));
         
         
-        _thread.enter(function _trc_Edit_ent_back(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _this.fiber$save(_thread);
-              __pc=1;return;
-            case 1:
-              
-              _this.fiber$loadPage(_thread, Tonyu.classes.mapEditor2.MapFiles, {config: _this.config});
-              __pc=2;return;
-            case 2:
-              
-              _thread.exit(_this);return;
-            }
-          }
-        });
       },
       modified :function _trc_Edit_modified() {
         "use strict";
         var _this=this;
         
       },
-      fiber$modified :function _trc_Edit_f_modified(_thread) {
+      fiber$modified :function* _trc_Edit_f_modified(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         
-        _thread.retVal=_this;return;
       },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"scrollTo":{"nowait":false},"procMulti":{"nowait":false},"moveC":{"nowait":false},"getChipSize":{"nowait":false},"put":{"nowait":false},"pick":{"nowait":false},"save":{"nowait":false},"play":{"nowait":false},"back":{"nowait":false},"modified":{"nowait":false}},"fields":{"mapFile":{},"config":{},"bw":{},"h":{},"w":{},"bhide":{},"putB":{},"menuPanelHeight":{},"sx":{},"sy":{},"zoom":{},"plw":{},"curP":{},"c":{},"dstCur":{},"mmove":{},"menuPanel":{},"mapToucher":{},"singleTouchState":{},"multiTouchState":{}}}
+  decls: {"methods":{"main":{"nowait":false},"scrollTo":{"nowait":false},"zoomAt":{"nowait":false},"procMulti":{"nowait":false},"moveC":{"nowait":false},"getChipSize":{"nowait":false},"put":{"nowait":false},"pick":{"nowait":false},"save":{"nowait":false},"play":{"nowait":false},"back":{"nowait":false},"modified":{"nowait":false}},"fields":{"mapFile":{},"config":{},"bw":{},"h":{},"w":{},"bhide":{},"putB":{},"menuPanelHeight":{},"sx":{},"sy":{},"zoom":{},"plw":{},"curP":{},"c":{},"lastMousePos":{},"dstCur":{},"mmove":{},"menuPanel":{},"mapToucher":{},"singleTouchState":{},"multiTouchState":{}}}
 });
 Tonyu.klass.define({
   fullName: 'mapEditor2.MapFiles',
@@ -1402,7 +1291,7 @@ Tonyu.klass.define({
       main :function _trc_MapFiles_main() {
         "use strict";
         var _this=this;
-        var _it_911;
+        var _it_0;
         
         _this.config = _this.config||Tonyu.globals.$editorConfig;
         
@@ -1421,10 +1310,7 @@ Tonyu.klass.define({
         _this.y=20;
         _this.pitch = 50;
         
-        _it_911=Tonyu.iterator(_this.mapDir.listFiles(),1);
-        while(_it_911.next()) {
-          _this.mf=_it_911[0];
-          
+        for ([_this.mf] of Tonyu.iterator2(_this.mapDir.listFiles(),1)) {
           if (_this.mf.ext()!==".json") {
             return _this;
           }
@@ -1436,12 +1322,11 @@ Tonyu.klass.define({
         _this.y+=_this.pitch;
         _this.backItem(_this.y);
       },
-      fiber$main :function _trc_MapFiles_f_main(_thread) {
+      fiber$main :function* _trc_MapFiles_f_main(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
-        var _it_911;
+        var _it_0;
         
         _this.config = _this.config||Tonyu.globals.$editorConfig;
         
@@ -1460,42 +1345,21 @@ Tonyu.klass.define({
         _this.y=20;
         _this.pitch = 50;
         
-        
-        _thread.enter(function _trc_MapFiles_ent_main(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _it_911=Tonyu.iterator(_this.mapDir.listFiles(),1);
-            case 1:
-              if (!(_it_911.next())) { __pc=4     ; break; }
-              _this.mf=_it_911[0];
-              
-              if (!(_this.mf.ext()!==".json")) { __pc=2     ; break; }
-              _thread.exit(_this);return;
-            case 2     :
-              
-              _this.fiber$item(_thread, _this.mf, _this.y);
-              __pc=3;return;
-            case 3:
-              
-              _this.y+=_this.pitch;
-              __pc=1;break;
-            case 4     :
-              
-              _this.fiber$newItem(_thread, _this.y);
-              __pc=5;return;
-            case 5:
-              
-              _this.y+=_this.pitch;
-              _this.fiber$backItem(_thread, _this.y);
-              __pc=6;return;
-            case 6:
-              
-              _thread.exit(_this);return;
-            }
+        for ([_this.mf] of Tonyu.iterator2(_this.mapDir.listFiles(),1)) {
+          if (_this.mf.ext()!==".json") {
+            return _this;
           }
-        });
+          (yield* _this.fiber$item(_thread, _this.mf, _this.y));
+          
+          _this.y+=_this.pitch;
+          
+        }
+        (yield* _this.fiber$newItem(_thread, _this.y));
+        
+        _this.y+=_this.pitch;
+        (yield* _this.fiber$backItem(_thread, _this.y));
+        
+        
       },
       newItem :function _trc_MapFiles_newItem(y) {
         "use strict";
@@ -1518,38 +1382,28 @@ Tonyu.klass.define({
           }
         }));
       },
-      fiber$newItem :function _trc_MapFiles_f_newItem(_thread,y) {
+      fiber$newItem :function* _trc_MapFiles_f_newItem(_thread,y) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var b;
         
         b = new Tonyu.classes.kernel.Button({left: 10,top: y,width: 100,padding: 2,height: _this.pitch*0.7,text: "New.."});
         
-        
-        _thread.enter(function _trc_MapFiles_ent_newItem(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              b.on("touch",(function anonymous_556() {
-                var name;
-                
-                name = _this.uniqFile(_this.mapDir,"map",_this.mapEXT).truncExt();
-                
-                name=Tonyu.globals.$InputBox.prompt("New File Name",name);
-                if (name) {
-                  name=name.replace(/\.json$/,"");
-                  name=name+".json";
-                  _this.loadPage(Tonyu.classes.mapEditor2.Edit,{config: _this.config,mapFile: _this.mapDir.rel(name)});
-                  
-                }
-              }));
-              _thread.exit(_this);return;
-            }
+        b.on("touch",(function anonymous_556() {
+          var name;
+          
+          name = _this.uniqFile(_this.mapDir,"map",_this.mapEXT).truncExt();
+          
+          name=Tonyu.globals.$InputBox.prompt("New File Name",name);
+          if (name) {
+            name=name.replace(/\.json$/,"");
+            name=name+".json";
+            _this.loadPage(Tonyu.classes.mapEditor2.Edit,{config: _this.config,mapFile: _this.mapDir.rel(name)});
+            
           }
-        });
+        }));
+        
       },
       backItem :function _trc_MapFiles_backItem(y) {
         "use strict";
@@ -1566,33 +1420,22 @@ Tonyu.klass.define({
           _this.loadPage(_this.config.titlePage);
         }));
       },
-      fiber$backItem :function _trc_MapFiles_f_backItem(_thread,y) {
+      fiber$backItem :function* _trc_MapFiles_f_backItem(_thread,y) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var b;
         
         if (! _this.config.titlePage) {
-          _thread.retVal=_this;return;
-          
+          return _this;
         }
         b = new Tonyu.classes.kernel.Button({left: 10,top: y,width: 100,padding: 2,height: _this.pitch*0.7,text: "Title"});
         
+        b.on("touch",(function anonymous_1041() {
+          
+          _this.loadPage(_this.config.titlePage);
+        }));
         
-        _thread.enter(function _trc_MapFiles_ent_backItem(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              b.on("touch",(function anonymous_1041() {
-                
-                _this.loadPage(_this.config.titlePage);
-              }));
-              _thread.exit(_this);return;
-            }
-          }
-        });
       },
       item :function _trc_MapFiles_item(file,y) {
         "use strict";
@@ -1649,11 +1492,10 @@ Tonyu.klass.define({
           }
         }));
       },
-      fiber$item :function _trc_MapFiles_f_item(_thread,file,y) {
+      fiber$item :function* _trc_MapFiles_f_item(_thread,file,y) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var name;
         var b;
         var xx;
@@ -1665,56 +1507,47 @@ Tonyu.klass.define({
         xx = 400;
         
         b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Edit"});
-        
-        _thread.enter(function _trc_MapFiles_ent_item(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              b.on("touch",(function anonymous_1335() {
-                
-                _this.loadPage(Tonyu.classes.mapEditor2.Edit,{config: _this.config,mapFile: file});
-              }));
-              xx-=100;
-              if (!(_this.config.mainPage)) { __pc=1     ; break; }
-              b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Play"});
-              b.on("touch",(function anonymous_1557() {
-                
-                _this.loadPage(_this.config.mainPage,{mapFile: file});
-              }));
-            case 1     :
-              
-              xx-=100;
-              b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Copy"});
-              b.on("touch",(function anonymous_1761() {
-                var nname;
-                
-                name=_this.uniqFile(file.up(),file.truncExt(),_this.mapEXT).truncExt();
-                nname = Tonyu.globals.$InputBox.prompt("New File Name",name);
-                
-                if (nname&&name!==nname) {
-                  file.copyTo(file.sibling(nname+_this.mapEXT));
-                  _this.loadPage(Tonyu.classes.mapEditor2.MapFiles,{config: _this.config});
-                  
-                }
-              }));
-              xx-=100;
-              b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Del",fillStyle: "#f88"});
-              b.on("touch",(function anonymous_2230() {
-                var r;
-                
-                r = Tonyu.globals.$InputBox.confirm("Delete "+name+"?");
-                
-                if (r) {
-                  file.rm();
-                  _this.loadPage(Tonyu.classes.mapEditor2.MapFiles,{config: _this.config});
-                  
-                }
-              }));
-              _thread.exit(_this);return;
-            }
+        b.on("touch",(function anonymous_1335() {
+          
+          _this.loadPage(Tonyu.classes.mapEditor2.Edit,{config: _this.config,mapFile: file});
+        }));
+        xx-=100;
+        if (_this.config.mainPage) {
+          b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Play"});
+          b.on("touch",(function anonymous_1557() {
+            
+            _this.loadPage(_this.config.mainPage,{mapFile: file});
+          }));
+          
+        }
+        xx-=100;
+        b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Copy"});
+        b.on("touch",(function anonymous_1761() {
+          var nname;
+          
+          name=_this.uniqFile(file.up(),file.truncExt(),_this.mapEXT).truncExt();
+          nname = Tonyu.globals.$InputBox.prompt("New File Name",name);
+          
+          if (nname&&name!==nname) {
+            file.copyTo(file.sibling(nname+_this.mapEXT));
+            _this.loadPage(Tonyu.classes.mapEditor2.MapFiles,{config: _this.config});
+            
           }
-        });
+        }));
+        xx-=100;
+        b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Del",fillStyle: "#f88"});
+        b.on("touch",(function anonymous_2230() {
+          var r;
+          
+          r = Tonyu.globals.$InputBox.confirm("Delete "+name+"?");
+          
+          if (r) {
+            file.rm();
+            _this.loadPage(Tonyu.classes.mapEditor2.MapFiles,{config: _this.config});
+            
+          }
+        }));
+        
       },
       uniqFile :function _trc_MapFiles_uniqFile(dir,name,ext) {
         "use strict";
@@ -1728,8 +1561,8 @@ Tonyu.klass.define({
         
         i = 1;
         
-        j = 0;
-        for (; j<100 ; j++) {
+        for (j = 0;
+         j<100 ; j++) {
           {
             res=dir.rel(name+i+ext);
             if (! res.exists()) {
@@ -1741,11 +1574,10 @@ Tonyu.klass.define({
         }
         return res;
       },
-      fiber$uniqFile :function _trc_MapFiles_f_uniqFile(_thread,dir,name,ext) {
+      fiber$uniqFile :function* _trc_MapFiles_f_uniqFile(_thread,dir,name,ext) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var res;
         var i;
         var j;
@@ -1755,8 +1587,8 @@ Tonyu.klass.define({
         
         i = 1;
         
-        j = 0;
-        for (; j<100 ; j++) {
+        for (j = 0;
+         j<100 ; j++) {
           {
             res=dir.rel(name+i+ext);
             if (! res.exists()) {
@@ -1766,10 +1598,8 @@ Tonyu.klass.define({
             i++;
           }
         }
-        _thread.retVal=res;return;
+        return res;
         
-        
-        _thread.retVal=_this;return;
       },
       __dummy: false
     };
@@ -1818,11 +1648,10 @@ Tonyu.klass.define({
         _this.size=20;
         _this.shift(0);
       },
-      fiber$main :function _trc_PatList_f_main(_thread) {
+      fiber$main :function* _trc_PatList_f_main(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         "field strict";
         
@@ -1852,20 +1681,9 @@ Tonyu.klass.define({
         _this.cursor = new Tonyu.classes.kernel.Actor({x: 0,y: 0,layer: _this.layer,text: "▲"});
         
         _this.size=20;
+        (yield* _this.fiber$shift(_thread, 0));
         
-        _thread.enter(function _trc_PatList_ent_main(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _this.fiber$shift(_thread, 0);
-              __pc=1;return;
-            case 1:
-              
-              _thread.exit(_this);return;
-            }
-          }
-        });
+        
       },
       draw :function _trc_PatList_draw() {
         "use strict";
@@ -1897,11 +1715,10 @@ Tonyu.klass.define({
         _this.curLIndex=i;
         _this.shift(0);
       },
-      fiber$changeLayer :function _trc_PatList_f_changeLayer(_thread) {
+      fiber$changeLayer :function* _trc_PatList_f_changeLayer(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var i;
         
         i = _this.curLIndex;
@@ -1910,20 +1727,9 @@ Tonyu.klass.define({
         i=(i+1)%_this.layers.length;
         _this.p=_this.savePats[i];
         _this.curLIndex=i;
+        (yield* _this.fiber$shift(_thread, 0));
         
-        _thread.enter(function _trc_PatList_ent_changeLayer(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _this.fiber$shift(_thread, 0);
-              __pc=1;return;
-            case 1:
-              
-              _thread.exit(_this);return;
-            }
-          }
-        });
+        
       },
       __getter__defaultLayer :function _trc_PatList___getter__defaultLayer() {
         "use strict";
@@ -1939,8 +1745,8 @@ Tonyu.klass.define({
         
         a = _this.patSels[_this.curLIndex];
         
-        i = 0;
-        for (; i<a.length ; i++) {
+        for (i = 0;
+         i<a.length ; i++) {
           {
             if (a[i].p===_this.p&&! _this.clamped(i+by,0,a.length-1)) {
               _this.p=a[i+by].p;
@@ -1953,18 +1759,17 @@ Tonyu.klass.define({
           }
         }
       },
-      fiber$shift :function _trc_PatList_f_shift(_thread,by) {
+      fiber$shift :function* _trc_PatList_f_shift(_thread,by) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var a;
         var i;
         
         a = _this.patSels[_this.curLIndex];
         
-        i = 0;
-        for (; i<a.length ; i++) {
+        for (i = 0;
+         i<a.length ; i++) {
           {
             if (a[i].p===_this.p&&! _this.clamped(i+by,0,a.length-1)) {
               _this.p=a[i+by].p;
@@ -1977,7 +1782,6 @@ Tonyu.klass.define({
           }
         }
         
-        _thread.retVal=_this;return;
       },
       set :function _trc_PatList_set(p,la) {
         "use strict";
@@ -1997,11 +1801,10 @@ Tonyu.klass.define({
         _this.shift(0);
         return true;
       },
-      fiber$set :function _trc_PatList_f_set(_thread,p,la) {
+      fiber$set :function* _trc_PatList_f_set(_thread,p,la) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         var preP;
         var preL;
         
@@ -2011,25 +1814,13 @@ Tonyu.klass.define({
         _this.curL=la||_this.curL;
         _this.p=p;
         if (preP==_this.p&&preL==_this.curL) {
-          _thread.retVal=false;return;
-          
+          return false;
           
         }
+        (yield* _this.fiber$shift(_thread, 0));
         
-        _thread.enter(function _trc_PatList_ent_set(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _this.fiber$shift(_thread, 0);
-              __pc=1;return;
-            case 1:
-              
-              _thread.exit(true);return;
-              _thread.exit(_this);return;
-            }
-          }
-        });
+        return true;
+        
       },
       __dummy: false
     };
@@ -2051,16 +1842,14 @@ Tonyu.klass.define({
         
         _this.on("touch",Tonyu.bindFunc(_this,_this.sel));
       },
-      fiber$main :function _trc_PatSel_f_main(_thread) {
+      fiber$main :function* _trc_PatSel_f_main(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         
         _this.on("touch",Tonyu.bindFunc(_this,_this.sel));
         
-        _thread.retVal=_this;return;
       },
       draw :function _trc_PatSel_draw(ctx) {
         "use strict";
@@ -2094,15 +1883,13 @@ Tonyu.klass.define({
         
         Tonyu.globals.$editor.curP.set(_this.p,_this.la);
       },
-      fiber$sel :function _trc_PatSel_f_sel(_thread,e) {
+      fiber$sel :function* _trc_PatSel_f_sel(_thread,e) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         Tonyu.globals.$editor.curP.set(_this.p,_this.la);
         
-        _thread.retVal=_this;return;
       },
       __dummy: false
     };
@@ -2126,29 +1913,17 @@ Tonyu.klass.define({
         Tonyu.globals.$editorConfig={layers: [{name: "base",pats: [- 1,_this.bp+88,_this.bp+89,_this.bp+90,_this.bp+91]},{name: "on",pats: [- 1,Tonyu.globals.$pat_mgoku,_this.bp+1,_this.bp+2,_this.bp+3,_this.bp+4,Tonyu.globals.$pat_neko]}],mapDir: _this.file("../maps/"),showHelp: true};
         _this.loadPage(Tonyu.classes.mapEditor2.MapFiles);
       },
-      fiber$main :function _trc_StartMapEditor_f_main(_thread) {
+      fiber$main :function* _trc_StartMapEditor_f_main(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var __pc=0;
         
         _this.bp = Tonyu.globals.$pat_mapchip;
         
         Tonyu.globals.$editorConfig={layers: [{name: "base",pats: [- 1,_this.bp+88,_this.bp+89,_this.bp+90,_this.bp+91]},{name: "on",pats: [- 1,Tonyu.globals.$pat_mgoku,_this.bp+1,_this.bp+2,_this.bp+3,_this.bp+4,Tonyu.globals.$pat_neko]}],mapDir: _this.file("../maps/"),showHelp: true};
+        (yield* _this.fiber$loadPage(_thread, Tonyu.classes.mapEditor2.MapFiles));
         
-        _thread.enter(function _trc_StartMapEditor_ent_main(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              _this.fiber$loadPage(_thread, Tonyu.classes.mapEditor2.MapFiles);
-              __pc=1;return;
-            case 1:
-              
-              _thread.exit(_this);return;
-            }
-          }
-        });
+        
       },
       __dummy: false
     };

@@ -76,6 +76,8 @@ nowait \sendEvent(type, arg) {
         var act=args.shift(EventMod) || this;
         args.trimUndefs();
         _thread.waitEvent(act, args.toArray());
+        __await null;
+        return _thread.retVal;
     }
 }
 
@@ -90,22 +92,11 @@ nowait \sendEvent(type, arg) {
     return f;
 }
 
-\runAsync(f) {
-    if (!_thread) {
-        throw new Error("runAsync should run in wait mode");
-    }
-    _thread.runAsync(f);
-}
 \runPromise(f) {
+    var pr=$DeferredUtil.promise (f);
     if (!_thread) {
-        return $DeferredUtil.promise (f);
+        return pr;
     } else {
-        var r;
-        try {
-            r=runAsync(f);
-        } catch (e) {
-            throw _thread.wrapError(e.args[0]);
-        }
-        return r[0];
+        return waitFor(pr);
     }
 }

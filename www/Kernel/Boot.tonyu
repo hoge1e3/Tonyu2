@@ -232,7 +232,7 @@ mainLoop();
 }
 \loadPlugins() {
     progress("Loading plugins..");
-    runAsync \(r) {
+    runPromise \(r) {
         $currentProject.loadPlugins(r);
     };
     progress("Loading plugins done");
@@ -241,16 +241,14 @@ mainLoop();
     progress("Loading pats..");
     var rs=$currentProject.getResource();
     var r;
-    r=runAsync \(succ) {
+    r=runPromise \(succ) {
         ImageList.load( rs.images, succ) {
             baseDir:$currentProject.getDir(),
             prj:$currentProject
         };
     };
-    //var r=a[0];
-    $imageList=r[0];
-    //$Sprites.setImageList(r[0]);
-    for (var name,val in r[0].names) {
+    $imageList=r;
+    for (var name,val in r.names) {
         Tonyu.setGlobal(name, val);
     }
     progress("Loading pats done.");

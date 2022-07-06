@@ -337,6 +337,8 @@ exports.isTonyuClass = isTonyuClass;
 
 },{}],5:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IT2 = exports.IT = void 0;
 //define(["Klass"], function (Klass) {
 //var Klass=require("../lib/Klass");
 const SYMIT = typeof Symbol !== "undefined" && Symbol.iterator;
@@ -413,7 +415,7 @@ class NativeIteratorWrapper {
         return true;
     }
 }
-module.exports = function IT(set, arity) {
+function IT(set, arity) {
     if (set && typeof set.tonyuIterator === "function") {
         // TODO: the prototype of class having tonyuIterator will iterate infinitively
         return set.tonyuIterator(arity);
@@ -441,7 +443,21 @@ module.exports = function IT(set, arity) {
         console.log(set);
         throw new Error(set + " is not iterable");
     }
-};
+}
+exports.IT = IT;
+function IT2(set, arity) {
+    const it = IT(set, arity);
+    return function* () {
+        while (it.next()) {
+            const yielded = [];
+            for (let i = 0; i < arity; i++) {
+                yielded[i] = it[i];
+            }
+            yield yielded;
+        }
+    }();
+}
+exports.IT2 = IT2;
 //	module.exports=IT;
 //   Tonyu.iterator=IT;
 //	return IT;
@@ -453,7 +469,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const R_1 = __importDefault(require("../lib/R"));
-const TonyuIterator_1 = __importDefault(require("./TonyuIterator"));
+const TonyuIterator_1 = require("./TonyuIterator");
 const TonyuThread_1 = require("./TonyuThread");
 const root_1 = __importDefault(require("../lib/root"));
 const assert_1 = __importDefault(require("../lib/assert"));
@@ -502,7 +518,7 @@ function addMeta(fn, m) {
     return extend(klass.getMeta(fn), m);
 }
 function getMeta(klass) {
-    if ((0, RuntimeTypes_1.isTonyuClass)(klass))
+    if (RuntimeTypes_1.isTonyuClass(klass))
         return klass.meta;
     return klass;
 }
@@ -690,7 +706,7 @@ var klass = {
             prot.getClassInfo = function () {
                 return res.meta;
             };
-            if ((0, RuntimeTypes_1.isTonyuClass)(res))
+            if (RuntimeTypes_1.isTonyuClass(res))
                 chkclass(res);
             return res; //chkclass(res,{isShim, init:false, includesRec:{}});
         }
@@ -779,7 +795,7 @@ function getClass(n) {
                     found = nn + "." + n;
                 }
                 else
-                    throw new Error((0, R_1.default)("ambiguousClassName", nn, n, found));
+                    throw new Error(R_1.default("ambiguousClassName", nn, n, found));
             }
         }
     }
@@ -804,20 +820,20 @@ function bindFunc(t, meth) {
 }
 function invokeMethod(t, name, args, objName) {
     if (!t)
-        throw new Error((0, R_1.default)("cannotInvokeMethod", objName, t, name));
+        throw new Error(R_1.default("cannotInvokeMethod", objName, t, name));
     var f = t[name];
     if (typeof f != "function")
-        throw new Error((0, R_1.default)("notAMethod", (objName == "this" ? "" : objName + "."), name, f));
+        throw new Error(R_1.default("notAMethod", (objName == "this" ? "" : objName + "."), name, f));
     return f.apply(t, args);
 }
 function callFunc(f, args, fName) {
     if (typeof f != "function")
-        throw new Error((0, R_1.default)("notAFunction", fName));
+        throw new Error(R_1.default("notAFunction", fName));
     return f.apply({}, args);
 }
 function checkNonNull(v, name) {
     if (v != v || v == null)
-        throw new Error((0, R_1.default)("uninitialized", name, v));
+        throw new Error(R_1.default("uninitialized", name, v));
     return v;
 }
 function A(args) {
@@ -828,7 +844,7 @@ function A(args) {
     return res;
 }
 function useNew(c) {
-    throw new Error((0, R_1.default)("newIsRequiredOnInstanciate", c));
+    throw new Error(R_1.default("newIsRequiredOnInstanciate", c));
 }
 function not_a_tonyu_object(o) {
     console.log("Not a tonyu object: ", o);
@@ -839,8 +855,8 @@ function hasKey(k, obj) {
 }
 function run(bootClassName) {
     var bootClass = getClass(bootClassName);
-    if (!(0, RuntimeTypes_1.isTonyuClass)(bootClass))
-        throw new Error((0, R_1.default)("bootClassIsNotFound", bootClassName));
+    if (!RuntimeTypes_1.isTonyuClass(bootClass))
+        throw new Error(R_1.default("bootClassIsNotFound", bootClassName));
     Tonyu.runMode = true;
     var boot = new bootClass();
     //var th=thread();
@@ -859,7 +875,7 @@ function checkLoop() {
     var now = root_1.default.performance.now();
     if (now - lastLoopCheck > 1000) {
         resetLoopCheck(10000);
-        throw new Error((0, R_1.default)("infiniteLoopDetected"));
+        throw new Error(R_1.default("infiniteLoopDetected"));
     }
     prevCheckLoopCalled = now;
 }
@@ -873,19 +889,21 @@ function is(obj, klass) {
         return false;
     if (obj instanceof klass)
         return true;
-    if (typeof obj.getClassInfo === "function" && (0, RuntimeTypes_1.isTonyuClass)(klass)) {
+    if (typeof obj.getClassInfo === "function" && RuntimeTypes_1.isTonyuClass(klass)) {
         return obj.getClassInfo().includesRec[klass.meta.fullName];
     }
     return false;
 }
 //setInterval(resetLoopCheck,16);
-const Tonyu = { thread,
+const Tonyu = {
+    thread,
+    supports_await: true,
     klass, bless, extend, messages: R_1.default,
     globals, classes, classMetas, setGlobal, getGlobal, getClass,
     timeout,
     bindFunc, not_a_tonyu_object, is,
     hasKey, invokeMethod, callFunc, checkNonNull,
-    iterator: TonyuIterator_1.default, run, checkLoop, resetLoopCheck,
+    iterator: TonyuIterator_1.IT, iterator2: TonyuIterator_1.IT2, run, checkLoop, resetLoopCheck,
     currentProject: null,
     currentThread: null,
     runMode: false,
@@ -896,7 +914,8 @@ const Tonyu = { thread,
         throw e;
     },
     VERSION: 1560828115159,
-    A, ID: Math.random() };
+    A, ID: Math.random()
+};
 //const TT=TonyuThreadF(Tonyu);
 if (root_1.default.Tonyu) {
     console.error("Tonyu called twice!");
@@ -914,6 +933,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TonyuThread = void 0;
 const R_1 = __importDefault(require("../lib/R"));
+class KilledError extends Error {
+}
+//const SYM_Exception=Symbol("exception");
+/*type Frame={
+    prev?:Frame, func:Function,
+};*/
 //export= function TonyuThreadF(Tonyu) {
 let idSeq = 1;
 //try {window.cnts=cnts;}catch(e){}
@@ -921,14 +946,14 @@ class TonyuThread {
     constructor(Tonyu) {
         this.Tonyu = Tonyu;
         this.preempted = false;
-        this.frame = null;
+        this.generator = null;
         this._isDead = false;
         //this._isAlive=true;
-        this.cnt = 0;
+        //this.cnt=0;
         this._isWaiting = false;
         this.fSuspended = false;
-        this.tryStack = [];
-        this.preemptionTime = 60;
+        //this.tryStack=[];
+        this.preemptionTime = Tonyu.globals.$preemptionTime || 5;
         this.onEndHandlers = [];
         this.onTerminateHandlers = [];
         this.id = idSeq++;
@@ -939,10 +964,16 @@ class TonyuThread {
         //return this.frame!=null && this._isAlive;
     }
     isDead() {
-        this._isDead = this._isDead || (this.frame == null) ||
+        this._isDead = this._isDead || (!!this.termStatus) ||
             (this._threadGroup && (this._threadGroup.objectPoolAge != this.tGrpObjectPoolAge ||
                 this._threadGroup.isDeadThreadGroup()));
         return this._isDead;
+    }
+    isDeadThreadGroup() {
+        return this.isDead();
+    }
+    killThreadGroup() {
+        this.kill();
     }
     setThreadGroup(g) {
         this._threadGroup = g;
@@ -954,13 +985,13 @@ class TonyuThread {
     }
     suspend() {
         this.fSuspended = true;
-        this.cnt = 0;
+        //this.cnt=0;
     }
-    enter(frameFunc) {
+    /*enter(frameFunc: Function) {
         //var n=frameFunc.name;
         //cnts.enterC[n]=(cnts.enterC[n]||0)+1;
-        this.frame = { prev: this.frame, func: frameFunc };
-    }
+        this.frame={prev:this.frame, func:frameFunc};
+    }*/
     apply(obj, methodName, args) {
         if (!args)
             args = [];
@@ -968,7 +999,7 @@ class TonyuThread {
         if (typeof methodName == "string") {
             method = obj["fiber$" + methodName];
             if (!method) {
-                throw new Error((0, R_1.default)("undefinedMethod", methodName));
+                throw new Error(R_1.default("undefinedMethod", methodName));
             }
         }
         if (typeof methodName == "function") {
@@ -976,25 +1007,24 @@ class TonyuThread {
             method = fmethod.fiber;
             if (!method) {
                 var n = fmethod.methodInfo ? fmethod.methodInfo.name : fmethod.name;
-                throw new Error((0, R_1.default)("notAWaitableMethod", n));
+                throw new Error(R_1.default("notAWaitableMethod", n));
             }
         }
         args = [this].concat(args);
-        var pc = 0;
+        this.generator = method.apply(obj, args);
+        /*var pc=0;
         return this.enter(function (th) {
-            switch (pc) {
-                case 0:
-                    method.apply(obj, args);
-                    pc = 1;
-                    break;
-                case 1:
-                    th.termStatus = "success";
-                    th.notifyEnd(th.retVal);
-                    args[0].exit();
-                    pc = 2;
-                    break;
+            switch (pc){
+            case 0:
+                method.apply(obj,args);
+                pc=1;break;
+            case 1:
+                th.termStatus="success";
+                th.notifyEnd(th.retVal);
+                args[0].exit();
+                pc=2;break;
             }
-        });
+        });*/
     }
     notifyEnd(r) {
         this.onEndHandlers.forEach(function (e) {
@@ -1003,9 +1033,7 @@ class TonyuThread {
         this.notifyTermination({ status: "success", value: r });
     }
     notifyTermination(tst) {
-        this.onTerminateHandlers.forEach(function (e) {
-            e(tst);
-        });
+        this.onTerminateHandlers.forEach((e) => e(tst));
     }
     on(type, f) {
         if (type === "end" || type === "success")
@@ -1017,9 +1045,17 @@ class TonyuThread {
         }
     }
     promise() {
-        var fb = this;
-        return new Promise(function (succ, err) {
-            fb.on("terminate", function (st) {
+        switch (this.termStatus) {
+            case "success":
+                return Promise.resolve(this.retVal);
+            case "exception":
+                return Promise.reject(this.lastEx);
+            case "killed":
+                return Promise.reject(new KilledError(this.termStatus));
+            default:
+        }
+        return new Promise((succ, err) => {
+            this.on("terminate", (st) => {
                 if (st.status === "success") {
                     succ(st.value);
                 }
@@ -1027,7 +1063,7 @@ class TonyuThread {
                     err(st.exception);
                 }
                 else {
-                    err(new Error(st.status));
+                    err(new KilledError(st.status));
                 }
             });
         });
@@ -1041,48 +1077,45 @@ class TonyuThread {
     fail(err) {
         return this.promise().then(e => e, err);
     }
-    gotoCatch(e) {
-        var fb = this;
-        if (fb.tryStack.length == 0) {
-            fb.termStatus = "exception";
+    /*gotoCatch(e) {
+        var fb=this;
+        if (fb.tryStack.length==0) {
+            fb.termStatus="exception";
             fb.kill();
-            if (fb.handleEx)
-                fb.handleEx(e);
-            else
-                fb.notifyTermination({ status: "exception", exception: e });
+            if (fb.handleEx) fb.handleEx(e);
+            else fb.notifyTermination({status:"exception",exception:e});
             return;
         }
-        fb.lastEx = e;
-        var s = fb.tryStack.pop();
+        fb.lastEx=e;
+        var s=fb.tryStack.pop();
         while (fb.frame) {
-            if (s.frame === fb.frame) {
-                fb.catchPC = s.catchPC;
+            if (s.frame===fb.frame) {
+                fb.catchPC=s.catchPC;
                 break;
-            }
-            else {
-                fb.frame = fb.frame.prev;
+            } else {
+                fb.frame=fb.frame.prev;
             }
         }
     }
     startCatch() {
-        var fb = this;
-        var e = fb.lastEx;
-        fb.lastEx = null;
+        var fb=this;
+        var e=fb.lastEx;
+        fb.lastEx=null;
         return e;
     }
     exit(res) {
         //cnts.exitC++;
-        this.frame = (this.frame ? this.frame.prev : null);
-        this.retVal = res;
+        this.frame=(this.frame ? this.frame.prev:null);
+        this.retVal=res;
     }
     enterTry(catchPC) {
-        var fb = this;
-        fb.tryStack.push({ frame: fb.frame, catchPC: catchPC });
+        var fb=this;
+        fb.tryStack.push({frame:fb.frame,catchPC:catchPC});
     }
     exitTry() {
-        var fb = this;
+        var fb=this;
         fb.tryStack.pop();
-    }
+    }*/
     waitEvent(obj, eventSpec) {
         const fb = this;
         fb.suspend();
@@ -1095,40 +1128,42 @@ class TonyuThread {
             fb.steps();
         });
     }
-    runAsync(f) {
-        var fb = this;
-        var succ = function () {
-            fb.retVal = arguments;
+    /*runAsync(f:Function) {
+        var fb=this;
+        var succ=function () {
+            fb.retVal=arguments;
             fb.steps();
         };
-        var err = function () {
-            var msg = "";
-            for (var i = 0; i < arguments.length; i++) {
-                msg += arguments[i] + ",";
+        var err=function () {
+            var msg="";
+            for (var i=0; i<arguments.length; i++) {
+                msg+=arguments[i]+",";
             }
-            if (msg.length == 0)
-                msg = "Async fail";
-            var e = new Error(msg);
-            e.args = arguments;
+            if (msg.length==0) msg="Async fail";
+            var e:any=new Error(msg);
+            e.args=arguments;
             fb.gotoCatch(e);
             fb.steps();
         };
         fb.suspend();
         setTimeout(function () {
-            f(succ, err);
-        }, 0);
-    }
+            f(succ,err);
+        },0);
+    }*/
     waitFor(j) {
         var fb = this;
         fb._isWaiting = true;
         fb.suspend();
-        if (j instanceof TonyuThread)
-            j = j.promise();
-        return Promise.resolve(j).then(function (r) {
+        let p = j;
+        if (p instanceof TonyuThread)
+            p = p.promise();
+        return Promise.resolve(p).then(function (r) {
             fb.retVal = r;
+            fb.lastEx = null;
             fb.stepsLoop();
         }).then(e => e, function (e) {
-            fb.gotoCatch(fb.wrapError(e));
+            e = fb.wrapError(e);
+            fb.lastEx = e;
             fb.stepsLoop();
         });
     }
@@ -1149,22 +1184,56 @@ class TonyuThread {
             return;
         const sv = this.Tonyu.currentThread;
         this.Tonyu.currentThread = fb;
-        fb.cnt = fb.preemptionTime;
+        const lim = performance.now() + fb.preemptionTime;
         fb.preempted = false;
         fb.fSuspended = false;
-        while (fb.cnt > 0 && fb.frame) {
-            try {
-                //while (new Date().getTime()<lim) {
-                while (fb.cnt-- > 0 && fb.frame) {
-                    fb.frame.func(fb);
+        let awaited = null;
+        try {
+            while (performance.now() < lim && !this.fSuspended) {
+                const n = this.generator.next();
+                if (n.value) {
+                    awaited = n.value;
+                    break;
                 }
-                fb.preempted = (!fb.fSuspended) && fb.isAlive();
+                if (n.done) {
+                    this.termStatus = "success";
+                    this.notifyEnd(this.retVal);
+                    break;
+                }
             }
-            catch (e) {
-                fb.gotoCatch(e);
+            fb.preempted = (!awaited) && (!this.fSuspended) && this.isAlive();
+        }
+        catch (e) {
+            return this.exception(e);
+        }
+        finally {
+            this.Tonyu.currentThread = sv;
+            if (awaited) {
+                //console.log("AWAIT!", awaited);
+                return this.waitFor(awaited);
             }
         }
-        this.Tonyu.currentThread = sv;
+        /*
+        while (fb.cnt>0 && fb.frame) {
+            try {
+                //while (new Date().getTime()<lim) {
+                while (fb.cnt-->0 && fb.frame) {
+                    fb.frame.func(fb);
+                }
+                fb.preempted= (!fb.fSuspended) && fb.isAlive();
+            } catch(e) {
+                fb.gotoCatch(e);
+            }
+        }*/
+    }
+    exception(e) {
+        this.termStatus = "exception";
+        this.lastEx = e;
+        this.kill();
+        if (this.handleEx)
+            this.handleEx(e);
+        else
+            this.notifyTermination({ status: "exception", exception: e });
     }
     stepsLoop() {
         var fb = this;
@@ -1179,15 +1248,22 @@ class TonyuThread {
         var fb = this;
         //fb._isAlive=false;
         fb._isDead = true;
-        fb.frame = null;
+        //fb.frame=null;
         if (!fb.termStatus) {
             fb.termStatus = "killed";
             fb.notifyTermination({ status: "killed" });
         }
     }
-    clearFrame() {
-        this.frame = null;
-        this.tryStack = [];
+    /*clearFrame() {
+        this.frame=null;
+        this.tryStack=[];
+    }*/
+    *await(p) {
+        this.lastEx = null;
+        yield p;
+        if (this.lastEx)
+            throw this.lastEx;
+        return this.retVal;
     }
 }
 exports.TonyuThread = TonyuThread;

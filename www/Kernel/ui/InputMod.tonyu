@@ -13,7 +13,7 @@ nowait \getkey(k) {
     return $Keys.getkey(k);
 }
 \waitInputDevice(fl) {
-    runAsync \(f){
+    runPromise \(f){
         $InputDevice.addOnetimeListener(f);
     };
 }

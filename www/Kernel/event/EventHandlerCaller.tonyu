@@ -4,7 +4,8 @@ native Tonyu;
     var t;
     if (h["fiber"]) {
         t=Tonyu.thread();
-        h["fiber"].apply(target, [t].concat(args) );
+        t.apply(target, h, args);
+        //h["fiber"].apply(target, [t].concat(args) );
         t.steps();
     } else {
         h.apply(target,args);
