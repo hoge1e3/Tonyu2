@@ -1943,35 +1943,43 @@ function genJS(klass, env, genOptions) {
             }
         },
         varDecl(node) {
-            var a = annotation(node);
-            var thisForVIM = a.varInMain ? THIZ + "." : "";
+            console.log(node);
+            throw new Error("Abolished. use varDecl(just a function) ");
+            /*var a=annotation(node);
+            var thisForVIM=a.varInMain? THIZ+"." :"";
             if (node.value) {
-                const t = (!ctx.noWait) && annotation(node).fiberCall;
-                const to = (!ctx.noWait) && annotation(node).otherFiberCall;
+                const t=(!ctx.noWait) && annotation(node).fiberCall;
+                const to=(!ctx.noWait) && annotation(node).otherFiberCall;
                 if (t) {
                     buf.printf(//VDC
-                    "%s%v=yield* %s.%s%s(%j);%n", //FIBERCALL
-                    thisForVIM, node.name, THIZ, FIBPRE, t.N, [", ", [THNode].concat(t.A)]);
-                }
-                else if (to && to.fiberType) {
+                        "%s%v=yield* %s.%s%s(%j);%n" ,//FIBERCALL
+                        thisForVIM, node.name, THIZ, FIBPRE, t.N, [", ",[THNode].concat(t.A)],
+                    );
+                } else if (to && to.fiberType) {
                     buf.printf(//VDC
-                    "%s%v=yield* %v.%s%s(%j);%n", //FIBERCALL
-                    thisForVIM, node.name, to.O, FIBPRE, to.N, [", ", [THNode].concat(to.A)]);
-                }
-                else {
+                        "%s%v=yield* %v.%s%s(%j);%n" ,//FIBERCALL
+                        thisForVIM, node.name, to.O, FIBPRE, to.N, [", ",[THNode].concat(to.A)],
+                    );
+                } else {
                     buf.printf("%s%v = %v;%n", thisForVIM, node.name, node.value);
+                }
+            } else {
+                //buf.printf("%v", node.name);
+            }*/
+        },
+        varsDecl: function (node) {
+            if (node.declPrefix.text === "var") {
+                const decls = node.decls.filter((n) => n.value);
+                if (decls.length > 0) {
+                    for (let decl of decls) {
+                        varDecl(decl, node);
+                    }
                 }
             }
             else {
-                //buf.printf("%v", node.name);
-            }
-        },
-        varsDecl: function (node) {
-            var decls = node.decls.filter(function (n) { return n.value; });
-            if (decls.length > 0) {
-                decls.forEach(function (decl) {
-                    buf.printf("%v", decl);
-                });
+                for (let decl of node.decls) {
+                    varDecl(decl, node);
+                }
             }
         },
         jsonElem: function (node) {
@@ -2179,9 +2187,10 @@ function genJS(klass, env, genOptions) {
             var an = annotation(node);
             if (node.inFor.type == "forin") {
                 const inFor = node.inFor;
-                buf.printf("for ([%f] of %s(%v,%s)) {%{" +
+                const pre = (inFor.isVar && inFor.isVar.text !== "var" ? inFor.isVar.text + " " : "");
+                buf.printf("for (%s[%f] of %s(%v,%s)) {%{" +
                     "%f%n" +
-                    "%}}", loopVarsF(inFor.isVar, inFor.vars), ITER2, inFor.set, inFor.vars.length, noSurroundCompoundF(node.loop));
+                    "%}}", pre, loopVarsF(inFor.isVar, inFor.vars), ITER2, inFor.set, inFor.vars.length, noSurroundCompoundF(node.loop));
                 /*var itn=annotation(node.inFor).iterName;
                 buf.printf(
                     "%s=%s(%v,%s);%n"+
@@ -2319,6 +2328,34 @@ function genJS(klass, env, genOptions) {
             buf.printf("%s", node.text);
         }
     });
+    function varDecl(node, parent) {
+        var a = annotation(node);
+        var thisForVIM = a.varInMain ? THIZ + "." : "";
+        var pa = annotation(parent);
+        const pre = (parent.declPrefix.text === "var" || pa.varInMain ? "" : parent.declPrefix + " ");
+        if (node.value) {
+            const t = (!ctx.noWait) && annotation(node).fiberCall;
+            const to = (!ctx.noWait) && annotation(node).otherFiberCall;
+            if (t) {
+                buf.printf(//VDC
+                "%s%s%v=yield* %s.%s%s(%j);%n", //FIBERCALL
+                pre, thisForVIM, node.name, THIZ, FIBPRE, t.N, [", ", [THNode].concat(t.A)]);
+            }
+            else if (to && to.fiberType) {
+                buf.printf(//VDC
+                "%s%s%v=yield* %v.%s%s(%j);%n", //FIBERCALL
+                pre, thisForVIM, node.name, to.O, FIBPRE, to.N, [", ", [THNode].concat(to.A)]);
+            }
+            else {
+                buf.printf("%s%s%v = %v;%n", pre, thisForVIM, node.name, node.value);
+            }
+        }
+        else {
+            if (pre) {
+                buf.printf("%s%v;", pre, node.name);
+            }
+        }
+    }
     var opTokens = ["++", "--", "!==", "===", "+=", "-=", "*=", "/=",
         "%=", ">=", "<=",
         "!=", "==", ">>>", ">>", "<<", "&&", "||", ">", "<", "+", "?", "=", "*",
@@ -3054,9 +3091,17 @@ function initClassDecls(klass, env) {
                 pos: node.pos
             };
         }
+        const ctx = context_1.context();
         var fieldsCollector = new Visitor_1.Visitor({
             varDecl: function (node) {
                 addField(node.name, node);
+            },
+            varsDecl(node) {
+                if (ctx.inBlockScope && node.declPrefix.text !== "var")
+                    return;
+                for (let d of node.decls) {
+                    fieldsCollector.visit(d);
+                }
             },
             nativeDecl: function (node) {
             },
@@ -3076,9 +3121,15 @@ function initClassDecls(klass, env) {
                     }
                 }
             },
+            "for": function (node) {
+                ctx.enter({ inBlockScope: true }, () => fieldsCollector.def(node));
+            },
+            compound(node) {
+                ctx.enter({ inBlockScope: true }, () => fieldsCollector.def(node));
+            },
             "forin": function (node) {
                 var isVar = node.isVar;
-                if (isVar) {
+                if (isVar && isVar.text === "var") {
                     node.vars.forEach((v) => {
                         addField(v);
                     });
@@ -3139,6 +3190,8 @@ function annotateSource2(klass, env) {
     // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，モジュール変数の集まり．親クラスの宣言は含まない
     var ST = ScopeTypes;
     var topLevelScope = {};
+    // ↑ このソースコードのトップレベル変数の種類 ，親クラスの宣言を含む
+    //  キー： 変数名   値： ScopeTypesのいずれか
     const ctx = context_1.context();
     const debug = false;
     const othersMethodCallTmpl = {
@@ -3352,6 +3405,7 @@ function annotateSource2(klass, env) {
         }
         return si;
     }
+    // locals are only var, not let or const
     var localsCollector = new Visitor_1.Visitor({
         varDecl: function (node) {
             if (ctx.isMain) {
@@ -3360,9 +3414,17 @@ function annotateSource2(klass, env) {
                 //console.log("var in main",node.name.text);
             }
             else {
+                //if (node.name.text==="nonvar") throw new Error("WHY1!!!");
                 ctx.locals.varDecls[node.name.text] = node;
                 //console.log("DeclaringFunc of ",node.name.text,ctx.finfo);
                 annotation(node, { declaringFunc: ctx.finfo });
+            }
+        },
+        varsDecl(node) {
+            if (node.declPrefix.text !== "var")
+                return;
+            for (let d of node.decls) {
+                localsCollector.visit(d);
             }
         },
         funcDecl: function (node) {
@@ -3380,12 +3442,13 @@ function annotateSource2(klass, env) {
         "forin": function (node) {
             var isVar = node.isVar;
             node.vars.forEach(function (v) {
-                if (isVar) {
+                if (isVar && isVar.text === "var") {
                     if (ctx.isMain) {
                         annotation(v, { varInMain: true });
                         annotation(v, { declaringClass: klass });
                     }
                     else {
+                        //if (v.text==="nonvar") throw new Error("WHY2!!!");
                         ctx.locals.varDecls[v.text] = v; //node??;
                         annotation(v, { declaringFunc: ctx.finfo });
                     }
@@ -3471,8 +3534,23 @@ function annotateSource2(klass, env) {
         },
         "for": function (node) {
             var t = this;
-            ctx.enter({ brkable: true, contable: true }, function () {
-                t.def(node);
+            if (node.isToken)
+                return;
+            ctx.enter({ inBlockScope: true }, () => {
+                const ns = newScope(ctx.scope);
+                if (node.inFor.type === "normalFor") {
+                    collectBlockScopedVardecl([node.inFor.init], ns);
+                }
+                else {
+                    if (node.inFor.isVar && node.inFor.isVar.text !== "var") {
+                        for (let v of node.inFor.vars) {
+                            ns[v.text] = new SI.LOCAL(ctx.finfo, true);
+                        }
+                    }
+                }
+                ctx.enter({ scope: ns, brkable: true, contable: true }, function () {
+                    t.def(node);
+                });
             });
         },
         "forin": function (node) {
@@ -3481,6 +3559,16 @@ function annotateSource2(klass, env) {
                 annotation(v, { scopeInfo: si });
             });
             this.visit(node.set);
+        },
+        compound(node) {
+            ctx.enter({ inBlockScope: true }, () => {
+                const ns = newScope(ctx.scope);
+                collectBlockScopedVardecl(node.stmts, ns);
+                ctx.enter({ scope: ns }, () => {
+                    for (let stmt of node.stmts)
+                        this.visit(stmt);
+                });
+            });
         },
         ifWait: function (node) {
             var TH = "_thread";
@@ -3666,7 +3754,9 @@ function annotateSource2(klass, env) {
     }
     varAccessesAnnotator.def = visitSub; //S
     function annotateVarAccesses(node, scope) {
-        ctx.enter({ scope }, function () {
+        const ns = newScope(scope);
+        collectBlockScopedVardecl(node, ns);
+        ctx.enter({ scope: ns }, function () {
             varAccessesAnnotator.visit(node);
         });
     }
@@ -3674,12 +3764,12 @@ function annotateSource2(klass, env) {
         const locals = finfo.locals;
         for (var i in locals.varDecls) {
             //console.log("LocalVar ",i,"declared by ",finfo);
-            var si = new SI.LOCAL(finfo); //genSt(ST.LOCAL,{declaringFunc:finfo});
+            var si = new SI.LOCAL(finfo, false);
             scope[i] = si;
             annotation(locals.varDecls[i], { scopeInfo: si });
         }
         for (let i in locals.subFuncDecls) {
-            const si = new SI.LOCAL(finfo); //genSt(ST.LOCAL,{declaringFunc:finfo});
+            const si = new SI.LOCAL(finfo, false);
             scope[i] = si;
             annotation(locals.subFuncDecls[i], { scopeInfo: si });
         }
@@ -3701,6 +3791,26 @@ function annotateSource2(klass, env) {
         //if (!f.params) throw new Error("f.params is not inited");
         resolveTypesOfParams(f.params);
     }
+    function collectBlockScopedVardecl(stmts, scope) {
+        for (let stmt of stmts) {
+            if (stmt.type === "varsDecl" && stmt.declPrefix.text !== "var") {
+                const ism = ctx.finfo.isMain;
+                //console.log("blockscope",ctx,ism);
+                if (ism && !ctx.inBlockScope)
+                    annotation(stmt, { varInMain: true });
+                for (const d of stmt.decls) {
+                    if (ism && !ctx.inBlockScope) {
+                        annotation(d, { varInMain: true });
+                        annotation(d, { declaringClass: klass });
+                    }
+                    else {
+                        scope[d.name.text] = new SI.LOCAL(ctx.finfo, true);
+                        annotation(d, { declaringFunc: ctx.finfo });
+                    }
+                }
+            }
+        }
+    }
     function annotateSubFuncExpr(node) {
         var m, ps;
         var body = node.body;
@@ -3717,13 +3827,13 @@ function annotateSource2(klass, env) {
         //var locals;
         ctx.enter({ finfo }, function () {
             ps.forEach(function (p) {
-                var si = new SI.PARAM(finfo); //genSt(ST.PARAM,{declaringFunc:finfo});
+                var si = new SI.PARAM(finfo);
                 annotation(p, { scopeInfo: si });
                 ns[p.name.text] = si;
             });
             finfo.locals = collectLocals(body);
             copyLocals(finfo, ns);
-            annotateVarAccesses(body, ns);
+            annotateVarAccesses(body.stmts, ns);
         });
         finfo.scope = ns;
         //finfo.name=name;
@@ -4236,8 +4346,9 @@ exports.ScopeTypes = {
 var ScopeInfos;
 (function (ScopeInfos) {
     class LOCAL {
-        constructor(declaringFunc) {
+        constructor(declaringFunc, isBlockScope) {
             this.declaringFunc = declaringFunc;
+            this.isBlockScope = isBlockScope;
             this.type = exports.ScopeTypes.LOCAL;
         }
     }
@@ -5668,7 +5779,7 @@ module.exports = function PF({ TT }) {
     /*var trailFor=tk(";").and(expr.opt()).and(tk(";")).and(expr.opt()).ret(function (s, cond, s2, next) {
         return {cond: cond, next:next  };
     });*/
-    var forin = g("forin").ands(tk("var").opt() /*.firstTokens(["var","symbol"])*/, symbol.sep1(tk(","), true), tk("in").or(tk("of")), expr).ret("isVar", "vars", "inof", "set");
+    var forin = g("forin").ands((tk("var").or(tk("let"))).opt() /*.firstTokens(["var","symbol"])*/, symbol.sep1(tk(","), true), tk("in").or(tk("of")), expr).ret("isVar", "vars", "inof", "set");
     var normalFor = g("normalFor").ands(stmt_l, expr.opt(), tk(";"), expr.opt()).ret("init", "cond", null, "next");
     /*var infor=expr.and(trailFor.opt()).ret(function (a,b) {
         if (b==null) return {type:"forin", expr: a};
@@ -5692,7 +5803,7 @@ module.exports = function PF({ TT }) {
     var typeExpr = g("typeExpr").ands(symbol).ret("name");
     var typeDecl = g("typeDecl").ands(tk(":"), typeExpr).ret(null, "vtype");
     var varDecl = g("varDecl").ands(symbol, typeDecl.opt(), tk("=").and(expr).retN(1).opt()).ret("name", "typeDecl", "value");
-    var varsDecl = g("varsDecl").ands(tk("var"), varDecl.sep1(tk(","), true), tk(";")).ret(null, "decls");
+    var varsDecl = g("varsDecl").ands(tk("var").or(tk("let")), varDecl.sep1(tk(","), true), tk(";")).ret("declPrefix", "decls");
     var paramDecl = g("paramDecl").ands(symbol, typeDecl.opt()).ret("name", "typeDecl");
     var paramDecls = g("paramDecls").ands(tk("("), comLastOpt(paramDecl), tk(")")).ret(null, "params");
     var setterDecl = g("setterDecl").ands(tk("="), paramDecl).ret(null, "value");
@@ -9140,7 +9251,7 @@ module.exports = tokenizerFactory_1.tokenizerFactory({
     caseInsensitive: false,
     reserved: {
         "function": true, "var": true, "return": true, "typeof": true, "if": true,
-        "__typeof": true, "__await": true,
+        "__typeof": true, "__await": true, "let": true, "const": true,
         "for": true,
         "else": true,
         "super": true,
@@ -14366,11 +14477,11 @@ class TonyuThread {
         this.generator = null;
         this._isDead = false;
         //this._isAlive=true;
-        this.cnt = 0;
+        //this.cnt=0;
         this._isWaiting = false;
         this.fSuspended = false;
         //this.tryStack=[];
-        this.preemptionTime = 60;
+        this.preemptionTime = Tonyu.globals.$preemptionTime || 5;
         this.onEndHandlers = [];
         this.onTerminateHandlers = [];
         this.id = idSeq++;
@@ -14402,7 +14513,7 @@ class TonyuThread {
     }
     suspend() {
         this.fSuspended = true;
-        this.cnt = 0;
+        //this.cnt=0;
     }
     /*enter(frameFunc: Function) {
         //var n=frameFunc.name;
@@ -14601,12 +14712,12 @@ class TonyuThread {
             return;
         const sv = this.Tonyu.currentThread;
         this.Tonyu.currentThread = fb;
-        fb.cnt = fb.preemptionTime;
+        const lim = performance.now() + fb.preemptionTime;
         fb.preempted = false;
         fb.fSuspended = false;
         let awaited = null;
         try {
-            while (fb.cnt-- > 0) {
+            while (performance.now() < lim && !this.fSuspended) {
                 const n = this.generator.next();
                 if (n.value) {
                     awaited = n.value;
@@ -14618,7 +14729,7 @@ class TonyuThread {
                     break;
                 }
             }
-            fb.preempted = (!awaited) && (!fb.fSuspended) && fb.isAlive();
+            fb.preempted = (!awaited) && (!this.fSuspended) && this.isAlive();
         }
         catch (e) {
             return this.exception(e);
