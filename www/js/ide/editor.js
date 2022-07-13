@@ -213,6 +213,7 @@ $(function () {
         return null;
     }
     const runDialog=new DebugDialog(runDialogParam);
+    ide.runDialog=runDialog;
     window.runDialog=runDialog;
     function displayMode(mode/*, next*/) {
         // mode == run     compile_error     runtime_error    edit
@@ -321,14 +322,14 @@ $(function () {
         alert(e);
         alertOnce=function(){};
     };
-    function jump(file,row=1,col=1) {
+    function jump(file,row=null,col=null) {
         //alert(file+":"+row+":"+col);
         fl.select(file);
         var inf=getCurrentEditorInfo();
         if (inf) {
             setTimeout(function () {
                 var prog=getCurrentEditor();
-                if (prog) prog.gotoLine(row,col);
+                if (prog && row!=null && col!=null) prog.gotoLine(row,col);
             },50);
         }
     }

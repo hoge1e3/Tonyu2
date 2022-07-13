@@ -26,18 +26,23 @@ define(function(require, exports, module) {
             this.dom.dialog("close");
             this.forceClose = false;
         }
-        show(reset) {
+        resize(size) {
+            // size: {left,top,width,height};
+            this.show(false, size);
+        }
+        show(reset, size) {
+            const doResize=!!size;
             const t = this;
             var d = t.dom;
             var param = t.param;
             var desktopEnv = param.desktopEnv;
-            if (reset) desktopEnv.runDialog = {};
-            t.size = desktopEnv.runDialog || (desktopEnv.runDialog = {});
-            var size = t.size;
+            if (reset || !desktopEnv.runDialog) desktopEnv.runDialog = {};
+            size=Object.assign(desktopEnv.runDialog, size||{});
+            t.size=size;
             t.iframe = d.$vars.iframe;
             size.width = size.width || ($(window).width() - 100) / 2 - 20;
             size.height = size.height || param.screenH - 20;
-            if (!t.shownOnce || reset) {
+            if (!t.shownOnce || reset || doResize) {
                 console.log("DIag::show", size);
                 d.dialog({
                     width: size.width,
@@ -45,7 +50,8 @@ define(function(require, exports, module) {
                     position: size.top ?
                         {
                             my: "left top",
-                            at: "left+" + size.left + " top+" + size.top
+                            at: "left+" + size.left + " top+" + size.top,
+                            of: $("#navBar")
                         } :
                         { my: "right top", at: "right-10 bottom+10", of: $("#navBar") },
                     resize: function(e, ngeom) {
@@ -98,7 +104,7 @@ define(function(require, exports, module) {
             } else {
                 d.dialog();
             }
-            if (!reset) t.iframe.attr("src", "debug.html?prj=" + param.prj+(t.param.isCloned? "&nodebug=1":""));
+            if (!reset && !doResize) t.iframe.attr("src", "debug.html?prj=" + param.prj+(t.param.isCloned? "&nodebug=1":""));
             t.opened = true;
             $(".ui-dialog-titlebar-close").blur();
             t.focusToIframe();
