@@ -37,7 +37,7 @@ function addX() {
     z+=p.z;
     return this;
 }
-function addX_v(p:Vector) {
+function addX_v(p:Vec3) {
     x+=p.x;
     y+=p.y;
     z+=p.z;
