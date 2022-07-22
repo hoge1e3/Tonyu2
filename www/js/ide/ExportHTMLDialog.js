@@ -6,6 +6,7 @@ function (east,UI,Klass,root,R,WebSite,extLink) {
         show: function (t,options) {
             //var dir=t.prj.getDir();
             t.options=options||{IE:false};
+            t.options.IE=false;
             t.prj.removeThumbnail();
             t.createDOM();
             t.resetUpload();
@@ -31,11 +32,6 @@ function (east,UI,Klass,root,R,WebSite,extLink) {
             t.dom=UI("div",{title:R("generateSingleHTML")},
                 ["div",R("thisIsExecutableInSingleHTML")],
                 ["div",
-                    ["input", {id:"ie",$var:"IE",$edit:"IE",type:"checkbox"
-                    }],
-                    ["label",{"for":"ie"},R("runnableInIE11")],
-                ],
-                ["div",
                     ["input", {id:"ie",$var:"editButton",type:"checkbox"
                     }],
                     ["label",{"for":"ie"},R("showEditButton")],
@@ -47,10 +43,6 @@ function (east,UI,Klass,root,R,WebSite,extLink) {
                 ["textarea",{$var:"prog",rows:20,cols:60,placeholder:"Please wait..."}],
             );
             t.dom.$edits.load(t.options);
-            t.dom.$vars.IE.on("change",()=> {
-                t.options.IE=t.dom.$vars.IE.prop("checked");
-                t.write();
-            });
             t.dom.$vars.editButton.on("change",()=> {
                 t.write();
             });

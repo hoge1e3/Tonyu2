@@ -13,7 +13,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             var resObj=resFile.obj();
             var scriptServer=WebSite.scriptServer||"https://edit.tonyu.jp/";
             buf+=`<link rel="stylesheet" href="${scriptServer}/css/runtime.css"/>`;
-            const genPath=scriptServer+"js/"+(options.IE?"gen":"g2")+"/";
+            const genPath=scriptServer+"js/g2/";
             resObj.images.forEach(function (im) {
                 if (WebSite.builtinAssetNames[im.url]) {
                     buf+='<script src="'+scriptServer+im.url+'.js"></script>\n';
@@ -21,9 +21,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             });
             buf+='<script src="'+scriptServer+'js/lib/jquery-1.12.1.js" type="text/javascript"></script>\n';
             buf+='<script src="'+genPath+'runScript_concat.min.js" type="text/javascript"></script>\n';
-            if (!options.IE) {
-                buf+=`<script src="${scriptServer}js/runtime/detectUnsupported.js"></script>`;
-            }
+            buf+=`<script src="${scriptServer}js/runtime/detectUnsupported.js"></script>`;
         }
         var binary=[],json=[];
         //dir=FS.get(dir);

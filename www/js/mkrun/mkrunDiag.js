@@ -38,10 +38,6 @@ function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root,jshint,R) {
                     ],
                 ["h1",R("executableOptions")],
                     ["div",
-                        ["input", {id:"ie",$edit:"IE",type:"checkbox"}],
-                        ["label",{"for":"ie"},R("RunInIE11")],
-                    ],
-                    ["div",
                         ["input", {id:"src",$edit:"src",type:"checkbox"}],
                         ["label",{"for":"src"},R("attachSourceFiles")],
                         ["div",
@@ -77,7 +73,6 @@ function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root,jshint,R) {
                 vars.progress.text(f.name());
                 return DU.timeout(0);
             };
-            opt.IE=model.IE;
             if (type==="dir") opt.dest=FS.get(FS.PathUtil.directorify(model.dest));
             return mkrun.run2(prj,type, opt ).then(function (r) {
                 /*if (outtype.value==="zip") {

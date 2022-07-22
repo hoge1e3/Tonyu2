@@ -71,7 +71,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
         var wwwDir=FS.get(WebSite.wwwDir);
         var jsDir=wwwDir.rel("js/");
         const runScrFileName="runScript2_concat.min.js";
-        const genDir=options.IE?"gen":"g2";
+        const genDir="g2";
         const scriptServer=WebSite.scriptServer||"https://edit.tonyu.jp/";
 
         console.log("jsDir",jsDir);
@@ -131,10 +131,8 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
             var htmlfile=wwwDir.rel("html/runtimes/index.html");
             return htmlfile.text(function (htmlcont) {
                 htmlcont=htmlcont.replace(/<!--SPLASH-->/,splashElement);
-                if (!options.IE) {
-                    htmlcont=htmlcont.replace(/<!--UNSUP-->/,
-                        `<script src="${scriptServer}js/runtime/detectUnsupported.js"></script>`);
-                }
+                htmlcont=htmlcont.replace(/<!--UNSUP-->/,
+                    `<script src="${scriptServer}js/runtime/detectUnsupported.js"></script>`);
                 htmlcont=htmlcont.replace(/TONYU_APP_VERSION/g,Math.floor(Math.random()*100000));
                 return dest.rel(htmlfile.name()).text(htmlcont);
             });
