@@ -46,7 +46,7 @@ $(function () {
         $("#fileViewer").hide();
         $("#runAreaParent").hide();
         $("#mainArea").attr("class","col-xs-12");
-        $("#fileSel").show();
+        $("#mobileBar").show();
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     const autoRun=Util.getQueryString("autoRun");
@@ -102,6 +102,7 @@ $(function () {
     }
     onResize();
     const em=RealtimeErrorMarker(ide);
+    $("#mobileRun").click(F(run));
     KeyEventChecker.down(document,"F9",F(run));
     KeyEventChecker.down(document,"F2",F(stop));
     KeyEventChecker.down(document,"ctrl+s",F(save));
