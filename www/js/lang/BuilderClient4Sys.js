@@ -351,7 +351,7 @@ exports.match = exports.isVar = exports.Z = exports.Y = exports.X = exports.W = 
 const VAR = Symbol("$var"); //,THIZ="$this";
 function v(name, cond = {}) {
     const res = function (cond2) {
-        const cond3 = { ...cond };
+        const cond3 = Object.assign({}, cond);
         Object.assign(cond3, cond2);
         return v(name, cond3);
     };
