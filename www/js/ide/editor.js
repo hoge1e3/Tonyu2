@@ -498,5 +498,10 @@ $(function () {
         }
     });
     curPrj.fullCompile();
+    $(window).on("beforeunload",function(e){
+        if(fl.isModified()){
+            return "保存されていないデータがあります。\nこれまでの作業を保存するためには一度実行してください。";
+        }
+    });
 });
 });
