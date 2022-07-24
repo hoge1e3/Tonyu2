@@ -6056,11 +6056,16 @@ module.exports = function PF({ TT }) {
             //console.log("ARRAYTYPE",left,op);
             return { type: "arrayTypeExpr", element: left };
         }
+        if (op.type === "optionalTypePostfix") {
+            return left; //TODO
+        }
         console.log(left, op);
         throw new Error("Invalid type op type");
     });
     const arrayTypePostfix = g("arrayTypePostfix").ands(tk("["), tk("]")).ret();
+    const optionalTypePostfix = g("optionalTypePostfix").ands(tk("?")).ret();
     tExp.postfix(0, arrayTypePostfix);
+    tExp.postfix(0, optionalTypePostfix);
     tExp.element(namedTypeExpr);
     const typeExpr = tExp.build();
     var typeDecl = g("typeDecl").ands(tk(":"), typeExpr).ret(null, "vtype");
