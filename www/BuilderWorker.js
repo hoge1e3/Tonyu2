@@ -1839,6 +1839,7 @@ const OM = __importStar(require("./ObjectMatcher"));
 const cu = __importStar(require("./compiler"));
 const context_1 = require("./context");
 const CompilerTypes_1 = require("./CompilerTypes");
+const compiler_1 = require("./compiler");
 //export=(cu as any).JSGenerator=(function () {
 // TonyuソースファイルをJavascriptに変換する
 const TH = "_thread", THIZ = "_this", ARGS = "_arguments", FIBPRE = "fiber$" /*F,RMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100*/; //G
@@ -2055,7 +2056,7 @@ function genJS(klass, env, genOptions) {
             }*/
         },
         varsDecl: function (node) {
-            if (node.declPrefix.text === "var") {
+            if ((0, compiler_1.isNonBlockScopeDeclprefix)(node.declPrefix)) {
                 const decls = node.decls.filter((n) => n.value);
                 if (decls.length > 0) {
                     for (let decl of decls) {
@@ -2274,7 +2275,7 @@ function genJS(klass, env, genOptions) {
             var an = annotation(node);
             if (node.inFor.type == "forin") {
                 const inFor = node.inFor;
-                const pre = (inFor.isVar && inFor.isVar.text !== "var" ? inFor.isVar.text + " " : "");
+                const pre = ((0, compiler_1.isBlockScopeDeclprefix)(inFor.isVar) ? inFor.isVar.text + " " : "");
                 buf.printf("for (%s[%f] of %s(%v,%s)) {%{" +
                     "%f%n" +
                     "%}}", pre, loopVarsF(inFor.isVar, inFor.vars), ITER2, inFor.set, inFor.vars.length, noSurroundCompoundF(node.loop));
@@ -2439,7 +2440,7 @@ function genJS(klass, env, genOptions) {
         var a = annotation(node);
         var thisForVIM = a.varInMain ? THIZ + "." : "";
         var pa = annotation(parent);
-        const pre = (parent.declPrefix.text === "var" || pa.varInMain ? "" : parent.declPrefix + " ");
+        const pre = ((0, compiler_1.isNonBlockScopeDeclprefix)(parent.declPrefix) || pa.varInMain ? "" : parent.declPrefix + " ");
         if (node.value) {
             const t = (!ctx.noWait) && annotation(node).fiberCall;
             const to = (!ctx.noWait) && annotation(node).otherFiberCall;
@@ -3184,7 +3185,7 @@ function initClassDecls(klass, env) {
                 addField(node.name, node);
             },
             varsDecl(node) {
-                if (ctx.inBlockScope && node.declPrefix.text !== "var")
+                if (ctx.inBlockScope && (0, compiler_1.isBlockScopeDeclprefix)(node.declPrefix))
                     return;
                 for (let d of node.decls) {
                     fieldsCollector.visit(d);
@@ -3216,7 +3217,7 @@ function initClassDecls(klass, env) {
             },
             "forin": function (node) {
                 var isVar = node.isVar;
-                if (isVar && isVar.text === "var") {
+                if ((0, compiler_1.isNonBlockScopeDeclprefix)(isVar)) {
                     node.vars.forEach((v) => {
                         addField(v);
                     });
@@ -3456,6 +3457,11 @@ function annotateSource2(klass, env) {
         //console.log("LVal",node);
         throw (0, TError_1.default)((0, R_1.default)("invalidLeftValue", getSource(node)), srcFile, node.pos);
     }
+    function prohibitGlobalNameOnBlockScopeDecl(v) {
+        var isg = v.text.match(/^\$/);
+        if (isg)
+            throw (0, TError_1.default)((0, R_1.default)("CannotUseGlobalVariableInLetOrConst"), srcFile, v.pos);
+    }
     function getScopeInfo(node) {
         const n = node + "";
         const si = ctx.scope[n];
@@ -3508,7 +3514,7 @@ function annotateSource2(klass, env) {
         }
         return si;
     }
-    // locals are only var, not let or const
+    // locals are only var, not let or const. see collectBlockScopedVardecl
     var localsCollector = new Visitor_1.Visitor({
         varDecl: function (node) {
             if (ctx.isMain) {
@@ -3524,7 +3530,7 @@ function annotateSource2(klass, env) {
             }
         },
         varsDecl(node) {
-            if (node.declPrefix.text !== "var")
+            if ((0, compiler_1.isBlockScopeDeclprefix)(node.declPrefix))
                 return;
             for (let d of node.decls) {
                 localsCollector.visit(d);
@@ -3545,7 +3551,7 @@ function annotateSource2(klass, env) {
         "forin": function (node) {
             var isVar = node.isVar;
             node.vars.forEach(function (v) {
-                if (isVar && isVar.text === "var") {
+                if ((0, compiler_1.isNonBlockScopeDeclprefix)(isVar)) {
                     if (ctx.isMain) {
                         annotation(v, { varInMain: true });
                         annotation(v, { declaringClass: klass });
@@ -3645,8 +3651,9 @@ function annotateSource2(klass, env) {
                     collectBlockScopedVardecl([node.inFor.init], ns);
                 }
                 else {
-                    if (node.inFor.isVar && node.inFor.isVar.text !== "var") {
+                    if ((0, compiler_1.isBlockScopeDeclprefix)(node.inFor.isVar)) {
                         for (let v of node.inFor.vars) {
+                            prohibitGlobalNameOnBlockScopeDecl(v);
                             ns[v.text] = new SI.LOCAL(ctx.finfo, true);
                         }
                     }
@@ -3909,12 +3916,13 @@ function annotateSource2(klass, env) {
     }
     function collectBlockScopedVardecl(stmts, scope) {
         for (let stmt of stmts) {
-            if (stmt.type === "varsDecl" && stmt.declPrefix.text !== "var") {
+            if (stmt.type === "varsDecl" && (0, compiler_1.isBlockScopeDeclprefix)(stmt.declPrefix)) {
                 const ism = ctx.finfo.isMain;
                 //console.log("blockscope",ctx,ism);
                 if (ism && !ctx.inBlockScope)
                     annotation(stmt, { varInMain: true });
                 for (const d of stmt.decls) {
+                    prohibitGlobalNameOnBlockScopeDecl(d.name);
                     if (ism && !ctx.inBlockScope) {
                         annotation(d, { varInMain: true });
                         annotation(d, { declaringClass: klass });
@@ -4507,10 +4515,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getParams = exports.getDependingClasses = exports.getProperty = exports.getMethod = exports.getField = exports.typeDigest2ResolvedType = exports.digestDecls = exports.resolvedType2Digest = exports.getSource = exports.packAnnotation = exports.annotation = exports.genSym = exports.nullCheck = exports.newScope = exports.getScopeType = exports.ScopeInfos = exports.ScopeTypes = void 0;
+exports.getParams = exports.getDependingClasses = exports.getProperty = exports.getMethod = exports.getField = exports.typeDigest2ResolvedType = exports.digestDecls = exports.resolvedType2Digest = exports.getSource = exports.packAnnotation = exports.annotation = exports.genSym = exports.nullCheck = exports.newScope = exports.getScopeType = exports.ScopeInfos = exports.ScopeTypes = exports.isNonBlockScopeDeclprefix = exports.isBlockScopeDeclprefix = void 0;
 const TonyuRuntime_1 = __importDefault(require("../runtime/TonyuRuntime"));
 const root_1 = __importDefault(require("../lib/root"));
 const CompilerTypes_1 = require("./CompilerTypes");
+const NONBLOCKSCOPE_DECLPREFIX = "var";
+function isBlockScopeDeclprefix(t) {
+    return t && t.text !== NONBLOCKSCOPE_DECLPREFIX;
+}
+exports.isBlockScopeDeclprefix = isBlockScopeDeclprefix;
+function isNonBlockScopeDeclprefix(t) {
+    return t && t.text === NONBLOCKSCOPE_DECLPREFIX;
+}
+exports.isNonBlockScopeDeclprefix = isNonBlockScopeDeclprefix;
 exports.ScopeTypes = {
     FIELD: "field", METHOD: "method", NATIVE: "native",
     LOCAL: "local", THVAR: "threadvar", PROP: "property",
@@ -6028,7 +6045,8 @@ module.exports = function PF({ TT }) {
     /*var trailFor=tk(";").and(expr.opt()).and(tk(";")).and(expr.opt()).ret(function (s, cond, s2, next) {
         return {cond: cond, next:next  };
     });*/
-    var forin = g("forin").ands((tk("var").or(tk("let"))).opt() /*.firstTokens(["var","symbol"])*/, symbol.sep1(tk(","), true), tk("in").or(tk("of")), expr).ret("isVar", "vars", "inof", "set");
+    const declPrefix = tk("var").or(tk("let"));
+    var forin = g("forin").ands(declPrefix.opt(), symbol.sep1(tk(","), true), tk("in").or(tk("of")), expr).ret("isVar", "vars", "inof", "set");
     var normalFor = g("normalFor").ands(stmt_l, expr.opt(), tk(";"), expr.opt()).ret("init", "cond", null, "next");
     /*var infor=expr.and(trailFor.opt()).ret(function (a,b) {
         if (b==null) return {type:"forin", expr: a};
@@ -6036,7 +6054,6 @@ module.exports = function PF({ TT }) {
     });*/
     var infor = normalFor.or(forin);
     var fors = g("for").ands(tk("for"), tk("("), infor, tk(")"), "stmt").ret(null, null, "inFor", null, "loop");
-    //var fors=g("for").ands(tk("for"),tk("("), tk("var").opt() , infor , tk(")"),"stmt" ).ret(null,null,"isVar", "inFor",null, "loop");
     var whiles = g("while").ands(tk("while"), tk("("), expr, tk(")"), "stmt").ret(null, null, "cond", null, "loop");
     var dos = g("do").ands(tk("do"), "stmt", tk("while"), tk("("), expr, tk(")"), tk(";")).ret(null, "loop", null, null, "cond", null, null);
     var cases = g("case").ands(tk("case"), expr, tk(":"), stmtList).ret(null, "value", null, "stmts");
@@ -6070,7 +6087,7 @@ module.exports = function PF({ TT }) {
     const typeExpr = tExp.build();
     var typeDecl = g("typeDecl").ands(tk(":"), typeExpr).ret(null, "vtype");
     var varDecl = g("varDecl").ands(symbol, typeDecl.opt(), tk("=").and(expr).retN(1).opt()).ret("name", "typeDecl", "value");
-    var varsDecl = g("varsDecl").ands(tk("var").or(tk("let")), varDecl.sep1(tk(","), true), tk(";")).ret("declPrefix", "decls");
+    var varsDecl = g("varsDecl").ands(declPrefix, varDecl.sep1(tk(","), true), tk(";")).ret("declPrefix", "decls");
     var paramDecl = g("paramDecl").ands(symbol, typeDecl.opt()).ret("name", "typeDecl");
     var paramDecls = g("paramDecls").ands(tk("("), comLastOpt(paramDecl), tk(")")).ret(null, "params");
     var setterDecl = g("setterDecl").ands(tk("="), paramDecl).ret(null, "value");
