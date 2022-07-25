@@ -492,6 +492,7 @@ Tonyu.klass.define({
         "field strict";
         
         
+        
       },
       fiber$main :function* _trc_SpriteMod_f_main(_thread) {
         "use strict";
@@ -499,6 +500,7 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         
         "field strict";
+        
         
         
         
@@ -720,7 +722,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"initSpriteMod":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initTransform":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__align":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"prepareImage":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"color":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"colorHSL":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setVisible":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"detectSpriteType":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"p":{},"pImg":{},"text":{},"size":{},"font":{},"align":{},"fillStyle":{},"scaleX":{},"scaleY":{},"width":{},"height":{},"radius":{},"rotation":{},"alpha":{},"position":{},"zOrder":{},"_isInvisible":{},"subsprites":{},"_alignVal":{},"_align":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"initSpriteMod":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initTransform":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__align":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"prepareImage":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"color":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"colorHSL":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setVisible":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"detectSpriteType":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"p":{},"pImg":{},"text":{},"size":{},"font":{},"align":{},"fillStyle":{},"scaleX":{},"scaleY":{},"width":{},"height":{},"radius":{},"rotation":{},"alpha":{},"position":{},"zOrder":{},"_isInvisible":{},"subsprites":{},"_alignVal":{},"_align":{},"__addedToSprites":{"vtype":"kernel.Sprites"}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.SpriteMod3D',
@@ -4990,7 +4992,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"changeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersects":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"contains":{"nowait":false,"isMain":false,"vtype":{"params":["Object"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["Object"],"returnValue":null}},"layerChanged":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__screen":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"_layer":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"changeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersects":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"contains":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["Object"],"returnValue":null}},"layerChanged":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__screen":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"_layer":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.CubeShape',
@@ -5239,7 +5241,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"initAxis":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Direction"],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rotate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"localToWorld":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"worldToLocal":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"forward":{},"down":{},"right":{},"back":{},"up":{},"left":{},"quaternion":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"initAxis":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Direction"],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rotate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"localToWorld":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"worldToLocal":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"forward":{},"down":{},"right":{},"back":{},"up":{},"left":{},"quaternion":{"vtype":"kernel.Quaternion"}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.ParentChanger',
@@ -5525,7 +5527,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform"],"returnValue":null}},"cn":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"chk":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getNode":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform"],"returnValue":null}},"change":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform","kernel.Transform"],"returnValue":null}}},"fields":{"dstParent":{},"nodes":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform"],"returnValue":null}},"cn":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"chk":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getNode":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform"],"returnValue":null}},"change":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform","kernel.Transform"],"returnValue":null}}},"fields":{"dstParent":{"vtype":"kernel.Transform"},"nodes":{"vtype":"Object"}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.PointShape',
@@ -5644,7 +5646,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"changeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["Object"],"returnValue":null}},"__getter__xmin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__xmax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"changeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__xmin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__xmax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Quaternion',
@@ -6046,7 +6048,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion"],"returnValue":null}},"__getter__length":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__lengthSQ":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"addX":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion"],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion"],"returnValue":null}},"subX":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion"],"returnValue":null}},"sub":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion"],"returnValue":null}},"mulX":{"nowait":false,"isMain":false,"vtype":{"params":["Number"],"returnValue":null}},"mul":{"nowait":false,"isMain":false,"vtype":{"params":["Number"],"returnValue":null}},"product":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion","kernel.Quaternion"],"returnValue":null}},"__getter__inverse":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__conjugate":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"rotate":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Vec3","kernel.Vec3"],"returnValue":null}},"calcTheta":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{},"z":{},"w":{},"axis":{},"r":{},"theta":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion"],"returnValue":null}},"__getter__length":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__lengthSQ":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"addX":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion"],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion"],"returnValue":null}},"subX":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion"],"returnValue":null}},"sub":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion"],"returnValue":null}},"mulX":{"nowait":false,"isMain":false,"vtype":{"params":["Number"],"returnValue":null}},"mul":{"nowait":false,"isMain":false,"vtype":{"params":["Number"],"returnValue":null}},"product":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Quaternion","kernel.Quaternion"],"returnValue":null}},"__getter__inverse":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__conjugate":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"rotate":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Vec3","kernel.Vec3"],"returnValue":null}},"calcTheta":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{"vtype":"Number"},"y":{"vtype":"Number"},"z":{"vtype":"Number"},"w":{"vtype":"Number"},"axis":{"vtype":"kernel.Vec3"},"r":{"vtype":"Number"},"theta":{"vtype":"Number"}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.RectShape',
@@ -6184,7 +6186,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"changeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.RectShape"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["Object"],"returnValue":null}},"__getter__xmin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__xmax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{},"width":{},"height":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"changeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.RectShape"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__xmin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__xmax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{},"width":{},"height":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Transform',
@@ -6628,7 +6630,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"_static":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__parent":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__parent":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__quaternion":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"child":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__isRoot":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform"],"returnValue":null}},"product":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform","kernel.Transform"],"returnValue":null}},"parentChanged":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform","kernel.Transform"],"returnValue":null}},"changeParent":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform"],"returnValue":null}},"localToWorld":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"childToSibling":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"worldToLocal":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"siblingToChild":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"changeScale":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isSibling":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isParentOf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isChildOf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__inverse":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"actor":{},"_parent":{},"direction":{},"position":{},"scale":{},"id":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"_static":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__parent":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__parent":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__quaternion":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"child":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__isRoot":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform"],"returnValue":null}},"product":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform","kernel.Transform"],"returnValue":null}},"parentChanged":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform","kernel.Transform"],"returnValue":null}},"changeParent":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Transform"],"returnValue":null}},"localToWorld":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"childToSibling":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"worldToLocal":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"siblingToChild":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"changeScale":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isSibling":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isParentOf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isChildOf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__inverse":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"actor":{"vtype":"kernel.Actor3D"},"_parent":{"vtype":"kernel.Transform"},"direction":{},"position":{},"scale":{},"id":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Transform2D',
@@ -9022,7 +9024,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"addSprite2D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addSprite3D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"to2D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setTransform":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"transform":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"save":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"camera":{},"sprites2D":{},"curTransform":{},"stack":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"addSprite2D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addSprite3D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"to2D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setTransform":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"transform":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"save":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"camera":{"vtype":"kernel.Camera3D"},"sprites2D":{"vtype":"Array"},"curTransform":{},"stack":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.GIFWriter',
@@ -9995,7 +9997,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"ignoreCheck":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"genHeader":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadHeader":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"checkExprValidity":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"assert":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"genChip":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadChip":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"genEntire":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"save":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"exprTocNumber":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"exprAt":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"patToExpr":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"exprToPat":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"load":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"loadVer1":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"saveVer1":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"loadVer2":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"map":{},"resc":{},"patVals":{},"c2p":{},"cNumberSeq":{},"entire":{},"noCheck":{},"r":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"ignoreCheck":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"genHeader":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadHeader":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"checkExprValidity":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"assert":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"genChip":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadChip":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"genEntire":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"save":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"exprTocNumber":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"exprAt":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"patToExpr":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"exprToPat":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"load":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"loadVer1":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"saveVer1":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"loadVer2":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"map":{},"resc":{},"patVals":{},"c2p":{},"cNumberSeq":{"vtype":"Number"},"entire":{},"noCheck":{},"r":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.MultiLayerTouches',
@@ -10653,7 +10655,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"get":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addSubsprite":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":["Array"],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"sprites":{},"transform":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"get":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addSubsprite":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":["Array"],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"sprites":{"vtype":"Array"},"transform":{"vtype":"kernel.Transform"}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.SpriteMod2D',
@@ -15432,7 +15434,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"getkey":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"keydown":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"keyup":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"i":{},"k":{},"v":{},"bmap":{},"up":{},"stats":{},"codes":{},"preventDefaults":{},"codesRev":{},"lastMouseDown":{},"reservedAction":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"getkey":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"keydown":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"keyup":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"i":{"vtype":"Number"},"k":{},"v":{},"bmap":{},"up":{},"stats":{},"codes":{},"preventDefaults":{},"codesRev":{},"lastMouseDown":{},"reservedAction":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.TouchFinger',
@@ -16421,11 +16423,13 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
+        
       },
       fiber$main :function* _trc_Matrix_f_main(_thread) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
+        
         
         
       },
@@ -16876,7 +16880,7 @@ Tonyu.klass.define({
         }
         switch (arity) {
         case 3:
-          res.next=(function anonymous_2484() {
+          res.next=(function anonymous_2500() {
             var key;
             var xy;
             
@@ -16917,7 +16921,7 @@ Tonyu.klass.define({
         }
         switch (arity) {
         case 3:
-          res.next=(function anonymous_2484() {
+          res.next=(function anonymous_2500() {
             var key;
             var xy;
             
@@ -16973,7 +16977,7 @@ Tonyu.klass.define({
         res = {x: _this.xmin,y: _this.ymin,cnt: 0};
         
         if (_this.xmin==null||_this.ymin==null||_this.xmax==null||_this.ymax==null) {
-          res.next=(function anonymous_3143() {
+          res.next=(function anonymous_3159() {
             
             return false;
           });
@@ -16982,7 +16986,7 @@ Tonyu.klass.define({
         }
         switch (arity) {
         case 3:
-          res.next=(function anonymous_3245() {
+          res.next=(function anonymous_3261() {
             
             if (res.x>_this.xmax) {
               res.x=_this.xmin;
@@ -17016,7 +17020,7 @@ Tonyu.klass.define({
         res = {x: _this.xmin,y: _this.ymin,cnt: 0};
         
         if (_this.xmin==null||_this.ymin==null||_this.xmax==null||_this.ymax==null) {
-          res.next=(function anonymous_3143() {
+          res.next=(function anonymous_3159() {
             
             return false;
           });
@@ -17025,7 +17029,7 @@ Tonyu.klass.define({
         }
         switch (arity) {
         case 3:
-          res.next=(function anonymous_3245() {
+          res.next=(function anonymous_3261() {
             
             if (res.x>_this.xmax) {
               res.x=_this.xmin;
@@ -17140,7 +17144,7 @@ Tonyu.klass.define({
         res = _this.data[_this.key(x,y)];
         
         if (res===undefined) {
-          e = {set: (function anonymous_4371(v) {
+          e = {set: (function anonymous_4387(v) {
             
             e.value=v;
             _this.set(x,y,v);
@@ -17162,7 +17166,7 @@ Tonyu.klass.define({
         res = _this.data[_this.key(x,y)];
         
         if (res===undefined) {
-          e = {set: (function anonymous_4371(v) {
+          e = {set: (function anonymous_4387(v) {
             
             e.value=v;
             _this.set(x,y,v);
@@ -17486,7 +17490,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"fromArray":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"toArray":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"load":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cross":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"search":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"find":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"crop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"rev":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"keysIterator":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"rectIterator":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"tonyuIteratorKeys":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"tonyuIterator":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"tonyuIteratorRect":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"unkey":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"key":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"__getter__rows":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__cols":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"get":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"exists":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"neighbors":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"fill":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"pack":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"data":{},"ymax":{},"xmax":{},"row":{},"cell":{},"iterateMode":{},"xmin":{},"ymin":{},"neighborDirs":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"fromArray":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"toArray":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"load":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cross":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"search":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"find":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"crop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"rev":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"keysIterator":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"rectIterator":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"tonyuIteratorKeys":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"tonyuIterator":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"tonyuIteratorRect":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"unkey":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"key":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"__getter__rows":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__cols":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"get":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"exists":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"neighbors":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"fill":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"pack":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"name":{"vtype":"String"},"data":{},"ymax":{},"xmax":{},"row":{},"cell":{},"iterateMode":{},"xmin":{},"ymin":{},"neighborDirs":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.QueryMod',
@@ -20497,7 +20501,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"to2D":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Vec3"],"returnValue":null}},"draw3D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"goBehind":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"z1":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"to2D":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Vec3"],"returnValue":null}},"draw3D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"goBehind":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"z1":{"vtype":"Number"}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.GameScreen',
@@ -26196,7 +26200,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getWorld":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initBody":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allContactPoints":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"contactPoint":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"allContact":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"allContacts":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"applyForce":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"applyImpulse":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"applyTorque":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveBy":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"contactTo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"die":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"addRevoluteJoint":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__rotation":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__rotation":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__x":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__x":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__y":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__y":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__vx":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__vx":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__vy":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__vy":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__vrotation":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__vrotation":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"body":{},"wscale":{},"b2world":{},"world":{},"isStatic":{},"shape":{},"manualRotation":{},"density":{},"friction":{},"restitution":{},"radius":{},"width":{},"height":{},"_x":{},"_y":{},"_vx":{},"_vy":{},"_rotation":{},"_vr":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getWorld":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initBody":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allContactPoints":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"contactPoint":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"allContact":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"allContacts":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"applyForce":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"applyImpulse":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"applyTorque":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveBy":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"contactTo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"die":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"addRevoluteJoint":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__rotation":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__rotation":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__x":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__x":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__y":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__y":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__vx":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__vx":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__vy":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__vy":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__vrotation":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__vrotation":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"body":{},"wscale":{},"b2world":{},"world":{"vtype":"kernel.T2World"},"isStatic":{},"shape":{},"manualRotation":{},"density":{},"friction":{},"restitution":{},"radius":{},"width":{},"height":{},"_x":{},"_y":{},"_vx":{},"_vy":{},"_rotation":{},"_vr":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.T2Body',
@@ -30502,7 +30506,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"getCurFileName":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"st":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"save":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"inRect":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawPanel":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawLetter":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"i":{},"j":{},"loadMode":{},"fileExist":{},"modified":{},"fileList":{},"fileName":{},"mapDataFile":{},"baseData":{},"loadedFile":{},"mapData":{},"mapOnData":{},"chipWidth":{},"chipHeight":{},"row":{},"col":{},"panel":{},"mIW":{},"mIH":{},"mCW":{},"mCH":{},"counter":{},"mode":{},"prevMode":{},"mapp":{},"maponp":{},"mx":{},"my":{},"chipX":{},"chipY":{},"initialWidth":{},"initialHeight":{},"layers":{},"lc":{},"selectedLayer":{},"saveFileName":{},"tmpon":{},"saveDataFile":{},"data":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"getCurFileName":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"st":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"save":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"inRect":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawPanel":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawLetter":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"i":{"vtype":"Number"},"j":{"vtype":"Number"},"loadMode":{},"fileExist":{},"modified":{},"fileList":{},"fileName":{},"mapDataFile":{},"baseData":{},"loadedFile":{},"mapData":{},"mapOnData":{},"chipWidth":{},"chipHeight":{},"row":{},"col":{},"panel":{},"mIW":{},"mIH":{},"mCW":{},"mCH":{},"counter":{},"mode":{},"prevMode":{},"mapp":{},"maponp":{},"mx":{},"my":{},"chipX":{},"chipY":{},"initialWidth":{},"initialHeight":{},"layers":{},"lc":{},"selectedLayer":{},"saveFileName":{},"tmpon":{},"saveDataFile":{},"data":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.MapEditorOLD',
@@ -30969,7 +30973,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}}},"fields":{"i":{},"j":{},"loadMode":{},"fileName":{},"mapDataFile":{},"baseData":{},"mapData":{},"mapOnData":{},"row":{},"col":{},"panel":{},"counter":{},"mode":{},"prevMode":{},"mapp":{},"mx":{},"my":{},"chipX":{},"chipY":{},"saveFileName":{},"saveDataFile":{},"data":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}}},"fields":{"i":{"vtype":"Number"},"j":{"vtype":"Number"},"loadMode":{},"fileName":{},"mapDataFile":{},"baseData":{},"mapData":{},"mapOnData":{},"row":{},"col":{},"panel":{},"counter":{},"mode":{},"prevMode":{},"mapp":{},"mx":{},"my":{},"chipX":{},"chipY":{},"saveFileName":{},"saveDataFile":{},"data":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.MapEditorOLD2',
@@ -31658,7 +31662,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"inRect":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawPanel":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"i":{},"j":{},"loadMode":{},"fileExist":{},"fileList":{},"fNames":{},"fileName":{},"mapDataFile":{},"baseData":{},"loadedFile":{},"mapData":{},"mapOnData":{},"chipWidth":{},"chipHeight":{},"row":{},"col":{},"panel":{},"mIW":{},"mIH":{},"mCW":{},"mCH":{},"counter":{},"mode":{},"prevMode":{},"mapp":{},"mx":{},"my":{},"chipX":{},"chipY":{},"saveFileName":{},"saveDataFile":{},"data":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"inRect":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawPanel":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"i":{"vtype":"Number"},"j":{"vtype":"Number"},"loadMode":{},"fileExist":{},"fileList":{},"fNames":{},"fileName":{},"mapDataFile":{},"baseData":{},"loadedFile":{},"mapData":{},"mapOnData":{},"chipWidth":{},"chipHeight":{},"row":{},"col":{},"panel":{},"mIW":{},"mIH":{},"mCW":{},"mCH":{},"counter":{},"mode":{},"prevMode":{},"mapp":{},"mx":{},"my":{},"chipX":{},"chipY":{},"saveFileName":{},"saveDataFile":{},"data":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Pad',
@@ -37859,7 +37863,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"__getter__defaultLayer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"morph":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"type":{},"fillStyle":{},"page":{},"params":{},"duration":{},"pass":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"__getter__defaultLayer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"morph":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"type":{"vtype":"String"},"fillStyle":{"vtype":"String"},"page":{},"params":{},"duration":{"vtype":"Number"},"pass":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.DxChar',

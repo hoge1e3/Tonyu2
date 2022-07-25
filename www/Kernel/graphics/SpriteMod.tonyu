@@ -7,7 +7,7 @@ var _alignVal, _align;
 native Tonyu;
 native Math;
 native console;
-
+let __addedToSprites:Sprites;
 \initSpriteMod() {//23D
     position=new Vec3View(this);
     // TODO: [win]transform should be initialized... ? [lose]NO, it should be initialized by LifeCycleMod...?

@@ -17,7 +17,7 @@ var _layer; // should be REAL layer(not group)
 \intersectsRaw(s:AbstractShape) {
     throw new Error("intersectsRaw::abstract");
 }
-\contains(s:Object/*x,y,layer*/) {
+\contains(s:AbstractShape/*x,y,layer*/) {
     if (!s) return false;
     if (s.layer===layer || !s.layer || !layer) {
         return containsRaw(s);

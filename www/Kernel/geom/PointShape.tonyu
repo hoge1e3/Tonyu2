@@ -16,7 +16,7 @@ var x,y;
 \intersectsRaw(s:AbstractShape) {
     return s.containsRaw(this);
 }
-\containsRaw(p:Object/*{x,y}*/) {
+\containsRaw(p/*{x,y}*/) {
     return p.x===x && p.y===y;
 }
 \xmin {return x;}

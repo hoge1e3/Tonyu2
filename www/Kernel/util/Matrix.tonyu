@@ -1,6 +1,6 @@
 extends TObject;
 includes MathMod,EventMod,FileMod;
-
+let name:String;
 \new(d) {
     data={}||d;
 }

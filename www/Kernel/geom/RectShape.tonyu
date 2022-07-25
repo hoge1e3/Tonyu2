@@ -23,7 +23,7 @@ var x,y,width,height;// (x,y): center
     }
     return containsRaw(s);
 }
-\containsRaw(p:Object/*{x,y}*/) {
+\containsRaw(p/*:Object{x,y}*/) {
     return p.x>=xmin && p.x<=xmax && p.y>=ymin && p.y<=ymax;
 }
 \xmin {return x-width/2;}
