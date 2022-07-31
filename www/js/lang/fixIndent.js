@@ -14,7 +14,9 @@ const f=new IndentFixer({
 		}
 	},
 	isOpen(token) {return token.type==="{";},
-	isClose(token) {return token.type==="}";}
+	isClose(token) {return token.type==="}";},
+	isBQOpen(token) {return token.type==="backquoteHead";},
+	isBQClose(token) {return token.type==="backquoteTail";},
 });
 
 module.exports=function (str,indentStr) {
