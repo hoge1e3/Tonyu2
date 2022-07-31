@@ -5,7 +5,8 @@ const dist = "www/";
 const paths = [
     {src:src+"test/fixture/BuilderClient4Sys.js", dist:dist+"js/lang/BuilderClient4Sys.js"},
     {src:src+"test/fixture/BuilderWorker.js", dist:dist+"BuilderWorker.js"},
-    {src:src+"test/fixture/TonyuRuntime.js", dist:dist+"js/runtime/TonyuRuntime.js"}
+    {src:src+"test/fixture/TonyuRuntime.js", dist:dist+"js/runtime/TonyuRuntime.js"},
+    {src:src+"test/fixture/tonyu2_token.js", dist:dist+"js/lang/tonyu2_token.js"}
 ];
 
 for (const p of paths) {

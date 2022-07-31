@@ -45,12 +45,15 @@ module.exports=class IndentFixer {
         row=-1;
         const changeDepths=[];
         for (let token of tokens) {
+			//console.log(row, token.row, token, this.tokenizer.isBQClose(token) );
             if (token.row>row) {
-                changeDepths[row]=depths[row];
+				if (!this.tokenizer.isBQClose(token)) {
+					changeDepths[token.row]=depths[token.row];
+				}
                 row=token.row;
             }
         }
-        //console.log(depths, changeDepths);
+        //console.log(depths, changeDepths, tokens);
         return lines.map ((line,row)=>indStr(line, changeDepths[row])).join("\n");
     	function indStr(line, depth) {
             if (typeof depth!=="number") return line;
