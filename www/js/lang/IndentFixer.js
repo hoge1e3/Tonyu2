@@ -44,14 +44,16 @@ module.exports=class IndentFixer {
     	});
         row=-1;
         const changeDepths=[];
+		let isBQT=false;
         for (let token of tokens) {
 			//console.log(row, token.row, token, this.tokenizer.isBQClose(token) );
             if (token.row>row) {
-				if (!this.tokenizer.isBQClose(token)) {
+				if (!isBQT) {
 					changeDepths[token.row]=depths[token.row];
 				}
                 row=token.row;
             }
+			isBQT=this.tokenizer.isBQText(token);
         }
         //console.log(depths, changeDepths, tokens);
         return lines.map ((line,row)=>indStr(line, changeDepths[row])).join("\n");
