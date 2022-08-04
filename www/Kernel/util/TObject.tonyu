@@ -1,4 +1,5 @@
 extends null;
+includes MathMod,PrintMod;
 native Tonyu;
 \new (options) {
     if (typeof options=="object") extend(options);
@@ -7,8 +8,3 @@ native Tonyu;
 nowait \extend(obj) {
     return Tonyu.extend(this,obj);
 }
-/*nowait \argParser(a) {
-    var r=[];
-    for (var i=0; i<a.length;i++) r.push(a[i]);
-    return r;
-}*/

@@ -2,7 +2,7 @@ extends null;
 includes MathMod,EventMod,
 ThreadGroupMod,EventHandlerCaller,DialogMod,FileMod,AnimMod,SchedulerMod,
 QueryMod,InputMod,LifeCycleMod,SpriteMod,ParallelMod,
-PlayMod, ParallelMod;
+PlayMod, ParallelMod, PrintMod;
 
 "field strict";
 
@@ -29,17 +29,6 @@ native console;
 }
 nowait \extend(obj) {
     return Tonyu.extend(this,obj);
-}
-
-nowait \print() {
-    $_printCount++; if ($_printCount>$printLimit) throw new Error("printをしすぎています.\n"
-    +"       $printLimitの値を変更すると、1フレーム間にできるprint回数を変更できます\n"
-    +"       $printLimit="+$printLimit+"; // 現在のprint回数の限度\n"
-    +"       [参考] https://edit.tonyu.jp/doc/limitations.html\n");
-    console.log.apply(console,arguments);
-    if($consolePanel){
-        $consolePanel.print.apply($consolePanel,arguments);
-    }
 }
 
 \loadPage(){// was nowait, why?

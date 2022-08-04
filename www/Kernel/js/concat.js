@@ -1049,6 +1049,45 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"bvec":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"defv":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"wscale":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.PrintMod',
+  shortName: 'PrintMod',
+  namespace: 'kernel',
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_PrintMod_main() {
+        "use strict";
+        var _this=this;
+        
+      },
+      fiber$main :function* _trc_PrintMod_f_main(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        
+      },
+      print :function _trc_PrintMod_print() {
+        "use strict";
+        var _this=this;
+        
+        Tonyu.globals.$_printCount++;
+        if (Tonyu.globals.$_printCount>Tonyu.globals.$printLimit) {
+          throw new Error("printをしすぎています.\n"+"       $printLimitの値を変更すると、1フレーム間にできるprint回数を変更できます\n"+"       $printLimit="+Tonyu.globals.$printLimit+"; // 現在のprint回数の限度\n"+"       [参考] https://edit.tonyu.jp/doc/limitations.html\n");
+          
+        }
+        console.log.apply(console,arguments);
+        if (Tonyu.globals.$consolePanel) {
+          Tonyu.globals.$consolePanel.print.apply(Tonyu.globals.$consolePanel,arguments);
+          
+        }
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"print":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.MediaPlayer',
   shortName: 'MediaPlayer',
   namespace: 'kernel',
@@ -3426,7 +3465,7 @@ Tonyu.klass.define({
   fullName: 'kernel.TObject',
   shortName: 'TObject',
   namespace: 'kernel',
-  includes: [],
+  includes: [Tonyu.classes.kernel.MathMod,Tonyu.classes.kernel.PrintMod],
   methods: function (__superClass) {
     return {
       main :function _trc_TObject_main() {
@@ -19876,7 +19915,7 @@ Tonyu.klass.define({
   fullName: 'kernel.BaseActor',
   shortName: 'BaseActor',
   namespace: 'kernel',
-  includes: [Tonyu.classes.kernel.MathMod,Tonyu.classes.kernel.EventMod,Tonyu.classes.kernel.ThreadGroupMod,Tonyu.classes.kernel.EventHandlerCaller,Tonyu.classes.kernel.DialogMod,Tonyu.classes.kernel.FileMod,Tonyu.classes.kernel.AnimMod,Tonyu.classes.kernel.SchedulerMod,Tonyu.classes.kernel.QueryMod,Tonyu.classes.kernel.InputMod,Tonyu.classes.kernel.LifeCycleMod,Tonyu.classes.kernel.SpriteMod,Tonyu.classes.kernel.ParallelMod,Tonyu.classes.kernel.PlayMod,Tonyu.classes.kernel.ParallelMod],
+  includes: [Tonyu.classes.kernel.MathMod,Tonyu.classes.kernel.EventMod,Tonyu.classes.kernel.ThreadGroupMod,Tonyu.classes.kernel.EventHandlerCaller,Tonyu.classes.kernel.DialogMod,Tonyu.classes.kernel.FileMod,Tonyu.classes.kernel.AnimMod,Tonyu.classes.kernel.SchedulerMod,Tonyu.classes.kernel.QueryMod,Tonyu.classes.kernel.InputMod,Tonyu.classes.kernel.LifeCycleMod,Tonyu.classes.kernel.SpriteMod,Tonyu.classes.kernel.ParallelMod,Tonyu.classes.kernel.PlayMod,Tonyu.classes.kernel.ParallelMod,Tonyu.classes.kernel.PrintMod],
   methods: function (__superClass) {
     return {
       main :function _trc_BaseActor_main() {
@@ -19928,21 +19967,6 @@ Tonyu.klass.define({
         
         return Tonyu.extend(_this,obj);
       },
-      print :function _trc_BaseActor_print() {
-        "use strict";
-        var _this=this;
-        
-        Tonyu.globals.$_printCount++;
-        if (Tonyu.globals.$_printCount>Tonyu.globals.$printLimit) {
-          throw new Error("printをしすぎています.\n"+"       $printLimitの値を変更すると、1フレーム間にできるprint回数を変更できます\n"+"       $printLimit="+Tonyu.globals.$printLimit+"; // 現在のprint回数の限度\n"+"       [参考] https://edit.tonyu.jp/doc/limitations.html\n");
-          
-        }
-        console.log.apply(console,arguments);
-        if (Tonyu.globals.$consolePanel) {
-          Tonyu.globals.$consolePanel.print.apply(Tonyu.globals.$consolePanel,arguments);
-          
-        }
-      },
       loadPage :function _trc_BaseActor_loadPage() {
         "use strict";
         var _this=this;
@@ -19968,7 +19992,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"extend":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"print":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPage":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__defaultLayer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"extend":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"loadPage":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__defaultLayer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.NoviceActor',
