@@ -77,7 +77,7 @@ define(function (require,exports) {
                 });
             });
         };
-        const cMethods=["fullCompile","clean","partialCompile","renameClassName","resetFiles"];
+        const cMethods=["fullCompile","clean","partialCompile","renameClassName","resetFiles","serializeAnnotatedNodes"];
         for (let _cMethod of cMethods) {
             const cMethod=_cMethod;
             res[cMethod]=async function (...args) {

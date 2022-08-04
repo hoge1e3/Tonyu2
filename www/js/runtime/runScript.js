@@ -65,7 +65,7 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			Tonyu.globals.$debugger=Debugger;// does also in Debugger.init ...
 
 			Tonyu.currentProject=Tonyu.globals.$currentProject=debuggerPrj;// does also...??
-			debuggerPrj.compiler=idePrj;
+			debuggerPrj.compiler=idePrj;// TODO: compiler->compilablePrj?
 			debuggerPrj.detectPlugins();
 			var o=debuggerPrj.getOptions();
 			if (o.compiler && o.compiler.diagnose) {

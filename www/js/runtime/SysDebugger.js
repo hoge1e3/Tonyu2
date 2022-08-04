@@ -40,7 +40,8 @@ define(function (require/*,exports,module*/) {
         prj.include(sysMod);
         await Debugger.init(prj);// sets $currentProject=prj
         try {
-            prj.compiler=root.parent.Tonyu.globals.$currentProject;
+            prj.compiler=root.parent.Tonyu.globals.$currentProject;// TODO: compiler->compilablePrj?
+            // It is likely I wanted to use from Tonyu like this:  $currentProject.compiler.partialCompile();
         } catch(e){console.log(e);}
         try {
             if (!getQueryString("nodebug")) {
