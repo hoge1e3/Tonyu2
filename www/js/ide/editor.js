@@ -39,7 +39,8 @@ $(function () {
     $.get("https://edit.tonyu.jp/doc/welcome_edit.html?a").then(function (t) {
         $("#welcome").append(t);
     });
-    var F=EC.f;
+    const F=EC.f;
+    const FC=(f)=>EC.f((...args)=>{ collapseMenu(); f(...args);});
     root.$LASTPOS=0;
     var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists();
     if (mobile) {
@@ -102,7 +103,7 @@ $(function () {
     }
     onResize();
     const em=RealtimeErrorMarker(ide);
-    $("#mobileRun").click(F(run));
+    $("#mobileRun").click(FC(run));
     KeyEventChecker.down(document,"F9",F(run));
     KeyEventChecker.down(document,"F2",F(stop));
     KeyEventChecker.down(document,"ctrl+s",F(save));
@@ -122,11 +123,18 @@ $(function () {
     ide.fileList=fl;
     ide.fileMenu=FM;
     const dialogs=Dialogs(ide);
-    $("#newFile").click(F(FM.create));
-    $("#mvFile").click(F(FM.mv));
-    $("#rmFile").click(F(FM.rm));
-    $("#closeFile").click(F(FM.close));
-    $("#runDialog").click(F(function () {
+    function collapseMenu() {
+        let b=$("button.navbar-toggle");
+        //console.log("Collape",b, b.hasClass("collapsed"));
+        if (!b.is(":visible")) return;
+        if (b.hasClass("collapsed")) return;
+        b.click();
+    }
+    $("#newFile").click(FC(FM.create));
+    $("#mvFile").click(FC(FM.mv));
+    $("#rmFile").click(FC(FM.rm));
+    $("#closeFile").click(FC(FM.close));
+    $("#runDialog").click(FC(function () {
         runDialog.show(true);
     }));
     fl.ls(curPrjDir);
@@ -170,7 +178,7 @@ $(function () {
             if (ii>=15) return;
             $("#runMenu").append(
                     $("<li>").append(
-                            $("<a>").attr("href","#").text(R("runClass",n)+(i==0?"(F9)":"")).click(F(function () {
+                            $("<a>").attr("href","#").text(R("runClass",n)+(i==0?"(F9)":"")).click(FC(function () {
                                 if (typeof n!="string") {console.log(n); alert("not a string2: "+n);}
                                 run(`${NSP_USR}.${n}`);
                                 if (ii>0) {
@@ -184,12 +192,12 @@ $(function () {
         });
         $("#runMenu").append(
                 $("<li>").append(
-                        $("<a>").attr("href","#").text(R("stop")).click(F(function () {
+                        $("<a>").attr("href","#").text(R("stop")).click(FC(function () {
                             stop();
                         }))));
         $("#runMenu").append(
                 $("<li>").append(
-                        $("<a>").attr("href","#").text(R("selectMain")).click(F(dialogs.selectMain))
+                        $("<a>").attr("href","#").text(R("selectMain")).click(FC(dialogs.selectMain))
                     ));
         console.log("runMenuOrd", runMenuOrd);
         //saveDesktopEnv();
@@ -352,14 +360,14 @@ $(function () {
         }
     }
     window.onerror=EC.handleException=Tonyu.onRuntimeError=ide.showError=showError;
-    $("#mapEditor").click(F(function () {
+    $("#mapEditor").click(FC(function () {
         console.log("run map");
         run("kernel.MapEditor");
     }));
-    $("#mapEditor2").click(F(function () {
+    $("#mapEditor2").click(FC(function () {
         MapEditor2.prepare(ide);
     }));
-    $("#search").click(F(dialogs.search));
+    $("#search").click(FC(dialogs.search));
     KeyEventChecker.down(document,"ctrl+t",F(dialogs.search));
     function fixEditorIndent(prog) {
         var cur=prog.getCursorPosition();
@@ -423,29 +431,29 @@ $(function () {
         var d=curPrjDir.rel(".desktop");
         d.obj(desktopEnv);
     }
-    $("#mkrun").click(F(dialogs.mkrun));
-    $("#imgResEditor").click(F(function () {
+    $("#mkrun").click(FC(dialogs.mkrun));
+    $("#imgResEditor").click(FC(function () {
         resEditors.open("image");
     }));
-    $("#soundResEditor").click(F(function () {
+    $("#soundResEditor").click(FC(function () {
         resEditors.open("sound");
     }));
     let optionsEditor;
-    $("#prjOptEditor").click(F(function () {
+    $("#prjOptEditor").click(FC(function () {
         optionsEditor=optionsEditor||ProjectOptionsEditor(curPrj);
         optionsEditor.show();
     }));
     //var helpd=null;
-    $("#refHelp").click(F(dialogs.helpDialog));
+    $("#refHelp").click(FC(dialogs.helpDialog));
     window.startTutorial=F(dialogs.startTutorial);
-    $("#rmPRJ").click(F(function () {
+    $("#rmPRJ").click(FC(function () {
         if (prompt(R("deleteProjectConfirm",curPrjDir),"")!="DELETE") {
             return;
         }
         sh.rm(curPrjDir,{r:1});
         document.location.href="index.html";
     }));
-    $("#mvPRJ").click(F(function () {
+    $("#mvPRJ").click(FC(function () {
         var np=prompt(R("inputNewProjectName"), curPrjDir.name().replace(/\//g,""));
         if (!np || np=="") return;
         if (!np.match(/\/$/)) np+="/";
@@ -458,8 +466,8 @@ $(function () {
         sh.rm(curPrjDir,{r:1});
         document.location.href="project.html?dir="+npd;
     }));
-    $("#editorEditor").click(F(dialogs.editorEditor));
-    $("#openFolder").click(F(dialogs.openFolder));
+    $("#editorEditor").click(FC(dialogs.editorEditor));
+    $("#openFolder").click(FC(dialogs.openFolder));
     sh.curFile=function () {
         return fl.curFile();
     };
