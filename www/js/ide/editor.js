@@ -99,7 +99,7 @@ $(function () {
         h-=20;
         runDialogParam.screenH=h;
         $("#progs pre").css("height",h+"px");
-        $("#fileItemList").height(h);
+        $("#fileItemList").height(h-10);
     }
     onResize();
     const em=RealtimeErrorMarker(ide);

@@ -1,8 +1,9 @@
 define(function (require, exports) {
     const WebSite=require("WebSite");
     const Mesg=require("Mesg");
-    let sender,button;
+    let sender,button,thePrj;
     exports.show=function (prj) {
+        thePrj=prj;
         if (WebSite.useEditButton) {
             Mesg.init().then(()=>{
                 button=$("<button>").text("Edit...").click(()=>doEdit(prj)).
@@ -17,6 +18,7 @@ define(function (require, exports) {
             commOK=true;
         }
     });*/
+    exports.openEditor=()=>doEdit(thePrj);
     async function doEdit(prj) {
         button.prop("disabled",true);
         sender=Mesg.createSender();

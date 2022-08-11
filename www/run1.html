@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 <meta http-equiv="Content-type" content="text/html; charset=utf8"/>
-<script>WebSite_runType='singleHTML';</script>
+<script>WebSite={runType:'singleHTML', useEditButton:true};</script>
 <!--script src="http://localhost/tonyu2/images/base.png.js"></script>
 <script src="http://localhost/tonyu2/images/Sample.png.js"></script>
 <script src="http://localhost/tonyu2/images/neko.png.js"></script>
@@ -37,6 +37,7 @@ https://edit.tonyu.jp/index.html?importFromHTML=1
 -->
 <script language='text/tonyu' type='text/tonyu' data-filename='Chara.tonyu' data-lastupdate='1570587860000' >vx=5;vy=0.2;
 
+
 p=$pat_neko+rnd(3)*10+9;
 vr=1;//rnd(40)+1;
 scaleX=rndFloat(0.8,1.2);
@@ -61,6 +62,9 @@ if ($debugger) {
         loadPage(Main);
     };
 }
+new Button{top:400,text:"edit",onClick:\{
+    $editButton.openEditor();
+}};
 while(true) {
     if($frameCount%10==0) new Chara{x:100,y:200};
     if (getkey("z")==1) new Chara{x:100,y:300};
