@@ -337,6 +337,73 @@ exports.isTonyuClass = isTonyuClass;
 
 },{}],5:[function(require,module,exports){
 "use strict";
+function TError(message, src, pos, len = 0) {
+    let rc;
+    const extend = (dst, src) => { for (var k in src)
+        dst[k] = src[k]; return dst; };
+    if (typeof src == "string") {
+        rc = TError.calcRowCol(src, pos);
+        message += " at " + (rc.row) + ":" + (rc.col);
+        return extend(new Error(message), {
+            isTError: true,
+            src: {
+                path: function () { return "/"; },
+                name: function () { return "unknown"; },
+                text: function () { return src; }
+            },
+            pos, row: rc.row, col: rc.col, len,
+            raise: function () {
+                throw this;
+            }
+        });
+    }
+    let klass = null;
+    if (src && src.src) {
+        klass = src;
+        src = klass.src.tonyu;
+    }
+    if (typeof src.name !== "function" || typeof src.text !== "function") {
+        throw new Error("src=" + src + " should be file object");
+    }
+    const s = src.text();
+    rc = TError.calcRowCol(s, pos);
+    message += " at " + src.name() + ":" + rc.row + ":" + rc.col;
+    return extend(new Error(message), {
+        isTError: true,
+        src, pos, row: rc.row, col: rc.col, len, klass,
+        raise: function () {
+            throw this;
+        }
+    });
+}
+;
+TError.calcRowCol = function (text, pos) {
+    const lines = text.split("\n");
+    let pp = 0, row, col;
+    /*
+aaa\n
+bb\n
+cc!cc
+pp = 4  7   11
+row=2  pp=11  pos=9
+lines[row].length=4
+    */
+    col = 0;
+    for (row = 0; row < lines.length; row++) {
+        const ppp = pp;
+        pp += lines[row].length + 1;
+        if (pp > pos) {
+            col = pos - ppp;
+            break;
+        }
+    }
+    return { row: row + 1, col: col + 1 };
+};
+module.exports = TError;
+//module.exports=TError;
+
+},{}],6:[function(require,module,exports){
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IT2 = exports.IT = void 0;
 //define(["Klass"], function (Klass) {
@@ -472,7 +539,7 @@ exports.IT2 = IT2;
 //	return IT;
 //});
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -483,6 +550,7 @@ const TonyuThread_1 = require("./TonyuThread");
 const root_1 = __importDefault(require("../lib/root"));
 const assert_1 = __importDefault(require("../lib/assert"));
 const RuntimeTypes_1 = require("./RuntimeTypes");
+const TError_1 = __importDefault(require("./TError"));
 // old browser support
 if (!root_1.default.performance) {
     root_1.default.performance = {};
@@ -527,7 +595,7 @@ function addMeta(fn, m) {
     return extend(klass.getMeta(fn), m);
 }
 function getMeta(klass) {
-    if (RuntimeTypes_1.isTonyuClass(klass))
+    if ((0, RuntimeTypes_1.isTonyuClass)(klass))
         return klass.meta;
     return klass;
 }
@@ -715,7 +783,7 @@ var klass = {
             prot.getClassInfo = function () {
                 return res.meta;
             };
-            if (RuntimeTypes_1.isTonyuClass(res))
+            if ((0, RuntimeTypes_1.isTonyuClass)(res))
                 chkclass(res);
             return res; //chkclass(res,{isShim, init:false, includesRec:{}});
         }
@@ -804,7 +872,7 @@ function getClass(n) {
                     found = nn + "." + n;
                 }
                 else
-                    throw new Error(R_1.default("ambiguousClassName", nn, n, found));
+                    throw new Error((0, R_1.default)("ambiguousClassName", nn, n, found));
             }
         }
     }
@@ -829,20 +897,20 @@ function bindFunc(t, meth) {
 }
 function invokeMethod(t, name, args, objName) {
     if (!t)
-        throw new Error(R_1.default("cannotInvokeMethod", objName, t, name));
+        throw new Error((0, R_1.default)("cannotInvokeMethod", objName, t, name));
     var f = t[name];
     if (typeof f != "function")
-        throw new Error(R_1.default("notAMethod", (objName == "this" ? "" : objName + "."), name, f));
+        throw new Error((0, R_1.default)("notAMethod", (objName == "this" ? "" : objName + "."), name, f));
     return f.apply(t, args);
 }
 function callFunc(f, args, fName) {
     if (typeof f != "function")
-        throw new Error(R_1.default("notAFunction", fName));
+        throw new Error((0, R_1.default)("notAFunction", fName));
     return f.apply({}, args);
 }
 function checkNonNull(v, name) {
     if (v != v || v == null)
-        throw new Error(R_1.default("uninitialized", name, v));
+        throw new Error((0, R_1.default)("uninitialized", name, v));
     return v;
 }
 function A(args) {
@@ -853,7 +921,7 @@ function A(args) {
     return res;
 }
 function useNew(c) {
-    throw new Error(R_1.default("newIsRequiredOnInstanciate", c));
+    throw new Error((0, R_1.default)("newIsRequiredOnInstanciate", c));
 }
 function not_a_tonyu_object(o) {
     console.log("Not a tonyu object: ", o);
@@ -864,8 +932,8 @@ function hasKey(k, obj) {
 }
 function run(bootClassName) {
     var bootClass = getClass(bootClassName);
-    if (!RuntimeTypes_1.isTonyuClass(bootClass))
-        throw new Error(R_1.default("bootClassIsNotFound", bootClassName));
+    if (!(0, RuntimeTypes_1.isTonyuClass)(bootClass))
+        throw new Error((0, R_1.default)("bootClassIsNotFound", bootClassName));
     Tonyu.runMode = true;
     var boot = new bootClass();
     //var th=thread();
@@ -884,7 +952,7 @@ function checkLoop() {
     var now = root_1.default.performance.now();
     if (now - lastLoopCheck > 1000) {
         resetLoopCheck(10000);
-        throw new Error(R_1.default("infiniteLoopDetected"));
+        throw new Error((0, R_1.default)("infiniteLoopDetected"));
     }
     prevCheckLoopCalled = now;
 }
@@ -898,7 +966,7 @@ function is(obj, klass) {
         return false;
     if (obj instanceof klass)
         return true;
-    if (typeof obj.getClassInfo === "function" && RuntimeTypes_1.isTonyuClass(klass)) {
+    if (typeof obj.getClassInfo === "function" && (0, RuntimeTypes_1.isTonyuClass)(klass)) {
         return obj.getClassInfo().includesRec[klass.meta.fullName];
     }
     return false;
@@ -921,7 +989,7 @@ const Tonyu = {
             root_1.default.alert("Error: " + e);
         console.log(e.stack);
         throw e;
-    },
+    }, TError: TError_1.default,
     VERSION: 1560828115159,
     A, ID: Math.random()
 };
@@ -933,7 +1001,7 @@ if (root_1.default.Tonyu) {
 root_1.default.Tonyu = Tonyu;
 module.exports = Tonyu;
 
-},{"../lib/R":1,"../lib/assert":2,"../lib/root":3,"./RuntimeTypes":4,"./TonyuIterator":5,"./TonyuThread":7}],7:[function(require,module,exports){
+},{"../lib/R":1,"../lib/assert":2,"../lib/root":3,"./RuntimeTypes":4,"./TError":5,"./TonyuIterator":6,"./TonyuThread":8}],8:[function(require,module,exports){
 "use strict";
 //	var Klass=require("../lib/Klass");
 var __importDefault = (this && this.__importDefault) || function (mod) {
@@ -1008,7 +1076,7 @@ class TonyuThread {
         if (typeof methodName == "string") {
             method = obj["fiber$" + methodName];
             if (!method) {
-                throw new Error(R_1.default("undefinedMethod", methodName));
+                throw new Error((0, R_1.default)("undefinedMethod", methodName));
             }
         }
         if (typeof methodName == "function") {
@@ -1016,7 +1084,7 @@ class TonyuThread {
             method = fmethod.fiber;
             if (!method) {
                 var n = fmethod.methodInfo ? fmethod.methodInfo.name : fmethod.name;
-                throw new Error(R_1.default("notAWaitableMethod", n));
+                throw new Error((0, R_1.default)("notAWaitableMethod", n));
             }
         }
         args = [this].concat(args);
@@ -1277,4 +1345,4 @@ class TonyuThread {
 }
 exports.TonyuThread = TonyuThread;
 
-},{"../lib/R":1}]},{},[6]);
+},{"../lib/R":1}]},{},[7]);
