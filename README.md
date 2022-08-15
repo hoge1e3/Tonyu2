@@ -11,7 +11,6 @@ Windows 7/8/10
   - Chrome 81
   - Firefox 72
   - Edge 44
-  - Internet Explorer 11(runtime only)
 
 ## How to build
 
