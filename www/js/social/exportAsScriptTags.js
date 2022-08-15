@@ -6,8 +6,12 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
         var includeJSScript=options.includeJSScript;
         var buf="<!DOCTYPE html>\n<html><head>\n";
         buf+='<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>\n';
-        buf+=`<script>WebSite={runType:'singleHTML', useEditButton:${!!options.editButton}};</script>`;
+        buf+=`<script>WebSite={runType:'singleHTML', useEditButton:${!!options.editButton}};</script>`+"\n";
         //"<script>WebSite_runType='singleHTML';</script>\n";
+        try {
+            let title=dir.rel("options.json").obj().social.title;
+            buf+=`<title>${Util.htmlspecialchars(title)}</title>`+"\n";
+        }catch(e) {}
         if (includeJSScript) {
             var resFile=dir.rel("res.json");
             var resObj=resFile.obj();

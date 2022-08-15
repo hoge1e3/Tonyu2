@@ -37,7 +37,13 @@ function (east,UI,Klass,root,R,WebSite,extLink) {
                     ["label",{"for":"ie"},R("showEditButton")],
                 ],
                 ["div",
-                    ["button",{$var:"upd",on:{click:()=>t.uploadTmp(t.prog.val())}},R("QuickUpload")],
+                    ["div",R("uploadPath"),["br"],
+                    "https://run.tonyu.jp/?USER/",["input", {$var:"preferredName"}]],
+                    ["button",{$var:"upd",
+                        on:{
+                            click:()=>t.uploadTmp(t.prog.val(), t.preferredName.val())
+                        }
+                    },R("QuickUpload")],
                     ["span",{$var:"updURL"}],
                 ],
                 ["textarea",{$var:"prog",rows:20,cols:60,placeholder:"Please wait..."}],
@@ -48,13 +54,22 @@ function (east,UI,Klass,root,R,WebSite,extLink) {
             });
 
             t.prog=t.dom.$vars.prog;
+            t.preferredName=t.dom.$vars.preferredName;
+            try {
+                const projectName=t.prj.getOptions().social.prjName;
+                if (projectName) t.preferredName.val(projectName);
+            } catch(e){}
             return t.dom;
         },
-        async uploadTmp(t, html) {
+        async uploadTmp(t, html, preferredName) {
             const f=new FormData();
             const url=WebSite.uploadTmpUrl;
             f.append( "content" , new Blob( [html], {type:"text/html"} ) , "index.html" );
             f.append( "extension", new Blob( [".html"], {type:"text/plain"} ) , "extension" );
+            const prep=(preferredName ?
+                `&preferredName=${
+                    preferredName.replace(/[^a-zA-Z0-9_\-\.]/g,"_")
+                }`:"");
             if (t.prj.api) {
                 const a=JSON.stringify(t.prj.api.get());
                 f.append( "api", new Blob( [a], {type:"text/json"} ) , "api" );
@@ -64,7 +79,8 @@ function (east,UI,Klass,root,R,WebSite,extLink) {
             const v=this.dom.$vars;
             v.upd.hide();
             v.updURL.empty();
-            v.updURL.append(extLink(`${WebSite.quickUploadURL}?name=${upf}`, R("ClickToCompleteQuickUpload")));
+            console.log("qupURL",`${WebSite.quickUploadURL}?name=${upf}${prep}`);
+            v.updURL.append(extLink(`${WebSite.quickUploadURL}?name=${upf}${prep}`, R("ClickToCompleteQuickUpload")));
         },
     });
 

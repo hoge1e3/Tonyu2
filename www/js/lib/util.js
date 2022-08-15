@@ -14,6 +14,21 @@ function getQueryString(key, default_)
 function decodeURLComponentEx(s){
     return decodeURIComponent(s.replace(/\+/g, '%20'));
 }
+function htmlspecialchars (string) {
+    if(typeof string !== 'string') {
+      return string;
+    }
+    return string.replace(/[&'`"<>]/g, function(match) {
+      return {
+        '&': '&amp;',
+        "'": '&#x27;',
+        '`': '&#x60;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;',
+      }[match]
+    });
+}
 function endsWith(str,postfix) {
     return str.substring(str.length-postfix.length)===postfix;
 }
@@ -186,6 +201,7 @@ function str2utf8bytes(str, binType) {
 
 return {
     getQueryString:getQueryString,
+    htmlspecialchars,
     endsWith: endsWith, startsWith: startsWith,
     Base64_To_ArrayBuffer:Base64_To_ArrayBuffer,
     Base64_From_ArrayBuffer:Base64_From_ArrayBuffer,

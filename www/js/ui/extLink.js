@@ -28,7 +28,8 @@ define(["WebSite","UI","PathUtil","Util","assert","jshint"],
     }
     function ext(cmd, href,afterClick) {
         return function () {
-            exec(cmd+" "+href);
+            href=href.replace(/&/g,"^&");
+            exec(`${cmd} ${href}`);
             if (afterClick) afterClick();
         };
     }

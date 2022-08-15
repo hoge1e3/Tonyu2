@@ -16,6 +16,7 @@ $(".dropdown-toggle");
         "wsService": "使用サービス",
         "wsKey": "APIキー",
         "QuickUpload": "クイックアップロード",
+        "uploadPath": "アップロード先のパス(空欄で自動生成)",
         "ClickToCompleteQuickUpload": "クイックアップロードを完了させる",
         "reloadRequested": "依存関係に変更がありました．再読み込みが必要です．再読み込みを行いますか？",
         "namespaceIsNotSet": "追加しようとしているプロジェクト'{1}'に名前空間が設定されていません．プロジェクト'{1}'を開いて，名前空間を設定してください．",
@@ -222,6 +223,8 @@ $(".dropdown-toggle");
         //"dependencyEditor": "ライブラリ管理",
         //"dependingProjects": "参照するプロジェクト",
         //"plugins":"プラグイン",
+        "QuickUpload": "Quick upload",
+        "uploadPath": "Uploading URL(Blank for auto generate)",
         "depProejctPlaceholder":"Type project name",
         "namespace":"namespace",
         "file" : "File", //ファイル
