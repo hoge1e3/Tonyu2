@@ -9,7 +9,7 @@ native Tonyu;
 native Image;
 var canvas,_drawn,_fillStyle,px,py;
 \initPanelMod(){
-throw "Check overrides in spritesmod /oneframeSpritemod";
+    throw "Check overrides in spritesmod /oneframeSpritemod";
     //this.width=width;
     //this.height=height;
     if (canvas) {

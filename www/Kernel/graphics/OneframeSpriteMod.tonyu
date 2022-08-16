@@ -18,7 +18,7 @@ nowait \drawTextEx(o) {
     if (!o.align) o.align="left";
     if (o.alpha==null) o.alpha=255;
     appear(T1Text){x:o.x, y:o.y, text:o.text, fillStyle:o.fillStyle, size:o.size, zOrder:o.zOrder, owner:this,
-        align:new Align2D(o.align), alpha:o.alpha, font:o.font};
+    align:new Align2D(o.align), alpha:o.alpha, font:o.font};
 }
 nowait \drawLine(x,y,tx,ty,col,zOrder) {
     if (!col) col="white";

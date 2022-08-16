@@ -15,10 +15,13 @@ define(["WebSite","UI","PathUtil","Util","assert","jshint"],
         var afterClick=(options.on && options.on.click) || function(){};
         if (p=="win32") {
             options.href=jshint.scriptURL(";");
-            options.on.click=ext("start",href,afterClick);
+            href=href.replace(/&/g,"^&");
+            const cmd=(`start ${href}`);
+            options.on.click=ext(cmd,afterClick);
         } else if (p=="darwin") {
             options.href=jshint.scriptURL(";");
-            options.on.click=ext("open",href,afterClick);
+            const cmd=`open '${href}'`;
+            options.on.click=ext(cmd,afterClick);
         } else {
             options.href=href;
             options.on.click=afterClick;
@@ -26,10 +29,9 @@ define(["WebSite","UI","PathUtil","Util","assert","jshint"],
         }
         return options;
     }
-    function ext(cmd, href,afterClick) {
+    function ext(cmd,afterClick) {
         return function () {
-            href=href.replace(/&/g,"^&");
-            exec(`${cmd} ${href}`);
+            exec(cmd);
             if (afterClick) afterClick();
         };
     }
