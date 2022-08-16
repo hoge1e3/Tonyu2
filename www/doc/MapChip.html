@@ -4,20 +4,21 @@
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
 <p><a href="Map2">Map2</a></p>
-<h1 id="mapchip-">MapChipクラス</h1>
-<p><a href="Map2">Map2</a>でchip, chipAtメソッドでマップチップを読み出したときに返されるオブジェクトです。<br>1つのMapChipオブジェクトで、同じ位置にある複数のレイヤーにまたがるパターンを操作できます。</p>
-<h2 id="-">フィールド</h2>
+<h1 id="mapchipクラス">MapChipクラス</h1>
+<p><a href="Map2">Map2</a>でchip, chipAtメソッドでマップチップを読み出したときに返されるオブジェクトです。
+1つのMapChipオブジェクトで、同じ位置にある複数のレイヤーにまたがるパターンを操作できます。</p>
+<h2 id="フィールド">フィールド</h2>
 <ul>
 <li>map: もとのMap2オブジェクト</li>
 <li>x,y: マップ上の位置（チップ座標）</li>
 <li>layers: 操作対象となるレイヤーを表すレイヤー名の配列</li>
 </ul>
-<h2 id="-">プロパティ</h2>
+<h2 id="プロパティ">プロパティ</h2>
 <ul>
 <li>pAll: layersをキーとし、各レイヤーのキャラクタパターンを値としたオブジェクト。書き込むとマップ上のキャラクタパターンを書き換えます。</li>
 <li>p: layers[0]のレイヤーのキャラクタパターン。書き込むとマップ上のキャラクタパターンを書き換えます。</li>
 </ul>
-<h2 id="-">メソッド</h2>
+<h2 id="メソッド">メソッド</h2>
 <ul>
 <li>moved(x,y): 同じマップの異なる座標(x,y)のチップを表す新しいMapChipオブジェクトを返します。layersはこのオブジェクトと同じです</li>
 <li>movedBy(dx,dy): このチップから(dx,dy)だけ移動したチップを表す新しいMapChipオブジェクトを返します。layersはこのオブジェクトと同じです</li>
@@ -28,10 +29,10 @@
 <li>layersは見つかったレイヤー名1つからなる要素数1の配列になります。</li>
 </ul>
 </li>
-<li>pが文字列配列の場合、pのいずれかがlayersのいずれかにあるかを判定します。</li>
+<li>pが配列の場合、pのいずれかがlayersのいずれかにあるかを判定します。</li>
 </ul>
 </li>
-<li>hasExcept(p): 指定したパターン(pは文字列か文字列の配列）以外がlayersのどれかにあるか返します。<ul>
+<li>hasExcept(p): 指定したパターン(pは数値か数値の配列）以外がlayersのどれかにあるか返します。<ul>
 <li>戻り値はhasと同じです</li>
 </ul>
 </li>
@@ -51,7 +52,7 @@
 </ul>
 </li>
 <li>getBuffer()<ul>
-<li>このチップが描かれているCanvasオブジェクトについてについての情報を次の形式で返します<ul>
+<li>このチップが描かれているCanvasオブジェクトについての情報を次の形式で返します<ul>
 <li>canvas: Canvasオブジェクト</li>
 <li>context: Canvasオブジェクトのコンテキスト</li>
 <li>left, top ,width, height: 描画範囲</li>

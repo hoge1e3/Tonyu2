@@ -1,0 +1,82 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<h1 id="websocketクラス">WebSocketクラス</h1>
+<p>WebSocketによる通信を行います．</p>
+<h2 id="準備">準備</h2>
+<p>WebSocketを利用するためには，まずAPIの設定を行ってください．</p>
+<p>メニューのウィンドウ→プロジェクトオプション→API設定を開きます</p>
+<p>API設定の「WebSocket」の項目を設定します．</p>
+<ul>
+<li>「サービス」は次の2つから選べます<ul>
+<li>Scaledrone   <ul>
+<li><a href="https://www.scaledrone.com/">https://www.scaledrone.com/</a> からユーザ登録を行い，チャンネルを作成してください</li>
+<li>APIキーの欄に，Channed IDを設定します</li>
+</ul>
+</li>
+<li>T2WebSocket<ul>
+<li><a href="https://www.tonyu.jp/project/viewProject.cgi?mainkey=897">https://www.tonyu.jp/project/viewProject.cgi?mainkey=897</a> のサービスを利用します</li>
+<li>APIキーは自動生成されます．（APIキーを空欄の状態で，T2WebSocketを選択する）</li>
+<li>送信を行わない状態が30秒間続くと接続が切断されます</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="注意点">注意点</h3>
+<ul>
+<li>API設定は，プロジェクトをzipでダウンロードしても保存されません．プロジェクト名ごとに紐づけられています．プロジェクト名を変更した場合も再設定が必要です．</li>
+<li>現状，プロジェクトボードにアップロードしたプログラムではWebSocketを利用できません（今後対応する予定です）．「クイックアップロード」（公開→HTML生成）でアップロードしたもののみが対応しています．</li>
+<li>クイックアップロードから「Edit」ボタンで編集した場合，API設定はもとのプログラムからは引き継がれません．再設定が必要です（制作者の異なるプログラム間ではAPI設定は共有されるべきではないため）．</li>
+<li>公開したプログラムのAPI設定は，他のユーザから覗かれる可能性があります（↑これらの仕組みは，API設定の盗み見を防ぐものではありません．）</li>
+</ul>
+<h2 id="使用方法">使用方法</h2>
+<pre><code>//WebSocketオブジェクト作成
+w=new WebSocket();
+// ルームに入室
+room=waitFor(w.enterRoom(&quot;myroom&quot;));
+// ルームからメッセージを受け取る
+room.on(&quot;message&quot;) \(evt) {
+   var data=evt.data;
+   print(evt.clientId, data.content);
+};
+// ルームにメッセージを送る
+room.send{content:&quot;Hello&quot;};
+</code></pre>
+<h2 id="websocketクラス-1">WebSocketクラス</h2>
+<ul>
+<li>コンストラクタ：引数なしでWebSocetオブジェクトを作成します．</li>
+<li>enterRoom(<code>ルーム名</code>): 指定したルームに入ります（指定されたルームがない場合は新規作成されます）<ul>
+<li>戻り値は RoomオブジェクトのPromiseになります．Roomオブジェクト自身はwaitForで受け取ってください．</li>
+<li>異なるルーム名でenterRoomを複数回呼び出すことも可能です．複数のルームに同時に入ることができます．</li>
+</ul>
+</li>
+</ul>
+<h2 id="roomオブジェクト">Roomオブジェクト</h2>
+<ul>
+<li><code>myId</code> 自分のID</li>
+<li><code>on</code>(&quot;message&quot;, <code>イベントハンドラ</code>)<ul>
+<li>メッセージを受け取ったときに<code>イベントハンドラ</code>を呼び出します．</li>
+<li><code>イベントハンドラ</code>に渡されるイベントオブジェクトの内容<ul>
+<li><code>clientId</code> 送信者のId</li>
+<li><code>data</code> データ本体（sendメソッドで指定したオブジェクト）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>send</code>(<code>data</code>)<ul>
+<li>入室しているすべてのメンバーにオブジェクト<code>data</code>を送ります．</li>
+</ul>
+</li>
+<li><code>members</code><ul>
+<li>入室しているメンバーオブジェクトの一覧を表す配列です．初期化されていない(undefinedの)場合もあります</li>
+<li>メンバーオブジェクトの内容：<ul>
+<li><code>id</code> メンバーのID</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</body></html>

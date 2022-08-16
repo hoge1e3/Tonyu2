@@ -1,0 +1,24 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p>後に計算されるもの-&gt;先に計算されるもの，の順で掲載しています</p>
+<ul>
+<li>代入演算子（右結合） <code>=</code>  <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>%=</code> <code>|=</code> <code>&amp;=</code></li>
+<li>3項演算子（右結合）    <code>?</code> <code>:</code></li>
+<li>論理and (左結合) <code>&amp;&amp;</code>※</li>
+<li>論理or (左結合) <code>||</code>※</li>
+<li>ビットor （左結合） <code>|</code></li>
+<li>ビットand （左結合） <code>&amp;</code></li>
+<li>ビットxor （左結合） <code>^</code></li>
+<li><code>instanceof</code> <code>is</code> <code>==</code> <code>!=</code> <code>&lt;=</code> <code>&gt;=</code> <code>&gt;</code> <code>&lt;</code> (結合なし)</li>
+<li>シフト (左結合） <code>&gt;&gt;&gt;</code> <code>&gt;&gt;</code> <code>&lt;&lt;</code> </li>
+<li>加減算 (左結合) <code>+</code> <code>-</code></li>
+<li>乗除算（左結合) <code>*</code> <code>/</code> <code>%</code></li>
+<li>前置演算子 <code>typeof</code> <code>delete</code> <code>++</code> <code>--</code> <code>+</code> <code>-</code> <code>!</code> <code>~</code></li>
+<li>後置演算子　<code>++</code> <code>--</code></li>
+<li>呼出 <code>(引数, 引数...)</code>   <code>.メンバ名</code>   <code>[添字] </code></li>
+</ul>
+<p>※構文木は左結合で生成されますが，実際のコードは通常のJSと同じく，<code>&amp;&amp;</code> の左辺がfalse，あるいは<code>||</code> の左辺がtrueの時点で，右辺の評価は中断します．</p>
+</body></html>

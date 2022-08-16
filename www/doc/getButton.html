@@ -3,17 +3,24 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="Pad">Pad</a></p>
-<h1 id="getbutton-">getButtonメソッド</h1>
+<h1 id="getbuttonメソッド">getButtonメソッド</h1>
 <p>パッドのボタンの押下状態を取得します．</p>
-<h2 id="-">書式</h2>
-<pre><code class="lang-JS">pad.getButton(i);
+<h2 id="書式">書式</h2>
+<pre><code class="language-JS">pad.getButton(i);
 </code></pre>
 <ul>
 <li>iに取得するボタンの番号(1から4)を渡します．<ul>
 <li>互換性のため、0も指定可能で、1番のボタンを表します。</li>
+<li>以下を指定すると十字パッドのキーを取得できます。<ul>
+<li>&quot;left&quot; または -37 : 左キー (getLeft()と同じ)</li>
+<li>&quot;up&quot; または -38 : 上キー (getUp()と同じ)</li>
+<li>&quot;right&quot; または -39 : 右キー (getRight()と同じ)</li>
+<li>&quot;down&quot; または -40 : 下キー (getDown()と同じ)</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>キーの状態に応じて次の数値を返します<ul>

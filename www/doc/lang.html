@@ -3,21 +3,22 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="index">index</a></p>
-<h1 id="-">言語仕様</h1>
+<h1 id="言語仕様">言語仕様</h1>
 <ul>
 <li>Tonyu2は，そのプログラムをJavaScriptに変換してから実行します．</li>
 <li>Tonyu2で用いられる値やオブジェクトはJavaScriptの値やオブジェクトそのものです．そのため，Tonyu2からJavaScriptのオブジェクトを操作したり，JavaScriptからTonyu2のオブジェクトを操作したりできます．</li>
 </ul>
-<p>Tonyu2 の言語仕様は，基本的にはJavaScriptの言語仕様に準じますが，JavaScriptとは次のような違いがあります．</p>
+<p>Tonyu2 の言語仕様は，基本的にはJavaScript(ES5)の言語仕様に準じますが，JavaScriptとは次のような違いがあります．</p>
 <ul>
 <li><a href="fs">ファイル</a>全体が１つの<a href="classDef">クラス定義</a>になります．</li>
 <li>親クラスのメソッド・コンストラクタ呼び出しは<a href="super">super</a>を用います</li>
 <li>「待機可能モード」「待機不能モード」という2つの<a href="waitmode">動作モード</a>があります．</li>
 <li><a href="sugar">拡張構文</a>があります</li>
 <li><a href="forin">for (.. in ..)</a>の挙動が違います</li>
+<li><a href="%E6%BC%94%E7%AE%97%E5%AD%90%E3%81%AE%E5%84%AA%E5%85%88%E9%A0%86%E4%BD%8D">演算子</a> について，使用できないものや，優先順位や結合について異なるものがあります．</li>
 </ul>
 <h1 id="backlink">Backlink</h1>
 <ul>

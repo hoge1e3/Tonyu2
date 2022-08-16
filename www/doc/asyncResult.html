@@ -3,30 +3,9 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="BaseActor">BaseActor</a></p>
-<h1 id="asyncresult-">asyncResultメソッド</h1>
-<p>※このメソッドは廃止されました。今後は<a href="runAsync">runAsync</a>を利用してください。</p>
-<p>AsyncResultオブジェクトを作成します</p>
-<p>AsyncResultオブジェクトは，ajaxなどの「非同期で実行を行い，結果をコールバック関数で受け取る」形式のメソッド（非同期メソッド）を<a href="waitmode">待機可能モード</a>で扱うためのオブジェクトです．</p>
-<h2 id="-">使い方</h2>
-<p>※必ず待機可能モードで実行してください．</p>
-<ul>
-<li>asyncResult()メソッドで，AsyncResultオブジェクトを作成します．これを<code>a</code>とします．</li>
-<li>非同期メソッドを呼び出します． このとき，<code>a.receiver</code> をコールバック関数として渡します．</li>
-<li><a href="waitFor">waitFor</a>メソッドを呼び出します．非同期メソッドが結果を返すまで処理を待機します．</li>
-<li>非同期メソッドの結果が<code>a[n</code>]に返されます．<code>a[n</code>]はコールバック関数に渡された第n引数（0が最初の引数）です．</li>
-</ul>
-<h2 id="-">使用例</h2>
-<pre><code class="lang-JS">native $;
-//asyncResultオブジェクトを作成
-a=asyncResult();
-//jqueryのgetメソッドを呼び出す．コールバック関数に a.receiverを指定
-$.get(&quot;http://tonyu.jp/&quot;, a.receiver);
-//getメソッドが終わるまで待つ
-waitFor(a);
-//結果がa[0]に返される
-print(a[0]);
-</code></pre>
+<h1 id="asyncresultメソッド">asyncResultメソッド</h1>
+<p>※このメソッドは廃止されました。今後は<a href="runPromise">runPromise</a>を利用してください。</p>
 </body></html>

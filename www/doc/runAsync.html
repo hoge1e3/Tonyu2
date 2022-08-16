@@ -3,56 +3,13 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="BaseActor">BaseActor</a></p>
-<h1 id="runasync-">runAsyncメソッド</h1>
-<p>ajaxなどの非同期処理を行なうためのメソッドです。</p>
-<p>※<a href="waitFor">waitFor</a>メソッドのほうが書きやすくなっています．</p>
-<h2 id="-">書式</h2>
-<pre><code class="lang-JS">runAsync \(success,error) {
-    処理
-};
-</code></pre>
-<p>※必ず<a href="waitMode">待機可能モード</a>で呼び出してください</p>
-<ul>
-<li>処理の中では、ajaxなどのコールバック関数を伴う処理（非同期処理）を行います。</li>
-<li>非同期処理が完了したときのコールバック関数を指定する部分に<code>success</code>を指定してください。<ul>
-<li>非同期処理が完了すると、runAsyncは終了します。</li>
-<li>戻り値は、コールバック関数に渡された引数の配列になります。</li>
-</ul>
-</li>
-<li>非同期処理が失敗する可能性がある場合、失敗したときのコールバック関数を指定する部分に<code>error</code>を指定してください。<ul>
-<li>非同期処理が失敗すると、例外が投げられます</li>
-<li>投げられる例外はErrorオブジェクトで、フィールドargsにコールバック関数に渡された引数の配列が格納されます。</li>
-</ul>
-</li>
-</ul>
-<h2 id="-">例</h2>
-<p>Main</p>
-<pre><code class="lang-JS">native setTimeout;
-try {
-    res=runAsync \(success,error) {
-        if (rnd(3)&gt;0) {
-            setTimeout(\{
-                success(10);
-            },1000);            
-        } else {
-            setTimeout(\{
-                error(&quot;Fail&quot;);
-            },1000);
-        }
-    };
-    print(&quot;Success&quot;);
-    print(res[0]);
-} catch (e) {
-    print(&quot;Error&quot;);
-    print(e.args[0]);
-}
-</code></pre>
+<h1 id="runasyncメソッド">runAsyncメソッド</h1>
+<p>このメソッドは廃止されました．<a href="runPromise">runPromiseメソッド</a>をお使いください．</p>
 <h1 id="backlink">Backlink</h1>
 <ul>
-<li><a href="runPromise">runPromiseメソッド</a></li>
 <li><a href="asyncResult">asyncResultメソッド</a></li>
 <li><a href="waitmode">動作モード</a></li>
 </ul>

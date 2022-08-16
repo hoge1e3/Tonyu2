@@ -3,22 +3,22 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="BaseActor">BaseActor</a></p>
-<h1 id="loadpage-">loadPageメソッド</h1>
+<h1 id="loadpageメソッド">loadPageメソッド</h1>
 <p>それまで動いていたオブジェクトをすべて消して、新しいページを読み込みます。</p>
-<h2 id="-1-">書式(1)</h2>
-<pre><code class="lang-JS">loadPage(Class, args, options);
+<h2 id="書式1">書式(1)</h2>
+<pre><code class="language-JS">loadPage(Class, args, options);
 </code></pre>
 <ul>
 <li><code>Class</code> には、ページオブジェクト（後述）のクラスを指定します。</li>
 <li><code>args</code> （省略可）には ページオブジェクトを生成するときに渡す引数を指定します。<ul>
-<li><code>options</code>を指定した場合，<code>args</code>は省略できません．特に渡すものがない場合は<code>undefined</code>や<code>{}</code>などを渡してください．</li>
+<li><code>options</code>にオブジェクトを指定した場合，<code>args</code>は省略できません．特に渡すものがない場合は<code>undefined</code>や<code>{}</code>などを渡してください．</li>
 </ul>
 </li>
 <li><code>options</code>（省略可）には，次のいずれかの属性をもつオブジェクトを指定します．<ul>
-<li><code>push</code> trueを指定すると，一旦現在のページを停止・保存してからページを読み込みます．現在のページに戻るには書式（2）を参照してください．</li>
+<li><code>push</code> trueを指定すると，現在のページのオブジェクトを消さず，休止状態にしてから新しいページを読み込みます．現在のページに戻るには書式（2）を参照してください．</li>
 <li><code>pass</code> Actorの配列を指定すると，それらのActorを読み込んだページに引き継ぎます．</li>
 <li><code>onLoad</code> 読み込みが完了した場合に実行される関数を指定します．</li>
 </ul>
@@ -34,16 +34,24 @@
 <li><code>loadPage(Class, undefined, {onLoad: func})</code>と等価．<code>func</code>は関数．</li>
 </ul>
 </li>
+<li><code>loadPage(Class, args, true)</code><ul>
+<li><code>loadPage(Class, args, {push: true})</code>と等価</li>
 </ul>
-<h2 id="-2-">書式(2)</h2>
-<pre><code class="lang-JS">loadPage();
+</li>
+<li><code>loadPage(Class, args, func)</code><ul>
+<li><code>loadPage(Class, args, {onLoad: func})</code>と等価．<code>func</code>は関数．</li>
+</ul>
+</li>
+</ul>
+<h2 id="書式2">書式(2)</h2>
+<pre><code class="language-JS">loadPage();
 </code></pre>
 <p><code>options</code>に<code>{push: true}</code>を指定した場合に，元のページに戻ります．</p>
-<h2 id="-">ページオブジェクトの作り方</h2>
+<h2 id="ページオブジェクトの作り方">ページオブジェクトの作り方</h2>
 <p>ページオブジェクトとは、通常のオブジェクトと同じものですが、主に他のオブジェクトを生成する働きをもったオブジェクトのことを指します。</p>
 <p>ページオブジェクトの例：</p>
 <p>Stage1</p>
-<pre><code class="lang-JS">//プレイヤーを生成
+<pre><code class="language-JS">//プレイヤーを生成
 new Player{x:200,y:400};
 //敵を10体生成
 for (i=0 ;i&lt;10; i++) {
@@ -52,7 +60,7 @@ for (i=0 ;i&lt;10; i++) {
 </code></pre>
 <p>例えば、上で作成したStage1 をloadPageを用いて呼び出すには次のようにします：</p>
 <p>Title</p>
-<pre><code class="lang-JS">new Actor{x:230,y:50, text:&quot;Press Space Key&quot;};
+<pre><code class="language-JS">new Actor{x:230,y:50, text:&quot;Press Space Key&quot;};
 while(true) {
   if(getkey(&quot;space&quot;)==1) loadPage(Stage1);
   update();
@@ -60,16 +68,16 @@ while(true) {
 </code></pre>
 <p>Player,Enemyは適当に実装します．</p>
 <p>Player</p>
-<pre><code class="lang-JS">p=$pat_neko;
+<pre><code class="language-JS">p=$pat_neko;
 </code></pre>
 <p>Enemy</p>
-<pre><code class="lang-JS">p=$pat_neko+48;
+<pre><code class="language-JS">p=$pat_neko+48;
 </code></pre>
-<h2 id="-">例</h2>
+<h2 id="例">例</h2>
 <ul>
-<li><a href="loadPage-実例">場面の切り替え</a></li>
-<li><a href="リトライする">リトライする</a></li>
+<li><a href="loadPage-%E5%AE%9F%E4%BE%8B">場面の切り替え</a></li>
+<li><a href="%E3%83%AA%E3%83%88%E3%83%A9%E3%82%A4%E3%81%99%E3%82%8B">リトライする</a></li>
 </ul>
-<h1 id="-">その他</h1>
+<h1 id="その他">その他</h1>
 <p>loadPageはページを瞬間的に読み込みます．フェードアウトの効果を付ける場合は<a href="FadeEffect">FadeEffectクラス</a>を使用してください．</p>
 </body></html>

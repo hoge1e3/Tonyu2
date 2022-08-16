@@ -3,34 +3,35 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="api">api</a></p>
 <h1 id="baseactor">BaseActor</h1>
-<p>画面に表示されるオブジェクトの基本クラスです．実際には<a href="Actor">Actor</a>を継承してクラスを作成してください．<br>使用例は<a href="用途別リファレンス">用途別リファレンス</a>などを参照してください．</p>
-<h1 id="-">コンストラクタ(オブジェクトの生成方法)</h1>
-<pre><code class="lang-JS">\new(params)
+<p>画面に表示されるオブジェクトの基本クラスです．実際には<a href="Actor">Actor</a>を継承してクラスを作成してください．
+使用例は<a href="%E7%94%A8%E9%80%94%E5%88%A5%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9">用途別リファレンス</a>などを参照してください．</p>
+<h1 id="コンストラクタオブジェクトの生成方法">コンストラクタ(オブジェクトの生成方法)</h1>
+<pre><code class="language-JS">\new(params)
 </code></pre>
 <p>paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます</p>
 <p>例：</p>
 <p>Main</p>
-<pre><code class="lang-JS">a=new MyActor{x:50,y:30, power:20, hp:50};
+<pre><code class="language-JS">a=new MyActor{x:50,y:30, power:20, hp:50};
 // a.x=50  a.y=30 a.power=20  a.hp=50 となる
 </code></pre>
 <p>MyActor</p>
-<pre><code class="lang-JS">// デフォルトのプロジェクト設定では，MyActorはBaseActorの子クラスになる
+<pre><code class="language-JS">// デフォルトのプロジェクト設定では，MyActorはBaseActorの子クラスになる
 print(x, y, power, hp);
 </code></pre>
-<h1 id="-2-">コンストラクタ(2)</h1>
-<pre><code class="lang-JS">\new(x,y,p)
+<h1 id="コンストラクタ2">コンストラクタ(2)</h1>
+<pre><code class="language-JS">\new(x,y,p)
 </code></pre>
 <p>x,y,pの値をフィールドに書き込みます</p>
 <p>例：</p>
 <p>Main</p>
-<pre><code class="lang-JS">new MyActor(100,200,$pat_neko);
+<pre><code class="language-JS">new MyActor(100,200,$pat_neko);
 // x=100  y=200 p=$pat_nekoとなる
 </code></pre>
-<h1 id="-">フィールドと表示モード</h1>
+<h1 id="フィールドと表示モード">フィールドと表示モード</h1>
 <p>表示モードは，「画像」「文字」「図形」「カスタム」のいずれかです．</p>
 <ul>
 <li>textに値がセットされている場合，表示モードは「文字」です</li>
@@ -38,48 +39,48 @@ print(x, y, power, hp);
 <li>textにもfillStyleにも値がセットされていない場合，表示モードは「画像」です</li>
 <li>pにdrawメソッドをもつオブジェクトを指定した場合，表示モードは「カスタム」です</li>
 </ul>
-<h2 id="-">「画像」におけるフィールド</h2>
+<h2 id="「画像」におけるフィールド">「画像」におけるフィールド</h2>
 <ul>
-<li>p : 表示する<a href="cpats">画像の番号</a>をあらわします。 <a href="オブジェクトのグラフィックを変える">使用例</a><ul>
+<li>p : 表示する<a href="cpats">画像の番号</a>をあらわします。 <a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E3%82%B0%E3%83%A9%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E3%82%92%E5%A4%89%E3%81%88%E3%82%8B">使用例</a><ul>
 <li>pにdrawメソッドをもつオブジェクト(Panelなど)を代入すると、そのオブジェクトのdrawメソッドを用いて描画します。</li>
 </ul>
 </li>
 </ul>
-<h2 id="-">「文字」におけるフィールド</h2>
+<h2 id="「文字」におけるフィールド">「文字」におけるフィールド</h2>
 <ul>
 <li>text : 表示される文字</li>
 <li>size : 文字の大きさ</li>
 <li>fillStyle : 文字の色を表す文字列(JavascriptのCanvasにおけるfillStyleと同じ書式）．または<a href="Color">Color</a>オブジェクト．</li>
 </ul>
-<h2 id="-">「図形」におけるフィールド</h2>
+<h2 id="「図形」におけるフィールド">「図形」におけるフィールド</h2>
 <ul>
 <li>radius: 値をセットすると円を表示し，その半径を表します</li>
 <li>width: radiusがセットされていない場合，四角形を表示し，その幅を表します</li>
 <li>height: radiusがセットされていない場合，四角形を表示し，その高さを表します</li>
 <li>fillStyle : 図形の色を表す文字列(JavascriptのCanvasにおけるfillStyleと同じ書式）．または<a href="Color">Color</a>オブジェクト．</li>
 </ul>
-<h2 id="-">「カスタム」におけるフィールド</h2>
+<h2 id="「カスタム」におけるフィールド">「カスタム」におけるフィールド</h2>
 <ul>
 <li>p : 「すべてのモードで共通のフィールド」で指定された変換操作（移動・伸縮・回転）を施した後，p.drawメソッドを用いて描画します．</li>
 </ul>
-<h2 id="-">すべてのモードで共通のフィールド</h2>
+<h2 id="すべてのモードで共通のフィールド">すべてのモードで共通のフィールド</h2>
 <ul>
-<li>x : オブジェクトのx座標をあらわします<a href="座標を指定してオブジェクトを表示する">使用例</a></li>
-<li>y : オブジェクトのy座標をあらわします<a href="座標を指定してオブジェクトを表示する">使用例</a></li>
-<li>zOrder : オブジェクト同士が重なった場合、この値が小さい方が手前に表示されます。<a href="オブジェクトの奥行きの設定">使用例</a></li>
-<li>alpha : 表示する画像の透明度を指定します(255-0)。<a href="オブジェクトの大きさや傾き、透明度を設定する">使用例</a></li>
-<li>scaleX : オブジェクトの横方向の拡大率を指定します．scaleYが未定義の場合は縦方向にもscaleXの拡大率が適用されます。<a href="オブジェクトの大きさや傾き、透明度を設定する">使用例</a></li>
+<li>x : オブジェクトのx座標をあらわします<a href="%E5%BA%A7%E6%A8%99%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%97%E3%81%A6%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B">使用例</a></li>
+<li>y : オブジェクトのy座標をあらわします<a href="%E5%BA%A7%E6%A8%99%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%97%E3%81%A6%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B">使用例</a></li>
+<li>zOrder : オブジェクト同士が重なった場合、この値が小さい方が手前に表示されます。<a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%A5%A5%E8%A1%8C%E3%81%8D%E3%81%AE%E8%A8%AD%E5%AE%9A">使用例</a></li>
+<li>alpha : 表示する画像の透明度を指定します(255-0)。<a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%A4%A7%E3%81%8D%E3%81%95%E3%82%84%E5%82%BE%E3%81%8D%E3%80%81%E9%80%8F%E6%98%8E%E5%BA%A6%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">使用例</a></li>
+<li>scaleX : オブジェクトの横方向の拡大率を指定します．scaleYが未定義の場合は縦方向にもscaleXの拡大率が適用されます。<a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%A4%A7%E3%81%8D%E3%81%95%E3%82%84%E5%82%BE%E3%81%8D%E3%80%81%E9%80%8F%E6%98%8E%E5%BA%A6%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">使用例</a></li>
 <li>scaleY : オブジェクトの縦方向の拡大率を指定します</li>
-<li>rotation : オブジェクトの回転を指定します．右回りで指定した値の角度回転します。<a href="オブジェクトの大きさや傾き、透明度を設定する">使用例</a></li>
+<li>rotation : オブジェクトの回転を指定します．右回りで指定した値の角度回転します。<a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%A4%A7%E3%81%8D%E3%81%95%E3%82%84%E5%82%BE%E3%81%8D%E3%80%81%E9%80%8F%E6%98%8E%E5%BA%A6%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">使用例</a></li>
 <li>crashScale: 当たり判定の大きさの比率を設定します．初期値は1です</li>
-<li>useObjectPool: この値を<code>true</code>にすると、このオブジェクトが消滅した後、<a href="オブジェクトプール">オブジェクトプール</a>に保存されるようになります。</li>
+<li>useObjectPool: この値を<code>true</code>にすると、このオブジェクトが消滅した後、<a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%83%97%E3%83%BC%E3%83%AB">オブジェクトプール</a>に保存されるようになります。</li>
 <li>lifeKeeper: この値に他のActorを設定すると，そのActorが<a href="die">dieメソッド</a>で消滅したときに，このオブジェクトも自動的に消滅します．</li>
 <li>position: x,y を操作可能な<a href="Vec3">Vec3View</a>オブジェクトです．<ul>
 <li>position に他の値を代入すると，それ以降はx,y を操作できません</li>
 </ul>
 </li>
-<li>layer: このオブジェクトを配置する<a href="座標系とレイヤー">レイヤー</a> を指定します．<ul>
-<li>layer に他のActorを指定すると，そのActorからの相対座標を用いて表示を行います．また，layerに指定した他のActorが消滅するとこのオブジェクトも消滅します．</li>
+<li>layer: このオブジェクトを配置する<a href="%E5%BA%A7%E6%A8%99%E7%B3%BB%E3%81%A8%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC">レイヤー</a> を指定します．<ul>
+<li>layer に他のActorを指定すると，そのActor（親）からの相対座標を用いて表示を行います．また，親が消滅するとこのオブジェクトも消滅します．crashToなどの当たり判定は使えなくなります（親にしか当たり判定はありません）．また，allなどのオブジェクトの列挙からこのオブジェクトは除外されます．</li>
 </ul>
 </li>
 <li>align: (x,y)の基準点を決めます。<ul>
@@ -100,9 +101,9 @@ print(x, y, power, hp);
 </li>
 <li>width, height: 「図形」以外の表示において、直前に描画を行った際の画像や文字の大きさが代入されています。</li>
 </ul>
-<h2 id="-">その他のフィールド</h2>
+<h2 id="その他のフィールド">その他のフィールド</h2>
 <p>上記以外のフィールドには値を自由に設定できます（表示には影響しません）</p>
-<h1 id="-">メソッド</h1>
+<h1 id="メソッド">メソッド</h1>
 <ul>
 <li>入力<ul>
 <li><a href="getkey">getkey</a></li>
@@ -172,7 +173,7 @@ print(x, y, power, hp);
 </ul>
 <h1 id="backlink">Backlink</h1>
 <ul>
-<li><a href="当たり判定で当たったオブジェクトを消す">当たり判定で当たったオブジェクトを消す</a></li>
+<li><a href="%E5%BD%93%E3%81%9F%E3%82%8A%E5%88%A4%E5%AE%9A%E3%81%A7%E5%BD%93%E3%81%9F%E3%81%A3%E3%81%9F%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E6%B6%88%E3%81%99">当たり判定で当たったオブジェクトを消す</a></li>
 <li><a href="TQuery">TQuery</a></li>
 <li><a href="Panel">Panelクラス</a></li>
 <li><a href="Actor3D">Actor3Dクラス</a></li>
