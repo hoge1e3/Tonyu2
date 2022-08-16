@@ -56,7 +56,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">";
             buf+=escapeLoosely(f.text());
             buf+="</script>\n\n";
-        },{excludes:["files/",".sync/"]});
+        },{excludes:["files/",".sync/",".git/"]});
         json.forEach(function (f) {
             var rel=f.relPath(dir);
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
