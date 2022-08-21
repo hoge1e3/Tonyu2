@@ -1,0 +1,80 @@
+extends TObject;
+"field strict";
+native $;
+var name2id;
+
+\isArray(e) {
+    return e && typeof e.splice==="function";
+}
+\isPlainObj(e) {
+    return e && !isArray(e) && typeof e==="object";
+}
+\genid() {
+    $dom_idSeq=$dom_idSeq||0;
+    $dom_idSeq++;
+    return "JQExpr"+$dom_idSeq;
+}
+\isPrimitive(v){
+    return ({number:1,string:1,boolean:1})[typeof v];
+}
+\extLink() {
+    return $JQEX_extLink || ($JQEX_extLink=new ExtLink);
+}
+\add2(parentID,expr) {
+    if (!parentID) throw new Error("parentID is not set for "+expr);
+    if (isPrimitive(expr)) {
+        expr=expr+"";
+        var esc=expr.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        //print(parentID, esc);
+        $("#"+parentID).append(esc);
+        return parentID;
+    }
+    if (!expr.shift) {
+        throw new Error(expr+" is not valid expression");
+    }
+    var tagname=expr.shift();
+    var elem=$("<"+tagname+">").appendTo("#"+parentID);
+    var id, name;
+    if (isPlainObj(expr[0])) {
+        var attr=expr.shift();
+        var r_evt=/^on(.*)/i;
+        if (tagname==="a") {
+            attr=extLink().getOpt(attr);
+        }
+        for (var k,v in attr) {
+            var m=r_evt.exec(k);
+            if (m) {
+                if (typeof v==="function") {
+                    //print(m[1],v);
+                    elem.on(m[1], v);
+                }
+            } else if (isPrimitive(v)) {
+                if ((v+"").match(/^javascript:/)) v="javascript:;";
+                elem.attr(k,v);
+                if (k==="id") id=v;
+                if (k==="name") name=v;
+            }
+        }
+    }
+    var svp;
+    elem.on("focus") \{
+        svp=$Keys.preventDefaults;
+        $Keys.preventDefaults={};
+    };
+    elem.on("blur") \{
+        if (svp) $Keys.preventDefaults=svp;
+    };
+    
+    if (!id) {
+        id=genid();
+        elem.attr("id",id);
+    }
+    if (name) {
+        name2id=name2id||{};
+        name2id[name]=id;
+    }
+    for (var e of expr) {
+        add2(id, e);
+    }
+    return id;
+}

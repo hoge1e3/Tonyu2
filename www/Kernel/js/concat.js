@@ -15018,6 +15018,446 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getGamePad":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getPadNo":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getPad":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getPadId":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isConnected":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMapping":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getButton":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getButtonValue":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getButtonCount":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getAxis":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getAxisCount":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getUp":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getDown":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getLeft":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getRight":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"gamePad":{},"padNo":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.ExtLink',
+  shortName: 'ExtLink',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.TObject,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_ExtLink_main() {
+        "use strict";
+        var _this=this;
+        
+        _this.exec = (WebSite.isNW?require('child_process').exec:(function anonymous_110() {
+          
+        }));
+        
+      },
+      fiber$main :function* _trc_ExtLink_f_main(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        _this.exec = (WebSite.isNW?require('child_process').exec:(function anonymous_110() {
+          
+        }));
+        
+        
+      },
+      getOpt :function _trc_ExtLink_getOpt(options) {
+        "use strict";
+        var _this=this;
+        var p;
+        var afterClick;
+        
+        p = WebSite.platform;
+        
+        options=options||{};
+        let href = options.href;
+        
+        options.on=options.on||{};
+        afterClick = (options.onclick)||(function anonymous_451() {
+          
+        });
+        
+        if (p=="win32") {
+          options.href="javascript:;";
+          options.onclick=_this.ext("start",href,afterClick);
+          
+        } else {
+          if (p=="darwin") {
+            options.href="javascript:;";
+            options.onclick=_this.ext("open",href,afterClick);
+            
+          } else {
+            options.href=href;
+            options.onclick=afterClick;
+            options.target="_new";
+            
+          }
+        }
+        return options;
+      },
+      fiber$getOpt :function* _trc_ExtLink_f_getOpt(_thread,options) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var p;
+        var afterClick;
+        
+        p = WebSite.platform;
+        
+        options=options||{};
+        let href = options.href;
+        
+        options.on=options.on||{};
+        afterClick = (options.onclick)||(function anonymous_451() {
+          
+        });
+        
+        if (p=="win32") {
+          options.href="javascript:;";
+          options.onclick=(yield* _this.fiber$ext(_thread, "start", href, afterClick));
+          
+        } else {
+          if (p=="darwin") {
+            options.href="javascript:;";
+            options.onclick=(yield* _this.fiber$ext(_thread, "open", href, afterClick));
+            
+          } else {
+            options.href=href;
+            options.onclick=afterClick;
+            options.target="_new";
+            
+          }
+        }
+        return options;
+        
+      },
+      ext :function _trc_ExtLink_ext(cmd,href,afterClick) {
+        "use strict";
+        var _this=this;
+        
+        return (function anonymous_896() {
+          
+          _this.exec(cmd+" "+href);
+          if (afterClick) {
+            afterClick();
+          }
+        });
+      },
+      fiber$ext :function* _trc_ExtLink_f_ext(_thread,cmd,href,afterClick) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        return (function anonymous_896() {
+          
+          _this.exec(cmd+" "+href);
+          if (afterClick) {
+            afterClick();
+          }
+        });
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"getOpt":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"ext":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}}},"fields":{"exec":{}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.JQExpr',
+  shortName: 'JQExpr',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.TObject,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_JQExpr_main() {
+        "use strict";
+        var _this=this;
+        
+        "field strict";
+        
+      },
+      fiber$main :function* _trc_JQExpr_f_main(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        "field strict";
+        
+        
+      },
+      isArray :function _trc_JQExpr_isArray(e) {
+        "use strict";
+        var _this=this;
+        
+        return e&&typeof  e.splice==="function";
+      },
+      fiber$isArray :function* _trc_JQExpr_f_isArray(_thread,e) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        return e&&typeof  e.splice==="function";
+        
+      },
+      isPlainObj :function _trc_JQExpr_isPlainObj(e) {
+        "use strict";
+        var _this=this;
+        
+        return e&&! _this.isArray(e)&&typeof  e==="object";
+      },
+      fiber$isPlainObj :function* _trc_JQExpr_f_isPlainObj(_thread,e) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        return e&&! _this.isArray(e)&&typeof  e==="object";
+        
+      },
+      genid :function _trc_JQExpr_genid() {
+        "use strict";
+        var _this=this;
+        
+        Tonyu.globals.$dom_idSeq=Tonyu.globals.$dom_idSeq||0;
+        Tonyu.globals.$dom_idSeq++;
+        return "JQExpr"+Tonyu.globals.$dom_idSeq;
+      },
+      fiber$genid :function* _trc_JQExpr_f_genid(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        Tonyu.globals.$dom_idSeq=Tonyu.globals.$dom_idSeq||0;
+        Tonyu.globals.$dom_idSeq++;
+        return "JQExpr"+Tonyu.globals.$dom_idSeq;
+        
+      },
+      isPrimitive :function _trc_JQExpr_isPrimitive(v) {
+        "use strict";
+        var _this=this;
+        
+        return ({number: 1,string: 1,boolean: 1})[typeof  v];
+      },
+      fiber$isPrimitive :function* _trc_JQExpr_f_isPrimitive(_thread,v) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        return ({number: 1,string: 1,boolean: 1})[typeof  v];
+        
+      },
+      extLink :function _trc_JQExpr_extLink() {
+        "use strict";
+        var _this=this;
+        
+        return Tonyu.globals.$JQEX_extLink||(Tonyu.globals.$JQEX_extLink=new Tonyu.classes.kernel.ExtLink);
+      },
+      fiber$extLink :function* _trc_JQExpr_f_extLink(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        return Tonyu.globals.$JQEX_extLink||(Tonyu.globals.$JQEX_extLink=new Tonyu.classes.kernel.ExtLink);
+        
+      },
+      add2 :function _trc_JQExpr_add2(parentID,expr) {
+        "use strict";
+        var _this=this;
+        var esc;
+        var tagname;
+        var elem;
+        var id;
+        var name;
+        var attr;
+        var r_evt;
+        var k;
+        var v;
+        var m;
+        var svp;
+        var e;
+        
+        if (! parentID) {
+          throw new Error("parentID is not set for "+expr);
+          
+        }
+        if (_this.isPrimitive(expr)) {
+          expr=expr+"";
+          esc = expr.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+          
+          $("#"+parentID).append(esc);
+          return parentID;
+          
+        }
+        if (! expr.shift) {
+          throw new Error(expr+" is not valid expression");
+          
+          
+        }
+        tagname = expr.shift();
+        
+        elem = $("<"+tagname+">").appendTo("#"+parentID);
+        
+        
+        if (_this.isPlainObj(expr[0])) {
+          attr = expr.shift();
+          
+          r_evt = /^on(.*)/i;
+          
+          if (tagname==="a") {
+            attr=_this.extLink().getOpt(attr);
+            
+          }
+          for ([k, v] of Tonyu.iterator2(attr,2)) {
+            m = r_evt.exec(k);
+            
+            if (m) {
+              if (typeof  v==="function") {
+                elem.on(m[1],v);
+                
+              }
+              
+            } else {
+              if (_this.isPrimitive(v)) {
+                if ((v+"").match(/^javascript:/)) {
+                  v="javascript:;";
+                }
+                elem.attr(k,v);
+                if (k==="id") {
+                  id=v;
+                }
+                if (k==="name") {
+                  name=v;
+                }
+                
+              }
+            }
+            
+          }
+          
+        }
+        
+        elem.on("focus",(function anonymous_1625() {
+          
+          svp=Tonyu.globals.$Keys.preventDefaults;
+          Tonyu.globals.$Keys.preventDefaults={};
+        }));
+        elem.on("blur",(function anonymous_1724() {
+          
+          if (svp) {
+            Tonyu.globals.$Keys.preventDefaults=svp;
+          }
+        }));
+        if (! id) {
+          id=_this.genid();
+          elem.attr("id",id);
+          
+        }
+        if (name) {
+          _this.name2id=_this.name2id||{};
+          _this.name2id[name]=id;
+          
+        }
+        for ([e] of Tonyu.iterator2(expr,1)) {
+          _this.add2(id,e);
+          
+        }
+        return id;
+      },
+      fiber$add2 :function* _trc_JQExpr_f_add2(_thread,parentID,expr) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var esc;
+        var tagname;
+        var elem;
+        var id;
+        var name;
+        var attr;
+        var r_evt;
+        var k;
+        var v;
+        var m;
+        var svp;
+        var e;
+        
+        if (! parentID) {
+          throw new Error("parentID is not set for "+expr);
+          
+        }
+        if (_this.isPrimitive(expr)) {
+          expr=expr+"";
+          esc = expr.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+          
+          $("#"+parentID).append(esc);
+          return parentID;
+          
+        }
+        if (! expr.shift) {
+          throw new Error(expr+" is not valid expression");
+          
+          
+        }
+        tagname = expr.shift();
+        
+        elem = $("<"+tagname+">").appendTo("#"+parentID);
+        
+        
+        if (_this.isPlainObj(expr[0])) {
+          attr = expr.shift();
+          
+          r_evt = /^on(.*)/i;
+          
+          if (tagname==="a") {
+            attr=_this.extLink().getOpt(attr);
+            
+          }
+          for ([k, v] of Tonyu.iterator2(attr,2)) {
+            m = r_evt.exec(k);
+            
+            if (m) {
+              if (typeof  v==="function") {
+                elem.on(m[1],v);
+                
+              }
+              
+            } else {
+              if (_this.isPrimitive(v)) {
+                if ((v+"").match(/^javascript:/)) {
+                  v="javascript:;";
+                }
+                elem.attr(k,v);
+                if (k==="id") {
+                  id=v;
+                }
+                if (k==="name") {
+                  name=v;
+                }
+                
+              }
+            }
+            
+          }
+          
+        }
+        
+        elem.on("focus",(function anonymous_1625() {
+          
+          svp=Tonyu.globals.$Keys.preventDefaults;
+          Tonyu.globals.$Keys.preventDefaults={};
+        }));
+        elem.on("blur",(function anonymous_1724() {
+          
+          if (svp) {
+            Tonyu.globals.$Keys.preventDefaults=svp;
+          }
+        }));
+        if (! id) {
+          id=(yield* _this.fiber$genid(_thread));
+          elem.attr("id",id);
+          
+        }
+        if (name) {
+          _this.name2id=_this.name2id||{};
+          _this.name2id[name]=id;
+          
+        }
+        for ([e] of Tonyu.iterator2(expr,1)) {
+          (yield* _this.fiber$add2(_thread, id, e));
+          
+        }
+        return id;
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"isArray":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isPlainObj":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"genid":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isPrimitive":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"extLink":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"add2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"name2id":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.KeyDownHandler',
   shortName: 'KeyDownHandler',
   namespace: 'kernel',
@@ -19424,7 +19864,7 @@ Tonyu.klass.define({
         
         element = $("<img>").css({display: "none"}).appendTo("body");
         
-        element.on("load",(function anonymous_7200() {
+        element.on("load",(function anonymous_7204() {
           var img;
           var width;
           var height;
@@ -19460,7 +19900,7 @@ Tonyu.klass.define({
         
         element = $("<img>").css({display: "none"}).appendTo("body");
         
-        element.on("load",(function anonymous_7200() {
+        element.on("load",(function anonymous_7204() {
           var img;
           var width;
           var height;
@@ -29464,6 +29904,304 @@ Tonyu.klass.define({
     };
   },
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"shouldDraw1x1":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"layout":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"cw":{},"canvas":{},"ch":{},"gameScreen":{},"sprites":{},"cctx":{}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.HTMLUI',
+  shortName: 'HTMLUI',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.Actor,
+  includes: [Tonyu.classes.kernel.JQExpr],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_HTMLUI_main() {
+        "use strict";
+        var _this=this;
+        
+        "field strict";
+        
+        
+      },
+      fiber$main :function* _trc_HTMLUI_f_main(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        "field strict";
+        
+        
+        
+      },
+      add :function _trc_HTMLUI_add(expr) {
+        "use strict";
+        var _this=this;
+        var expr;
+        
+        expr = new Tonyu.classes.kernel.ArgParser(arguments).toArray();
+        
+        if (expr.length==1&&_this.isArray(expr[0])) {
+          expr=expr[0];
+        }
+        return _this.add2(_this.id,expr);
+      },
+      fiber$add :function* _trc_HTMLUI_f_add(_thread,expr) {
+        "use strict";
+        var _this=this;
+        var _arguments=Tonyu.A(arguments);
+        var expr;
+        
+        expr = new Tonyu.classes.kernel.ArgParser(_arguments).toArray();
+        
+        if (expr.length==1&&_this.isArray(expr[0])) {
+          expr=expr[0];
+        }
+        return yield* _this.fiber$add2(_thread, _this.id, expr);
+        
+        
+      },
+      initialize :function _trc_HTMLUI_initialize(param) {
+        "use strict";
+        var _this=this;
+        var body;
+        var bid;
+        
+        __superClass.apply( _this, [param]);
+        _this.screen=_this.screen||Tonyu.globals.$Screen;
+        body = $(document.body);
+        
+        if (! body.attr("id")) {
+          body.attr({id: _this.genid()});
+        }
+        bid = body.attr("id");
+        
+        if (! _this.content) {
+          _this.id=_this.add2(bid,["div"]);
+        } else {
+          if (typeof  _this.content==="string") {
+            _this.id=_this.add2(bid,[_this.content]);
+          } else {
+            _this.id=_this.add2(bid,_this.content);
+          }
+        }
+        document.body.appendChild($("#"+_this.id)[0]);
+        _this.fit();
+        Tonyu.globals.$uiScreen.on("resize",(function anonymous_842() {
+          
+          _this.fit();
+        }));
+      },
+      toUI :function _trc_HTMLUI_toUI(x,y) {
+        "use strict";
+        var _this=this;
+        var sc;
+        var scale;
+        var left;
+        var top;
+        
+        sc = _this.screen;
+        
+        scale = sc.scaleX;
+        
+        left = sc.x+((- sc.width/2+x)*scale);
+        
+        top = sc.y+((- sc.height/2+y)*scale);
+        
+        return {left: left,top: top};
+      },
+      fiber$toUI :function* _trc_HTMLUI_f_toUI(_thread,x,y) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var sc;
+        var scale;
+        var left;
+        var top;
+        
+        sc = _this.screen;
+        
+        scale = sc.scaleX;
+        
+        left = sc.x+((- sc.width/2+x)*scale);
+        
+        top = sc.y+((- sc.height/2+y)*scale);
+        
+        return {left: left,top: top};
+        
+      },
+      fit :function _trc_HTMLUI_fit() {
+        "use strict";
+        var _this=this;
+        var sc;
+        var scale;
+        var u1;
+        var u2;
+        var c;
+        var left;
+        var top;
+        
+        sc = _this.screen;
+        
+        scale = sc.scaleX;
+        
+        u1 = _this.toUI(_this.left,_this.top);
+        
+        u2 = _this.toUI(_this.left+_this.width,_this.top+_this.height);
+        
+        c = {left: (u1.left+u2.left)/2,top: (u1.top+u2.top)/2};
+        
+        left = c.left-(u2.left-u1.left)/2/scale;
+        
+        top = c.top-(u2.top-u1.top)/2/scale;
+        
+        $("#"+_this.id).css({position: "absolute",width: (_this.width)+"px",height: (_this.height)+"px",left: left,top: top,transform: "scale("+scale+")"});
+      },
+      fiber$fit :function* _trc_HTMLUI_f_fit(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var sc;
+        var scale;
+        var u1;
+        var u2;
+        var c;
+        var left;
+        var top;
+        
+        sc = _this.screen;
+        
+        scale = sc.scaleX;
+        
+        u1=yield* _this.fiber$toUI(_thread, _this.left, _this.top);
+        
+        u2=yield* _this.fiber$toUI(_thread, _this.left+_this.width, _this.top+_this.height);
+        
+        c = {left: (u1.left+u2.left)/2,top: (u1.top+u2.top)/2};
+        
+        left = c.left-(u2.left-u1.left)/2/scale;
+        
+        top = c.top-(u2.top-u1.top)/2/scale;
+        
+        $("#"+_this.id).css({position: "absolute",width: (_this.width)+"px",height: (_this.height)+"px",left: left,top: top,transform: "scale("+scale+")"});
+        
+      },
+      checkExists :function _trc_HTMLUI_checkExists(name) {
+        "use strict";
+        var _this=this;
+        
+        if (! _this.name2id[name]) {
+          _this.print(_this.name2id);
+          throw new Error("name="+name+" is not found");
+          
+          
+        }
+        return $("#"+_this.name2id[name]);
+      },
+      fiber$checkExists :function* _trc_HTMLUI_f_checkExists(_thread,name) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (! _this.name2id[name]) {
+          _this.print(_this.name2id);
+          throw new Error("name="+name+" is not found");
+          
+          
+        }
+        return $("#"+_this.name2id[name]);
+        
+      },
+      getValue :function _trc_HTMLUI_getValue(name) {
+        "use strict";
+        var _this=this;
+        
+        if (! _this.name2id) {
+          return "";
+        }
+        return _this.checkExists(name).val();
+      },
+      fiber$getValue :function* _trc_HTMLUI_f_getValue(_thread,name) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (! _this.name2id) {
+          return "";
+        }
+        return _this.checkExists(name).val();
+        
+      },
+      setValue :function _trc_HTMLUI_setValue(name,value) {
+        "use strict";
+        var _this=this;
+        
+        if (! _this.name2id) {
+          return "";
+        }
+        return _this.checkExists(name).val(value);
+      },
+      fiber$setValue :function* _trc_HTMLUI_f_setValue(_thread,name,value) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (! _this.name2id) {
+          return "";
+        }
+        return _this.checkExists(name).val(value);
+        
+      },
+      copyToClipboard :function _trc_HTMLUI_copyToClipboard(name) {
+        "use strict";
+        var _this=this;
+        
+        navigator.clipboard.writeText(_this.getValue(name));
+      },
+      fiber$copyToClipboard :function* _trc_HTMLUI_f_copyToClipboard(_thread,name) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        navigator.clipboard.writeText(_this.getValue(name));
+        
+      },
+      die :function _trc_HTMLUI_die() {
+        "use strict";
+        var _this=this;
+        
+        __superClass.prototype.die.apply( _this, []);
+        $("#"+_this.id).remove();
+      },
+      loop :function _trc_HTMLUI_loop() {
+        "use strict";
+        var _this=this;
+        var k;
+        
+        k = _this.toUI(_this.left,_this.top);
+        
+        while (true) {
+          _this.fit();
+          _this.update();
+          
+        }
+      },
+      fiber$loop :function* _trc_HTMLUI_f_loop(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var k;
+        
+        k=yield* _this.fiber$toUI(_thread, _this.left, _this.top);
+        
+        while (true) {
+          (yield* _this.fiber$fit(_thread));
+          (yield* _this.fiber$update(_thread));
+          
+        }
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"toUI":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"fit":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"checkExists":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getValue":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setValue":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"copyToClipboard":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"die":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"left":{},"top":{},"width":{},"height":{},"screen":{},"id":{},"content":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Label',

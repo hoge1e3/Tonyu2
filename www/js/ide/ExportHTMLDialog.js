@@ -46,7 +46,7 @@ function (east,UI,Klass,root,R,WebSite,extLink) {
                     },R("QuickUpload")],
                     ["span",{$var:"updURL"}],
                 ],
-                ["textarea",{$var:"prog",rows:20,cols:60,placeholder:"Please wait..."}],
+                ["textarea",{$var:"prog",rows:10,cols:60,placeholder:"Please wait..."}],
             );
             t.dom.$edits.load(t.options);
             t.dom.$vars.editButton.on("change",()=> {

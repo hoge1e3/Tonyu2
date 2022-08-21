@@ -1,0 +1,92 @@
+extends Actor;
+includes JQExpr;
+native document;
+native $;
+native navigator;
+"field strict";
+var left, top, width, height;
+var screen,id,content;
+\add(expr) {
+    var expr=new ArgParser(arguments).toArray();
+    if (expr.length==1 && isArray(expr[0])) expr=expr[0];
+    return add2(id, expr);
+}
+\new(param) {
+    //print("HTMLUI NEW!");
+    super(param);
+    //print("HTMLUI NEW end!");
+    //throw new Error("dom");
+    screen=screen||$Screen;
+    var body=$(document.body);
+    if (!body.attr("id")) body.attr{id:genid()};
+    var bid=body.attr("id");
+    if (!content) id=add2(bid, ["div"]);
+    else if (typeof content==="string") id=add2(bid,[content]);
+    else id=add2(bid, content);
+    //print("id",id);
+    //print("HTMLUI NEW end!?"+(typeof dom));
+    document.body.appendChild($("#"+id)[0]);
+    fit();
+    $uiScreen.on("resize") \{
+        //print("RSZ");
+        fit();
+    };
+}
+function toUI(x,y) {
+    var sc=screen;
+    var scale=sc.scaleX;
+    var left=sc.x+((-sc.width/2+x)*scale);
+    var top=sc.y+((-sc.height/2+y)*scale);
+    return {left,top};    
+}
+
+function fit() {
+    var sc=screen;
+    var scale=sc.scaleX;
+    /*vx=sc.x-(sc.width*scale)/2;
+    vy=sc.y-(sc.height*scale)/2;*/
+    var u1=toUI(this.left,this.top);
+    //dom.css{position:"absolute",left:u1.left,top:u1.top};
+    //return;
+    var u2=toUI(this.left+width,this.top+height);
+    var c={left: (u1.left+u2.left)/2, top:(u1.top+u2.top)/2};
+    var left=c.left-(u2.left-u1.left)/2/scale;
+    var top=c.top-(u2.top-u1.top)/2/scale;
+    $("#"+id).css{
+        position:"absolute",
+        width:(width)+"px", height: (height)+"px", 
+        left, top,
+        transform: "scale("+scale+")",
+    };
+}
+\checkExists(name) {
+    if (!name2id[name]) {print(name2id); throw new Error("name="+name+" is not found");}
+    return $("#"+name2id[name]);
+}
+\getValue(name) {
+    if (!name2id) return "";
+    return checkExists(name).val();
+}
+\setValue(name,value) {
+    if (!name2id) return "";
+    return checkExists(name).val(value);
+}
+\copyToClipboard(name) {
+    //checkExists(name)[0].select();
+    //document.execCommand("copy");
+    navigator.clipboard.writeText(getValue(name));
+}
+\die() {
+    super.die();
+    $("#"+id).remove();
+}
+\loop(){
+    //if (!dom.css) return;
+    var k=toUI(left,top);
+//print( [screen.x,screen.y, screen.width, screen.height, screen.scaleX*10, k.left, k.top].map(floor));
+    while(true) {
+        fit();
+        update();
+    }
+}
+//loop();

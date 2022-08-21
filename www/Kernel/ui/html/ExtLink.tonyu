@@ -1,0 +1,34 @@
+extends TObject;
+native WebSite;
+native require;
+let exec = (WebSite.isNW? require('child_process').exec : function (){});
+/*function extLink(href,caption,options) {
+    options=options||{};
+    var opt=getOpt(href,options);
+    return ["a",opt,caption];
+}*/
+function getOpt(options) {
+    var p=WebSite.platform;
+    options=options||{};
+    let href=options.href;
+    options.on=options.on||{};
+    var afterClick=(options.onclick) || function(){};
+    if (p=="win32") {
+        options.href="javascript:;";
+        options.onclick=ext("start",href,afterClick);
+    } else if (p=="darwin") {
+        options.href="javascript:;";
+        options.onclick=ext("open",href,afterClick);
+    } else {
+        options.href=href;
+        options.onclick=afterClick;
+        options.target="_new";
+    }
+    return options;
+}
+function ext(cmd, href,afterClick) {
+    return function () {
+        exec(cmd+" "+href);
+        if (afterClick) afterClick();
+    };
+}

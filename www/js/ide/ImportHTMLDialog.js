@@ -5,7 +5,7 @@ function (east,UI,Klass,NPD,STF,R) {
         show: function (t,options) {
             options=options||{};
             t.createDOM();
-            t.dom.dialog({width:800,height:600});
+            t.dom.dialog({width:800,height:500});
             //console.log("imp.dom.data",$.data(t.dom[0],"ui-dialog"));
             t.mode("src");
             const src=($("#importing").length && $("#importing").val())||
