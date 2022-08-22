@@ -4325,6 +4325,7 @@ function checkExpr(klass, env) {
         },
         backquoteLiteral(node) {
             annotation(node, { resolvedType: { class: String, sampleValue: "a" } });
+            this.visit(node.body);
         },
         postfix: function (node) {
             //var a=annotation(node);
