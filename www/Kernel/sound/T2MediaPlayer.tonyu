@@ -344,3 +344,27 @@ native console;
 \getAudioLength()       { return $t2MediaLib.getAudioLength(); }
 \getAudioData(idx)      { return $t2MediaLib.getAudioData(idx); }
 \resetSEFrame() {seStaredAtThisFrame={};}
+
+\initMMTimer() {
+    if (mmTimer) return mmTimer;
+    if (!available) return false;
+    mmTimer=new MMTimer{context:$t2MediaLib.context};
+    mmTimer.on("interval") \(e){
+        fireEvent("interval",e);
+    };
+    return mmTimer;
+}
+\beep(options) {
+    if (!initMMTimer())return;
+    // freq, vol, duration
+    options=options||{};
+    let b=new Beep{mmTimer};
+    b.setVolume(options.vol||64);
+    if (options.freq) b.setFreq(options.freq);
+    else if (options.scale) b.setScale(options.scale);
+    if (options.duration) b.dieAfter(options.duration);
+    return b;
+}
+\checkTimer() {
+    if (mmTimer) mmTimer.check();
+}

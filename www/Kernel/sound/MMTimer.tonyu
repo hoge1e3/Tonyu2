@@ -1,0 +1,40 @@
+extends TObject;
+includes EventMod;
+native setTimeout;
+native clearTimeout;
+"field strict";
+let context;
+let interval:Number;
+let next:Number;
+let htimi;
+let isDead;
+interval=interval || 1/60;
+next=context.currentTime+interval;
+$Boot.on("stop") \{
+    isDead=true;  
+};
+check();
+\check(){
+    if (isDead) return;
+    let c=context.currentTime;
+    if(c>=next) {
+        proc();
+    } else {
+        clearTimeout(htimi);
+        htimi=setTimeout(proc,
+        floor( (next-c)*1000));
+    }
+}
+\proc(){
+    if (isDead) return;
+    fireEvent("beforeInterval") {
+        time:next,
+        context
+    };
+    fireEvent("interval") {
+        time:next,
+        context
+    };
+    next+=interval;
+    check();
+}

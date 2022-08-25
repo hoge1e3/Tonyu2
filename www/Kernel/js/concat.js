@@ -4662,7 +4662,7 @@ Tonyu.klass.define({
           
           _this.removeListener(listener);
         });
-        listener.dispose=listener.dispose||(function anonymous_785() {
+        listener.dispose=listener.dispose||(function anonymous_786() {
           
         });
         listener.action=listener.action||f;
@@ -12731,6 +12731,281 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"getConnectionInfo":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"connect":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"enterRoom":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"impl":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.Beep',
+  shortName: 'Beep',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.TObject,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_Beep_main() {
+        "use strict";
+        var _this=this;
+        
+        "field strict";
+        
+        
+        
+        
+        
+      },
+      fiber$main :function* _trc_Beep_f_main(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        "field strict";
+        
+        
+        
+        
+        
+        
+      },
+      init :function _trc_Beep_init() {
+        "use strict";
+        var _this=this;
+        var chd;
+        var i;
+        
+        if (_this.buffer) {
+          return true;
+        }
+        if (! _this.context) {
+          return false;
+        }
+        _this.sampleRate=_this.context.sampleRate;
+        _this.buflen=_this.buflen||1024;
+        _this.buffer=_this.context.createBuffer(1,_this.buflen,_this.sampleRate);
+        chd = _this.buffer.getChannelData(0);
+        
+        for (i = 0;
+         i<_this.buflen ; i++) {
+          {
+            chd[i]=i<_this.buflen/2?- 0.1:0.1;
+          }
+        }
+        _this.delay=_this.delay||2/60;
+        _this.gainNode=_this.context.createGain();
+        _this.gainNode.connect(_this.context.destination);
+        _this.gainNode.gain.value=0;
+        _this.source=_this.context.createBufferSource();
+        _this.source.buffer=_this.buffer;
+        _this.source.loop=true;
+        _this.source.connect(_this.gainNode);
+        _this.mmTimer=_this.mmTimer||Tonyu.globals.$sound.mmTimer;
+        if (_this.mmTimer) {
+          _this.mmTimer.on("beforeInterval",(function anonymous_813(e) {
+            
+            _this.time=e.time;
+          }));
+        }
+        _this.time=_this.context.currentTime;
+        _this.source.start();
+        Tonyu.globals.$Boot.on("stop",Tonyu.bindFunc(_this,_this.die));
+        return true;
+      },
+      fiber$init :function* _trc_Beep_f_init(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var chd;
+        var i;
+        
+        if (_this.buffer) {
+          return true;
+        }
+        if (! _this.context) {
+          return false;
+        }
+        _this.sampleRate=_this.context.sampleRate;
+        _this.buflen=_this.buflen||1024;
+        _this.buffer=_this.context.createBuffer(1,_this.buflen,_this.sampleRate);
+        chd = _this.buffer.getChannelData(0);
+        
+        for (i = 0;
+         i<_this.buflen ; i++) {
+          {
+            chd[i]=i<_this.buflen/2?- 0.1:0.1;
+          }
+        }
+        _this.delay=_this.delay||2/60;
+        _this.gainNode=_this.context.createGain();
+        _this.gainNode.connect(_this.context.destination);
+        _this.gainNode.gain.value=0;
+        _this.source=_this.context.createBufferSource();
+        _this.source.buffer=_this.buffer;
+        _this.source.loop=true;
+        _this.source.connect(_this.gainNode);
+        _this.mmTimer=_this.mmTimer||Tonyu.globals.$sound.mmTimer;
+        if (_this.mmTimer) {
+          _this.mmTimer.on("beforeInterval",(function anonymous_813(e) {
+            
+            _this.time=e.time;
+          }));
+        }
+        _this.time=_this.context.currentTime;
+        _this.source.start();
+        Tonyu.globals.$Boot.on("stop",Tonyu.bindFunc(_this,_this.die));
+        return true;
+        
+      },
+      initScaleTable :function _trc_Beep_initScaleTable() {
+        "use strict";
+        var _this=this;
+        
+        return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1660(e) {
+          
+          return 111860.78125/e;
+        }));
+      },
+      fiber$initScaleTable :function* _trc_Beep_f_initScaleTable(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1660(e) {
+          
+          return 111860.78125/e;
+        }));
+        
+      },
+      setScale :function _trc_Beep_setScale(scale,detune) {
+        "use strict";
+        var _this=this;
+        
+        let s = _this.initScaleTable();
+        
+        if (detune>0) {
+          _this.setFreq(s[scale]*(1-detune)+s[scale+1]*detune);
+          
+        } else {
+          if (detune<0) {
+            _this.setFreq(s[scale]*(1+detune)-s[scale-1]*detune);
+            
+          } else {
+            _this.setFreq(s[scale]);
+            
+          }
+        }
+      },
+      fiber$setScale :function* _trc_Beep_f_setScale(_thread,scale,detune) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        let s=yield* _this.fiber$initScaleTable(_thread);
+        
+        if (detune>0) {
+          (yield* _this.fiber$setFreq(_thread, s[scale]*(1-detune)+s[scale+1]*detune));
+          
+        } else {
+          if (detune<0) {
+            (yield* _this.fiber$setFreq(_thread, s[scale]*(1+detune)-s[scale-1]*detune));
+            
+          } else {
+            (yield* _this.fiber$setFreq(_thread, s[scale]));
+            
+          }
+        }
+        
+      },
+      setFreq :function _trc_Beep_setFreq(f) {
+        "use strict";
+        var _this=this;
+        
+        if (! _this.init()) {
+          return _this;
+        }
+        _this.source.playbackRate.setValueAtTime(_this.hzToRate(f),_this.time+_this.delay);
+      },
+      fiber$setFreq :function* _trc_Beep_f_setFreq(_thread,f) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (! _this.init()) {
+          return _this;
+        }
+        _this.source.playbackRate.setValueAtTime(_this.hzToRate(f),_this.time+_this.delay);
+        
+      },
+      setVolume :function _trc_Beep_setVolume(v) {
+        "use strict";
+        var _this=this;
+        
+        if (! _this.init()) {
+          return _this;
+        }
+        _this.gainNode.gain.setValueAtTime(v/128,_this.time+_this.delay);
+      },
+      fiber$setVolume :function* _trc_Beep_f_setVolume(_thread,v) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (! _this.init()) {
+          return _this;
+        }
+        _this.gainNode.gain.setValueAtTime(v/128,_this.time+_this.delay);
+        
+      },
+      hzToRate :function _trc_Beep_hzToRate(hz) {
+        "use strict";
+        var _this=this;
+        
+        return hz/_this.sampleRate*_this.buflen;
+      },
+      fiber$hzToRate :function* _trc_Beep_f_hzToRate(_thread,hz) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        return hz/_this.sampleRate*_this.buflen;
+        
+      },
+      __getter__context :function _trc_Beep___getter__context() {
+        "use strict";
+        var _this=this;
+        
+        return Tonyu.globals.$t2MediaLib.context;
+      },
+      dieAfter :function _trc_Beep_dieAfter(after) {
+        "use strict";
+        var _this=this;
+        
+        _this.source.stop(_this.time+after);
+        setTimeout(Tonyu.bindFunc(_this,_this.die),after*1000);
+      },
+      fiber$dieAfter :function* _trc_Beep_f_dieAfter(_thread,after) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        _this.source.stop(_this.time+after);
+        setTimeout(Tonyu.bindFunc(_this,_this.die),after*1000);
+        
+      },
+      die :function _trc_Beep_die() {
+        "use strict";
+        var _this=this;
+        
+        _this.gainNode.disconnect();
+      },
+      fiber$die :function* _trc_Beep_f_die(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        _this.gainNode.disconnect();
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"init":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initScaleTable":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setScale":{"nowait":false,"isMain":false,"vtype":{"params":["Number","Number"],"returnValue":null}},"setFreq":{"nowait":false,"isMain":false,"vtype":{"params":["Number"],"returnValue":null}},"setVolume":{"nowait":false,"isMain":false,"vtype":{"params":["Number"],"returnValue":null}},"hzToRate":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__context":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"dieAfter":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"die":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"delay":{"vtype":"Number"},"time":{"vtype":"Number"},"gainNode":{},"buffer":{},"buflen":{},"source":{},"sampleRate":{},"mmTimer":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.MML',
   shortName: 'MML',
   namespace: 'kernel',
@@ -12938,6 +13213,121 @@ Tonyu.klass.define({
     };
   },
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"play":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"playNext":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"id":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"bufferCount":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isPlaying":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"currentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"stop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"mmlBuf":{},"cTimeBase":{},"m":{},"mwav":{},"_id":{}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.MMTimer',
+  shortName: 'MMTimer',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.TObject,
+  includes: [Tonyu.classes.kernel.EventMod],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_MMTimer_main() {
+        "use strict";
+        var _this=this;
+        
+        "field strict";
+        
+        
+        
+        
+        
+        _this.interval=_this.interval||1/60;
+        _this.next=_this.context.currentTime+_this.interval;
+        Tonyu.globals.$Boot.on("stop",(function anonymous_245() {
+          
+          _this.isDead=true;
+        }));
+        _this.check();
+      },
+      fiber$main :function* _trc_MMTimer_f_main(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        "field strict";
+        
+        
+        
+        
+        
+        _this.interval=_this.interval||1/60;
+        _this.next=_this.context.currentTime+_this.interval;
+        Tonyu.globals.$Boot.on("stop",(function anonymous_245() {
+          
+          _this.isDead=true;
+        }));
+        (yield* _this.fiber$check(_thread));
+        
+      },
+      check :function _trc_MMTimer_check() {
+        "use strict";
+        var _this=this;
+        
+        if (_this.isDead) {
+          return _this;
+        }
+        let c = _this.context.currentTime;
+        
+        if (c>=_this.next) {
+          _this.proc();
+          
+        } else {
+          clearTimeout(_this.htimi);
+          _this.htimi=setTimeout(Tonyu.bindFunc(_this,_this.proc),_this.floor((_this.next-c)*1000));
+          
+        }
+      },
+      fiber$check :function* _trc_MMTimer_f_check(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (_this.isDead) {
+          return _this;
+        }
+        let c = _this.context.currentTime;
+        
+        if (c>=_this.next) {
+          (yield* _this.fiber$proc(_thread));
+          
+        } else {
+          clearTimeout(_this.htimi);
+          _this.htimi=setTimeout(Tonyu.bindFunc(_this,_this.proc),_this.floor((_this.next-c)*1000));
+          
+        }
+        
+      },
+      proc :function _trc_MMTimer_proc() {
+        "use strict";
+        var _this=this;
+        
+        if (_this.isDead) {
+          return _this;
+        }
+        _this.fireEvent("beforeInterval",{time: _this.next,context: _this.context});
+        _this.fireEvent("interval",{time: _this.next,context: _this.context});
+        _this.next+=_this.interval;
+        _this.check();
+      },
+      fiber$proc :function* _trc_MMTimer_f_proc(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (_this.isDead) {
+          return _this;
+        }
+        _this.fireEvent("beforeInterval",{time: _this.next,context: _this.context});
+        _this.fireEvent("interval",{time: _this.next,context: _this.context});
+        _this.next+=_this.interval;
+        (yield* _this.fiber$check(_thread));
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"check":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"proc":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"context":{},"interval":{"vtype":"Number"},"next":{"vtype":"Number"},"htimi":{},"isDead":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.WaveTable',
@@ -28713,10 +29103,112 @@ Tonyu.klass.define({
         _this.seStaredAtThisFrame={};
         
       },
+      initMMTimer :function _trc_T2MediaPlayer_initMMTimer() {
+        "use strict";
+        var _this=this;
+        
+        if (_this.mmTimer) {
+          return _this.mmTimer;
+        }
+        if (! _this.available) {
+          return false;
+        }
+        _this.mmTimer=new Tonyu.classes.kernel.MMTimer({context: Tonyu.globals.$t2MediaLib.context});
+        _this.mmTimer.on("interval",(function anonymous_12886(e) {
+          
+          _this.fireEvent("interval",e);
+        }));
+        return _this.mmTimer;
+      },
+      fiber$initMMTimer :function* _trc_T2MediaPlayer_f_initMMTimer(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (_this.mmTimer) {
+          return _this.mmTimer;
+        }
+        if (! _this.available) {
+          return false;
+        }
+        _this.mmTimer=new Tonyu.classes.kernel.MMTimer({context: Tonyu.globals.$t2MediaLib.context});
+        _this.mmTimer.on("interval",(function anonymous_12886(e) {
+          
+          _this.fireEvent("interval",e);
+        }));
+        return _this.mmTimer;
+        
+      },
+      beep :function _trc_T2MediaPlayer_beep(options) {
+        "use strict";
+        var _this=this;
+        
+        if (! _this.initMMTimer()) {
+          return _this;
+        }
+        options=options||{};
+        let b = new Tonyu.classes.kernel.Beep({mmTimer: _this.mmTimer});
+        
+        b.setVolume(options.vol||64);
+        if (options.freq) {
+          b.setFreq(options.freq);
+        } else {
+          if (options.scale) {
+            b.setScale(options.scale);
+          }
+        }
+        if (options.duration) {
+          b.dieAfter(options.duration);
+        }
+        return b;
+      },
+      fiber$beep :function* _trc_T2MediaPlayer_f_beep(_thread,options) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (! _this.initMMTimer()) {
+          return _this;
+        }
+        options=options||{};
+        let b = new Tonyu.classes.kernel.Beep({mmTimer: _this.mmTimer});
+        
+        b.setVolume(options.vol||64);
+        if (options.freq) {
+          b.setFreq(options.freq);
+        } else {
+          if (options.scale) {
+            b.setScale(options.scale);
+          }
+        }
+        if (options.duration) {
+          b.dieAfter(options.duration);
+        }
+        return b;
+        
+      },
+      checkTimer :function _trc_T2MediaPlayer_checkTimer() {
+        "use strict";
+        var _this=this;
+        
+        if (_this.mmTimer) {
+          _this.mmTimer.check();
+        }
+      },
+      fiber$checkTimer :function* _trc_T2MediaPlayer_f_checkTimer(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (_this.mmTimer) {
+          _this.mmTimer.check();
+        }
+        
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initT2MediaPlayer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allClearSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clearSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"allRemoveDecodedSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"removeDecodedSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"loadSound":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"__getter__available":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadFromProject":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"decodeSound":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSoundFileData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getSoundDecodedData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getContext":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"playSE":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"stopSE":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"stopAllSE":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getSEMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setSEMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getSEVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSEVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSERate":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSERate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSEPan":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSEPan":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isSELoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoop":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSELoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSELoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"playBGM":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"stopBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"pauseBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resumeBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMTempo":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMTempo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPan":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMPan":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isBGMLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMLength":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getPlayingBGMName":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setOnBGMEndListener":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getPlayingBGMState":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMPicoAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isTagLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setTagLoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPlayerMax":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allStopBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allResetBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"playBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"stopBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"pauseBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"resumeBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMVolumeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMVolumeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMTempoID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMTempoID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMPanID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMPanID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isBGMLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMLoopStartTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopStartTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMLoopEndTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopEndTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMCurrentTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLengthID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getPlayingBGMNameID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setOnBGMEndListenerID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getPlayingBGMStateID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPicoAudioID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isTagLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setTagLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"loadAudio":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"playAudio":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"stopAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"pauseAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resumeAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setAudioVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setAudioTempo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setAudioPosition":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getAudioCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getAudioLength":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getAudioData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"resetSEFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"bgmPlayerMax":{},"progressNoLog":{},"mute":{},"seStaredAtThisFrame":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initT2MediaPlayer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allClearSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clearSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"allRemoveDecodedSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"removeDecodedSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"loadSound":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"__getter__available":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadFromProject":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"decodeSound":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSoundFileData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getSoundDecodedData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getContext":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"playSE":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"stopSE":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"stopAllSE":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getSEMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setSEMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getSEVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSEVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSERate":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSERate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSEPan":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSEPan":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isSELoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoop":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSELoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSELoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"playBGM":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"stopBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"pauseBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resumeBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMTempo":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMTempo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPan":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMPan":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isBGMLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMLength":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getPlayingBGMName":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setOnBGMEndListener":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getPlayingBGMState":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMPicoAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isTagLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setTagLoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPlayerMax":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allStopBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allResetBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"playBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"stopBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"pauseBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"resumeBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMVolumeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMVolumeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMTempoID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMTempoID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMPanID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMPanID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isBGMLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMLoopStartTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopStartTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMLoopEndTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopEndTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMCurrentTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLengthID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getPlayingBGMNameID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setOnBGMEndListenerID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getPlayingBGMStateID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPicoAudioID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isTagLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setTagLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"loadAudio":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"playAudio":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"stopAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"pauseAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resumeAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setAudioVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setAudioTempo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setAudioPosition":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getAudioCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getAudioLength":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getAudioData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"resetSEFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initMMTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"beep":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"checkTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"bgmPlayerMax":{},"progressNoLog":{},"mute":{},"seStaredAtThisFrame":{},"mmTimer":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.PlainChar',

@@ -1181,7 +1181,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             if (this.isSrcPlaying) return;
             options=options||{};
             t.masterGain=t.context.createGain();
-            t.masterGain.connect(t.context.destination);
+            t.masterGain.connect(options.destination || t.context.destination);
             for (var i=0;i<Chs;i++) {
                 var chn=t.channels[i];
                 chn.gainNode=t.context.createGain();
@@ -1244,6 +1244,10 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             t.waveBuffers[n]=res;
             if (dat.lambda) res.lambda=dat.lambda << mult;
             return res;
+        },
+        setWaveDat(t, n, wd) {
+            t.WaveDat[n]=wd;
+            delete t.waveBuffers[n];
         },
         Play1Sound: function(t, c, n, iss, noteOnInCtx,noteOffInCtx,por) {
             // ESpeed == psX
@@ -1725,13 +1729,16 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                             t.SelWav(ch, LParam);
                             chn.MPointC += 2;
                             break;
-                        case MWrtWav:
+                        case MWrtWav:{
                             chn.MPointC += 34; // MWrtWav wavno data*32
+                            const wd=[];
                             for (i = 0; i < 32; i++) {
-                                t.WaveDat[LParam][i] = WDT2Float( chn.MPoint[pc + 2 + i] );
+                                wd.push(WDT2Float( chn.MPoint[pc + 2 + i] ));
                             }
+                            t.setWaveDat(LParam, wd);
                             break;
-                        case MWrtWav2:
+                        }
+                        case MWrtWav2:{
                             const lambda=HParam+chn.MPoint[pc+3]*256;
                             const mul=chn.MPoint[pc + 4];
                             const len=lambda*mul;
@@ -1740,9 +1747,10 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                                 wd.push(WDT2Float(chn.MPoint[pc+5+i]));
                             }
                             wd.lambda=lambda;
-                            t.WaveDat[LParam]=wd;
+                            t.setWaveDat(LParam, wd);//t.WaveDat[LParam]=wd;
                             chn.MPointC += len+5; // MWrtWav2 wavno lenL lenH l data*len
                             break;
+                        }
                         case MSelEnv:
                             chn.EShape = t.EnvDat[LParam];
                             chn.CurEnv=LParam;

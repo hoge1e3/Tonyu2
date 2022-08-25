@@ -29,7 +29,7 @@ nowait \addListener() {
     a.push(f);
     var listener=newListener.apply(this,a);
     listener.remove=\{
-       removeListener(listener);
+        removeListener(listener);
     };
     listener.dispose=listener.dispose||\{};
     listener.action=listener.action||f;

@@ -1,0 +1,82 @@
+extends TObject;
+native setTimeout;
+"field strict";
+let delay:Number;
+let time:Number;
+let gainNode, buffer, buflen, source;
+let sampleRate;
+let mmTimer;
+\init() {
+    if (buffer) return true;
+    if (!context) return false;
+    sampleRate=context.sampleRate;
+    buflen=buflen||1024;
+    buffer=context.createBuffer(1,buflen, sampleRate);
+    var chd=buffer.getChannelData(0);
+    for (var i=0;i<buflen;i++) {
+        chd[i]=i<buflen/2 ? -0.1 : 0.1; //dat[i >> mult];
+    }
+    delay=delay||2/60;
+    gainNode=context.createGain();
+    gainNode.connect(context.destination);
+    gainNode.gain.value=0;
+
+    source=context.createBufferSource();
+    source.buffer=buffer;
+    source.loop=true;
+    source.connect(gainNode);
+    
+    mmTimer=mmTimer || $sound.mmTimer;
+    if (mmTimer) mmTimer.on("beforeInterval") \(e) {
+        time=e.time;
+    };
+    time=context.currentTime;
+    source.start();
+    $Boot.on("stop",die);
+    return true;
+}
+\initScaleTable() {
+    return $sound.m2t = $sound.m2t||
+    [0xd5d, 0xc9c, 0xbe7, 0xb3c, 0xa9b, 0xa02, 0x973, 0x8eb, 0x86b, 0x7f2, 0x780, 0x714,
+    0x6af, 0x64e, 0x5f4, 0x59e, 0x54e, 0x501, 0x4ba, 0x476, 0x436, 0x3f9, 0x3c0, 0x38a,
+    0x357, 0x327, 0x2fa, 0x2cf, 0x2a7, 0x281, 0x25d, 0x23b, 0x21b, 0x1fd, 0x1e0, 0x1c5,
+    0x1ac, 0x194, 0x17d, 0x168, 0x153, 0x140, 0x12e, 0x11d, 0x10d, 0xfe, 0xf0, 0xe3,
+    0xd6, 0xca, 0xbe, 0xb4, 0xaa, 0xa0, 0x97, 0x8f, 0x87, 0x7f, 0x78, 0x71,
+    0x6b, 0x65, 0x5f, 0x5a, 0x55, 0x50, 0x4c, 0x47, 0x43, 0x40, 0x3c, 0x39,
+    0x35, 0x32, 0x30, 0x2d, 0x2a, 0x28, 0x26, 0x24, 0x22, 0x20, 0x1e, 0x1c,
+    0x1b, 0x19, 0x18, 0x16, 0x15, 0x14, 0x13, 0x12, 0x11, 0x10, 0xf, 0xe
+    ].map\(e){
+        return 111860.78125 / e;
+    };
+}
+\setScale(scale:Number, detune:Number) {
+    let s=initScaleTable();
+    if (detune>0) {
+        setFreq(s[scale]*(1-detune)+s[scale+1]*detune);
+    } else if (detune<0) {
+        setFreq(s[scale]*(1+detune)-s[scale-1]*detune);
+    } else {
+        setFreq(s[scale]);
+    }
+}
+\setFreq(f:Number) {
+    if (!init()) return;
+    source.playbackRate.setValueAtTime( hzToRate(f)  ,time+delay);
+}
+\setVolume(v:Number) {
+    if (!init()) return;
+    gainNode.gain.setValueAtTime(v/128, time+delay);    
+}
+\hzToRate(hz) {
+    return hz /sampleRate*buflen;
+}
+\context {
+    return $t2MediaLib.context;
+}
+\dieAfter(after) {
+    source.stop(time+after);
+    setTimeout(die, after*1000);
+}
+\die () {
+    gainNode.disconnect();
+}
