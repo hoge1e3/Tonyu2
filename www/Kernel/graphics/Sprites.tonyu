@@ -95,6 +95,7 @@ function draw(ctx, camera) {
     ctx.translate(-sx,-sy);
     drawing=ctx;
     orderArray.forEach(\(s){
+        //$Boot.checkTimer();
         s.draw(ctx, camera);
     });
     drawing=null;

@@ -368,3 +368,11 @@ native console;
 \checkTimer() {
     if (mmTimer) mmTimer.check();
 }
+/*\on(type, arg1, arg2) {
+    if (type==="interval") initMMTimer();
+    super.on(type, arg1, arg2);
+}*/
+nowait \findEventHandlerClass(type) {
+    if (type==="interval") initMMTimer();
+    return super.findEventHandlerClass(type);    
+}

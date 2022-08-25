@@ -61,10 +61,13 @@ let mmTimer;
 }
 \setFreq(f:Number) {
     if (!init()) return;
+    if (typeof f!=="number" || f!==f) return;
     source.playbackRate.setValueAtTime( hzToRate(f)  ,time+delay);
 }
 \setVolume(v:Number) {
     if (!init()) return;
+    if (typeof v!=="number" || v!==v) return;
+    v=clamp(v,0,128);
     gainNode.gain.setValueAtTime(v/128, time+delay);    
 }
 \hzToRate(hz) {

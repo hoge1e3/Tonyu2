@@ -11336,9 +11336,9 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        _this.hitWatchers.forEach((function anonymous_2769(w) {
+        _this.hitWatchers.forEach((function anonymous_2800(w) {
           
-          _this.sprites.forEach((function anonymous_2809(a) {
+          _this.sprites.forEach((function anonymous_2840(a) {
             var a_owner;
             
             a_owner = a;
@@ -11346,7 +11346,7 @@ Tonyu.klass.define({
             if (! (a_owner instanceof w.A)) {
               return _this;
             }
-            _this.sprites.forEach((function anonymous_2992(b) {
+            _this.sprites.forEach((function anonymous_3023(b) {
               var b_owner;
               
               b_owner = b;
@@ -11370,9 +11370,9 @@ Tonyu.klass.define({
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
-        _this.hitWatchers.forEach((function anonymous_2769(w) {
+        _this.hitWatchers.forEach((function anonymous_2800(w) {
           
-          _this.sprites.forEach((function anonymous_2809(a) {
+          _this.sprites.forEach((function anonymous_2840(a) {
             var a_owner;
             
             a_owner = a;
@@ -11380,7 +11380,7 @@ Tonyu.klass.define({
             if (! (a_owner instanceof w.A)) {
               return _this;
             }
-            _this.sprites.forEach((function anonymous_2992(b) {
+            _this.sprites.forEach((function anonymous_3023(b) {
               var b_owner;
               
               b_owner = b;
@@ -11547,7 +11547,7 @@ Tonyu.klass.define({
           return res;
           
         }
-        _this.sprites.forEach((function anonymous_4605(s) {
+        _this.sprites.forEach((function anonymous_4636(s) {
           
           if (s===_this) {
             return _this;
@@ -12917,6 +12917,9 @@ Tonyu.klass.define({
         if (! _this.init()) {
           return _this;
         }
+        if (typeof  f!=="number"||f!==f) {
+          return _this;
+        }
         _this.source.playbackRate.setValueAtTime(_this.hzToRate(f),_this.time+_this.delay);
       },
       fiber$setFreq :function* _trc_Beep_f_setFreq(_thread,f) {
@@ -12925,6 +12928,9 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         
         if (! _this.init()) {
+          return _this;
+        }
+        if (typeof  f!=="number"||f!==f) {
           return _this;
         }
         _this.source.playbackRate.setValueAtTime(_this.hzToRate(f),_this.time+_this.delay);
@@ -12937,6 +12943,10 @@ Tonyu.klass.define({
         if (! _this.init()) {
           return _this;
         }
+        if (typeof  v!=="number"||v!==v) {
+          return _this;
+        }
+        v=_this.clamp(v,0,128);
         _this.gainNode.gain.setValueAtTime(v/128,_this.time+_this.delay);
       },
       fiber$setVolume :function* _trc_Beep_f_setVolume(_thread,v) {
@@ -12947,6 +12957,10 @@ Tonyu.klass.define({
         if (! _this.init()) {
           return _this;
         }
+        if (typeof  v!=="number"||v!==v) {
+          return _this;
+        }
+        v=_this.clamp(v,0,128);
         _this.gainNode.gain.setValueAtTime(v/128,_this.time+_this.delay);
         
       },
@@ -14264,7 +14278,7 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        return _this.allThreads.filter((function anonymous_3169(t) {
+        return _this.allThreads.filter((function anonymous_3200(t) {
           
           return t._threadGroup===o;
         }));
@@ -14274,7 +14288,7 @@ Tonyu.klass.define({
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
-        return _this.allThreads.filter((function anonymous_3169(t) {
+        return _this.allThreads.filter((function anonymous_3200(t) {
           
           return t._threadGroup===o;
         }));
@@ -29205,10 +29219,19 @@ Tonyu.klass.define({
         }
         
       },
+      findEventHandlerClass :function _trc_T2MediaPlayer_findEventHandlerClass(type) {
+        "use strict";
+        var _this=this;
+        
+        if (type==="interval") {
+          _this.initMMTimer();
+        }
+        return __superClass.prototype.findEventHandlerClass.apply( _this, [type]);
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initT2MediaPlayer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allClearSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clearSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"allRemoveDecodedSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"removeDecodedSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"loadSound":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"__getter__available":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadFromProject":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"decodeSound":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSoundFileData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getSoundDecodedData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getContext":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"playSE":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"stopSE":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"stopAllSE":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getSEMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setSEMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getSEVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSEVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSERate":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSERate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSEPan":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSEPan":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isSELoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoop":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSELoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSELoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"playBGM":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"stopBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"pauseBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resumeBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMTempo":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMTempo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPan":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMPan":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isBGMLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMLength":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getPlayingBGMName":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setOnBGMEndListener":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getPlayingBGMState":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMPicoAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isTagLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setTagLoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPlayerMax":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allStopBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allResetBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"playBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"stopBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"pauseBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"resumeBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMVolumeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMVolumeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMTempoID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMTempoID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMPanID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMPanID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isBGMLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMLoopStartTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopStartTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMLoopEndTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopEndTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMCurrentTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLengthID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getPlayingBGMNameID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setOnBGMEndListenerID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getPlayingBGMStateID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPicoAudioID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isTagLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setTagLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"loadAudio":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"playAudio":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"stopAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"pauseAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resumeAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setAudioVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setAudioTempo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setAudioPosition":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getAudioCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getAudioLength":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getAudioData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"resetSEFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initMMTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"beep":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"checkTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"bgmPlayerMax":{},"progressNoLog":{},"mute":{},"seStaredAtThisFrame":{},"mmTimer":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initT2MediaPlayer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allClearSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clearSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"allRemoveDecodedSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"removeDecodedSoundData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"loadSound":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"__getter__available":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadFromProject":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"decodeSound":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSoundFileData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getSoundDecodedData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getContext":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"playSE":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"stopSE":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"stopAllSE":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getSEMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setSEMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getSEVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSEVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSERate":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSERate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSEPan":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSEPan":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isSELoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoop":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSELoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getSELoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setSELoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"playBGM":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"stopBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"pauseBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resumeBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMMasterVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMVolume":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMTempo":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMTempo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPan":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMPan":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isBGMLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoopStartTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setBGMLoopEndTime":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMLength":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getPlayingBGMName":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setOnBGMEndListener":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getPlayingBGMState":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBGMPicoAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isTagLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setTagLoop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPlayerMax":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allStopBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"allResetBGM":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"playBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"stopBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"pauseBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"resumeBGMID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMVolumeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMVolumeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMTempoID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMTempoID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMPanID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMPanID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isBGMLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMLoopStartTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopStartTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMLoopEndTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setBGMLoopEndTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getBGMCurrentTimeID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMLengthID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getPlayingBGMNameID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setOnBGMEndListenerID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getPlayingBGMStateID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getBGMPicoAudioID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isTagLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setTagLoopID":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"loadAudio":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"playAudio":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"stopAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"pauseAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resumeAudio":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setAudioVolume":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setAudioTempo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setAudioPosition":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getAudioCurrentTime":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getAudioLength":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getAudioData":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"resetSEFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initMMTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"beep":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"checkTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"findEventHandlerClass":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"bgmPlayerMax":{},"progressNoLog":{},"mute":{},"seStaredAtThisFrame":{},"mmTimer":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.PlainChar',
@@ -38699,6 +38722,7 @@ Tonyu.klass.define({
           
         }
         wt=_this.floor(wt);
+        _this.checkTimer();
         _this.waitFor(Tonyu.timeout(wt));
         _this.deadLine+=1000/_this._fps;
       },
@@ -38718,6 +38742,7 @@ Tonyu.klass.define({
           
         }
         wt=_this.floor(wt);
+        (yield* _this.fiber$checkTimer(_thread));
         (yield* _this.fiber$waitFor(_thread, Tonyu.timeout(wt)));
         _this.deadLine+=1000/_this._fps;
         
@@ -38800,7 +38825,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16153() {
+        requestAnimationFrame((function anonymous_16250() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -38818,7 +38843,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16153() {
+        requestAnimationFrame((function anonymous_16250() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;

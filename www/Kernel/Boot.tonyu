@@ -511,6 +511,10 @@ nowait \moveFrame() {
     fps_rpsCnt ++;
     $frameCount++;//=fps_rpsCnt;
 }
+// $sound==this
+/*\checkTimer() {
+    if($sound) $sound.checkTimer();
+}*/
 nowait \afterDraw(e) {// should call (after draw, e.drawn==true) or (move and frame skip, e.drawn==false)
     //debug("AfterDraw",1);
     $Sprites.checkHit();
@@ -553,6 +557,7 @@ nowait \resetDeadLine() {
         wt=1;
     }
     wt=floor(wt);
+    checkTimer();
     waitFor(Tonyu.timeout(wt));
     deadLine+=1000/_fps;
 }
