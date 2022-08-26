@@ -475,7 +475,7 @@ $(function () {
     extLink.all();
     if (autoRun) {
         console.log("autoRun::runMenuOrd", runMenuOrd);
-        run(runMenuOrd[0]);
+        run(NSP_USR+"."+runMenuOrd[0]);
         let file=curPrjDir.rel(runMenuOrd[0]+EXT);
         if (file.exists()) {
             const s=file.text();

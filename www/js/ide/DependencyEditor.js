@@ -76,15 +76,24 @@ define(function (require, exports, module) {
             const depList=v.depList;
             depList.empty();
             for (let d of deps) {
-                const {dir,namespace}=d;
-                if (!dir) continue;
-                depList.append(UI("div",
-                    dir, `(${namespace})`,
-                    ["a", {
-                        href: jshint.scriptURL(";"),
-                        on:{click:()=>this.removeDependingProject(namespace)}
-                    },"Remove"]
-                ));
+                const {dir,namespace,outputFile}=d;
+                if (dir) {
+                    depList.append(UI("div",
+                        dir, `(${namespace})`,
+                        ["a", {
+                            href: jshint.scriptURL(";"),
+                            on:{click:()=>this.removeDependingProject(namespace)}
+                        },"Remove"]
+                    ));
+                } else if (outputFile) {
+                    depList.append(UI("div",
+                        outputFile, `(${namespace})`,
+                        ["a", {
+                            href: jshint.scriptURL(";"),
+                            on:{click:()=>this.removeDependingProject(namespace)}
+                        },"Remove"]
+                    ));
+                }
             }
         }
         show() {

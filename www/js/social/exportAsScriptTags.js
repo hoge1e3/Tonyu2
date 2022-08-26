@@ -79,7 +79,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             let lu=" data-lastupdate='"+f.lastUpdate()+"' ";
             let rel=deps[ns].dstPath;
             buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"' data-wrap='80'"+lu+">";
-            buf+=wrap(f.text(),80);
+            buf+=escapeLoosely(wrap(f.text(),80));
             buf+="</script>\n\n";
         }
         binary.forEach(function (f) {
@@ -142,7 +142,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
         }
     };
     function escapeLoosely(text) {
-        text=text.replace(/&(#?[\w\d]+;)/g, function (_,a){
+        text=text.replace(/&(#?[\w\d]+)/g, function (_,a){
             return "&amp;"+a;
         });
         text=text.replace(/<(\s*)\/(\s*)script(\s*)>/ig,function (_,s1,s2,s3) {
