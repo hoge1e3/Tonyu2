@@ -18,11 +18,10 @@ function (east,UI,Klass,root,R,WebSite,extLink) {
             t.dom.$vars.updURL.empty();
         },
         write: function (t) {
-            var dir=t.prj.getDir();
             t.prog.val("");
             t.options.editButton=t.dom.$vars.editButton.prop("checked");
             setTimeout(function () {
-                var buf=east(dir,t.options);
+                var buf=east(t.prj, t.options);
                 t.prog.val(buf);
                 t.resetUpload();
             },10);

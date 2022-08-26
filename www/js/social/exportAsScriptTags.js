@@ -1,5 +1,6 @@
 define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splashElement) {
-    var east=function (dir,options) {
+    var east=function (prj,options) {
+        var dir=prj.getDir();
         options=options||{};
         console.log("east options",options);
         var excludes=options.excludes||{};
@@ -8,10 +9,13 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
         buf+='<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>\n';
         buf+=`<script>WebSite={runType:'singleHTML', useEditButton:${!!options.editButton}};</script>`+"\n";
         //"<script>WebSite_runType='singleHTML';</script>\n";
+        const popt=prj.getOptions();
         try {
-            let title=dir.rel("options.json").obj().social.title;
+            let title=popt.social.title;
             buf+=`<title>${Util.htmlspecialchars(title)}</title>`+"\n";
         }catch(e) {}
+        const deps={};
+        scanDirBasedDependingProjects();
         if (includeJSScript) {
             var resFile=dir.rel("res.json");
             var resObj=resFile.obj();
@@ -37,6 +41,8 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
                 return;
             } else if (rel.indexOf("static/")>=0) {
                 binary.push(f);
+                return;
+            } else if (rel===("options.json")) {
                 return;
             } else if (f.endsWith(".desktop")) {
                 return;
@@ -64,6 +70,18 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             buf+=beautifyJSON(f.text());
             buf+="</script>\n\n";
         });
+        let lu=` data-lastupdate='${new Date().getTime()}' `;
+        buf+="<script language='text/tonyu' type='text/tonyu' data-filename='options.json'"+lu+">\n";
+        buf+=JSON.stringify(popt,null,4);;
+        buf+="</script>\n\n";
+        for (let ns of Object.keys(deps)) {
+            const f=deps[ns].srcFile;
+            let lu=" data-lastupdate='"+f.lastUpdate()+"' ";
+            let rel=deps[ns].dstPath;
+            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"' data-wrap='80'"+lu+">";
+            buf+=wrap(f.text(),80);
+            buf+="</script>\n\n";
+        }
         binary.forEach(function (f) {
             var rel=f.relPath(dir);
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
@@ -97,6 +115,30 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             }catch(e) {
                 return str;
             }
+        }
+        function scanDirBasedDependingProjects() {
+            for (let depPrj of prj.getDependingProjects()) {
+                const ns=depPrj.getNamespace();
+                if (ns==="kernel") continue;
+                if (!depPrj.getOutputFile) continue;
+                let outf=depPrj.getOutputFile();
+                if (!outf.relPath(dir).match(/^\.\./)) continue;
+                deps[ns]={
+                    srcFile: outf, 
+                    dstPath: `static/libs/${ns}.js`,
+                };
+                console.log("Depending projects", ns, depPrj.getOutputFile());
+            }
+            if (deps.length==0) return;
+            if (!popt.compiler) return;
+            if (!popt.compiler.dependingProjects) return;
+            popt.compiler.dependingProjects=popt.compiler.dependingProjects.map(
+                p=>!deps[p.namespace] ? p :
+                  {
+                    namespace:p.namespace, 
+                    outputFile:deps[p.namespace].dstPath
+                  }
+            );
         }
     };
     function escapeLoosely(text) {
