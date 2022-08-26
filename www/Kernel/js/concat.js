@@ -12789,19 +12789,16 @@ Tonyu.klass.define({
         _this.gainNode=_this.context.createGain();
         _this.gainNode.connect(_this.context.destination);
         _this.gainNode.gain.value=0;
-        _this.source=_this.context.createBufferSource();
-        _this.source.buffer=_this.buffer;
-        _this.source.loop=true;
-        _this.source.connect(_this.gainNode);
+        _this.createSource();
+        _this.source.start();
         _this.mmTimer=_this.mmTimer||Tonyu.globals.$sound.mmTimer;
         if (_this.mmTimer) {
-          _this.mmTimer.on("beforeInterval",(function anonymous_813(e) {
+          _this.mmTimer.on("beforeInterval",(function anonymous_733(e) {
             
             _this.time=e.time;
           }));
         }
         _this.time=_this.context.currentTime;
-        _this.source.start();
         Tonyu.globals.$Boot.on("stop",Tonyu.bindFunc(_this,_this.die));
         return true;
       },
@@ -12833,28 +12830,45 @@ Tonyu.klass.define({
         _this.gainNode=_this.context.createGain();
         _this.gainNode.connect(_this.context.destination);
         _this.gainNode.gain.value=0;
-        _this.source=_this.context.createBufferSource();
-        _this.source.buffer=_this.buffer;
-        _this.source.loop=true;
-        _this.source.connect(_this.gainNode);
+        (yield* _this.fiber$createSource(_thread));
+        _this.source.start();
         _this.mmTimer=_this.mmTimer||Tonyu.globals.$sound.mmTimer;
         if (_this.mmTimer) {
-          _this.mmTimer.on("beforeInterval",(function anonymous_813(e) {
+          _this.mmTimer.on("beforeInterval",(function anonymous_733(e) {
             
             _this.time=e.time;
           }));
         }
         _this.time=_this.context.currentTime;
-        _this.source.start();
         Tonyu.globals.$Boot.on("stop",Tonyu.bindFunc(_this,_this.die));
         return true;
+        
+      },
+      createSource :function _trc_Beep_createSource() {
+        "use strict";
+        var _this=this;
+        
+        _this.source=_this.context.createBufferSource();
+        _this.source.buffer=_this.buffer;
+        _this.source.loop=true;
+        _this.source.connect(_this.gainNode);
+      },
+      fiber$createSource :function* _trc_Beep_f_createSource(_thread) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        _this.source=_this.context.createBufferSource();
+        _this.source.buffer=_this.buffer;
+        _this.source.loop=true;
+        _this.source.connect(_this.gainNode);
         
       },
       initScaleTable :function _trc_Beep_initScaleTable() {
         "use strict";
         var _this=this;
         
-        return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1660(e) {
+        return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1699(e) {
           
           return 111860.78125/e;
         }));
@@ -12864,7 +12878,7 @@ Tonyu.klass.define({
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
-        return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1660(e) {
+        return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1699(e) {
           
           return 111860.78125/e;
         }));
@@ -12907,6 +12921,60 @@ Tonyu.klass.define({
             (yield* _this.fiber$setFreq(_thread, s[scale]));
             
           }
+        }
+        
+      },
+      set :function _trc_Beep_set(options) {
+        "use strict";
+        var _this=this;
+        
+        if (options.reset) {
+          let curs = _this.source;
+          
+          curs.stop(_this.time+_this.delay);
+          setTimeout((function anonymous_2139() {
+            
+            curs.disconnect();
+          }),(_this.time+_this.delay)*1000+100);
+          _this.createSource();
+          _this.source.start(_this.time+_this.delay);
+          
+        }
+        if (typeof  options.vol==="number") {
+          _this.setVolume(options.vol);
+        }
+        if (typeof  options.freq==="number") {
+          _this.setFreq(options.freq);
+        }
+        if (typeof  options.scale==="number") {
+          _this.setScale(options.scale);
+        }
+      },
+      fiber$set :function* _trc_Beep_f_set(_thread,options) {
+        "use strict";
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (options.reset) {
+          let curs = _this.source;
+          
+          curs.stop(_this.time+_this.delay);
+          setTimeout((function anonymous_2139() {
+            
+            curs.disconnect();
+          }),(_this.time+_this.delay)*1000+100);
+          (yield* _this.fiber$createSource(_thread));
+          _this.source.start(_this.time+_this.delay);
+          
+        }
+        if (typeof  options.vol==="number") {
+          (yield* _this.fiber$setVolume(_thread, options.vol));
+        }
+        if (typeof  options.freq==="number") {
+          (yield* _this.fiber$setFreq(_thread, options.freq));
+        }
+        if (typeof  options.scale==="number") {
+          (yield* _this.fiber$setScale(_thread, options.scale));
         }
         
       },
@@ -12988,16 +13056,16 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        _this.source.stop(_this.time+after);
-        setTimeout(Tonyu.bindFunc(_this,_this.die),after*1000);
+        _this.source.stop(_this.time+_this.delay+after);
+        setTimeout(Tonyu.bindFunc(_this,_this.die),(_this.delay+after)*1000);
       },
       fiber$dieAfter :function* _trc_Beep_f_dieAfter(_thread,after) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
-        _this.source.stop(_this.time+after);
-        setTimeout(Tonyu.bindFunc(_this,_this.die),after*1000);
+        _this.source.stop(_this.time+_this.delay+after);
+        setTimeout(Tonyu.bindFunc(_this,_this.die),(_this.delay+after)*1000);
         
       },
       die :function _trc_Beep_die() {
@@ -13017,7 +13085,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"init":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initScaleTable":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setScale":{"nowait":false,"isMain":false,"vtype":{"params":["Number","Number"],"returnValue":null}},"setFreq":{"nowait":false,"isMain":false,"vtype":{"params":["Number"],"returnValue":null}},"setVolume":{"nowait":false,"isMain":false,"vtype":{"params":["Number"],"returnValue":null}},"hzToRate":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__context":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"dieAfter":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"die":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"delay":{"vtype":"Number"},"time":{"vtype":"Number"},"gainNode":{},"buffer":{},"buflen":{},"source":{},"sampleRate":{},"mmTimer":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"init":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"createSource":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initScaleTable":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setScale":{"nowait":false,"isMain":false,"vtype":{"params":["Number","Number"],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setFreq":{"nowait":false,"isMain":false,"vtype":{"params":["Number"],"returnValue":null}},"setVolume":{"nowait":false,"isMain":false,"vtype":{"params":["Number"],"returnValue":null}},"hzToRate":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__context":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"dieAfter":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"die":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"delay":{"vtype":"Number"},"time":{"vtype":"Number"},"gainNode":{},"buffer":{},"buflen":{},"source":{},"sampleRate":{},"mmTimer":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.MML',

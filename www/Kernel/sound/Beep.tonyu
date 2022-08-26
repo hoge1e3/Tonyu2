@@ -20,20 +20,22 @@ let mmTimer;
     gainNode=context.createGain();
     gainNode.connect(context.destination);
     gainNode.gain.value=0;
-
-    source=context.createBufferSource();
-    source.buffer=buffer;
-    source.loop=true;
-    source.connect(gainNode);
+    createSource();
+    source.start();
     
     mmTimer=mmTimer || $sound.mmTimer;
     if (mmTimer) mmTimer.on("beforeInterval") \(e) {
         time=e.time;
     };
     time=context.currentTime;
-    source.start();
     $Boot.on("stop",die);
     return true;
+}
+\createSource() {
+    source=context.createBufferSource();
+    source.buffer=buffer;
+    source.loop=true;
+    source.connect(gainNode);
 }
 \initScaleTable() {
     return $sound.m2t = $sound.m2t||
@@ -59,6 +61,18 @@ let mmTimer;
         setFreq(s[scale]);
     }
 }
+\set(options) {
+    if (options.reset) {
+        let curs=source;
+        curs.stop(time+delay);
+        setTimeout(\{ curs.disconnect(); },(time+delay)*1000+100);
+        createSource();
+        source.start(time+delay);
+    }
+    if (typeof options.vol==="number") setVolume(options.vol);
+    if (typeof options.freq==="number") setFreq(options.freq);
+    if (typeof options.scale==="number") setScale(options.scale);
+}
 \setFreq(f:Number) {
     if (!init()) return;
     if (typeof f!=="number" || f!==f) return;
@@ -77,8 +91,8 @@ let mmTimer;
     return $t2MediaLib.context;
 }
 \dieAfter(after) {
-    source.stop(time+after);
-    setTimeout(die, after*1000);
+    source.stop(time+delay+after);
+    setTimeout(die, (delay+after)*1000);
 }
 \die () {
     gainNode.disconnect();
