@@ -8,7 +8,7 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 	var prot=location.protocol;
 	var k;
 
-	var VER=1661483480206;
+	var VER=1661504636648;
 	if (!prot.match(/^http/)) prot="https:";
 	switch(WebSite.runType) {
 	case "IDE":
