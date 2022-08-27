@@ -60,7 +60,7 @@ define(["Tonyu","WebSite"],function (Tonyu,WebSite) {
             opt.language="tonyu";
         },
         fixBootRunClasses: function (opt) {
-            if (opt.run) {
+            /*if (opt.run) {
                 const ns=opt.compiler.namespace||NSP_USR;
                 var mc=this.fixClassName(ns, opt.run.mainClass);
                 var bc=this.fixClassName(ns, opt.run.bootClass);
@@ -68,7 +68,7 @@ define(["Tonyu","WebSite"],function (Tonyu,WebSite) {
                     opt.run.mainClass=mc;
                     opt.run.bootClass=bc;
                 }
-            }
+            }*/
         },
         fixClassName: function (ns, cn) {
             //if (TPR.classExists(cn)) return cn;
