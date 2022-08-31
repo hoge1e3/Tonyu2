@@ -1000,7 +1000,7 @@ var T2MediaLib_BGMPlayer = (function(){
         if (isMezonetSource(decodedData)) {
             var m=decodedData.playback(this.t2MediaLib.context);
             this.playingBGM = m;
-            m.Start();
+            m.Start({volume:this.bgmVolume});
         } else if (decodedData instanceof AudioBuffer) {
             // MP3, Ogg, AAC, WAV
             if (this.isTagLoop) {
