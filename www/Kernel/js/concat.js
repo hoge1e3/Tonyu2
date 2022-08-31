@@ -6,19 +6,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_EventHandlerCaller_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_EventHandlerCaller_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       callEventHandler :function _trc_EventHandlerCaller_callEventHandler(h,args) {
-        "use strict";
         var _this=this;
         var t;
         
@@ -34,7 +31,6 @@ Tonyu.klass.define({
         }
       },
       fiber$callEventHandler :function* _trc_EventHandlerCaller_f_callEventHandler(_thread,h,args) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var t;
@@ -64,14 +60,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_EventMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_EventMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -80,7 +74,6 @@ Tonyu.klass.define({
         
       },
       initEventMod :function _trc_EventMod_initEventMod() {
-        "use strict";
         var _this=this;
         
         if (_this._eventHandlers) {
@@ -90,7 +83,6 @@ Tonyu.klass.define({
         _this.on("die",Tonyu.bindFunc(_this,_this.releaseEventMod));
       },
       releaseEventMod :function _trc_EventMod_releaseEventMod() {
-        "use strict";
         var _this=this;
         var k;
         var v;
@@ -101,7 +93,6 @@ Tonyu.klass.define({
         }
       },
       parseEventArgs :function _trc_EventMod_parseEventArgs(a) {
-        "use strict";
         var _this=this;
         var res;
         var i;
@@ -117,13 +108,11 @@ Tonyu.klass.define({
         return res;
       },
       findEventHandlerClass :function _trc_EventMod_findEventHandlerClass(type) {
-        "use strict";
         var _this=this;
         
         return Tonyu.classes.kernel.EventHandler;
       },
       registerEventHandler :function _trc_EventMod_registerEventHandler(type,obj) {
-        "use strict";
         var _this=this;
         var cl;
         
@@ -144,7 +133,6 @@ Tonyu.klass.define({
         return _this._eventHandlers[type]=obj;
       },
       getEventHandler :function _trc_EventMod_getEventHandler(type) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -158,7 +146,6 @@ Tonyu.klass.define({
         return res;
       },
       getOrRegisterEventHandler :function _trc_EventMod_getOrRegisterEventHandler(type) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -167,7 +154,6 @@ Tonyu.klass.define({
         return res;
       },
       on :function _trc_EventMod_on() {
-        "use strict";
         var _this=this;
         var a;
         var h;
@@ -179,7 +165,6 @@ Tonyu.klass.define({
         return h.addListener.apply(h,a.args);
       },
       fireEvent :function _trc_EventMod_fireEvent(type,arg) {
-        "use strict";
         var _this=this;
         var h;
         
@@ -193,13 +178,11 @@ Tonyu.klass.define({
         }
       },
       sendEvent :function _trc_EventMod_sendEvent(type,arg) {
-        "use strict";
         var _this=this;
         
         _this.fireEvent(type,arg);
       },
       waitEvent :function _trc_EventMod_waitEvent() {
-        "use strict";
         var _this=this;
         var args;
         var act;
@@ -217,7 +200,6 @@ Tonyu.klass.define({
         }
       },
       fiber$waitEvent :function* _trc_EventMod_f_waitEvent(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var args;
@@ -237,7 +219,6 @@ Tonyu.klass.define({
         
       },
       waitFor :function _trc_EventMod_waitFor(f) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -254,7 +235,6 @@ Tonyu.klass.define({
         return f;
       },
       fiber$waitFor :function* _trc_EventMod_f_waitFor(_thread,f) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -273,7 +253,6 @@ Tonyu.klass.define({
         
       },
       runPromise :function _trc_EventMod_runPromise(f) {
-        "use strict";
         var _this=this;
         var pr;
         
@@ -288,7 +267,6 @@ Tonyu.klass.define({
         }
       },
       fiber$runPromise :function* _trc_EventMod_f_runPromise(_thread,f) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var pr;
@@ -318,19 +296,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_OneframeSpriteMod_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_OneframeSpriteMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       drawText :function _trc_OneframeSpriteMod_drawText(x,y,text,fillStyle,size,zOrder) {
-        "use strict";
         var _this=this;
         
         if (! size) {
@@ -342,7 +317,6 @@ Tonyu.klass.define({
         _this.appear(Tonyu.classes.kernel.T1Text,{x: x,y: y,text: text,fillStyle: fillStyle,size: size,zOrder: zOrder,owner: _this});
       },
       centerText :function _trc_OneframeSpriteMod_centerText(x,y,text,fillStyle,size,zOrder) {
-        "use strict";
         var _this=this;
         
         if (! size) {
@@ -354,7 +328,6 @@ Tonyu.klass.define({
         _this.appear(Tonyu.classes.kernel.T1Text,{x: x,y: y,text: text,fillStyle: fillStyle,size: size,zOrder: zOrder,owner: _this,align: new Tonyu.classes.kernel.Align2D("center")});
       },
       drawTextEx :function _trc_OneframeSpriteMod_drawTextEx(o) {
-        "use strict";
         var _this=this;
         
         if (typeof  o!="object") {
@@ -375,7 +348,6 @@ Tonyu.klass.define({
         _this.appear(Tonyu.classes.kernel.T1Text,{x: o.x,y: o.y,text: o.text,fillStyle: o.fillStyle,size: o.size,zOrder: o.zOrder,owner: _this,align: new Tonyu.classes.kernel.Align2D(o.align),alpha: o.alpha,font: o.font});
       },
       drawLine :function _trc_OneframeSpriteMod_drawLine(x,y,tx,ty,col,zOrder) {
-        "use strict";
         var _this=this;
         
         if (! col) {
@@ -384,43 +356,36 @@ Tonyu.klass.define({
         _this.appear(Tonyu.classes.kernel.T1Line,{x: x,y: y,tx: tx,ty: ty,col: col,zOrder: zOrder,owner: _this});
       },
       drawRect :function _trc_OneframeSpriteMod_drawRect(x,y,w,h,col,zOrder) {
-        "use strict";
         var _this=this;
         
         _this.appear(Tonyu.classes.kernel.T1Rect,{x: x,y: y,w: w,h: h,col: col,zOrder: zOrder,fill: false,owner: _this});
       },
       drawRectT1 :function _trc_OneframeSpriteMod_drawRectT1(x,y,tx,ty,col,zOrder) {
-        "use strict";
         var _this=this;
         
         _this.appear(Tonyu.classes.kernel.T1Rect,{x: x,y: y,w: tx-x,h: ty-y,col: col,zOrder: zOrder,fill: false,owner: _this});
       },
       fillRect :function _trc_OneframeSpriteMod_fillRect(x,y,w,h,col,zOrder) {
-        "use strict";
         var _this=this;
         
         _this.appear(Tonyu.classes.kernel.T1Rect,{x: x,y: y,w: w,h: h,col: col,zOrder: zOrder,fill: true,owner: _this});
       },
       fillRectT1 :function _trc_OneframeSpriteMod_fillRectT1(x,y,tx,ty,col,zOrder) {
-        "use strict";
         var _this=this;
         
         _this.appear(Tonyu.classes.kernel.T1Rect,{x: x,y: y,w: tx-x,h: ty-y,col: col,zOrder: zOrder,fill: true,owner: _this});
       },
       drawSprite :function _trc_OneframeSpriteMod_drawSprite(x,y,p,f,zOrder) {
-        "use strict";
         var _this=this;
         
         _this.drawDxSprite(x,y,p,f,zOrder,0,255,1,1);
       },
       drawDxSprite :function _trc_OneframeSpriteMod_drawDxSprite(x,y,p,f,zOrder,angle,alpha,scaleX,scaleY) {
-        "use strict";
         var _this=this;
         
         _this.appear(Tonyu.classes.kernel.T1Sprite,{x: x,y: y,p: p,f: f,zOrder: zOrder,angle: angle,alpha: alpha,scaleX: scaleX,scaleY: scaleY,owner: _this});
       },
       setPolygon :function _trc_OneframeSpriteMod_setPolygon(seq,x,y) {
-        "use strict";
         var _this=this;
         
         if (seq<0||seq>=100) {
@@ -433,7 +398,6 @@ Tonyu.klass.define({
         Tonyu.globals.$_setPolygonTempAry[seq*2+1]=y;
       },
       fillPolygon :function _trc_OneframeSpriteMod_fillPolygon(x,y,posCnt,col,zOrder,alpha) {
-        "use strict";
         var _this=this;
         var startPos;
         var i;
@@ -486,7 +450,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_SpriteMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -495,7 +458,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_SpriteMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -506,7 +468,6 @@ Tonyu.klass.define({
         
       },
       initSpriteMod :function _trc_SpriteMod_initSpriteMod() {
-        "use strict";
         var _this=this;
         
         _this.position=new Tonyu.classes.kernel.Vec3View(_this);
@@ -525,7 +486,6 @@ Tonyu.klass.define({
         _this.initTransform();
       },
       fiber$initSpriteMod :function* _trc_SpriteMod_f_initSpriteMod(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -546,25 +506,21 @@ Tonyu.klass.define({
         
       },
       initTransform :function _trc_SpriteMod_initTransform() {
-        "use strict";
         var _this=this;
         
       },
       fiber$initTransform :function* _trc_SpriteMod_f_initTransform(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       __getter__align :function _trc_SpriteMod___getter__align() {
-        "use strict";
         var _this=this;
         
         return _this._alignVal;
       },
       prepareImage :function _trc_SpriteMod_prepareImage() {
-        "use strict";
         var _this=this;
         
         if (typeof  _this.p!="number") {
@@ -580,13 +536,11 @@ Tonyu.klass.define({
         _this.height=_this.pImg.height;
       },
       color :function _trc_SpriteMod_color(r,g,b) {
-        "use strict";
         var _this=this;
         
         return "rgb("+[r,g,b].join(",")+")";
       },
       colorHSL :function _trc_SpriteMod_colorHSL(iroai,azayakasa,akarusa) {
-        "use strict";
         var _this=this;
         var r;
         var g;
@@ -660,13 +614,11 @@ Tonyu.klass.define({
         return _this.color(r,g,b);
       },
       setVisible :function _trc_SpriteMod_setVisible(v) {
-        "use strict";
         var _this=this;
         
         _this._isInvisible=! v;
       },
       fiber$setVisible :function* _trc_SpriteMod_f_setVisible(_thread,v) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -674,7 +626,6 @@ Tonyu.klass.define({
         
       },
       detectSpriteType :function _trc_SpriteMod_detectSpriteType() {
-        "use strict";
         var _this=this;
         
         if (_this.text!=null) {
@@ -696,7 +647,6 @@ Tonyu.klass.define({
         }
       },
       fiber$detectSpriteType :function* _trc_SpriteMod_f_detectSpriteType(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -732,14 +682,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_SpriteMod3D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_SpriteMod3D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -748,7 +696,6 @@ Tonyu.klass.define({
         
       },
       detectSpriteType :function _trc_SpriteMod3D_detectSpriteType() {
-        "use strict";
         var _this=this;
         var t;
         
@@ -760,7 +707,6 @@ Tonyu.klass.define({
         return t;
       },
       fiber$detectSpriteType :function* _trc_SpriteMod3D_f_detectSpriteType(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var t;
@@ -774,7 +720,6 @@ Tonyu.klass.define({
         
       },
       initTransform :function _trc_SpriteMod3D_initTransform() {
-        "use strict";
         var _this=this;
         var givenTransform;
         
@@ -791,7 +736,6 @@ Tonyu.klass.define({
         }
       },
       fiber$initTransform :function* _trc_SpriteMod3D_f_initTransform(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var givenTransform;
@@ -810,7 +754,6 @@ Tonyu.klass.define({
         
       },
       __getter__scale :function _trc_SpriteMod3D___getter__scale() {
-        "use strict";
         var _this=this;
         
         if (! _this.transform) {
@@ -819,7 +762,6 @@ Tonyu.klass.define({
         return _this.transform.scale;
       },
       __setter__scale :function _trc_SpriteMod3D___setter__scale(s) {
-        "use strict";
         var _this=this;
         
         if (! _this.transform) {
@@ -828,7 +770,6 @@ Tonyu.klass.define({
         _this.transform.scale=s;
       },
       draw3D :function _trc_SpriteMod3D_draw3D(ctx3d) {
-        "use strict";
         var _this=this;
         var t;
         
@@ -856,7 +797,6 @@ Tonyu.klass.define({
         }
       },
       fiber$draw3D :function* _trc_SpriteMod3D_f_draw3D(_thread,ctx3d) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var t;
@@ -898,13 +838,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_TextRectMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_TextRectMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -912,7 +850,6 @@ Tonyu.klass.define({
         
       },
       drawTextRect :function _trc_TextRectMod_drawTextRect(ctx,text,x,topY,h,align,type) {
-        "use strict";
         var _this=this;
         var met;
         var res;
@@ -939,7 +876,6 @@ Tonyu.klass.define({
         return res;
       },
       setFontSize :function _trc_TextRectMod_setFontSize(ctx,sz) {
-        "use strict";
         var _this=this;
         var post;
         
@@ -948,7 +884,6 @@ Tonyu.klass.define({
         ctx.font=sz+post;
       },
       fukidashi :function _trc_TextRectMod_fukidashi(ctx,text,x,y,sz) {
-        "use strict";
         var _this=this;
         var align;
         var theight;
@@ -994,14 +929,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T2Mod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_T2Mod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1010,7 +943,6 @@ Tonyu.klass.define({
         
       },
       bvec :function _trc_T2Mod_bvec(tx,ty) {
-        "use strict";
         var _this=this;
         var b2Vec2;
         
@@ -1019,7 +951,6 @@ Tonyu.klass.define({
         return new b2Vec2(tx/_this.wscale,ty/_this.wscale);
       },
       fiber$bvec :function* _trc_T2Mod_f_bvec(_thread,tx,ty) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var b2Vec2;
@@ -1030,13 +961,11 @@ Tonyu.klass.define({
         
       },
       defv :function _trc_T2Mod_defv(t,d) {
-        "use strict";
         var _this=this;
         
         return (t===t&&(typeof  t)==="number")?t:d;
       },
       fiber$defv :function* _trc_T2Mod_f_defv(_thread,t,d) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1056,19 +985,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_PrintMod_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_PrintMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       print :function _trc_PrintMod_print() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$_printCount++;
@@ -1095,25 +1021,21 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_MediaPlayer_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_MediaPlayer_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       play :function _trc_MediaPlayer_play(s) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$sound.playBGM(s);
       },
       fiber$play :function* _trc_MediaPlayer_f_play(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1121,13 +1043,11 @@ Tonyu.klass.define({
         
       },
       stop :function _trc_MediaPlayer_stop() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$sound.stopBGM(_this.s);
       },
       fiber$stop :function* _trc_MediaPlayer_f_stop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1135,13 +1055,11 @@ Tonyu.klass.define({
         
       },
       playSE :function _trc_MediaPlayer_playSE() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$sound.playSE(_this.s);
       },
       fiber$playSE :function* _trc_MediaPlayer_f_playSE(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1149,24 +1067,20 @@ Tonyu.klass.define({
         
       },
       setDelay :function _trc_MediaPlayer_setDelay() {
-        "use strict";
         var _this=this;
         
       },
       fiber$setDelay :function* _trc_MediaPlayer_f_setDelay(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       setVolume :function _trc_MediaPlayer_setVolume() {
-        "use strict";
         var _this=this;
         
       },
       fiber$setVolume :function* _trc_MediaPlayer_f_setVolume(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1185,31 +1099,26 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T1Array_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_T1Array_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_T1Array_initialize() {
-        "use strict";
         var _this=this;
         
         _this.data=[];
       },
       ary :function _trc_T1Array_ary() {
-        "use strict";
         var _this=this;
         
         return _this.data;
       },
       fiber$ary :function* _trc_T1Array_f_ary(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1217,13 +1126,11 @@ Tonyu.klass.define({
         
       },
       add :function _trc_T1Array_add(d) {
-        "use strict";
         var _this=this;
         
         _this.data.push(d);
       },
       fiber$add :function* _trc_T1Array_f_add(_thread,d) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1231,13 +1138,11 @@ Tonyu.klass.define({
         
       },
       clear :function _trc_T1Array_clear() {
-        "use strict";
         var _this=this;
         
         _this.data.splice(0);
       },
       fiber$clear :function* _trc_T1Array_f_clear(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1245,13 +1150,11 @@ Tonyu.klass.define({
         
       },
       _delete :function _trc_T1Array__delete(i) {
-        "use strict";
         var _this=this;
         
         _this.data.splice(i,1);
       },
       fiber$_delete :function* _trc_T1Array_f__delete(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1259,13 +1162,11 @@ Tonyu.klass.define({
         
       },
       get :function _trc_T1Array_get(i) {
-        "use strict";
         var _this=this;
         
         return _this.data[i];
       },
       fiber$get :function* _trc_T1Array_f_get(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1273,13 +1174,11 @@ Tonyu.klass.define({
         
       },
       indexOf :function _trc_T1Array_indexOf(d) {
-        "use strict";
         var _this=this;
         
         _this.data.indexOf(d);
       },
       fiber$indexOf :function* _trc_T1Array_f_indexOf(_thread,d) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1287,13 +1186,11 @@ Tonyu.klass.define({
         
       },
       insert :function _trc_T1Array_insert(i,d) {
-        "use strict";
         var _this=this;
         
         _this.data.splice(i,0,d);
       },
       fiber$insert :function* _trc_T1Array_f_insert(_thread,i,d) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1301,13 +1198,11 @@ Tonyu.klass.define({
         
       },
       lightIndexOf :function _trc_T1Array_lightIndexOf() {
-        "use strict";
         var _this=this;
         
         _this.data.indexOf(_this.d);
       },
       fiber$lightIndexOf :function* _trc_T1Array_f_lightIndexOf(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1315,19 +1210,16 @@ Tonyu.klass.define({
         
       },
       load :function _trc_T1Array_load() {
-        "use strict";
         var _this=this;
         
       },
       fiber$load :function* _trc_T1Array_f_load(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       remove :function _trc_T1Array_remove() {
-        "use strict";
         var _this=this;
         var i;
         
@@ -1336,7 +1228,6 @@ Tonyu.klass.define({
         _this.data.splice(i,1);
       },
       fiber$remove :function* _trc_T1Array_f_remove(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -1347,25 +1238,21 @@ Tonyu.klass.define({
         
       },
       save :function _trc_T1Array_save() {
-        "use strict";
         var _this=this;
         
       },
       fiber$save :function* _trc_T1Array_f_save(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       set :function _trc_T1Array_set(i,d) {
-        "use strict";
         var _this=this;
         
         _this.data[i]=d;
       },
       fiber$set :function* _trc_T1Array_f_set(_thread,i,d) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1373,13 +1260,11 @@ Tonyu.klass.define({
         
       },
       size :function _trc_T1Array_size() {
-        "use strict";
         var _this=this;
         
         return _this.data.length;
       },
       fiber$size :function* _trc_T1Array_f_size(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1399,13 +1284,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ParallelMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_ParallelMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1413,7 +1296,6 @@ Tonyu.klass.define({
         
       },
       parallel :function _trc_ParallelMod_parallel() {
-        "use strict";
         var _this=this;
         var args;
         var i;
@@ -1435,19 +1317,16 @@ Tonyu.klass.define({
         return th;
       },
       para_no_op :function _trc_ParallelMod_para_no_op() {
-        "use strict";
         var _this=this;
         
       },
       fiber$para_no_op :function* _trc_ParallelMod_f_para_no_op(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       call :function _trc_ParallelMod_call() {
-        "use strict";
         var _this=this;
         var a;
         var t;
@@ -1495,7 +1374,6 @@ Tonyu.klass.define({
         }
       },
       fiber$call :function* _trc_ParallelMod_f_call(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var a;
@@ -1557,14 +1435,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_SchedulerMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_SchedulerMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1573,14 +1449,12 @@ Tonyu.klass.define({
         
       },
       initSchedulerMod :function _trc_SchedulerMod_initSchedulerMod() {
-        "use strict";
         var _this=this;
         
         _this._scheduler=_this._scheduler||Tonyu.globals.$Scheduler;
         _this._th=Tonyu.globals.$Boot.schedule(_this,"main",[]);
       },
       fiber$initSchedulerMod :function* _trc_SchedulerMod_f_initSchedulerMod(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1589,7 +1463,6 @@ Tonyu.klass.define({
         
       },
       update :function _trc_SchedulerMod_update() {
-        "use strict";
         var _this=this;
         
         _this.onUpdate();
@@ -1606,7 +1479,6 @@ Tonyu.klass.define({
         }
       },
       fiber$update :function* _trc_SchedulerMod_f_update(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1625,12 +1497,10 @@ Tonyu.klass.define({
         
       },
       onUpdate :function _trc_SchedulerMod_onUpdate() {
-        "use strict";
         var _this=this;
         
       },
       updateEx :function _trc_SchedulerMod_updateEx(updateT) {
-        "use strict";
         var _this=this;
         var updateCount;
         
@@ -1642,7 +1512,6 @@ Tonyu.klass.define({
         }
       },
       fiber$updateEx :function* _trc_SchedulerMod_f_updateEx(_thread,updateT) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var updateCount;
@@ -1656,13 +1525,11 @@ Tonyu.klass.define({
         
       },
       currentThreadGroup :function _trc_SchedulerMod_currentThreadGroup() {
-        "use strict";
         var _this=this;
         
         return _this._scheduler;
       },
       wait :function _trc_SchedulerMod_wait(t) {
-        "use strict";
         var _this=this;
         
         if (null) {
@@ -1692,7 +1559,6 @@ Tonyu.klass.define({
         }
       },
       fiber$wait :function* _trc_SchedulerMod_f_wait(_thread,t) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1724,7 +1590,6 @@ Tonyu.klass.define({
         
       },
       notify :function _trc_SchedulerMod_notify() {
-        "use strict";
         var _this=this;
         
         if (_this._th) {
@@ -1741,13 +1606,11 @@ Tonyu.klass.define({
         }
       },
       timeStop :function _trc_SchedulerMod_timeStop() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$Boot.timeStop(_this);
       },
       fiber$timeStop :function* _trc_SchedulerMod_f_timeStop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1767,25 +1630,21 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ThreadGroupMod_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_ThreadGroupMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       isDeadThreadGroup :function _trc_ThreadGroupMod_isDeadThreadGroup() {
-        "use strict";
         var _this=this;
         
         return _this._isDeadThreadGroup=_this._isDeadThreadGroup||(_this._threadGroup&&(_this._threadGroup.objectPoolAge!=_this.tGrpObjectPoolAge||_this._threadGroup.isDeadThreadGroup()));
       },
       fiber$isDeadThreadGroup :function* _trc_ThreadGroupMod_f_isDeadThreadGroup(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1793,14 +1652,12 @@ Tonyu.klass.define({
         
       },
       setThreadGroup :function _trc_ThreadGroupMod_setThreadGroup(g) {
-        "use strict";
         var _this=this;
         
         _this._threadGroup=g;
         _this.tGrpObjectPoolAge=g.objectPoolAge;
       },
       fiber$setThreadGroup :function* _trc_ThreadGroupMod_f_setThreadGroup(_thread,g) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1809,13 +1666,11 @@ Tonyu.klass.define({
         
       },
       killThreadGroup :function _trc_ThreadGroupMod_killThreadGroup() {
-        "use strict";
         var _this=this;
         
         _this._isDeadThreadGroup=true;
       },
       fiber$killThreadGroup :function* _trc_ThreadGroupMod_f_killThreadGroup(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1835,19 +1690,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_InputDevice_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_InputDevice_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_InputDevice_initialize() {
-        "use strict";
         var _this=this;
         
         _this.listeners=[];
@@ -1856,7 +1708,6 @@ Tonyu.klass.define({
         _this.defaultLayer=Tonyu.globals.$Screen;
       },
       handleListeners :function _trc_InputDevice_handleListeners(type,evt) {
-        "use strict";
         var _this=this;
         var l;
         
@@ -1878,7 +1729,6 @@ Tonyu.klass.define({
         }
       },
       fiber$handleListeners :function* _trc_InputDevice_f_handleListeners(_thread,type,evt) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var l;
@@ -1902,13 +1752,11 @@ Tonyu.klass.define({
         
       },
       addOnetimeListener :function _trc_InputDevice_addOnetimeListener(l) {
-        "use strict";
         var _this=this;
         
         _this.listeners.push(l);
       },
       fiber$addOnetimeListener :function* _trc_InputDevice_f_addOnetimeListener(_thread,l) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1916,13 +1764,11 @@ Tonyu.klass.define({
         
       },
       newTouch :function _trc_InputDevice_newTouch(i) {
-        "use strict";
         var _this=this;
         
         return {index: i,px: 0,py: 0,x: 0,y: 0,vx: 0,vy: 0,touched: 0,identifier: - 1,ended: false,layer: _this.defaultLayer};
       },
       fiber$newTouch :function* _trc_InputDevice_f_newTouch(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1930,13 +1776,11 @@ Tonyu.klass.define({
         
       },
       changeTouchLayer :function _trc_InputDevice_changeTouchLayer(t,toLayer) {
-        "use strict";
         var _this=this;
         
         return t.layer=toLayer;
       },
       fiber$changeTouchLayer :function* _trc_InputDevice_f_changeTouchLayer(_thread,t,toLayer) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -1944,7 +1788,6 @@ Tonyu.klass.define({
         
       },
       initCanvasEvents :function _trc_InputDevice_initCanvasEvents(cvj) {
-        "use strict";
         var _this=this;
         var cv;
         var ID_MOUSE;
@@ -2143,7 +1986,6 @@ Tonyu.klass.define({
         }
       },
       fiber$initCanvasEvents :function* _trc_InputDevice_f_initCanvasEvents(_thread,cvj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var cv;
@@ -2344,14 +2186,12 @@ Tonyu.klass.define({
         
       },
       update :function _trc_InputDevice_update() {
-        "use strict";
         var _this=this;
         
         _this.wheelVy=0;
         return _this.touch.updateFingers();
       },
       fiber$update :function* _trc_InputDevice_f_update(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -2360,7 +2200,6 @@ Tonyu.klass.define({
         
       },
       debug :function _trc_InputDevice_debug() {
-        "use strict";
         var _this=this;
         
         if (_this.debugFlag) {
@@ -2369,7 +2208,6 @@ Tonyu.klass.define({
         }
       },
       fiber$debug :function* _trc_InputDevice_f_debug(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         
@@ -2380,13 +2218,11 @@ Tonyu.klass.define({
         
       },
       reset :function _trc_InputDevice_reset() {
-        "use strict";
         var _this=this;
         
         _this.touch.reset();
       },
       fiber$reset :function* _trc_InputDevice_f_reset(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -2406,19 +2242,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_API_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_API_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       info :function _trc_API_info() {
-        "use strict";
         var _this=this;
         var ide;
         
@@ -2433,7 +2266,6 @@ Tonyu.klass.define({
         }
       },
       fiber$info :function* _trc_API_f_info(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ide;
@@ -2462,19 +2294,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ArgParser_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_ArgParser_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_ArgParser_initialize(asrc) {
-        "use strict";
         var _this=this;
         var i;
         
@@ -2490,13 +2319,11 @@ Tonyu.klass.define({
         }
       },
       push :function _trc_ArgParser_push(v) {
-        "use strict";
         var _this=this;
         
         _this.a[_this.length++]=v;
       },
       fiber$push :function* _trc_ArgParser_f_push(_thread,v) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -2504,7 +2331,6 @@ Tonyu.klass.define({
         
       },
       trimUndefs :function _trc_ArgParser_trimUndefs() {
-        "use strict";
         var _this=this;
         
         while (_this.length>0) {
@@ -2518,7 +2344,6 @@ Tonyu.klass.define({
         }
       },
       fiber$trimUndefs :function* _trc_ArgParser_f_trimUndefs(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -2534,13 +2359,11 @@ Tonyu.klass.define({
         
       },
       peek :function _trc_ArgParser_peek(i) {
-        "use strict";
         var _this=this;
         
         return _this.a[i||0];
       },
       fiber$peek :function* _trc_ArgParser_f_peek(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -2548,7 +2371,6 @@ Tonyu.klass.define({
         
       },
       shift :function _trc_ArgParser_shift(type) {
-        "use strict";
         var _this=this;
         var res;
         var i;
@@ -2595,7 +2417,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$shift :function* _trc_ArgParser_f_shift(_thread,type) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -2646,7 +2467,6 @@ Tonyu.klass.define({
         
       },
       toArray :function _trc_ArgParser_toArray() {
-        "use strict";
         var _this=this;
         var res;
         var i;
@@ -2660,7 +2480,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$toArray :function* _trc_ArgParser_f_toArray(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -2676,7 +2495,6 @@ Tonyu.klass.define({
         
       },
       parseOptions :function _trc_ArgParser_parseOptions(spec) {
-        "use strict";
         var _this=this;
         var speca;
         var res;
@@ -2731,7 +2549,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$parseOptions :function* _trc_ArgParser_f_parseOptions(_thread,spec) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var speca;
@@ -2800,19 +2617,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_FileMod_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_FileMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       file :function _trc_FileMod_file(path) {
-        "use strict";
         var _this=this;
         var d;
         var files;
@@ -2827,7 +2641,6 @@ Tonyu.klass.define({
         return files.rel(path).setPolicy({topDir: d});
       },
       fiber$file :function* _trc_FileMod_f_file(_thread,path) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var d;
@@ -2856,19 +2669,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_GeneratorMod_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_GeneratorMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       generator :function _trc_GeneratorMod_generator() {
-        "use strict";
         var _this=this;
         var a;
         var methodName;
@@ -2891,7 +2701,6 @@ Tonyu.klass.define({
         th.apply(_this,methodName,a);
       },
       fiber$generator :function* _trc_GeneratorMod_f_generator(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var a;
@@ -2928,13 +2737,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_MathMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_MathMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -2942,7 +2749,6 @@ Tonyu.klass.define({
         
       },
       sin :function _trc_MathMod_sin(d) {
-        "use strict";
         var _this=this;
         
         if (d%90==0) {
@@ -2953,7 +2759,6 @@ Tonyu.klass.define({
         return Math.sin(_this.rad(d));
       },
       cos :function _trc_MathMod_cos(d) {
-        "use strict";
         var _this=this;
         
         if (d%90==0) {
@@ -2964,50 +2769,42 @@ Tonyu.klass.define({
         return Math.cos(_this.rad(d));
       },
       rad :function _trc_MathMod_rad(d) {
-        "use strict";
         var _this=this;
         
         return d/180*Math.PI;
       },
       deg :function _trc_MathMod_deg(d) {
-        "use strict";
         var _this=this;
         
         return d/Math.PI*180;
       },
       abs :function _trc_MathMod_abs(v) {
-        "use strict";
         var _this=this;
         
         return Math.abs(v);
       },
       sgn :function _trc_MathMod_sgn(v,base) {
-        "use strict";
         var _this=this;
         
         base=base||0;
         return (v>base?1:v<- base?- 1:0);
       },
       atan2 :function _trc_MathMod_atan2(y,x) {
-        "use strict";
         var _this=this;
         
         return _this.deg(Math.atan2(y,x));
       },
       atanxy :function _trc_MathMod_atanxy(x,y) {
-        "use strict";
         var _this=this;
         
         return _this.atan2(y,x);
       },
       floor :function _trc_MathMod_floor(x) {
-        "use strict";
         var _this=this;
         
         return Math.floor(x);
       },
       angleDiff :function _trc_MathMod_angleDiff(a,b) {
-        "use strict";
         var _this=this;
         var c;
         
@@ -3030,20 +2827,17 @@ Tonyu.klass.define({
         return c;
       },
       sqrt :function _trc_MathMod_sqrt(t) {
-        "use strict";
         var _this=this;
         
         return Math.sqrt(t);
       },
       dist :function _trc_MathMod_dist(dx,dy,dz) {
-        "use strict";
         var _this=this;
         
         dz=dz||0;
         return _this.sqrt(dx*dx+dy*dy+dz*dz);
       },
       trunc :function _trc_MathMod_trunc(f) {
-        "use strict";
         var _this=this;
         
         if (f>=0) {
@@ -3053,13 +2847,11 @@ Tonyu.klass.define({
         }
       },
       ceil :function _trc_MathMod_ceil(f) {
-        "use strict";
         var _this=this;
         
         return Math.ceil(f);
       },
       rndFloat :function _trc_MathMod_rndFloat(r,m) {
-        "use strict";
         var _this=this;
         
         if (typeof  r!=="number") {
@@ -3077,7 +2869,6 @@ Tonyu.klass.define({
         }
       },
       rnd :function _trc_MathMod_rnd(r,m) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -3106,19 +2897,16 @@ Tonyu.klass.define({
         return res;
       },
       randomize :function _trc_MathMod_randomize(s) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$random=new Tonyu.classes.kernel.Random(s);
       },
       parseFloat :function _trc_MathMod_parseFloat(s) {
-        "use strict";
         var _this=this;
         
         return parseFloat(s);
       },
       clamp :function _trc_MathMod_clamp(v,min,max) {
-        "use strict";
         var _this=this;
         
         if (min>max) {
@@ -3127,37 +2915,31 @@ Tonyu.klass.define({
         return v<min?min:v>max?max:v;
       },
       clamped :function _trc_MathMod_clamped(v,min,max) {
-        "use strict";
         var _this=this;
         
         return _this.clamp(v,min,max)-v;
       },
       min :function _trc_MathMod_min() {
-        "use strict";
         var _this=this;
         
         return Math.min.apply(Math,arguments);
       },
       max :function _trc_MathMod_max() {
-        "use strict";
         var _this=this;
         
         return Math.max.apply(Math,arguments);
       },
       amod :function _trc_MathMod_amod(v,d) {
-        "use strict";
         var _this=this;
         
         return (v%d+d)%d;
       },
       log :function _trc_MathMod_log(n) {
-        "use strict";
         var _this=this;
         
         return Math.log(n);
       },
       fiber$log :function* _trc_MathMod_f_log(_thread,n) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -3177,25 +2959,21 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Navigator_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_Navigator_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       getUserAgent :function _trc_Navigator_getUserAgent() {
-        "use strict";
         var _this=this;
         
         return navigator.userAgent;
       },
       fiber$getUserAgent :function* _trc_Navigator_f_getUserAgent(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -3203,7 +2981,6 @@ Tonyu.klass.define({
         
       },
       isTablet :function _trc_Navigator_isTablet() {
-        "use strict";
         var _this=this;
         var u;
         var isIPad;
@@ -3215,7 +2992,6 @@ Tonyu.klass.define({
         return ((u.indexOf("windows")!=- 1&&u.indexOf("touch")!=- 1&&u.indexOf("tablet pc")==- 1)||isIPad!=- 1||(u.indexOf("android")!=- 1&&u.indexOf("windows")==- 1&&u.indexOf("mobile")==- 1)||(u.indexOf("firefox")!=- 1&&u.indexOf("tablet")!=- 1)||u.indexOf("kindle")!=- 1||u.indexOf("silk")!=- 1||u.indexOf("playbook")!=- 1||u.indexOf('a1_07')!=- 1||u.indexOf('sc-01c')!=- 1);
       },
       fiber$isTablet :function* _trc_Navigator_f_isTablet(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var u;
@@ -3229,7 +3005,6 @@ Tonyu.klass.define({
         
       },
       isMobile :function _trc_Navigator_isMobile() {
-        "use strict";
         var _this=this;
         var u;
         
@@ -3238,7 +3013,6 @@ Tonyu.klass.define({
         return ((u.indexOf("windows")!=- 1&&u.indexOf("phone")!=- 1)||u.indexOf("iphone")!=- 1||u.indexOf("ipod")!=- 1||(u.indexOf("android")!=- 1&&u.indexOf("windows")==- 1&&u.indexOf("mobile")!=- 1)||(u.indexOf("firefox")!=- 1&&u.indexOf("mobile")!=- 1)||(u.indexOf("blackberry")!=- 1||(u.indexOf("bb10")!=- 1&&u.indexOf("mobile")!=- 1)));
       },
       fiber$isMobile :function* _trc_Navigator_f_isMobile(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var u;
@@ -3249,7 +3023,6 @@ Tonyu.klass.define({
         
       },
       isWindows :function _trc_Navigator_isWindows() {
-        "use strict";
         var _this=this;
         var u;
         
@@ -3258,7 +3031,6 @@ Tonyu.klass.define({
         return u.indexOf("windows")!=- 1;
       },
       fiber$isWindows :function* _trc_Navigator_f_isWindows(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var u;
@@ -3269,7 +3041,6 @@ Tonyu.klass.define({
         
       },
       isAndroid :function _trc_Navigator_isAndroid() {
-        "use strict";
         var _this=this;
         var u;
         
@@ -3278,7 +3049,6 @@ Tonyu.klass.define({
         return (u.indexOf("android")!=- 1&&u.indexOf("windows")==- 1);
       },
       fiber$isAndroid :function* _trc_Navigator_f_isAndroid(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var u;
@@ -3289,7 +3059,6 @@ Tonyu.klass.define({
         
       },
       isIOS :function _trc_Navigator_isIOS() {
-        "use strict";
         var _this=this;
         var u;
         var isIPad;
@@ -3301,7 +3070,6 @@ Tonyu.klass.define({
         return (u.indexOf("iphone")!=- 1||isIPad||u.indexOf("ipod")!=- 1);
       },
       fiber$isIOS :function* _trc_Navigator_f_isIOS(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var u;
@@ -3315,7 +3083,6 @@ Tonyu.klass.define({
         
       },
       isFirefoxOS :function _trc_Navigator_isFirefoxOS() {
-        "use strict";
         var _this=this;
         var u;
         
@@ -3324,7 +3091,6 @@ Tonyu.klass.define({
         return u.indexOf("firefox")!=1;
       },
       fiber$isFirefoxOS :function* _trc_Navigator_f_isFirefoxOS(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var u;
@@ -3335,7 +3101,6 @@ Tonyu.klass.define({
         
       },
       isKindle :function _trc_Navigator_isKindle() {
-        "use strict";
         var _this=this;
         var u;
         
@@ -3344,7 +3109,6 @@ Tonyu.klass.define({
         return (u.indexOf("kindle")!=- 1||u.indexOf("silk")!=- 1);
       },
       fiber$isKindle :function* _trc_Navigator_f_isKindle(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var u;
@@ -3355,7 +3119,6 @@ Tonyu.klass.define({
         
       },
       isBlackBerry :function _trc_Navigator_isBlackBerry() {
-        "use strict";
         var _this=this;
         var u;
         
@@ -3364,7 +3127,6 @@ Tonyu.klass.define({
         return (u.indexOf("blackberry")!=- 1||u.indexOf("playbook")!=- 1||(u.indexOf("bb10")!=- 1&&u.indexOf("mobile")!=- 1));
       },
       fiber$isBlackBerry :function* _trc_Navigator_f_isBlackBerry(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var u;
@@ -3387,19 +3149,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ObjectPool_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_ObjectPool_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       pool :function _trc_ObjectPool_pool(key,o) {
-        "use strict";
         var _this=this;
         var list;
         
@@ -3409,7 +3168,6 @@ Tonyu.klass.define({
         list.push(o);
       },
       fiber$pool :function* _trc_ObjectPool_f_pool(_thread,key,o) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var list;
@@ -3421,7 +3179,6 @@ Tonyu.klass.define({
         
       },
       withdraw :function _trc_ObjectPool_withdraw(key) {
-        "use strict";
         var _this=this;
         var list;
         
@@ -3430,7 +3187,6 @@ Tonyu.klass.define({
         return list.shift();
       },
       fiber$withdraw :function* _trc_ObjectPool_f_withdraw(_thread,key) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var list;
@@ -3441,14 +3197,12 @@ Tonyu.klass.define({
         
       },
       poolList :function _trc_ObjectPool_poolList(key) {
-        "use strict";
         var _this=this;
         
         _this.lists=_this.lists||{};
         return _this.lists[key]=_this.lists[key]||[];
       },
       fiber$poolList :function* _trc_ObjectPool_f_poolList(_thread,key) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -3469,19 +3223,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_TObject_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_TObject_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_TObject_initialize(options) {
-        "use strict";
         var _this=this;
         
         if (typeof  options=="object") {
@@ -3490,7 +3241,6 @@ Tonyu.klass.define({
         _this.main();
       },
       extend :function _trc_TObject_extend(obj) {
-        "use strict";
         var _this=this;
         
         return Tonyu.extend(_this,obj);
@@ -3509,14 +3259,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_TQuery_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_TQuery_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -3525,7 +3273,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_TQuery_initialize(context) {
-        "use strict";
         var _this=this;
         
         _this.length=0;
@@ -3541,19 +3288,16 @@ Tonyu.klass.define({
         _this.context=context;
       },
       __getter__parent :function _trc_TQuery___getter__parent() {
-        "use strict";
         var _this=this;
         
         return _this.context.actor;
       },
       create :function _trc_TQuery_create() {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.TQuery(_this.context);
       },
       fiber$create :function* _trc_TQuery_f_create(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -3561,7 +3305,6 @@ Tonyu.klass.define({
         
       },
       contains :function _trc_TQuery_contains(t) {
-        "use strict";
         var _this=this;
         var o;
         
@@ -3574,7 +3317,6 @@ Tonyu.klass.define({
         return false;
       },
       fiber$contains :function* _trc_TQuery_f_contains(_thread,t) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var o;
@@ -3589,7 +3331,6 @@ Tonyu.klass.define({
         
       },
       tonyuIterator :function _trc_TQuery_tonyuIterator(arity) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -3625,7 +3366,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$tonyuIterator :function* _trc_TQuery_f_tonyuIterator(_thread,arity) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -3663,7 +3403,6 @@ Tonyu.klass.define({
         
       },
       attr :function _trc_TQuery_attr() {
-        "use strict";
         var _this=this;
         var values;
         var i;
@@ -3699,7 +3438,6 @@ Tonyu.klass.define({
         }
       },
       fiber$attr :function* _trc_TQuery_f_attr(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var values;
@@ -3737,7 +3475,6 @@ Tonyu.klass.define({
         
       },
       genKeyfunc :function _trc_TQuery_genKeyfunc(key) {
-        "use strict";
         var _this=this;
         
         if (typeof  key!="function") {
@@ -3752,7 +3489,6 @@ Tonyu.klass.define({
         }
       },
       fiber$genKeyfunc :function* _trc_TQuery_f_genKeyfunc(_thread,key) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -3769,7 +3505,6 @@ Tonyu.klass.define({
         
       },
       applyArrayMethod :function _trc_TQuery_applyArrayMethod(name,args) {
-        "use strict";
         var _this=this;
         var res;
         var a;
@@ -3785,7 +3520,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$applyArrayMethod :function* _trc_TQuery_f_applyArrayMethod(_thread,name,args) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -3803,7 +3537,6 @@ Tonyu.klass.define({
         
       },
       toArray :function _trc_TQuery_toArray() {
-        "use strict";
         var _this=this;
         var res;
         var i;
@@ -3817,7 +3550,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$toArray :function* _trc_TQuery_f_toArray(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -3833,13 +3565,11 @@ Tonyu.klass.define({
         
       },
       sort :function _trc_TQuery_sort() {
-        "use strict";
         var _this=this;
         
         return _this.applyArrayMethod("sort",arguments);
       },
       fiber$sort :function* _trc_TQuery_f_sort(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         
@@ -3848,13 +3578,11 @@ Tonyu.klass.define({
         
       },
       slice :function _trc_TQuery_slice() {
-        "use strict";
         var _this=this;
         
         return _this.applyArrayMethod("slice",arguments);
       },
       fiber$slice :function* _trc_TQuery_f_slice(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         
@@ -3863,7 +3591,6 @@ Tonyu.klass.define({
         
       },
       maxs :function _trc_TQuery_maxs(key) {
-        "use strict";
         var _this=this;
         var f;
         var res;
@@ -3891,7 +3618,6 @@ Tonyu.klass.define({
         return reso;
       },
       fiber$maxs :function* _trc_TQuery_f_maxs(_thread,key) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var f;
@@ -3921,7 +3647,6 @@ Tonyu.klass.define({
         
       },
       mins :function _trc_TQuery_mins(key) {
-        "use strict";
         var _this=this;
         var f;
         var res;
@@ -3949,7 +3674,6 @@ Tonyu.klass.define({
         return reso;
       },
       fiber$mins :function* _trc_TQuery_f_mins(_thread,key) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var f;
@@ -3979,13 +3703,11 @@ Tonyu.klass.define({
         
       },
       minObj :function _trc_TQuery_minObj(key) {
-        "use strict";
         var _this=this;
         
         return _this.mins(key)[0];
       },
       fiber$minObj :function* _trc_TQuery_f_minObj(_thread,key) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -3993,13 +3715,11 @@ Tonyu.klass.define({
         
       },
       maxObj :function _trc_TQuery_maxObj(key) {
-        "use strict";
         var _this=this;
         
         return _this.maxs(key)[0];
       },
       fiber$maxObj :function* _trc_TQuery_f_maxObj(_thread,key) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4007,7 +3727,6 @@ Tonyu.klass.define({
         
       },
       nearests :function _trc_TQuery_nearests(x,y) {
-        "use strict";
         var _this=this;
         var z;
         
@@ -4042,7 +3761,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$nearests :function* _trc_TQuery_f_nearests(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var z;
@@ -4081,13 +3799,11 @@ Tonyu.klass.define({
         
       },
       nearest :function _trc_TQuery_nearest(x,y) {
-        "use strict";
         var _this=this;
         
         return _this.nearests(x,y)[0];
       },
       fiber$nearest :function* _trc_TQuery_f_nearest(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4095,7 +3811,6 @@ Tonyu.klass.define({
         
       },
       withins :function _trc_TQuery_withins(xo,yd,d) {
-        "use strict";
         var _this=this;
         var x;
         var y;
@@ -4139,7 +3854,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$withins :function* _trc_TQuery_f_withins(_thread,xo,yd,d) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var x;
@@ -4187,13 +3901,11 @@ Tonyu.klass.define({
         
       },
       within :function _trc_TQuery_within(xo,yd,d) {
-        "use strict";
         var _this=this;
         
         return _this.withins(xo,yd,d).nearest();
       },
       fiber$within :function* _trc_TQuery_f_within(_thread,xo,yd,d) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4201,7 +3913,6 @@ Tonyu.klass.define({
         
       },
       max :function _trc_TQuery_max(key) {
-        "use strict";
         var _this=this;
         var f;
         var res;
@@ -4222,7 +3933,6 @@ Tonyu.klass.define({
         return res;
       },
       min :function _trc_TQuery_min(key) {
-        "use strict";
         var _this=this;
         var f;
         var res;
@@ -4243,7 +3953,6 @@ Tonyu.klass.define({
         return res;
       },
       push :function _trc_TQuery_push(e) {
-        "use strict";
         var _this=this;
         var ee;
         
@@ -4259,7 +3968,6 @@ Tonyu.klass.define({
         }
       },
       fiber$push :function* _trc_TQuery_f_push(_thread,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ee;
@@ -4277,13 +3985,11 @@ Tonyu.klass.define({
         
       },
       size :function _trc_TQuery_size() {
-        "use strict";
         var _this=this;
         
         return _this.length;
       },
       fiber$size :function* _trc_TQuery_f_size(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4291,7 +3997,6 @@ Tonyu.klass.define({
         
       },
       find :function _trc_TQuery_find(f) {
-        "use strict";
         var _this=this;
         var no;
         var q;
@@ -4325,7 +4030,6 @@ Tonyu.klass.define({
         return no;
       },
       fiber$find :function* _trc_TQuery_f_find(_thread,f) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var no;
@@ -4361,13 +4065,11 @@ Tonyu.klass.define({
         
       },
       find1 :function _trc_TQuery_find1(f) {
-        "use strict";
         var _this=this;
         
         return _this.find(f)[0];
       },
       fiber$find1 :function* _trc_TQuery_f_find1(_thread,f) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4375,7 +4077,6 @@ Tonyu.klass.define({
         
       },
       random :function _trc_TQuery_random() {
-        "use strict";
         var _this=this;
         
         if (_this.length===0) {
@@ -4384,7 +4085,6 @@ Tonyu.klass.define({
         return _this[_this.rnd(_this.length)];
       },
       fiber$random :function* _trc_TQuery_f_random(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4395,7 +4095,6 @@ Tonyu.klass.define({
         
       },
       apply :function _trc_TQuery_apply(name,args) {
-        "use strict";
         var _this=this;
         var res;
         var o;
@@ -4417,7 +4116,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$apply :function* _trc_TQuery_f_apply(_thread,name,args) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -4441,7 +4139,6 @@ Tonyu.klass.define({
         
       },
       alive :function _trc_TQuery_alive() {
-        "use strict";
         var _this=this;
         
         return _this.find((function anonymous_5141(o) {
@@ -4450,7 +4147,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$alive :function* _trc_TQuery_f_alive(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4462,7 +4158,6 @@ Tonyu.klass.define({
         
       },
       die :function _trc_TQuery_die() {
-        "use strict";
         var _this=this;
         var a;
         
@@ -4475,7 +4170,6 @@ Tonyu.klass.define({
         return true;
       },
       fiber$die :function* _trc_TQuery_f_die(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var a;
@@ -4490,7 +4184,6 @@ Tonyu.klass.define({
         
       },
       klass :function _trc_TQuery_klass(k) {
-        "use strict";
         var _this=this;
         
         return _this.find((function anonymous_5328(o) {
@@ -4499,7 +4192,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$klass :function* _trc_TQuery_f_klass(_thread,k) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4511,13 +4203,11 @@ Tonyu.klass.define({
         
       },
       sendEvent :function _trc_TQuery_sendEvent() {
-        "use strict";
         var _this=this;
         
         return Tonyu.bindFunc(_this,_this.apply).apply(_this,["sendEvent",arguments]);
       },
       fiber$sendEvent :function* _trc_TQuery_f_sendEvent(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         
@@ -4537,19 +4227,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Zip_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_Zip_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       zip :function _trc_Zip_zip(srcdir,zipfile) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$currentProject.requestPlugin("JSZip");
@@ -4557,7 +4244,6 @@ Tonyu.klass.define({
         return FS.zip.zip(srcdir,zipfile);
       },
       fiber$zip :function* _trc_Zip_f_zip(_thread,srcdir,zipfile) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4567,7 +4253,6 @@ Tonyu.klass.define({
         
       },
       unzip :function _trc_Zip_unzip(zipfile,dstdir) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$currentProject.requestPlugin("JSZip");
@@ -4575,7 +4260,6 @@ Tonyu.klass.define({
         return FS.zip.unzip(zipfile,dstdir);
       },
       fiber$unzip :function* _trc_Zip_f_unzip(_thread,zipfile,dstdir) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4598,14 +4282,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_EventHandler_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_EventHandler_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4614,14 +4296,12 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_EventHandler_initialize(param) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [param]);
         _this.listeners=[];
       },
       toListener :function _trc_EventHandler_toListener(f) {
-        "use strict";
         var _this=this;
         
         if (_this.target&&(typeof  f)=="string") {
@@ -4635,7 +4315,6 @@ Tonyu.klass.define({
         return f;
       },
       newListener :function _trc_EventHandler_newListener(f) {
-        "use strict";
         var _this=this;
         var listener;
         
@@ -4644,7 +4323,6 @@ Tonyu.klass.define({
         return listener;
       },
       addListener :function _trc_EventHandler_addListener() {
-        "use strict";
         var _this=this;
         var a;
         var f;
@@ -4670,7 +4348,6 @@ Tonyu.klass.define({
         return listener;
       },
       doDispose :function _trc_EventHandler_doDispose(listener) {
-        "use strict";
         var _this=this;
         
         if (typeof  listener.dispose==="function") {
@@ -4679,7 +4356,6 @@ Tonyu.klass.define({
         }
       },
       removeListener :function _trc_EventHandler_removeListener(listener) {
-        "use strict";
         var _this=this;
         var i;
         
@@ -4692,7 +4368,6 @@ Tonyu.klass.define({
         }
       },
       removeAllListeners :function _trc_EventHandler_removeAllListeners() {
-        "use strict";
         var _this=this;
         var listener;
         
@@ -4703,7 +4378,6 @@ Tonyu.klass.define({
         }
       },
       fire :function _trc_EventHandler_fire(args) {
-        "use strict";
         var _this=this;
         var listener;
         
@@ -4716,7 +4390,6 @@ Tonyu.klass.define({
         }
       },
       fiber$fire :function* _trc_EventHandler_f_fire(_thread,args) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var listener;
@@ -4731,7 +4404,6 @@ Tonyu.klass.define({
         
       },
       release :function _trc_EventHandler_release() {
-        "use strict";
         var _this=this;
         
         _this.released=true;
@@ -4751,19 +4423,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ScreenOutHandler_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_ScreenOutHandler_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       addListener :function _trc_ScreenOutHandler_addListener(d,f) {
-        "use strict";
         var _this=this;
         var retThread;
         
@@ -4775,7 +4444,6 @@ Tonyu.klass.define({
         })};
       },
       initialize :function _trc_ScreenOutHandler_initialize(param) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [param]);
@@ -4795,19 +4463,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_WithinHandler_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_WithinHandler_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       addListener :function _trc_WithinHandler_addListener(d,r,f) {
-        "use strict";
         var _this=this;
         var retThread;
         
@@ -4819,7 +4484,6 @@ Tonyu.klass.define({
         })};
       },
       initialize :function _trc_WithinHandler_initialize(param) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [param]);
@@ -4839,14 +4503,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_AbstractShape_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_AbstractShape_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4855,14 +4517,12 @@ Tonyu.klass.define({
         
       },
       clone :function _trc_AbstractShape_clone(value) {
-        "use strict";
         var _this=this;
         
         throw new Error("clone::abstract");
         
       },
       fiber$clone :function* _trc_AbstractShape_f_clone(_thread,value) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4871,14 +4531,12 @@ Tonyu.klass.define({
         
       },
       changeLayer :function _trc_AbstractShape_changeLayer(value) {
-        "use strict";
         var _this=this;
         
         throw new Error("changeLayer::abstract");
         
       },
       fiber$changeLayer :function* _trc_AbstractShape_f_changeLayer(_thread,value) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4887,7 +4545,6 @@ Tonyu.klass.define({
         
       },
       intersects :function _trc_AbstractShape_intersects(s) {
-        "use strict";
         var _this=this;
         
         if (! s) {
@@ -4900,7 +4557,6 @@ Tonyu.klass.define({
         return _this.intersectsRaw(s.layerChanged(_this.layer));
       },
       fiber$intersects :function* _trc_AbstractShape_f_intersects(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4917,14 +4573,12 @@ Tonyu.klass.define({
         
       },
       intersectsRaw :function _trc_AbstractShape_intersectsRaw(s) {
-        "use strict";
         var _this=this;
         
         throw new Error("intersectsRaw::abstract");
         
       },
       fiber$intersectsRaw :function* _trc_AbstractShape_f_intersectsRaw(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4933,7 +4587,6 @@ Tonyu.klass.define({
         
       },
       contains :function _trc_AbstractShape_contains(s) {
-        "use strict";
         var _this=this;
         var cv;
         
@@ -4949,7 +4602,6 @@ Tonyu.klass.define({
         return _this.intersectsRaw(cv);
       },
       fiber$contains :function* _trc_AbstractShape_f_contains(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var cv;
@@ -4969,14 +4621,12 @@ Tonyu.klass.define({
         
       },
       containsRaw :function _trc_AbstractShape_containsRaw(s) {
-        "use strict";
         var _this=this;
         
         throw new Error("containsRaw::abstract");
         
       },
       fiber$containsRaw :function* _trc_AbstractShape_f_containsRaw(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -4985,7 +4635,6 @@ Tonyu.klass.define({
         
       },
       layerChanged :function _trc_AbstractShape_layerChanged(layer) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -4995,7 +4644,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$layerChanged :function* _trc_AbstractShape_f_layerChanged(_thread,layer) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -5007,13 +4655,11 @@ Tonyu.klass.define({
         
       },
       __getter__layer :function _trc_AbstractShape___getter__layer() {
-        "use strict";
         var _this=this;
         
         return _this._layer;
       },
       __setter__layer :function _trc_AbstractShape___setter__layer(value) {
-        "use strict";
         var _this=this;
         
         if (! _this._layer||_this._layer===value) {
@@ -5023,7 +4669,6 @@ Tonyu.klass.define({
         }
       },
       __getter__screen :function _trc_AbstractShape___getter__screen() {
-        "use strict";
         var _this=this;
         
         return (_this.layer&&_this.layer.screen)||Tonyu.globals.$Screen;
@@ -5042,14 +4687,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_CubeShape_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_CubeShape_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5058,13 +4701,11 @@ Tonyu.klass.define({
         
       },
       intersects :function _trc_CubeShape_intersects(s) {
-        "use strict";
         var _this=this;
         
         return s&&Math.abs(_this.x-s.x)*2<_this.width+s.width&&Math.abs(_this.y-s.y)*2<_this.height+s.height&&Math.abs(_this.z-s.z)*2<_this.depth+s.depth;
       },
       fiber$intersects :function* _trc_CubeShape_f_intersects(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5085,7 +4726,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Direction_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -5093,7 +4733,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_Direction_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5103,7 +4742,6 @@ Tonyu.klass.define({
         
       },
       initAxis :function _trc_Direction_initAxis() {
-        "use strict";
         var _this=this;
         
         if (! Tonyu.classes.kernel.Direction.axis) {
@@ -5112,7 +4750,6 @@ Tonyu.klass.define({
         }
       },
       fiber$initAxis :function* _trc_Direction_f_initAxis(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5123,13 +4760,11 @@ Tonyu.klass.define({
         
       },
       clone :function _trc_Direction_clone() {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.Direction().set(_this);
       },
       fiber$clone :function* _trc_Direction_f_clone(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5137,14 +4772,12 @@ Tonyu.klass.define({
         
       },
       set :function _trc_Direction_set(d) {
-        "use strict";
         var _this=this;
         
         _this.quaternion.set(d.quaternion);
         return _this;
       },
       fiber$set :function* _trc_Direction_f_set(_thread,d) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5153,7 +4786,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Direction_initialize(p) {
-        "use strict";
         var _this=this;
         
         _this.initAxis();
@@ -5194,7 +4826,6 @@ Tonyu.klass.define({
         }));
       },
       rotate :function _trc_Direction_rotate(mode,angle,unit) {
-        "use strict";
         var _this=this;
         var x;
         var y;
@@ -5221,7 +4852,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$rotate :function* _trc_Direction_f_rotate(_thread,mode,angle,unit) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var x;
@@ -5250,13 +4880,11 @@ Tonyu.klass.define({
         
       },
       localToWorld :function _trc_Direction_localToWorld(local,dst) {
-        "use strict";
         var _this=this;
         
         return _this.quaternion.rotate(local,dst);
       },
       fiber$localToWorld :function* _trc_Direction_f_localToWorld(_thread,local,dst) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5264,13 +4892,11 @@ Tonyu.klass.define({
         
       },
       worldToLocal :function _trc_Direction_worldToLocal(world,dst) {
-        "use strict";
         var _this=this;
         
         return _this.quaternion.inverse.rotate(world,dst);
       },
       fiber$worldToLocal :function* _trc_Direction_f_worldToLocal(_thread,world,dst) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5291,7 +4917,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ParentChanger_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -5299,7 +4924,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_ParentChanger_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5309,7 +4933,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_ParentChanger_initialize(dstParent) {
-        "use strict";
         var _this=this;
         var cnode;
         var t;
@@ -5328,7 +4951,6 @@ Tonyu.klass.define({
         }
       },
       cn :function _trc_ParentChanger_cn(n) {
-        "use strict";
         var _this=this;
         
         switch (n.relation) {
@@ -5350,7 +4972,6 @@ Tonyu.klass.define({
         return n;
       },
       fiber$cn :function* _trc_ParentChanger_f_cn(_thread,n) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5374,7 +4995,6 @@ Tonyu.klass.define({
         
       },
       chk :function _trc_ParentChanger_chk(b,mesg) {
-        "use strict";
         var _this=this;
         
         if (! b) {
@@ -5383,7 +5003,6 @@ Tonyu.klass.define({
         }
       },
       fiber$chk :function* _trc_ParentChanger_f_chk(_thread,b,mesg) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5394,7 +5013,6 @@ Tonyu.klass.define({
         
       },
       getNode :function _trc_ParentChanger_getNode(tt) {
-        "use strict";
         var _this=this;
         var cnode;
         var prev;
@@ -5435,7 +5053,6 @@ Tonyu.klass.define({
         return cnode;
       },
       fiber$getNode :function* _trc_ParentChanger_f_getNode(_thread,tt) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var cnode;
@@ -5478,7 +5095,6 @@ Tonyu.klass.define({
         
       },
       change :function _trc_ParentChanger_change(t,res) {
-        "use strict";
         var _this=this;
         var n;
         var dstNode;
@@ -5520,7 +5136,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$change :function* _trc_ParentChanger_f_change(_thread,t,res) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var n;
@@ -5577,14 +5192,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_PointShape_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_PointShape_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5593,13 +5206,11 @@ Tonyu.klass.define({
         
       },
       clone :function _trc_PointShape_clone() {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.PointShape({x: _this.x,y: _this.y,_layer: _this._layer});
       },
       fiber$clone :function* _trc_PointShape_f_clone(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5607,7 +5218,6 @@ Tonyu.klass.define({
         
       },
       changeLayer :function _trc_PointShape_changeLayer(newLayer) {
-        "use strict";
         var _this=this;
         var c;
         
@@ -5618,7 +5228,6 @@ Tonyu.klass.define({
         _this._layer=newLayer;
       },
       fiber$changeLayer :function* _trc_PointShape_f_changeLayer(_thread,newLayer) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var c;
@@ -5631,13 +5240,11 @@ Tonyu.klass.define({
         
       },
       intersectsRaw :function _trc_PointShape_intersectsRaw(s) {
-        "use strict";
         var _this=this;
         
         return s.containsRaw(_this);
       },
       fiber$intersectsRaw :function* _trc_PointShape_f_intersectsRaw(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5645,13 +5252,11 @@ Tonyu.klass.define({
         
       },
       containsRaw :function _trc_PointShape_containsRaw(p) {
-        "use strict";
         var _this=this;
         
         return p.x===_this.x&&p.y===_this.y;
       },
       fiber$containsRaw :function* _trc_PointShape_f_containsRaw(_thread,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5659,25 +5264,21 @@ Tonyu.klass.define({
         
       },
       __getter__xmin :function _trc_PointShape___getter__xmin() {
-        "use strict";
         var _this=this;
         
         return _this.x;
       },
       __getter__xmax :function _trc_PointShape___getter__xmax() {
-        "use strict";
         var _this=this;
         
         return _this.x;
       },
       __getter__ymin :function _trc_PointShape___getter__ymin() {
-        "use strict";
         var _this=this;
         
         return _this.y;
       },
       __getter__ymax :function _trc_PointShape___getter__ymax() {
-        "use strict";
         var _this=this;
         
         return _this.y;
@@ -5696,7 +5297,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Quaternion_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -5704,7 +5304,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_Quaternion_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5714,7 +5313,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Quaternion_initialize(p) {
-        "use strict";
         var _this=this;
         var v;
         
@@ -5739,7 +5337,6 @@ Tonyu.klass.define({
         }
       },
       set :function _trc_Quaternion_set(q) {
-        "use strict";
         var _this=this;
         
         _this.x=q.x;
@@ -5749,7 +5346,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$set :function* _trc_Quaternion_f_set(_thread,q) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5761,25 +5357,21 @@ Tonyu.klass.define({
         
       },
       __getter__length :function _trc_Quaternion___getter__length() {
-        "use strict";
         var _this=this;
         
         return _this.sqrt(_this.lengthSQ);
       },
       __getter__lengthSQ :function _trc_Quaternion___getter__lengthSQ() {
-        "use strict";
         var _this=this;
         
         return _this.x*_this.x+_this.y*_this.y+_this.z*_this.z+_this.w*_this.w;
       },
       clone :function _trc_Quaternion_clone() {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.Quaternion({x: _this.x,y: _this.y,z: _this.z,w: _this.w});
       },
       fiber$clone :function* _trc_Quaternion_f_clone(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5787,7 +5379,6 @@ Tonyu.klass.define({
         
       },
       addX :function _trc_Quaternion_addX(q) {
-        "use strict";
         var _this=this;
         
         _this.x+=q.x;
@@ -5797,7 +5388,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$addX :function* _trc_Quaternion_f_addX(_thread,q) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5809,13 +5399,11 @@ Tonyu.klass.define({
         
       },
       add :function _trc_Quaternion_add(q) {
-        "use strict";
         var _this=this;
         
         return _this.clone().addX(q);
       },
       fiber$add :function* _trc_Quaternion_f_add(_thread,q) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5823,7 +5411,6 @@ Tonyu.klass.define({
         
       },
       subX :function _trc_Quaternion_subX(q) {
-        "use strict";
         var _this=this;
         
         _this.x-=q.x;
@@ -5833,7 +5420,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$subX :function* _trc_Quaternion_f_subX(_thread,q) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5845,13 +5431,11 @@ Tonyu.klass.define({
         
       },
       sub :function _trc_Quaternion_sub(q) {
-        "use strict";
         var _this=this;
         
         return _this.clone().subX(q);
       },
       fiber$sub :function* _trc_Quaternion_f_sub(_thread,q) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5859,7 +5443,6 @@ Tonyu.klass.define({
         
       },
       mulX :function _trc_Quaternion_mulX(k) {
-        "use strict";
         var _this=this;
         
         _this.x*=k;
@@ -5869,7 +5452,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$mulX :function* _trc_Quaternion_f_mulX(_thread,k) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5881,13 +5463,11 @@ Tonyu.klass.define({
         
       },
       mul :function _trc_Quaternion_mul(k) {
-        "use strict";
         var _this=this;
         
         return _this.clone().mulX(k);
       },
       fiber$mul :function* _trc_Quaternion_f_mul(_thread,k) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -5895,7 +5475,6 @@ Tonyu.klass.define({
         
       },
       product :function _trc_Quaternion_product(b,dst) {
-        "use strict";
         var _this=this;
         var a;
         var qax;
@@ -5929,7 +5508,6 @@ Tonyu.klass.define({
         return dst;
       },
       fiber$product :function* _trc_Quaternion_f_product(_thread,b,dst) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var a;
@@ -5965,19 +5543,16 @@ Tonyu.klass.define({
         
       },
       __getter__inverse :function _trc_Quaternion___getter__inverse() {
-        "use strict";
         var _this=this;
         
         return _this.conjugate.mulX(1/_this.lengthSQ);
       },
       __getter__conjugate :function _trc_Quaternion___getter__conjugate() {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.Quaternion({x: - _this.x,y: - _this.y,z: - _this.z,w: _this.w});
       },
       rotate :function _trc_Quaternion_rotate(p,dst) {
-        "use strict";
         var _this=this;
         var x;
         var y;
@@ -6021,7 +5596,6 @@ Tonyu.klass.define({
         return dst;
       },
       fiber$rotate :function* _trc_Quaternion_f_rotate(_thread,p,dst) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var x;
@@ -6067,7 +5641,6 @@ Tonyu.klass.define({
         
       },
       calcTheta :function _trc_Quaternion_calcTheta() {
-        "use strict";
         var _this=this;
         
         _this.theta=_this.atanxy(_this.w,_this.sqrt(_this.x*_this.x+_this.y*_this.y+_this.z*_this.z));
@@ -6075,7 +5648,6 @@ Tonyu.klass.define({
         return _this.theta;
       },
       fiber$calcTheta :function* _trc_Quaternion_f_calcTheta(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6098,14 +5670,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_RectShape_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_RectShape_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6114,13 +5684,11 @@ Tonyu.klass.define({
         
       },
       clone :function _trc_RectShape_clone() {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.RectShape({x: _this.x,y: _this.y,width: _this.width,height: _this.height,_layer: _this._layer});
       },
       fiber$clone :function* _trc_RectShape_f_clone(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6128,7 +5696,6 @@ Tonyu.klass.define({
         
       },
       changeLayer :function _trc_RectShape_changeLayer(newLayer) {
-        "use strict";
         var _this=this;
         var c;
         var rb;
@@ -6144,7 +5711,6 @@ Tonyu.klass.define({
         _this._layer=newLayer;
       },
       fiber$changeLayer :function* _trc_RectShape_f_changeLayer(_thread,newLayer) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var c;
@@ -6162,7 +5728,6 @@ Tonyu.klass.define({
         
       },
       intersectsRaw :function _trc_RectShape_intersectsRaw(s) {
-        "use strict";
         var _this=this;
         
         if (Tonyu.is(s,Tonyu.classes.kernel.RectShape)) {
@@ -6172,7 +5737,6 @@ Tonyu.klass.define({
         return _this.containsRaw(s);
       },
       fiber$intersectsRaw :function* _trc_RectShape_f_intersectsRaw(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6185,13 +5749,11 @@ Tonyu.klass.define({
         
       },
       containsRaw :function _trc_RectShape_containsRaw(p) {
-        "use strict";
         var _this=this;
         
         return p.x>=_this.xmin&&p.x<=_this.xmax&&p.y>=_this.ymin&&p.y<=_this.ymax;
       },
       fiber$containsRaw :function* _trc_RectShape_f_containsRaw(_thread,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6199,25 +5761,21 @@ Tonyu.klass.define({
         
       },
       __getter__xmin :function _trc_RectShape___getter__xmin() {
-        "use strict";
         var _this=this;
         
         return _this.x-_this.width/2;
       },
       __getter__xmax :function _trc_RectShape___getter__xmax() {
-        "use strict";
         var _this=this;
         
         return _this.x+_this.width/2;
       },
       __getter__ymin :function _trc_RectShape___getter__ymin() {
-        "use strict";
         var _this=this;
         
         return _this.y-_this.height/2;
       },
       __getter__ymax :function _trc_RectShape___getter__ymax() {
-        "use strict";
         var _this=this;
         
         return _this.y+_this.height/2;
@@ -6236,7 +5794,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Transform_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -6247,7 +5804,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_Transform_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6260,7 +5816,6 @@ Tonyu.klass.define({
         
       },
       _static :function _trc_Transform__static() {
-        "use strict";
         var _this=this;
         
         if (! Tonyu.classes.kernel.Transform._static) {
@@ -6271,7 +5826,6 @@ Tonyu.klass.define({
         }
       },
       fiber$_static :function* _trc_Transform_f__static(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6284,7 +5838,6 @@ Tonyu.klass.define({
         
       },
       __setter__parent :function _trc_Transform___setter__parent(p) {
-        "use strict";
         var _this=this;
         
         if (_this._parent===p) {
@@ -6293,19 +5846,16 @@ Tonyu.klass.define({
         _this._parent=p;
       },
       __getter__parent :function _trc_Transform___getter__parent() {
-        "use strict";
         var _this=this;
         
         return _this._parent;
       },
       __getter__quaternion :function _trc_Transform___getter__quaternion() {
-        "use strict";
         var _this=this;
         
         return _this.direction.quaternion;
       },
       initialize :function _trc_Transform_initialize(param) {
-        "use strict";
         var _this=this;
         
         _this._static();
@@ -6316,14 +5866,12 @@ Tonyu.klass.define({
         _this.position=_this.position||new Tonyu.classes.kernel.Vec3(0,0,0);
       },
       child :function _trc_Transform_child(param) {
-        "use strict";
         var _this=this;
         
         param.parent=_this;
         return new Tonyu.classes.kernel.Transform(param);
       },
       fiber$child :function* _trc_Transform_f_child(_thread,param) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6332,19 +5880,16 @@ Tonyu.klass.define({
         
       },
       __getter__isRoot :function _trc_Transform___getter__isRoot() {
-        "use strict";
         var _this=this;
         
         return _this===Tonyu.classes.kernel.Transform.root;
       },
       clone :function _trc_Transform_clone() {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.Transform().set(_this);
       },
       fiber$clone :function* _trc_Transform_f_clone(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6352,7 +5897,6 @@ Tonyu.klass.define({
         
       },
       set :function _trc_Transform_set(t) {
-        "use strict";
         var _this=this;
         
         _this.position.set(t.position);
@@ -6362,7 +5906,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$set :function* _trc_Transform_f_set(_thread,t) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6374,7 +5917,6 @@ Tonyu.klass.define({
         
       },
       product :function _trc_Transform_product(t,dst) {
-        "use strict";
         var _this=this;
         var writeToThis;
         
@@ -6398,7 +5940,6 @@ Tonyu.klass.define({
         return dst;
       },
       fiber$product :function* _trc_Transform_f_product(_thread,t,dst) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var writeToThis;
@@ -6424,7 +5965,6 @@ Tonyu.klass.define({
         
       },
       parentChanged :function _trc_Transform_parentChanged(to,dst) {
-        "use strict";
         var _this=this;
         var p;
         
@@ -6433,7 +5973,6 @@ Tonyu.klass.define({
         return p.change(_this,dst);
       },
       fiber$parentChanged :function* _trc_Transform_f_parentChanged(_thread,to,dst) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var p;
@@ -6444,7 +5983,6 @@ Tonyu.klass.define({
         
       },
       changeParent :function _trc_Transform_changeParent(to) {
-        "use strict";
         var _this=this;
         var c;
         
@@ -6453,7 +5991,6 @@ Tonyu.klass.define({
         return _this.set(c);
       },
       fiber$changeParent :function* _trc_Transform_f_changeParent(_thread,to) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var c;
@@ -6465,13 +6002,11 @@ Tonyu.klass.define({
         
       },
       localToWorld :function _trc_Transform_localToWorld(local,dst) {
-        "use strict";
         var _this=this;
         
         return _this.childToSibling(local,dst);
       },
       fiber$localToWorld :function* _trc_Transform_f_localToWorld(_thread,local,dst) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6480,7 +6015,6 @@ Tonyu.klass.define({
         
       },
       childToSibling :function _trc_Transform_childToSibling(child,dst) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -6497,7 +6031,6 @@ Tonyu.klass.define({
         return dst;
       },
       fiber$childToSibling :function* _trc_Transform_f_childToSibling(_thread,child,dst) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -6516,13 +6049,11 @@ Tonyu.klass.define({
         
       },
       worldToLocal :function _trc_Transform_worldToLocal(local,dst) {
-        "use strict";
         var _this=this;
         
         return _this.siblingToChild(local,dst);
       },
       fiber$worldToLocal :function* _trc_Transform_f_worldToLocal(_thread,local,dst) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6531,7 +6062,6 @@ Tonyu.klass.define({
         
       },
       siblingToChild :function _trc_Transform_siblingToChild(sibling,dst) {
-        "use strict";
         var _this=this;
         var copyToSibling;
         
@@ -6567,7 +6097,6 @@ Tonyu.klass.define({
         return dst;
       },
       fiber$siblingToChild :function* _trc_Transform_f_siblingToChild(_thread,sibling,dst) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var copyToSibling;
@@ -6605,13 +6134,11 @@ Tonyu.klass.define({
         
       },
       changeScale :function _trc_Transform_changeScale(vec,by) {
-        "use strict";
         var _this=this;
         
         return vec.mulX(by);
       },
       fiber$changeScale :function* _trc_Transform_f_changeScale(_thread,vec,by) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6619,13 +6146,11 @@ Tonyu.klass.define({
         
       },
       isSibling :function _trc_Transform_isSibling(sib) {
-        "use strict";
         var _this=this;
         
         return sib.parent===_this.parent;
       },
       fiber$isSibling :function* _trc_Transform_f_isSibling(_thread,sib) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6633,13 +6158,11 @@ Tonyu.klass.define({
         
       },
       isParentOf :function _trc_Transform_isParentOf(child) {
-        "use strict";
         var _this=this;
         
         return child.parent===_this;
       },
       fiber$isParentOf :function* _trc_Transform_f_isParentOf(_thread,child) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6647,13 +6170,11 @@ Tonyu.klass.define({
         
       },
       isChildOf :function _trc_Transform_isChildOf(parent) {
-        "use strict";
         var _this=this;
         
         return _this.parent===parent;
       },
       fiber$isChildOf :function* _trc_Transform_f_isChildOf(_thread,parent) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6661,7 +6182,6 @@ Tonyu.klass.define({
         
       },
       __getter__inverse :function _trc_Transform___getter__inverse() {
-        "use strict";
         var _this=this;
         
         return _this.siblingToChild(new Tonyu.classes.kernel.Transform());
@@ -6680,14 +6200,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Transform2D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_Transform2D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6696,19 +6214,16 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Transform2D_initialize(actor) {
-        "use strict";
         var _this=this;
         
         _this.actor=actor;
       },
       __getter__position :function _trc_Transform2D___getter__position() {
-        "use strict";
         var _this=this;
         
         return _this.actor.position;
       },
       __getter__scale :function _trc_Transform2D___getter__scale() {
-        "use strict";
         var _this=this;
         var x;
         var y;
@@ -6721,13 +6236,11 @@ Tonyu.klass.define({
         return {x: x,y: y};
       },
       __getter__rotation :function _trc_Transform2D___getter__rotation() {
-        "use strict";
         var _this=this;
         
         return _this.actor.rotation;
       },
       __getter__base :function _trc_Transform2D___getter__base() {
-        "use strict";
         var _this=this;
         var s;
         
@@ -6736,7 +6249,6 @@ Tonyu.klass.define({
         return {x: new Tonyu.classes.kernel.Vec3(_this.cos(_this.rotation)*s.x,_this.sin(_this.rotation)*s.x),y: new Tonyu.classes.kernel.Vec3(_this.cos(_this.rotation+90)*s.y,_this.sin(_this.rotation+90)*s.y)};
       },
       localToWorld :function _trc_Transform2D_localToWorld(pos) {
-        "use strict";
         var _this=this;
         var b;
         
@@ -6745,7 +6257,6 @@ Tonyu.klass.define({
         return b.x.mul(pos.x).addX(b.y.mul(pos.y)).addX(_this.position);
       },
       fiber$localToWorld :function* _trc_Transform2D_f_localToWorld(_thread,pos) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var b;
@@ -6756,7 +6267,6 @@ Tonyu.klass.define({
         
       },
       worldToLocal :function _trc_Transform2D_worldToLocal(pos) {
-        "use strict";
         var _this=this;
         var b;
         var det;
@@ -6770,7 +6280,6 @@ Tonyu.klass.define({
         return new Tonyu.classes.kernel.Vec3(b.y.y*pos.x-b.y.x*pos.y,- b.x.y*pos.x+b.x.x*pos.y).divX(det);
       },
       fiber$worldToLocal :function* _trc_Transform2D_f_worldToLocal(_thread,pos) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var b;
@@ -6799,19 +6308,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Vec3_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_Vec3_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_Vec3_initialize(x,y,z) {
-        "use strict";
         var _this=this;
         
         if (typeof  x==="object") {
@@ -6825,7 +6331,6 @@ Tonyu.klass.define({
         _this.z=(typeof  z==="number")?z:0;
       },
       checkNum :function _trc_Vec3_checkNum(o) {
-        "use strict";
         var _this=this;
         var name;
         var val;
@@ -6840,7 +6345,6 @@ Tonyu.klass.define({
         }
       },
       fiber$checkNum :function* _trc_Vec3_f_checkNum(_thread,o) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var name;
@@ -6857,7 +6361,6 @@ Tonyu.klass.define({
         
       },
       parsePointArgs :function _trc_Vec3_parsePointArgs(args) {
-        "use strict";
         var _this=this;
         var a;
         var p;
@@ -6880,7 +6383,6 @@ Tonyu.klass.define({
         return p;
       },
       fiber$parsePointArgs :function* _trc_Vec3_f_parsePointArgs(_thread,args) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var a;
@@ -6905,7 +6407,6 @@ Tonyu.klass.define({
         
       },
       addX :function _trc_Vec3_addX() {
-        "use strict";
         var _this=this;
         var p;
         
@@ -6917,7 +6418,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$addX :function* _trc_Vec3_f_addX(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var p;
@@ -6931,7 +6431,6 @@ Tonyu.klass.define({
         
       },
       addX_v :function _trc_Vec3_addX_v(p) {
-        "use strict";
         var _this=this;
         
         _this.x+=p.x;
@@ -6940,7 +6439,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$addX_v :function* _trc_Vec3_f_addX_v(_thread,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6951,7 +6449,6 @@ Tonyu.klass.define({
         
       },
       subX :function _trc_Vec3_subX() {
-        "use strict";
         var _this=this;
         var p;
         
@@ -6963,7 +6460,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$subX :function* _trc_Vec3_f_subX(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var p;
@@ -6977,7 +6473,6 @@ Tonyu.klass.define({
         
       },
       subX_v :function _trc_Vec3_subX_v(p) {
-        "use strict";
         var _this=this;
         
         _this.x-=p.x;
@@ -6986,7 +6481,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$subX_v :function* _trc_Vec3_f_subX_v(_thread,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -6997,7 +6491,6 @@ Tonyu.klass.define({
         
       },
       mulX :function _trc_Vec3_mulX(k) {
-        "use strict";
         var _this=this;
         
         _this.x=_this.x*k;
@@ -7006,7 +6499,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$mulX :function* _trc_Vec3_f_mulX(_thread,k) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7017,7 +6509,6 @@ Tonyu.klass.define({
         
       },
       divX :function _trc_Vec3_divX(k) {
-        "use strict";
         var _this=this;
         
         _this.x=_this.x/k;
@@ -7026,7 +6517,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$divX :function* _trc_Vec3_f_divX(_thread,k) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7037,13 +6527,11 @@ Tonyu.klass.define({
         
       },
       add :function _trc_Vec3_add(x,y,z) {
-        "use strict";
         var _this=this;
         
         return _this.clone().addX(x,y,z);
       },
       fiber$add :function* _trc_Vec3_f_add(_thread,x,y,z) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7051,13 +6539,11 @@ Tonyu.klass.define({
         
       },
       sub :function _trc_Vec3_sub(x,y,z) {
-        "use strict";
         var _this=this;
         
         return _this.clone().subX(x,y,z);
       },
       fiber$sub :function* _trc_Vec3_f_sub(_thread,x,y,z) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7065,13 +6551,11 @@ Tonyu.klass.define({
         
       },
       mul :function _trc_Vec3_mul(k) {
-        "use strict";
         var _this=this;
         
         return _this.clone().mulX(k);
       },
       fiber$mul :function* _trc_Vec3_f_mul(_thread,k) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7079,13 +6563,11 @@ Tonyu.klass.define({
         
       },
       div :function _trc_Vec3_div(k) {
-        "use strict";
         var _this=this;
         
         return _this.clone().divX(k);
       },
       fiber$div :function* _trc_Vec3_f_div(_thread,k) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7093,13 +6575,11 @@ Tonyu.klass.define({
         
       },
       clone :function _trc_Vec3_clone() {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.Vec3(_this.x,_this.y,_this.z);
       },
       fiber$clone :function* _trc_Vec3_f_clone(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7107,7 +6587,6 @@ Tonyu.klass.define({
         
       },
       set :function _trc_Vec3_set(x,y,z) {
-        "use strict";
         var _this=this;
         
         if (typeof  x==="object") {
@@ -7128,7 +6607,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$set :function* _trc_Vec3_f_set(_thread,x,y,z) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7151,7 +6629,6 @@ Tonyu.klass.define({
         
       },
       setTo :function _trc_Vec3_setTo(t) {
-        "use strict";
         var _this=this;
         
         t.x=_this.x;
@@ -7159,7 +6636,6 @@ Tonyu.klass.define({
         t.z=_this.z;
       },
       fiber$setTo :function* _trc_Vec3_f_setTo(_thread,t) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7169,7 +6645,6 @@ Tonyu.klass.define({
         
       },
       addTo :function _trc_Vec3_addTo(t) {
-        "use strict";
         var _this=this;
         
         t.x+=_this.x;
@@ -7177,7 +6652,6 @@ Tonyu.klass.define({
         t.z+=_this.z;
       },
       fiber$addTo :function* _trc_Vec3_f_addTo(_thread,t) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7187,7 +6661,6 @@ Tonyu.klass.define({
         
       },
       dist :function _trc_Vec3_dist(vec) {
-        "use strict";
         var _this=this;
         var dx;
         var dy;
@@ -7206,25 +6679,21 @@ Tonyu.klass.define({
         return _this.sqrt(_this.x*_this.x+_this.y*_this.y+_this.z*_this.z);
       },
       __getter__length :function _trc_Vec3___getter__length() {
-        "use strict";
         var _this=this;
         
         return _this.sqrt(_this.x*_this.x+_this.y*_this.y+_this.z*_this.z);
       },
       __setter__length :function _trc_Vec3___setter__length(l) {
-        "use strict";
         var _this=this;
         
         return _this.normalizeX(l);
       },
       lerp :function _trc_Vec3_lerp(to,t) {
-        "use strict";
         var _this=this;
         
         return _this.mul(1-t).addX_v(to.mul(t));
       },
       fiber$lerp :function* _trc_Vec3_f_lerp(_thread,to,t) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7232,13 +6701,11 @@ Tonyu.klass.define({
         
       },
       slerp :function _trc_Vec3_slerp(to,t) {
-        "use strict";
         var _this=this;
         
         return _this.mul(1-t).addX_v(to.mul(t));
       },
       fiber$slerp :function* _trc_Vec3_f_slerp(_thread,to,t) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7246,7 +6713,6 @@ Tonyu.klass.define({
         
       },
       normalizeX :function _trc_Vec3_normalizeX(len) {
-        "use strict";
         var _this=this;
         var l;
         
@@ -7262,7 +6728,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$normalizeX :function* _trc_Vec3_f_normalizeX(_thread,len) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var l;
@@ -7280,13 +6745,11 @@ Tonyu.klass.define({
         
       },
       normalize :function _trc_Vec3_normalize(len) {
-        "use strict";
         var _this=this;
         
         return _this.clone().normalizeX(len);
       },
       fiber$normalize :function* _trc_Vec3_f_normalize(_thread,len) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7294,7 +6757,6 @@ Tonyu.klass.define({
         
       },
       productX :function _trc_Vec3_productX() {
-        "use strict";
         var _this=this;
         var a;
         var b;
@@ -7321,7 +6783,6 @@ Tonyu.klass.define({
         return a.mul(- 1);
       },
       fiber$productX :function* _trc_Vec3_f_productX(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var a;
@@ -7350,13 +6811,11 @@ Tonyu.klass.define({
         
       },
       product :function _trc_Vec3_product(x,y,z) {
-        "use strict";
         var _this=this;
         
         return _this.clone().productX(x,y,z);
       },
       fiber$product :function* _trc_Vec3_f_product(_thread,x,y,z) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7364,7 +6823,6 @@ Tonyu.klass.define({
         
       },
       innerProduct :function _trc_Vec3_innerProduct() {
-        "use strict";
         var _this=this;
         var a;
         
@@ -7373,7 +6831,6 @@ Tonyu.klass.define({
         return _this.x*a.x+_this.y*a.y+_this.z*a.z;
       },
       fiber$innerProduct :function* _trc_Vec3_f_innerProduct(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var a;
@@ -7384,13 +6841,11 @@ Tonyu.klass.define({
         
       },
       __getter__angleXY :function _trc_Vec3___getter__angleXY() {
-        "use strict";
         var _this=this;
         
         return _this.atanxy(_this.x,_this.y);
       },
       __setter__angleXY :function _trc_Vec3___setter__angleXY(a) {
-        "use strict";
         var _this=this;
         var l;
         
@@ -7401,7 +6856,6 @@ Tonyu.klass.define({
         return a;
       },
       rotate :function _trc_Vec3_rotate(angle,axis) {
-        "use strict";
         var _this=this;
         var v90;
         
@@ -7414,7 +6868,6 @@ Tonyu.klass.define({
         return _this.mul(_this.cos(angle)).add(v90.mul(_this.sin(angle)));
       },
       fiber$rotate :function* _trc_Vec3_f_rotate(_thread,angle,axis) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var v90;
@@ -7429,13 +6882,11 @@ Tonyu.klass.define({
         
       },
       rotateX :function _trc_Vec3_rotateX(angle,axis) {
-        "use strict";
         var _this=this;
         
         return _this.set(_this.rotate(angle,axis));
       },
       fiber$rotateX :function* _trc_Vec3_f_rotateX(_thread,angle,axis) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7444,13 +6895,11 @@ Tonyu.klass.define({
         
       },
       toString :function _trc_Vec3_toString() {
-        "use strict";
         var _this=this;
         
         return "("+[_this.x,_this.y,_this.z].join(",")+")";
       },
       fiber$toString :function* _trc_Vec3_f_toString(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7471,56 +6920,47 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Vec3View_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_Vec3View_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_Vec3View_initialize(target,attrs) {
-        "use strict";
         var _this=this;
         
         _this.target=target;
         _this.attrs=attrs||{x: "x",y: "y",z: "z"};
       },
       __getter__x :function _trc_Vec3View___getter__x() {
-        "use strict";
         var _this=this;
         
         return _this.target[_this.attrs.x]||0;
       },
       __getter__y :function _trc_Vec3View___getter__y() {
-        "use strict";
         var _this=this;
         
         return _this.target[_this.attrs.y]||0;
       },
       __getter__z :function _trc_Vec3View___getter__z() {
-        "use strict";
         var _this=this;
         
         return _this.target[_this.attrs.z]||0;
       },
       __setter__x :function _trc_Vec3View___setter__x(v) {
-        "use strict";
         var _this=this;
         
         return _this.target[_this.attrs.x]=v;
       },
       __setter__y :function _trc_Vec3View___setter__y(v) {
-        "use strict";
         var _this=this;
         
         return _this.target[_this.attrs.y]=v;
       },
       __setter__z :function _trc_Vec3View___setter__z(v) {
-        "use strict";
         var _this=this;
         
         return _this.target[_this.attrs.z]=v;
@@ -7539,13 +6979,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ActorTouch_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_ActorTouch_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7553,7 +6991,6 @@ Tonyu.klass.define({
         
       },
       newListener :function _trc_ActorTouch_newListener(f) {
-        "use strict";
         var _this=this;
         var ts;
         
@@ -7579,7 +7016,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Align2D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -7588,7 +7024,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_Align2D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7599,7 +7034,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Align2D_initialize() {
-        "use strict";
         var _this=this;
         var params;
         var p;
@@ -7693,13 +7127,11 @@ Tonyu.klass.define({
         }
       },
       __getter__isOriginPivot :function _trc_Align2D___getter__isOriginPivot() {
-        "use strict";
         var _this=this;
         
         return _this.h=="center"&&(_this.v=="middle"||_this.v=="default")&&_this.offset.x==0&&_this.offset.y==0;
       },
       getDrawRect :function _trc_Align2D_getDrawRect(obj) {
-        "use strict";
         var _this=this;
         var width;
         var height;
@@ -7734,7 +7166,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$getDrawRect :function* _trc_Align2D_f_getDrawRect(_thread,obj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var width;
@@ -7783,14 +7214,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_AnimMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_AnimMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7799,7 +7228,6 @@ Tonyu.klass.define({
         
       },
       initAnimMod :function _trc_AnimMod_initAnimMod() {
-        "use strict";
         var _this=this;
         
         if (_this.anim instanceof Array) {
@@ -7814,7 +7242,6 @@ Tonyu.klass.define({
         }
       },
       fiber$initAnimMod :function* _trc_AnimMod_f_initAnimMod(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -7831,7 +7258,6 @@ Tonyu.klass.define({
         
       },
       setAnimFps :function _trc_AnimMod_setAnimFps(f) {
-        "use strict";
         var _this=this;
         
         _this.animFps=f;
@@ -7839,7 +7265,6 @@ Tonyu.klass.define({
         _this.startAnim();
       },
       startAnim :function _trc_AnimMod_startAnim() {
-        "use strict";
         var _this=this;
         
         if (! _this.animMode) {
@@ -7849,7 +7274,6 @@ Tonyu.klass.define({
         }
       },
       stopAnim :function _trc_AnimMod_stopAnim() {
-        "use strict";
         var _this=this;
         
         if (_this.animMode) {
@@ -7859,7 +7283,6 @@ Tonyu.klass.define({
         }
       },
       _animation :function _trc_AnimMod__animation() {
-        "use strict";
         var _this=this;
         var age;
         
@@ -7877,7 +7300,6 @@ Tonyu.klass.define({
         }
       },
       fiber$_animation :function* _trc_AnimMod_f__animation(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var age;
@@ -7910,19 +7332,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Color_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_Color_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_Color_initialize() {
-        "use strict";
         var _this=this;
         var a;
         var s;
@@ -7991,7 +7410,6 @@ Tonyu.klass.define({
         }
       },
       fillNum :function _trc_Color_fillNum() {
-        "use strict";
         var _this=this;
         var a;
         var k;
@@ -8006,7 +7424,6 @@ Tonyu.klass.define({
         }
       },
       fiber$fillNum :function* _trc_Color_f_fillNum(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var a;
@@ -8023,7 +7440,6 @@ Tonyu.klass.define({
         
       },
       __getter__r :function _trc_Color___getter__r() {
-        "use strict";
         var _this=this;
         
         _this.makeRGBA();
@@ -8033,7 +7449,6 @@ Tonyu.klass.define({
         return _this.value.r;
       },
       __getter__g :function _trc_Color___getter__g() {
-        "use strict";
         var _this=this;
         
         _this.makeRGBA();
@@ -8043,7 +7458,6 @@ Tonyu.klass.define({
         return _this.value.g;
       },
       __getter__b :function _trc_Color___getter__b() {
-        "use strict";
         var _this=this;
         
         _this.makeRGBA();
@@ -8053,7 +7467,6 @@ Tonyu.klass.define({
         return _this.value.b;
       },
       __getter__a :function _trc_Color___getter__a() {
-        "use strict";
         var _this=this;
         
         if (_this.imageData) {
@@ -8062,7 +7475,6 @@ Tonyu.klass.define({
         return _this.value.a;
       },
       __setter__a :function _trc_Color___setter__a(v) {
-        "use strict";
         var _this=this;
         
         _this.clearName();
@@ -8074,7 +7486,6 @@ Tonyu.klass.define({
         }
       },
       __setter__r :function _trc_Color___setter__r(v) {
-        "use strict";
         var _this=this;
         
         _this.makeRGBA();
@@ -8088,7 +7499,6 @@ Tonyu.klass.define({
         }
       },
       __setter__g :function _trc_Color___setter__g(v) {
-        "use strict";
         var _this=this;
         
         _this.makeRGBA();
@@ -8101,7 +7511,6 @@ Tonyu.klass.define({
         _this.value.g=v;
       },
       __setter__b :function _trc_Color___setter__b(v) {
-        "use strict";
         var _this=this;
         
         _this.makeRGBA();
@@ -8114,28 +7523,24 @@ Tonyu.klass.define({
         _this.value.b=v;
       },
       __getter__h :function _trc_Color___getter__h() {
-        "use strict";
         var _this=this;
         
         _this.makeHSLA();
         return _this.value.h;
       },
       __getter__s :function _trc_Color___getter__s() {
-        "use strict";
         var _this=this;
         
         _this.makeHSLA();
         return _this.value.s;
       },
       __getter__l :function _trc_Color___getter__l() {
-        "use strict";
         var _this=this;
         
         _this.makeHSLA();
         return _this.value.l;
       },
       __setter__h :function _trc_Color___setter__h(v) {
-        "use strict";
         var _this=this;
         
         _this.makeHSLA();
@@ -8148,7 +7553,6 @@ Tonyu.klass.define({
         }
       },
       __setter__s :function _trc_Color___setter__s(v) {
-        "use strict";
         var _this=this;
         
         _this.makeHSLA();
@@ -8161,7 +7565,6 @@ Tonyu.klass.define({
         }
       },
       __setter__l :function _trc_Color___setter__l(v) {
-        "use strict";
         var _this=this;
         
         _this.makeHSLA();
@@ -8174,7 +7577,6 @@ Tonyu.klass.define({
         }
       },
       setHSLA :function _trc_Color_setHSLA(h,s,l,a) {
-        "use strict";
         var _this=this;
         
         _this.value.h=h;
@@ -8197,7 +7599,6 @@ Tonyu.klass.define({
         return true;
       },
       fiber$setHSLA :function* _trc_Color_f_setHSLA(_thread,h,s,l,a) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -8222,7 +7623,6 @@ Tonyu.klass.define({
         
       },
       setRGBA :function _trc_Color_setRGBA(r,g,b,a) {
-        "use strict";
         var _this=this;
         var n;
         var i;
@@ -8248,7 +7648,6 @@ Tonyu.klass.define({
         }
       },
       fiber$setRGBA :function* _trc_Color_f_setRGBA(_thread,r,g,b,a) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var n;
@@ -8276,13 +7675,11 @@ Tonyu.klass.define({
         
       },
       hasRGBA :function _trc_Color_hasRGBA() {
-        "use strict";
         var _this=this;
         
         return _this.imageData||typeof  (_this.value.r)==="number";
       },
       fiber$hasRGBA :function* _trc_Color_f_hasRGBA(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -8290,13 +7687,11 @@ Tonyu.klass.define({
         
       },
       hasHSLA :function _trc_Color_hasHSLA() {
-        "use strict";
         var _this=this;
         
         return typeof  (_this.value.h)==="number";
       },
       fiber$hasHSLA :function* _trc_Color_f_hasHSLA(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -8304,13 +7699,11 @@ Tonyu.klass.define({
         
       },
       hasName :function _trc_Color_hasName() {
-        "use strict";
         var _this=this;
         
         return typeof  (_this.value.name)==="string";
       },
       fiber$hasName :function* _trc_Color_f_hasName(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -8318,13 +7711,11 @@ Tonyu.klass.define({
         
       },
       clearRGBA :function _trc_Color_clearRGBA() {
-        "use strict";
         var _this=this;
         
         delete _this.value.r;
       },
       fiber$clearRGBA :function* _trc_Color_f_clearRGBA(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -8332,13 +7723,11 @@ Tonyu.klass.define({
         
       },
       clearHSLA :function _trc_Color_clearHSLA() {
-        "use strict";
         var _this=this;
         
         delete _this.value.h;
       },
       fiber$clearHSLA :function* _trc_Color_f_clearHSLA(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -8346,13 +7735,11 @@ Tonyu.klass.define({
         
       },
       clearName :function _trc_Color_clearName() {
-        "use strict";
         var _this=this;
         
         delete _this.value.name;
       },
       fiber$clearName :function* _trc_Color_f_clearName(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -8360,14 +7747,12 @@ Tonyu.klass.define({
         
       },
       lerpRGBA :function _trc_Color_lerpRGBA(c,t) {
-        "use strict";
         var _this=this;
         
         t=t||0;
         return new Tonyu.classes.kernel.Color(_this.r*(1-t)+c.r*t,_this.g*(1-t)+c.g*t,_this.b*(1-t)+c.b*t,_this.a*(1-t)+c.a*t);
       },
       fiber$lerpRGBA :function* _trc_Color_f_lerpRGBA(_thread,c,t) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -8376,7 +7761,6 @@ Tonyu.klass.define({
         
       },
       distRGBA :function _trc_Color_distRGBA(other) {
-        "use strict";
         var _this=this;
         var dr;
         var dg;
@@ -8401,7 +7785,6 @@ Tonyu.klass.define({
         return _this.sqrt(dr*dr+dg*dg+db*db+da*da);
       },
       fiber$distRGBA :function* _trc_Color_f_distRGBA(_thread,other) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var dr;
@@ -8428,7 +7811,6 @@ Tonyu.klass.define({
         
       },
       distHSLA :function _trc_Color_distHSLA(other) {
-        "use strict";
         var _this=this;
         var dh;
         var ds;
@@ -8453,7 +7835,6 @@ Tonyu.klass.define({
         return _this.sqrt(dh*dh+ds*ds+dl*dl+da*da);
       },
       fiber$distHSLA :function* _trc_Color_f_distHSLA(_thread,other) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var dh;
@@ -8480,7 +7861,6 @@ Tonyu.klass.define({
         
       },
       makeRGBA :function _trc_Color_makeRGBA(force) {
-        "use strict";
         var _this=this;
         var rgb;
         var i;
@@ -8509,7 +7889,6 @@ Tonyu.klass.define({
         _this.nameToRGB();
       },
       fiber$makeRGBA :function* _trc_Color_f_makeRGBA(_thread,force) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var rgb;
@@ -8540,7 +7919,6 @@ Tonyu.klass.define({
         
       },
       nameToRGB :function _trc_Color_nameToRGB() {
-        "use strict";
         var _this=this;
         var ctx;
         var d;
@@ -8568,7 +7946,6 @@ Tonyu.klass.define({
         }
       },
       fiber$nameToRGB :function* _trc_Color_f_nameToRGB(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -8598,7 +7975,6 @@ Tonyu.klass.define({
         
       },
       makeHSLA :function _trc_Color_makeHSLA() {
-        "use strict";
         var _this=this;
         var hsl;
         
@@ -8622,7 +7998,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$makeHSLA :function* _trc_Color_f_makeHSLA(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var hsl;
@@ -8648,7 +8023,6 @@ Tonyu.klass.define({
         
       },
       makeName :function _trc_Color_makeName(type) {
-        "use strict";
         var _this=this;
         function p(r) {
           
@@ -8677,7 +8051,6 @@ Tonyu.klass.define({
         
       },
       fiber$makeName :function* _trc_Color_f_makeName(_thread,type) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         function p(r) {
@@ -8708,14 +8081,12 @@ Tonyu.klass.define({
         
       },
       toString :function _trc_Color_toString() {
-        "use strict";
         var _this=this;
         
         _this.makeName();
         return _this.value.name;
       },
       tmpCanvas :function _trc_Color_tmpCanvas() {
-        "use strict";
         var _this=this;
         var cv;
         
@@ -8728,7 +8099,6 @@ Tonyu.klass.define({
         return Tonyu.classes.kernel.Color.ctx;
       },
       fiber$tmpCanvas :function* _trc_Color_f_tmpCanvas(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var cv;
@@ -8743,7 +8113,6 @@ Tonyu.klass.define({
         
       },
       RGBToHSL :function _trc_Color_RGBToHSL(r,g,b) {
-        "use strict";
         var _this=this;
         var min;
         var max;
@@ -8767,7 +8136,6 @@ Tonyu.klass.define({
         return [h,s,l];
       },
       fiber$RGBToHSL :function* _trc_Color_f_RGBToHSL(_thread,r,g,b) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var min;
@@ -8793,7 +8161,6 @@ Tonyu.klass.define({
         
       },
       HSLToRGB :function _trc_Color_HSLToRGB(h,s,l) {
-        "use strict";
         var _this=this;
         var temp2;
         var temp1;
@@ -8829,7 +8196,6 @@ Tonyu.klass.define({
         return rgb;
       },
       fiber$HSLToRGB :function* _trc_Color_f_HSLToRGB(_thread,h,s,l) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var temp2;
@@ -8867,14 +8233,12 @@ Tonyu.klass.define({
         
       },
       __getter__name :function _trc_Color___getter__name() {
-        "use strict";
         var _this=this;
         
         _this.makeName();
         return _this.value.name;
       },
       __setter__name :function _trc_Color___setter__name(v) {
-        "use strict";
         var _this=this;
         
         _this.value.name=v;
@@ -8894,7 +8258,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Context3D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -8904,7 +8267,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_Context3D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -8916,7 +8278,6 @@ Tonyu.klass.define({
         
       },
       addSprite2D :function _trc_Context3D_addSprite2D(s) {
-        "use strict";
         var _this=this;
         
         if (! (Tonyu.is(s,Tonyu.classes.kernel.ActorSprite))) {
@@ -8925,7 +8286,6 @@ Tonyu.klass.define({
         _this.sprites2D.push(s);
       },
       fiber$addSprite2D :function* _trc_Context3D_f_addSprite2D(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -8936,7 +8296,6 @@ Tonyu.klass.define({
         
       },
       addSprite3D :function _trc_Context3D_addSprite3D(s) {
-        "use strict";
         var _this=this;
         var pos3d;
         var pt;
@@ -8954,7 +8313,6 @@ Tonyu.klass.define({
         }
       },
       fiber$addSprite3D :function* _trc_Context3D_f_addSprite3D(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var pos3d;
@@ -8974,7 +8332,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Context3D_initialize(p) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [p]);
@@ -8983,7 +8340,6 @@ Tonyu.klass.define({
         _this.stack=[];
       },
       to2D :function _trc_Context3D_to2D(pos) {
-        "use strict";
         var _this=this;
         
         if (! pos) {
@@ -8993,7 +8349,6 @@ Tonyu.klass.define({
         return _this.camera.to2D(_this.curTransform.childToSibling(pos));
       },
       fiber$to2D :function* _trc_Context3D_f_to2D(_thread,pos) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9005,13 +8360,11 @@ Tonyu.klass.define({
         
       },
       setTransform :function _trc_Context3D_setTransform(t) {
-        "use strict";
         var _this=this;
         
         _this.curTransform=t;
       },
       fiber$setTransform :function* _trc_Context3D_f_setTransform(_thread,t) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9019,13 +8372,11 @@ Tonyu.klass.define({
         
       },
       transform :function _trc_Context3D_transform(t) {
-        "use strict";
         var _this=this;
         
         _this.curTransform=_this.curTransform.childToSibling(t);
       },
       fiber$transform :function* _trc_Context3D_f_transform(_thread,t) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9033,13 +8384,11 @@ Tonyu.klass.define({
         
       },
       save :function _trc_Context3D_save() {
-        "use strict";
         var _this=this;
         
         _this.stack.push({curTransform: _this.curTransform});
       },
       fiber$save :function* _trc_Context3D_f_save(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9047,13 +8396,11 @@ Tonyu.klass.define({
         
       },
       restore :function _trc_Context3D_restore() {
-        "use strict";
         var _this=this;
         
         _this.extend(_this.stack.pop());
       },
       fiber$restore :function* _trc_Context3D_f_restore(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9074,19 +8421,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_GIFWriter_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_GIFWriter_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_GIFWriter_initialize(params) {
-        "use strict";
         var _this=this;
         var cnt;
         var wevt;
@@ -9119,7 +8463,6 @@ Tonyu.klass.define({
         }
       },
       start :function _trc_GIFWriter_start() {
-        "use strict";
         var _this=this;
         var cnt;
         
@@ -9164,7 +8507,6 @@ Tonyu.klass.define({
         }
       },
       fiber$start :function* _trc_GIFWriter_f_start(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var cnt;
@@ -9211,7 +8553,6 @@ Tonyu.klass.define({
         
       },
       addFrame :function _trc_GIFWriter_addFrame() {
-        "use strict";
         var _this=this;
         
         if (! _this.e) {
@@ -9220,7 +8561,6 @@ Tonyu.klass.define({
         _this.e.addFrame(_this.target.image,{delay: _this.duration,copy: true});
       },
       fiber$addFrame :function* _trc_GIFWriter_f_addFrame(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9231,7 +8571,6 @@ Tonyu.klass.define({
         
       },
       finish :function _trc_GIFWriter_finish() {
-        "use strict";
         var _this=this;
         var r;
         
@@ -9249,7 +8588,6 @@ Tonyu.klass.define({
         return r;
       },
       fiber$finish :function* _trc_GIFWriter_f_finish(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -9269,7 +8607,6 @@ Tonyu.klass.define({
         
       },
       download :function _trc_GIFWriter_download(f) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -9290,7 +8627,6 @@ Tonyu.klass.define({
         return r;
       },
       fiber$download :function* _trc_GIFWriter_f_download(_thread,f) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -9313,7 +8649,6 @@ Tonyu.klass.define({
         
       },
       save :function _trc_GIFWriter_save(f) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -9337,7 +8672,6 @@ Tonyu.klass.define({
         return r;
       },
       fiber$save :function* _trc_GIFWriter_f_save(_thread,f) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -9376,7 +8710,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_MapChip_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -9384,7 +8717,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_MapChip_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9394,7 +8726,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_MapChip_initialize(params) {
-        "use strict";
         var _this=this;
         var l;
         
@@ -9419,13 +8750,11 @@ Tonyu.klass.define({
         }
       },
       moved :function _trc_MapChip_moved(x,y) {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.MapChip({map: _this.map,x: x,y: y,layers: _this.layers});
       },
       fiber$moved :function* _trc_MapChip_f_moved(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9433,13 +8762,11 @@ Tonyu.klass.define({
         
       },
       movedBy :function _trc_MapChip_movedBy(dx,dy) {
-        "use strict";
         var _this=this;
         
         return _this.moved(_this.x+dx,_this.y+dy);
       },
       fiber$movedBy :function* _trc_MapChip_f_movedBy(_thread,dx,dy) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9448,7 +8775,6 @@ Tonyu.klass.define({
         
       },
       withLayers :function _trc_MapChip_withLayers() {
-        "use strict";
         var _this=this;
         var a;
         var nl;
@@ -9471,7 +8797,6 @@ Tonyu.klass.define({
         return new Tonyu.classes.kernel.MapChip({map: _this.map,x: _this.x,y: _this.y,layers: nl});
       },
       fiber$withLayers :function* _trc_MapChip_f_withLayers(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var a;
@@ -9496,7 +8821,6 @@ Tonyu.klass.define({
         
       },
       __getter__pAll :function _trc_MapChip___getter__pAll() {
-        "use strict";
         var _this=this;
         var res;
         var l;
@@ -9510,7 +8834,6 @@ Tonyu.klass.define({
         return res;
       },
       __setter__pAll :function _trc_MapChip___setter__pAll(vals) {
-        "use strict";
         var _this=this;
         var l;
         var val;
@@ -9521,13 +8844,11 @@ Tonyu.klass.define({
         }
       },
       __getter__p :function _trc_MapChip___getter__p() {
-        "use strict";
         var _this=this;
         
         return _this.map.getWithLayerName(_this.layers[0],_this.x,_this.y);
       },
       __setter__p :function _trc_MapChip___setter__p(val) {
-        "use strict";
         var _this=this;
         
         if (typeof  val==="object") {
@@ -9536,7 +8857,6 @@ Tonyu.klass.define({
         return _this.map.setWithLayerName(_this.layers[0],_this.x,_this.y,val);
       },
       has :function _trc_MapChip_has(p) {
-        "use strict";
         var _this=this;
         var chipLayer;
         
@@ -9556,7 +8876,6 @@ Tonyu.klass.define({
         return null;
       },
       fiber$has :function* _trc_MapChip_f_has(_thread,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var chipLayer;
@@ -9580,7 +8899,6 @@ Tonyu.klass.define({
         
       },
       hasExcept :function _trc_MapChip_hasExcept(p) {
-        "use strict";
         var _this=this;
         var chipLayer;
         
@@ -9597,7 +8915,6 @@ Tonyu.klass.define({
         return null;
       },
       fiber$hasExcept :function* _trc_MapChip_f_hasExcept(_thread,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var chipLayer;
@@ -9617,7 +8934,6 @@ Tonyu.klass.define({
         
       },
       toActor :function _trc_MapChip_toActor(options,params) {
-        "use strict";
         var _this=this;
         var klass;
         var w;
@@ -9641,7 +8957,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$toActor :function* _trc_MapChip_f_toActor(_thread,options,params) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var klass;
@@ -9667,13 +8982,11 @@ Tonyu.klass.define({
         
       },
       toWorld :function _trc_MapChip_toWorld(align) {
-        "use strict";
         var _this=this;
         
         return _this.map.chipToWorld(_this.x,_this.y,align);
       },
       fiber$toWorld :function* _trc_MapChip_f_toWorld(_thread,align) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9681,13 +8994,11 @@ Tonyu.klass.define({
         
       },
       getBuffer :function _trc_MapChip_getBuffer() {
-        "use strict";
         var _this=this;
         
         return _this.map.getBuf(_this.x,_this.y);
       },
       fiber$getBuffer :function* _trc_MapChip_f_getBuffer(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9708,7 +9019,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_MapCodec_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -9730,7 +9040,6 @@ Tonyu.klass.define({
         }
       },
       fiber$main :function* _trc_MapCodec_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -9754,14 +9063,12 @@ Tonyu.klass.define({
         
       },
       ignoreCheck :function _trc_MapCodec_ignoreCheck() {
-        "use strict";
         var _this=this;
         
         _this.noCheck=true;
         return _this;
       },
       genHeader :function _trc_MapCodec_genHeader() {
-        "use strict";
         var _this=this;
         var header;
         var l;
@@ -9775,7 +9082,6 @@ Tonyu.klass.define({
         }
       },
       loadHeader :function _trc_MapCodec_loadHeader() {
-        "use strict";
         var _this=this;
         var header;
         var e2c;
@@ -9809,7 +9115,6 @@ Tonyu.klass.define({
         }));
       },
       checkExprValidity :function _trc_MapCodec_checkExprValidity(e) {
-        "use strict";
         var _this=this;
         var p;
         var re;
@@ -9824,7 +9129,6 @@ Tonyu.klass.define({
         _this.assert(re===e,R("invalidPatExpr",e));
       },
       assert :function _trc_MapCodec_assert(b,mesg) {
-        "use strict";
         var _this=this;
         
         if (! b&&! _this.noCheck) {
@@ -9834,7 +9138,6 @@ Tonyu.klass.define({
         }
       },
       genChip :function _trc_MapCodec_genChip() {
-        "use strict";
         var _this=this;
         var header;
         
@@ -9872,7 +9175,6 @@ Tonyu.klass.define({
         }));
       },
       loadChip :function _trc_MapCodec_loadChip() {
-        "use strict";
         var _this=this;
         var c;
         var layerNames;
@@ -9908,7 +9210,6 @@ Tonyu.klass.define({
         }
       },
       genEntire :function _trc_MapCodec_genEntire() {
-        "use strict";
         var _this=this;
         
         _this.entire={version: 2.1};
@@ -9916,14 +9217,12 @@ Tonyu.klass.define({
         _this.genChip();
       },
       save :function _trc_MapCodec_save(file) {
-        "use strict";
         var _this=this;
         
         _this.genEntire();
         file.obj(_this.entire);
       },
       exprTocNumber :function _trc_MapCodec_exprTocNumber(expr) {
-        "use strict";
         var _this=this;
         var e2c;
         
@@ -9937,13 +9236,11 @@ Tonyu.klass.define({
         return e2c[expr];
       },
       exprAt :function _trc_MapCodec_exprAt(x,y,layer) {
-        "use strict";
         var _this=this;
         
         return _this.patToExpr(_this.map.getWithLayerName(layer,x,y));
       },
       patToExpr :function _trc_MapCodec_patToExpr(p) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -9956,7 +9253,6 @@ Tonyu.klass.define({
         return "e";
       },
       exprToPat :function _trc_MapCodec_exprToPat(name) {
-        "use strict";
         var _this=this;
         var ns;
         var g;
@@ -9975,7 +9271,6 @@ Tonyu.klass.define({
         return g+(ns[1]-0);
       },
       load :function _trc_MapCodec_load(file) {
-        "use strict";
         var _this=this;
         
         _this.entire=file.obj();
@@ -9986,7 +9281,6 @@ Tonyu.klass.define({
         }
       },
       loadVer1 :function _trc_MapCodec_loadVer1(baseData) {
-        "use strict";
         var _this=this;
         var mapTable;
         var mapOnTable;
@@ -10015,7 +9309,6 @@ Tonyu.klass.define({
         _this.map.pack();
       },
       saveVer1 :function _trc_MapCodec_saveVer1(saveDataFile) {
-        "use strict";
         var _this=this;
         var chipLayers;
         var data;
@@ -10027,7 +9320,6 @@ Tonyu.klass.define({
         saveDataFile.obj(data);
       },
       loadVer2 :function _trc_MapCodec_loadVer2() {
-        "use strict";
         var _this=this;
         
         _this.loadHeader();
@@ -10047,7 +9339,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_MultiLayerTouches_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -10056,7 +9347,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_MultiLayerTouches_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10067,7 +9357,6 @@ Tonyu.klass.define({
         
       },
       add :function _trc_MultiLayerTouches_add(a) {
-        "use strict";
         var _this=this;
         var layer;
         var ts;
@@ -10081,7 +9370,6 @@ Tonyu.klass.define({
         }
       },
       fiber$add :function* _trc_MultiLayerTouches_f_add(_thread,a) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var layer;
@@ -10097,7 +9385,6 @@ Tonyu.klass.define({
         
       },
       remove :function _trc_MultiLayerTouches_remove(a) {
-        "use strict";
         var _this=this;
         var layer;
         var ts;
@@ -10114,7 +9401,6 @@ Tonyu.klass.define({
         }
       },
       fiber$remove :function* _trc_MultiLayerTouches_f_remove(_thread,a) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var layer;
@@ -10133,7 +9419,6 @@ Tonyu.klass.define({
         
       },
       getOrNewTouchables :function _trc_MultiLayerTouches_getOrNewTouchables(layer) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -10147,7 +9432,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$getOrNewTouchables :function* _trc_MultiLayerTouches_f_getOrNewTouchables(_thread,layer) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -10163,13 +9447,11 @@ Tonyu.klass.define({
         
       },
       getTouchables :function _trc_MultiLayerTouches_getTouchables(layer) {
-        "use strict";
         var _this=this;
         
         return _this.layers.get(layer);
       },
       fiber$getTouchables :function* _trc_MultiLayerTouches_f_getTouchables(_thread,layer) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10177,7 +9459,6 @@ Tonyu.klass.define({
         
       },
       findActor :function _trc_MultiLayerTouches_findActor(shape) {
-        "use strict";
         var _this=this;
         var cands;
         var i;
@@ -10266,7 +9547,6 @@ Tonyu.klass.define({
         return cands[0]&&cands[0].actor;
       },
       fiber$findActor :function* _trc_MultiLayerTouches_f_findActor(_thread,shape) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var cands;
@@ -10357,7 +9637,6 @@ Tonyu.klass.define({
         
       },
       saveAndClear :function _trc_MultiLayerTouches_saveAndClear() {
-        "use strict";
         var _this=this;
         var saved;
         
@@ -10367,7 +9646,6 @@ Tonyu.klass.define({
         return saved;
       },
       fiber$saveAndClear :function* _trc_MultiLayerTouches_f_saveAndClear(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var saved;
@@ -10379,13 +9657,11 @@ Tonyu.klass.define({
         
       },
       restore :function _trc_MultiLayerTouches_restore(saved) {
-        "use strict";
         var _this=this;
         
         _this.layers=saved;
       },
       fiber$restore :function* _trc_MultiLayerTouches_f_restore(_thread,saved) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10406,19 +9682,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_OneframeSprite_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_OneframeSprite_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_OneframeSprite_initialize(params) {
-        "use strict";
         var _this=this;
         
         _this.extend(params);
@@ -10431,24 +9704,20 @@ Tonyu.klass.define({
         }
       },
       die :function _trc_OneframeSprite_die() {
-        "use strict";
         var _this=this;
         
       },
       fiber$die :function* _trc_OneframeSprite_f_die(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       isDead :function _trc_OneframeSprite_isDead() {
-        "use strict";
         var _this=this;
         
       },
       fiber$isDead :function* _trc_OneframeSprite_f_isDead(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10468,13 +9737,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_PanelTouchStart_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_PanelTouchStart_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10482,7 +9749,6 @@ Tonyu.klass.define({
         
       },
       newListener :function _trc_PanelTouchStart_newListener(f) {
-        "use strict";
         var _this=this;
         var h;
         
@@ -10513,13 +9779,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ScreenLayer_main() {
-        "use strict";
         var _this=this;
         
         
       },
       fiber$main :function* _trc_ScreenLayer_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10527,19 +9791,16 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_ScreenLayer_initialize(p) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [p]);
       },
       addSubsprite :function _trc_ScreenLayer_addSubsprite() {
-        "use strict";
         var _this=this;
         
         return _this.group.addSubsprite.apply(_this.group,arguments);
       },
       fiber$addSubsprite :function* _trc_ScreenLayer_f_addSubsprite(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         
@@ -10547,13 +9808,11 @@ Tonyu.klass.define({
         
       },
       all :function _trc_ScreenLayer_all() {
-        "use strict";
         var _this=this;
         
         return _this.group.all.apply(_this.group,arguments);
       },
       fiber$all :function* _trc_ScreenLayer_f_all(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         
@@ -10574,14 +9833,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_SpriteGroup_main() {
-        "use strict";
         var _this=this;
         
         
         
       },
       fiber$main :function* _trc_SpriteGroup_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10590,13 +9847,11 @@ Tonyu.klass.define({
         
       },
       get :function _trc_SpriteGroup_get(i) {
-        "use strict";
         var _this=this;
         
         return _this.sprites[i];
       },
       fiber$get :function* _trc_SpriteGroup_f_get(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10604,13 +9859,11 @@ Tonyu.klass.define({
         
       },
       addSubsprite :function _trc_SpriteGroup_addSubsprite() {
-        "use strict";
         var _this=this;
         
         return Tonyu.bindFunc(_this,_this.add).apply(_this,arguments);
       },
       fiber$addSubsprite :function* _trc_SpriteGroup_f_addSubsprite(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         
@@ -10618,14 +9871,12 @@ Tonyu.klass.define({
         
       },
       add :function _trc_SpriteGroup_add() {
-        "use strict";
         var _this=this;
         
         throw new Error("SpriteGroup::add abstract");
         
       },
       fiber$add :function* _trc_SpriteGroup_f_add(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10634,7 +9885,6 @@ Tonyu.klass.define({
         
       },
       saveAndClear :function _trc_SpriteGroup_saveAndClear(excludes) {
-        "use strict";
         var _this=this;
         var saved;
         
@@ -10651,7 +9901,6 @@ Tonyu.klass.define({
         return saved;
       },
       fiber$saveAndClear :function* _trc_SpriteGroup_f_saveAndClear(_thread,excludes) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var saved;
@@ -10670,7 +9919,6 @@ Tonyu.klass.define({
         
       },
       restore :function _trc_SpriteGroup_restore(saved) {
-        "use strict";
         var _this=this;
         
         if (! saved) {
@@ -10680,7 +9928,6 @@ Tonyu.klass.define({
         _this.sprites=saved;
       },
       fiber$restore :function* _trc_SpriteGroup_f_restore(_thread,saved) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10704,14 +9951,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_SpriteMod2D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_SpriteMod2D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10720,14 +9965,12 @@ Tonyu.klass.define({
         
       },
       initSpriteMod :function _trc_SpriteMod2D_initSpriteMod() {
-        "use strict";
         var _this=this;
         
         __superClass.prototype.initSpriteMod.apply( _this, []);
         _this._align=_this._align||new Tonyu.classes.kernel.Align2D();
       },
       fiber$initSpriteMod :function* _trc_SpriteMod2D_f_initSpriteMod(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10736,20 +9979,17 @@ Tonyu.klass.define({
         
       },
       __setter__align :function _trc_SpriteMod2D___setter__align(v) {
-        "use strict";
         var _this=this;
         
         _this._alignVal=v;
         _this._align=new Tonyu.classes.kernel.Align2D(v);
       },
       initTransform :function _trc_SpriteMod2D_initTransform() {
-        "use strict";
         var _this=this;
         
         _this.transform=new Tonyu.classes.kernel.Transform2D(_this);
       },
       fiber$initTransform :function* _trc_SpriteMod2D_f_initTransform(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10757,7 +9997,6 @@ Tonyu.klass.define({
         
       },
       performTransform :function _trc_SpriteMod2D_performTransform(ctx) {
-        "use strict";
         var _this=this;
         
         if (_this.x!==_this.x||_this.y!==_this.y||_this.x==null||_this.y==null) {
@@ -10782,7 +10021,6 @@ Tonyu.klass.define({
         ctx.globalAlpha=(_this.alpha<0?0:_this.alpha>255?255:_this.alpha)/255;
       },
       draw :function _trc_SpriteMod2D_draw(ctx) {
-        "use strict";
         var _this=this;
         var t;
         
@@ -10801,7 +10039,6 @@ Tonyu.klass.define({
         }
       },
       drawAsText :function _trc_SpriteMod2D_drawAsText(ctx) {
-        "use strict";
         var _this=this;
         var splitsText;
         var drawY;
@@ -10841,7 +10078,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       drawAsShape :function _trc_SpriteMod2D_drawAsShape(ctx) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -10878,7 +10114,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       fiber$drawAsShape :function* _trc_SpriteMod2D_f_drawAsShape(_thread,ctx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -10917,7 +10152,6 @@ Tonyu.klass.define({
         
       },
       drawAsCustom :function _trc_SpriteMod2D_drawAsCustom(ctx) {
-        "use strict";
         var _this=this;
         
         ctx.save();
@@ -10931,7 +10165,6 @@ Tonyu.klass.define({
         }
       },
       fiber$drawAsCustom :function* _trc_SpriteMod2D_f_drawAsCustom(_thread,ctx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -10947,7 +10180,6 @@ Tonyu.klass.define({
         
       },
       drawAsImage :function _trc_SpriteMod2D_drawAsImage(ctx) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -10969,7 +10201,6 @@ Tonyu.klass.define({
         }
       },
       fiber$drawAsImage :function* _trc_SpriteMod2D_f_drawAsImage(_thread,ctx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -11006,7 +10237,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Sprites_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -11014,7 +10244,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_Sprites_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11024,7 +10253,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Sprites_initialize() {
-        "use strict";
         var _this=this;
         
         _this.sprites=[];
@@ -11035,7 +10263,6 @@ Tonyu.klass.define({
         _this.objId=0;
       },
       add :function _trc_Sprites_add(s) {
-        "use strict";
         var _this=this;
         
         if (Tonyu.globals.$Boot.newLimit) {
@@ -11068,7 +10295,6 @@ Tonyu.klass.define({
         return s;
       },
       fiber$add :function* _trc_Sprites_f_add(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11103,7 +10329,6 @@ Tonyu.klass.define({
         
       },
       remove :function _trc_Sprites_remove(s) {
-        "use strict";
         var _this=this;
         var idx;
         
@@ -11116,7 +10341,6 @@ Tonyu.klass.define({
         delete s.__addedToSprites;
       },
       fiber$remove :function* _trc_Sprites_f_remove(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var idx;
@@ -11131,7 +10355,6 @@ Tonyu.klass.define({
         
       },
       removeOneframes :function _trc_Sprites_removeOneframes(drawn) {
-        "use strict";
         var _this=this;
         var s;
         var i;
@@ -11150,7 +10373,6 @@ Tonyu.klass.define({
         }
       },
       fiber$removeOneframes :function* _trc_Sprites_f_removeOneframes(_thread,drawn) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var s;
@@ -11171,13 +10393,11 @@ Tonyu.klass.define({
         
       },
       clear :function _trc_Sprites_clear() {
-        "use strict";
         var _this=this;
         
         _this.sprites.splice(0,_this.sprites.length);
       },
       fiber$clear :function* _trc_Sprites_f_clear(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11185,7 +10405,6 @@ Tonyu.klass.define({
         
       },
       compOrder :function _trc_Sprites_compOrder(obj1,obj2) {
-        "use strict";
         var _this=this;
         var val1;
         var val2;
@@ -11217,7 +10436,6 @@ Tonyu.klass.define({
         }
       },
       fiber$compOrder :function* _trc_Sprites_f_compOrder(_thread,obj1,obj2) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var val1;
@@ -11251,7 +10469,6 @@ Tonyu.klass.define({
         
       },
       draw :function _trc_Sprites_draw(ctx,camera) {
-        "use strict";
         var _this=this;
         var orderArray;
         
@@ -11291,7 +10508,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       fiber$draw :function* _trc_Sprites_f_draw(_thread,ctx,camera) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var orderArray;
@@ -11333,7 +10549,6 @@ Tonyu.klass.define({
         
       },
       checkHit :function _trc_Sprites_checkHit() {
-        "use strict";
         var _this=this;
         
         _this.hitWatchers.forEach((function anonymous_2800(w) {
@@ -11366,7 +10581,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$checkHit :function* _trc_Sprites_f_checkHit(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11401,7 +10615,6 @@ Tonyu.klass.define({
         
       },
       watchHit :function _trc_Sprites_watchHit(typeA,typeB,onHit) {
-        "use strict";
         var _this=this;
         var p;
         
@@ -11410,7 +10623,6 @@ Tonyu.klass.define({
         _this.hitWatchers.push(p);
       },
       fiber$watchHit :function* _trc_Sprites_f_watchHit(_thread,typeA,typeB,onHit) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var p;
@@ -11421,7 +10633,6 @@ Tonyu.klass.define({
         
       },
       drawGrid :function _trc_Sprites_drawGrid(c) {
-        "use strict";
         var _this=this;
         var ctx;
         var i;
@@ -11470,7 +10681,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       fiber$drawGrid :function* _trc_Sprites_f_drawGrid(_thread,c) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -11521,14 +10731,12 @@ Tonyu.klass.define({
         
       },
       scrollTo :function _trc_Sprites_scrollTo(scrollX,scrollY) {
-        "use strict";
         var _this=this;
         
         _this.sx=scrollX;
         _this.sy=scrollY;
       },
       fiber$scrollTo :function* _trc_Sprites_f_scrollTo(_thread,scrollX,scrollY) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11537,7 +10745,6 @@ Tonyu.klass.define({
         
       },
       all :function _trc_Sprites_all(c) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -11573,13 +10780,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Sprites3D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_Sprites3D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11587,7 +10792,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Sprites3D_initialize(p) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [p]);
@@ -11595,7 +10799,6 @@ Tonyu.klass.define({
         _this.transform=_this.transform||new Tonyu.classes.kernel.Transform;
       },
       add :function _trc_Sprites3D_add(a) {
-        "use strict";
         var _this=this;
         var curLayer;
         
@@ -11616,7 +10819,6 @@ Tonyu.klass.define({
         a.__addedToSprites=_this;
       },
       fiber$add :function* _trc_Sprites3D_f_add(_thread,a) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var curLayer;
@@ -11639,7 +10841,6 @@ Tonyu.klass.define({
         
       },
       draw3D :function _trc_Sprites3D_draw3D(ctx) {
-        "use strict";
         var _this=this;
         var s;
         
@@ -11649,7 +10850,6 @@ Tonyu.klass.define({
         }
       },
       fiber$draw3D :function* _trc_Sprites3D_f_draw3D(_thread,ctx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var s;
@@ -11661,7 +10861,6 @@ Tonyu.klass.define({
         
       },
       remove :function _trc_Sprites3D_remove(s) {
-        "use strict";
         var _this=this;
         var idx;
         
@@ -11674,7 +10873,6 @@ Tonyu.klass.define({
         delete s.__addedToSprites;
       },
       all :function _trc_Sprites3D_all(c) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -11710,14 +10908,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_M_T2Room_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_M_T2Room_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11726,7 +10922,6 @@ Tonyu.klass.define({
         
       },
       enter :function _trc_M_T2Room_enter() {
-        "use strict";
         var _this=this;
         
         return new Promise((function anonymous_182(s,e) {
@@ -11802,7 +10997,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$enter :function* _trc_M_T2Room_f_enter(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11880,13 +11074,11 @@ Tonyu.klass.define({
         
       },
       close :function _trc_M_T2Room_close() {
-        "use strict";
         var _this=this;
         
         _this.m.close();
       },
       fiber$close :function* _trc_M_T2Room_f_close(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11894,13 +11086,11 @@ Tonyu.klass.define({
         
       },
       getMembers :function _trc_M_T2Room_getMembers() {
-        "use strict";
         var _this=this;
         
         return Promise.resolve(_this.members);
       },
       fiber$getMembers :function* _trc_M_T2Room_f_getMembers(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11908,13 +11098,11 @@ Tonyu.klass.define({
         
       },
       cloneEvent :function _trc_M_T2Room_cloneEvent(ev) {
-        "use strict";
         var _this=this;
         
         return Object.assign({},ev);
       },
       fiber$cloneEvent :function* _trc_M_T2Room_f_cloneEvent(_thread,ev) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11922,7 +11110,6 @@ Tonyu.klass.define({
         
       },
       send :function _trc_M_T2Room_send(mesg) {
-        "use strict";
         var _this=this;
         
         mesg=_this.cloneEvent(mesg);
@@ -11931,7 +11118,6 @@ Tonyu.klass.define({
         _this.keepAlive();
       },
       fiber$send :function* _trc_M_T2Room_f_send(_thread,mesg) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11942,7 +11128,6 @@ Tonyu.klass.define({
         
       },
       keepAlive :function _trc_M_T2Room_keepAlive() {
-        "use strict";
         var _this=this;
         
         if (_this.timer) {
@@ -11954,7 +11139,6 @@ Tonyu.klass.define({
         }),25*1000);
       },
       fiber$keepAlive :function* _trc_M_T2Room_f_keepAlive(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -11968,13 +11152,11 @@ Tonyu.klass.define({
         
       },
       __getter__SYM_CLIENTID :function _trc_M_T2Room___getter__SYM_CLIENTID() {
-        "use strict";
         var _this=this;
         
         return "SYM_CLIENTID";
       },
       __getter__url :function _trc_M_T2Room___getter__url() {
-        "use strict";
         var _this=this;
         var wsProtocol;
         var wsHost;
@@ -12008,7 +11190,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_M_T2Web_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -12016,7 +11197,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_M_T2Web_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12026,13 +11206,11 @@ Tonyu.klass.define({
         
       },
       connect :function _trc_M_T2Web_connect() {
-        "use strict";
         var _this=this;
         
         return Promise.resolve(_this);
       },
       fiber$connect :function* _trc_M_T2Web_f_connect(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12040,7 +11218,6 @@ Tonyu.klass.define({
         
       },
       enterRoom :function _trc_M_T2Web_enterRoom(name) {
-        "use strict";
         var _this=this;
         var room;
         
@@ -12049,7 +11226,6 @@ Tonyu.klass.define({
         return room.enter();
       },
       fiber$enterRoom :function* _trc_M_T2Web_f_enterRoom(_thread,name) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var room;
@@ -12073,14 +11249,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ScaledroneImpl_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_ScaledroneImpl_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12089,7 +11263,6 @@ Tonyu.klass.define({
         
       },
       loadScript :function _trc_ScaledroneImpl_loadScript() {
-        "use strict";
         var _this=this;
         
         if (typeof  Scaledrone==="undefined") {
@@ -12101,7 +11274,6 @@ Tonyu.klass.define({
         }
       },
       fiber$loadScript :function* _trc_ScaledroneImpl_f_loadScript(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12115,7 +11287,6 @@ Tonyu.klass.define({
         
       },
       connect :function _trc_ScaledroneImpl_connect() {
-        "use strict";
         var _this=this;
         
         return _this.loadScript().then((function anonymous_344() {
@@ -12126,7 +11297,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$connect :function* _trc_ScaledroneImpl_f_connect(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12139,13 +11309,11 @@ Tonyu.klass.define({
         
       },
       newRoom :function _trc_ScaledroneImpl_newRoom(name) {
-        "use strict";
         var _this=this;
         
         return _this.enterRoom(name);
       },
       fiber$newRoom :function* _trc_ScaledroneImpl_f_newRoom(_thread,name) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12154,7 +11322,6 @@ Tonyu.klass.define({
         
       },
       enterRoom :function _trc_ScaledroneImpl_enterRoom(name) {
-        "use strict";
         var _this=this;
         
         return new Promise((function anonymous_553(s,e) {
@@ -12178,7 +11345,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$enterRoom :function* _trc_ScaledroneImpl_f_enterRoom(_thread,name) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12204,7 +11370,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_ScaledroneImpl_initialize(params) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [params]);
@@ -12227,14 +11392,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ScaledroneRoom_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_ScaledroneRoom_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12243,13 +11406,11 @@ Tonyu.klass.define({
         
       },
       __getter__rawName :function _trc_ScaledroneRoom___getter__rawName() {
-        "use strict";
         var _this=this;
         
         return (_this.observable?"observable-":"")+_this.name;
       },
       initialize :function _trc_ScaledroneRoom_initialize(params) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [params]);
@@ -12288,13 +11449,11 @@ Tonyu.klass.define({
         }));
       },
       close :function _trc_ScaledroneRoom_close() {
-        "use strict";
         var _this=this;
         
         _this.drone.close();
       },
       fiber$close :function* _trc_ScaledroneRoom_f_close(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12302,13 +11461,11 @@ Tonyu.klass.define({
         
       },
       send :function _trc_ScaledroneRoom_send(message) {
-        "use strict";
         var _this=this;
         
         return _this.drone.publish({room: _this.rawName,message: message});
       },
       fiber$send :function* _trc_ScaledroneRoom_f_send(_thread,message) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12316,7 +11473,6 @@ Tonyu.klass.define({
         
       },
       getMembers :function _trc_ScaledroneRoom_getMembers() {
-        "use strict";
         var _this=this;
         
         if (_this.members) {
@@ -12332,7 +11488,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$getMembers :function* _trc_ScaledroneRoom_f_getMembers(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12363,7 +11518,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T2WebSocket_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -12371,7 +11525,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_T2WebSocket_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12381,7 +11534,6 @@ Tonyu.klass.define({
         
       },
       connect :function _trc_T2WebSocket_connect(url) {
-        "use strict";
         var _this=this;
         var e;
         
@@ -12416,7 +11568,6 @@ Tonyu.klass.define({
         }
       },
       fiber$connect :function* _trc_T2WebSocket_f_connect(_thread,url) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var e;
@@ -12453,7 +11604,6 @@ Tonyu.klass.define({
         
       },
       close :function _trc_T2WebSocket_close() {
-        "use strict";
         var _this=this;
         
         if (_this.sock) {
@@ -12463,7 +11613,6 @@ Tonyu.klass.define({
         }
       },
       fiber$close :function* _trc_T2WebSocket_f_close(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12475,7 +11624,6 @@ Tonyu.klass.define({
         
       },
       send :function _trc_T2WebSocket_send(d) {
-        "use strict";
         var _this=this;
         
         if (_this.sock&&_this.sock.readyState==1) {
@@ -12498,7 +11646,6 @@ Tonyu.klass.define({
         }
       },
       fiber$send :function* _trc_T2WebSocket_f_send(_thread,d) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12523,7 +11670,6 @@ Tonyu.klass.define({
         
       },
       recv :function _trc_T2WebSocket_recv(e) {
-        "use strict";
         var _this=this;
         var d;
         var obj;
@@ -12546,7 +11692,6 @@ Tonyu.klass.define({
         }
       },
       fiber$recv :function* _trc_T2WebSocket_f_recv(_thread,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var d;
@@ -12571,13 +11716,11 @@ Tonyu.klass.define({
         
       },
       _isTypedArray :function _trc_T2WebSocket__isTypedArray(value) {
-        "use strict";
         var _this=this;
         
         return ArrayBuffer.isView(value)&&! (value instanceof DataView);
       },
       fiber$_isTypedArray :function* _trc_T2WebSocket_f__isTypedArray(_thread,value) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12598,14 +11741,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_WebSocket_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_WebSocket_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12614,7 +11755,6 @@ Tonyu.klass.define({
         
       },
       getConnectionInfo :function _trc_WebSocket_getConnectionInfo() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$API.info().then((function anonymous_110(r) {
@@ -12631,7 +11771,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$getConnectionInfo :function* _trc_WebSocket_f_getConnectionInfo(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12650,7 +11789,6 @@ Tonyu.klass.define({
         
       },
       connect :function _trc_WebSocket_connect() {
-        "use strict";
         var _this=this;
         var services;
         
@@ -12673,7 +11811,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$connect :function* _trc_WebSocket_f_connect(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var services;
@@ -12698,7 +11835,6 @@ Tonyu.klass.define({
         
       },
       enterRoom :function _trc_WebSocket_enterRoom(name) {
-        "use strict";
         var _this=this;
         
         return _this.connect().then((function anonymous_750() {
@@ -12711,7 +11847,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$enterRoom :function* _trc_WebSocket_f_enterRoom(_thread,name) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12739,7 +11874,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Beep_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -12750,7 +11884,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_Beep_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12763,7 +11896,6 @@ Tonyu.klass.define({
         
       },
       init :function _trc_Beep_init() {
-        "use strict";
         var _this=this;
         var chd;
         var i;
@@ -12803,7 +11935,6 @@ Tonyu.klass.define({
         return true;
       },
       fiber$init :function* _trc_Beep_f_init(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var chd;
@@ -12845,7 +11976,6 @@ Tonyu.klass.define({
         
       },
       createSource :function _trc_Beep_createSource() {
-        "use strict";
         var _this=this;
         
         _this.source=_this.context.createBufferSource();
@@ -12854,7 +11984,6 @@ Tonyu.klass.define({
         _this.source.connect(_this.gainNode);
       },
       fiber$createSource :function* _trc_Beep_f_createSource(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12865,7 +11994,6 @@ Tonyu.klass.define({
         
       },
       initScaleTable :function _trc_Beep_initScaleTable() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1699(e) {
@@ -12874,7 +12002,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$initScaleTable :function* _trc_Beep_f_initScaleTable(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12885,7 +12012,6 @@ Tonyu.klass.define({
         
       },
       setScale :function _trc_Beep_setScale(scale,detune) {
-        "use strict";
         var _this=this;
         
         let s = _this.initScaleTable();
@@ -12904,7 +12030,6 @@ Tonyu.klass.define({
         }
       },
       fiber$setScale :function* _trc_Beep_f_setScale(_thread,scale,detune) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12925,7 +12050,6 @@ Tonyu.klass.define({
         
       },
       set :function _trc_Beep_set(options) {
-        "use strict";
         var _this=this;
         
         if (options.reset) {
@@ -12951,7 +12075,6 @@ Tonyu.klass.define({
         }
       },
       fiber$set :function* _trc_Beep_f_set(_thread,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -12979,7 +12102,6 @@ Tonyu.klass.define({
         
       },
       setFreq :function _trc_Beep_setFreq(f) {
-        "use strict";
         var _this=this;
         
         if (! _this.init()) {
@@ -12991,7 +12113,6 @@ Tonyu.klass.define({
         _this.source.playbackRate.setValueAtTime(_this.hzToRate(f),_this.time+_this.delay);
       },
       fiber$setFreq :function* _trc_Beep_f_setFreq(_thread,f) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13005,7 +12126,6 @@ Tonyu.klass.define({
         
       },
       setVolume :function _trc_Beep_setVolume(v) {
-        "use strict";
         var _this=this;
         
         if (! _this.init()) {
@@ -13018,7 +12138,6 @@ Tonyu.klass.define({
         _this.gainNode.gain.setValueAtTime(v/128,_this.time+_this.delay);
       },
       fiber$setVolume :function* _trc_Beep_f_setVolume(_thread,v) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13033,13 +12152,11 @@ Tonyu.klass.define({
         
       },
       hzToRate :function _trc_Beep_hzToRate(hz) {
-        "use strict";
         var _this=this;
         
         return hz/_this.sampleRate*_this.buflen;
       },
       fiber$hzToRate :function* _trc_Beep_f_hzToRate(_thread,hz) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13047,20 +12164,17 @@ Tonyu.klass.define({
         
       },
       __getter__context :function _trc_Beep___getter__context() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.context;
       },
       dieAfter :function _trc_Beep_dieAfter(after) {
-        "use strict";
         var _this=this;
         
         _this.source.stop(_this.time+_this.delay+after);
         setTimeout(Tonyu.bindFunc(_this,_this.die),(_this.delay+after)*1000);
       },
       fiber$dieAfter :function* _trc_Beep_f_dieAfter(_thread,after) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13069,13 +12183,11 @@ Tonyu.klass.define({
         
       },
       die :function _trc_Beep_die() {
-        "use strict";
         var _this=this;
         
         _this.gainNode.disconnect();
       },
       fiber$die :function* _trc_Beep_f_die(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13096,13 +12208,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_MML_main() {
-        "use strict";
         var _this=this;
         
         _this.mmlBuf=[];
       },
       fiber$main :function* _trc_MML_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13110,7 +12220,6 @@ Tonyu.klass.define({
         
       },
       play :function _trc_MML_play(mmls) {
-        "use strict";
         var _this=this;
         
         _this.mmlBuf.push(mmls);
@@ -13120,7 +12229,6 @@ Tonyu.klass.define({
         }
       },
       fiber$play :function* _trc_MML_f_play(_thread,mmls) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13132,7 +12240,6 @@ Tonyu.klass.define({
         
       },
       playNext :function _trc_MML_playNext() {
-        "use strict";
         var _this=this;
         var mml;
         
@@ -13158,7 +12265,6 @@ Tonyu.klass.define({
         Tonyu.globals.$MMLS[_this.id()]=_this;
       },
       fiber$playNext :function* _trc_MML_f_playNext(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var mml;
@@ -13186,7 +12292,6 @@ Tonyu.klass.define({
         
       },
       id :function _trc_MML_id() {
-        "use strict";
         var _this=this;
         
         if (! _this._id) {
@@ -13195,7 +12300,6 @@ Tonyu.klass.define({
         return _this._id;
       },
       fiber$id :function* _trc_MML_f_id(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13206,13 +12310,11 @@ Tonyu.klass.define({
         
       },
       bufferCount :function _trc_MML_bufferCount() {
-        "use strict";
         var _this=this;
         
         return _this.mmlBuf.length;
       },
       fiber$bufferCount :function* _trc_MML_f_bufferCount(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13220,13 +12322,11 @@ Tonyu.klass.define({
         
       },
       isPlaying :function _trc_MML_isPlaying() {
-        "use strict";
         var _this=this;
         
         return _this.m;
       },
       fiber$isPlaying :function* _trc_MML_f_isPlaying(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13234,7 +12334,6 @@ Tonyu.klass.define({
         
       },
       currentTime :function _trc_MML_currentTime() {
-        "use strict";
         var _this=this;
         
         if (_this.m) {
@@ -13243,7 +12342,6 @@ Tonyu.klass.define({
         return - 1;
       },
       fiber$currentTime :function* _trc_MML_f_currentTime(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13254,7 +12352,6 @@ Tonyu.klass.define({
         
       },
       stop :function _trc_MML_stop() {
-        "use strict";
         var _this=this;
         
         if (_this.m) {
@@ -13272,7 +12369,6 @@ Tonyu.klass.define({
         }
       },
       fiber$stop :function* _trc_MML_f_stop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13305,7 +12401,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_MMTimer_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -13323,7 +12418,6 @@ Tonyu.klass.define({
         _this.check();
       },
       fiber$main :function* _trc_MMTimer_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13343,7 +12437,6 @@ Tonyu.klass.define({
         
       },
       check :function _trc_MMTimer_check() {
-        "use strict";
         var _this=this;
         
         if (_this.isDead) {
@@ -13361,7 +12454,6 @@ Tonyu.klass.define({
         }
       },
       fiber$check :function* _trc_MMTimer_f_check(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13381,7 +12473,6 @@ Tonyu.klass.define({
         
       },
       proc :function _trc_MMTimer_proc() {
-        "use strict";
         var _this=this;
         
         if (_this.isDead) {
@@ -13393,7 +12484,6 @@ Tonyu.klass.define({
         _this.check();
       },
       fiber$proc :function* _trc_MMTimer_f_proc(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13420,7 +12510,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_WaveTable_main() {
-        "use strict";
         var _this=this;
         
         _this.wav={};
@@ -13433,7 +12522,6 @@ Tonyu.klass.define({
         }
       },
       fiber$main :function* _trc_WaveTable_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13448,13 +12536,11 @@ Tonyu.klass.define({
         
       },
       setWav :function _trc_WaveTable_setWav(num,synth) {
-        "use strict";
         var _this=this;
         
         _this.wav[num]=synth;
       },
       fiber$setWav :function* _trc_WaveTable_f_setWav(_thread,num,synth) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13462,13 +12548,11 @@ Tonyu.klass.define({
         
       },
       setEnv :function _trc_WaveTable_setEnv(num,synth) {
-        "use strict";
         var _this=this;
         
         _this.env[num]=synth;
       },
       fiber$setEnv :function* _trc_WaveTable_f_setEnv(_thread,num,synth) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13476,7 +12560,6 @@ Tonyu.klass.define({
         
       },
       get :function _trc_WaveTable_get(w,e) {
-        "use strict";
         var _this=this;
         var synth;
         
@@ -13485,7 +12568,6 @@ Tonyu.klass.define({
         return synth;
       },
       fiber$get :function* _trc_WaveTable_f_get(_thread,w,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var synth;
@@ -13496,12 +12578,10 @@ Tonyu.klass.define({
         
       },
       stop :function _trc_WaveTable_stop() {
-        "use strict";
         var _this=this;
         
       },
       fiber$stop :function* _trc_WaveTable_f_stop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13521,19 +12601,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T1FillPolygon_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_T1FillPolygon_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       draw :function _trc_T1FillPolygon_draw(ctx) {
-        "use strict";
         var _this=this;
         var i;
         var xx;
@@ -13564,7 +12641,6 @@ Tonyu.klass.define({
         _this.drawn=true;
       },
       fiber$draw :function* _trc_T1FillPolygon_f_draw(_thread,ctx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -13610,19 +12686,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T1Line_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_T1Line_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       draw :function _trc_T1Line_draw(ctx) {
-        "use strict";
         var _this=this;
         var bx;
         var by;
@@ -13647,7 +12720,6 @@ Tonyu.klass.define({
         _this.drawn=true;
       },
       fiber$draw :function* _trc_T1Line_f_draw(_thread,ctx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var bx;
@@ -13687,19 +12759,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T1Rect_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_T1Rect_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       draw :function _trc_T1Rect_draw(ctx) {
-        "use strict";
         var _this=this;
         
         ctx.save();
@@ -13718,7 +12787,6 @@ Tonyu.klass.define({
         _this.drawn=true;
       },
       fiber$draw :function* _trc_T1Rect_f_draw(_thread,ctx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13752,19 +12820,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T1Sprite_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_T1Sprite_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       draw :function _trc_T1Sprite_draw(ctx) {
-        "use strict";
         var _this=this;
         var sgn;
         
@@ -13790,7 +12855,6 @@ Tonyu.klass.define({
         _this.drawn=true;
       },
       fiber$draw :function* _trc_T1Sprite_f_draw(_thread,ctx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var sgn;
@@ -13831,19 +12895,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T1Text_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_T1Text_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       draw :function _trc_T1Text_draw(ctx) {
-        "use strict";
         var _this=this;
         var splitsText;
         var drawY;
@@ -13893,7 +12954,6 @@ Tonyu.klass.define({
         _this.drawn=true;
       },
       fiber$draw :function* _trc_T1Text_f_draw(_thread,ctx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var splitsText;
@@ -13958,7 +13018,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Scheduler_main() {
-        "use strict";
         var _this=this;
         
         if (typeof  performance==="undefined") {
@@ -13976,7 +13035,6 @@ Tonyu.klass.define({
         _this.next=[];
       },
       fiber$main :function* _trc_Scheduler_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -13996,13 +13054,11 @@ Tonyu.klass.define({
         
       },
       addObj :function _trc_Scheduler_addObj(obj,name,args) {
-        "use strict";
         var _this=this;
         
         return _this.newThread(obj,name,args);
       },
       fiber$addObj :function* _trc_Scheduler_f_addObj(_thread,obj,name,args) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -14011,7 +13067,6 @@ Tonyu.klass.define({
         
       },
       newThread :function _trc_Scheduler_newThread(obj,name,args,options) {
-        "use strict";
         var _this=this;
         var th;
         
@@ -14025,7 +13080,6 @@ Tonyu.klass.define({
         return th;
       },
       fiber$newThread :function* _trc_Scheduler_f_newThread(_thread,obj,name,args,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var th;
@@ -14041,7 +13095,6 @@ Tonyu.klass.define({
         
       },
       addToCur :function _trc_Scheduler_addToCur(th) {
-        "use strict";
         var _this=this;
         
         if (th.scheduled) {
@@ -14059,7 +13112,6 @@ Tonyu.klass.define({
         }
       },
       fiber$addToCur :function* _trc_Scheduler_f_addToCur(_thread,th) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -14079,7 +13131,6 @@ Tonyu.klass.define({
         
       },
       addToNext :function _trc_Scheduler_addToNext(th) {
-        "use strict";
         var _this=this;
         
         if (th.scheduled) {
@@ -14089,7 +13140,6 @@ Tonyu.klass.define({
         th.scheduled=_this;
       },
       fiber$addToNext :function* _trc_Scheduler_f_addToNext(_thread,th) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -14101,7 +13151,6 @@ Tonyu.klass.define({
         
       },
       unschedule :function _trc_Scheduler_unschedule(th) {
-        "use strict";
         var _this=this;
         var i;
         
@@ -14122,7 +13171,6 @@ Tonyu.klass.define({
         }
       },
       fiber$unschedule :function* _trc_Scheduler_f_unschedule(_thread,th) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -14145,7 +13193,6 @@ Tonyu.klass.define({
         
       },
       checkTimeout :function _trc_Scheduler_checkTimeout() {
-        "use strict";
         var _this=this;
         var now;
         
@@ -14158,7 +13205,6 @@ Tonyu.klass.define({
         }
       },
       fiber$checkTimeout :function* _trc_Scheduler_f_checkTimeout(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var now;
@@ -14173,7 +13219,6 @@ Tonyu.klass.define({
         
       },
       checkDuplicate :function _trc_Scheduler_checkDuplicate() {
-        "use strict";
         var _this=this;
         var dupc;
         var t;
@@ -14198,7 +13243,6 @@ Tonyu.klass.define({
         }
       },
       fiber$checkDuplicate :function* _trc_Scheduler_f_checkDuplicate(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var dupc;
@@ -14225,7 +13269,6 @@ Tonyu.klass.define({
         
       },
       doTimeStop :function _trc_Scheduler_doTimeStop() {
-        "use strict";
         var _this=this;
         
         _this.next=_this.allThreads;
@@ -14233,7 +13276,6 @@ Tonyu.klass.define({
         return _this.next;
       },
       fiber$doTimeStop :function* _trc_Scheduler_f_doTimeStop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -14243,13 +13285,11 @@ Tonyu.klass.define({
         
       },
       resetLastSteps :function _trc_Scheduler_resetLastSteps() {
-        "use strict";
         var _this=this;
         
         _this.lastSteps=performance.now();
       },
       fiber$resetLastSteps :function* _trc_Scheduler_f_resetLastSteps(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -14257,7 +13297,6 @@ Tonyu.klass.define({
         
       },
       stepsAll :function _trc_Scheduler_stepsAll() {
-        "use strict";
         var _this=this;
         var dupc;
         var t;
@@ -14296,7 +13335,6 @@ Tonyu.klass.define({
         return _this.cur.length;
       },
       fiber$stepsAll :function* _trc_Scheduler_f_stepsAll(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var dupc;
@@ -14337,13 +13375,11 @@ Tonyu.klass.define({
         
       },
       __getter__allThreads :function _trc_Scheduler___getter__allThreads() {
-        "use strict";
         var _this=this;
         
         return _this.cur.concat(_this.next);
       },
       findByThreadGroup :function _trc_Scheduler_findByThreadGroup(o) {
-        "use strict";
         var _this=this;
         
         return _this.allThreads.filter((function anonymous_3200(t) {
@@ -14352,7 +13388,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$findByThreadGroup :function* _trc_Scheduler_f_findByThreadGroup(_thread,o) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -14363,7 +13398,6 @@ Tonyu.klass.define({
         
       },
       __getter__isEmpty :function _trc_Scheduler___getter__isEmpty() {
-        "use strict";
         var _this=this;
         
         return _this.allThreads.length==0;
@@ -14381,19 +13415,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_DialogMod_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_DialogMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       prompt :function _trc_DialogMod_prompt(mesg,val,geom) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -14403,7 +13434,6 @@ Tonyu.klass.define({
         return r;
       },
       fiber$prompt :function* _trc_DialogMod_f_prompt(_thread,mesg,val,geom) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -14415,13 +13445,11 @@ Tonyu.klass.define({
         
       },
       waitInput :function _trc_DialogMod_waitInput(title,mesg,val,geom) {
-        "use strict";
         var _this=this;
         
         return _this.prompt({title: title,body: mesg},val,geom);
       },
       fiber$waitInput :function* _trc_DialogMod_f_waitInput(_thread,title,mesg,val,geom) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -14430,7 +13458,6 @@ Tonyu.klass.define({
         
       },
       promptNumber :function _trc_DialogMod_promptNumber(mesg,val,geom) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -14439,7 +13466,6 @@ Tonyu.klass.define({
         return r-0;
       },
       fiber$promptNumber :function* _trc_DialogMod_f_promptNumber(_thread,mesg,val,geom) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -14450,7 +13476,6 @@ Tonyu.klass.define({
         
       },
       confirm :function _trc_DialogMod_confirm(mesg) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -14460,7 +13485,6 @@ Tonyu.klass.define({
         return r;
       },
       fiber$confirm :function* _trc_DialogMod_f_confirm(_thread,mesg) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -14472,7 +13496,6 @@ Tonyu.klass.define({
         
       },
       alert :function _trc_DialogMod_alert(mesg) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -14482,7 +13505,6 @@ Tonyu.klass.define({
         return r;
       },
       fiber$alert :function* _trc_DialogMod_f_alert(_thread,mesg) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -14507,7 +13529,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_GamePad_main() {
-        "use strict";
         var _this=this;
         
         _this.available=false;
@@ -14518,7 +13539,6 @@ Tonyu.klass.define({
         _this.prevFrameCount=- 1;
       },
       fiber$main :function* _trc_GamePad_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -14531,13 +13551,11 @@ Tonyu.klass.define({
         
       },
       setEnable :function _trc_GamePad_setEnable(e) {
-        "use strict";
         var _this=this;
         
         _this.enable=e;
       },
       fiber$setEnable :function* _trc_GamePad_f_setEnable(_thread,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -14545,7 +13563,6 @@ Tonyu.klass.define({
         
       },
       enableGamePad :function _trc_GamePad_enableGamePad() {
-        "use strict";
         var _this=this;
         
         if (! _this.useGamePad) {
@@ -14555,7 +13572,6 @@ Tonyu.klass.define({
         }
       },
       fiber$enableGamePad :function* _trc_GamePad_f_enableGamePad(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -14567,7 +13583,6 @@ Tonyu.klass.define({
         
       },
       getGamepads :function _trc_GamePad_getGamepads() {
-        "use strict";
         var _this=this;
         var pads;
         
@@ -14577,7 +13592,6 @@ Tonyu.klass.define({
         return pads;
       },
       fiber$getGamepads :function* _trc_GamePad_f_getGamepads(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var pads;
@@ -14589,7 +13603,6 @@ Tonyu.klass.define({
         
       },
       get :function _trc_GamePad_get(no) {
-        "use strict";
         var _this=this;
         
         if (_this.gamepadones[no]==null) {
@@ -14599,7 +13612,6 @@ Tonyu.klass.define({
         return _this.gamepadones[no];
       },
       fiber$get :function* _trc_GamePad_f_get(_thread,no) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -14611,7 +13623,6 @@ Tonyu.klass.define({
         
       },
       padsCount :function _trc_GamePad_padsCount() {
-        "use strict";
         var _this=this;
         var count;
         var i;
@@ -14630,7 +13641,6 @@ Tonyu.klass.define({
         return count;
       },
       fiber$padsCount :function* _trc_GamePad_f_padsCount(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var count;
@@ -14651,7 +13661,6 @@ Tonyu.klass.define({
         
       },
       getPad :function _trc_GamePad_getPad(index) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14664,7 +13673,6 @@ Tonyu.klass.define({
         return gp.pad;
       },
       fiber$getPad :function* _trc_GamePad_f_getPad(_thread,index) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14679,7 +13687,6 @@ Tonyu.klass.define({
         
       },
       getPadId :function _trc_GamePad_getPadId(index) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14692,7 +13699,6 @@ Tonyu.klass.define({
         return gp.pad.id;
       },
       fiber$getPadId :function* _trc_GamePad_f_getPadId(_thread,index) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14707,7 +13713,6 @@ Tonyu.klass.define({
         
       },
       isConnected :function _trc_GamePad_isConnected(index) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14720,7 +13725,6 @@ Tonyu.klass.define({
         return gp.pad.connected;
       },
       fiber$isConnected :function* _trc_GamePad_f_isConnected(_thread,index) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14735,7 +13739,6 @@ Tonyu.klass.define({
         
       },
       getMapping :function _trc_GamePad_getMapping(index) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14748,7 +13751,6 @@ Tonyu.klass.define({
         return gp.pad.mapping;
       },
       fiber$getMapping :function* _trc_GamePad_f_getMapping(_thread,index) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14763,7 +13765,6 @@ Tonyu.klass.define({
         
       },
       getButton :function _trc_GamePad_getButton(index,no) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14776,7 +13777,6 @@ Tonyu.klass.define({
         return gp.status[no];
       },
       fiber$getButton :function* _trc_GamePad_f_getButton(_thread,index,no) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14791,7 +13791,6 @@ Tonyu.klass.define({
         
       },
       getButtonValue :function _trc_GamePad_getButtonValue(index,no) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14804,7 +13803,6 @@ Tonyu.klass.define({
         return gp.pad.buttons[no].value;
       },
       fiber$getButtonValue :function* _trc_GamePad_f_getButtonValue(_thread,index,no) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14819,7 +13817,6 @@ Tonyu.klass.define({
         
       },
       getButtonCount :function _trc_GamePad_getButtonCount(index) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14832,7 +13829,6 @@ Tonyu.klass.define({
         return gp.pad.buttons.length;
       },
       fiber$getButtonCount :function* _trc_GamePad_f_getButtonCount(_thread,index) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14847,7 +13843,6 @@ Tonyu.klass.define({
         
       },
       getAxis :function _trc_GamePad_getAxis(index,no) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14860,7 +13855,6 @@ Tonyu.klass.define({
         return gp.pad.axes[no];
       },
       fiber$getAxis :function* _trc_GamePad_f_getAxis(_thread,index,no) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14875,7 +13869,6 @@ Tonyu.klass.define({
         
       },
       getAxisCount :function _trc_GamePad_getAxisCount(index) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14888,7 +13881,6 @@ Tonyu.klass.define({
         return gp.pad.axes.length;
       },
       fiber$getAxisCount :function* _trc_GamePad_f_getAxisCount(_thread,index) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14903,7 +13895,6 @@ Tonyu.klass.define({
         
       },
       getUp :function _trc_GamePad_getUp(index) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14916,7 +13907,6 @@ Tonyu.klass.define({
         return gp.statusA1U;
       },
       fiber$getUp :function* _trc_GamePad_f_getUp(_thread,index) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14931,7 +13921,6 @@ Tonyu.klass.define({
         
       },
       getDown :function _trc_GamePad_getDown(index) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14944,7 +13933,6 @@ Tonyu.klass.define({
         return gp.statusA1D;
       },
       fiber$getDown :function* _trc_GamePad_f_getDown(_thread,index) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14959,7 +13947,6 @@ Tonyu.klass.define({
         
       },
       getLeft :function _trc_GamePad_getLeft(index) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -14972,7 +13959,6 @@ Tonyu.klass.define({
         return gp.statusA1L;
       },
       fiber$getLeft :function* _trc_GamePad_f_getLeft(_thread,index) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -14987,7 +13973,6 @@ Tonyu.klass.define({
         
       },
       getRight :function _trc_GamePad_getRight(index) {
-        "use strict";
         var _this=this;
         var gp;
         
@@ -15000,7 +13985,6 @@ Tonyu.klass.define({
         return gp.statusA1R;
       },
       fiber$getRight :function* _trc_GamePad_f_getRight(_thread,index) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var gp;
@@ -15015,7 +13999,6 @@ Tonyu.klass.define({
         
       },
       update :function _trc_GamePad_update() {
-        "use strict";
         var _this=this;
         var pads;
         var i;
@@ -15128,7 +14111,6 @@ Tonyu.klass.define({
         _this.prevFrameCount=Tonyu.globals.$frameCount;
       },
       fiber$update :function* _trc_GamePad_f_update(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var pads;
@@ -15256,32 +14238,27 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_GamePadOne_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_GamePadOne_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_GamePadOne_initialize(gamePad,padNo) {
-        "use strict";
         var _this=this;
         
         _this.gamePad=gamePad;
         _this.padNo=padNo;
       },
       getGamePad :function _trc_GamePadOne_getGamePad() {
-        "use strict";
         var _this=this;
         
         return _this.gamePad;
       },
       fiber$getGamePad :function* _trc_GamePadOne_f_getGamePad(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15289,13 +14266,11 @@ Tonyu.klass.define({
         
       },
       getPadNo :function _trc_GamePadOne_getPadNo() {
-        "use strict";
         var _this=this;
         
         return _this.padNo;
       },
       fiber$getPadNo :function* _trc_GamePadOne_f_getPadNo(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15303,13 +14278,11 @@ Tonyu.klass.define({
         
       },
       getPad :function _trc_GamePadOne_getPad() {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.gamePadCount(_this.padNo);
       },
       fiber$getPad :function* _trc_GamePadOne_f_getPad(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15317,13 +14290,11 @@ Tonyu.klass.define({
         
       },
       getPadId :function _trc_GamePadOne_getPadId() {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.getPadId(_this.padNo);
       },
       fiber$getPadId :function* _trc_GamePadOne_f_getPadId(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15331,13 +14302,11 @@ Tonyu.klass.define({
         
       },
       isConnected :function _trc_GamePadOne_isConnected() {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.isConnected(_this.padNo);
       },
       fiber$isConnected :function* _trc_GamePadOne_f_isConnected(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15345,13 +14314,11 @@ Tonyu.klass.define({
         
       },
       getMapping :function _trc_GamePadOne_getMapping() {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.getMapping(_this.padNo);
       },
       fiber$getMapping :function* _trc_GamePadOne_f_getMapping(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15359,13 +14326,11 @@ Tonyu.klass.define({
         
       },
       getButton :function _trc_GamePadOne_getButton(btnNo) {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.getButton(_this.padNo,btnNo);
       },
       fiber$getButton :function* _trc_GamePadOne_f_getButton(_thread,btnNo) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15373,13 +14338,11 @@ Tonyu.klass.define({
         
       },
       getButtonValue :function _trc_GamePadOne_getButtonValue(btnNo) {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.getButtonValue(_this.padNo,btnNo);
       },
       fiber$getButtonValue :function* _trc_GamePadOne_f_getButtonValue(_thread,btnNo) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15387,13 +14350,11 @@ Tonyu.klass.define({
         
       },
       getButtonCount :function _trc_GamePadOne_getButtonCount() {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.getButtonCount(_this.padNo);
       },
       fiber$getButtonCount :function* _trc_GamePadOne_f_getButtonCount(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15401,13 +14362,11 @@ Tonyu.klass.define({
         
       },
       getAxis :function _trc_GamePadOne_getAxis(btnNo) {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.getAxis(_this.padNo,btnNo);
       },
       fiber$getAxis :function* _trc_GamePadOne_f_getAxis(_thread,btnNo) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15415,13 +14374,11 @@ Tonyu.klass.define({
         
       },
       getAxisCount :function _trc_GamePadOne_getAxisCount() {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.getAxisCount(_this.padNo);
       },
       fiber$getAxisCount :function* _trc_GamePadOne_f_getAxisCount(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15429,13 +14386,11 @@ Tonyu.klass.define({
         
       },
       getUp :function _trc_GamePadOne_getUp() {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.getUp(_this.padNo);
       },
       fiber$getUp :function* _trc_GamePadOne_f_getUp(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15443,13 +14398,11 @@ Tonyu.klass.define({
         
       },
       getDown :function _trc_GamePadOne_getDown() {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.getDown(_this.padNo);
       },
       fiber$getDown :function* _trc_GamePadOne_f_getDown(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15457,13 +14410,11 @@ Tonyu.klass.define({
         
       },
       getLeft :function _trc_GamePadOne_getLeft() {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.getLeft(_this.padNo);
       },
       fiber$getLeft :function* _trc_GamePadOne_f_getLeft(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15471,13 +14422,11 @@ Tonyu.klass.define({
         
       },
       getRight :function _trc_GamePadOne_getRight() {
-        "use strict";
         var _this=this;
         
         return _this.gamePad.getRight(_this.padNo);
       },
       fiber$getRight :function* _trc_GamePadOne_f_getRight(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15498,7 +14447,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ExtLink_main() {
-        "use strict";
         var _this=this;
         
         _this.exec = (WebSite.isNW?require('child_process').exec:(function anonymous_110() {
@@ -15507,7 +14455,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_ExtLink_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15518,7 +14465,6 @@ Tonyu.klass.define({
         
       },
       getOpt :function _trc_ExtLink_getOpt(options) {
-        "use strict";
         var _this=this;
         var p;
         var afterClick;
@@ -15552,7 +14498,6 @@ Tonyu.klass.define({
         return options;
       },
       fiber$getOpt :function* _trc_ExtLink_f_getOpt(_thread,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var p;
@@ -15588,7 +14533,6 @@ Tonyu.klass.define({
         
       },
       ext :function _trc_ExtLink_ext(cmd,href,afterClick) {
-        "use strict";
         var _this=this;
         
         return (function anonymous_896() {
@@ -15600,7 +14544,6 @@ Tonyu.klass.define({
         });
       },
       fiber$ext :function* _trc_ExtLink_f_ext(_thread,cmd,href,afterClick) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15627,14 +14570,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_JQExpr_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_JQExpr_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15643,13 +14584,11 @@ Tonyu.klass.define({
         
       },
       isArray :function _trc_JQExpr_isArray(e) {
-        "use strict";
         var _this=this;
         
         return e&&typeof  e.splice==="function";
       },
       fiber$isArray :function* _trc_JQExpr_f_isArray(_thread,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15657,13 +14596,11 @@ Tonyu.klass.define({
         
       },
       isPlainObj :function _trc_JQExpr_isPlainObj(e) {
-        "use strict";
         var _this=this;
         
         return e&&! _this.isArray(e)&&typeof  e==="object";
       },
       fiber$isPlainObj :function* _trc_JQExpr_f_isPlainObj(_thread,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15671,7 +14608,6 @@ Tonyu.klass.define({
         
       },
       genid :function _trc_JQExpr_genid() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$dom_idSeq=Tonyu.globals.$dom_idSeq||0;
@@ -15679,7 +14615,6 @@ Tonyu.klass.define({
         return "JQExpr"+Tonyu.globals.$dom_idSeq;
       },
       fiber$genid :function* _trc_JQExpr_f_genid(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15689,13 +14624,11 @@ Tonyu.klass.define({
         
       },
       isPrimitive :function _trc_JQExpr_isPrimitive(v) {
-        "use strict";
         var _this=this;
         
         return ({number: 1,string: 1,boolean: 1})[typeof  v];
       },
       fiber$isPrimitive :function* _trc_JQExpr_f_isPrimitive(_thread,v) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15703,13 +14636,11 @@ Tonyu.klass.define({
         
       },
       extLink :function _trc_JQExpr_extLink() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$JQEX_extLink||(Tonyu.globals.$JQEX_extLink=new Tonyu.classes.kernel.ExtLink);
       },
       fiber$extLink :function* _trc_JQExpr_f_extLink(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15717,7 +14648,6 @@ Tonyu.klass.define({
         
       },
       add2 :function _trc_JQExpr_add2(parentID,expr) {
-        "use strict";
         var _this=this;
         var esc;
         var tagname;
@@ -15820,7 +14750,6 @@ Tonyu.klass.define({
         return id;
       },
       fiber$add2 :function* _trc_JQExpr_f_add2(_thread,parentID,expr) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var esc;
@@ -15938,14 +14867,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_KeyDownHandler_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_KeyDownHandler_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -15954,7 +14881,6 @@ Tonyu.klass.define({
         
       },
       createEvent :function _trc_KeyDownHandler_createEvent(raw) {
-        "use strict";
         var _this=this;
         var e;
         
@@ -15983,7 +14909,6 @@ Tonyu.klass.define({
         return e;
       },
       fiber$createEvent :function* _trc_KeyDownHandler_f_createEvent(_thread,raw) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var e;
@@ -16014,7 +14939,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_KeyDownHandler_initialize() {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, []);
@@ -16062,7 +14986,6 @@ Tonyu.klass.define({
         }));
       },
       newListener :function _trc_KeyDownHandler_newListener(keyName,f) {
-        "use strict";
         var _this=this;
         var keyCode;
         var a;
@@ -16101,7 +15024,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Keys_main() {
-        "use strict";
         var _this=this;
         
         _this.stats={};
@@ -16163,7 +15085,6 @@ Tonyu.klass.define({
         }
       },
       fiber$main :function* _trc_Keys_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -16227,7 +15148,6 @@ Tonyu.klass.define({
         
       },
       getkey :function _trc_Keys_getkey(code) {
-        "use strict";
         var _this=this;
         
         if (typeof  code=="string") {
@@ -16246,7 +15166,6 @@ Tonyu.klass.define({
         return _this.stats[code];
       },
       fiber$getkey :function* _trc_Keys_f_getkey(_thread,code) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -16267,7 +15186,6 @@ Tonyu.klass.define({
         
       },
       update :function _trc_Keys_update() {
-        "use strict";
         var _this=this;
         var i;
         
@@ -16288,7 +15206,6 @@ Tonyu.klass.define({
         }
       },
       fiber$update :function* _trc_Keys_f_update(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -16311,7 +15228,6 @@ Tonyu.klass.define({
         
       },
       keydown :function _trc_Keys_keydown(e) {
-        "use strict";
         var _this=this;
         var s;
         
@@ -16331,7 +15247,6 @@ Tonyu.klass.define({
         Tonyu.globals.$InputDevice.handleListeners();
       },
       fiber$keydown :function* _trc_Keys_f_keydown(_thread,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var s;
@@ -16353,7 +15268,6 @@ Tonyu.klass.define({
         
       },
       keyup :function _trc_Keys_keyup(e) {
-        "use strict";
         var _this=this;
         
         if (_this.preventDefaults[e.keyCode+""]&&e.preventDefault) {
@@ -16367,7 +15281,6 @@ Tonyu.klass.define({
         Tonyu.globals.$InputDevice.handleListeners();
       },
       fiber$keyup :function* _trc_Keys_f_keyup(_thread,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -16396,7 +15309,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_TouchFinger_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -16405,7 +15317,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_TouchFinger_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -16416,7 +15327,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_TouchFinger_initialize(layer,screen,index) {
-        "use strict";
         var _this=this;
         
         _this.reset();
@@ -16427,7 +15337,6 @@ Tonyu.klass.define({
         _this.index=index;
       },
       reset :function _trc_TouchFinger_reset() {
-        "use strict";
         var _this=this;
         
         _this.identifier=- 1;
@@ -16436,7 +15345,6 @@ Tonyu.klass.define({
         _this.ended=false;
       },
       fiber$reset :function* _trc_TouchFinger_f_reset(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -16447,13 +15355,11 @@ Tonyu.klass.define({
         
       },
       __getter__layer :function _trc_TouchFinger___getter__layer() {
-        "use strict";
         var _this=this;
         
         return _this._layer;
       },
       __setter__layer :function _trc_TouchFinger___setter__layer(toLayer) {
-        "use strict";
         var _this=this;
         var p;
         
@@ -16476,7 +15382,6 @@ Tonyu.klass.define({
         _this.vx=_this.vy=0;
       },
       update :function _trc_TouchFinger_update() {
-        "use strict";
         var _this=this;
         
         if (_this.touched>0) {
@@ -16502,7 +15407,6 @@ Tonyu.klass.define({
         }
       },
       fiber$update :function* _trc_TouchFinger_f_update(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -16530,13 +15434,11 @@ Tonyu.klass.define({
         
       },
       show :function _trc_TouchFinger_show() {
-        "use strict";
         var _this=this;
         
         return "["+_this.oid+":"+_this.floor(_this.x*100)/100+","+_this.floor(_this.px*100)/100+"]";
       },
       fiber$show :function* _trc_TouchFinger_f_show(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -16544,7 +15446,6 @@ Tonyu.klass.define({
         
       },
       doStart :function _trc_TouchFinger_doStart(id,point) {
-        "use strict";
         var _this=this;
         
         _this.identifier=id;
@@ -16560,7 +15461,6 @@ Tonyu.klass.define({
         }
       },
       fiber$doStart :function* _trc_TouchFinger_f_doStart(_thread,id,point) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -16578,7 +15478,6 @@ Tonyu.klass.define({
         
       },
       doMove :function _trc_TouchFinger_doMove(point) {
-        "use strict";
         var _this=this;
         var p;
         var px;
@@ -16601,7 +15500,6 @@ Tonyu.klass.define({
         _this.fireEvent("move",e);
       },
       fiber$doMove :function* _trc_TouchFinger_f_doMove(_thread,point) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var p;
@@ -16626,7 +15524,6 @@ Tonyu.klass.define({
         
       },
       doEnd :function _trc_TouchFinger_doEnd() {
-        "use strict";
         var _this=this;
         
         _this.vx=_this.vy=_this.touched=0;
@@ -16639,7 +15536,6 @@ Tonyu.klass.define({
         _this.fireEvent("end",{finger: _this,x: _this.x,y: _this.y});
       },
       fiber$doEnd :function* _trc_TouchFinger_f_doEnd(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -16667,19 +15563,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_TouchFingers_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_TouchFingers_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_TouchFingers_initialize(dev) {
-        "use strict";
         var _this=this;
         var i;
         
@@ -16720,7 +15613,6 @@ Tonyu.klass.define({
         }
       },
       handleStart :function _trc_TouchFingers_handleStart(e) {
-        "use strict";
         var _this=this;
         var p;
         var ts;
@@ -16769,7 +15661,6 @@ Tonyu.klass.define({
         _this.inputDevice.handleListeners("touchstart",{byMouse: e.byMouse,finger: dst,index: dst.bound&&dst.bound.index});
       },
       fiber$handleStart :function* _trc_TouchFingers_f_handleStart(_thread,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var p;
@@ -16820,7 +15711,6 @@ Tonyu.klass.define({
         
       },
       handleMove :function _trc_TouchFingers_handleMove(e) {
-        "use strict";
         var _this=this;
         var p;
         var ts;
@@ -16857,7 +15747,6 @@ Tonyu.klass.define({
         Tonyu.globals.$mouseY=_this.fingerArray[0].y;
       },
       fiber$handleMove :function* _trc_TouchFingers_f_handleMove(_thread,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var p;
@@ -16896,7 +15785,6 @@ Tonyu.klass.define({
         
       },
       handleEnd :function _trc_TouchFingers_handleEnd(e) {
-        "use strict";
         var _this=this;
         var ts;
         var i;
@@ -16926,7 +15814,6 @@ Tonyu.klass.define({
         }
       },
       fiber$handleEnd :function* _trc_TouchFingers_f_handleEnd(_thread,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ts;
@@ -16958,7 +15845,6 @@ Tonyu.klass.define({
         
       },
       unsetEmu :function _trc_TouchFingers_unsetEmu(ID_MOUSE) {
-        "use strict";
         var _this=this;
         var t;
         var i;
@@ -16979,7 +15865,6 @@ Tonyu.klass.define({
         }
       },
       fiber$unsetEmu :function* _trc_TouchFingers_f_unsetEmu(_thread,ID_MOUSE) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var t;
@@ -17002,7 +15887,6 @@ Tonyu.klass.define({
         
       },
       updateFingers :function _trc_TouchFingers_updateFingers() {
-        "use strict";
         var _this=this;
         var t;
         var i;
@@ -17017,7 +15901,6 @@ Tonyu.klass.define({
         }
       },
       fiber$updateFingers :function* _trc_TouchFingers_f_updateFingers(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var t;
@@ -17034,7 +15917,6 @@ Tonyu.klass.define({
         
       },
       reset :function _trc_TouchFingers_reset() {
-        "use strict";
         var _this=this;
         var t;
         
@@ -17044,7 +15926,6 @@ Tonyu.klass.define({
         }
       },
       fiber$reset :function* _trc_TouchFingers_f_reset(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var t;
@@ -17068,14 +15949,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_LifeCycleMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_LifeCycleMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -17084,7 +15963,6 @@ Tonyu.klass.define({
         
       },
       hide :function _trc_LifeCycleMod_hide() {
-        "use strict";
         var _this=this;
         
         if (Tonyu.is(_this.layer,Tonyu.classes.kernel.SpriteGroup)) {
@@ -17101,7 +15979,6 @@ Tonyu.klass.define({
         }
       },
       show :function _trc_LifeCycleMod_show(x,y,p) {
-        "use strict";
         var _this=this;
         
         _this.layer.add(_this);
@@ -17116,7 +15993,6 @@ Tonyu.klass.define({
         }
       },
       die :function _trc_LifeCycleMod_die() {
-        "use strict";
         var _this=this;
         
         _this.killThreadGroup();
@@ -17133,7 +16009,6 @@ Tonyu.klass.define({
         }
       },
       __setter__lifeKeeper :function _trc_LifeCycleMod___setter__lifeKeeper(v) {
-        "use strict";
         var _this=this;
         
         _this._lifeKeeper=v;
@@ -17143,19 +16018,16 @@ Tonyu.klass.define({
         }
       },
       __getter__lifeKeeper :function _trc_LifeCycleMod___getter__lifeKeeper() {
-        "use strict";
         var _this=this;
         
         return _this._lifeKeeper;
       },
       isDead :function _trc_LifeCycleMod_isDead() {
-        "use strict";
         var _this=this;
         
         return _this._isDead;
       },
       __setter__useObjectPool :function _trc_LifeCycleMod___setter__useObjectPool(value) {
-        "use strict";
         var _this=this;
         
         if (value) {
@@ -17164,7 +16036,6 @@ Tonyu.klass.define({
         }
       },
       appear :function _trc_LifeCycleMod_appear(o,param) {
-        "use strict";
         var _this=this;
         var p;
         var k;
@@ -17197,7 +16068,6 @@ Tonyu.klass.define({
         }
       },
       fiber$appear :function* _trc_LifeCycleMod_f_appear(_thread,o,param) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var p;
@@ -17232,7 +16102,6 @@ Tonyu.klass.define({
         
       },
       getSpriteGroup :function _trc_LifeCycleMod_getSpriteGroup() {
-        "use strict";
         var _this=this;
         
         if (Tonyu.is(_this.__addedToSprites,Tonyu.classes.kernel.SpriteGroup)) {
@@ -17246,7 +16115,6 @@ Tonyu.klass.define({
         return null;
       },
       fiber$getSpriteGroup :function* _trc_LifeCycleMod_f_getSpriteGroup(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -17262,7 +16130,6 @@ Tonyu.klass.define({
         
       },
       addToLayer :function _trc_LifeCycleMod_addToLayer() {
-        "use strict";
         var _this=this;
         
         if (_this.layer&&typeof  _this.layer.addSubsprite==="function") {
@@ -17285,7 +16152,6 @@ Tonyu.klass.define({
         _this.onAppear();
       },
       fiber$addToLayer :function* _trc_LifeCycleMod_f_addToLayer(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -17310,7 +16176,6 @@ Tonyu.klass.define({
         
       },
       changeLayer :function _trc_LifeCycleMod_changeLayer(l) {
-        "use strict";
         var _this=this;
         var curLayer;
         
@@ -17327,7 +16192,6 @@ Tonyu.klass.define({
         _this.layer=l;
       },
       fiber$changeLayer :function* _trc_LifeCycleMod_f_changeLayer(_thread,l) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var curLayer;
@@ -17346,12 +16210,10 @@ Tonyu.klass.define({
         
       },
       onAppear :function _trc_LifeCycleMod_onAppear() {
-        "use strict";
         var _this=this;
         
       },
       fiber$onAppear :function* _trc_LifeCycleMod_f_onAppear(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -17371,13 +16233,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Matrix_main() {
-        "use strict";
         var _this=this;
         
         
       },
       fiber$main :function* _trc_Matrix_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -17385,13 +16245,11 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Matrix_initialize(d) {
-        "use strict";
         var _this=this;
         
         _this.data={}||d;
       },
       fromArray :function _trc_Matrix_fromArray(array) {
-        "use strict";
         var _this=this;
         var i;
         var row;
@@ -17407,7 +16265,6 @@ Tonyu.klass.define({
         }
       },
       fiber$fromArray :function* _trc_Matrix_f_fromArray(_thread,array) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -17425,7 +16282,6 @@ Tonyu.klass.define({
         
       },
       toArray :function _trc_Matrix_toArray() {
-        "use strict";
         var _this=this;
         var res;
         var i;
@@ -17451,7 +16307,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$toArray :function* _trc_Matrix_f_toArray(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -17479,7 +16334,6 @@ Tonyu.klass.define({
         
       },
       load :function _trc_Matrix_load(csvFile) {
-        "use strict";
         var _this=this;
         var f;
         var x;
@@ -17510,7 +16364,6 @@ Tonyu.klass.define({
         }
       },
       fiber$load :function* _trc_Matrix_f_load(_thread,csvFile) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var f;
@@ -17543,7 +16396,6 @@ Tonyu.klass.define({
         
       },
       cross :function _trc_Matrix_cross(col,row) {
-        "use strict";
         var _this=this;
         var colr;
         var rowr;
@@ -17555,7 +16407,6 @@ Tonyu.klass.define({
         return _this.get(colr.x,rowr.y);
       },
       fiber$cross :function* _trc_Matrix_f_cross(_thread,col,row) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var colr;
@@ -17570,7 +16421,6 @@ Tonyu.klass.define({
         
       },
       search :function _trc_Matrix_search(cell,options) {
-        "use strict";
         var _this=this;
         var k;
         var v;
@@ -17584,7 +16434,6 @@ Tonyu.klass.define({
         }
       },
       fiber$search :function* _trc_Matrix_f_search(_thread,cell,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var k;
@@ -17601,7 +16450,6 @@ Tonyu.klass.define({
         
       },
       find :function _trc_Matrix_find() {
-        "use strict";
         var _this=this;
         var r;
         
@@ -17615,7 +16463,6 @@ Tonyu.klass.define({
         return r;
       },
       fiber$find :function* _trc_Matrix_f_find(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var r;
@@ -17631,7 +16478,6 @@ Tonyu.klass.define({
         
       },
       clone :function _trc_Matrix_clone() {
-        "use strict";
         var _this=this;
         var nm;
         var x;
@@ -17647,7 +16493,6 @@ Tonyu.klass.define({
         return nm;
       },
       fiber$clone :function* _trc_Matrix_f_clone(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var nm;
@@ -17665,7 +16510,6 @@ Tonyu.klass.define({
         
       },
       crop :function _trc_Matrix_crop() {
-        "use strict";
         var _this=this;
         var a;
         var o;
@@ -17711,7 +16555,6 @@ Tonyu.klass.define({
         return r;
       },
       fiber$crop :function* _trc_Matrix_f_crop(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var a;
@@ -17759,7 +16602,6 @@ Tonyu.klass.define({
         
       },
       rev :function _trc_Matrix_rev(line) {
-        "use strict";
         var _this=this;
         var res;
         var e;
@@ -17773,7 +16615,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$rev :function* _trc_Matrix_f_rev(_thread,line) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -17789,13 +16630,11 @@ Tonyu.klass.define({
         
       },
       keysIterator :function _trc_Matrix_keysIterator() {
-        "use strict";
         var _this=this;
         
         return {tonyuIterator: Tonyu.bindFunc(_this,_this.tonyuIteratorKeys)};
       },
       fiber$keysIterator :function* _trc_Matrix_f_keysIterator(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -17803,13 +16642,11 @@ Tonyu.klass.define({
         
       },
       rectIterator :function _trc_Matrix_rectIterator() {
-        "use strict";
         var _this=this;
         
         return {tonyuIterator: Tonyu.bindFunc(_this,_this.tonyuIteratorRect)};
       },
       fiber$rectIterator :function* _trc_Matrix_f_rectIterator(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -17817,7 +16654,6 @@ Tonyu.klass.define({
         
       },
       tonyuIteratorKeys :function _trc_Matrix_tonyuIteratorKeys(arity) {
-        "use strict";
         var _this=this;
         var res;
         var k;
@@ -17857,7 +16693,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$tonyuIteratorKeys :function* _trc_Matrix_f_tonyuIteratorKeys(_thread,arity) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -17899,7 +16734,6 @@ Tonyu.klass.define({
         
       },
       tonyuIterator :function _trc_Matrix_tonyuIterator(arity) {
-        "use strict";
         var _this=this;
         
         if (_this.iterateMode==="keys") {
@@ -17908,7 +16742,6 @@ Tonyu.klass.define({
         return _this.tonyuIteratorRect(arity);
       },
       fiber$tonyuIterator :function* _trc_Matrix_f_tonyuIterator(_thread,arity) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -17921,7 +16754,6 @@ Tonyu.klass.define({
         
       },
       tonyuIteratorRect :function _trc_Matrix_tonyuIteratorRect(arity) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -17963,7 +16795,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$tonyuIteratorRect :function* _trc_Matrix_f_tonyuIteratorRect(_thread,arity) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -18007,7 +16838,6 @@ Tonyu.klass.define({
         
       },
       unkey :function _trc_Matrix_unkey(key) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -18016,7 +16846,6 @@ Tonyu.klass.define({
         return {x: r[0]-0,y: r[1]-0};
       },
       fiber$unkey :function* _trc_Matrix_f_unkey(_thread,key) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -18027,7 +16856,6 @@ Tonyu.klass.define({
         
       },
       key :function _trc_Matrix_key(x,y,updateRange) {
-        "use strict";
         var _this=this;
         
         x=_this.floor(x)||0;
@@ -18050,7 +16878,6 @@ Tonyu.klass.define({
         return x+","+y;
       },
       fiber$key :function* _trc_Matrix_f_key(_thread,x,y,updateRange) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -18075,19 +16902,16 @@ Tonyu.klass.define({
         
       },
       __getter__rows :function _trc_Matrix___getter__rows() {
-        "use strict";
         var _this=this;
         
         return _this.xmax-_this.xmin+1;
       },
       __getter__cols :function _trc_Matrix___getter__cols() {
-        "use strict";
         var _this=this;
         
         return _this.ymax-_this.ymin+1;
       },
       get :function _trc_Matrix_get(x,y) {
-        "use strict";
         var _this=this;
         var res;
         var e;
@@ -18108,7 +16932,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$get :function* _trc_Matrix_f_get(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -18131,13 +16954,11 @@ Tonyu.klass.define({
         
       },
       exists :function _trc_Matrix_exists(x,y) {
-        "use strict";
         var _this=this;
         
         return _this.data[_this.key(x,y)]!==undefined;
       },
       fiber$exists :function* _trc_Matrix_f_exists(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -18145,7 +16966,6 @@ Tonyu.klass.define({
         
       },
       set :function _trc_Matrix_set(x,y,v) {
-        "use strict";
         var _this=this;
         var k;
         
@@ -18169,7 +16989,6 @@ Tonyu.klass.define({
         }
       },
       fiber$set :function* _trc_Matrix_f_set(_thread,x,y,v) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var k;
@@ -18195,7 +17014,6 @@ Tonyu.klass.define({
         
       },
       neighbors :function _trc_Matrix_neighbors(x,y,options) {
-        "use strict";
         var _this=this;
         var dirs;
         var res;
@@ -18241,7 +17059,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$neighbors :function* _trc_Matrix_f_neighbors(_thread,x,y,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var dirs;
@@ -18289,7 +17106,6 @@ Tonyu.klass.define({
         
       },
       fill :function _trc_Matrix_fill(left,top,cols,rows,data) {
-        "use strict";
         var _this=this;
         var i;
         var j;
@@ -18320,7 +17136,6 @@ Tonyu.klass.define({
         }
       },
       fiber$fill :function* _trc_Matrix_f_fill(_thread,left,top,cols,rows,data) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -18353,7 +17168,6 @@ Tonyu.klass.define({
         
       },
       pack :function _trc_Matrix_pack() {
-        "use strict";
         var _this=this;
         var t;
         var k;
@@ -18395,7 +17209,6 @@ Tonyu.klass.define({
         }
       },
       fiber$pack :function* _trc_Matrix_f_pack(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var t;
@@ -18451,14 +17264,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_QueryMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_QueryMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -18467,13 +17278,11 @@ Tonyu.klass.define({
         
       },
       hitTo :function _trc_QueryMod_hitTo(t) {
-        "use strict";
         var _this=this;
         
         return _this.crashTo(t);
       },
       all :function _trc_QueryMod_all(c) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -18496,7 +17305,6 @@ Tonyu.klass.define({
         return res;
       },
       allCrash :function _trc_QueryMod_allCrash(t) {
-        "use strict";
         var _this=this;
         var res;
         var sp;
@@ -18523,14 +17331,12 @@ Tonyu.klass.define({
         return res;
       },
       getCrashShape :function _trc_QueryMod_getCrashShape() {
-        "use strict";
         var _this=this;
         
         throw new Error("getCrashShape::abstract");
         
       },
       fiber$getCrashShape :function* _trc_QueryMod_f_getCrashShape(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -18539,7 +17345,6 @@ Tonyu.klass.define({
         
       },
       crashTo :function _trc_QueryMod_crashTo(t) {
-        "use strict";
         var _this=this;
         
         if (! t) {
@@ -18552,7 +17357,6 @@ Tonyu.klass.define({
         return _this.crashTo1(t);
       },
       crashTo1 :function _trc_QueryMod_crashTo1(t) {
-        "use strict";
         var _this=this;
         var t1;
         var t2;
@@ -18567,7 +17371,6 @@ Tonyu.klass.define({
         return t1&&t1.intersects(t2);
       },
       crashToChecker :function _trc_QueryMod_crashToChecker(d,f) {
-        "use strict";
         var _this=this;
         var obj;
         
@@ -18589,7 +17392,6 @@ Tonyu.klass.define({
         }
       },
       fiber$crashToChecker :function* _trc_QueryMod_f_crashToChecker(_thread,d,f) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var obj;
@@ -18613,7 +17415,6 @@ Tonyu.klass.define({
         
       },
       allWithin :function _trc_QueryMod_allWithin(t,distance) {
-        "use strict";
         var _this=this;
         var res;
         var sp;
@@ -18636,7 +17437,6 @@ Tonyu.klass.define({
         return res;
       },
       within :function _trc_QueryMod_within(t,distance) {
-        "use strict";
         var _this=this;
         
         if (! t) {
@@ -18649,7 +17449,6 @@ Tonyu.klass.define({
         return _this.within1(t,distance);
       },
       within1 :function _trc_QueryMod_within1(t,distance) {
-        "use strict";
         var _this=this;
         
         if (! t||t._isDead) {
@@ -18662,7 +17461,6 @@ Tonyu.klass.define({
         return false;
       },
       withinChecker :function _trc_QueryMod_withinChecker(d,r,f) {
-        "use strict";
         var _this=this;
         var obj;
         
@@ -18684,7 +17482,6 @@ Tonyu.klass.define({
         }
       },
       fiber$withinChecker :function* _trc_QueryMod_f_withinChecker(_thread,d,r,f) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var obj;
@@ -18708,7 +17505,6 @@ Tonyu.klass.define({
         
       },
       watchHit :function _trc_QueryMod_watchHit(typeA,typeB,onHit) {
-        "use strict";
         var _this=this;
         
         _this.getSpriteGroup().watchHit(typeA,typeB,(function anonymous_2942(a,b) {
@@ -18717,7 +17513,6 @@ Tonyu.klass.define({
         }));
       },
       screenOutChecker :function _trc_QueryMod_screenOutChecker(d,f) {
-        "use strict";
         var _this=this;
         
         while (true) {
@@ -18745,7 +17540,6 @@ Tonyu.klass.define({
         }
       },
       fiber$screenOutChecker :function* _trc_QueryMod_f_screenOutChecker(_thread,d,f) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -18775,14 +17569,12 @@ Tonyu.klass.define({
         
       },
       screenOut :function _trc_QueryMod_screenOut() {
-        "use strict";
         var _this=this;
         
         throw new Error("screenOut::abstract");
         
       },
       fiber$screenOut :function* _trc_QueryMod_f_screenOut(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -18791,7 +17583,6 @@ Tonyu.klass.define({
         
       },
       findEventHandlerClass :function _trc_QueryMod_findEventHandlerClass(type) {
-        "use strict";
         var _this=this;
         var eventTypes;
         
@@ -18815,13 +17606,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_QueryMod2D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_QueryMod2D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -18829,13 +17618,11 @@ Tonyu.klass.define({
         
       },
       getCrashShape :function _trc_QueryMod2D_getCrashShape() {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.RectShape(_this.getCrashRect());
       },
       fiber$getCrashShape :function* _trc_QueryMod2D_f_getCrashShape(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -18843,7 +17630,6 @@ Tonyu.klass.define({
         
       },
       dist :function _trc_QueryMod2D_dist(dx,dy,dz) {
-        "use strict";
         var _this=this;
         var t;
         
@@ -18858,7 +17644,6 @@ Tonyu.klass.define({
         return __superClass.prototype.dist.apply( _this, [dx,dy,dz]);
       },
       getCrashRect :function _trc_QueryMod2D_getCrashRect() {
-        "use strict";
         var _this=this;
         var scx;
         var scy;
@@ -18892,13 +17677,11 @@ Tonyu.klass.define({
         return typeof  _this.x=="number"&&typeof  _this.y=="number"&&typeof  actWidth=="number"&&typeof  actHeight=="number"&&{x: _this.x,y: _this.y,width: Math.abs(actWidth),height: Math.abs(actHeight)};
       },
       getTouchShape :function _trc_QueryMod2D_getTouchShape() {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.RectShape(_this.getTouchRect());
       },
       fiber$getTouchShape :function* _trc_QueryMod2D_f_getTouchShape(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -18906,13 +17689,11 @@ Tonyu.klass.define({
         
       },
       getTouchRect :function _trc_QueryMod2D_getTouchRect(scale) {
-        "use strict";
         var _this=this;
         
         return _this.getCrashRect();
       },
       fiber$getTouchRect :function* _trc_QueryMod2D_f_getTouchRect(_thread,scale) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -18920,7 +17701,6 @@ Tonyu.klass.define({
         
       },
       screenOut :function _trc_QueryMod2D_screenOut(a) {
-        "use strict";
         var _this=this;
         var cp;
         
@@ -18932,7 +17712,6 @@ Tonyu.klass.define({
         return _this.abs(_this.clamped(cp.x,- a,Tonyu.globals.$screenWidth+a))+_this.abs(_this.clamped(cp.y,- a,Tonyu.globals.$screenHeight+a));
       },
       fiber$screenOut :function* _trc_QueryMod2D_f_screenOut(_thread,a) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var cp;
@@ -18958,13 +17737,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_QueryMod3D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_QueryMod3D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -18972,7 +17749,6 @@ Tonyu.klass.define({
         
       },
       dist :function _trc_QueryMod3D_dist(dx,dy,dz) {
-        "use strict";
         var _this=this;
         var t;
         
@@ -18987,7 +17763,6 @@ Tonyu.klass.define({
         return __superClass.prototype.dist.apply( _this, [dx,dy,dz]);
       },
       getCrashShape :function _trc_QueryMod3D_getCrashShape() {
-        "use strict";
         var _this=this;
         var actWidth;
         var actHeight;
@@ -19004,7 +17779,6 @@ Tonyu.klass.define({
         return typeof  _this.x=="number"&&typeof  _this.y=="number"&&typeof  actWidth=="number"&&typeof  actHeight=="number"&&new Tonyu.classes.kernel.CubeShape({x: _this.x,y: _this.y,z: _this.z,width: Math.abs(actWidth),height: Math.abs(actHeight),depth: (Math.abs(actWidth)+Math.abs(actHeight))/2});
       },
       fiber$getCrashShape :function* _trc_QueryMod3D_f_getCrashShape(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var actWidth;
@@ -19023,7 +17797,6 @@ Tonyu.klass.define({
         
       },
       screenOut :function _trc_QueryMod3D_screenOut(a) {
-        "use strict";
         var _this=this;
         var cp;
         
@@ -19036,7 +17809,6 @@ Tonyu.klass.define({
         return _this.abs(_this.clamped(cp.x,- a,Tonyu.globals.$screenWidth+a))+_this.abs(_this.clamped(cp.y,- a,Tonyu.globals.$screenHeight+a));
       },
       fiber$screenOut :function* _trc_QueryMod3D_f_screenOut(_thread,a) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var cp;
@@ -19064,25 +17836,21 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Random_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_Random_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_Random_initialize(seed) {
-        "use strict";
         var _this=this;
         
         _this.setSeed(seed);
       },
       setSeed :function _trc_Random_setSeed(seed) {
-        "use strict";
         var _this=this;
         
         _this.x=123456789;
@@ -19093,7 +17861,6 @@ Tonyu.klass.define({
         _this.w=seed||new Date().getTime();
       },
       next :function _trc_Random_next() {
-        "use strict";
         var _this=this;
         var t;
         
@@ -19105,7 +17872,6 @@ Tonyu.klass.define({
         return _this.w=(_this.w^(_this.w>>>19))^(t^(t>>>8));
       },
       nextInt :function _trc_Random_nextInt(min,max) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -19114,7 +17880,6 @@ Tonyu.klass.define({
         return res;
       },
       next01 :function _trc_Random_next01() {
-        "use strict";
         var _this=this;
         
         return (_this.next()-_this.MIN)/(_this.MAX-_this.MIN);
@@ -19133,19 +17898,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_CrashToHandler_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_CrashToHandler_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       addListener :function _trc_CrashToHandler_addListener(d,f) {
-        "use strict";
         var _this=this;
         var retThread;
         
@@ -19157,7 +17919,6 @@ Tonyu.klass.define({
         })};
       },
       initialize :function _trc_CrashToHandler_initialize(param) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [param]);
@@ -19177,31 +17938,26 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ComputedVec3_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_ComputedVec3_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_ComputedVec3_initialize(func) {
-        "use strict";
         var _this=this;
         
         _this.computer=func;
       },
       requestCompute :function _trc_ComputedVec3_requestCompute() {
-        "use strict";
         var _this=this;
         
         _this.computed=null;
       },
       fiber$requestCompute :function* _trc_ComputedVec3_f_requestCompute(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -19209,7 +17965,6 @@ Tonyu.klass.define({
         
       },
       compute :function _trc_ComputedVec3_compute() {
-        "use strict";
         var _this=this;
         var c;
         
@@ -19221,7 +17976,6 @@ Tonyu.klass.define({
         return _this.computed||c;
       },
       fiber$compute :function* _trc_ComputedVec3_f_compute(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var c;
@@ -19235,14 +17989,12 @@ Tonyu.klass.define({
         
       },
       keep :function _trc_ComputedVec3_keep(c) {
-        "use strict";
         var _this=this;
         
         _this.computed=c;
         return c;
       },
       fiber$keep :function* _trc_ComputedVec3_f_keep(_thread,c) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -19251,39 +18003,33 @@ Tonyu.klass.define({
         
       },
       __getter__x :function _trc_ComputedVec3___getter__x() {
-        "use strict";
         var _this=this;
         
         return _this.compute().x;
       },
       __getter__y :function _trc_ComputedVec3___getter__y() {
-        "use strict";
         var _this=this;
         
         return _this.compute().y;
       },
       __getter__z :function _trc_ComputedVec3___getter__z() {
-        "use strict";
         var _this=this;
         
         return _this.compute().z;
       },
       __setter__x :function _trc_ComputedVec3___setter__x(v) {
-        "use strict";
         var _this=this;
         
         throw new Error("ComputedVec3: read only");
         
       },
       __setter__y :function _trc_ComputedVec3___setter__y(v) {
-        "use strict";
         var _this=this;
         
         throw new Error("ComputedVec3: read only");
         
       },
       __setter__z :function _trc_ComputedVec3___setter__z(v) {
-        "use strict";
         var _this=this;
         
         throw new Error("ComputedVec3: read only");
@@ -19303,19 +18049,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ActorSprite_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_ActorSprite_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_ActorSprite_initialize(param) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [param]);
@@ -19335,14 +18078,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Layer2D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_Layer2D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -19351,7 +18092,6 @@ Tonyu.klass.define({
         
       },
       draw :function _trc_Layer2D_draw(c) {
-        "use strict";
         var _this=this;
         var rt;
         var sc;
@@ -19373,7 +18113,6 @@ Tonyu.klass.define({
         c.restore();
       },
       fiber$draw :function* _trc_Layer2D_f_draw(_thread,c) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var rt;
@@ -19397,7 +18136,6 @@ Tonyu.klass.define({
         
       },
       world2screen :function _trc_Layer2D_world2screen(obj) {
-        "use strict";
         var _this=this;
         var dx;
         var dy;
@@ -19418,7 +18156,6 @@ Tonyu.klass.define({
         return {x: x,y: y,rotation: obj.rotation,scale: obj.scale,layer: _this.screen};
       },
       fiber$world2screen :function* _trc_Layer2D_f_world2screen(_thread,obj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var dx;
@@ -19441,7 +18178,6 @@ Tonyu.klass.define({
         
       },
       screen2world :function _trc_Layer2D_screen2world(obj) {
-        "use strict";
         var _this=this;
         var rt;
         var dx;
@@ -19462,7 +18198,6 @@ Tonyu.klass.define({
         return {x: x,y: y,rotation: rt,scale: 1/_this.scale,layer: _this.group};
       },
       fiber$screen2world :function* _trc_Layer2D_f_screen2world(_thread,obj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var rt;
@@ -19498,14 +18233,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Layer3D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_Layer3D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -19514,7 +18247,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Layer3D_initialize(p) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [p]);
@@ -19522,7 +18254,6 @@ Tonyu.klass.define({
         _this.spy=_this.spy||Tonyu.globals.$screenHeight/2;
       },
       draw :function _trc_Layer3D_draw(c2) {
-        "use strict";
         var _this=this;
         var c3;
         var s2ds;
@@ -19547,7 +18278,6 @@ Tonyu.klass.define({
         c2.restore();
       },
       fiber$draw :function* _trc_Layer3D_f_draw(_thread,c2) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var c3;
@@ -19574,7 +18304,6 @@ Tonyu.klass.define({
         
       },
       world2screen :function _trc_Layer3D_world2screen(obj) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -19587,7 +18316,6 @@ Tonyu.klass.define({
         return r;
       },
       fiber$world2screen :function* _trc_Layer3D_f_world2screen(_thread,obj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -19602,14 +18330,12 @@ Tonyu.klass.define({
         
       },
       screen2world :function _trc_Layer3D_screen2world(obj) {
-        "use strict";
         var _this=this;
         
         throw new Error("cannot call screen2world for Layer3D");
         
       },
       fiber$screen2world :function* _trc_Layer3D_f_screen2world(_thread,obj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -19631,14 +18357,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_PanelMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_PanelMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -19647,7 +18371,6 @@ Tonyu.klass.define({
         
       },
       initPanelMod :function _trc_PanelMod_initPanelMod() {
-        "use strict";
         var _this=this;
         
         throw "Check overrides in spritesmod /oneframeSpritemod";
@@ -19676,7 +18399,6 @@ Tonyu.klass.define({
         }
       },
       fiber$initPanelMod :function* _trc_PanelMod_f_initPanelMod(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -19707,7 +18429,6 @@ Tonyu.klass.define({
         
       },
       setPanel :function _trc_PanelMod_setPanel(width,height) {
-        "use strict";
         var _this=this;
         var buf;
         
@@ -19721,7 +18442,6 @@ Tonyu.klass.define({
         _this.fireEvent("resize",{width: width,height: height,force: true});
       },
       fiber$setPanel :function* _trc_PanelMod_f_setPanel(_thread,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var buf;
@@ -19737,7 +18457,6 @@ Tonyu.klass.define({
         
       },
       resize :function _trc_PanelMod_resize(width,height) {
-        "use strict";
         var _this=this;
         
         if (_this.width==width&&_this.height==height) {
@@ -19746,7 +18465,6 @@ Tonyu.klass.define({
         _this.setPanel(width,height);
       },
       fiber$resize :function* _trc_PanelMod_f_resize(_thread,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -19757,14 +18475,12 @@ Tonyu.klass.define({
         
       },
       getContext :function _trc_PanelMod_getContext() {
-        "use strict";
         var _this=this;
         
         _this._drawn=true;
         return _this.canvas.getContext("2d");
       },
       fiber$getContext :function* _trc_PanelMod_f_getContext(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -19773,27 +18489,23 @@ Tonyu.klass.define({
         
       },
       __getter__context :function _trc_PanelMod___getter__context() {
-        "use strict";
         var _this=this;
         
         _this._drawn=true;
         return _this.canvas.getContext("2d");
       },
       __getter__image :function _trc_PanelMod___getter__image() {
-        "use strict";
         var _this=this;
         
         _this._drawn=true;
         return _this.canvas;
       },
       setFillStyle :function _trc_PanelMod_setFillStyle(color) {
-        "use strict";
         var _this=this;
         
         _this.fillStyle=color;
       },
       fiber$setFillStyle :function* _trc_PanelMod_f_setFillStyle(_thread,color) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -19801,13 +18513,11 @@ Tonyu.klass.define({
         
       },
       __getter__fillStyle :function _trc_PanelMod___getter__fillStyle() {
-        "use strict";
         var _this=this;
         
         return _this._fillStyle;
       },
       __setter__fillStyle :function _trc_PanelMod___setter__fillStyle(val) {
-        "use strict";
         var _this=this;
         
         _this._fillStyle=val;
@@ -19817,19 +18527,16 @@ Tonyu.klass.define({
         _this.context.fillStyle=val+"";
       },
       __setter__strokeStyle :function _trc_PanelMod___setter__strokeStyle(val) {
-        "use strict";
         var _this=this;
         
         _this.context.strokeStyle=val+"";
       },
       __setter__lineWidth :function _trc_PanelMod___setter__lineWidth(val) {
-        "use strict";
         var _this=this;
         
         _this.context.lineWidth=val;
       },
       fillCircle :function _trc_PanelMod_fillCircle(x,y,r) {
-        "use strict";
         var _this=this;
         var ctx;
         
@@ -19842,7 +18549,6 @@ Tonyu.klass.define({
         ctx.fill();
       },
       fiber$fillCircle :function* _trc_PanelMod_f_fillCircle(_thread,x,y,r) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -19857,7 +18563,6 @@ Tonyu.klass.define({
         
       },
       fillRect :function _trc_PanelMod_fillRect(x,y,w,h) {
-        "use strict";
         var _this=this;
         var ctx;
         
@@ -19866,7 +18571,6 @@ Tonyu.klass.define({
         ctx.fillRect(x,y,w,h);
       },
       fiber$fillRect :function* _trc_PanelMod_f_fillRect(_thread,x,y,w,h) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -19877,7 +18581,6 @@ Tonyu.klass.define({
         
       },
       fillText :function _trc_PanelMod_fillText(text,x,y,size,align) {
-        "use strict";
         var _this=this;
         var ctx;
         var splits;
@@ -19906,7 +18609,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       fiber$fillText :function* _trc_PanelMod_f_fillText(_thread,text,x,y,size,align) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -19937,7 +18639,6 @@ Tonyu.klass.define({
         
       },
       clearRect :function _trc_PanelMod_clearRect(clearX,clearY,clearW,clearH) {
-        "use strict";
         var _this=this;
         var ctx;
         
@@ -19951,7 +18652,6 @@ Tonyu.klass.define({
         }
       },
       fiber$clearRect :function* _trc_PanelMod_f_clearRect(_thread,clearX,clearY,clearW,clearH) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -19967,7 +18667,6 @@ Tonyu.klass.define({
         
       },
       getPixel :function _trc_PanelMod_getPixel(getX,getY) {
-        "use strict";
         var _this=this;
         var ctx;
         var imagedata;
@@ -19986,7 +18685,6 @@ Tonyu.klass.define({
         return (colordata);
       },
       fiber$getPixel :function* _trc_PanelMod_f_getPixel(_thread,getX,getY) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -20007,7 +18705,6 @@ Tonyu.klass.define({
         
       },
       scroll :function _trc_PanelMod_scroll(scrollX,scrollY) {
-        "use strict";
         var _this=this;
         var ctx;
         var imagedata;
@@ -20022,7 +18719,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       fiber$scroll :function* _trc_PanelMod_f_scroll(_thread,scrollX,scrollY) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -20039,7 +18735,6 @@ Tonyu.klass.define({
         
       },
       draw :function _trc_PanelMod_draw(ctx) {
-        "use strict";
         var _this=this;
         var pImg;
         
@@ -20082,7 +18777,6 @@ Tonyu.klass.define({
         }
       },
       drawSprite :function _trc_PanelMod_drawSprite(x,y,p,options) {
-        "use strict";
         var _this=this;
         var pImg;
         var scaleX;
@@ -20118,7 +18812,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       copy :function _trc_PanelMod_copy() {
-        "use strict";
         var _this=this;
         var sx;
         var sy;
@@ -20175,7 +18868,6 @@ Tonyu.klass.define({
         }
       },
       drawLine :function _trc_PanelMod_drawLine(x,y,dx,dy) {
-        "use strict";
         var _this=this;
         
         if (dx==null&&dy==null) {
@@ -20205,7 +18897,6 @@ Tonyu.klass.define({
         _this.context.stroke();
       },
       fiber$drawLine :function* _trc_PanelMod_f_drawLine(_thread,x,y,dx,dy) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20237,13 +18928,11 @@ Tonyu.klass.define({
         
       },
       slicePattern :function _trc_PanelMod_slicePattern(x,y,width,height) {
-        "use strict";
         var _this=this;
         
         return {image: _this.canvas,x: x,y: y,width: width,height: height};
       },
       fiber$slicePattern :function* _trc_PanelMod_f_slicePattern(_thread,x,y,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20251,14 +18940,12 @@ Tonyu.klass.define({
         
       },
       addPattern :function _trc_PanelMod_addPattern(x,y,width,height) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$imageList.push(_this.slicePattern(x,y,width,height));
         return Tonyu.globals.$imageList.length-1;
       },
       fiber$addPattern :function* _trc_PanelMod_f_addPattern(_thread,x,y,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20267,13 +18954,11 @@ Tonyu.klass.define({
         
       },
       getImageData :function _trc_PanelMod_getImageData(x,y,width,height) {
-        "use strict";
         var _this=this;
         
         return _this.context.getImageData(x,y,width,height);
       },
       fiber$getImageData :function* _trc_PanelMod_f_getImageData(_thread,x,y,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20281,13 +18966,11 @@ Tonyu.klass.define({
         
       },
       putImageData :function _trc_PanelMod_putImageData(data,x,y) {
-        "use strict";
         var _this=this;
         
         return _this.context.putImageData(data,x,y);
       },
       fiber$putImageData :function* _trc_PanelMod_f_putImageData(_thread,data,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20295,7 +18978,6 @@ Tonyu.klass.define({
         
       },
       save :function _trc_PanelMod_save(fn) {
-        "use strict";
         var _this=this;
         var url;
         
@@ -20307,7 +18989,6 @@ Tonyu.klass.define({
         return fn.text(url);
       },
       fiber$save :function* _trc_PanelMod_f_save(_thread,fn) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var url;
@@ -20321,7 +19002,6 @@ Tonyu.klass.define({
         
       },
       load :function _trc_PanelMod_load(fn) {
-        "use strict";
         var _this=this;
         var d;
         var url;
@@ -20356,7 +19036,6 @@ Tonyu.klass.define({
         return d.promise();
       },
       fiber$load :function* _trc_PanelMod_f_load(_thread,fn) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var d;
@@ -20393,7 +19072,6 @@ Tonyu.klass.define({
         
       },
       __setter__imageSmoothingEnabled :function _trc_PanelMod___setter__imageSmoothingEnabled(v) {
-        "use strict";
         var _this=this;
         
         if (typeof  _this.context.msImageSmoothingEnabled==="boolean") {
@@ -20405,7 +19083,6 @@ Tonyu.klass.define({
         }
       },
       __getter__imageSmoothingEnabled :function _trc_PanelMod___getter__imageSmoothingEnabled() {
-        "use strict";
         var _this=this;
         
         if (typeof  _this.context.msImageSmoothingEnabled==="boolean") {
@@ -20417,7 +19094,6 @@ Tonyu.klass.define({
         }
       },
       replaceColor :function _trc_PanelMod_replaceColor() {
-        "use strict";
         var _this=this;
         var a;
         var top;
@@ -20483,7 +19159,6 @@ Tonyu.klass.define({
         _this.putImageData(data,left,top);
       },
       fiber$replaceColor :function* _trc_PanelMod_f_replaceColor(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var a;
@@ -20563,14 +19238,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_PlayMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_PlayMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20579,7 +19252,6 @@ Tonyu.klass.define({
         
       },
       initMML :function _trc_PlayMod_initMML() {
-        "use strict";
         var _this=this;
         
         if (_this.mmlInited) {
@@ -20599,7 +19271,6 @@ Tonyu.klass.define({
         }));
       },
       releaseMML :function _trc_PlayMod_releaseMML() {
-        "use strict";
         var _this=this;
         var k;
         var v;
@@ -20619,7 +19290,6 @@ Tonyu.klass.define({
         }
       },
       play :function _trc_PlayMod_play() {
-        "use strict";
         var _this=this;
         var mmls;
         var i;
@@ -20647,7 +19317,6 @@ Tonyu.klass.define({
         return _this._mml;
       },
       fiber$play :function* _trc_PlayMod_f_play(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var mmls;
@@ -20677,7 +19346,6 @@ Tonyu.klass.define({
         
       },
       playSE :function _trc_PlayMod_playSE() {
-        "use strict";
         var _this=this;
         var mml;
         var mmls;
@@ -20710,13 +19378,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_InputMod_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_InputMod_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20724,13 +19390,11 @@ Tonyu.klass.define({
         
       },
       getkey :function _trc_InputMod_getkey(k) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$Keys.getkey(k);
       },
       waitInputDevice :function _trc_InputMod_waitInputDevice(fl) {
-        "use strict";
         var _this=this;
         
         _this.runPromise((function anonymous_244(f) {
@@ -20739,7 +19403,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$waitInputDevice :function* _trc_InputMod_f_waitInputDevice(_thread,fl) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20762,13 +19425,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_InputMod2D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_InputMod2D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20776,7 +19437,6 @@ Tonyu.klass.define({
         
       },
       findTouch :function _trc_InputMod2D_findTouch(params) {
-        "use strict";
         var _this=this;
         var r;
         var res;
@@ -20831,13 +19491,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_BaseActor_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_BaseActor_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20845,7 +19503,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_BaseActor_initialize(x,y,p) {
-        "use strict";
         var _this=this;
         
         if (typeof  x=="object") {
@@ -20874,20 +19531,17 @@ Tonyu.klass.define({
         _this.initAnimMod();
       },
       extend :function _trc_BaseActor_extend(obj) {
-        "use strict";
         var _this=this;
         
         return Tonyu.extend(_this,obj);
       },
       loadPage :function _trc_BaseActor_loadPage() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$Boot.loadPage.apply(Tonyu.globals.$Boot,arguments);
         _this.update();
       },
       fiber$loadPage :function* _trc_BaseActor_f_loadPage(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         
@@ -20896,7 +19550,6 @@ Tonyu.klass.define({
         
       },
       __getter__defaultLayer :function _trc_BaseActor___getter__defaultLayer() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$mainLayer;
@@ -20915,19 +19568,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_NoviceActor_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_NoviceActor_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       sleep :function _trc_NoviceActor_sleep(n) {
-        "use strict";
         var _this=this;
         
         if (! n) {
@@ -20938,7 +19588,6 @@ Tonyu.klass.define({
         }
       },
       fiber$sleep :function* _trc_NoviceActor_f_sleep(_thread,n) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20951,7 +19600,6 @@ Tonyu.klass.define({
         
       },
       initSprite :function _trc_NoviceActor_initSprite() {
-        "use strict";
         var _this=this;
         
         if (! _this._sprite) {
@@ -20961,7 +19609,6 @@ Tonyu.klass.define({
         }
       },
       fiber$initSprite :function* _trc_NoviceActor_f_initSprite(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20973,7 +19620,6 @@ Tonyu.klass.define({
         
       },
       say :function _trc_NoviceActor_say(text,size) {
-        "use strict";
         var _this=this;
         
         if (! size) {
@@ -20983,7 +19629,6 @@ Tonyu.klass.define({
         _this._sprite._fukidashi={text: text,size: size,c: 30};
       },
       fiber$say :function* _trc_NoviceActor_f_say(_thread,text,size) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -20995,13 +19640,11 @@ Tonyu.klass.define({
         
       },
       sprite :function _trc_NoviceActor_sprite(x,y,p) {
-        "use strict";
         var _this=this;
         
         _this.go(x,y,p);
       },
       fiber$sprite :function* _trc_NoviceActor_f_sprite(_thread,x,y,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21009,25 +19652,21 @@ Tonyu.klass.define({
         
       },
       show :function _trc_NoviceActor_show(x,y,p) {
-        "use strict";
         var _this=this;
         
         _this.go(x,y,p);
       },
       draw :function _trc_NoviceActor_draw(ctx) {
-        "use strict";
         var _this=this;
         
         _this._sprite.draw(ctx);
       },
       getCrashRect :function _trc_NoviceActor_getCrashRect() {
-        "use strict";
         var _this=this;
         
         return _this._sprite.getCrashRect();
       },
       fiber$getCrashRect :function* _trc_NoviceActor_f_getCrashRect(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21035,7 +19674,6 @@ Tonyu.klass.define({
         
       },
       go :function _trc_NoviceActor_go(x,y,p) {
-        "use strict";
         var _this=this;
         
         _this.initSprite();
@@ -21046,7 +19684,6 @@ Tonyu.klass.define({
         }
       },
       fiber$go :function* _trc_NoviceActor_f_go(_thread,x,y,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21059,14 +19696,12 @@ Tonyu.klass.define({
         
       },
       change :function _trc_NoviceActor_change(p) {
-        "use strict";
         var _this=this;
         
         _this.initSprite();
         _this._sprite.p=p;
       },
       fiber$change :function* _trc_NoviceActor_f_change(_thread,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21088,13 +19723,11 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Actor_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
       },
       fiber$main :function* _trc_Actor_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21102,7 +19735,6 @@ Tonyu.klass.define({
         
       },
       addSubsprite :function _trc_Actor_addSubsprite(s) {
-        "use strict";
         var _this=this;
         
         _this.subsprites=_this.subsprites||new Tonyu.classes.kernel.Sprites({layer: _this});
@@ -21112,7 +19744,6 @@ Tonyu.klass.define({
         }
       },
       fiber$addSubsprite :function* _trc_Actor_f_addSubsprite(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21124,7 +19755,6 @@ Tonyu.klass.define({
         
       },
       findEventHandlerClass :function _trc_Actor_findEventHandlerClass(type) {
-        "use strict";
         var _this=this;
         
         if (type==="touch") {
@@ -21149,14 +19779,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Actor3D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_Actor3D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21165,7 +19793,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Actor3D_initialize(params) {
-        "use strict";
         var _this=this;
         
         Tonyu.extend(_this,params);
@@ -21183,14 +19810,12 @@ Tonyu.klass.define({
         _this.initAnimMod();
       },
       rotate :function _trc_Actor3D_rotate(axis,angle) {
-        "use strict";
         var _this=this;
         
         _this.direction.rotate(axis,angle);
         return _this;
       },
       fiber$rotate :function* _trc_Actor3D_f_rotate(_thread,axis,angle) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21199,13 +19824,11 @@ Tonyu.klass.define({
         
       },
       __getter__defaultLayer :function _trc_Actor3D___getter__defaultLayer() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$mainLayer3D;
       },
       dist :function _trc_Actor3D_dist(dx,dy,dz) {
-        "use strict";
         var _this=this;
         var t;
         
@@ -21221,7 +19844,6 @@ Tonyu.klass.define({
         return _this.sqrt(dx*dx+dy*dy+dz*dz);
       },
       addSubsprite :function _trc_Actor3D_addSubsprite(s) {
-        "use strict";
         var _this=this;
         
         _this.subsprites=_this.subsprites||new Tonyu.classes.kernel.Sprites3D({layer: _this,transform: _this.transform});
@@ -21231,7 +19853,6 @@ Tonyu.klass.define({
         }
       },
       fiber$addSubsprite :function* _trc_Actor3D_f_addSubsprite(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21243,7 +19864,6 @@ Tonyu.klass.define({
         
       },
       localToWorld :function _trc_Actor3D_localToWorld(fru) {
-        "use strict";
         var _this=this;
         var res;
         var name;
@@ -21263,7 +19883,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$localToWorld :function* _trc_Actor3D_f_localToWorld(_thread,fru) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -21285,7 +19904,6 @@ Tonyu.klass.define({
         
       },
       moveBy :function _trc_Actor3D_moveBy(by) {
-        "use strict";
         var _this=this;
         
         if (typeof  by==="number") {
@@ -21295,7 +19913,6 @@ Tonyu.klass.define({
         return _this;
       },
       fiber$moveBy :function* _trc_Actor3D_f_moveBy(_thread,by) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21321,14 +19938,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Camera3D_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
         
       },
       fiber$main :function* _trc_Camera3D_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21337,7 +19952,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Camera3D_initialize(p) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [p]);
@@ -21345,7 +19959,6 @@ Tonyu.klass.define({
         _this.z=- _this.z1;
       },
       to2D :function _trc_Camera3D_to2D(pos) {
-        "use strict";
         var _this=this;
         var c;
         var x;
@@ -21368,7 +19981,6 @@ Tonyu.klass.define({
         return {x: x,y: y,z: z,scale: _this.z1/z};
       },
       fiber$to2D :function* _trc_Camera3D_f_to2D(_thread,pos) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var c;
@@ -21393,7 +20005,6 @@ Tonyu.klass.define({
         
       },
       draw3D :function _trc_Camera3D_draw3D(ctx3d) {
-        "use strict";
         var _this=this;
         
         if (ctx3d.camera===_this) {
@@ -21402,7 +20013,6 @@ Tonyu.klass.define({
         __superClass.prototype.draw3D.apply( _this, [ctx3d]);
       },
       fiber$draw3D :function* _trc_Camera3D_f_draw3D(_thread,ctx3d) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21413,7 +20023,6 @@ Tonyu.klass.define({
         
       },
       goBehind :function _trc_Camera3D_goBehind(target,dist) {
-        "use strict";
         var _this=this;
         
         if (! dist) {
@@ -21423,7 +20032,6 @@ Tonyu.klass.define({
         _this.direction.set(target.direction);
       },
       fiber$goBehind :function* _trc_Camera3D_f_goBehind(_thread,target,dist) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21448,19 +20056,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_GameScreen_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_GameScreen_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_GameScreen_initialize(opt) {
-        "use strict";
         var _this=this;
         
         _this.extend(opt);
@@ -21469,7 +20074,6 @@ Tonyu.klass.define({
         _this.isDrawGrid=Tonyu.globals.$Sprites.isDrawGrid;
       },
       resize :function _trc_GameScreen_resize(width,height) {
-        "use strict";
         var _this=this;
         
         _this.width=width;
@@ -21479,7 +20083,6 @@ Tonyu.klass.define({
         _this.fireEvent("resize",width,height);
       },
       fiber$resize :function* _trc_GameScreen_f_resize(_thread,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21491,13 +20094,11 @@ Tonyu.klass.define({
         
       },
       setBounds :function _trc_GameScreen_setBounds(b) {
-        "use strict";
         var _this=this;
         
         _this.bounds=b;
       },
       fiber$setBounds :function* _trc_GameScreen_f_setBounds(_thread,b) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21505,7 +20106,6 @@ Tonyu.klass.define({
         
       },
       draw :function _trc_GameScreen_draw(cctx) {
-        "use strict";
         var _this=this;
         var b;
         
@@ -21516,7 +20116,6 @@ Tonyu.klass.define({
         cctx.drawImage(_this.buf[0],0,0,_this.width,_this.height,b.left,b.top,b.width,b.height);
       },
       canvas2buf :function _trc_GameScreen_canvas2buf(point) {
-        "use strict";
         var _this=this;
         var b;
         
@@ -21528,7 +20127,6 @@ Tonyu.klass.define({
         return {x: (point.x-b.left)/b.width*_this.width,y: (point.y-b.top)/b.height*_this.height};
       },
       fiber$canvas2buf :function* _trc_GameScreen_f_canvas2buf(_thread,point) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var b;
@@ -21542,13 +20140,11 @@ Tonyu.klass.define({
         
       },
       setBGColor :function _trc_GameScreen_setBGColor(c) {
-        "use strict";
         var _this=this;
         
         _this.bgColor=c;
       },
       fiber$setBGColor :function* _trc_GameScreen_f_setBGColor(_thread,c) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21556,7 +20152,6 @@ Tonyu.klass.define({
         
       },
       fillCanvas :function _trc_GameScreen_fillCanvas() {
-        "use strict";
         var _this=this;
         var ctx;
         
@@ -21568,7 +20163,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       fiber$fillCanvas :function* _trc_GameScreen_f_fillCanvas(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -21582,13 +20176,11 @@ Tonyu.klass.define({
         
       },
       scrollTo :function _trc_GameScreen_scrollTo(scrollX,scrollY) {
-        "use strict";
         var _this=this;
         
         _this.sprites.scrollTo(scrollX,scrollY);
       },
       fiber$scrollTo :function* _trc_GameScreen_f_scrollTo(_thread,scrollX,scrollY) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21609,19 +20201,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Map_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_Map_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_Map_initialize(param) {
-        "use strict";
         var _this=this;
         var j;
         var rows;
@@ -21677,7 +20266,6 @@ Tonyu.klass.define({
         _this.initMap();
       },
       createBuf :function _trc_Map_createBuf(width,height) {
-        "use strict";
         var _this=this;
         var rh;
         var ary;
@@ -21729,7 +20317,6 @@ Tonyu.klass.define({
         return ary;
       },
       fiber$createBuf :function* _trc_Map_f_createBuf(_thread,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var rh;
@@ -21783,7 +20370,6 @@ Tonyu.klass.define({
         
       },
       initMap :function _trc_Map_initMap() {
-        "use strict";
         var _this=this;
         var i;
         var j;
@@ -21807,7 +20393,6 @@ Tonyu.klass.define({
         }
       },
       fiber$initMap :function* _trc_Map_f_initMap(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -21833,13 +20418,11 @@ Tonyu.klass.define({
         
       },
       redrawMap :function _trc_Map_redrawMap() {
-        "use strict";
         var _this=this;
         
         return _this.redraw();
       },
       fiber$redrawMap :function* _trc_Map_f_redrawMap(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21848,7 +20431,6 @@ Tonyu.klass.define({
         
       },
       redraw :function _trc_Map_redraw() {
-        "use strict";
         var _this=this;
         var i;
         var j;
@@ -21884,7 +20466,6 @@ Tonyu.klass.define({
         }
       },
       fiber$redraw :function* _trc_Map_f_redraw(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -21922,7 +20503,6 @@ Tonyu.klass.define({
         
       },
       resolve :function _trc_Map_resolve(fileName,fallback) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -21939,7 +20519,6 @@ Tonyu.klass.define({
         return fileName;
       },
       fiber$resolve :function* _trc_Map_f_resolve(_thread,fileName,fallback) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -21958,7 +20537,6 @@ Tonyu.klass.define({
         
       },
       load :function _trc_Map_load(dataFile) {
-        "use strict";
         var _this=this;
         
         dataFile=_this.resolve(dataFile,true);
@@ -21972,7 +20550,6 @@ Tonyu.klass.define({
         _this.loadFromBaseData(_this.baseData);
       },
       fiber$load :function* _trc_Map_f_load(_thread,dataFile) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -21988,7 +20565,6 @@ Tonyu.klass.define({
         
       },
       loadFromBaseData :function _trc_Map_loadFromBaseData(baseData) {
-        "use strict";
         var _this=this;
         
         _this.mapTable=baseData[0];
@@ -22007,7 +20583,6 @@ Tonyu.klass.define({
         _this.initMap();
       },
       fiber$loadFromBaseData :function* _trc_Map_f_loadFromBaseData(_thread,baseData) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22028,7 +20603,6 @@ Tonyu.klass.define({
         
       },
       save :function _trc_Map_save(saveFileName) {
-        "use strict";
         var _this=this;
         var saveDataFile;
         var data;
@@ -22040,7 +20614,6 @@ Tonyu.klass.define({
         saveDataFile.obj(data);
       },
       fiber$save :function* _trc_Map_f_save(_thread,saveFileName) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var saveDataFile;
@@ -22054,7 +20627,6 @@ Tonyu.klass.define({
         
       },
       setAll :function _trc_Map_setAll(setCol,setRow,p,onP) {
-        "use strict";
         var _this=this;
         var oldP;
         var oldOnP;
@@ -22137,7 +20709,6 @@ Tonyu.klass.define({
         }
       },
       fiber$setAll :function* _trc_Map_f_setAll(_thread,setCol,setRow,p,onP) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var oldP;
@@ -22222,7 +20793,6 @@ Tonyu.klass.define({
         
       },
       set :function _trc_Map_set(setCol,setRow,p) {
-        "use strict";
         var _this=this;
         
         if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
@@ -22231,7 +20801,6 @@ Tonyu.klass.define({
         _this.setAll(setCol,setRow,p,_this.mapOnTable[setRow][setCol]);
       },
       fiber$set :function* _trc_Map_f_set(_thread,setCol,setRow,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22242,7 +20811,6 @@ Tonyu.klass.define({
         
       },
       setOn :function _trc_Map_setOn(setCol,setRow,onP) {
-        "use strict";
         var _this=this;
         
         if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
@@ -22251,7 +20819,6 @@ Tonyu.klass.define({
         _this.setAll(setCol,setRow,_this.mapTable[setRow][setCol],onP);
       },
       fiber$setOn :function* _trc_Map_f_setOn(_thread,setCol,setRow,onP) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22262,13 +20829,11 @@ Tonyu.klass.define({
         
       },
       setOnAt :function _trc_Map_setOnAt(setX,setY,p) {
-        "use strict";
         var _this=this;
         
         _this.setOn(Math.floor((setX-_this.sx)/_this.chipWidth),Math.floor((setY-_this.sy)/_this.chipHeight),p);
       },
       fiber$setOnAt :function* _trc_Map_f_setOnAt(_thread,setX,setY,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22276,13 +20841,11 @@ Tonyu.klass.define({
         
       },
       setAt :function _trc_Map_setAt(setX,setY,p) {
-        "use strict";
         var _this=this;
         
         _this.set(Math.floor((setX-_this.sx)/_this.chipWidth),Math.floor((setY-_this.sy)/_this.chipHeight),p);
       },
       fiber$setAt :function* _trc_Map_f_setAt(_thread,setX,setY,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22290,7 +20853,6 @@ Tonyu.klass.define({
         
       },
       get :function _trc_Map_get(getCol,getRow) {
-        "use strict";
         var _this=this;
         
         if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
@@ -22299,7 +20861,6 @@ Tonyu.klass.define({
         return - 1;
       },
       fiber$get :function* _trc_Map_f_get(_thread,getCol,getRow) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22310,13 +20871,11 @@ Tonyu.klass.define({
         
       },
       getAt :function _trc_Map_getAt(getX,getY) {
-        "use strict";
         var _this=this;
         
         return _this.get(Math.floor((getX-_this.sx)/_this.chipWidth),Math.floor((getY-_this.sy)/_this.chipHeight));
       },
       fiber$getAt :function* _trc_Map_f_getAt(_thread,getX,getY) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22325,7 +20884,6 @@ Tonyu.klass.define({
         
       },
       getOn :function _trc_Map_getOn(getCol,getRow) {
-        "use strict";
         var _this=this;
         
         if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
@@ -22334,7 +20892,6 @@ Tonyu.klass.define({
         return - 1;
       },
       fiber$getOn :function* _trc_Map_f_getOn(_thread,getCol,getRow) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22345,13 +20902,11 @@ Tonyu.klass.define({
         
       },
       getOnAt :function _trc_Map_getOnAt(getX,getY) {
-        "use strict";
         var _this=this;
         
         return _this.getOn(Math.floor((getX-_this.sx)/_this.chipWidth),Math.floor((getY-_this.sy)/_this.chipHeight));
       },
       fiber$getOnAt :function* _trc_Map_f_getOnAt(_thread,getX,getY) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22360,14 +20915,12 @@ Tonyu.klass.define({
         
       },
       scrollTo :function _trc_Map_scrollTo(scrollX,scrollY) {
-        "use strict";
         var _this=this;
         
         _this.sx=- scrollX;
         _this.sy=- scrollY;
       },
       fiber$scrollTo :function* _trc_Map_f_scrollTo(_thread,scrollX,scrollY) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22376,7 +20929,6 @@ Tonyu.klass.define({
         
       },
       draw :function _trc_Map_draw(ctx) {
-        "use strict";
         var _this=this;
         var lay;
         var lsx;
@@ -22480,7 +21032,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Map2_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -22491,7 +21042,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_Map2_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22504,7 +21054,6 @@ Tonyu.klass.define({
         
       },
       getChipLayer :function _trc_Map2_getChipLayer(name) {
-        "use strict";
         var _this=this;
         var mp;
         
@@ -22517,7 +21066,6 @@ Tonyu.klass.define({
         return null;
       },
       fiber$getChipLayer :function* _trc_Map2_f_getChipLayer(_thread,name) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var mp;
@@ -22532,7 +21080,6 @@ Tonyu.klass.define({
         
       },
       addChipLayer :function _trc_Map2_addChipLayer(name) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -22543,7 +21090,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$addChipLayer :function* _trc_Map2_f_addChipLayer(_thread,name) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -22556,7 +21102,6 @@ Tonyu.klass.define({
         
       },
       __setter__expand :function _trc_Map2___setter__expand(v) {
-        "use strict";
         var _this=this;
         var k;
         
@@ -22590,13 +21135,11 @@ Tonyu.klass.define({
         }
       },
       __getter__expand :function _trc_Map2___getter__expand() {
-        "use strict";
         var _this=this;
         
         return _this._expand;
       },
       initialize :function _trc_Map2_initialize(param) {
-        "use strict";
         var _this=this;
         
         _this._expand={};
@@ -22632,13 +21175,11 @@ Tonyu.klass.define({
         _this.setWallFilter({layer: "on"});
       },
       setPivot :function _trc_Map2_setPivot(x,y) {
-        "use strict";
         var _this=this;
         
         _this.align=["left","top",x,y];
       },
       fiber$setPivot :function* _trc_Map2_f_setPivot(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -22646,7 +21187,6 @@ Tonyu.klass.define({
         
       },
       initBuf :function _trc_Map2_initBuf(p) {
-        "use strict";
         var _this=this;
         var pImg;
         
@@ -22668,7 +21208,6 @@ Tonyu.klass.define({
         _this.parseBufferSize();
       },
       fiber$initBuf :function* _trc_Map2_f_initBuf(_thread,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var pImg;
@@ -22692,7 +21231,6 @@ Tonyu.klass.define({
         
       },
       parseBufferSize :function _trc_Map2_parseBufferSize() {
-        "use strict";
         var _this=this;
         function fitSize(size,unit) {
           
@@ -22715,7 +21253,6 @@ Tonyu.klass.define({
         _this.bufferSize.h=fitSize(_this.bufferSize.h,_this.chipHeight);
       },
       fiber$parseBufferSize :function* _trc_Map2_f_parseBufferSize(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         function fitSize(size,unit) {
@@ -22740,7 +21277,6 @@ Tonyu.klass.define({
         
       },
       getBuf :function _trc_Map2_getBuf(col,row) {
-        "use strict";
         var _this=this;
         var w;
         var h;
@@ -22773,7 +21309,6 @@ Tonyu.klass.define({
         return {canvas: canvas,context: canvas[0].getContext("2d"),bx: bx,by: by,left: (col%cPerBuf)*_this.chipWidth,top: (row%rPerBuf)*_this.chipHeight,width: _this.chipWidth,height: _this.chipHeight};
       },
       fiber$getBuf :function* _trc_Map2_f_getBuf(_thread,col,row) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var w;
@@ -22808,7 +21343,6 @@ Tonyu.klass.define({
         
       },
       pack :function _trc_Map2_pack() {
-        "use strict";
         var _this=this;
         var chipLayer;
         
@@ -22824,7 +21358,6 @@ Tonyu.klass.define({
         }
       },
       fiber$pack :function* _trc_Map2_f_pack(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var chipLayer;
@@ -22842,7 +21375,6 @@ Tonyu.klass.define({
         
       },
       redraw :function _trc_Map2_redraw() {
-        "use strict";
         var _this=this;
         var i;
         var j;
@@ -22861,7 +21393,6 @@ Tonyu.klass.define({
         }
       },
       fiber$redraw :function* _trc_Map2_f_redraw(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -22882,7 +21413,6 @@ Tonyu.klass.define({
         
       },
       resolve :function _trc_Map2_resolve(fileName,fallback) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -22899,7 +21429,6 @@ Tonyu.klass.define({
         return fileName;
       },
       fiber$resolve :function* _trc_Map2_f_resolve(_thread,fileName,fallback) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -22918,7 +21447,6 @@ Tonyu.klass.define({
         
       },
       load :function _trc_Map2_load(dataFile) {
-        "use strict";
         var _this=this;
         var c;
         
@@ -22936,7 +21464,6 @@ Tonyu.klass.define({
         _this.redraw();
       },
       fiber$load :function* _trc_Map2_f_load(_thread,dataFile) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var c;
@@ -22956,7 +21483,6 @@ Tonyu.klass.define({
         
       },
       save :function _trc_Map2_save(saveFileName) {
-        "use strict";
         var _this=this;
         var c;
         var saveDataFile;
@@ -22968,7 +21494,6 @@ Tonyu.klass.define({
         c.save(saveDataFile);
       },
       fiber$save :function* _trc_Map2_f_save(_thread,saveFileName) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var c;
@@ -22982,7 +21507,6 @@ Tonyu.klass.define({
         
       },
       redrawChip :function _trc_Map2_redrawChip(setCol,setRow) {
-        "use strict";
         var _this=this;
         var buf;
         var cv;
@@ -23025,7 +21549,6 @@ Tonyu.klass.define({
         }
       },
       fiber$redrawChip :function* _trc_Map2_f_redrawChip(_thread,setCol,setRow) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var buf;
@@ -23070,7 +21593,6 @@ Tonyu.klass.define({
         
       },
       setWithLayerName :function _trc_Map2_setWithLayerName(name,setCol,setRow,p) {
-        "use strict";
         var _this=this;
         var l;
         
@@ -23098,7 +21620,6 @@ Tonyu.klass.define({
         _this.redrawChip(setCol,setRow);
       },
       fiber$setWithLayerName :function* _trc_Map2_f_setWithLayerName(_thread,name,setCol,setRow,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var l;
@@ -23128,7 +21649,6 @@ Tonyu.klass.define({
         
       },
       range :function _trc_Map2_range(options) {
-        "use strict";
         var _this=this;
         var s;
         var world;
@@ -23215,7 +21735,6 @@ Tonyu.klass.define({
         
       },
       fiber$range :function* _trc_Map2_f_range(_thread,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var s;
@@ -23304,7 +21823,6 @@ Tonyu.klass.define({
         
       },
       crashTo :function _trc_Map2_crashTo(actor,filter) {
-        "use strict";
         var _this=this;
         var r;
         var f;
@@ -23330,7 +21848,6 @@ Tonyu.klass.define({
         return null;
       },
       isWallAt :function _trc_Map2_isWallAt(x,y) {
-        "use strict";
         var _this=this;
         var o;
         
@@ -23339,7 +21856,6 @@ Tonyu.klass.define({
         return _this.isWall(o.x,o.y);
       },
       fiber$isWallAt :function* _trc_Map2_f_isWallAt(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var o;
@@ -23351,13 +21867,11 @@ Tonyu.klass.define({
         
       },
       isWall :function _trc_Map2_isWall(cx,cy) {
-        "use strict";
         var _this=this;
         
         return _this._wallFilter(cx,cy,_this);
       },
       fiber$isWall :function* _trc_Map2_f_isWall(_thread,cx,cy) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -23365,7 +21879,6 @@ Tonyu.klass.define({
         
       },
       chipFilter :function _trc_Map2_chipFilter(options) {
-        "use strict";
         var _this=this;
         var func;
         var p;
@@ -23421,7 +21934,6 @@ Tonyu.klass.define({
         return func;
       },
       fiber$chipFilter :function* _trc_Map2_f_chipFilter(_thread,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var func;
@@ -23479,7 +21991,6 @@ Tonyu.klass.define({
         
       },
       setWallFilter :function _trc_Map2_setWallFilter(options) {
-        "use strict";
         var _this=this;
         
         if (options.wall!=null) {
@@ -23494,7 +22005,6 @@ Tonyu.klass.define({
         _this._wallFilter=_this.chipFilter(options);
       },
       fiber$setWallFilter :function* _trc_Map2_f_setWallFilter(_thread,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -23511,13 +22021,11 @@ Tonyu.klass.define({
         
       },
       set :function _trc_Map2_set(setCol,setRow,p) {
-        "use strict";
         var _this=this;
         
         _this.setWithLayerName("base",setCol,setRow,p);
       },
       fiber$set :function* _trc_Map2_f_set(_thread,setCol,setRow,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -23525,13 +22033,11 @@ Tonyu.klass.define({
         
       },
       setOn :function _trc_Map2_setOn(setCol,setRow,onP) {
-        "use strict";
         var _this=this;
         
         _this.setWithLayerName("on",setCol,setRow,onP);
       },
       fiber$setOn :function* _trc_Map2_f_setOn(_thread,setCol,setRow,onP) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -23539,7 +22045,6 @@ Tonyu.klass.define({
         
       },
       worldToChip :function _trc_Map2_worldToChip(o) {
-        "use strict";
         var _this=this;
         var l;
         var r;
@@ -23552,7 +22057,6 @@ Tonyu.klass.define({
         return {x: Math.floor((l.x-r.left)/_this.chipWidth),y: Math.floor((l.y-r.top)/_this.chipHeight)};
       },
       fiber$worldToChip :function* _trc_Map2_f_worldToChip(_thread,o) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var l;
@@ -23567,7 +22071,6 @@ Tonyu.klass.define({
         
       },
       chipToWorld :function _trc_Map2_chipToWorld(x,y) {
-        "use strict";
         var _this=this;
         var o;
         var r;
@@ -23587,7 +22090,6 @@ Tonyu.klass.define({
         return _this.transform.localToWorld(co);
       },
       fiber$chipToWorld :function* _trc_Map2_f_chipToWorld(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var o;
@@ -23609,7 +22111,6 @@ Tonyu.klass.define({
         
       },
       setOnAt :function _trc_Map2_setOnAt(x,y,p) {
-        "use strict";
         var _this=this;
         var l;
         
@@ -23618,7 +22119,6 @@ Tonyu.klass.define({
         _this.setOn(l.x,l.y,p);
       },
       fiber$setOnAt :function* _trc_Map2_f_setOnAt(_thread,x,y,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var l;
@@ -23629,7 +22129,6 @@ Tonyu.klass.define({
         
       },
       setAt :function _trc_Map2_setAt(x,y,p) {
-        "use strict";
         var _this=this;
         var l;
         
@@ -23638,7 +22137,6 @@ Tonyu.klass.define({
         _this.set(l.x,l.y,p);
       },
       fiber$setAt :function* _trc_Map2_f_setAt(_thread,x,y,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var l;
@@ -23649,7 +22147,6 @@ Tonyu.klass.define({
         
       },
       getWithLayerName :function _trc_Map2_getWithLayerName(name,setCol,setRow) {
-        "use strict";
         var _this=this;
         var l;
         var r;
@@ -23668,7 +22165,6 @@ Tonyu.klass.define({
         return r==null?- 1:r;
       },
       fiber$getWithLayerName :function* _trc_Map2_f_getWithLayerName(_thread,name,setCol,setRow) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var l;
@@ -23689,13 +22185,11 @@ Tonyu.klass.define({
         
       },
       get :function _trc_Map2_get(getCol,getRow) {
-        "use strict";
         var _this=this;
         
         return _this.getWithLayerName("base",getCol,getRow);
       },
       fiber$get :function* _trc_Map2_f_get(_thread,getCol,getRow) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -23704,7 +22198,6 @@ Tonyu.klass.define({
         
       },
       getAt :function _trc_Map2_getAt(x,y) {
-        "use strict";
         var _this=this;
         var l;
         
@@ -23713,7 +22206,6 @@ Tonyu.klass.define({
         return _this.get(l.x,l.y);
       },
       fiber$getAt :function* _trc_Map2_f_getAt(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var l;
@@ -23725,13 +22217,11 @@ Tonyu.klass.define({
         
       },
       getOn :function _trc_Map2_getOn(getCol,getRow) {
-        "use strict";
         var _this=this;
         
         return _this.getWithLayerName("on",getCol,getRow);
       },
       fiber$getOn :function* _trc_Map2_f_getOn(_thread,getCol,getRow) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -23740,7 +22230,6 @@ Tonyu.klass.define({
         
       },
       getOnAt :function _trc_Map2_getOnAt(x,y) {
-        "use strict";
         var _this=this;
         var l;
         
@@ -23749,7 +22238,6 @@ Tonyu.klass.define({
         return _this.getOn(l.x,l.y);
       },
       fiber$getOnAt :function* _trc_Map2_f_getOnAt(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var l;
@@ -23761,7 +22249,6 @@ Tonyu.klass.define({
         
       },
       __getter__allLayerNames :function _trc_Map2___getter__allLayerNames() {
-        "use strict";
         var _this=this;
         
         return _this.chipLayers.map((function anonymous_10344(l) {
@@ -23770,13 +22257,11 @@ Tonyu.klass.define({
         }));
       },
       chip :function _trc_Map2_chip(x,y,layers) {
-        "use strict";
         var _this=this;
         
         return new Tonyu.classes.kernel.MapChip({map: _this,x: x,y: y,layers: layers});
       },
       fiber$chip :function* _trc_Map2_f_chip(_thread,x,y,layers) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -23784,7 +22269,6 @@ Tonyu.klass.define({
         
       },
       chipAt :function _trc_Map2_chipAt(x,y,layers) {
-        "use strict";
         var _this=this;
         var l;
         
@@ -23793,7 +22277,6 @@ Tonyu.klass.define({
         return _this.chip(l.x,l.y,layers);
       },
       fiber$chipAt :function* _trc_Map2_f_chipAt(_thread,x,y,layers) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var l;
@@ -23805,13 +22288,11 @@ Tonyu.klass.define({
         
       },
       has :function _trc_Map2_has(x,y,p) {
-        "use strict";
         var _this=this;
         
         return _this.chip(x,y).has(p);
       },
       fiber$has :function* _trc_Map2_f_has(_thread,x,y,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -23819,7 +22300,6 @@ Tonyu.klass.define({
         
       },
       hasAt :function _trc_Map2_hasAt(x,y,p) {
-        "use strict";
         var _this=this;
         var l;
         
@@ -23828,7 +22308,6 @@ Tonyu.klass.define({
         return _this.has(l.x,l.y,p);
       },
       fiber$hasAt :function* _trc_Map2_f_hasAt(_thread,x,y,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var l;
@@ -23840,14 +22319,12 @@ Tonyu.klass.define({
         
       },
       scrollTo :function _trc_Map2_scrollTo(scrollX,scrollY) {
-        "use strict";
         var _this=this;
         
         _this.x=- scrollX;
         _this.y=- scrollY;
       },
       fiber$scrollTo :function* _trc_Map2_f_scrollTo(_thread,scrollX,scrollY) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -23856,7 +22333,6 @@ Tonyu.klass.define({
         
       },
       getDrawRect :function _trc_Map2_getDrawRect() {
-        "use strict";
         var _this=this;
         var r;
         
@@ -23868,7 +22344,6 @@ Tonyu.klass.define({
         return r;
       },
       fiber$getDrawRect :function* _trc_Map2_f_getDrawRect(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -23882,7 +22357,6 @@ Tonyu.klass.define({
         
       },
       draw :function _trc_Map2_draw(ctx) {
-        "use strict";
         var _this=this;
         var sum;
         var r;
@@ -23932,7 +22406,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       chipToActor :function _trc_Map2_chipToActor(options) {
-        "use strict";
         var _this=this;
         var p;
         var klass;
@@ -23959,7 +22432,6 @@ Tonyu.klass.define({
         }
       },
       fiber$chipToActor :function* _trc_Map2_f_chipToActor(_thread,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var p;
@@ -24001,19 +22473,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Panel_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_Panel_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_Panel_initialize(opt) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [opt]);
@@ -24040,7 +22509,6 @@ Tonyu.klass.define({
         _this.registerEventHandler("touchstart",new Tonyu.classes.kernel.PanelTouchStart({target: _this}));
       },
       watchResize :function _trc_Panel_watchResize() {
-        "use strict";
         var _this=this;
         
         while (true) {
@@ -24055,7 +22523,6 @@ Tonyu.klass.define({
         }
       },
       fiber$watchResize :function* _trc_Panel_f_watchResize(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -24072,7 +22539,6 @@ Tonyu.klass.define({
         
       },
       setPanel :function _trc_Panel_setPanel(width,height) {
-        "use strict";
         var _this=this;
         
         if (! (width*height>0)) {
@@ -24089,7 +22555,6 @@ Tonyu.klass.define({
         _this.fireEvent("resize",{width: width,height: height,force: true});
       },
       fiber$setPanel :function* _trc_Panel_f_setPanel(_thread,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -24108,7 +22573,6 @@ Tonyu.klass.define({
         
       },
       resize :function _trc_Panel_resize(width,height) {
-        "use strict";
         var _this=this;
         
         if (_this.width==width&&_this.height==height) {
@@ -24117,7 +22581,6 @@ Tonyu.klass.define({
         _this.setPanel(width,height);
       },
       fiber$resize :function* _trc_Panel_f_resize(_thread,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -24128,14 +22591,12 @@ Tonyu.klass.define({
         
       },
       getContext :function _trc_Panel_getContext() {
-        "use strict";
         var _this=this;
         
         _this._drawn=true;
         return _this.canvas.getContext("2d");
       },
       fiber$getContext :function* _trc_Panel_f_getContext(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -24144,27 +22605,23 @@ Tonyu.klass.define({
         
       },
       __getter__context :function _trc_Panel___getter__context() {
-        "use strict";
         var _this=this;
         
         _this._drawn=true;
         return _this.canvas.getContext("2d");
       },
       __getter__image :function _trc_Panel___getter__image() {
-        "use strict";
         var _this=this;
         
         _this._drawn=true;
         return _this.canvas;
       },
       setFillStyle :function _trc_Panel_setFillStyle(color) {
-        "use strict";
         var _this=this;
         
         _this.fillStyle=color;
       },
       fiber$setFillStyle :function* _trc_Panel_f_setFillStyle(_thread,color) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -24172,13 +22629,11 @@ Tonyu.klass.define({
         
       },
       __getter__fillStyle :function _trc_Panel___getter__fillStyle() {
-        "use strict";
         var _this=this;
         
         return _this._fillStyle;
       },
       __setter__fillStyle :function _trc_Panel___setter__fillStyle(val) {
-        "use strict";
         var _this=this;
         
         _this._fillStyle=val;
@@ -24188,19 +22643,16 @@ Tonyu.klass.define({
         _this.context.fillStyle=val+"";
       },
       __setter__strokeStyle :function _trc_Panel___setter__strokeStyle(val) {
-        "use strict";
         var _this=this;
         
         _this.context.strokeStyle=val+"";
       },
       __setter__lineWidth :function _trc_Panel___setter__lineWidth(val) {
-        "use strict";
         var _this=this;
         
         _this.context.lineWidth=val;
       },
       fillCircle :function _trc_Panel_fillCircle(x,y,r) {
-        "use strict";
         var _this=this;
         var ctx;
         
@@ -24213,7 +22665,6 @@ Tonyu.klass.define({
         ctx.fill();
       },
       fiber$fillCircle :function* _trc_Panel_f_fillCircle(_thread,x,y,r) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -24228,7 +22679,6 @@ Tonyu.klass.define({
         
       },
       fillRect :function _trc_Panel_fillRect(x,y,w,h) {
-        "use strict";
         var _this=this;
         var ctx;
         
@@ -24237,7 +22687,6 @@ Tonyu.klass.define({
         ctx.fillRect(x,y,w,h);
       },
       fillText :function _trc_Panel_fillText(text,x,y,size,align,baseline) {
-        "use strict";
         var _this=this;
         var ctx;
         var splits;
@@ -24267,7 +22716,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       fiber$fillText :function* _trc_Panel_f_fillText(_thread,text,x,y,size,align,baseline) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -24299,7 +22747,6 @@ Tonyu.klass.define({
         
       },
       clearRect :function _trc_Panel_clearRect(clearX,clearY,clearW,clearH) {
-        "use strict";
         var _this=this;
         var ctx;
         
@@ -24313,7 +22760,6 @@ Tonyu.klass.define({
         }
       },
       fiber$clearRect :function* _trc_Panel_f_clearRect(_thread,clearX,clearY,clearW,clearH) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -24329,7 +22775,6 @@ Tonyu.klass.define({
         
       },
       getPixelColor :function _trc_Panel_getPixelColor(x,y) {
-        "use strict";
         var _this=this;
         var d;
         
@@ -24338,7 +22783,6 @@ Tonyu.klass.define({
         return new Tonyu.classes.kernel.Color(d[0],d[1],d[2],d[3]);
       },
       fiber$getPixelColor :function* _trc_Panel_f_getPixelColor(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var d;
@@ -24349,7 +22793,6 @@ Tonyu.klass.define({
         
       },
       getPixel :function _trc_Panel_getPixel(getX,getY) {
-        "use strict";
         var _this=this;
         var ctx;
         
@@ -24366,7 +22809,6 @@ Tonyu.klass.define({
         return (_this.colordata);
       },
       fiber$getPixel :function* _trc_Panel_f_getPixel(_thread,getX,getY) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -24385,7 +22827,6 @@ Tonyu.klass.define({
         
       },
       scroll :function _trc_Panel_scroll(scrollX,scrollY) {
-        "use strict";
         var _this=this;
         var ctx;
         
@@ -24398,7 +22839,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       fiber$scroll :function* _trc_Panel_f_scroll(_thread,scrollX,scrollY) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -24413,7 +22853,6 @@ Tonyu.klass.define({
         
       },
       draw :function _trc_Panel_draw(ctx) {
-        "use strict";
         var _this=this;
         var pImg;
         var r;
@@ -24431,7 +22870,6 @@ Tonyu.klass.define({
         }
       },
       drawSprite :function _trc_Panel_drawSprite(x,y,p,options) {
-        "use strict";
         var _this=this;
         var pImg;
         var scaleX;
@@ -24467,7 +22905,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       copy :function _trc_Panel_copy() {
-        "use strict";
         var _this=this;
         var sx;
         var sy;
@@ -24524,7 +22961,6 @@ Tonyu.klass.define({
         }
       },
       convert :function _trc_Panel_convert(obj,toLayer) {
-        "use strict";
         var _this=this;
         var fromLayer;
         var scaleY;
@@ -24611,7 +23047,6 @@ Tonyu.klass.define({
         }
       },
       fiber$convert :function* _trc_Panel_f_convert(_thread,obj,toLayer) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var fromLayer;
@@ -24700,7 +23135,6 @@ Tonyu.klass.define({
         
       },
       drawLine :function _trc_Panel_drawLine(x,y,dx,dy) {
-        "use strict";
         var _this=this;
         
         if (dx==null&&dy==null) {
@@ -24730,13 +23164,11 @@ Tonyu.klass.define({
         _this.context.stroke();
       },
       slicePattern :function _trc_Panel_slicePattern(x,y,width,height) {
-        "use strict";
         var _this=this;
         
         return {image: _this.canvas,x: x,y: y,width: width,height: height};
       },
       fiber$slicePattern :function* _trc_Panel_f_slicePattern(_thread,x,y,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -24744,14 +23176,12 @@ Tonyu.klass.define({
         
       },
       addPattern :function _trc_Panel_addPattern(x,y,width,height) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$imageList.push(_this.slicePattern(x,y,width,height));
         return Tonyu.globals.$imageList.length-1;
       },
       fiber$addPattern :function* _trc_Panel_f_addPattern(_thread,x,y,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -24760,13 +23190,11 @@ Tonyu.klass.define({
         
       },
       getImageData :function _trc_Panel_getImageData(x,y,width,height) {
-        "use strict";
         var _this=this;
         
         return _this.context.getImageData(x,y,width,height);
       },
       fiber$getImageData :function* _trc_Panel_f_getImageData(_thread,x,y,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -24774,13 +23202,11 @@ Tonyu.klass.define({
         
       },
       putImageData :function _trc_Panel_putImageData(data,x,y) {
-        "use strict";
         var _this=this;
         
         return _this.context.putImageData(data,x,y);
       },
       fiber$putImageData :function* _trc_Panel_f_putImageData(_thread,data,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -24788,7 +23214,6 @@ Tonyu.klass.define({
         
       },
       setAsText :function _trc_Panel_setAsText(text,options) {
-        "use strict";
         var _this=this;
         var padding;
         var f;
@@ -24850,7 +23275,6 @@ Tonyu.klass.define({
         
       },
       fiber$setAsText :function* _trc_Panel_f_setAsText(_thread,text,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var padding;
@@ -24914,19 +23338,16 @@ Tonyu.klass.define({
         
       },
       replace :function _trc_Panel_replace(x,y,width,height,replacement) {
-        "use strict";
         var _this=this;
         
       },
       fiber$replace :function* _trc_Panel_f_replace(_thread,x,y,width,height,replacement) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       save :function _trc_Panel_save(fn) {
-        "use strict";
         var _this=this;
         var url;
         
@@ -24938,7 +23359,6 @@ Tonyu.klass.define({
         return fn.text(url);
       },
       fiber$save :function* _trc_Panel_f_save(_thread,fn) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var url;
@@ -24952,7 +23372,6 @@ Tonyu.klass.define({
         
       },
       download :function _trc_Panel_download(filename) {
-        "use strict";
         var _this=this;
         var url;
         
@@ -24962,7 +23381,6 @@ Tonyu.klass.define({
         FS.Content.url(url).download(filename);
       },
       fiber$download :function* _trc_Panel_f_download(_thread,filename) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var url;
@@ -24974,7 +23392,6 @@ Tonyu.klass.define({
         
       },
       load :function _trc_Panel_load(fn) {
-        "use strict";
         var _this=this;
         var d;
         var url;
@@ -25009,7 +23426,6 @@ Tonyu.klass.define({
         return d.promise();
       },
       fiber$load :function* _trc_Panel_f_load(_thread,fn) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var d;
@@ -25046,7 +23462,6 @@ Tonyu.klass.define({
         
       },
       __setter__imageSmoothingEnabled :function _trc_Panel___setter__imageSmoothingEnabled(v) {
-        "use strict";
         var _this=this;
         var context;
         
@@ -25064,7 +23479,6 @@ Tonyu.klass.define({
         }
       },
       __getter__imageSmoothingEnabled :function _trc_Panel___getter__imageSmoothingEnabled() {
-        "use strict";
         var _this=this;
         var context;
         
@@ -25082,7 +23496,6 @@ Tonyu.klass.define({
         }
       },
       replaceColor :function _trc_Panel_replaceColor() {
-        "use strict";
         var _this=this;
         var a;
         var top;
@@ -25148,7 +23561,6 @@ Tonyu.klass.define({
         _this.putImageData(data,left,top);
       },
       fiber$replaceColor :function* _trc_Panel_f_replaceColor(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var a;
@@ -25229,19 +23641,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ScaledCanvas_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_ScaledCanvas_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_ScaledCanvas_initialize(opt) {
-        "use strict";
         var _this=this;
         
         _this.extend(opt);
@@ -25255,7 +23664,6 @@ Tonyu.klass.define({
         _this.isDrawGrid=Tonyu.globals.$Sprites.isDrawGrid;
       },
       resize :function _trc_ScaledCanvas_resize(width,height) {
-        "use strict";
         var _this=this;
         
         _this.width=width;
@@ -25279,7 +23687,6 @@ Tonyu.klass.define({
         }
       },
       fiber$resize :function* _trc_ScaledCanvas_f_resize(_thread,width,height) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -25305,7 +23712,6 @@ Tonyu.klass.define({
         
       },
       shouldDraw1x1 :function _trc_ScaledCanvas_shouldDraw1x1(srcw,srch,dstw,dsth) {
-        "use strict";
         var _this=this;
         var larger;
         var smaller;
@@ -25317,7 +23723,6 @@ Tonyu.klass.define({
         return srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;
       },
       fiber$shouldDraw1x1 :function* _trc_ScaledCanvas_f_shouldDraw1x1(_thread,srcw,srch,dstw,dsth) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var larger;
@@ -25331,7 +23736,6 @@ Tonyu.klass.define({
         
       },
       draw :function _trc_ScaledCanvas_draw() {
-        "use strict";
         var _this=this;
         var calcw;
         var calch;
@@ -25363,7 +23767,6 @@ Tonyu.klass.define({
         _this.cctx.drawImage(_this.buf[0],0,0,_this.width,_this.height,marginw,marginh,calcw,calch);
       },
       canvas2buf :function _trc_ScaledCanvas_canvas2buf(point) {
-        "use strict";
         var _this=this;
         var calcw;
         var calch;
@@ -25393,7 +23796,6 @@ Tonyu.klass.define({
         return {x: (point.x-marginw)/calcw*_this.width,y: (point.y-marginh)/calch*_this.height};
       },
       fiber$canvas2buf :function* _trc_ScaledCanvas_f_canvas2buf(_thread,point) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var calcw;
@@ -25425,13 +23827,11 @@ Tonyu.klass.define({
         
       },
       setBGColor :function _trc_ScaledCanvas_setBGColor(color) {
-        "use strict";
         var _this=this;
         
         _this._color=color;
       },
       fiber$setBGColor :function* _trc_ScaledCanvas_f_setBGColor(_thread,color) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -25439,7 +23839,6 @@ Tonyu.klass.define({
         
       },
       fillCanvas :function _trc_ScaledCanvas_fillCanvas(cv) {
-        "use strict";
         var _this=this;
         var ctx;
         
@@ -25454,7 +23853,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       fiber$fillCanvas :function* _trc_ScaledCanvas_f_fillCanvas(_thread,cv) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var ctx;
@@ -25471,13 +23869,11 @@ Tonyu.klass.define({
         
       },
       scrollTo :function _trc_ScaledCanvas_scrollTo(scrollX,scrollY) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$Sprites.scrollTo(scrollX,scrollY);
       },
       fiber$scrollTo :function* _trc_ScaledCanvas_f_scrollTo(_thread,scrollX,scrollY) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -25498,19 +23894,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Screen_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_Screen_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_Screen_initialize(opt) {
-        "use strict";
         var _this=this;
         
         _this.layers=[];
@@ -25519,7 +23912,6 @@ Tonyu.klass.define({
         __superClass.apply( _this, [opt]);
       },
       drawLayers :function _trc_Screen_drawLayers() {
-        "use strict";
         var _this=this;
         var c;
         var i;
@@ -25553,7 +23945,6 @@ Tonyu.klass.define({
         }
       },
       fiber$drawLayers :function* _trc_Screen_f_drawLayers(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var c;
@@ -25589,14 +23980,12 @@ Tonyu.klass.define({
         
       },
       draw :function _trc_Screen_draw(ctx) {
-        "use strict";
         var _this=this;
         
         _this.drawLayers();
         __superClass.prototype.draw.apply( _this, [ctx]);
       },
       addLayer :function _trc_Screen_addLayer(group,at) {
-        "use strict";
         var _this=this;
         var layer;
         
@@ -25625,7 +24014,6 @@ Tonyu.klass.define({
         return layer;
       },
       fiber$addLayer :function* _trc_Screen_f_addLayer(_thread,group,at) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var layer;
@@ -25656,7 +24044,6 @@ Tonyu.klass.define({
         
       },
       removeLayer :function _trc_Screen_removeLayer(i) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -25668,7 +24055,6 @@ Tonyu.klass.define({
         _this.layers.splice(r,1);
       },
       fiber$removeLayer :function* _trc_Screen_f_removeLayer(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -25682,7 +24068,6 @@ Tonyu.klass.define({
         
       },
       selectLayer :function _trc_Screen_selectLayer(i) {
-        "use strict";
         var _this=this;
         var r;
         
@@ -25693,7 +24078,6 @@ Tonyu.klass.define({
         }
       },
       fiber$selectLayer :function* _trc_Screen_f_selectLayer(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -25706,7 +24090,6 @@ Tonyu.klass.define({
         
       },
       findLayerIndex :function _trc_Screen_findLayerIndex(i) {
-        "use strict";
         var _this=this;
         var j;
         
@@ -25730,7 +24113,6 @@ Tonyu.klass.define({
         return - 1;
       },
       fiber$findLayerIndex :function* _trc_Screen_f_findLayerIndex(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var j;
@@ -25756,7 +24138,6 @@ Tonyu.klass.define({
         
       },
       findLayer :function _trc_Screen_findLayer(key) {
-        "use strict";
         var _this=this;
         var idx;
         
@@ -25768,7 +24149,6 @@ Tonyu.klass.define({
         return null;
       },
       fiber$findLayer :function* _trc_Screen_f_findLayer(_thread,key) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var idx;
@@ -25782,14 +24162,12 @@ Tonyu.klass.define({
         
       },
       setPivot :function _trc_Screen_setPivot(x,y) {
-        "use strict";
         var _this=this;
         
         _this.layers[_this.index].spx=x;
         _this.layers[_this.index].spy=y;
       },
       fiber$setPivot :function* _trc_Screen_f_setPivot(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -25798,7 +24176,6 @@ Tonyu.klass.define({
         
       },
       scrollTo :function _trc_Screen_scrollTo(x,y,scl,rot) {
-        "use strict";
         var _this=this;
         
         _this.layers[_this.index].wpx=x;
@@ -25811,7 +24188,6 @@ Tonyu.klass.define({
         }
       },
       fiber$scrollTo :function* _trc_Screen_f_scrollTo(_thread,x,y,scl,rot) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -25826,14 +24202,12 @@ Tonyu.klass.define({
         
       },
       canvas2buf :function _trc_Screen_canvas2buf(p) {
-        "use strict";
         var _this=this;
         
         p.layer=_this.layer;
         return _this.convert(p,_this);
       },
       fiber$canvas2buf :function* _trc_Screen_f_canvas2buf(_thread,p) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -25843,7 +24217,6 @@ Tonyu.klass.define({
         
       },
       convert :function _trc_Screen_convert(obj,toLayer) {
-        "use strict";
         var _this=this;
         var p;
         var l;
@@ -25893,7 +24266,6 @@ Tonyu.klass.define({
         }
       },
       fiber$convert :function* _trc_Screen_f_convert(_thread,obj,toLayer) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var p;
@@ -25946,13 +24318,11 @@ Tonyu.klass.define({
         
       },
       setBGColor :function _trc_Screen_setBGColor(color) {
-        "use strict";
         var _this=this;
         
         _this._color=color;
       },
       fiber$setBGColor :function* _trc_Screen_f_setBGColor(_thread,color) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -25960,7 +24330,6 @@ Tonyu.klass.define({
         
       },
       all :function _trc_Screen_all() {
-        "use strict";
         var _this=this;
         var res;
         var l;
@@ -25977,7 +24346,6 @@ Tonyu.klass.define({
         return res;
       },
       saveAndClear :function _trc_Screen_saveAndClear(excludes) {
-        "use strict";
         var _this=this;
         var res;
         var l;
@@ -25992,7 +24360,6 @@ Tonyu.klass.define({
         return {layers: res,multiLayerTouches: _this.multiLayerTouches&&_this.multiLayerTouches.saveAndClear()};
       },
       fiber$saveAndClear :function* _trc_Screen_f_saveAndClear(_thread,excludes) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -26009,7 +24376,6 @@ Tonyu.klass.define({
         
       },
       restore :function _trc_Screen_restore(saved) {
-        "use strict";
         var _this=this;
         var i;
         var l;
@@ -26027,7 +24393,6 @@ Tonyu.klass.define({
         }
       },
       fiber$restore :function* _trc_Screen_f_restore(_thread,saved) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -26047,7 +24412,6 @@ Tonyu.klass.define({
         
       },
       touchedFingers :function _trc_Screen_touchedFingers(q,options) {
-        "use strict";
         var _this=this;
         var res;
         var e;
@@ -26084,7 +24448,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$touchedFingers :function* _trc_Screen_f_touchedFingers(_thread,q,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -26136,14 +24499,12 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_KernelDemo_main() {
-        "use strict";
         var _this=this;
         
         new Tonyu.classes.kernel.Label({x: Tonyu.globals.$screenWidth/2,y: 0,text: "Tonyu System",size: 20});
         new Tonyu.classes.kernel.Actor({x: 0,y: 0,align: "left top",fillStyle: "red",width: 50,height: 50});
       },
       fiber$main :function* _trc_KernelDemo_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -26165,7 +24526,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_BodyActor_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -26176,7 +24536,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_BodyActor_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -26189,7 +24548,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_BodyActor_initialize(p) {
-        "use strict";
         var _this=this;
         
         if (typeof  Box2D==="undefined") {
@@ -26200,7 +24558,6 @@ Tonyu.klass.define({
         _this._th.on("end",Tonyu.bindFunc(_this,_this.initBody));
       },
       getWorld :function _trc_BodyActor_getWorld() {
-        "use strict";
         var _this=this;
         
         if (Tonyu.is(_this.world,Tonyu.classes.kernel.T2World)) {
@@ -26213,7 +24570,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2World;
       },
       fiber$getWorld :function* _trc_BodyActor_f_getWorld(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -26228,14 +24584,12 @@ Tonyu.klass.define({
         
       },
       update :function _trc_BodyActor_update() {
-        "use strict";
         var _this=this;
         
         _this.initBody();
         __superClass.prototype.update.apply( _this, []);
       },
       fiber$update :function* _trc_BodyActor_f_update(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -26244,7 +24598,6 @@ Tonyu.klass.define({
         
       },
       initBody :function _trc_BodyActor_initBody() {
-        "use strict";
         var _this=this;
         var wworld;
         var b2Vec2;
@@ -26356,7 +24709,6 @@ Tonyu.klass.define({
         return _this.body;
       },
       fiber$initBody :function* _trc_BodyActor_f_initBody(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var wworld;
@@ -26470,7 +24822,6 @@ Tonyu.klass.define({
         
       },
       allContactPoints :function _trc_BodyActor_allContactPoints(klass) {
-        "use strict";
         var _this=this;
         var res;
         var m;
@@ -26530,7 +24881,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$allContactPoints :function* _trc_BodyActor_f_allContactPoints(_thread,klass) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -26592,13 +24942,11 @@ Tonyu.klass.define({
         
       },
       contactPoint :function _trc_BodyActor_contactPoint(klass) {
-        "use strict";
         var _this=this;
         
         return _this.allContactPoints(klass)[0];
       },
       fiber$contactPoint :function* _trc_BodyActor_f_contactPoint(_thread,klass) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -26606,13 +24954,11 @@ Tonyu.klass.define({
         
       },
       allContact :function _trc_BodyActor_allContact(klass) {
-        "use strict";
         var _this=this;
         
         return _this.allContacts(klass);
       },
       fiber$allContact :function* _trc_BodyActor_f_allContact(_thread,klass) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -26621,7 +24967,6 @@ Tonyu.klass.define({
         
       },
       allContacts :function _trc_BodyActor_allContacts(klass) {
-        "use strict";
         var _this=this;
         var res;
         var c;
@@ -26663,7 +25008,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$allContacts :function* _trc_BodyActor_f_allContacts(_thread,klass) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -26707,7 +25051,6 @@ Tonyu.klass.define({
         
       },
       applyForce :function _trc_BodyActor_applyForce(fx,fy,px,py) {
-        "use strict";
         var _this=this;
         var b2Vec2;
         var scale;
@@ -26725,7 +25068,6 @@ Tonyu.klass.define({
         _this.body.ApplyForce(new b2Vec2(fx,fy),_this.body.GetPosition());
       },
       fiber$applyForce :function* _trc_BodyActor_f_applyForce(_thread,fx,fy,px,py) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var b2Vec2;
@@ -26745,7 +25087,6 @@ Tonyu.klass.define({
         
       },
       applyImpulse :function _trc_BodyActor_applyImpulse(fx,fy,px,py) {
-        "use strict";
         var _this=this;
         var b2Vec2;
         var scale;
@@ -26763,7 +25104,6 @@ Tonyu.klass.define({
         _this.body.ApplyImpulse(new b2Vec2(fx,fy),_this.body.GetPosition());
       },
       fiber$applyImpulse :function* _trc_BodyActor_f_applyImpulse(_thread,fx,fy,px,py) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var b2Vec2;
@@ -26783,7 +25123,6 @@ Tonyu.klass.define({
         
       },
       applyTorque :function _trc_BodyActor_applyTorque(a) {
-        "use strict";
         var _this=this;
         
         if (! _this.initBody()) {
@@ -26792,7 +25131,6 @@ Tonyu.klass.define({
         _this.body.ApplyTorque(a);
       },
       fiber$applyTorque :function* _trc_BodyActor_f_applyTorque(_thread,a) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -26803,7 +25141,6 @@ Tonyu.klass.define({
         
       },
       moveBy :function _trc_BodyActor_moveBy(dx,dy) {
-        "use strict";
         var _this=this;
         var pos;
         
@@ -26817,7 +25154,6 @@ Tonyu.klass.define({
         _this.body.SetPosition(pos);
       },
       fiber$moveBy :function* _trc_BodyActor_f_moveBy(_thread,dx,dy) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var pos;
@@ -26833,13 +25169,11 @@ Tonyu.klass.define({
         
       },
       contactTo :function _trc_BodyActor_contactTo(t) {
-        "use strict";
         var _this=this;
         
         return _this.allContact(t)[0];
       },
       fiber$contactTo :function* _trc_BodyActor_f_contactTo(_thread,t) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -26847,7 +25181,6 @@ Tonyu.klass.define({
         
       },
       die :function _trc_BodyActor_die() {
-        "use strict";
         var _this=this;
         
         __superClass.prototype.die.apply( _this, []);
@@ -26856,7 +25189,6 @@ Tonyu.klass.define({
         }
       },
       addRevoluteJoint :function _trc_BodyActor_addRevoluteJoint(params) {
-        "use strict";
         var _this=this;
         var px;
         var py;
@@ -26919,7 +25251,6 @@ Tonyu.klass.define({
         b2world.CreateJoint(jd);
       },
       fiber$addRevoluteJoint :function* _trc_BodyActor_f_addRevoluteJoint(_thread,params) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var px;
@@ -26984,7 +25315,6 @@ Tonyu.klass.define({
         
       },
       __getter__rotation :function _trc_BodyActor___getter__rotation() {
-        "use strict";
         var _this=this;
         
         if (! _this.body||_this.manualRotation) {
@@ -26993,7 +25323,6 @@ Tonyu.klass.define({
         return _this.deg(_this.body.GetAngle());
       },
       __setter__rotation :function _trc_BodyActor___setter__rotation(r) {
-        "use strict";
         var _this=this;
         
         r=r||0;
@@ -27003,7 +25332,6 @@ Tonyu.klass.define({
         _this.body.SetAngle(_this.rad(r));
       },
       __getter__x :function _trc_BodyActor___getter__x() {
-        "use strict";
         var _this=this;
         var pos;
         
@@ -27015,7 +25343,6 @@ Tonyu.klass.define({
         return pos.x*_this.wscale;
       },
       __setter__x :function _trc_BodyActor___setter__x(v) {
-        "use strict";
         var _this=this;
         var pos;
         
@@ -27029,7 +25356,6 @@ Tonyu.klass.define({
         _this.body.SetPosition(pos);
       },
       __getter__y :function _trc_BodyActor___getter__y() {
-        "use strict";
         var _this=this;
         var pos;
         
@@ -27041,7 +25367,6 @@ Tonyu.klass.define({
         return pos.y*_this.wscale;
       },
       __setter__y :function _trc_BodyActor___setter__y(v) {
-        "use strict";
         var _this=this;
         var pos;
         
@@ -27055,7 +25380,6 @@ Tonyu.klass.define({
         _this.body.SetPosition(pos);
       },
       __getter__vx :function _trc_BodyActor___getter__vx() {
-        "use strict";
         var _this=this;
         var v;
         
@@ -27067,7 +25391,6 @@ Tonyu.klass.define({
         return v.x*_this.wscale/_this.getWorld().fps;
       },
       __setter__vx :function _trc_BodyActor___setter__vx(v) {
-        "use strict";
         var _this=this;
         var ve;
         
@@ -27084,7 +25407,6 @@ Tonyu.klass.define({
         _this.body.SetLinearVelocity(ve);
       },
       __getter__vy :function _trc_BodyActor___getter__vy() {
-        "use strict";
         var _this=this;
         var v;
         
@@ -27096,7 +25418,6 @@ Tonyu.klass.define({
         return v.y*_this.wscale/_this.getWorld().fps;
       },
       __setter__vy :function _trc_BodyActor___setter__vy(v) {
-        "use strict";
         var _this=this;
         var ve;
         
@@ -27112,7 +25433,6 @@ Tonyu.klass.define({
         _this.body.SetLinearVelocity(ve);
       },
       __getter__vrotation :function _trc_BodyActor___getter__vrotation() {
-        "use strict";
         var _this=this;
         
         if (! _this.body) {
@@ -27121,7 +25441,6 @@ Tonyu.klass.define({
         return _this.deg(_this.body.GetAngularVelocity()/_this.getWorld().fps);
       },
       __setter__vrotation :function _trc_BodyActor___setter__vrotation(v) {
-        "use strict";
         var _this=this;
         
         if (! _this.body) {
@@ -27147,12 +25466,10 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T2Body_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_T2Body_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27172,19 +25489,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T2World_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_T2World_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       onAppear :function _trc_T2World_onAppear() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$currentProject.requestPlugin("box2d");
@@ -27192,7 +25506,6 @@ Tonyu.klass.define({
         _this.parallel(Tonyu.bindFunc(_this,_this.loop));
       },
       fiber$onAppear :function* _trc_T2World_f_onAppear(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27202,7 +25515,6 @@ Tonyu.klass.define({
         
       },
       initWorld :function _trc_T2World_initWorld() {
-        "use strict";
         var _this=this;
         var b2World;
         var b2Vec2;
@@ -27225,7 +25537,6 @@ Tonyu.klass.define({
         _this.on("die",Tonyu.bindFunc(_this,_this.releaseWorld));
       },
       fiber$initWorld :function* _trc_T2World_f_initWorld(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var b2World;
@@ -27250,7 +25561,6 @@ Tonyu.klass.define({
         
       },
       releaseWorld :function _trc_T2World_releaseWorld() {
-        "use strict";
         var _this=this;
         
         if (Tonyu.globals.$t2World===_this) {
@@ -27258,7 +25568,6 @@ Tonyu.klass.define({
         }
       },
       fiber$releaseWorld :function* _trc_T2World_f_releaseWorld(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27268,7 +25577,6 @@ Tonyu.klass.define({
         
       },
       loop :function _trc_T2World_loop() {
-        "use strict";
         var _this=this;
         
         while (true) {
@@ -27280,7 +25588,6 @@ Tonyu.klass.define({
         }
       },
       fiber$loop :function* _trc_T2World_f_loop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27294,7 +25601,6 @@ Tonyu.klass.define({
         
       },
       updatePos :function _trc_T2World_updatePos() {
-        "use strict";
         var _this=this;
         var b;
         var d;
@@ -27311,7 +25617,6 @@ Tonyu.klass.define({
         }
       },
       fiber$updatePos :function* _trc_T2World_f_updatePos(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var b;
@@ -27343,25 +25648,21 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T2MediaPlayer_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_T2MediaPlayer_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_T2MediaPlayer_initialize() {
-        "use strict";
         var _this=this;
         
         _this.initT2MediaPlayer();
       },
       initT2MediaPlayer :function _trc_T2MediaPlayer_initT2MediaPlayer() {
-        "use strict";
         var _this=this;
         
         if (! Tonyu.globals.$t2MediaLib) {
@@ -27372,7 +25673,6 @@ Tonyu.klass.define({
         _this.bgmPlayerMax=Tonyu.globals.$t2MediaLib.bgmPlayerMax;
       },
       fiber$initT2MediaPlayer :function* _trc_T2MediaPlayer_f_initT2MediaPlayer(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27385,14 +25685,12 @@ Tonyu.klass.define({
         
       },
       allClearSoundData :function _trc_T2MediaPlayer_allClearSoundData() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$t2MediaLib.allResetBGM();
         Tonyu.globals.$t2MediaLib.allClearSoundData();
       },
       fiber$allClearSoundData :function* _trc_T2MediaPlayer_f_allClearSoundData(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27401,13 +25699,11 @@ Tonyu.klass.define({
         
       },
       clearSoundData :function _trc_T2MediaPlayer_clearSoundData(idx) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$t2MediaLib.clearSoundData(idx);
       },
       fiber$clearSoundData :function* _trc_T2MediaPlayer_f_clearSoundData(_thread,idx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27415,13 +25711,11 @@ Tonyu.klass.define({
         
       },
       allRemoveDecodedSoundData :function _trc_T2MediaPlayer_allRemoveDecodedSoundData() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$t2MediaLib.allRemoveDecodedSoundData();
       },
       fiber$allRemoveDecodedSoundData :function* _trc_T2MediaPlayer_f_allRemoveDecodedSoundData(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27429,13 +25723,11 @@ Tonyu.klass.define({
         
       },
       removeDecodedSoundData :function _trc_T2MediaPlayer_removeDecodedSoundData(idx) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$t2MediaLib.removeDecodedSoundData(idx);
       },
       fiber$removeDecodedSoundData :function* _trc_T2MediaPlayer_f_removeDecodedSoundData(_thread,idx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27443,13 +25735,11 @@ Tonyu.klass.define({
         
       },
       getMasterVolume :function _trc_T2MediaPlayer_getMasterVolume() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getMasterVolume()*128;
       },
       fiber$getMasterVolume :function* _trc_T2MediaPlayer_f_getMasterVolume(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27457,7 +25747,6 @@ Tonyu.klass.define({
         
       },
       setMasterVolume :function _trc_T2MediaPlayer_setMasterVolume(vol) {
-        "use strict";
         var _this=this;
         
         if (typeof  vol==="number") {
@@ -27473,7 +25762,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.setMasterVolume(vol);
       },
       fiber$setMasterVolume :function* _trc_T2MediaPlayer_f_setMasterVolume(_thread,vol) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27491,7 +25779,6 @@ Tonyu.klass.define({
         
       },
       loadSound :function _trc_T2MediaPlayer_loadSound(idx,src,callbacks) {
-        "use strict";
         var _this=this;
         var isLoadAndDecode;
         
@@ -27500,7 +25787,6 @@ Tonyu.klass.define({
         Tonyu.globals.$t2MediaLib.loadSound(idx,src,callbacks,isLoadAndDecode);
       },
       fiber$loadSound :function* _trc_T2MediaPlayer_f_loadSound(_thread,idx,src,callbacks) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var isLoadAndDecode;
@@ -27511,13 +25797,11 @@ Tonyu.klass.define({
         
       },
       __getter__available :function _trc_T2MediaPlayer___getter__available() {
-        "use strict";
         var _this=this;
         
         return ! ! Tonyu.globals.$t2MediaLib.context;
       },
       loadFromProject :function _trc_T2MediaPlayer_loadFromProject(prj) {
-        "use strict";
         var _this=this;
         var r;
         var jobs;
@@ -27615,7 +25899,6 @@ Tonyu.klass.define({
         }
       },
       fiber$loadFromProject :function* _trc_T2MediaPlayer_f_loadFromProject(_thread,prj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var r;
@@ -27715,13 +25998,11 @@ Tonyu.klass.define({
         
       },
       decodeSound :function _trc_T2MediaPlayer_decodeSound(idx,callbacks) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$t2MediaLib.decodeSound(idx,callbacks);
       },
       fiber$decodeSound :function* _trc_T2MediaPlayer_f_decodeSound(_thread,idx,callbacks) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27729,13 +26010,11 @@ Tonyu.klass.define({
         
       },
       getSoundFileData :function _trc_T2MediaPlayer_getSoundFileData(idx) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getSoundFileData(idx);
       },
       fiber$getSoundFileData :function* _trc_T2MediaPlayer_f_getSoundFileData(_thread,idx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27743,13 +26022,11 @@ Tonyu.klass.define({
         
       },
       getSoundDecodedData :function _trc_T2MediaPlayer_getSoundDecodedData(idx) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getSoundDecodedData(idx);
       },
       fiber$getSoundDecodedData :function* _trc_T2MediaPlayer_f_getSoundDecodedData(_thread,idx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27757,13 +26034,11 @@ Tonyu.klass.define({
         
       },
       getCurrentTime :function _trc_T2MediaPlayer_getCurrentTime() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getCurrentTime();
       },
       fiber$getCurrentTime :function* _trc_T2MediaPlayer_f_getCurrentTime(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27771,13 +26046,11 @@ Tonyu.klass.define({
         
       },
       getContext :function _trc_T2MediaPlayer_getContext() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.context;
       },
       fiber$getContext :function* _trc_T2MediaPlayer_f_getContext(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27785,7 +26058,6 @@ Tonyu.klass.define({
         
       },
       playSE :function _trc_T2MediaPlayer_playSE(idx,vol,pan,rate,offset,loop,loopStart,loopEnd,start,duration) {
-        "use strict";
         var _this=this;
         var o;
         
@@ -27826,13 +26098,11 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.playSE(idx,vol,pan,rate,offset,loop,loopStart,loopEnd,start,duration);
       },
       stopSE :function _trc_T2MediaPlayer_stopSE(sourceObj) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.stopSE(sourceObj);
       },
       fiber$stopSE :function* _trc_T2MediaPlayer_f_stopSE(_thread,sourceObj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27840,13 +26110,11 @@ Tonyu.klass.define({
         
       },
       stopAllSE :function _trc_T2MediaPlayer_stopAllSE() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.stopAllSE();
       },
       fiber$stopAllSE :function* _trc_T2MediaPlayer_f_stopAllSE(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27854,13 +26122,11 @@ Tonyu.klass.define({
         
       },
       getSEMasterVolume :function _trc_T2MediaPlayer_getSEMasterVolume() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getSEMasterVolume()*128;
       },
       fiber$getSEMasterVolume :function* _trc_T2MediaPlayer_f_getSEMasterVolume(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27868,7 +26134,6 @@ Tonyu.klass.define({
         
       },
       setSEMasterVolume :function _trc_T2MediaPlayer_setSEMasterVolume(vol) {
-        "use strict";
         var _this=this;
         
         if (typeof  vol==="number") {
@@ -27884,7 +26149,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.setSEMasterVolume(vol);
       },
       fiber$setSEMasterVolume :function* _trc_T2MediaPlayer_f_setSEMasterVolume(_thread,vol) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27902,7 +26166,6 @@ Tonyu.klass.define({
         
       },
       getSEVolume :function _trc_T2MediaPlayer_getSEVolume(sourceObj) {
-        "use strict";
         var _this=this;
         var vol;
         
@@ -27911,7 +26174,6 @@ Tonyu.klass.define({
         return typeof  vol==="number"?vol*128:vol;
       },
       fiber$getSEVolume :function* _trc_T2MediaPlayer_f_getSEVolume(_thread,sourceObj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var vol;
@@ -27922,7 +26184,6 @@ Tonyu.klass.define({
         
       },
       setSEVolume :function _trc_T2MediaPlayer_setSEVolume(sourceObj,vol) {
-        "use strict";
         var _this=this;
         
         if (typeof  vol==="number") {
@@ -27938,7 +26199,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.setSEVolume(sourceObj,vol);
       },
       fiber$setSEVolume :function* _trc_T2MediaPlayer_f_setSEVolume(_thread,sourceObj,vol) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27956,13 +26216,11 @@ Tonyu.klass.define({
         
       },
       getSERate :function _trc_T2MediaPlayer_getSERate(sourceObj) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getSERate(sourceObj);
       },
       fiber$getSERate :function* _trc_T2MediaPlayer_f_getSERate(_thread,sourceObj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27970,13 +26228,11 @@ Tonyu.klass.define({
         
       },
       setSERate :function _trc_T2MediaPlayer_setSERate(sourceObj,rate) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setSERate(sourceObj,rate);
       },
       fiber$setSERate :function* _trc_T2MediaPlayer_f_setSERate(_thread,sourceObj,rate) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27984,13 +26240,11 @@ Tonyu.klass.define({
         
       },
       getSEPan :function _trc_T2MediaPlayer_getSEPan(sourceObj) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getSEPan(sourceObj);
       },
       fiber$getSEPan :function* _trc_T2MediaPlayer_f_getSEPan(_thread,sourceObj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -27998,13 +26252,11 @@ Tonyu.klass.define({
         
       },
       setSEPan :function _trc_T2MediaPlayer_setSEPan(sourceObj,pan) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setSEPan(sourceObj,pan);
       },
       fiber$setSEPan :function* _trc_T2MediaPlayer_f_setSEPan(_thread,sourceObj,pan) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28012,13 +26264,11 @@ Tonyu.klass.define({
         
       },
       isSELoop :function _trc_T2MediaPlayer_isSELoop(sourceObj) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.isSELoop(sourceObj);
       },
       fiber$isSELoop :function* _trc_T2MediaPlayer_f_isSELoop(_thread,sourceObj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28026,13 +26276,11 @@ Tonyu.klass.define({
         
       },
       setSELoop :function _trc_T2MediaPlayer_setSELoop(sourceObj,loop) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setSELoop(sourceObj,loop);
       },
       fiber$setSELoop :function* _trc_T2MediaPlayer_f_setSELoop(_thread,sourceObj,loop) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28040,13 +26288,11 @@ Tonyu.klass.define({
         
       },
       getSELoopStartTime :function _trc_T2MediaPlayer_getSELoopStartTime(sourceObj) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getSELoopStartTime(sourceObj);
       },
       fiber$getSELoopStartTime :function* _trc_T2MediaPlayer_f_getSELoopStartTime(_thread,sourceObj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28054,13 +26300,11 @@ Tonyu.klass.define({
         
       },
       setSELoopStartTime :function _trc_T2MediaPlayer_setSELoopStartTime(sourceObj,loopStart) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setSELoopStartTime(sourceObj,loopStart);
       },
       fiber$setSELoopStartTime :function* _trc_T2MediaPlayer_f_setSELoopStartTime(_thread,sourceObj,loopStart) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28068,13 +26312,11 @@ Tonyu.klass.define({
         
       },
       getSELoopEndTime :function _trc_T2MediaPlayer_getSELoopEndTime(sourceObj) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getSELoopEndTime(sourceObj);
       },
       fiber$getSELoopEndTime :function* _trc_T2MediaPlayer_f_getSELoopEndTime(_thread,sourceObj) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28082,13 +26324,11 @@ Tonyu.klass.define({
         
       },
       setSELoopEndTime :function _trc_T2MediaPlayer_setSELoopEndTime(sourceObj,loopEnd) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setSELoopEndTime(sourceObj,loopEnd);
       },
       fiber$setSELoopEndTime :function* _trc_T2MediaPlayer_f_setSELoopEndTime(_thread,sourceObj,loopEnd) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28096,7 +26336,6 @@ Tonyu.klass.define({
         
       },
       playBGM :function _trc_T2MediaPlayer_playBGM(idx,loop,offset,loopStart,loopEnd) {
-        "use strict";
         var _this=this;
         
         if (_this.mute) {
@@ -28111,7 +26350,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.playBGM(0,idx,loop,offset,loopStart,loopEnd);
       },
       fiber$playBGM :function* _trc_T2MediaPlayer_f_playBGM(_thread,idx,loop,offset,loopStart,loopEnd) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28128,13 +26366,11 @@ Tonyu.klass.define({
         
       },
       stopBGM :function _trc_T2MediaPlayer_stopBGM() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.stopBGM(0);
       },
       fiber$stopBGM :function* _trc_T2MediaPlayer_f_stopBGM(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28142,13 +26378,11 @@ Tonyu.klass.define({
         
       },
       pauseBGM :function _trc_T2MediaPlayer_pauseBGM() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.pauseBGM(0);
       },
       fiber$pauseBGM :function* _trc_T2MediaPlayer_f_pauseBGM(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28156,7 +26390,6 @@ Tonyu.klass.define({
         
       },
       resumeBGM :function _trc_T2MediaPlayer_resumeBGM() {
-        "use strict";
         var _this=this;
         
         if (_this.mute) {
@@ -28165,7 +26398,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.resumeBGM(0);
       },
       fiber$resumeBGM :function* _trc_T2MediaPlayer_f_resumeBGM(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28176,13 +26408,11 @@ Tonyu.klass.define({
         
       },
       getBGMMasterVolume :function _trc_T2MediaPlayer_getBGMMasterVolume() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMMasterVolume()*128;
       },
       fiber$getBGMMasterVolume :function* _trc_T2MediaPlayer_f_getBGMMasterVolume(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28190,7 +26420,6 @@ Tonyu.klass.define({
         
       },
       setBGMMasterVolume :function _trc_T2MediaPlayer_setBGMMasterVolume(vol) {
-        "use strict";
         var _this=this;
         
         if (typeof  vol==="number") {
@@ -28206,7 +26435,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.setBGMMasterVolume(vol);
       },
       fiber$setBGMMasterVolume :function* _trc_T2MediaPlayer_f_setBGMMasterVolume(_thread,vol) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28224,7 +26452,6 @@ Tonyu.klass.define({
         
       },
       getBGMVolume :function _trc_T2MediaPlayer_getBGMVolume() {
-        "use strict";
         var _this=this;
         var vol;
         
@@ -28233,7 +26460,6 @@ Tonyu.klass.define({
         return typeof  vol==="number"?vol*128:vol;
       },
       fiber$getBGMVolume :function* _trc_T2MediaPlayer_f_getBGMVolume(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var vol;
@@ -28244,7 +26470,6 @@ Tonyu.klass.define({
         
       },
       setBGMVolume :function _trc_T2MediaPlayer_setBGMVolume(vol) {
-        "use strict";
         var _this=this;
         
         if (typeof  vol==="number") {
@@ -28260,7 +26485,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.setBGMVolume(0,vol);
       },
       fiber$setBGMVolume :function* _trc_T2MediaPlayer_f_setBGMVolume(_thread,vol) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28278,13 +26502,11 @@ Tonyu.klass.define({
         
       },
       getBGMTempo :function _trc_T2MediaPlayer_getBGMTempo() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMTempo(0);
       },
       fiber$getBGMTempo :function* _trc_T2MediaPlayer_f_getBGMTempo(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28292,13 +26514,11 @@ Tonyu.klass.define({
         
       },
       setBGMTempo :function _trc_T2MediaPlayer_setBGMTempo(tempo) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setBGMTempo(0,tempo);
       },
       fiber$setBGMTempo :function* _trc_T2MediaPlayer_f_setBGMTempo(_thread,tempo) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28306,13 +26526,11 @@ Tonyu.klass.define({
         
       },
       getBGMPan :function _trc_T2MediaPlayer_getBGMPan() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMPan(0);
       },
       fiber$getBGMPan :function* _trc_T2MediaPlayer_f_getBGMPan(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28320,13 +26538,11 @@ Tonyu.klass.define({
         
       },
       setBGMPan :function _trc_T2MediaPlayer_setBGMPan(pan) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setBGMPan(0,pan);
       },
       fiber$setBGMPan :function* _trc_T2MediaPlayer_f_setBGMPan(_thread,pan) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28334,13 +26550,11 @@ Tonyu.klass.define({
         
       },
       isBGMLoop :function _trc_T2MediaPlayer_isBGMLoop() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.isBGMLoop(0);
       },
       fiber$isBGMLoop :function* _trc_T2MediaPlayer_f_isBGMLoop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28348,13 +26562,11 @@ Tonyu.klass.define({
         
       },
       setBGMLoop :function _trc_T2MediaPlayer_setBGMLoop(loop) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setBGMLoop(0,loop);
       },
       fiber$setBGMLoop :function* _trc_T2MediaPlayer_f_setBGMLoop(_thread,loop) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28362,13 +26574,11 @@ Tonyu.klass.define({
         
       },
       getBGMLoopStartTime :function _trc_T2MediaPlayer_getBGMLoopStartTime() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMLoopStartTime(0);
       },
       fiber$getBGMLoopStartTime :function* _trc_T2MediaPlayer_f_getBGMLoopStartTime(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28376,13 +26586,11 @@ Tonyu.klass.define({
         
       },
       setBGMLoopStartTime :function _trc_T2MediaPlayer_setBGMLoopStartTime(loopStart) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setBGMLoopStartTime(0,loopStart);
       },
       fiber$setBGMLoopStartTime :function* _trc_T2MediaPlayer_f_setBGMLoopStartTime(_thread,loopStart) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28390,13 +26598,11 @@ Tonyu.klass.define({
         
       },
       getBGMLoopEndTime :function _trc_T2MediaPlayer_getBGMLoopEndTime() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMLoopEndTime(0);
       },
       fiber$getBGMLoopEndTime :function* _trc_T2MediaPlayer_f_getBGMLoopEndTime(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28404,13 +26610,11 @@ Tonyu.klass.define({
         
       },
       setBGMLoopEndTime :function _trc_T2MediaPlayer_setBGMLoopEndTime(loopEnd) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setBGMLoopEndTime(0,loopEnd);
       },
       fiber$setBGMLoopEndTime :function* _trc_T2MediaPlayer_f_setBGMLoopEndTime(_thread,loopEnd) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28418,13 +26622,11 @@ Tonyu.klass.define({
         
       },
       getBGMCurrentTime :function _trc_T2MediaPlayer_getBGMCurrentTime() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMCurrentTime(0);
       },
       fiber$getBGMCurrentTime :function* _trc_T2MediaPlayer_f_getBGMCurrentTime(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28432,13 +26634,11 @@ Tonyu.klass.define({
         
       },
       getBGMLength :function _trc_T2MediaPlayer_getBGMLength() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMLength(0);
       },
       fiber$getBGMLength :function* _trc_T2MediaPlayer_f_getBGMLength(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28446,13 +26646,11 @@ Tonyu.klass.define({
         
       },
       getPlayingBGMName :function _trc_T2MediaPlayer_getPlayingBGMName() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getPlayingBGMName(0);
       },
       fiber$getPlayingBGMName :function* _trc_T2MediaPlayer_f_getPlayingBGMName(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28460,13 +26658,11 @@ Tonyu.klass.define({
         
       },
       setOnBGMEndListener :function _trc_T2MediaPlayer_setOnBGMEndListener() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setOnBGMEndListener(0);
       },
       fiber$setOnBGMEndListener :function* _trc_T2MediaPlayer_f_setOnBGMEndListener(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28474,13 +26670,11 @@ Tonyu.klass.define({
         
       },
       getPlayingBGMState :function _trc_T2MediaPlayer_getPlayingBGMState() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getPlayingBGMState(0);
       },
       fiber$getPlayingBGMState :function* _trc_T2MediaPlayer_f_getPlayingBGMState(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28488,13 +26682,11 @@ Tonyu.klass.define({
         
       },
       getBGMPicoAudio :function _trc_T2MediaPlayer_getBGMPicoAudio() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMPicoAudio(0);
       },
       fiber$getBGMPicoAudio :function* _trc_T2MediaPlayer_f_getBGMPicoAudio(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28502,13 +26694,11 @@ Tonyu.klass.define({
         
       },
       isTagLoop :function _trc_T2MediaPlayer_isTagLoop() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.isTagLoop(0);
       },
       fiber$isTagLoop :function* _trc_T2MediaPlayer_f_isTagLoop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28516,13 +26706,11 @@ Tonyu.klass.define({
         
       },
       setTagLoop :function _trc_T2MediaPlayer_setTagLoop(isTagLoop) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setTagLoop(0,isTagLoop);
       },
       fiber$setTagLoop :function* _trc_T2MediaPlayer_f_setTagLoop(_thread,isTagLoop) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28530,13 +26718,11 @@ Tonyu.klass.define({
         
       },
       getBGMPlayerMax :function _trc_T2MediaPlayer_getBGMPlayerMax() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMPlayerMax();
       },
       fiber$getBGMPlayerMax :function* _trc_T2MediaPlayer_f_getBGMPlayerMax(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28544,13 +26730,11 @@ Tonyu.klass.define({
         
       },
       allStopBGM :function _trc_T2MediaPlayer_allStopBGM() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$t2MediaLib.allStopBGM();
       },
       fiber$allStopBGM :function* _trc_T2MediaPlayer_f_allStopBGM(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28558,13 +26742,11 @@ Tonyu.klass.define({
         
       },
       allResetBGM :function _trc_T2MediaPlayer_allResetBGM() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$t2MediaLib.allResetBGM();
       },
       fiber$allResetBGM :function* _trc_T2MediaPlayer_f_allResetBGM(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28572,7 +26754,6 @@ Tonyu.klass.define({
         
       },
       playBGMID :function _trc_T2MediaPlayer_playBGMID(id,idx,loop,offset,loopStart,loopEnd) {
-        "use strict";
         var _this=this;
         
         if (_this.mute) {
@@ -28587,7 +26768,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.playBGM(id,idx,loop,offset,loopStart,loopEnd);
       },
       fiber$playBGMID :function* _trc_T2MediaPlayer_f_playBGMID(_thread,id,idx,loop,offset,loopStart,loopEnd) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28604,13 +26784,11 @@ Tonyu.klass.define({
         
       },
       stopBGMID :function _trc_T2MediaPlayer_stopBGMID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.stopBGM(id);
       },
       fiber$stopBGMID :function* _trc_T2MediaPlayer_f_stopBGMID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28618,13 +26796,11 @@ Tonyu.klass.define({
         
       },
       pauseBGMID :function _trc_T2MediaPlayer_pauseBGMID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.pauseBGM(id);
       },
       fiber$pauseBGMID :function* _trc_T2MediaPlayer_f_pauseBGMID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28632,7 +26808,6 @@ Tonyu.klass.define({
         
       },
       resumeBGMID :function _trc_T2MediaPlayer_resumeBGMID(id) {
-        "use strict";
         var _this=this;
         
         if (_this.mute) {
@@ -28641,7 +26816,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.resumeBGM(id);
       },
       fiber$resumeBGMID :function* _trc_T2MediaPlayer_f_resumeBGMID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28652,7 +26826,6 @@ Tonyu.klass.define({
         
       },
       getBGMVolumeID :function _trc_T2MediaPlayer_getBGMVolumeID(id) {
-        "use strict";
         var _this=this;
         var vol;
         
@@ -28661,7 +26834,6 @@ Tonyu.klass.define({
         return typeof  vol==="number"?vol*128:vol;
       },
       fiber$getBGMVolumeID :function* _trc_T2MediaPlayer_f_getBGMVolumeID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var vol;
@@ -28672,7 +26844,6 @@ Tonyu.klass.define({
         
       },
       setBGMVolumeID :function _trc_T2MediaPlayer_setBGMVolumeID(id,vol) {
-        "use strict";
         var _this=this;
         
         if (typeof  vol==="number") {
@@ -28688,7 +26859,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.setBGMVolume(id,vol);
       },
       fiber$setBGMVolumeID :function* _trc_T2MediaPlayer_f_setBGMVolumeID(_thread,id,vol) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28706,13 +26876,11 @@ Tonyu.klass.define({
         
       },
       getBGMTempoID :function _trc_T2MediaPlayer_getBGMTempoID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMTempo(id);
       },
       fiber$getBGMTempoID :function* _trc_T2MediaPlayer_f_getBGMTempoID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28720,13 +26888,11 @@ Tonyu.klass.define({
         
       },
       setBGMTempoID :function _trc_T2MediaPlayer_setBGMTempoID(id,tempo) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setBGMTempo(id,tempo);
       },
       fiber$setBGMTempoID :function* _trc_T2MediaPlayer_f_setBGMTempoID(_thread,id,tempo) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28734,13 +26900,11 @@ Tonyu.klass.define({
         
       },
       getBGMPanID :function _trc_T2MediaPlayer_getBGMPanID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMPan(id);
       },
       fiber$getBGMPanID :function* _trc_T2MediaPlayer_f_getBGMPanID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28748,13 +26912,11 @@ Tonyu.klass.define({
         
       },
       setBGMPanID :function _trc_T2MediaPlayer_setBGMPanID(id,pan) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setBGMPan(id,pan);
       },
       fiber$setBGMPanID :function* _trc_T2MediaPlayer_f_setBGMPanID(_thread,id,pan) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28762,13 +26924,11 @@ Tonyu.klass.define({
         
       },
       isBGMLoopID :function _trc_T2MediaPlayer_isBGMLoopID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.isBGMLoop(id);
       },
       fiber$isBGMLoopID :function* _trc_T2MediaPlayer_f_isBGMLoopID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28776,13 +26936,11 @@ Tonyu.klass.define({
         
       },
       setBGMLoopID :function _trc_T2MediaPlayer_setBGMLoopID(id,loop) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setBGMLoop(id,loop);
       },
       fiber$setBGMLoopID :function* _trc_T2MediaPlayer_f_setBGMLoopID(_thread,id,loop) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28790,13 +26948,11 @@ Tonyu.klass.define({
         
       },
       getBGMLoopStartTimeID :function _trc_T2MediaPlayer_getBGMLoopStartTimeID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMLoopStartTime(id);
       },
       fiber$getBGMLoopStartTimeID :function* _trc_T2MediaPlayer_f_getBGMLoopStartTimeID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28804,13 +26960,11 @@ Tonyu.klass.define({
         
       },
       setBGMLoopStartTimeID :function _trc_T2MediaPlayer_setBGMLoopStartTimeID(id,loopStart) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setBGMLoopStartTime(id,loopStart);
       },
       fiber$setBGMLoopStartTimeID :function* _trc_T2MediaPlayer_f_setBGMLoopStartTimeID(_thread,id,loopStart) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28818,13 +26972,11 @@ Tonyu.klass.define({
         
       },
       getBGMLoopEndTimeID :function _trc_T2MediaPlayer_getBGMLoopEndTimeID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMLoopEndTime(id);
       },
       fiber$getBGMLoopEndTimeID :function* _trc_T2MediaPlayer_f_getBGMLoopEndTimeID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28832,13 +26984,11 @@ Tonyu.klass.define({
         
       },
       setBGMLoopEndTimeID :function _trc_T2MediaPlayer_setBGMLoopEndTimeID(id,loopEnd) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setBGMLoopEndTime(id,loopEnd);
       },
       fiber$setBGMLoopEndTimeID :function* _trc_T2MediaPlayer_f_setBGMLoopEndTimeID(_thread,id,loopEnd) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28846,13 +26996,11 @@ Tonyu.klass.define({
         
       },
       getBGMCurrentTimeID :function _trc_T2MediaPlayer_getBGMCurrentTimeID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMCurrentTime(id);
       },
       fiber$getBGMCurrentTimeID :function* _trc_T2MediaPlayer_f_getBGMCurrentTimeID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28860,13 +27008,11 @@ Tonyu.klass.define({
         
       },
       getBGMLengthID :function _trc_T2MediaPlayer_getBGMLengthID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMLength(id);
       },
       fiber$getBGMLengthID :function* _trc_T2MediaPlayer_f_getBGMLengthID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28874,13 +27020,11 @@ Tonyu.klass.define({
         
       },
       getPlayingBGMNameID :function _trc_T2MediaPlayer_getPlayingBGMNameID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getPlayingBGMName(id);
       },
       fiber$getPlayingBGMNameID :function* _trc_T2MediaPlayer_f_getPlayingBGMNameID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28888,13 +27032,11 @@ Tonyu.klass.define({
         
       },
       setOnBGMEndListenerID :function _trc_T2MediaPlayer_setOnBGMEndListenerID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setOnBGMEndListener(id);
       },
       fiber$setOnBGMEndListenerID :function* _trc_T2MediaPlayer_f_setOnBGMEndListenerID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28902,13 +27044,11 @@ Tonyu.klass.define({
         
       },
       getPlayingBGMStateID :function _trc_T2MediaPlayer_getPlayingBGMStateID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getPlayingBGMState(id);
       },
       fiber$getPlayingBGMStateID :function* _trc_T2MediaPlayer_f_getPlayingBGMStateID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28916,13 +27056,11 @@ Tonyu.klass.define({
         
       },
       getBGMPicoAudioID :function _trc_T2MediaPlayer_getBGMPicoAudioID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getBGMPicoAudio(id);
       },
       fiber$getBGMPicoAudioID :function* _trc_T2MediaPlayer_f_getBGMPicoAudioID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28930,13 +27068,11 @@ Tonyu.klass.define({
         
       },
       isTagLoopID :function _trc_T2MediaPlayer_isTagLoopID(id) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.isTagLoop(id);
       },
       fiber$isTagLoopID :function* _trc_T2MediaPlayer_f_isTagLoopID(_thread,id) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28944,13 +27080,11 @@ Tonyu.klass.define({
         
       },
       setTagLoopID :function _trc_T2MediaPlayer_setTagLoopID(id,isTagLoop) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setTagLoop(id,isTagLoop);
       },
       fiber$setTagLoopID :function* _trc_T2MediaPlayer_f_setTagLoopID(_thread,id,isTagLoop) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28958,7 +27092,6 @@ Tonyu.klass.define({
         
       },
       loadAudio :function _trc_T2MediaPlayer_loadAudio(idx,src) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$t2MediaLib.loadAudio(idx,src);
@@ -28967,7 +27100,6 @@ Tonyu.klass.define({
         }
       },
       fiber$loadAudio :function* _trc_T2MediaPlayer_f_loadAudio(_thread,idx,src) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -28978,7 +27110,6 @@ Tonyu.klass.define({
         
       },
       playAudio :function _trc_T2MediaPlayer_playAudio(idx,loop,startTime) {
-        "use strict";
         var _this=this;
         
         if (_this.mute) {
@@ -28993,7 +27124,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.playAudio(idx,loop,startTime);
       },
       fiber$playAudio :function* _trc_T2MediaPlayer_f_playAudio(_thread,idx,loop,startTime) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29010,13 +27140,11 @@ Tonyu.klass.define({
         
       },
       stopAudio :function _trc_T2MediaPlayer_stopAudio() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.stopAudio();
       },
       fiber$stopAudio :function* _trc_T2MediaPlayer_f_stopAudio(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29024,13 +27152,11 @@ Tonyu.klass.define({
         
       },
       pauseAudio :function _trc_T2MediaPlayer_pauseAudio() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.pauseAudio();
       },
       fiber$pauseAudio :function* _trc_T2MediaPlayer_f_pauseAudio(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29038,7 +27164,6 @@ Tonyu.klass.define({
         
       },
       resumeAudio :function _trc_T2MediaPlayer_resumeAudio() {
-        "use strict";
         var _this=this;
         
         if (_this.mute) {
@@ -29047,7 +27172,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.resumeAudio();
       },
       fiber$resumeAudio :function* _trc_T2MediaPlayer_f_resumeAudio(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29058,7 +27182,6 @@ Tonyu.klass.define({
         
       },
       setAudioVolume :function _trc_T2MediaPlayer_setAudioVolume(vol) {
-        "use strict";
         var _this=this;
         
         vol=vol/128;
@@ -29072,7 +27195,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.setAudioVolume(vol);
       },
       fiber$setAudioVolume :function* _trc_T2MediaPlayer_f_setAudioVolume(_thread,vol) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29088,7 +27210,6 @@ Tonyu.klass.define({
         
       },
       setAudioTempo :function _trc_T2MediaPlayer_setAudioTempo(tempo) {
-        "use strict";
         var _this=this;
         
         if (tempo>4) {
@@ -29101,7 +27222,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$t2MediaLib.setAudioTempo(tempo);
       },
       fiber$setAudioTempo :function* _trc_T2MediaPlayer_f_setAudioTempo(_thread,tempo) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29116,13 +27236,11 @@ Tonyu.klass.define({
         
       },
       setAudioPosition :function _trc_T2MediaPlayer_setAudioPosition(time) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.setAudioPosition(time);
       },
       fiber$setAudioPosition :function* _trc_T2MediaPlayer_f_setAudioPosition(_thread,time) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29130,13 +27248,11 @@ Tonyu.klass.define({
         
       },
       getAudioCurrentTime :function _trc_T2MediaPlayer_getAudioCurrentTime() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getAudioCurrentTime();
       },
       fiber$getAudioCurrentTime :function* _trc_T2MediaPlayer_f_getAudioCurrentTime(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29144,13 +27260,11 @@ Tonyu.klass.define({
         
       },
       getAudioLength :function _trc_T2MediaPlayer_getAudioLength() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getAudioLength();
       },
       fiber$getAudioLength :function* _trc_T2MediaPlayer_f_getAudioLength(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29158,13 +27272,11 @@ Tonyu.klass.define({
         
       },
       getAudioData :function _trc_T2MediaPlayer_getAudioData(idx) {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$t2MediaLib.getAudioData(idx);
       },
       fiber$getAudioData :function* _trc_T2MediaPlayer_f_getAudioData(_thread,idx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29172,13 +27284,11 @@ Tonyu.klass.define({
         
       },
       resetSEFrame :function _trc_T2MediaPlayer_resetSEFrame() {
-        "use strict";
         var _this=this;
         
         _this.seStaredAtThisFrame={};
       },
       fiber$resetSEFrame :function* _trc_T2MediaPlayer_f_resetSEFrame(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29186,7 +27296,6 @@ Tonyu.klass.define({
         
       },
       initMMTimer :function _trc_T2MediaPlayer_initMMTimer() {
-        "use strict";
         var _this=this;
         
         if (_this.mmTimer) {
@@ -29203,7 +27312,6 @@ Tonyu.klass.define({
         return _this.mmTimer;
       },
       fiber$initMMTimer :function* _trc_T2MediaPlayer_f_initMMTimer(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29222,7 +27330,6 @@ Tonyu.klass.define({
         
       },
       beep :function _trc_T2MediaPlayer_beep(options) {
-        "use strict";
         var _this=this;
         
         if (! _this.initMMTimer()) {
@@ -29245,7 +27352,6 @@ Tonyu.klass.define({
         return b;
       },
       fiber$beep :function* _trc_T2MediaPlayer_f_beep(_thread,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29270,7 +27376,6 @@ Tonyu.klass.define({
         
       },
       checkTimer :function _trc_T2MediaPlayer_checkTimer() {
-        "use strict";
         var _this=this;
         
         if (_this.mmTimer) {
@@ -29278,7 +27383,6 @@ Tonyu.klass.define({
         }
       },
       fiber$checkTimer :function* _trc_T2MediaPlayer_f_checkTimer(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29288,7 +27392,6 @@ Tonyu.klass.define({
         
       },
       findEventHandlerClass :function _trc_T2MediaPlayer_findEventHandlerClass(type) {
-        "use strict";
         var _this=this;
         
         if (type==="interval") {
@@ -29310,19 +27413,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_PlainChar_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_PlainChar_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_PlainChar_initialize(x,y,p) {
-        "use strict";
         var _this=this;
         
         _this.layer=_this.layer||Tonyu.globals.$mainLayer;
@@ -29342,7 +27442,6 @@ Tonyu.klass.define({
         }
       },
       draw :function _trc_PlainChar_draw(c) {
-        "use strict";
         var _this=this;
         
         _this.onDraw();
@@ -29351,13 +27450,11 @@ Tonyu.klass.define({
         }
       },
       setVisible :function _trc_PlainChar_setVisible(v) {
-        "use strict";
         var _this=this;
         
         _this._isInvisible=! v;
       },
       fiber$setVisible :function* _trc_PlainChar_f_setVisible(_thread,v) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29365,26 +27462,22 @@ Tonyu.klass.define({
         
       },
       onDraw :function _trc_PlainChar_onDraw() {
-        "use strict";
         var _this=this;
         
       },
       fiber$onDraw :function* _trc_PlainChar_f_onDraw(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       update :function _trc_PlainChar_update() {
-        "use strict";
         var _this=this;
         
         _this.onUpdate();
         __superClass.prototype.update.apply( _this, []);
       },
       fiber$update :function* _trc_PlainChar_f_update(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29393,19 +27486,16 @@ Tonyu.klass.define({
         
       },
       onUpdate :function _trc_PlainChar_onUpdate() {
-        "use strict";
         var _this=this;
         
       },
       tMain :function _trc_PlainChar_tMain() {
-        "use strict";
         var _this=this;
         
         _this.main();
         _this.die();
       },
       fiber$tMain :function* _trc_PlainChar_f_tMain(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29427,19 +27517,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_SecretChar_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_SecretChar_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       draw :function _trc_SecretChar_draw(c) {
-        "use strict";
         var _this=this;
         
         _this.onDraw();
@@ -29458,19 +27545,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_SpriteChar_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_SpriteChar_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_SpriteChar_initialize(x,y,p,f) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [x,y,p]);
@@ -29489,7 +27573,6 @@ Tonyu.klass.define({
         }
       },
       draw :function _trc_SpriteChar_draw(c) {
-        "use strict";
         var _this=this;
         
         if (_this._isInvisible) {
@@ -29513,25 +27596,21 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T1Map_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_T1Map_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       setBGColor :function _trc_T1Map_setBGColor(c) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$Screen.setBGColor(c);
       },
       fiber$setBGColor :function* _trc_T1Map_f_setBGColor(_thread,c) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29539,7 +27618,6 @@ Tonyu.klass.define({
         
       },
       load :function _trc_T1Map_load(fileName) {
-        "use strict";
         var _this=this;
         var f;
         var o;
@@ -29561,7 +27639,6 @@ Tonyu.klass.define({
         _this.initMap();
       },
       fiber$load :function* _trc_T1Map_f_load(_thread,fileName) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var f;
@@ -29585,7 +27662,6 @@ Tonyu.klass.define({
         
       },
       conv :function _trc_T1Map_conv(mat,tbl) {
-        "use strict";
         var _this=this;
         var res;
         
@@ -29612,7 +27688,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$conv :function* _trc_T1Map_f_conv(_thread,mat,tbl) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -29654,19 +27729,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_T1Page_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_T1Page_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initGlobals :function _trc_T1Page_initGlobals() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$chars=Tonyu.globals.$Sprites.sprites;
@@ -29682,7 +27754,6 @@ Tonyu.klass.define({
         Tonyu.globals.$mplayer=new Tonyu.classes.kernel.MediaPlayer;
       },
       fiber$initGlobals :function* _trc_T1Page_f_initGlobals(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29713,19 +27784,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_TextChar_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_TextChar_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_TextChar_initialize(xx,yy,t,c,s) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [xx,yy]);
@@ -29749,7 +27817,6 @@ Tonyu.klass.define({
         }
       },
       draw :function _trc_TextChar_draw(ctx) {
-        "use strict";
         var _this=this;
         
         if (_this._isInvisible) {
@@ -29772,7 +27839,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_APad_main() {
-        "use strict";
         var _this=this;
         
         if (! _this.auto) {
@@ -29780,7 +27846,6 @@ Tonyu.klass.define({
         }
       },
       fiber$main :function* _trc_APad_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -29790,7 +27855,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_APad_initialize(p) {
-        "use strict";
         var _this=this;
         
         p=p||{};
@@ -29830,13 +27894,11 @@ Tonyu.klass.define({
         _this.iy=_this.y;
       },
       __getter__defaultLayer :function _trc_APad___getter__defaultLayer() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$frontLayer;
       },
       draw :function _trc_APad_draw(ctx) {
-        "use strict";
         var _this=this;
         
         if (_this.auto) {
@@ -29859,7 +27921,6 @@ Tonyu.klass.define({
         ctx.restore();
       },
       findTouch :function _trc_APad_findTouch() {
-        "use strict";
         var _this=this;
         var t;
         
@@ -29872,7 +27933,6 @@ Tonyu.klass.define({
         }
       },
       loop :function _trc_APad_loop() {
-        "use strict";
         var _this=this;
         var vx;
         var vy;
@@ -29920,7 +27980,6 @@ Tonyu.klass.define({
         }
       },
       fiber$loop :function* _trc_APad_f_loop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var vx;
@@ -29970,13 +28029,11 @@ Tonyu.klass.define({
         
       },
       __getter__speed :function _trc_APad___getter__speed() {
-        "use strict";
         var _this=this;
         
         return _this.sqrt(_this.vx*_this.vx+_this.vy*_this.vy);
       },
       __getter__direction :function _trc_APad___getter__direction() {
-        "use strict";
         var _this=this;
         
         return _this.atanxy(_this.vx,_this.vy);
@@ -29995,7 +28052,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Button_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -30029,7 +28085,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$main :function* _trc_Button_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -30065,45 +28120,38 @@ Tonyu.klass.define({
         
       },
       __getter__clickedStyle :function _trc_Button___getter__clickedStyle() {
-        "use strict";
         var _this=this;
         
         return (_this.clickedEffect&&_this.clickedEffect.strokeStyle);
       },
       __setter__clickedStyle :function _trc_Button___setter__clickedStyle(v) {
-        "use strict";
         var _this=this;
         
         _this.clickedEffect=_this.clickedEffect||{};
         _this.clickedEffect.strokeStyle=v;
       },
       __getter__effect :function _trc_Button___getter__effect() {
-        "use strict";
         var _this=this;
         
         return _this.clickedEffect;
       },
       __setter__effect :function _trc_Button___setter__effect(v) {
-        "use strict";
         var _this=this;
         
         _this.clickedEffect=v;
       },
       __getter__disabledStrokeStyle :function _trc_Button___getter__disabledStrokeStyle() {
-        "use strict";
         var _this=this;
         
         return (_this.disabledEffect&&_this.disabledEffect.strokeStyle);
       },
       __setter__disabledStrokeStyle :function _trc_Button___setter__disabledStrokeStyle(v) {
-        "use strict";
         var _this=this;
         
         _this.disabledEffect=_this.disabledEffect||{};
         _this.disabledEffect.strokeStyle=v;
       },
       initialize :function _trc_Button_initialize(options) {
-        "use strict";
         var _this=this;
         
         options=options||{};
@@ -30124,7 +28172,6 @@ Tonyu.klass.define({
         _this.__binited=true;
       },
       __getter__curEffect :function _trc_Button___getter__curEffect() {
-        "use strict";
         var _this=this;
         var base;
         
@@ -30142,7 +28189,6 @@ Tonyu.klass.define({
         return base;
       },
       handleClickEvent :function _trc_Button_handleClickEvent() {
-        "use strict";
         var _this=this;
         
         _this.fireEvent("click");
@@ -30151,7 +28197,6 @@ Tonyu.klass.define({
         }
       },
       fiber$handleClickEvent :function* _trc_Button_f_handleClickEvent(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -30162,7 +28207,6 @@ Tonyu.klass.define({
         
       },
       doStartClick :function _trc_Button_doStartClick() {
-        "use strict";
         var _this=this;
         
         _this._clicked=Tonyu.globals.$frameCount;
@@ -30179,7 +28223,6 @@ Tonyu.klass.define({
         }
       },
       fiber$doStartClick :function* _trc_Button_f_doStartClick(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -30198,7 +28241,6 @@ Tonyu.klass.define({
         
       },
       doEndClick :function _trc_Button_doEndClick() {
-        "use strict";
         var _this=this;
         
         _this.fireEvent("release");
@@ -30211,7 +28253,6 @@ Tonyu.klass.define({
         }
       },
       fiber$doEndClick :function* _trc_Button_f_doEndClick(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -30226,7 +28267,6 @@ Tonyu.klass.define({
         
       },
       procAR :function _trc_Button_procAR() {
-        "use strict";
         var _this=this;
         
         _this.updateEx(_this.autoRepeat);
@@ -30237,7 +28277,6 @@ Tonyu.klass.define({
         }
       },
       fiber$procAR :function* _trc_Button_f_procAR(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -30250,13 +28289,11 @@ Tonyu.klass.define({
         
       },
       getCrashRect :function _trc_Button_getCrashRect() {
-        "use strict";
         var _this=this;
         
         return {x: _this.left+_this.width/2,y: _this.top+_this.height/2,width: _this.width,height: _this.height};
       },
       draw :function _trc_Button_draw(c) {
-        "use strict";
         var _this=this;
         var e;
         var eleft;
@@ -30292,7 +28329,6 @@ Tonyu.klass.define({
         c.fillText(_this.text,eleft+e.width/2-r.width/2,etop+e.padding);
       },
       __getter__clicked :function _trc_Button___getter__clicked() {
-        "use strict";
         var _this=this;
         
         if (! _this._clicked) {
@@ -30301,7 +28337,6 @@ Tonyu.klass.define({
         return Tonyu.globals.$frameCount-_this._clicked+1;
       },
       __getter__x :function _trc_Button___getter__x() {
-        "use strict";
         var _this=this;
         
         if (_this.__binited) {
@@ -30310,7 +28345,6 @@ Tonyu.klass.define({
         return _this._x;
       },
       __setter__x :function _trc_Button___setter__x(val) {
-        "use strict";
         var _this=this;
         
         if (_this.__binited) {
@@ -30319,7 +28353,6 @@ Tonyu.klass.define({
         _this._x=val;
       },
       __getter__y :function _trc_Button___getter__y() {
-        "use strict";
         var _this=this;
         
         if (_this.__binited) {
@@ -30328,7 +28361,6 @@ Tonyu.klass.define({
         return _this._y;
       },
       __setter__y :function _trc_Button___setter__y(val) {
-        "use strict";
         var _this=this;
         
         if (_this.__binited) {
@@ -30350,19 +28382,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_GameConsole_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_GameConsole_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_GameConsole_initialize(opt) {
-        "use strict";
         var _this=this;
         
         _this.extend(opt);
@@ -30375,7 +28404,6 @@ Tonyu.klass.define({
         _this.cctx=_this.canvas[0].getContext("2d");
       },
       shouldDraw1x1 :function _trc_GameConsole_shouldDraw1x1(srcw,srch,dstw,dsth) {
-        "use strict";
         var _this=this;
         var larger;
         var smaller;
@@ -30387,7 +28415,6 @@ Tonyu.klass.define({
         return srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;
       },
       fiber$shouldDraw1x1 :function* _trc_GameConsole_f_shouldDraw1x1(_thread,srcw,srch,dstw,dsth) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var larger;
@@ -30401,7 +28428,6 @@ Tonyu.klass.define({
         
       },
       layout :function _trc_GameConsole_layout() {
-        "use strict";
         var _this=this;
         var width;
         var height;
@@ -30438,7 +28464,6 @@ Tonyu.klass.define({
         _this.gameScreen.setBounds({left: marginw,top: marginh,width: calcw,height: calch});
       },
       fiber$layout :function* _trc_GameConsole_f_layout(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var width;
@@ -30477,7 +28502,6 @@ Tonyu.klass.define({
         
       },
       draw :function _trc_GameConsole_draw() {
-        "use strict";
         var _this=this;
         
         _this.layout();
@@ -30497,7 +28521,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_HTMLUI_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -30505,7 +28528,6 @@ Tonyu.klass.define({
         
       },
       fiber$main :function* _trc_HTMLUI_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -30515,7 +28537,6 @@ Tonyu.klass.define({
         
       },
       add :function _trc_HTMLUI_add(expr) {
-        "use strict";
         var _this=this;
         var expr;
         
@@ -30527,7 +28548,6 @@ Tonyu.klass.define({
         return _this.add2(_this.id,expr);
       },
       fiber$add :function* _trc_HTMLUI_f_add(_thread,expr) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var expr;
@@ -30542,7 +28562,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_HTMLUI_initialize(param) {
-        "use strict";
         var _this=this;
         var body;
         var bid;
@@ -30573,7 +28592,6 @@ Tonyu.klass.define({
         }));
       },
       toUI :function _trc_HTMLUI_toUI(x,y) {
-        "use strict";
         var _this=this;
         var sc;
         var scale;
@@ -30591,7 +28609,6 @@ Tonyu.klass.define({
         return {left: left,top: top};
       },
       fiber$toUI :function* _trc_HTMLUI_f_toUI(_thread,x,y) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var sc;
@@ -30611,7 +28628,6 @@ Tonyu.klass.define({
         
       },
       fit :function _trc_HTMLUI_fit() {
-        "use strict";
         var _this=this;
         var sc;
         var scale;
@@ -30638,7 +28654,6 @@ Tonyu.klass.define({
         $("#"+_this.id).css({position: "absolute",width: (_this.width)+"px",height: (_this.height)+"px",left: left,top: top,transform: "scale("+scale+")"});
       },
       fiber$fit :function* _trc_HTMLUI_f_fit(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var sc;
@@ -30667,7 +28682,6 @@ Tonyu.klass.define({
         
       },
       checkExists :function _trc_HTMLUI_checkExists(name) {
-        "use strict";
         var _this=this;
         
         if (! _this.name2id[name]) {
@@ -30679,7 +28693,6 @@ Tonyu.klass.define({
         return $("#"+_this.name2id[name]);
       },
       fiber$checkExists :function* _trc_HTMLUI_f_checkExists(_thread,name) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -30693,7 +28706,6 @@ Tonyu.klass.define({
         
       },
       getValue :function _trc_HTMLUI_getValue(name) {
-        "use strict";
         var _this=this;
         
         if (! _this.name2id) {
@@ -30702,7 +28714,6 @@ Tonyu.klass.define({
         return _this.checkExists(name).val();
       },
       fiber$getValue :function* _trc_HTMLUI_f_getValue(_thread,name) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -30713,7 +28724,6 @@ Tonyu.klass.define({
         
       },
       setValue :function _trc_HTMLUI_setValue(name,value) {
-        "use strict";
         var _this=this;
         
         if (! _this.name2id) {
@@ -30722,7 +28732,6 @@ Tonyu.klass.define({
         return _this.checkExists(name).val(value);
       },
       fiber$setValue :function* _trc_HTMLUI_f_setValue(_thread,name,value) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -30733,13 +28742,11 @@ Tonyu.klass.define({
         
       },
       copyToClipboard :function _trc_HTMLUI_copyToClipboard(name) {
-        "use strict";
         var _this=this;
         
         navigator.clipboard.writeText(_this.getValue(name));
       },
       fiber$copyToClipboard :function* _trc_HTMLUI_f_copyToClipboard(_thread,name) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -30747,14 +28754,12 @@ Tonyu.klass.define({
         
       },
       die :function _trc_HTMLUI_die() {
-        "use strict";
         var _this=this;
         
         __superClass.prototype.die.apply( _this, []);
         $("#"+_this.id).remove();
       },
       loop :function _trc_HTMLUI_loop() {
-        "use strict";
         var _this=this;
         var k;
         
@@ -30767,7 +28772,6 @@ Tonyu.klass.define({
         }
       },
       fiber$loop :function* _trc_HTMLUI_f_loop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var k;
@@ -30795,19 +28799,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Label_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_Label_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_Label_initialize(x,y,f) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [x,y,- 1]);
@@ -30823,13 +28824,11 @@ Tonyu.klass.define({
         }
       },
       __getter__defaultLayer :function _trc_Label___getter__defaultLayer() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$frontLayer;
       },
       __getter__text :function _trc_Label___getter__text() {
-        "use strict";
         var _this=this;
         
         if (typeof  _this.template!=="string") {
@@ -30851,7 +28850,6 @@ Tonyu.klass.define({
         }));
       },
       expandVal :function _trc_Label_expandVal(obj,flds) {
-        "use strict";
         var _this=this;
         
         while (flds.length>0) {
@@ -30864,7 +28862,6 @@ Tonyu.klass.define({
         return obj;
       },
       fiber$expandVal :function* _trc_Label_f_expandVal(_thread,obj,flds) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -30879,7 +28876,6 @@ Tonyu.klass.define({
         
       },
       __setter__text :function _trc_Label___setter__text(v) {
-        "use strict";
         var _this=this;
         
         delete _this.template;
@@ -30899,7 +28895,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_MapEditor_main() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$Screen.resize(480,640);
@@ -31251,7 +29246,6 @@ Tonyu.klass.define({
         }
       },
       fiber$main :function* _trc_MapEditor_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -31605,13 +29599,11 @@ Tonyu.klass.define({
         
       },
       getCurFileName :function _trc_MapEditor_getCurFileName() {
-        "use strict";
         var _this=this;
         
         return _this.saveFileName||_this.loadedFile;
       },
       fiber$getCurFileName :function* _trc_MapEditor_f_getCurFileName(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -31619,7 +29611,6 @@ Tonyu.klass.define({
         
       },
       st :function _trc_MapEditor_st(e) {
-        "use strict";
         var _this=this;
         var curFileName;
         var r;
@@ -31644,7 +29635,6 @@ Tonyu.klass.define({
         }
       },
       fiber$st :function* _trc_MapEditor_f_st(_thread,e) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var curFileName;
@@ -31671,7 +29661,6 @@ Tonyu.klass.define({
         
       },
       save :function _trc_MapEditor_save(fileName) {
-        "use strict";
         var _this=this;
         
         _this.saveDataFile=_this.file("../maps/").rel(fileName);
@@ -31681,7 +29670,6 @@ Tonyu.klass.define({
         _this.print(fileName+" Saved");
       },
       fiber$save :function* _trc_MapEditor_f_save(_thread,fileName) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -31693,13 +29681,11 @@ Tonyu.klass.define({
         
       },
       inRect :function _trc_MapEditor_inRect() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$mouseX>40&&Tonyu.globals.$mouseX<Tonyu.globals.$screenWidth-40&&Tonyu.globals.$mouseY>40&&Tonyu.globals.$mouseY<Tonyu.globals.$screenHeight-200;
       },
       fiber$inRect :function* _trc_MapEditor_f_inRect(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -31707,7 +29693,6 @@ Tonyu.klass.define({
         
       },
       drawPanel :function _trc_MapEditor_drawPanel() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$panel.setFillStyle("gray");
@@ -31744,7 +29729,6 @@ Tonyu.klass.define({
         Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
       },
       fiber$drawPanel :function* _trc_MapEditor_f_drawPanel(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -31783,7 +29767,6 @@ Tonyu.klass.define({
         
       },
       drawLetter :function _trc_MapEditor_drawLetter(mode) {
-        "use strict";
         var _this=this;
         
         if (mode=="set") {
@@ -31815,7 +29798,6 @@ Tonyu.klass.define({
         Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
       },
       fiber$drawLetter :function* _trc_MapEditor_f_drawLetter(_thread,mode) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -31862,7 +29844,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_MapEditorOLD_main() {
-        "use strict";
         var _this=this;
         
         _this.loadMode=false;
@@ -32088,7 +30069,6 @@ Tonyu.klass.define({
         }
       },
       fiber$main :function* _trc_MapEditorOLD_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -32329,7 +30309,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_MapEditorOLD2_main() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$Screen.resize(480,640);
@@ -32621,7 +30600,6 @@ Tonyu.klass.define({
         }
       },
       fiber$main :function* _trc_MapEditorOLD2_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -32915,13 +30893,11 @@ Tonyu.klass.define({
         
       },
       inRect :function _trc_MapEditorOLD2_inRect() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$mouseX>40&&Tonyu.globals.$mouseX<Tonyu.globals.$screenWidth-40&&Tonyu.globals.$mouseY>40&&Tonyu.globals.$mouseY<Tonyu.globals.$screenHeight-200;
       },
       fiber$inRect :function* _trc_MapEditorOLD2_f_inRect(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -32929,7 +30905,6 @@ Tonyu.klass.define({
         
       },
       drawPanel :function _trc_MapEditorOLD2_drawPanel() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$panel.setFillStyle("gray");
@@ -32966,7 +30941,6 @@ Tonyu.klass.define({
         Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
       },
       fiber$drawPanel :function* _trc_MapEditorOLD2_f_drawPanel(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -33018,7 +30992,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Pad_main() {
-        "use strict";
         var _this=this;
         
         while (true) {
@@ -33028,7 +31001,6 @@ Tonyu.klass.define({
         }
       },
       fiber$main :function* _trc_Pad_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -33040,7 +31012,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Pad_initialize(opt) {
-        "use strict";
         var _this=this;
         
         opt=opt||{};
@@ -33068,7 +31039,6 @@ Tonyu.klass.define({
         }
       },
       activate :function _trc_Pad_activate(opt) {
-        "use strict";
         var _this=this;
         
         if (opt) {
@@ -33087,7 +31057,6 @@ Tonyu.klass.define({
         }
       },
       fiber$activate :function* _trc_Pad_f_activate(_thread,opt) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -33108,7 +31077,6 @@ Tonyu.klass.define({
         
       },
       newPadV2 :function _trc_Pad_newPadV2(opt) {
-        "use strict";
         var _this=this;
         
         _this.died=false;
@@ -33127,7 +31095,6 @@ Tonyu.klass.define({
         _this.initButton();
       },
       fiber$newPadV2 :function* _trc_Pad_f_newPadV2(_thread,opt) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -33148,7 +31115,6 @@ Tonyu.klass.define({
         
       },
       newPadV1 :function _trc_Pad_newPadV1(opt) {
-        "use strict";
         var _this=this;
         
         _this.APAD_DIAG_SIZE=96;
@@ -33174,7 +31140,6 @@ Tonyu.klass.define({
         _this.jujiKeyPush1.hide();
       },
       fiber$newPadV1 :function* _trc_Pad_f_newPadV1(_thread,opt) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -33202,7 +31167,6 @@ Tonyu.klass.define({
         
       },
       die :function _trc_Pad_die() {
-        "use strict";
         var _this=this;
         
         if (_this.version==1) {
@@ -33215,7 +31179,6 @@ Tonyu.klass.define({
         __superClass.prototype.die.apply( _this, []);
       },
       dieV2 :function _trc_Pad_dieV2() {
-        "use strict";
         var _this=this;
         var i;
         var obj;
@@ -33255,7 +31218,6 @@ Tonyu.klass.define({
         }
       },
       fiber$dieV2 :function* _trc_Pad_f_dieV2(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -33297,7 +31259,6 @@ Tonyu.klass.define({
         
       },
       dieV1 :function _trc_Pad_dieV1() {
-        "use strict";
         var _this=this;
         
         _this.died=true;
@@ -33315,7 +31276,6 @@ Tonyu.klass.define({
         _this.jujiKeyPush1.die();
       },
       fiber$dieV1 :function* _trc_Pad_f_dieV1(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -33335,7 +31295,6 @@ Tonyu.klass.define({
         
       },
       initButton :function _trc_Pad_initButton() {
-        "use strict";
         var _this=this;
         
         _this.DEFALT_SCREEN_WIDTH=465;
@@ -33351,7 +31310,6 @@ Tonyu.klass.define({
         }
       },
       fiber$initButton :function* _trc_Pad_f_initButton(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -33369,7 +31327,6 @@ Tonyu.klass.define({
         
       },
       initButtonLayout1 :function _trc_Pad_initButtonLayout1() {
-        "use strict";
         var _this=this;
         var screenSize;
         var sw;
@@ -33616,7 +31573,6 @@ Tonyu.klass.define({
         }
       },
       fiber$initButtonLayout1 :function* _trc_Pad_f_initButtonLayout1(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var screenSize;
@@ -33865,7 +31821,6 @@ Tonyu.klass.define({
         
       },
       drawPanel :function _trc_Pad_drawPanel() {
-        "use strict";
         var _this=this;
         var screenSize;
         var sw;
@@ -33958,7 +31913,6 @@ Tonyu.klass.define({
         }
       },
       fiber$drawPanel :function* _trc_Pad_f_drawPanel(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var screenSize;
@@ -34053,7 +32007,6 @@ Tonyu.klass.define({
         
       },
       setXYPanel :function _trc_Pad_setXYPanel() {
-        "use strict";
         var _this=this;
         
         if (_this.layout==1) {
@@ -34062,7 +32015,6 @@ Tonyu.klass.define({
         }
       },
       fiber$setXYPanel :function* _trc_Pad_f_setXYPanel(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -34073,7 +32025,6 @@ Tonyu.klass.define({
         
       },
       setXYPanelLayout1 :function _trc_Pad_setXYPanelLayout1() {
-        "use strict";
         var _this=this;
         var sw;
         var sh;
@@ -34127,7 +32078,6 @@ Tonyu.klass.define({
         }
       },
       fiber$setXYPanelLayout1 :function* _trc_Pad_f_setXYPanelLayout1(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var sw;
@@ -34183,7 +32133,6 @@ Tonyu.klass.define({
         
       },
       padUpdate :function _trc_Pad_padUpdate() {
-        "use strict";
         var _this=this;
         
         if (! _this.active) {
@@ -34199,7 +32148,6 @@ Tonyu.klass.define({
         }
       },
       fiber$padUpdate :function* _trc_Pad_f_padUpdate(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -34217,7 +32165,6 @@ Tonyu.klass.define({
         
       },
       padUpdateV2 :function _trc_Pad_padUpdateV2() {
-        "use strict";
         var _this=this;
         var screenSize;
         var sw;
@@ -34257,7 +32204,6 @@ Tonyu.klass.define({
         }
       },
       fiber$padUpdateV2 :function* _trc_Pad_f_padUpdateV2(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var screenSize;
@@ -34299,7 +32245,6 @@ Tonyu.klass.define({
         
       },
       padUpdateV1 :function _trc_Pad_padUpdateV1() {
-        "use strict";
         var _this=this;
         var i;
         var t;
@@ -34393,7 +32338,6 @@ Tonyu.klass.define({
         }
       },
       fiber$padUpdateV1 :function* _trc_Pad_f_padUpdateV1(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -34489,7 +32433,6 @@ Tonyu.klass.define({
         
       },
       padsUpdateV2 :function _trc_Pad_padsUpdateV2() {
-        "use strict";
         var _this=this;
         var i;
         var obj;
@@ -34520,7 +32463,6 @@ Tonyu.klass.define({
         }
       },
       fiber$padsUpdateV2 :function* _trc_Pad_f_padsUpdateV2(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -34553,7 +32495,6 @@ Tonyu.klass.define({
         
       },
       getUp :function _trc_Pad_getUp(i) {
-        "use strict";
         var _this=this;
         var value;
         
@@ -34579,7 +32520,6 @@ Tonyu.klass.define({
         return value;
       },
       fiber$getUp :function* _trc_Pad_f_getUp(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var value;
@@ -34607,7 +32547,6 @@ Tonyu.klass.define({
         
       },
       getDown :function _trc_Pad_getDown(i) {
-        "use strict";
         var _this=this;
         var value;
         
@@ -34633,7 +32572,6 @@ Tonyu.klass.define({
         return value;
       },
       fiber$getDown :function* _trc_Pad_f_getDown(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var value;
@@ -34661,7 +32599,6 @@ Tonyu.klass.define({
         
       },
       getLeft :function _trc_Pad_getLeft(i) {
-        "use strict";
         var _this=this;
         var value;
         
@@ -34687,7 +32624,6 @@ Tonyu.klass.define({
         return value;
       },
       fiber$getLeft :function* _trc_Pad_f_getLeft(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var value;
@@ -34715,7 +32651,6 @@ Tonyu.klass.define({
         
       },
       getRight :function _trc_Pad_getRight(i) {
-        "use strict";
         var _this=this;
         var value;
         
@@ -34741,7 +32676,6 @@ Tonyu.klass.define({
         return value;
       },
       fiber$getRight :function* _trc_Pad_f_getRight(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var value;
@@ -34769,7 +32703,6 @@ Tonyu.klass.define({
         
       },
       getButton :function _trc_Pad_getButton(i) {
-        "use strict";
         var _this=this;
         var value;
         
@@ -34814,7 +32747,6 @@ Tonyu.klass.define({
         return value;
       },
       fiber$getButton :function* _trc_Pad_f_getButton(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var value;
@@ -34861,7 +32793,6 @@ Tonyu.klass.define({
         
       },
       getJujiPadObj :function _trc_Pad_getJujiPadObj(i) {
-        "use strict";
         var _this=this;
         var obj;
         
@@ -34880,7 +32811,6 @@ Tonyu.klass.define({
         return obj;
       },
       fiber$getJujiPadObj :function* _trc_Pad_f_getJujiPadObj(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var obj;
@@ -34901,7 +32831,6 @@ Tonyu.klass.define({
         
       },
       getJujiPadObjLength :function _trc_Pad_getJujiPadObjLength(i) {
-        "use strict";
         var _this=this;
         
         _this.activate();
@@ -34911,7 +32840,6 @@ Tonyu.klass.define({
         return _this.jujiPads.length;
       },
       fiber$getJujiPadObjLength :function* _trc_Pad_f_getJujiPadObjLength(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -34923,7 +32851,6 @@ Tonyu.klass.define({
         
       },
       getButtonObj :function _trc_Pad_getButtonObj(i) {
-        "use strict";
         var _this=this;
         var obj;
         
@@ -34942,7 +32869,6 @@ Tonyu.klass.define({
         return obj;
       },
       fiber$getButtonObj :function* _trc_Pad_f_getButtonObj(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var obj;
@@ -34963,7 +32889,6 @@ Tonyu.klass.define({
         
       },
       getButtonObjLength :function _trc_Pad_getButtonObjLength(i) {
-        "use strict";
         var _this=this;
         
         _this.activate();
@@ -34973,7 +32898,6 @@ Tonyu.klass.define({
         return _this.buttons.length;
       },
       fiber$getButtonObjLength :function* _trc_Pad_f_getButtonObjLength(_thread,i) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -34985,13 +32909,11 @@ Tonyu.klass.define({
         
       },
       getPadUp :function _trc_Pad_getPadUp() {
-        "use strict";
         var _this=this;
         
         return _this.getUp();
       },
       fiber$getPadUp :function* _trc_Pad_f_getPadUp(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -35000,13 +32922,11 @@ Tonyu.klass.define({
         
       },
       getPadDown :function _trc_Pad_getPadDown() {
-        "use strict";
         var _this=this;
         
         return _this.getDown();
       },
       fiber$getPadDown :function* _trc_Pad_f_getPadDown(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -35015,13 +32935,11 @@ Tonyu.klass.define({
         
       },
       getPadLeft :function _trc_Pad_getPadLeft() {
-        "use strict";
         var _this=this;
         
         return _this.getLeft();
       },
       fiber$getPadLeft :function* _trc_Pad_f_getPadLeft(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -35030,13 +32948,11 @@ Tonyu.klass.define({
         
       },
       getPadRight :function _trc_Pad_getPadRight() {
-        "use strict";
         var _this=this;
         
         return _this.getRight();
       },
       fiber$getPadRight :function* _trc_Pad_f_getPadRight(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -35045,13 +32961,11 @@ Tonyu.klass.define({
         
       },
       getPadButton :function _trc_Pad_getPadButton() {
-        "use strict";
         var _this=this;
         
         return _this.getButton();
       },
       fiber$getPadButton :function* _trc_Pad_f_getPadButton(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -35060,13 +32974,11 @@ Tonyu.klass.define({
         
       },
       isOnRect :function _trc_Pad_isOnRect(mx,my,rx,ry,rx2,ry2) {
-        "use strict";
         var _this=this;
         
         return (rx<=mx&&mx<rx2&&ry<=my&&my<ry2);
       },
       fiber$isOnRect :function* _trc_Pad_f_isOnRect(_thread,mx,my,rx,ry,rx2,ry2) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -35074,13 +32986,11 @@ Tonyu.klass.define({
         
       },
       isOnRectWH :function _trc_Pad_isOnRectWH(mx,my,rx,ry,rw,rh) {
-        "use strict";
         var _this=this;
         
         return (rx<=mx&&mx<rx+rw&&ry<=my&&my<ry+rh);
       },
       fiber$isOnRectWH :function* _trc_Pad_f_isOnRectWH(_thread,mx,my,rx,ry,rw,rh) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -35101,7 +33011,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_PadButton_main() {
-        "use strict";
         var _this=this;
         
         while (_this.loop) {
@@ -35111,7 +33020,6 @@ Tonyu.klass.define({
         }
       },
       fiber$main :function* _trc_PadButton_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -35123,7 +33031,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_PadButton_initialize(opt) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [opt]);
@@ -35132,7 +33039,6 @@ Tonyu.klass.define({
         _this.init();
       },
       die :function _trc_PadButton_die() {
-        "use strict";
         var _this=this;
         
         _this.died=true;
@@ -35174,7 +33080,6 @@ Tonyu.klass.define({
         __superClass.prototype.die.apply( _this, []);
       },
       hide :function _trc_PadButton_hide() {
-        "use strict";
         var _this=this;
         
         if (_this.panel!=null) {
@@ -35183,7 +33088,6 @@ Tonyu.klass.define({
         }
       },
       show :function _trc_PadButton_show() {
-        "use strict";
         var _this=this;
         
         if (_this.panel!=null) {
@@ -35192,7 +33096,6 @@ Tonyu.klass.define({
         }
       },
       init :function _trc_PadButton_init() {
-        "use strict";
         var _this=this;
         var i;
         
@@ -35358,7 +33261,6 @@ Tonyu.klass.define({
         }
       },
       fiber$init :function* _trc_PadButton_f_init(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -35526,7 +33428,6 @@ Tonyu.klass.define({
         
       },
       drawPanel :function _trc_PadButton_drawPanel() {
-        "use strict";
         var _this=this;
         
         if (_this.mode==10000) {
@@ -35545,7 +33446,6 @@ Tonyu.klass.define({
         }
       },
       fiber$drawPanel :function* _trc_PadButton_f_drawPanel(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -35566,7 +33466,6 @@ Tonyu.klass.define({
         
       },
       drawPanelMode10000 :function _trc_PadButton_drawPanelMode10000() {
-        "use strict";
         var _this=this;
         var w;
         var h;
@@ -35608,7 +33507,6 @@ Tonyu.klass.define({
         _this.panelPush.fillRect(1,1,w,h);
       },
       fiber$drawPanelMode10000 :function* _trc_PadButton_f_drawPanelMode10000(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var w;
@@ -35652,7 +33550,6 @@ Tonyu.klass.define({
         
       },
       drawPanelMode10001 :function _trc_PadButton_drawPanelMode10001() {
-        "use strict";
         var _this=this;
         var screenSize;
         var w;
@@ -35728,7 +33625,6 @@ Tonyu.klass.define({
         _this.panelPushD.fillRect(0,0,cw,ch+bh);
       },
       fiber$drawPanelMode10001 :function* _trc_PadButton_f_drawPanelMode10001(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var screenSize;
@@ -35806,19 +33702,16 @@ Tonyu.klass.define({
         
       },
       drawPanelMode10002 :function _trc_PadButton_drawPanelMode10002() {
-        "use strict";
         var _this=this;
         
       },
       fiber$drawPanelMode10002 :function* _trc_PadButton_f_drawPanelMode10002(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       padUpdate :function _trc_PadButton_padUpdate() {
-        "use strict";
         var _this=this;
         
         if (_this.padUpdateFrame==Tonyu.globals.$frameCount) {
@@ -35856,7 +33749,6 @@ Tonyu.klass.define({
         }
       },
       fiber$padUpdate :function* _trc_PadButton_f_padUpdate(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -35896,43 +33788,36 @@ Tonyu.klass.define({
         
       },
       padUpdateMode0 :function _trc_PadButton_padUpdateMode0() {
-        "use strict";
         var _this=this;
         
       },
       fiber$padUpdateMode0 :function* _trc_PadButton_f_padUpdateMode0(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       padUpdateMode1 :function _trc_PadButton_padUpdateMode1() {
-        "use strict";
         var _this=this;
         
       },
       fiber$padUpdateMode1 :function* _trc_PadButton_f_padUpdateMode1(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       padUpdateMode2 :function _trc_PadButton_padUpdateMode2() {
-        "use strict";
         var _this=this;
         
       },
       fiber$padUpdateMode2 :function* _trc_PadButton_f_padUpdateMode2(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       padUpdateMode10000 :function _trc_PadButton_padUpdateMode10000() {
-        "use strict";
         var _this=this;
         var allNoTouche;
         var i;
@@ -35994,7 +33879,6 @@ Tonyu.klass.define({
         }
       },
       fiber$padUpdateMode10000 :function* _trc_PadButton_f_padUpdateMode10000(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var allNoTouche;
@@ -36058,7 +33942,6 @@ Tonyu.klass.define({
         
       },
       padUpdateMode10001 :function _trc_PadButton_padUpdateMode10001() {
-        "use strict";
         var _this=this;
         var w;
         var h;
@@ -36251,7 +34134,6 @@ Tonyu.klass.define({
         }
       },
       fiber$padUpdateMode10001 :function* _trc_PadButton_f_padUpdateMode10001(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var w;
@@ -36446,25 +34328,21 @@ Tonyu.klass.define({
         
       },
       padUpdateMode10002 :function _trc_PadButton_padUpdateMode10002() {
-        "use strict";
         var _this=this;
         
       },
       fiber$padUpdateMode10002 :function* _trc_PadButton_f_padUpdateMode10002(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       toScaledX :function _trc_PadButton_toScaledX(mx) {
-        "use strict";
         var _this=this;
         
         return (mx*Tonyu.globals.$Screen.scaleX+(Tonyu.globals.$uiScreen.width-Tonyu.globals.$Screen.width*Tonyu.globals.$Screen.scaleX)/2);
       },
       fiber$toScaledX :function* _trc_PadButton_f_toScaledX(_thread,mx) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -36472,13 +34350,11 @@ Tonyu.klass.define({
         
       },
       toScaledY :function _trc_PadButton_toScaledY(my) {
-        "use strict";
         var _this=this;
         
         return (my*Tonyu.globals.$Screen.scaleX+(Tonyu.globals.$uiScreen.height-Tonyu.globals.$Screen.height*Tonyu.globals.$Screen.scaleX)/2);
       },
       fiber$toScaledY :function* _trc_PadButton_f_toScaledY(_thread,my) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -36486,7 +34362,6 @@ Tonyu.klass.define({
         
       },
       isOnRect :function _trc_PadButton_isOnRect(_mx,_my,rx,ry,rx2,ry2) {
-        "use strict";
         var _this=this;
         var mx;
         var my;
@@ -36502,7 +34377,6 @@ Tonyu.klass.define({
         return (mx>=rx&&mx<rx2&&my>=ry&&my<ry2);
       },
       fiber$isOnRect :function* _trc_PadButton_f_isOnRect(_thread,_mx,_my,rx,ry,rx2,ry2) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var mx;
@@ -36520,7 +34394,6 @@ Tonyu.klass.define({
         
       },
       isOnRectWH :function _trc_PadButton_isOnRectWH(_mx,_my,rx,ry,rw,rh) {
-        "use strict";
         var _this=this;
         var mx;
         var my;
@@ -36536,7 +34409,6 @@ Tonyu.klass.define({
         return (mx>=rx&&mx<rx+rw&&my>=ry&&my<ry+rh);
       },
       fiber$isOnRectWH :function* _trc_PadButton_f_isOnRectWH(_thread,_mx,_my,rx,ry,rw,rh) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var mx;
@@ -36554,7 +34426,6 @@ Tonyu.klass.define({
         
       },
       crashXY :function _trc_PadButton_crashXY(_mx,_my) {
-        "use strict";
         var _this=this;
         var w;
         var h;
@@ -36574,7 +34445,6 @@ Tonyu.klass.define({
         return (mx>=_this.x-w/2&&mx<_this.x+w/2&&my>=_this.y-h/2&&my<_this.y+h/2);
       },
       fiber$crashXY :function* _trc_PadButton_f_crashXY(_thread,_mx,_my) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var w;
@@ -36596,7 +34466,6 @@ Tonyu.klass.define({
         
       },
       crashXY10000 :function _trc_PadButton_crashXY10000(_mx,_my) {
-        "use strict";
         var _this=this;
         var w;
         var h;
@@ -36616,7 +34485,6 @@ Tonyu.klass.define({
         return (mx>=_this.x-w/2-1&&mx<_this.x+w/2-1&&my>=_this.y-h/2-1&&my<_this.y+h/2-1);
       },
       fiber$crashXY10000 :function* _trc_PadButton_f_crashXY10000(_thread,_mx,_my) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var w;
@@ -36651,19 +34519,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_PadPanel_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_PadPanel_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       fillPolygon3 :function _trc_PadPanel_fillPolygon3(x1,y1,x2,y2,x3,y3,color,color2) {
-        "use strict";
         var _this=this;
         
         _this.ctx=_this.getContext();
@@ -36684,7 +34549,6 @@ Tonyu.klass.define({
         _this.ctx.restore();
       },
       fiber$fillPolygon3 :function* _trc_PadPanel_f_fillPolygon3(_thread,x1,y1,x2,y2,x3,y3,color,color2) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -36707,7 +34571,6 @@ Tonyu.klass.define({
         
       },
       fillRect :function _trc_PadPanel_fillRect(x,y,rectWidth,rectHeight,color) {
-        "use strict";
         var _this=this;
         
         _this.ctx=_this.getContext();
@@ -36723,7 +34586,6 @@ Tonyu.klass.define({
         _this.ctx.restore();
       },
       fillText :function _trc_PadPanel_fillText(text,x,y,color,size,align,baseline) {
-        "use strict";
         var _this=this;
         var splits;
         var colCount;
@@ -36756,7 +34618,6 @@ Tonyu.klass.define({
         _this.ctx.restore();
       },
       fiber$fillText :function* _trc_PadPanel_f_fillText(_thread,text,x,y,color,size,align,baseline) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var splits;
@@ -36804,7 +34665,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_UILayout_main() {
-        "use strict";
         var _this=this;
         
         _this.doLayout();
@@ -36812,7 +34672,6 @@ Tonyu.klass.define({
         Tonyu.globals.$uiScreen.on("resize",Tonyu.bindFunc(_this,_this.doLayout));
       },
       fiber$main :function* _trc_UILayout_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -36822,7 +34681,6 @@ Tonyu.klass.define({
         
       },
       doLayout :function _trc_UILayout_doLayout() {
-        "use strict";
         var _this=this;
         var cw;
         var ch;
@@ -36868,7 +34726,6 @@ Tonyu.klass.define({
         Tonyu.globals.$Screen.y=_this.trunc(ch/2)+height/2%1;
       },
       fiber$doLayout :function* _trc_UILayout_f_doLayout(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var cw;
@@ -36916,7 +34773,6 @@ Tonyu.klass.define({
         
       },
       shouldDraw1x1 :function _trc_UILayout_shouldDraw1x1(srcw,srch,dstw,dsth) {
-        "use strict";
         var _this=this;
         var larger;
         var smaller;
@@ -36928,7 +34784,6 @@ Tonyu.klass.define({
         return srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;
       },
       fiber$shouldDraw1x1 :function* _trc_UILayout_f_shouldDraw1x1(_thread,srcw,srch,dstw,dsth) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var larger;
@@ -36955,7 +34810,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_WebPage_main() {
-        "use strict";
         var _this=this;
         
         _this.eventWindowOpen=(function anonymous_114(e) {
@@ -36984,7 +34838,6 @@ Tonyu.klass.define({
         });
       },
       fiber$main :function* _trc_WebPage_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37015,7 +34868,6 @@ Tonyu.klass.define({
         
       },
       openNewWindow :function _trc_WebPage_openNewWindow(url,options) {
-        "use strict";
         var _this=this;
         
         _this.postUrl=url;
@@ -37040,7 +34892,6 @@ Tonyu.klass.define({
         }
       },
       fiber$openNewWindow :function* _trc_WebPage_f_openNewWindow(_thread,url,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37067,13 +34918,11 @@ Tonyu.klass.define({
         
       },
       openPage :function _trc_WebPage_openPage(url) {
-        "use strict";
         var _this=this;
         
         window.location.href=url;
       },
       fiber$openPage :function* _trc_WebPage_f_openPage(_thread,url) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37081,7 +34930,6 @@ Tonyu.klass.define({
         
       },
       openTweet :function _trc_WebPage_openTweet(text,url,hashtags,via,related,tl) {
-        "use strict";
         var _this=this;
         var sendUrl;
         
@@ -37116,7 +34964,6 @@ Tonyu.klass.define({
         _this.openNewWindow(sendUrl,{comment: text});
       },
       fiber$openTweet :function* _trc_WebPage_f_openTweet(_thread,text,url,hashtags,via,related,tl) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var sendUrl;
@@ -37153,7 +35000,6 @@ Tonyu.klass.define({
         
       },
       openShareTweet :function _trc_WebPage_openShareTweet(text,url,hashtags,via,related,tl) {
-        "use strict";
         var _this=this;
         var sendUrl;
         var tempText;
@@ -37202,7 +35048,6 @@ Tonyu.klass.define({
         _this.openNewWindow(sendUrl,{comment: text});
       },
       fiber$openShareTweet :function* _trc_WebPage_f_openShareTweet(_thread,text,url,hashtags,via,related,tl) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var sendUrl;
@@ -37253,7 +35098,6 @@ Tonyu.klass.define({
         
       },
       showLink :function _trc_WebPage_showLink(url,text,options) {
-        "use strict";
         var _this=this;
         var $;
         var domain;
@@ -37279,7 +35123,6 @@ Tonyu.klass.define({
         d.dialog();
       },
       fiber$showLink :function* _trc_WebPage_f_showLink(_thread,url,text,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var $;
@@ -37307,13 +35150,11 @@ Tonyu.klass.define({
         
       },
       param :function _trc_WebPage_param(name,def) {
-        "use strict";
         var _this=this;
         
         return Util.getQueryString(name,def);
       },
       fiber$param :function* _trc_WebPage_f_param(_thread,name,def) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37334,7 +35175,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_Boot_main() {
-        "use strict";
         var _this=this;
         
         if (typeof  performance==="undefined") {
@@ -37370,7 +35210,6 @@ Tonyu.klass.define({
         _this.mainLoop();
       },
       fiber$main :function* _trc_Boot_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37408,7 +35247,6 @@ Tonyu.klass.define({
         
       },
       initialize :function _trc_Boot_initialize(param) {
-        "use strict";
         var _this=this;
         
         _this.extend(param);
@@ -37424,13 +35262,11 @@ Tonyu.klass.define({
         }));
       },
       initSymbol :function _trc_Boot_initSymbol() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$Symbol={subActors: "__SUBACTOR"};
       },
       fiber$initSymbol :function* _trc_Boot_f_initSymbol(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37438,13 +35274,11 @@ Tonyu.klass.define({
         
       },
       setScheduler :function _trc_Boot_setScheduler(s) {
-        "use strict";
         var _this=this;
         
         _this._scheduler=Tonyu.globals.$Scheduler=s;
       },
       fiber$setScheduler :function* _trc_Boot_f_setScheduler(_thread,s) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37452,7 +35286,6 @@ Tonyu.klass.define({
         
       },
       moveToScheduler :function _trc_Boot_moveToScheduler(a,oldS,newS) {
-        "use strict";
         var _this=this;
         
         a._scheduler=newS;
@@ -37467,7 +35300,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$moveToScheduler :function* _trc_Boot_f_moveToScheduler(_thread,a,oldS,newS) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37484,7 +35316,6 @@ Tonyu.klass.define({
         
       },
       timeStop :function _trc_Boot_timeStop(except) {
-        "use strict";
         var _this=this;
         var oldS;
         var newS;
@@ -37521,7 +35352,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$timeStop :function* _trc_Boot_f_timeStop(_thread,except) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var oldS;
@@ -37560,13 +35390,11 @@ Tonyu.klass.define({
         
       },
       update :function _trc_Boot_update() {
-        "use strict";
         var _this=this;
         
         _this.waitFor(Tonyu.timeout(50));
       },
       fiber$update :function* _trc_Boot_f_update(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37574,7 +35402,6 @@ Tonyu.klass.define({
         
       },
       initGlobals :function _trc_Boot_initGlobals() {
-        "use strict";
         var _this=this;
         var opt;
         var g;
@@ -37594,7 +35421,6 @@ Tonyu.klass.define({
         Tonyu.globals.$fixProductOrder=true;
       },
       fiber$initGlobals :function* _trc_Boot_f_initGlobals(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var opt;
@@ -37616,7 +35442,6 @@ Tonyu.klass.define({
         
       },
       initPeripherals :function _trc_Boot_initPeripherals() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$InputDevice=new Tonyu.classes.kernel.InputDevice;
@@ -37694,7 +35519,6 @@ Tonyu.klass.define({
         _this.pageStack=[];
       },
       fiber$initPeripherals :function* _trc_Boot_f_initPeripherals(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37774,7 +35598,6 @@ Tonyu.klass.define({
         
       },
       initLayers :function _trc_Boot_initLayers() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$screenWidth=465;
@@ -37819,7 +35642,6 @@ Tonyu.klass.define({
         Tonyu.globals.$layoutManager=new Tonyu.classes.kernel.UILayout({layer: Tonyu.globals.$uiLayer});
       },
       fiber$initLayers :function* _trc_Boot_f_initLayers(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37866,7 +35688,6 @@ Tonyu.klass.define({
         
       },
       debug :function _trc_Boot_debug() {
-        "use strict";
         var _this=this;
         var a;
         
@@ -37881,7 +35702,6 @@ Tonyu.klass.define({
         console.log.apply(console,a);
       },
       fiber$debug :function* _trc_Boot_f_debug(_thread) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         var a;
@@ -37898,7 +35718,6 @@ Tonyu.klass.define({
         
       },
       loadPlugins :function _trc_Boot_loadPlugins() {
-        "use strict";
         var _this=this;
         
         _this.progress("Loading plugins..");
@@ -37909,7 +35728,6 @@ Tonyu.klass.define({
         _this.progress("Loading plugins done");
       },
       fiber$loadPlugins :function* _trc_Boot_f_loadPlugins(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -37922,7 +35740,6 @@ Tonyu.klass.define({
         
       },
       loadImages :function _trc_Boot_loadImages() {
-        "use strict";
         var _this=this;
         var rs;
         var r;
@@ -37945,7 +35762,6 @@ Tonyu.klass.define({
         _this.progress("Loading pats done.");
       },
       fiber$loadImages :function* _trc_Boot_f_loadImages(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var rs;
@@ -37970,7 +35786,6 @@ Tonyu.klass.define({
         
       },
       loadSounds :function _trc_Boot_loadSounds() {
-        "use strict";
         var _this=this;
         
         _this.progress("Loading sounds...");
@@ -37984,7 +35799,6 @@ Tonyu.klass.define({
         Tonyu.globals.$sound=_this;
       },
       fiber$loadSounds :function* _trc_Boot_f_loadSounds(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -38000,7 +35814,6 @@ Tonyu.klass.define({
         
       },
       loadAssets :function _trc_Boot_loadAssets(para) {
-        "use strict";
         var _this=this;
         
         _this.loadImages();
@@ -38011,7 +35824,6 @@ Tonyu.klass.define({
         }
       },
       fiber$loadAssets :function* _trc_Boot_f_loadAssets(_thread,para) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -38024,7 +35836,6 @@ Tonyu.klass.define({
         
       },
       getIDE :function _trc_Boot_getIDE() {
-        "use strict";
         var _this=this;
         var e;
         
@@ -38037,7 +35848,6 @@ Tonyu.klass.define({
         }
       },
       fiber$getIDE :function* _trc_Boot_f_getIDE(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var e;
@@ -38052,7 +35862,6 @@ Tonyu.klass.define({
         
       },
       getMainClass :function _trc_Boot_getMainClass() {
-        "use strict";
         var _this=this;
         var o;
         var mainClassName;
@@ -38070,7 +35879,6 @@ Tonyu.klass.define({
         }
       },
       fiber$getMainClass :function* _trc_Boot_f_getMainClass(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var o;
@@ -38090,7 +35898,6 @@ Tonyu.klass.define({
         
       },
       createMainObject :function _trc_Boot_createMainObject() {
-        "use strict";
         var _this=this;
         
         _this.getMainClass();
@@ -38098,7 +35905,6 @@ Tonyu.klass.define({
         new _this.mainClass();
       },
       fiber$createMainObject :function* _trc_Boot_f_createMainObject(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -38108,7 +35914,6 @@ Tonyu.klass.define({
         
       },
       loadPage :function _trc_Boot_loadPage(page,arg,options) {
-        "use strict";
         var _this=this;
         var push;
         var pass;
@@ -38193,7 +35998,6 @@ Tonyu.klass.define({
         }
       },
       fiber$loadPage :function* _trc_Boot_f_loadPage(_thread,page,arg,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var push;
@@ -38280,7 +36084,6 @@ Tonyu.klass.define({
         
       },
       stop :function _trc_Boot_stop() {
-        "use strict";
         var _this=this;
         var res;
         var evt;
@@ -38315,7 +36118,6 @@ Tonyu.klass.define({
         return res;
       },
       fiber$stop :function* _trc_Boot_f_stop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var res;
@@ -38352,12 +36154,10 @@ Tonyu.klass.define({
         
       },
       hide :function _trc_Boot_hide() {
-        "use strict";
         var _this=this;
         
       },
       schedule :function _trc_Boot_schedule(obj,method,args) {
-        "use strict";
         var _this=this;
         var s;
         var th;
@@ -38376,7 +36176,6 @@ Tonyu.klass.define({
         return th;
       },
       fiber$schedule :function* _trc_Boot_f_schedule(_thread,obj,method,args) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var s;
@@ -38397,7 +36196,6 @@ Tonyu.klass.define({
         
       },
       progress :function _trc_Boot_progress(m) {
-        "use strict";
         var _this=this;
         
         if (typeof  SplashScreen=="undefined") {
@@ -38412,7 +36210,6 @@ Tonyu.klass.define({
         }
       },
       fiber$progress :function* _trc_Boot_f_progress(_thread,m) {
-        "use strict";
         var _this=this;
         var _arguments=Tonyu.A(arguments);
         
@@ -38429,7 +36226,6 @@ Tonyu.klass.define({
         
       },
       progressNoLog :function _trc_Boot_progressNoLog(m) {
-        "use strict";
         var _this=this;
         
         if (typeof  SplashScreen=="undefined") {
@@ -38443,7 +36239,6 @@ Tonyu.klass.define({
         }
       },
       fiber$progressNoLog :function* _trc_Boot_f_progressNoLog(_thread,m) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -38459,7 +36254,6 @@ Tonyu.klass.define({
         
       },
       mainLoop :function _trc_Boot_mainLoop() {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$frameCount=0;
@@ -38480,7 +36274,6 @@ Tonyu.klass.define({
         }
       },
       fiber$mainLoop :function* _trc_Boot_f_mainLoop(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -38503,7 +36296,6 @@ Tonyu.klass.define({
         
       },
       loopRAF :function _trc_Boot_loopRAF() {
-        "use strict";
         var _this=this;
         var nowTime;
         var frameTime;
@@ -38553,7 +36345,6 @@ Tonyu.klass.define({
         _this.runPromise(requestAnimationFrame);
       },
       fiber$loopRAF :function* _trc_Boot_f_loopRAF(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var nowTime;
@@ -38605,7 +36396,6 @@ Tonyu.klass.define({
         
       },
       loopTimer :function _trc_Boot_loopTimer() {
-        "use strict";
         var _this=this;
         
         _this.moveFrame();
@@ -38628,7 +36418,6 @@ Tonyu.klass.define({
         _this.waitFrame();
       },
       fiber$loopTimer :function* _trc_Boot_f_loopTimer(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -38653,7 +36442,6 @@ Tonyu.klass.define({
         
       },
       handlePause :function _trc_Boot_handlePause() {
-        "use strict";
         var _this=this;
         
         if (_this.economyMode&&_this._scheduler.isEmpty) {
@@ -38676,7 +36464,6 @@ Tonyu.klass.define({
         _this.isIdle=false;
       },
       fiber$handlePause :function* _trc_Boot_f_handlePause(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -38701,7 +36488,6 @@ Tonyu.klass.define({
         
       },
       drawFrame :function _trc_Boot_drawFrame() {
-        "use strict";
         var _this=this;
         var s;
         
@@ -38712,7 +36498,6 @@ Tonyu.klass.define({
         _this.fps_fpsCnt++;
       },
       moveFrame :function _trc_Boot_moveFrame() {
-        "use strict";
         var _this=this;
         var s;
         var sc;
@@ -38739,7 +36524,6 @@ Tonyu.klass.define({
         Tonyu.globals.$frameCount++;
       },
       afterDraw :function _trc_Boot_afterDraw(e) {
-        "use strict";
         var _this=this;
         
         Tonyu.globals.$Sprites.checkHit();
@@ -38747,7 +36531,6 @@ Tonyu.klass.define({
         _this.sendEvent("afterDraw",e);
       },
       initFPSParams :function _trc_Boot_initFPSParams() {
-        "use strict";
         var _this=this;
         
         _this._fps=Tonyu.globals.$defaultFPS||30;
@@ -38763,20 +36546,17 @@ Tonyu.klass.define({
         _this.rafProcNowTime=_this.now();
       },
       now :function _trc_Boot_now() {
-        "use strict";
         var _this=this;
         
         return performance.now();
       },
       resetDeadLine :function _trc_Boot_resetDeadLine() {
-        "use strict";
         var _this=this;
         
         _this.deadLine=_this.now()+1000/_this._fps;
         _this.frameSkipped=0;
       },
       waitFrame :function _trc_Boot_waitFrame() {
-        "use strict";
         var _this=this;
         var wt;
         
@@ -38795,7 +36575,6 @@ Tonyu.klass.define({
         _this.deadLine+=1000/_this._fps;
       },
       fiber$waitFrame :function* _trc_Boot_f_waitFrame(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var wt;
@@ -38816,13 +36595,11 @@ Tonyu.klass.define({
         
       },
       getFrameRate :function _trc_Boot_getFrameRate() {
-        "use strict";
         var _this=this;
         
         return _this._fps;
       },
       setFrameRate :function _trc_Boot_setFrameRate(fps,maxFrameSkip) {
-        "use strict";
         var _this=this;
         
         _this._fps=fps;
@@ -38836,13 +36613,11 @@ Tonyu.klass.define({
         _this.resetDeadLine();
       },
       __getter__useRAF :function _trc_Boot___getter__useRAF() {
-        "use strict";
         var _this=this;
         
         return _this._useRAF;
       },
       __setter__useRAF :function _trc_Boot___setter__useRAF(v) {
-        "use strict";
         var _this=this;
         
         if (v) {
@@ -38855,19 +36630,16 @@ Tonyu.klass.define({
         return _this._useRAF=v;
       },
       getMeasuredFps :function _trc_Boot_getMeasuredFps() {
-        "use strict";
         var _this=this;
         
         return _this.fps_fps;
       },
       getMeasuredRps :function _trc_Boot_getMeasuredRps() {
-        "use strict";
         var _this=this;
         
         return _this.fps_rps;
       },
       measureFps :function _trc_Boot_measureFps() {
-        "use strict";
         var _this=this;
         var nowTime;
         
@@ -38883,7 +36655,6 @@ Tonyu.klass.define({
         }
       },
       requestDrawFrame :function _trc_Boot_requestDrawFrame() {
-        "use strict";
         var _this=this;
         
         if (! _this.isIdle) {
@@ -38900,7 +36671,6 @@ Tonyu.klass.define({
         }));
       },
       fiber$requestDrawFrame :function* _trc_Boot_f_requestDrawFrame(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -38919,13 +36689,11 @@ Tonyu.klass.define({
         
       },
       setEconomyMode :function _trc_Boot_setEconomyMode(options) {
-        "use strict";
         var _this=this;
         
         _this.economyMode=options;
       },
       fiber$setEconomyMode :function* _trc_Boot_f_setEconomyMode(_thread,options) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -38946,19 +36714,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_ConsolePanel_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_ConsolePanel_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_ConsolePanel_initialize(opt) {
-        "use strict";
         var _this=this;
         
         _this.printAry=[];
@@ -38969,7 +36734,6 @@ Tonyu.klass.define({
         __superClass.apply( _this, [opt]);
       },
       print :function _trc_ConsolePanel_print() {
-        "use strict";
         var _this=this;
         var mergedArg;
         var argCount;
@@ -39009,7 +36773,6 @@ Tonyu.klass.define({
         }
       },
       draw :function _trc_ConsolePanel_draw(ctx) {
-        "use strict";
         var _this=this;
         var scrollY;
         var i;
@@ -39082,7 +36845,6 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_FadeEffect_main() {
-        "use strict";
         var _this=this;
         
         "field strict";
@@ -39123,7 +36885,6 @@ Tonyu.klass.define({
         }
       },
       fiber$main :function* _trc_FadeEffect_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
@@ -39166,13 +36927,11 @@ Tonyu.klass.define({
         
       },
       __getter__defaultLayer :function _trc_FadeEffect___getter__defaultLayer() {
-        "use strict";
         var _this=this;
         
         return Tonyu.globals.$frontLayer;
       },
       morph :function _trc_FadeEffect_morph(from,to) {
-        "use strict";
         var _this=this;
         var i;
         var progress;
@@ -39189,7 +36948,6 @@ Tonyu.klass.define({
         _this.alpha=to;
       },
       fiber$morph :function* _trc_FadeEffect_f_morph(_thread,from,to) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         var i;
@@ -39221,19 +36979,16 @@ Tonyu.klass.define({
   methods: function (__superClass) {
     return {
       main :function _trc_DxChar_main() {
-        "use strict";
         var _this=this;
         
       },
       fiber$main :function* _trc_DxChar_f_main(_thread) {
-        "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
         
       },
       initialize :function _trc_DxChar_initialize(xx,yy,pp,ff,sz,rt,al) {
-        "use strict";
         var _this=this;
         
         __superClass.apply( _this, [xx,yy,pp,ff]);
@@ -39251,7 +37006,6 @@ Tonyu.klass.define({
         }
       },
       draw :function _trc_DxChar_draw(c) {
-        "use strict";
         var _this=this;
         
         if (_this._isInvisible) {
