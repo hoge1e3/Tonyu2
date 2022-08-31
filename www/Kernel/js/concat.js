@@ -11914,7 +11914,7 @@ Tonyu.klass.define({
         for (i = 0;
          i<_this.buflen ; i++) {
           {
-            chd[i]=i<_this.buflen/2?- 0.1:0.1;
+            chd[i]=i<_this.buflen/2?- 0.05:0.05;
           }
         }
         _this.delay=_this.delay||2/60;
@@ -11925,7 +11925,7 @@ Tonyu.klass.define({
         _this.source.start();
         _this.mmTimer=_this.mmTimer||Tonyu.globals.$sound.mmTimer;
         if (_this.mmTimer) {
-          _this.mmTimer.on("beforeInterval",(function anonymous_733(e) {
+          _this.mmTimer.on("beforeInterval",(function anonymous_735(e) {
             
             _this.time=e.time;
           }));
@@ -11954,7 +11954,7 @@ Tonyu.klass.define({
         for (i = 0;
          i<_this.buflen ; i++) {
           {
-            chd[i]=i<_this.buflen/2?- 0.1:0.1;
+            chd[i]=i<_this.buflen/2?- 0.05:0.05;
           }
         }
         _this.delay=_this.delay||2/60;
@@ -11965,7 +11965,7 @@ Tonyu.klass.define({
         _this.source.start();
         _this.mmTimer=_this.mmTimer||Tonyu.globals.$sound.mmTimer;
         if (_this.mmTimer) {
-          _this.mmTimer.on("beforeInterval",(function anonymous_733(e) {
+          _this.mmTimer.on("beforeInterval",(function anonymous_735(e) {
             
             _this.time=e.time;
           }));
@@ -11996,7 +11996,7 @@ Tonyu.klass.define({
       initScaleTable :function _trc_Beep_initScaleTable() {
         var _this=this;
         
-        return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1699(e) {
+        return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1701(e) {
           
           return 111860.78125/e;
         }));
@@ -12005,7 +12005,7 @@ Tonyu.klass.define({
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
-        return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1699(e) {
+        return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1701(e) {
           
           return 111860.78125/e;
         }));
@@ -12056,7 +12056,7 @@ Tonyu.klass.define({
           let curs = _this.source;
           
           curs.stop(_this.time+_this.delay);
-          setTimeout((function anonymous_2139() {
+          setTimeout((function anonymous_2141() {
             
             curs.disconnect();
           }),(_this.time+_this.delay)*1000+100);
@@ -12082,7 +12082,7 @@ Tonyu.klass.define({
           let curs = _this.source;
           
           curs.stop(_this.time+_this.delay);
-          setTimeout((function anonymous_2139() {
+          setTimeout((function anonymous_2141() {
             
             curs.disconnect();
           }),(_this.time+_this.delay)*1000+100);

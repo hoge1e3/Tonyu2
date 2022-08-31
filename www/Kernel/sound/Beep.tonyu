@@ -14,7 +14,7 @@ let mmTimer;
     buffer=context.createBuffer(1,buflen, sampleRate);
     var chd=buffer.getChannelData(0);
     for (var i=0;i<buflen;i++) {
-        chd[i]=i<buflen/2 ? -0.1 : 0.1; //dat[i >> mult];
+        chd[i]=i<buflen/2 ? -0.05 : 0.05; //dat[i >> mult];
     }
     delay=delay||2/60;
     gainNode=context.createGain();
