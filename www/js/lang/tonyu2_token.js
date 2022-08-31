@@ -1269,7 +1269,7 @@ function tokenizerFactory({ reserved, caseInsensitive }) {
     function parse(str) {
         var res = sp.parse(all, str);
         if (res.success) {
-            console.log("Token", res.result[0]);
+            //console.log("Token", res.result[0]);
         }
         else {
             console.log("Stopped with ", res.src.maxErrors);
