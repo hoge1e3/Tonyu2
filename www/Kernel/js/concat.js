@@ -12411,7 +12411,7 @@ Tonyu.klass.define({
         
         _this.interval=_this.interval||1/60;
         _this.next=_this.context.currentTime+_this.interval;
-        Tonyu.globals.$Boot.on("stop",(function anonymous_245() {
+        Tonyu.globals.$Boot.on("stop",(function anonymous_259() {
           
           _this.isDead=true;
         }));
@@ -12429,7 +12429,7 @@ Tonyu.klass.define({
         
         _this.interval=_this.interval||1/60;
         _this.next=_this.context.currentTime+_this.interval;
-        Tonyu.globals.$Boot.on("stop",(function anonymous_245() {
+        Tonyu.globals.$Boot.on("stop",(function anonymous_259() {
           
           _this.isDead=true;
         }));
@@ -12475,6 +12475,7 @@ Tonyu.klass.define({
       proc :function _trc_MMTimer_proc() {
         var _this=this;
         
+        Tonyu.resetLoopCheck();
         if (_this.isDead) {
           return _this;
         }
@@ -12487,6 +12488,7 @@ Tonyu.klass.define({
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
+        Tonyu.resetLoopCheck();
         if (_this.isDead) {
           return _this;
         }

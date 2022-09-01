@@ -2,6 +2,7 @@ extends TObject;
 includes EventMod;
 native setTimeout;
 native clearTimeout;
+native Tonyu;
 "field strict";
 let context;
 let interval:Number;
@@ -26,6 +27,7 @@ check();
     }
 }
 \proc(){
+    Tonyu.resetLoopCheck();
     if (isDead) return;
     fireEvent("beforeInterval") {
         time:next,
