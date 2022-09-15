@@ -182,7 +182,7 @@ function orderByInheritance(classes) {
                     break;
                 }
             }
-            throw (0, TError_1.default)((0, R_1.default)("circularDependencyDetected", ""), "Unknown", 0);
+            throw TError_1.default(R_1.default("circularDependencyDetected", ""), "Unknown", 0);
         }
     }
     function dep1(c) {
@@ -201,7 +201,7 @@ function orderByInheritance(classes) {
         function pushPath(c) {
             path.push(c.fullName);
             if (visited[c.fullName]) {
-                throw (0, TError_1.default)((0, R_1.default)("circularDependencyDetected", path.join("->")), "Unknown", 0);
+                throw TError_1.default(R_1.default("circularDependencyDetected", path.join("->")), "Unknown", 0);
             }
             visited[c.fullName] = true;
         }
@@ -247,7 +247,7 @@ module.exports = class Builder {
     }
     isTonyu1() {
         const options = this.getOptions();
-        return (0, tonyu1_1.isTonyu1)(options);
+        return tonyu1_1.isTonyu1(options);
     }
     getOptions() { return this.prj.getOptions(); }
     getOutputFile(...f) { return this.prj.getOutputFile(...f); }
@@ -456,10 +456,10 @@ module.exports = class Builder {
             while (true) {
                 env.unresolvedVars = 0;
                 for (let n_1 in compilingClasses) {
-                    (0, TypeChecker_1.checkTypeDecl)(compilingClasses[n_1], env);
+                    TypeChecker_1.checkTypeDecl(compilingClasses[n_1], env);
                 }
                 for (let n_2 in compilingClasses) {
-                    (0, TypeChecker_1.checkExpr)(compilingClasses[n_2], env);
+                    TypeChecker_1.checkExpr(compilingClasses[n_2], env);
                 }
                 if (env.unresolvedVars <= 0)
                     break;
@@ -477,7 +477,7 @@ module.exports = class Builder {
             traceIndex: buf.traceIndex,
         });
         const s = SourceFiles_1.sourceFiles.add(buf.close(), buf.srcmap /*, buf.traceIndex */);
-        if ((0, CompilerTypes_1.isFileDest)(destinations)) {
+        if (CompilerTypes_1.isFileDest(destinations)) {
             const outf = this.getOutputFile();
             await s.saveAs(outf);
         }
@@ -794,22 +794,22 @@ function ExpressionParser(context, name = "Expression") {
             return built;
         },
         mkInfix_def(left, op, right) {
-            return (0, parser_1.setRange)({ type: "infix", op, left, right, toString: toStrF("left", "op", "right") });
+            return parser_1.setRange({ type: "infix", op, left, right, toString: toStrF("left", "op", "right") });
         },
         mkInfixl_def(left, op, right) {
-            return (0, parser_1.setRange)({ type: "infixl", op, left, right, toString: toStrF("left", "op", "right") });
+            return parser_1.setRange({ type: "infixl", op, left, right, toString: toStrF("left", "op", "right") });
         },
         mkInfixr_def(left, op, right) {
-            return (0, parser_1.setRange)({ type: "infixr", op, left, right, toString: toStrF("left", "op", "right") });
+            return parser_1.setRange({ type: "infixr", op, left, right, toString: toStrF("left", "op", "right") });
         },
         mkPrefix_def(op, right) {
-            return (0, parser_1.setRange)({ type: "prefix", op, right, toString: toStrF("op", "right") });
+            return parser_1.setRange({ type: "prefix", op, right, toString: toStrF("op", "right") });
         },
         mkPostfix_def(left, op) {
-            return (0, parser_1.setRange)({ type: "postfix", left, op, toString: toStrF("left", "op") });
+            return parser_1.setRange({ type: "postfix", left, op, toString: toStrF("left", "op") });
         },
         mkTrifixr_def(left, op1, mid, op2, right) {
-            return (0, parser_1.setRange)({ type: "trifixr", left, op1, mid, op2, right, toString: toStrF("left", "op1", "mid", "op2", "right") });
+            return parser_1.setRange({ type: "trifixr", left, op1, mid, op2, right, toString: toStrF("left", "op1", "mid", "op2", "right") });
         },
         lazy() {
             return context.create((st) => $.built.parse(st)).setName(name, { type: "lazy", name });
@@ -1279,7 +1279,7 @@ class IndentBuffer {
         this.lazyOverflow = false;
         this.traceIndex = {};
         //$.printf=$;
-        this.buf = (0, StringBuilder_1.default)();
+        this.buf = StringBuilder_1.default();
         this.bufRow = 1;
         this.bufCol = 1;
         this.srcmap = new source_map_1.default.SourceMapGenerator();
@@ -1877,7 +1877,7 @@ function genJS(klass, env, genOptions) {
     var traceIndex = genOptions.traceIndex || {};
     buf.setSrcFile(srcFile);
     var printf = buf.printf;
-    var ctx = (0, context_1.context)();
+    var ctx = context_1.context();
     var debug = false;
     //var traceTbl=env.traceTbl;
     // method := fiber | function
@@ -1935,7 +1935,7 @@ function genJS(klass, env, genOptions) {
             buf.printf("%s%s", GLOBAL_HEAD, n);
         }
         else if (t == ST.PARAM || t == ST.LOCAL || t == ST.NATIVE || t == ST.MODULE) {
-            if ((0, tonyu1_1.isTonyu1)(env.options) && t == ST.NATIVE) {
+            if (tonyu1_1.isTonyu1(env.options) && t == ST.NATIVE) {
                 buf.printf("%s.%s", THIZ, n);
             }
             else {
@@ -2070,7 +2070,7 @@ function genJS(klass, env, genOptions) {
             }*/
         },
         varsDecl: function (node) {
-            if ((0, compiler_1.isNonBlockScopeDeclprefix)(node.declPrefix)) {
+            if (compiler_1.isNonBlockScopeDeclprefix(node.declPrefix)) {
                 const decls = node.decls.filter((n) => n.value);
                 if (decls.length > 0) {
                     for (let decl of decls) {
@@ -2290,7 +2290,7 @@ function genJS(klass, env, genOptions) {
             var an = annotation(node);
             if (node.inFor.type == "forin") {
                 const inFor = node.inFor;
-                const pre = ((0, compiler_1.isBlockScopeDeclprefix)(inFor.isVar) ? inFor.isVar.text + " " : "");
+                const pre = (compiler_1.isBlockScopeDeclprefix(inFor.isVar) ? inFor.isVar.text + " " : "");
                 buf.printf("for (%s[%f] of %s(%v,%s)) {%{" +
                     "%f%n" +
                     "%}}", pre, loopVarsF(inFor.isVar, inFor.vars), ITER2, inFor.set, inFor.vars.length, noSurroundCompoundF(node.loop));
@@ -2434,13 +2434,13 @@ function genJS(klass, env, genOptions) {
     function typeToLiteral(resolvedType) {
         if (resolvedType) {
             const t = resolvedType;
-            if ((0, CompilerTypes_1.isMethodType)(t)) {
+            if (CompilerTypes_1.isMethodType(t)) {
                 buf.printf("Tonyu.classMetas[%l].decls.methods.%s", t.method.klass.fullName, t.method.name);
             }
-            else if ((0, CompilerTypes_1.isMeta)(t)) {
+            else if (CompilerTypes_1.isMeta(t)) {
                 buf.printf("Tonyu.classMetas[%l]", t.fullName);
             }
-            else if ((0, CompilerTypes_1.isNativeClass)(t)) {
+            else if (CompilerTypes_1.isNativeClass(t)) {
                 buf.printf(t.class.name);
             }
             else {
@@ -2455,7 +2455,7 @@ function genJS(klass, env, genOptions) {
         var a = annotation(node);
         var thisForVIM = a.varInMain ? THIZ + "." : "";
         var pa = annotation(parent);
-        const pre = ((0, compiler_1.isNonBlockScopeDeclprefix)(parent.declPrefix) || pa.varInMain ? "" : parent.declPrefix + " ");
+        const pre = (compiler_1.isNonBlockScopeDeclprefix(parent.declPrefix) || pa.varInMain ? "" : parent.declPrefix + " ");
         if (node.value) {
             const t = (!ctx.noWait) && annotation(node).fiberCall;
             const to = (!ctx.noWait) && annotation(node).otherFiberCall;
@@ -3119,7 +3119,7 @@ function visitSub(node) {
     es.forEach((e) => t.visit(e));
 }
 function getSourceFile(klass) {
-    return (0, assert_1.default)(klass.src && klass.src.tonyu, "File for " + klass.fullName + " not found.");
+    return assert_1.default(klass.src && klass.src.tonyu, "File for " + klass.fullName + " not found.");
 }
 function parse(klass, options = {}) {
     const s = getSourceFile(klass); //.src.tonyu; //file object
@@ -3129,7 +3129,7 @@ function parse(klass, options = {}) {
     }
     if (!node) {
         //console.log("Parse "+s);
-        if ((0, tonyu1_1.isTonyu1)(options)) {
+        if (tonyu1_1.isTonyu1(options)) {
             node = parse_tonyu1_1.default.parse(s);
         }
         else {
@@ -3175,7 +3175,7 @@ function initClassDecls(klass, env) {
                 var p = i.pos;
                 var incc = env.classes[env.aliases[n] || n]; /*ENVC*/ //CFN env.classes[env.aliases[n]]
                 if (!incc)
-                    throw (0, TError_1.default)((0, R_1.default)("classIsUndefined", n), s, p);
+                    throw TError_1.default(R_1.default("classIsUndefined", n), s, p);
                 klass.includes.push(incc);
             });
         }
@@ -3185,7 +3185,7 @@ function initClassDecls(klass, env) {
         else if (spcn) {
             var spc = env.classes[env.aliases[spcn] || spcn]; /*ENVC*/ //CFN env.classes[env.aliases[spcn]]
             if (!spc) {
-                throw (0, TError_1.default)((0, R_1.default)("superClassIsUndefined", spcn), s, pos);
+                throw TError_1.default(R_1.default("superClassIsUndefined", spcn), s, pos);
             }
             klass.superclass = spc;
         }
@@ -3203,13 +3203,13 @@ function initClassDecls(klass, env) {
                 pos: node.pos
             };
         }
-        const ctx = (0, context_1.context)();
+        const ctx = context_1.context();
         var fieldsCollector = new Visitor_1.Visitor({
             varDecl: function (node) {
                 addField(node.name, node);
             },
             varsDecl(node) {
-                if (ctx.inBlockScope && (0, compiler_1.isBlockScopeDeclprefix)(node.declPrefix))
+                if (ctx.inBlockScope && compiler_1.isBlockScopeDeclprefix(node.declPrefix))
                     return;
                 for (let d of node.decls) {
                     fieldsCollector.visit(d);
@@ -3241,7 +3241,7 @@ function initClassDecls(klass, env) {
             },
             "forin": function (node) {
                 var isVar = node.isVar;
-                if ((0, compiler_1.isNonBlockScopeDeclprefix)(isVar)) {
+                if (compiler_1.isNonBlockScopeDeclprefix(isVar)) {
                     node.vars.forEach((v) => {
                         addField(v);
                     });
@@ -3304,7 +3304,7 @@ function annotateSource2(klass, env) {
     var topLevelScope = {};
     // ↑ このソースコードのトップレベル変数の種類 ，親クラスの宣言を含む
     //  キー： 変数名   値： ScopeTypesのいずれか
-    const ctx = (0, context_1.context)();
+    const ctx = context_1.context();
     const debug = false;
     const othersMethodCallTmpl = {
         type: "postfix",
@@ -3429,7 +3429,7 @@ function annotateSource2(klass, env) {
         var s = topLevelScope;
         getDependingClasses(klass).forEach(initTopLevelScope2);
         var decls = klass.decls; // Do not inherit parents' natives
-        if (!(0, tonyu1_1.isTonyu1)(env.options)) {
+        if (!tonyu1_1.isTonyu1(env.options)) {
             for (let i in JSNATIVES) {
                 s[i] = new SI.NATIVE("native::" + i, { class: root_1.default[i], sampleValue: JSNATIVES[i] });
             }
@@ -3472,20 +3472,20 @@ function annotateSource2(klass, env) {
             !getMethod(name).nowait;
     }
     function checkLVal(node) {
-        if ((0, NodeTypes_1.isVarAccess)(node) ||
-            (0, NodeTypes_1.isPostfix)(node) && (node.op.type == "member" || node.op.type == "arrayElem")) {
+        if (NodeTypes_1.isVarAccess(node) ||
+            NodeTypes_1.isPostfix(node) && (node.op.type == "member" || node.op.type == "arrayElem")) {
             if (node.type == "varAccess") {
                 annotation(node, { noBind: true });
             }
             return true;
         }
         //console.log("LVal",node);
-        throw (0, TError_1.default)((0, R_1.default)("invalidLeftValue", getSource(node)), srcFile, node.pos);
+        throw TError_1.default(R_1.default("invalidLeftValue", getSource(node)), srcFile, node.pos);
     }
     function prohibitGlobalNameOnBlockScopeDecl(v) {
         var isg = v.text.match(/^\$/);
         if (isg)
-            throw (0, TError_1.default)((0, R_1.default)("CannotUseGlobalVariableInLetOrConst"), srcFile, v.pos);
+            throw TError_1.default(R_1.default("CannotUseGlobalVariableInLetOrConst"), srcFile, v.pos);
     }
     function getScopeInfo(node) {
         const n = node + "";
@@ -3501,7 +3501,7 @@ function annotateSource2(klass, env) {
             var isg = n.match(/^\$/);
             if (env.options.compiler.field_strict || klass.directives.field_strict) {
                 if (!isg)
-                    throw (0, TError_1.default)((0, R_1.default)("fieldDeclarationRequired", n), srcFile, node.pos);
+                    throw TError_1.default(R_1.default("fieldDeclarationRequired", n), srcFile, node.pos);
             }
             if (isg) {
                 topLevelScope[n] = new SI.GLOBAL(n);
@@ -3555,7 +3555,7 @@ function annotateSource2(klass, env) {
             }
         },
         varsDecl(node) {
-            if ((0, compiler_1.isBlockScopeDeclprefix)(node.declPrefix))
+            if (compiler_1.isBlockScopeDeclprefix(node.declPrefix))
                 return;
             for (let d of node.decls) {
                 localsCollector.visit(d);
@@ -3576,7 +3576,7 @@ function annotateSource2(klass, env) {
         "forin": function (node) {
             var isVar = node.isVar;
             node.vars.forEach(function (v) {
-                if ((0, compiler_1.isNonBlockScopeDeclprefix)(isVar)) {
+                if (compiler_1.isNonBlockScopeDeclprefix(isVar)) {
                     if (ctx.isMain) {
                         annotation(v, { varInMain: true });
                         annotation(v, { declaringClass: klass });
@@ -3628,7 +3628,7 @@ function annotateSource2(klass, env) {
                     e.key.text.substring(1, e.key.text.length - 1) :
                     e.key.text;
                 if (dup.hasOwnProperty(kn)) {
-                    throw (0, TError_1.default)((0, R_1.default)("duplicateKeyInObjectLiteral", kn), srcFile, e.pos);
+                    throw TError_1.default(R_1.default("duplicateKeyInObjectLiteral", kn), srcFile, e.pos);
                 }
                 dup[kn] = 1;
                 //console.log("objlit",e.key.text);
@@ -3641,7 +3641,7 @@ function annotateSource2(klass, env) {
             }
             else {
                 if (node.key.type == "literal") {
-                    throw (0, TError_1.default)((0, R_1.default)("cannotUseStringLiteralAsAShorthandOfObjectValue"), srcFile, node.pos);
+                    throw TError_1.default(R_1.default("cannotUseStringLiteralAsAShorthandOfObjectValue"), srcFile, node.pos);
                 }
                 var si = getScopeInfo(node.key);
                 annotation(node, { scopeInfo: si });
@@ -3655,8 +3655,22 @@ function annotateSource2(klass, env) {
         },
         "switch": function (node) {
             var t = this;
-            ctx.enter({ brkable: true }, function () {
-                t.def(node);
+            if (node.isToken)
+                return;
+            ctx.enter({ inBlockScope: true }, () => {
+                const ns = newScope(ctx.scope);
+                let stmts = [];
+                //console.log("node.cases",node);
+                for (let c of node.cases) {
+                    stmts = [...stmts, ...c.stmts];
+                }
+                if (node.defs) {
+                    stmts = [...stmts, ...node.defs.stmts];
+                }
+                collectBlockScopedVardecl(stmts, ns);
+                ctx.enter({ scope: ns, brkable: true }, function () {
+                    t.def(node);
+                });
             });
         },
         "while": function (node) {
@@ -3676,7 +3690,7 @@ function annotateSource2(klass, env) {
                     collectBlockScopedVardecl([node.inFor.init], ns);
                 }
                 else {
-                    if ((0, compiler_1.isBlockScopeDeclprefix)(node.inFor.isVar)) {
+                    if (compiler_1.isBlockScopeDeclprefix(node.inFor.isVar)) {
                         for (let v of node.inFor.vars) {
                             prohibitGlobalNameOnBlockScopeDecl(v);
                             ns[v.text] = new SI.LOCAL(ctx.finfo, true);
@@ -3736,13 +3750,13 @@ function annotateSource2(klass, env) {
         },
         "break": function (node) {
             if (!ctx.brkable)
-                throw (0, TError_1.default)((0, R_1.default)("breakShouldBeUsedInIterationOrSwitchStatement"), srcFile, node.pos);
+                throw TError_1.default(R_1.default("breakShouldBeUsedInIterationOrSwitchStatement"), srcFile, node.pos);
             if (!ctx.noWait)
                 annotateParents(this.path, { hasJump: true });
         },
         "continue": function (node) {
             if (!ctx.contable)
-                throw (0, TError_1.default)((0, R_1.default)("continueShouldBeUsedInIterationStatement"), srcFile, node.pos);
+                throw TError_1.default(R_1.default("continueShouldBeUsedInIterationStatement"), srcFile, node.pos);
             if (!ctx.noWait)
                 annotateParents(this.path, { hasJump: true });
         },
@@ -3780,7 +3794,7 @@ function annotateSource2(klass, env) {
         exprstmt: function (node) {
             var t, m;
             if (node.expr.type === "objlit") {
-                throw (0, TError_1.default)((0, R_1.default)("cannotUseObjectLiteralAsTheExpressionOfStatement"), srcFile, node.pos);
+                throw TError_1.default(R_1.default("cannotUseObjectLiteralAsTheExpressionOfStatement"), srcFile, node.pos);
             }
             const path = this.path.slice();
             /*if (klass.fullName==="user.Main") {
@@ -3816,7 +3830,7 @@ function annotateSource2(klass, env) {
                 t.S.name) {
                 const m = getSuperMethod(t.S.name.text);
                 if (!m) {
-                    throw (0, TError_1.default)((0, R_1.default)("undefinedSuperMethod", t.S.name.text), srcFile, node.pos);
+                    throw TError_1.default(R_1.default("undefinedSuperMethod", t.S.name.text), srcFile, node.pos);
                     //throw new Error(R("undefinedSuperMethod",t.S.name.text));
                 }
                 if (!m.nowait) {
@@ -3830,11 +3844,11 @@ function annotateSource2(klass, env) {
                 (t = OM.match(node, retSuperFiberCallTmpl)) &&
                 t.S.name) {
                 if (!klass.superclass) {
-                    throw new Error((0, R_1.default)("Class {1} has no superclass", klass.shortName));
+                    throw new Error(R_1.default("Class {1} has no superclass", klass.shortName));
                 }
                 m = getSuperMethod(t.S.name.text);
                 if (!m) {
-                    throw (0, TError_1.default)((0, R_1.default)("undefinedSuperMethod", t.S.name.text), srcFile, node.pos);
+                    throw TError_1.default(R_1.default("undefinedSuperMethod", t.S.name.text), srcFile, node.pos);
                     //throw new Error(R("undefinedSuperMethod",t.S.name.text));
                 }
                 if (!m.nowait) {
@@ -3875,9 +3889,9 @@ function annotateSource2(klass, env) {
     });
     varAccessesAnnotator.def = visitSub; //S
     function resolveType(node) {
-        if ((0, NodeTypes_1.isNamedTypeExpr)(node))
+        if (NodeTypes_1.isNamedTypeExpr(node))
             return resolveNamedType(node);
-        else if ((0, NodeTypes_1.isArrayTypeExpr)(node))
+        else if (NodeTypes_1.isArrayTypeExpr(node))
             return resolveArrayType(node);
     }
     function resolveArrayType(node) {
@@ -3897,7 +3911,7 @@ function annotateSource2(klass, env) {
         }
         else if (env.options.compiler.typeCheck) {
             console.log("typeNotFound: topLevelScope", topLevelScope, si, env.classes);
-            throw (0, TError_1.default)((0, R_1.default)("typeNotFound", node.name), srcFile, node.pos);
+            throw TError_1.default(R_1.default("typeNotFound", node.name), srcFile, node.pos);
         }
         return resolvedType;
     }
@@ -3952,7 +3966,7 @@ function annotateSource2(klass, env) {
     }
     function collectBlockScopedVardecl(stmts, scope) {
         for (let stmt of stmts) {
-            if (stmt.type === "varsDecl" && (0, compiler_1.isBlockScopeDeclprefix)(stmt.declPrefix)) {
+            if (stmt.type === "varsDecl" && compiler_1.isBlockScopeDeclprefix(stmt.declPrefix)) {
                 const ism = ctx.finfo.isMain;
                 //console.log("blockscope",ctx,ism);
                 if (ism && !ctx.inBlockScope)
@@ -4044,7 +4058,7 @@ function annotateSource2(klass, env) {
                 annotateMethodFiber(method);
             }
         });
-        (0, compiler_1.packAnnotation)(klass.annotation);
+        compiler_1.packAnnotation(klass.annotation);
     }
     initTopLevelScope(); //S
     inheritSuperMethod(); //S
@@ -4242,7 +4256,7 @@ function checkTypeDecl(klass, env) {
         forin(node) {
             this.visit(node.set);
             const a = annotation(node.set);
-            if (a.resolvedType && (0, CompilerTypes_1.isArrayType)(a.resolvedType) &&
+            if (a.resolvedType && CompilerTypes_1.isArrayType(a.resolvedType) &&
                 node.isVar && node.isVar.text !== "var") {
                 if (node.vars.length == 1) {
                     const sa = annotation(node.vars[0]);
@@ -4338,17 +4352,17 @@ function checkExpr(klass, env) {
             //var a=annotation(node);
             this.visit(node.left);
             this.visit(node.op);
-            if ((0, NodeTypes_1.isMember)(node.op)) {
+            if (NodeTypes_1.isMember(node.op)) {
                 //var m=a.memberAccess;
                 const a = annotation(node.left);
                 var vtype = a.resolvedType; // visitExpr(m.target);
                 const name = node.op.name.text;
-                if (vtype && (0, CompilerTypes_1.isMeta)(vtype)) {
+                if (vtype && CompilerTypes_1.isMeta(vtype)) {
                     const field = cu.getField(vtype, name);
                     const method = cu.getMethod(vtype, name);
                     const prop = cu.getProperty(vtype, name);
                     if (!field && !method && !prop) {
-                        throw (0, TError_1.default)((0, R_1.default)("memberNotFoundInClass", vtype.shortName, name), srcFile, node.op.name.pos);
+                        throw TError_1.default(R_1.default("memberNotFoundInClass", vtype.shortName, name), srcFile, node.op.name.pos);
                     }
                     //console.log("GETF",vtype,m.name,f);
                     // fail if f is not set when strict check
@@ -4365,7 +4379,7 @@ function checkExpr(klass, env) {
                         annotation(node, { resolvedType: prop.setter.paramTypes[0] });
                     }
                 }
-                if (vtype && (0, CompilerTypes_1.isNativeClass)(vtype)) {
+                if (vtype && CompilerTypes_1.isNativeClass(vtype)) {
                     if (vtype.class.prototype[name]) {
                         // Maybe function
                         //OK (as any)
@@ -4375,25 +4389,25 @@ function checkExpr(klass, env) {
                         //OK (as any) 
                     }
                     else {
-                        throw (0, TError_1.default)((0, R_1.default)("memberNotFoundInClass", vtype.class.name, name), srcFile, node.op.name.pos);
+                        throw TError_1.default(R_1.default("memberNotFoundInClass", vtype.class.name, name), srcFile, node.op.name.pos);
                     }
                 }
             }
-            else if ((0, NodeTypes_1.isCall)(node.op)) {
+            else if (NodeTypes_1.isCall(node.op)) {
                 const leftA = annotation(node.left);
                 //console.log("OPCALL1", leftA);
                 if (leftA && leftA.resolvedType) {
                     const leftT = leftA.resolvedType;
-                    if (!(0, CompilerTypes_1.isMethodType)(leftT)) {
-                        throw (0, TError_1.default)((0, R_1.default)("cannotCallNonFunctionType"), srcFile, node.op.pos);
+                    if (!CompilerTypes_1.isMethodType(leftT)) {
+                        throw TError_1.default(R_1.default("cannotCallNonFunctionType"), srcFile, node.op.pos);
                     }
                     //console.log("OPCALL", leftT);
                     annotation(node, { resolvedType: leftT.method.returnType });
                 }
             }
-            else if ((0, NodeTypes_1.isArrayElem)(node.op)) {
+            else if (NodeTypes_1.isArrayElem(node.op)) {
                 const leftA = annotation(node.left);
-                if (leftA && leftA.resolvedType && (0, CompilerTypes_1.isArrayType)(leftA.resolvedType)) {
+                if (leftA && leftA.resolvedType && CompilerTypes_1.isArrayType(leftA.resolvedType)) {
                     const rt = leftA.resolvedType.element;
                     annotation(node, { resolvedType: rt });
                 }
@@ -4459,13 +4473,13 @@ function checkExpr(klass, env) {
         if (a.otherFiberCall) {
             const o = a.otherFiberCall;
             const ta = annotation(o.T);
-            if (ta.resolvedType && (0, CompilerTypes_1.isMethodType)(ta.resolvedType) && !ta.resolvedType.method.nowait) {
+            if (ta.resolvedType && CompilerTypes_1.isMethodType(ta.resolvedType) && !ta.resolvedType.method.nowait) {
                 //o.fiberCallRequired_lazy();
                 o.fiberType = ta.resolvedType;
             }
         }
     }
-    const ctx = (0, context_1.context)();
+    const ctx = context_1.context();
     typeAnnotationVisitor.def = visitSub;
     typeAnnotationVisitor.visit(klass.node);
     function visitExpr(node) {
@@ -4743,13 +4757,13 @@ exports.getSource = getSource;
     }
 }*/
 function resolvedType2Digest(t) {
-    if ((0, CompilerTypes_1.isMethodType)(t)) {
+    if (CompilerTypes_1.isMethodType(t)) {
         return `${t.method.klass.fullName}.${t.method.name}()`;
     }
-    else if ((0, CompilerTypes_1.isMeta)(t)) {
+    else if (CompilerTypes_1.isMeta(t)) {
         return t.fullName;
     }
-    else if ((0, CompilerTypes_1.isNativeClass)(t)) {
+    else if (CompilerTypes_1.isNativeClass(t)) {
         return t.class.name;
     }
     else {
@@ -4950,7 +4964,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const parserFactory_1 = __importDefault(require("./parserFactory"));
 const tonyu1_token_1 = __importDefault(require("./tonyu1_token"));
-const Tonyu1Lang = (0, parserFactory_1.default)({ TT: tonyu1_token_1.default });
+const Tonyu1Lang = parserFactory_1.default({ TT: tonyu1_token_1.default });
 module.exports = Tonyu1Lang;
 
 },{"./parserFactory":21,"./tonyu1_token":25}],19:[function(require,module,exports){
@@ -4960,7 +4974,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const parserFactory_1 = __importDefault(require("./parserFactory"));
 const tonyu2_token_1 = __importDefault(require("./tonyu2_token"));
-const Tonyu2Lang = (0, parserFactory_1.default)({ TT: tonyu2_token_1.default });
+const Tonyu2Lang = parserFactory_1.default({ TT: tonyu2_token_1.default });
 module.exports = Tonyu2Lang;
 
 },{"./parserFactory":21,"./tonyu2_token":26}],20:[function(require,module,exports){
@@ -5030,7 +5044,7 @@ class ParserContext {
                 }
                 if (tbl[exports.ALL])
                     return tbl[exports.ALL].parse(s);
-                return s.withError((0, R_1.default)("expected", Object.keys(tbl).join("")));
+                return s.withError(R_1.default("expected", Object.keys(tbl).join("")));
             });
             res._first = tbl; //{space:space,tbl:tbl};
             //res.checkTbl();
@@ -5050,7 +5064,7 @@ class ParserContext {
             }
             if (tbl[exports.ALL])
                 return tbl[exports.ALL].parse(s);
-            return s.withError((0, R_1.default)("expected", Object.keys(tbl).join(", ")));
+            return s.withError(R_1.default("expected", Object.keys(tbl).join(", ")));
         });
         res._first = tbl; //{space:"TOKEN",tbl:tbl};
         //res.checkTbl();
@@ -5763,7 +5777,7 @@ exports.TokensParser = {
                 s.result = [t];
             }
             else {
-                s = s.withError((0, R_1.default)("expected", type));
+                s = s.withError(R_1.default("expected", type));
             }
             return s;
         }).setName("'" + type + "'", { type: "primitive", name: type }).firstTokens(type);
@@ -5875,7 +5889,7 @@ const tokenizerFactory_1 = require("./tokenizerFactory");
 module.exports = function PF({ TT }) {
     //var p:any=Parser;
     var $ = {};
-    var g = (0, Grammar_1.default)(parser_1.TokensParser.context);
+    var g = Grammar_1.default(parser_1.TokensParser.context);
     var G = g.get;
     var tk = parser_1.TokensParser.token;
     function disp(n) { return JSON.stringify(n); }
@@ -5932,7 +5946,7 @@ module.exports = function PF({ TT }) {
     function comLastOpt(p) {
         return p.sep0(tk(",")).and(tk(",").opt()).retN(0).setName(`(comLastOpt ${p.name})`, { type: "rept", elem: p });
     }
-    var e = (0, ExpressionParser2_1.ExpressionParser)(parser_1.TokensParser.context);
+    var e = ExpressionParser2_1.ExpressionParser(parser_1.TokensParser.context);
     var explz = e.lazy(); //.firstTokens(ALL);
     const dottableExpr = explz.or(tk("...").and(explz).ret((_, e) => ({ type: "dotExpr", expr: e })));
     var arrayElem = g("arrayElem").ands(tk("["), explz, tk("]")).ret(null, "subscript");
@@ -5952,15 +5966,15 @@ module.exports = function PF({ TT }) {
             throw disp(argList);
         }
         if (argList) {
-            var rg = (0, parser_1.getRange)(argList);
-            (0, parser_1.addRange)(res, rg);
+            var rg = parser_1.getRange(argList);
+            parser_1.addRange(res, rg);
             argList.args.forEach(function (arg) {
                 res.push(arg);
             });
         }
         oof.forEach(function (o) {
-            var rg = (0, parser_1.getRange)(o);
-            (0, parser_1.addRange)(res, rg);
+            var rg = parser_1.getRange(o);
+            parser_1.addRange(res, rg);
             res.push(o.obj);
         });
         return res;
@@ -6066,7 +6080,7 @@ module.exports = function PF({ TT }) {
     e.postfix(prio, arrayElem);
     function mki(left, op, right) {
         const res = { type: "infix", left, op, right };
-        (0, parser_1.setRange)(res);
+        parser_1.setRange(res);
         res.toString = function () {
             return "(" + left + op + right + ")";
         };
@@ -6116,7 +6130,7 @@ module.exports = function PF({ TT }) {
     var trys = g("try").ands(tk("try"), "stmt", catches.rep1()).ret(null, "stmt", "catches");
     var throwSt = g("throw").ands(tk("throw"), expr, tk(";")).ret(null, "ex");
     const namedTypeExpr = g("namedTypeExpr").ands(symbol).ret("name");
-    const tExp = (0, ExpressionParser2_1.ExpressionParser)(parser_1.TokensParser.context);
+    const tExp = ExpressionParser2_1.ExpressionParser(parser_1.TokensParser.context);
     tExp.mkPostfix((left, op) => {
         if (op.type === "arrayTypePostfix") {
             //console.log("ARRAYTYPE",left,op);
@@ -6178,7 +6192,7 @@ module.exports = function PF({ TT }) {
         if (!tokenRes.isSuccess()) {
             //return "ERROR\nToken error at "+tokenRes.src.maxPos+"\n"+
             //	str.substring(0,tokenRes.src.maxPos)+"!!HERE!!"+str.substring(tokenRes.src.maxPos);
-            throw (0, TError_1.default)((0, R_1.default)("lexicalError") + ": " + tokenRes.error, file, tokenRes.src.maxErrors.pos);
+            throw TError_1.default(R_1.default("lexicalError") + ": " + tokenRes.error, file, tokenRes.src.maxErrors.pos);
         }
         var tokens = tokenRes.result[0];
         //console.log("Tokens: "+tokens.join(","));
@@ -6197,7 +6211,7 @@ module.exports = function PF({ TT }) {
         var lt = tokens[maxErrors.pos];
         var mp = (lt ? lt.pos : str.length);
         const len = (lt ? lt.len : 0);
-        throw (0, TError_1.default)((0, R_1.default)("parseError") + `: ${maxErrors.errors.join(", ")}`, file, mp, len);
+        throw TError_1.default(R_1.default("parseError") + `: ${maxErrors.errors.join(", ")}`, file, mp, len);
         /*return "ERROR\nSyntax error at "+mp+"\n"+
         str.substring(0,mp)+"!!HERE!!"+str.substring(mp);*/
     };
@@ -9668,7 +9682,7 @@ exports.isTonyu1 = isTonyu1;
 },{}],25:[function(require,module,exports){
 "use strict";
 const tokenizerFactory_1 = require("./tokenizerFactory");
-module.exports = (0, tokenizerFactory_1.tokenizerFactory)({
+module.exports = tokenizerFactory_1.tokenizerFactory({
     caseInsensitive: true,
     reserved: {
         'while': true,
@@ -9697,7 +9711,7 @@ module.exports = (0, tokenizerFactory_1.tokenizerFactory)({
 },{"./tokenizerFactory":23}],26:[function(require,module,exports){
 "use strict";
 const tokenizerFactory_1 = require("./tokenizerFactory");
-module.exports = (0, tokenizerFactory_1.tokenizerFactory)({
+module.exports = tokenizerFactory_1.tokenizerFactory({
     caseInsensitive: false,
     reserved: {
         "function": true, "var": true, "return": true, "typeof": true, "if": true,
@@ -14506,7 +14520,7 @@ function addMeta(fn, m) {
     return extend(klass.getMeta(fn), m);
 }
 function getMeta(klass) {
-    if ((0, RuntimeTypes_1.isTonyuClass)(klass))
+    if (RuntimeTypes_1.isTonyuClass(klass))
         return klass.meta;
     return klass;
 }
@@ -14694,7 +14708,7 @@ var klass = {
             prot.getClassInfo = function () {
                 return res.meta;
             };
-            if ((0, RuntimeTypes_1.isTonyuClass)(res))
+            if (RuntimeTypes_1.isTonyuClass(res))
                 chkclass(res);
             return res; //chkclass(res,{isShim, init:false, includesRec:{}});
         }
@@ -14783,7 +14797,7 @@ function getClass(n) {
                     found = nn + "." + n;
                 }
                 else
-                    throw new Error((0, R_1.default)("ambiguousClassName", nn, n, found));
+                    throw new Error(R_1.default("ambiguousClassName", nn, n, found));
             }
         }
     }
@@ -14808,20 +14822,20 @@ function bindFunc(t, meth) {
 }
 function invokeMethod(t, name, args, objName) {
     if (!t)
-        throw new Error((0, R_1.default)("cannotInvokeMethod", objName, t, name));
+        throw new Error(R_1.default("cannotInvokeMethod", objName, t, name));
     var f = t[name];
     if (typeof f != "function")
-        throw new Error((0, R_1.default)("notAMethod", (objName == "this" ? "" : objName + "."), name, f));
+        throw new Error(R_1.default("notAMethod", (objName == "this" ? "" : objName + "."), name, f));
     return f.apply(t, args);
 }
 function callFunc(f, args, fName) {
     if (typeof f != "function")
-        throw new Error((0, R_1.default)("notAFunction", fName));
+        throw new Error(R_1.default("notAFunction", fName));
     return f.apply({}, args);
 }
 function checkNonNull(v, name) {
     if (v != v || v == null)
-        throw new Error((0, R_1.default)("uninitialized", name, v));
+        throw new Error(R_1.default("uninitialized", name, v));
     return v;
 }
 function A(args) {
@@ -14832,7 +14846,7 @@ function A(args) {
     return res;
 }
 function useNew(c) {
-    throw new Error((0, R_1.default)("newIsRequiredOnInstanciate", c));
+    throw new Error(R_1.default("newIsRequiredOnInstanciate", c));
 }
 function not_a_tonyu_object(o) {
     console.log("Not a tonyu object: ", o);
@@ -14843,8 +14857,8 @@ function hasKey(k, obj) {
 }
 function run(bootClassName) {
     var bootClass = getClass(bootClassName);
-    if (!(0, RuntimeTypes_1.isTonyuClass)(bootClass))
-        throw new Error((0, R_1.default)("bootClassIsNotFound", bootClassName));
+    if (!RuntimeTypes_1.isTonyuClass(bootClass))
+        throw new Error(R_1.default("bootClassIsNotFound", bootClassName));
     Tonyu.runMode = true;
     var boot = new bootClass();
     //var th=thread();
@@ -14863,7 +14877,7 @@ function checkLoop() {
     var now = root_1.default.performance.now();
     if (now - lastLoopCheck > 1000) {
         resetLoopCheck(10000);
-        throw new Error((0, R_1.default)("infiniteLoopDetected"));
+        throw new Error(R_1.default("infiniteLoopDetected"));
     }
     prevCheckLoopCalled = now;
 }
@@ -14877,7 +14891,7 @@ function is(obj, klass) {
         return false;
     if (obj instanceof klass)
         return true;
-    if (typeof obj.getClassInfo === "function" && (0, RuntimeTypes_1.isTonyuClass)(klass)) {
+    if (typeof obj.getClassInfo === "function" && RuntimeTypes_1.isTonyuClass(klass)) {
         return obj.getClassInfo().includesRec[klass.meta.fullName];
     }
     return false;
@@ -14987,7 +15001,7 @@ class TonyuThread {
         if (typeof methodName == "string") {
             method = obj["fiber$" + methodName];
             if (!method) {
-                throw new Error((0, R_1.default)("undefinedMethod", methodName));
+                throw new Error(R_1.default("undefinedMethod", methodName));
             }
         }
         if (typeof methodName == "function") {
@@ -14995,7 +15009,7 @@ class TonyuThread {
             method = fmethod.fiber;
             if (!method) {
                 var n = fmethod.methodInfo ? fmethod.methodInfo.name : fmethod.name;
-                throw new Error((0, R_1.default)("notAWaitableMethod", n));
+                throw new Error(R_1.default("notAWaitableMethod", n));
             }
         }
         args = [this].concat(args);
