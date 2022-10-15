@@ -513,10 +513,18 @@ extends Actor;
 
 // XY座標スケール変換 //
 \toScaledX(mx) {
-    return (mx * $Screen.scaleX + ($uiScreen.width - $Screen.width * $Screen.scaleX) / 2);
+    if (layer == $uiLayer) {
+        return (mx * $Screen.scaleX + ($uiScreen.width - $Screen.width * $Screen.scaleX) / 2);
+    } else {
+        return mx;
+    }
 }
 \toScaledY(my) {
-    return (my * $Screen.scaleX + ($uiScreen.height - $Screen.height * $Screen.scaleX) / 2);
+    if (layer == $uiLayer) {
+        return (my * $Screen.scaleX + ($uiScreen.height - $Screen.height * $Screen.scaleX) / 2);
+    } else {
+        return my;
+    }
 }
 
 // 範囲XY //

@@ -562,10 +562,10 @@ extends Actor;
         if (!i) i = 1;
         i--;
         if (i >= 0 && i < buttons.length) value = buttons[i].padCnt;
-        else if (i == -37 || i == "left") getLeft();
-        else if (i == -38 || i == "up") getUp();
-        else if (i == -39 || i == "right") getRight();
-        else if (i == -40 || i == "down") getDown();
+        else if (i == -37-1 || i == "left") value = getLeft();
+        else if (i == -38-1 || i == "up") value = getUp();
+        else if (i == -39-1 || i == "right") value = getRight();
+        else if (i == -40-1 || i == "down") value = getDown();
     }
     return value;
 }
