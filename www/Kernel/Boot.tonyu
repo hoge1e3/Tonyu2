@@ -169,15 +169,18 @@ mainLoop();
         autoReload=$debugger.startWithAutoReload;
         $debugger.on("classChanged") \{
             getMainClass();// Should be reload because old class(before compile) are not same
-            if (typeof autoReload==="function") {
-                return autoReload{mainClass};
-            }
-            if (autoReload===true && mainClass) {
-                loadPage(mainClass);
-            }
+            doAutoReload();
         };
     }
     pageStack=[];
+}
+\doAutoReload() {
+    if (typeof autoReload==="function") {
+        return autoReload{mainClass};
+    }
+    if (autoReload===true && mainClass) {
+        loadPage(mainClass);
+    }
 }
 \initLayers() {
     $screenWidth=465;
