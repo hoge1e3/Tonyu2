@@ -19,6 +19,7 @@ var layers=new WeakMap;
     /*if (layer ===$mainLayer3D || layer.group===$mainLayer3D) {
         throw new Error("Why 3d?");
     }*/
+    if (!layer) throw new Error("No layer set: "+layer);
     var res=getTouchables(layer);
     if (res) return res;
     res=[];

@@ -9422,6 +9422,10 @@ Tonyu.klass.define({
         var _this=this;
         var res;
         
+        if (! layer) {
+          throw new Error("No layer set: "+layer);
+          
+        }
         res = _this.getTouchables(layer);
         
         if (res) {
@@ -9436,6 +9440,10 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var res;
         
+        if (! layer) {
+          throw new Error("No layer set: "+layer);
+          
+        }
         res=yield* _this.fiber$getTouchables(_thread, layer);
         
         if (res) {
@@ -9536,11 +9544,11 @@ Tonyu.klass.define({
           }
         }
         
-        cands=cands.filter((function anonymous_2189(e) {
+        cands=cands.filter((function anonymous_2247(e) {
           
           return ! e.dead;
         }));
-        cands.sort((function anonymous_2227(a,b) {
+        cands.sort((function anonymous_2285(a,b) {
           
           return a.dist-b.dist;
         }));
@@ -9625,11 +9633,11 @@ Tonyu.klass.define({
           }
         }
         
-        cands=cands.filter((function anonymous_2189(e) {
+        cands=cands.filter((function anonymous_2247(e) {
           
           return ! e.dead;
         }));
-        cands.sort((function anonymous_2227(a,b) {
+        cands.sort((function anonymous_2285(a,b) {
           
           return a.dist-b.dist;
         }));
@@ -35507,14 +35515,7 @@ Tonyu.klass.define({
           Tonyu.globals.$debugger.on("classChanged",(function anonymous_4353() {
             
             _this.getMainClass();
-            if (typeof  _this.autoReload==="function") {
-              return _this.autoReload({mainClass: _this.mainClass});
-              
-            }
-            if (_this.autoReload===true&&_this.mainClass) {
-              _this.loadPage(_this.mainClass);
-              
-            }
+            _this.doAutoReload();
           }));
           
         }
@@ -35585,18 +35586,37 @@ Tonyu.klass.define({
           Tonyu.globals.$debugger.on("classChanged",(function anonymous_4353() {
             
             _this.getMainClass();
-            if (typeof  _this.autoReload==="function") {
-              return _this.autoReload({mainClass: _this.mainClass});
-              
-            }
-            if (_this.autoReload===true&&_this.mainClass) {
-              _this.loadPage(_this.mainClass);
-              
-            }
+            _this.doAutoReload();
           }));
           
         }
         _this.pageStack=[];
+        
+      },
+      doAutoReload :function _trc_Boot_doAutoReload() {
+        var _this=this;
+        
+        if (typeof  _this.autoReload==="function") {
+          return _this.autoReload({mainClass: _this.mainClass});
+          
+        }
+        if (_this.autoReload===true&&_this.mainClass) {
+          _this.loadPage(_this.mainClass);
+          
+        }
+      },
+      fiber$doAutoReload :function* _trc_Boot_f_doAutoReload(_thread) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (typeof  _this.autoReload==="function") {
+          return _this.autoReload({mainClass: _this.mainClass});
+          
+        }
+        if (_this.autoReload===true&&_this.mainClass) {
+          (yield* _this.fiber$loadPage(_thread, _this.mainClass));
+          
+        }
         
       },
       initLayers :function _trc_Boot_initLayers() {
@@ -35613,7 +35633,7 @@ Tonyu.klass.define({
         Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Layer3D({group: Tonyu.globals.$sprites3D,camera: Tonyu.globals.$camera3D});
         _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-        Tonyu.globals.$Screen.on("resize",(function anonymous_5249() {
+        Tonyu.globals.$Screen.on("resize",(function anonymous_5252() {
           
           Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
           Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
@@ -35658,7 +35678,7 @@ Tonyu.klass.define({
         Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Layer3D({group: Tonyu.globals.$sprites3D,camera: Tonyu.globals.$camera3D});
         _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-        Tonyu.globals.$Screen.on("resize",(function anonymous_5249() {
+        Tonyu.globals.$Screen.on("resize",(function anonymous_5252() {
           
           Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
           Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
@@ -35723,7 +35743,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.progress("Loading plugins..");
-        _this.runPromise((function anonymous_6474(r) {
+        _this.runPromise((function anonymous_6477(r) {
           
           Tonyu.globals.$currentProject.loadPlugins(r);
         }));
@@ -35734,7 +35754,7 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$progress(_thread, "Loading plugins.."));
-        (yield* _this.fiber$runPromise(_thread, (function anonymous_6474(r) {
+        (yield* _this.fiber$runPromise(_thread, (function anonymous_6477(r) {
           
           Tonyu.globals.$currentProject.loadPlugins(r);
         })));
@@ -35752,7 +35772,7 @@ Tonyu.klass.define({
         rs = Tonyu.globals.$currentProject.getResource();
         
         
-        r=_this.runPromise((function anonymous_6695(succ) {
+        r=_this.runPromise((function anonymous_6698(succ) {
           
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         }));
@@ -35775,7 +35795,7 @@ Tonyu.klass.define({
         rs = Tonyu.globals.$currentProject.getResource();
         
         
-        r=(yield* _this.fiber$runPromise(_thread, (function anonymous_6695(succ) {
+        r=(yield* _this.fiber$runPromise(_thread, (function anonymous_6698(succ) {
           
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         })));
@@ -35794,7 +35814,7 @@ Tonyu.klass.define({
         _this.initT2MediaPlayer();
         _this.loadFromProject(Tonyu.globals.$currentProject);
         _this.progress("Loading sounds done.");
-        _this.on("stop",(function anonymous_7161() {
+        _this.on("stop",(function anonymous_7164() {
           
           _this.allResetBGM();
         }));
@@ -35808,7 +35828,7 @@ Tonyu.klass.define({
         (yield* _this.fiber$initT2MediaPlayer(_thread));
         (yield* _this.fiber$loadFromProject(_thread, Tonyu.globals.$currentProject));
         (yield* _this.fiber$progress(_thread, "Loading sounds done."));
-        _this.on("stop",(function anonymous_7161() {
+        _this.on("stop",(function anonymous_7164() {
           
           _this.allResetBGM();
         }));
@@ -35986,7 +36006,7 @@ Tonyu.klass.define({
           } else {
             a = Tonyu.globals.$Screen.all();
             
-            a=a.find((function anonymous_9275(e) {
+            a=a.find((function anonymous_9278(e) {
               
               return pass.indexOf(e)<0;
             }));
@@ -36071,7 +36091,7 @@ Tonyu.klass.define({
           } else {
             a = Tonyu.globals.$Screen.all();
             
-            a=a.find((function anonymous_9275(e) {
+            a=a.find((function anonymous_9278(e) {
               
               return pass.indexOf(e)<0;
             }));
@@ -36094,11 +36114,11 @@ Tonyu.klass.define({
         
         res = new $.Deferred();
         
-        evt = {die: (function anonymous_9509() {
+        evt = {die: (function anonymous_9512() {
           
           _this.die();
           res.resolve();
-        }),preventDefault: (function anonymous_9638() {
+        }),preventDefault: (function anonymous_9641() {
           
           evt.defaultPrevented=true;
         })};
@@ -36129,11 +36149,11 @@ Tonyu.klass.define({
         
         res = new $.Deferred();
         
-        evt = {die: (function anonymous_9509() {
+        evt = {die: (function anonymous_9512() {
           
           _this.die();
           res.resolve();
-        }),preventDefault: (function anonymous_9638() {
+        }),preventDefault: (function anonymous_9641() {
           
           evt.defaultPrevented=true;
         })};
@@ -36666,7 +36686,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16250() {
+        requestAnimationFrame((function anonymous_16253() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -36683,7 +36703,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16250() {
+        requestAnimationFrame((function anonymous_16253() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -36705,7 +36725,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initSymbol":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setScheduler":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveToScheduler":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Actor","kernel.Scheduler","kernel.Scheduler"],"returnValue":null}},"timeStop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initGlobals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initPeripherals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"debug":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPlugins":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadImages":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadSounds":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadAssets":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getIDE":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMainClass":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"createMainObject":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPage":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"stop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"hide":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"schedule":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"progress":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"progressNoLog":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mainLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopRAF":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"handlePause":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"moveFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"afterDraw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initFPSParams":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"now":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resetDeadLine":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"waitFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"__getter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getMeasuredFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMeasuredRps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"measureFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"requestDrawFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setEconomyMode":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"tt":{},"window":{},"cvj":{},"debugCnt":{},"newLimit":{},"autoReload":{},"mainClass":{},"pageStack":{},"loadedAll":{},"_useRAF":{},"_fps":{},"subTime":{},"rafProcNowTime":{},"procCnt":{},"maxFrameSkip":{},"doDraw":{},"deadLine":{},"frameSkipped":{},"economyMode":{},"isIdle":{},"paused":{},"drawTime":{},"fps_fpsCnt":{},"newLimitCount":{},"moveTime":{},"fps_rpsCnt":{},"minFrameSkip":{},"frameCnt":{},"lastMeasured":{},"fps_fps":{},"fps_rps":{},"_drawFrameRequested":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initSymbol":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setScheduler":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveToScheduler":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Actor","kernel.Scheduler","kernel.Scheduler"],"returnValue":null}},"timeStop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initGlobals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initPeripherals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"doAutoReload":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"debug":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPlugins":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadImages":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadSounds":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadAssets":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getIDE":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMainClass":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"createMainObject":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPage":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"stop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"hide":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"schedule":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"progress":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"progressNoLog":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mainLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopRAF":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"handlePause":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"moveFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"afterDraw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initFPSParams":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"now":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resetDeadLine":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"waitFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"__getter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getMeasuredFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMeasuredRps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"measureFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"requestDrawFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setEconomyMode":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"tt":{},"window":{},"cvj":{},"debugCnt":{},"newLimit":{},"autoReload":{},"pageStack":{},"mainClass":{},"loadedAll":{},"_useRAF":{},"_fps":{},"subTime":{},"rafProcNowTime":{},"procCnt":{},"maxFrameSkip":{},"doDraw":{},"deadLine":{},"frameSkipped":{},"economyMode":{},"isIdle":{},"paused":{},"drawTime":{},"fps_fpsCnt":{},"newLimitCount":{},"moveTime":{},"fps_rpsCnt":{},"minFrameSkip":{},"frameCnt":{},"lastMeasured":{},"fps_fps":{},"fps_rps":{},"_drawFrameRequested":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.ConsolePanel',

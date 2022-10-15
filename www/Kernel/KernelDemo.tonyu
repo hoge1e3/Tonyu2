@@ -1,3 +1,4 @@
 extends Actor;
 new Label{x:$screenWidth/2, y:0, text:"Tonyu System",size:20};
 new Actor{x:0,y:0, align:"left top", fillStyle:"red",width:50,height:50};
+//$Screen.on("touch") \{};
