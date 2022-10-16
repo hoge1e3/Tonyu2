@@ -135,6 +135,9 @@ mainLoop();
             e.actor=a;
             f.layer=a.layer;
             a.fireEvent("touch",e);
+        } else {
+            f.layer=$Screen;
+            $Screen.fireEvent("touch",e);
         }
     };
     $InputBox=UIDiag;

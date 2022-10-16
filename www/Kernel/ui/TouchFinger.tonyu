@@ -28,7 +28,7 @@ var screen,_layer;
     var p=screen.convert(this,toLayer);
     if (!p) {
         console.log("Screen convert failed",screen,this,toLayer,p);
-        throw new Error("Screen convert failed");
+        throw new Error("Screen convert failed. See console for details.");
     }
     x=p.x;
     y=p.y;

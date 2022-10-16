@@ -12,6 +12,9 @@ var transform:Transform;
 \add(){
     throw new Error("SpriteGroup::add abstract");
 }
+\has(a:Actor) {
+    return sprites.indexOf(a)>=0;
+}
 \saveAndClear(excludes:Array) {
     var saved=sprites;
     sprites=sprites.filter \(s) {

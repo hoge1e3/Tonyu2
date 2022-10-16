@@ -1,7 +1,7 @@
 extends TObject;
 includes EventMod;
 
-var group;
+let group, screen;
 \new(p) {
     super(p);
     //on(TouchStartOnLayer) 

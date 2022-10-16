@@ -6,11 +6,13 @@ var screen;
 var layers=new WeakMap;
 \add(a:Actor) {
     var layer=screen.findLayer( a.getSpriteGroup() );
+    if (!layer) return;//ex. screen itself
     var ts=getOrNewTouchables(layer);
     if (ts.indexOf(a)<0) ts.push(a);
 }
 \remove(a:Actor) {
     var layer=screen.findLayer( a.getSpriteGroup() );
+    if (!layer) return;
     var ts=getOrNewTouchables(layer);
     var idx=ts.indexOf(a);
     if (idx>=0) ts.splice(idx,1);
