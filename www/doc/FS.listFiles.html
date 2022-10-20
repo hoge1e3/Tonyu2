@@ -12,4 +12,18 @@
 <pre><code class="language-JS">fs.listFiles()
 </code></pre>
 <p><em>fs</em>があらわすディレクトリ直下のすべてのファイルまたはディレクトリを，fileオブジェクトの配列で返します．</p>
+<h2 id="例">例</h2>
+<pre><code class="language-JS">// filesフォルダのファイル名一覧を表示
+dir=file(&quot;./&quot;);
+for (let n of dir.listFiles()) {
+    print(n.name());
+}
+</code></pre>
+<pre><code class="language-JS">// filesフォルダ内のサブフォルダ data/ のファイル名一覧を表示
+// (data/フォルダがない場合，dir.listFiles()は空の配列になり，何も表示されない）
+dir=file(&quot;data/&quot;);
+for (let n of dir.listFiles()) {
+    print(n.name());
+}
+</code></pre>
 </body></html>

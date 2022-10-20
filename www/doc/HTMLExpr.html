@@ -1,0 +1,34 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<h1 id="html式">HTML式</h1>
+<p><a href="HTMLUI">HTMLUI</a>クラスで使用される，HTMLの内容を記述するための配列・オブジェクトの表記方法です．</p>
+<h2 id="構文">構文</h2>
+<pre><code class="language-JS">[&quot;タグ名&quot;,{属性名1:属性値1, 属性名2:属性値2, ...},要素1, 要素2 ....]
+</code></pre>
+<p>この構文によって，次のようなHTMLが作成されます：</p>
+<pre><code class="language-HTML">&lt;タグ名 属性名1=&quot;属性値1&quot; 属性名2=&quot;属性値2&quot;&gt;要素1 要素2&lt;/タグ名&gt;
+</code></pre>
+<ul>
+<li>要素1, 要素2 にはHTML式または文字列が入ります．</li>
+<li>属性値は文字列または関数です．<ul>
+<li>関数は属性名がonで始まるものにのみ指定可能です．逆に，属性名がonで始まるものには必ず関数を指定する必要があります．</li>
+</ul>
+</li>
+<li>属性名が1個もない場合は{属性名1:属性値1, 属性名2:属性値2, ...}は省略可能です．</li>
+</ul>
+<h2 id="例">例</h2>
+<pre><code class="language-JS">[&quot;div&quot;, {style:&quot;background:white;&quot;},
+  [&quot;h1&quot;, &quot;Welcome&quot;],
+  [&quot;button&quot;, {onclick: function () { print (&quot;World&quot;);  }}, &quot;Hello&quot;]
+]
+</code></pre>
+<pre><code class="language-HTML">&lt;div style=&quot;background:white;&quot;&gt;
+  &lt;h1&gt;Welcome&lt;/h1&gt;
+  &lt;button&gt;Hello&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+<p>※buttonにはclick時のイベントが割り当てられています</p>
+</body></html>

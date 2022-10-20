@@ -3,28 +3,33 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="api">api</a></p>
-<h1 id="panel-">Panelクラス</h1>
-<p>図形、文字、画像などのグラフィックスを自由に描画できる領域です．<br>$panelというグローバル変数に予め作成されています．自分で新しく作成することもできます。</p>
-<p><a href="ゲージの表示">実例</a></p>
-<h1 id="-">コンストラクタ</h1>
-<pre><code class="lang-JS">\new(param)
+<h1 id="panelクラス">Panelクラス</h1>
+<p>図形、文字、画像などのグラフィックスを自由に描画できる領域です．
+$panelというグローバル変数に予め作成されています．自分で新しく作成することもできます。</p>
+<p><a href="%E3%82%B2%E3%83%BC%E3%82%B8%E3%81%AE%E8%A1%A8%E7%A4%BA">実例</a></p>
+<h1 id="コンストラクタ">コンストラクタ</h1>
+<pre><code class="language-JS">\new(param)
 </code></pre>
 <p>paramでパネルの横幅と縦幅を設定します．paramに何も与えずにresizeメソッドを使用してサイズを設定することもできます．</p>
 <p>例：</p>
-<pre><code class="lang-JS">panel=new Panel();
+<pre><code class="language-JS">panel=new Panel();
 </code></pre>
 <p><a href="panelCoord">パネルの座標系について</a></p>
-<h1 id="-">フィールド</h1>
+<h1 id="フィールド">フィールド</h1>
 <ul>
 <li>x,y<ul>
 <li>パネルの中心のx,y座標（ゲーム画面内の座標）をあらわします．</li>
 </ul>
 </li>
 <li>fillStyle<ul>
-<li>値<code>f</code>を代入することで，<a href="setFillStyle">setFillStyle</a>(<code>f</code>)と同じ効果があります</li>
+<li>塗りつぶし色<code>f</code>を代入することで，<a href="setFillStyle">setFillStyle</a>(<code>f</code>)と同じ効果があります</li>
+</ul>
+</li>
+<li>strokeStyle<ul>
+<li>線画の色を指定します．</li>
 </ul>
 </li>
 <li>context<ul>
@@ -37,7 +42,7 @@
 </li>
 <li>その他，<a href="BaseActor">BaseActor</a>クラスのフィールドも利用できます．</li>
 </ul>
-<h1 id="-">メソッド</h1>
+<h1 id="メソッド">メソッド</h1>
 <ul>
 <li><a href="setPanel">setPanel</a></li>
 <li><a href="setPanel">resize</a></li>
@@ -48,6 +53,7 @@
 <li><a href="clearRect">clearRect</a></li>
 <li><a href="getPixel">getPixel</a></li>
 <li><a href="drawSprite">drawSprite</a></li>
+<li><a href="Panel.drawLine">drawLine</a></li>
 <li><a href="Panel.copy">copy</a></li>
 <li><a href="Panel.save">save</a></li>
 <li><a href="Panel.load">load</a></li>
@@ -64,6 +70,6 @@
 <ul>
 <li><a href="Color">Colorクラス</a></li>
 <li><a href="diffTonyu1">Tonyu1 と Tonyu2 の違い</a></li>
-<li><a href="座標系とレイヤー">座標系とレイヤー</a></li>
+<li><a href="%E5%BA%A7%E6%A8%99%E7%B3%BB%E3%81%A8%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC">座標系とレイヤー</a></li>
 </ul>
 </body></html>

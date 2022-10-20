@@ -95,6 +95,22 @@
 <li>T2MediaPlayerが生成されてからの時間を返します（単位：秒）．なお，再度実行された場合でもリセットされないことがあります．</li>
 </ul>
 </li>
+<li>beep{vol: freq: duration: }<ul>
+<li>ビープ音を鳴らします．vol=音量0-128，freq=周波数(Hz)，duration=鳴らす時間(秒)<ul>
+<li>durationを省略するとずっと鳴らします．</li>
+<li>freqの代わりにscaleを使用可能です．scaleは0から95の整数値で，音階を表します．0がド，1がド#....10がラ#，11がシで，8オクターブ分あります．</li>
+</ul>
+</li>
+<li>戻り値の<a href="Beep">Beep</a>オブジェクトを使用すると，鳴らした後に周波数や音量を変更できます．<ul>
+<li>後述のon(&quot;interval&quot;)イベントの中で変更すると，比較的正確なタイミングで変更ができます．</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>on(&quot;interval&quot;)<ul>
+<li>1/60秒おきに発生するイベントです．AudioContextの時間を使用して，メインの処理の影響を受けにくく，比較的正確なタイミングで処理を行います．</li>
+</ul>
+</li>
 </ul>
 <h2 id="t2mediaplayerクラスの詳細→"><a href="T2MediaPlayer_detail">T2MediaPlayerクラスの詳細→</a></h2>
 <p>.</p>

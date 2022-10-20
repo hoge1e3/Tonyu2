@@ -1,0 +1,23 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<h1 id="beepクラス">Beepクラス</h1>
+<p>ビープ音を制御します．<a href="T2MediaPlayer">$sound.beep</a>で生成されます．</p>
+<h2 id="メソッド">メソッド</h2>
+<ul>
+<li>set{freq, scale, vol, reset} ビープ音の音程と音量を変更します．<ul>
+<li>vol: 音量0-128</li>
+<li>freq: 周波数(Hz)，</li>
+<li>scale: freqの代わりにscaleを使用可能です．scaleは0から95の整数値で，音階を表します．0がド，1がド#....10がラ#，11がシで，8オクターブ分あります．</li>
+<li>reset: これまで鳴らしていた音とまったく違う音を出す場合，trueに設定すると音が安定する場合があります．<ul>
+<li>段階的に音量や周波数を変えたい場合はfalseを指定するか省略してください．</li>
+<li>内部的には，trueを設定した場合，これまで使用していたAudioBufferSourceNodeを切断して新しいAudioBufferSourceNodeを接続します．</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>die ビープ音を止めます．一度止めた後はこのBeepオブジェクトを使用してふたたび鳴らすことはできません．</li>
+</ul>
+</body></html>
