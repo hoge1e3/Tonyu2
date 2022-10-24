@@ -137,6 +137,7 @@ $(function () {
     $("#runDialog").click(FC(function () {
         runDialog.show(true);
     }));
+    $("#runin").click(FC(runin));
     fl.ls(curPrjDir);
     refreshRunMenu();
     function refreshRunMenu() {
@@ -199,11 +200,10 @@ $(function () {
                 $("<li>").append(
                         $("<a>").attr("href","#").text(R("selectMain")).click(FC(dialogs.selectMain))
                     ));
-        $("#runMenu").append(
+        /*$("#runMenu").append(
             $("<li>").append(
                     $("<a>").attr({"href":"#",id:"runin"}).text(R("runInSeparateWindow")).click(FC(runin))
-                ));
-        
+                ));*/
         if (desktopEnv.runInSeparateWindow) {
             $("#runin").text(R("runInsideEditor"));
         }

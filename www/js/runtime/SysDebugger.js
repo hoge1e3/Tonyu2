@@ -34,17 +34,19 @@ define(function (require/*,exports,module*/) {
     Tonyu.runMode=true;
     Tonyu.animationFrame=()=>new Promise(requestAnimationFrame);
     start();
-    /*function traverseParent() {
-        let p;
-        for (p=root.parent; p && !p.tonyu ; p=p.parent);
+    function traverseParent() {
+        let p=root.parent;
+        if (p && root!==p) return p;
+        p=root.opener;
+        if (p && root!==p) return p;
         return p;
-    }*/
+    }
     async function start() {
         const prjDir=FS.get(getQueryString("prj")||root.Tonyu_StartProject);
         const prj=CompiledProject.create({dir:prjDir});
         prj.include(sysMod);
         await Debugger.init(prj);// sets $currentProject=prj
-        let parent=root.parent;//traverseParent();
+        let parent=traverseParent();
         try {
             prj.compiler=parent.Tonyu.globals.$currentProject;// TODO: compiler->compilablePrj?
             // It is likely I wanted to use from Tonyu like this:  $currentProject.compiler.partialCompile();

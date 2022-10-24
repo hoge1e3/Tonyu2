@@ -13,6 +13,7 @@ define(function(require, exports, module) {
             this.url=url;
             this.feature=feature;
             this.window=window.open(url,"_blank",f2s(feature));
+            this.setHandlers();       
             setInterval(this.watch.bind(this), 100);
         }
         reopen() {
@@ -20,13 +21,33 @@ define(function(require, exports, module) {
                 this.window.location.reload();
                 return this.focus();
             }
-            this.window=window.open(this.url,"_blank",f2s(this.feature));            
+            this.window=window.open(this.url,"_blank",f2s(this.feature));     
+            this.setHandlers();       
+        }
+        setHandlers() {
+            this.handleClose();
+            this.wasOpened=this.window;
+            /*this.window.addEventListener("load", ()=>{
+                console.log("Onload handler start");
+                this.window.addEventListener("unload", ()=>{
+                    console.log("unload handler start", this.beforeClose);
+                    if (this.beforeClose) this.beforeClose();
+                });
+            });*/
         }
         focus() {
             this.window.focus();
         }
+        handleClose() {
+            if (!this.wasOpened) return;
+            if (this.beforeClose) this.beforeClose(this.wasOpened);
+            this.wasOpened=null;
+        }
         watch() {
-            if (this.window.closed) return;
+            if (this.window.closed) {
+                this.handleClose();
+                return;
+            }
             if (!this.state){ 
                 this.state=this.getState();
             }

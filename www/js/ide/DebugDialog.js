@@ -42,6 +42,12 @@ define(function(require, exports, module) {
                     t.openedWindow.reopen();
                 } else {
                     t.openedWindow=new PopupWindow("debug.html?prj=" + param.prj);
+                    t.openedWindow.beforeClose=function() {
+                        //if (t.param.isCloned) return true;
+                        //if (t.forceClose) return true;
+                        t.param.ide.stop({ closeAfterStop: true });
+                        return false;
+                    };
                 }
                 return;
             }
