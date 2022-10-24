@@ -1,0 +1,52 @@
+define(function(require, exports, module) {
+    function f2s(feature) {
+        return "popup,"+Object.keys(feature).map((k)=>`${k}=${feature[k]}`).join(",");
+    }
+    let keys={
+        "screenLeft": "left",
+        "screenTop":"top",
+        "innerWidth":"width", 
+        "innerHeight":"height",
+    };
+    module.exports=class {
+        constructor(url, feature={left:50, top:50, width:465,height:465}) {
+            this.url=url;
+            this.feature=feature;
+            this.window=window.open(url,"_blank",f2s(feature));
+            setInterval(this.watch.bind(this), 100);
+        }
+        reopen() {
+            if (!this.window.closed) {
+                this.window.location.reload();
+                return this.focus();
+            }
+            this.window=window.open(this.url,"_blank",f2s(this.feature));            
+        }
+        focus() {
+            this.window.focus();
+        }
+        watch() {
+            if (this.window.closed) return;
+            if (!this.state){ 
+                this.state=this.getState();
+            }
+            let ns=this.getState();
+            let changed=false;
+            for (let k of Object.keys(keys) ) {
+                let fk=keys[k];
+                let dif=ns[k]-this.state[k];
+                this.feature[fk]+=dif;
+                if (dif!=0) changed=true;
+            }
+            if (changed) console.log("F", f2s(this.feature));
+            this.state=ns;
+        }
+        getState() {
+            let res={};
+            for (let k of Object.keys(keys) ) {
+                res[k]=this.window[k];
+            }
+            return res;
+        }
+    };
+});

@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
     const UI = require("UI");
     const R = require("R");
+    const PopupWindow = require("PopupWindow");
     class DebugDialog {
         constructor(param) {
             const t = this;
@@ -20,6 +21,7 @@ define(function(require, exports, module) {
             t.dom = d;
             t.iframe = d.$vars.iframe;
             t.project = param.ide.project;
+            //t.savedFeature="popup";
         }
         close() {
             this.forceClose = true;
@@ -31,11 +33,19 @@ define(function(require, exports, module) {
             this.show(false, size);
         }
         show(reset, size) {
-            const doResize=!!size;
             const t = this;
+            let param = t.param;
             var d = t.dom;
-            var param = t.param;
             var desktopEnv = param.desktopEnv;
+            if(desktopEnv.runInSeparateWindow) {
+                if (t.openedWindow) {
+                    t.openedWindow.reopen();
+                } else {
+                    t.openedWindow=new PopupWindow("debug.html?prj=" + param.prj);
+                }
+                return;
+            }
+            const doResize=!!size;
             if (reset || !desktopEnv.runDialog) desktopEnv.runDialog = {};
             size=Object.assign(desktopEnv.runDialog, size||{});
             t.size=size;

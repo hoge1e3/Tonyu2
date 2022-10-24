@@ -90,7 +90,7 @@ $(function () {
     createResFile();
     const runDialogParam={
         screenH:200,
-        desktopEnv: desktopEnv,
+        desktopEnv,
         prj: curPrjDir.path(),//???
         ide
     };
@@ -199,10 +199,29 @@ $(function () {
                 $("<li>").append(
                         $("<a>").attr("href","#").text(R("selectMain")).click(FC(dialogs.selectMain))
                     ));
+        $("#runMenu").append(
+            $("<li>").append(
+                    $("<a>").attr({"href":"#",id:"runin"}).text(R("runInSeparateWindow")).click(FC(runin))
+                ));
+        
+        if (desktopEnv.runInSeparateWindow) {
+            $("#runin").text(R("runInsideEditor"));
+        }
         console.log("runMenuOrd", runMenuOrd);
         //saveDesktopEnv();
         //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
         //$("#exportToExe").attr("href", "exportToExe.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
+    }
+    function runin() {
+        desktopEnv.runInSeparateWindow=!desktopEnv.runInSeparateWindow;
+        if (desktopEnv.runInSeparateWindow) {
+            $("#runin").text(R("runInsideEditor"));
+            alert(R("configurationChanged")+": "+R("runInSeparateWindow")+"\n"+R("disablePopupBlock"));
+        } else {
+            $("#runin").text(R("runInSeparateWindow"));
+            alert(R("configurationChanged")+": "+R("runInsideEditor"));
+        }
+        saveDesktopEnv();
     }
     $("#exportToJsdoit").attr("href", jshint.scriptURL(";")).click(dialogs.exportHTML);
     function dispName(f) {

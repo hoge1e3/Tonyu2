@@ -177,6 +177,7 @@ var reqConf={
             },
             dialogs:{Dialogs:1},
             "ide": {
+                PopupWindow:1 ,
                 MapEditor2:1,
                 RealtimeErrorMarker:1,
                 EditorPopupMarker:1,

@@ -5,6 +5,10 @@ $(".dropdown-toggle");
 */
     const root=require("root");
     const ja={
+        "runInSeparateWindow": "別ウィンドウで実行",
+        "runInsideEditor": "エディタと同じ画面で実行",
+        "configurationChanged": "設定変更",
+        "disablePopupBlock": "ポップアップを許可してください",
         "doTypeCheck": "型チェックを行う",
         "socialEditor": "アプリ情報",
         "title": "タイトル",
