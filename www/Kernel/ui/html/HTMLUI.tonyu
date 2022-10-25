@@ -3,6 +3,8 @@ includes JQExpr;
 native document;
 native $;
 native navigator;
+native Promise;
+native FileReader;
 "field strict";
 var left, top, width, height;
 var screen,id,content;
@@ -70,6 +72,26 @@ function fit() {
 \setValue(name,value) {
     if (!name2id) return "";
     return checkExists(name).val(value);
+}
+\hasFile(name) {
+    if (!name2id) return "";
+    let files=checkExists(name)[0].files;
+    if (!files) return 0;
+    return files.length;
+}
+\getFile(name) {
+    if (!name2id) return "";
+    return new Promise \(s){
+        let files=checkExists(name)[0].files;
+        if (!files) s();
+        let f=files[0];
+        if (!f) s();
+        let rd=new FileReader;
+        rd.onload = \(e) { 
+            s{name:f.name, dataURL:e.target.result};
+        };
+        rd.readAsDataURL(f);
+    };
 }
 \copyToClipboard(name) {
     //checkExists(name)[0].select();
