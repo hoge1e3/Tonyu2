@@ -23,7 +23,7 @@ Tonyu.klass.define({
         if (h["fiber"]) {
           t=Tonyu.thread();
           t.apply(_this.target,h,args);
-          t.steps();
+          t.stepsLoop();
           
         } else {
           h.apply(_this.target,args);
@@ -39,7 +39,7 @@ Tonyu.klass.define({
         if (h["fiber"]) {
           t=Tonyu.thread();
           t.apply(_this.target,h,args);
-          t.steps();
+          t.stepsLoop();
           
         } else {
           h.apply(_this.target,args);
@@ -28632,7 +28632,7 @@ Tonyu.klass.define({
         }
         document.body.appendChild($("#"+_this.id)[0]);
         _this.fit();
-        Tonyu.globals.$uiScreen.on("resize",(function anonymous_842() {
+        Tonyu.globals.$uiScreen.on("resize",(function anonymous_877() {
           
           _this.fit();
         }));
@@ -28787,6 +28787,90 @@ Tonyu.klass.define({
         return _this.checkExists(name).val(value);
         
       },
+      hasFile :function _trc_HTMLUI_hasFile(name) {
+        var _this=this;
+        
+        if (! _this.name2id) {
+          return "";
+        }
+        let files = _this.checkExists(name)[0].files;
+        
+        if (! files) {
+          return 0;
+        }
+        return files.length;
+      },
+      fiber$hasFile :function* _trc_HTMLUI_f_hasFile(_thread,name) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (! _this.name2id) {
+          return "";
+        }
+        let files = _this.checkExists(name)[0].files;
+        
+        if (! files) {
+          return 0;
+        }
+        return files.length;
+        
+      },
+      getFile :function _trc_HTMLUI_getFile(name) {
+        var _this=this;
+        
+        if (! _this.name2id) {
+          return "";
+        }
+        return new Promise((function anonymous_2255(s) {
+          
+          let files = _this.checkExists(name)[0].files;
+          
+          if (! files) {
+            s();
+          }
+          let f = files[0];
+          
+          if (! f) {
+            s();
+          }
+          let rd = new FileReader;
+          
+          rd.onload=(function anonymous_2428(e) {
+            
+            s({name: f.name,dataURL: e.target.result});
+          });
+          rd.readAsDataURL(f);
+        }));
+      },
+      fiber$getFile :function* _trc_HTMLUI_f_getFile(_thread,name) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (! _this.name2id) {
+          return "";
+        }
+        return new Promise((function anonymous_2255(s) {
+          
+          let files = _this.checkExists(name)[0].files;
+          
+          if (! files) {
+            s();
+          }
+          let f = files[0];
+          
+          if (! f) {
+            s();
+          }
+          let rd = new FileReader;
+          
+          rd.onload=(function anonymous_2428(e) {
+            
+            s({name: f.name,dataURL: e.target.result});
+          });
+          rd.readAsDataURL(f);
+        }));
+        
+      },
       copyToClipboard :function _trc_HTMLUI_copyToClipboard(name) {
         var _this=this;
         
@@ -28834,7 +28918,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"toUI":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"fit":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"checkExists":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getValue":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setValue":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"copyToClipboard":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"die":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"left":{},"top":{},"width":{},"height":{},"screen":{},"id":{},"content":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"toUI":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"fit":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"checkExists":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getValue":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setValue":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"hasFile":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getFile":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"copyToClipboard":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"die":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"left":{},"top":{},"width":{},"height":{},"screen":{},"id":{},"content":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Label',
