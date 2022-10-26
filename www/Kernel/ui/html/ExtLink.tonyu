@@ -20,9 +20,9 @@ function getOpt(options) {
         options.href="javascript:;";
         options.onclick=ext("open",href,afterClick);
     } else {
-        options.href=href;
-        options.onclick=afterClick;
-        options.target="_new";
+        //options.href=href;
+        //options.onclick=afterClick;
+        //options.target="_new";
     }
     return options;
 }

@@ -1,4 +1,5 @@
 extends TObject;
+includes EventHandlerCaller;
 "field strict";
 native $;
 var name2id;
@@ -41,12 +42,14 @@ var name2id;
         if (tagname==="a") {
             attr=extLink().getOpt(attr);
         }
-        for (var k,v in attr) {
-            var m=r_evt.exec(k);
+        for (let k,v in attr) {
+            let m=r_evt.exec(k);
             if (m) {
                 if (typeof v==="function") {
                     //print(m[1],v);
-                    elem.on(m[1], v);
+                    elem.on(m[1]) \(...args) {
+                        return callEventHandler(v, args);
+                    };
                 }
             } else if (isPrimitive(v)) {
                 if ((v+"").match(/^javascript:/)) v="javascript:;";

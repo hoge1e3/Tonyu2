@@ -26,7 +26,7 @@ Tonyu.klass.define({
           t.stepsLoop();
           
         } else {
-          h.apply(_this.target,args);
+          return h.apply(_this.target,args);
           
         }
       },
@@ -42,7 +42,7 @@ Tonyu.klass.define({
           t.stepsLoop();
           
         } else {
-          h.apply(_this.target,args);
+          return h.apply(_this.target,args);
           
         }
         
@@ -14523,9 +14523,7 @@ Tonyu.klass.define({
             options.onclick=_this.ext("open",href,afterClick);
             
           } else {
-            options.href=href;
-            options.onclick=afterClick;
-            options.target="_new";
+            
             
           }
         }
@@ -14557,9 +14555,7 @@ Tonyu.klass.define({
             options.onclick=(yield* _this.fiber$ext(_thread, "open", href, afterClick));
             
           } else {
-            options.href=href;
-            options.onclick=afterClick;
-            options.target="_new";
+            
             
           }
         }
@@ -14569,7 +14565,7 @@ Tonyu.klass.define({
       ext :function _trc_ExtLink_ext(cmd,href,afterClick) {
         var _this=this;
         
-        return (function anonymous_896() {
+        return (function anonymous_902() {
           
           _this.exec(cmd+" "+href);
           if (afterClick) {
@@ -14581,7 +14577,7 @@ Tonyu.klass.define({
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
         
-        return (function anonymous_896() {
+        return (function anonymous_902() {
           
           _this.exec(cmd+" "+href);
           if (afterClick) {
@@ -14600,7 +14596,7 @@ Tonyu.klass.define({
   shortName: 'JQExpr',
   namespace: 'kernel',
   superclass: Tonyu.classes.kernel.TObject,
-  includes: [],
+  includes: [Tonyu.classes.kernel.EventHandlerCaller],
   methods: function (__superClass) {
     return {
       main :function _trc_JQExpr_main() {
@@ -14690,9 +14686,6 @@ Tonyu.klass.define({
         var name;
         var attr;
         var r_evt;
-        var k;
-        var v;
-        var m;
         var svp;
         var e;
         
@@ -14727,12 +14720,15 @@ Tonyu.klass.define({
             attr=_this.extLink().getOpt(attr);
             
           }
-          for ([k, v] of Tonyu.iterator2(attr,2)) {
-            m = r_evt.exec(k);
+          for (let [k, v] of Tonyu.iterator2(attr,2)) {
+            let m = r_evt.exec(k);
             
             if (m) {
               if (typeof  v==="function") {
-                elem.on(m[1],v);
+                elem.on(m[1],(function anonymous_1351(...args) {
+                  
+                  return _this.callEventHandler(v,args);
+                }));
                 
               }
               
@@ -14756,12 +14752,12 @@ Tonyu.klass.define({
           
         }
         
-        elem.on("focus",(function anonymous_1625() {
+        elem.on("focus",(function anonymous_1744() {
           
           svp=Tonyu.globals.$Keys.preventDefaults;
           Tonyu.globals.$Keys.preventDefaults={};
         }));
-        elem.on("blur",(function anonymous_1724() {
+        elem.on("blur",(function anonymous_1843() {
           
           if (svp) {
             Tonyu.globals.$Keys.preventDefaults=svp;
@@ -14793,9 +14789,6 @@ Tonyu.klass.define({
         var name;
         var attr;
         var r_evt;
-        var k;
-        var v;
-        var m;
         var svp;
         var e;
         
@@ -14830,12 +14823,15 @@ Tonyu.klass.define({
             attr=_this.extLink().getOpt(attr);
             
           }
-          for ([k, v] of Tonyu.iterator2(attr,2)) {
-            m = r_evt.exec(k);
+          for (let [k, v] of Tonyu.iterator2(attr,2)) {
+            let m = r_evt.exec(k);
             
             if (m) {
               if (typeof  v==="function") {
-                elem.on(m[1],v);
+                elem.on(m[1],(function anonymous_1351(...args) {
+                  
+                  return _this.callEventHandler(v,args);
+                }));
                 
               }
               
@@ -14859,12 +14855,12 @@ Tonyu.klass.define({
           
         }
         
-        elem.on("focus",(function anonymous_1625() {
+        elem.on("focus",(function anonymous_1744() {
           
           svp=Tonyu.globals.$Keys.preventDefaults;
           Tonyu.globals.$Keys.preventDefaults={};
         }));
-        elem.on("blur",(function anonymous_1724() {
+        elem.on("blur",(function anonymous_1843() {
           
           if (svp) {
             Tonyu.globals.$Keys.preventDefaults=svp;

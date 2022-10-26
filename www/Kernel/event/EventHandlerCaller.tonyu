@@ -7,6 +7,6 @@ native Tonyu;
         t.apply(target, h, args);
         t.stepsLoop();
     } else {
-        h.apply(target,args);
+        return h.apply(target,args);
     }
 }
