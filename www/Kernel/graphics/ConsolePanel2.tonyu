@@ -1,0 +1,160 @@
+extends Panel;
+native console;
+"field strict";
+var size,row,col,cx,cy,mat,font;
+\new(p) {
+    p=p||{};
+    p.size=p.size||16;
+    p.width=p.width||$screenWidth;
+    p.height=p.height||$screenHeight;
+    p.row=p.row||floor(p.height/p.size);
+    p.col=p.col||floor(p.width/(p.size/2));
+    p.width=p.col*(p.size/2);
+    p.height=p.row*p.size;
+    p.fg=p.fg||"white";
+    p.bg=p.bg||"rgba(0,0,0,0)";
+    if (p.left) p.x=p.left+p.width/2;
+    if (p.top ) p.y=p.top +p.height/2;
+    super(p);
+    cx=0;cy=0;
+    fillStyle="white";
+    mat=new Matrix;
+    mat.on("newCell") \(e) {e.set({});};
+}
+
+
+\locate(x,y) {
+    cx=x;cy=y;
+    return this;
+}
+\color(fg,bg) {
+    this.fg=fg||this.fg;
+    this.bg=bg||this.bg;
+    return this;
+}
+\cprint(s) {
+    s=s+"";
+    var r=/^(#[0-9a-f][0-9a-f][0-9a-f](?:[0-9a-f][0-9a-f][0-9a-f])?)(#[0-9a-f][0-9a-f][0-9a-f](?:[0-9a-f][0-9a-f][0-9a-f])?)?/i;
+    for (var i=0;i<s.length;i++) {
+        var ch=s.charCodeAt(i);
+        if (ch===35) {
+            var cs=s.substring(i);
+            var m=r.exec(cs);
+            if (m) {
+                //console.log("COL",m[1],m[2]);
+                color(m[1],m[2]);
+                i+=m[0].length-1;
+            } else {
+                putchar(ch);
+            }
+        } else {
+            putchar(ch);
+        }
+    }
+    return this;
+    
+}
+\print(...args) {
+    puts(args.join(" ")+"\n");
+}
+\puts(s:String) {
+    s=s+"";
+    for (var i=0;i<s.length;i++) {
+        var ch=s.charCodeAt(i);
+        putchar(ch);
+    }
+    return this;
+}
+\putchar(ch) {
+    if (ch>=256 && cx==col-1) {
+        putchar(" ");
+    }
+    if (ch!==10) {
+        poke(cx,cy,ch);
+        cx+=(ch>=256?2:1);
+    }
+    if (cx>=col || ch===10) {
+        cx=0;
+        cy++;
+        if (cy>=row) {
+            scroll();
+            cy=row-1;
+        }
+    }   
+}
+\poke(cx,cy,ch,fg,bg) {
+    if (typeof ch==="object") {
+        fg=ch.fg;
+        bg=ch.bg;
+        ch=ch.text;
+    }
+    if (typeof ch==="string") {
+        ch=ch.charCodeAt(0);  
+    }
+    fg=fg||this.fg;
+    bg=bg||this.bg;
+    //if (peek(cx,cy)===ch) return;
+    var ctx=context;
+    //var size=p.size;
+    var hp=size/2;
+    var w=(ch>=256 ? size : size/2); 
+    ctx.save();
+    ctx.textBaseline="top";
+    ctx.font=size+"px Monospace";
+    ctx.clearRect(cx*hp,cy*size,w,size);
+    ctx.fillStyle=bg;
+    ctx.fillRect(cx*hp,cy*size,w,size);
+    //var pImg=$imageList[ch+font];
+    ctx.fillStyle=fg;
+    ctx.fillText(String.fromCharCode(ch),cx*hp,cy*size);
+    var d=mat.get(cx,cy);
+    d.text=ch;
+    d.fg=fg;
+    d.bg=bg;
+    if (ch>=256) mat.get(cx+1,cy).text=-1;
+    ctx.restore();
+}
+\peek(cx,cy) {
+    /*var r=mat.get(cx,cy);
+    if (!r) {
+        console.log(cx,cy,r);
+        throw new Error(cx+","+cy+","+r);
+    }*/
+    return mat.get(cx,cy).text;
+}
+\peekAttr(cx,cy) {
+    return mat.get(cx,cy);
+}
+\scroll(dx,dy) {
+    if (dx==null) dx=0;
+    if (dy==null) dy=-1;
+    var range={left:0,top:0,row,col};
+    var nm=new Matrix;
+    nm.on("newCell") \(e) {e.set({});};
+    for (var x,y,c in mat) {
+        var dsx=x+dx;
+        var dsy=y+dy;
+        if (dsy>=0 && dsy<row && dsx>=0 && dsx<col) nm.set(dsx,dsy,c);
+    }
+    var hs=size/2;
+    mat=nm;
+    context.save();
+    context.globalCompositeOperation="copy";
+    var cp={
+        //src:{x:-dx*hs, y:-dy*size}, 
+        src:{x:range.left*hs,y:range.top*size}, 
+        dst:{x:range.left*hs,y:range.top*size}, 
+        sz:{w:range.col*hs, h:range.row*size}
+    };
+    if (dy<0) cp.src.y-=dy*size;
+    if (dy>0) cp.dst.y+=dy*size;
+    if (dx<0) cp.src.x-=dx*hs;
+    if (dx>0) cp.dst.x+=dx*hs;
+    cp.sz.w-=abs(dx*hs);
+    cp.sz.h-=abs(dy*size);
+    
+    context.drawImage(image,
+    cp.src.x, cp.src.y, cp.sz.w, cp.sz.h,
+    cp.dst.x, cp.dst.y, cp.sz.w, cp.sz.h);
+    context.restore();
+}

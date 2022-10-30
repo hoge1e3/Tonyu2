@@ -37007,6 +37007,484 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"print":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"printAry":{},"printStart":{},"printCnt":{},"screenCol":{},"defaultCol":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.ConsolePanel2',
+  shortName: 'ConsolePanel2',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.Panel,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_ConsolePanel2_main() {
+        var _this=this;
+        
+        "field strict";
+        
+      },
+      fiber$main :function* _trc_ConsolePanel2_f_main(_thread) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        "field strict";
+        
+        
+      },
+      initialize :function _trc_ConsolePanel2_initialize(p) {
+        var _this=this;
+        
+        p=p||{};
+        p.size=p.size||16;
+        p.width=p.width||Tonyu.globals.$screenWidth;
+        p.height=p.height||Tonyu.globals.$screenHeight;
+        p.row=p.row||_this.floor(p.height/p.size);
+        p.col=p.col||_this.floor(p.width/(p.size/2));
+        p.width=p.col*(p.size/2);
+        p.height=p.row*p.size;
+        p.fg=p.fg||"white";
+        p.bg=p.bg||"rgba(0,0,0,0)";
+        if (p.left) {
+          p.x=p.left+p.width/2;
+        }
+        if (p.top) {
+          p.y=p.top+p.height/2;
+        }
+        __superClass.apply( _this, [p]);
+        _this.cx=0;
+        _this.cy=0;
+        _this.fillStyle="white";
+        _this.mat=new Tonyu.classes.kernel.Matrix;
+        _this.mat.on("newCell",(function anonymous_568(e) {
+          
+          e.set({});
+        }));
+      },
+      locate :function _trc_ConsolePanel2_locate(x,y) {
+        var _this=this;
+        
+        _this.cx=x;
+        _this.cy=y;
+        return _this;
+      },
+      fiber$locate :function* _trc_ConsolePanel2_f_locate(_thread,x,y) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        _this.cx=x;
+        _this.cy=y;
+        return _this;
+        
+      },
+      color :function _trc_ConsolePanel2_color(fg,bg) {
+        var _this=this;
+        
+        _this.fg=fg||_this.fg;
+        _this.bg=bg||_this.bg;
+        return _this;
+      },
+      cprint :function _trc_ConsolePanel2_cprint(s) {
+        var _this=this;
+        var r;
+        var i;
+        var ch;
+        var cs;
+        var m;
+        
+        s=s+"";
+        r = /^(#[0-9a-f][0-9a-f][0-9a-f](?:[0-9a-f][0-9a-f][0-9a-f])?)(#[0-9a-f][0-9a-f][0-9a-f](?:[0-9a-f][0-9a-f][0-9a-f])?)?/i;
+        
+        for (i = 0;
+         i<s.length ; i++) {
+          {
+            ch = s.charCodeAt(i);
+            
+            if (ch===35) {
+              cs = s.substring(i);
+              
+              m = r.exec(cs);
+              
+              if (m) {
+                _this.color(m[1],m[2]);
+                i+=m[0].length-1;
+                
+              } else {
+                _this.putchar(ch);
+                
+              }
+              
+            } else {
+              _this.putchar(ch);
+              
+            }
+          }
+        }
+        return _this;
+      },
+      fiber$cprint :function* _trc_ConsolePanel2_f_cprint(_thread,s) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var r;
+        var i;
+        var ch;
+        var cs;
+        var m;
+        
+        s=s+"";
+        r = /^(#[0-9a-f][0-9a-f][0-9a-f](?:[0-9a-f][0-9a-f][0-9a-f])?)(#[0-9a-f][0-9a-f][0-9a-f](?:[0-9a-f][0-9a-f][0-9a-f])?)?/i;
+        
+        for (i = 0;
+         i<s.length ; i++) {
+          {
+            ch = s.charCodeAt(i);
+            
+            if (ch===35) {
+              cs = s.substring(i);
+              
+              m = r.exec(cs);
+              
+              if (m) {
+                _this.color(m[1],m[2]);
+                i+=m[0].length-1;
+                
+              } else {
+                (yield* _this.fiber$putchar(_thread, ch));
+                
+              }
+              
+            } else {
+              (yield* _this.fiber$putchar(_thread, ch));
+              
+            }
+          }
+        }
+        return _this;
+        
+      },
+      print :function _trc_ConsolePanel2_print(...args) {
+        var _this=this;
+        
+        _this.puts(args.join(" ")+"\n");
+      },
+      puts :function _trc_ConsolePanel2_puts(s) {
+        var _this=this;
+        var i;
+        var ch;
+        
+        s=s+"";
+        for (i = 0;
+         i<s.length ; i++) {
+          {
+            ch = s.charCodeAt(i);
+            
+            _this.putchar(ch);
+          }
+        }
+        return _this;
+      },
+      fiber$puts :function* _trc_ConsolePanel2_f_puts(_thread,s) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var i;
+        var ch;
+        
+        s=s+"";
+        for (i = 0;
+         i<s.length ; i++) {
+          {
+            ch = s.charCodeAt(i);
+            
+            (yield* _this.fiber$putchar(_thread, ch));
+          }
+        }
+        return _this;
+        
+      },
+      putchar :function _trc_ConsolePanel2_putchar(ch) {
+        var _this=this;
+        
+        if (ch>=256&&_this.cx==_this.col-1) {
+          _this.putchar(" ");
+          
+        }
+        if (ch!==10) {
+          _this.poke(_this.cx,_this.cy,ch);
+          _this.cx+=(ch>=256?2:1);
+          
+        }
+        if (_this.cx>=_this.col||ch===10) {
+          _this.cx=0;
+          _this.cy++;
+          if (_this.cy>=_this.row) {
+            _this.scroll();
+            _this.cy=_this.row-1;
+            
+          }
+          
+        }
+      },
+      fiber$putchar :function* _trc_ConsolePanel2_f_putchar(_thread,ch) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        if (ch>=256&&_this.cx==_this.col-1) {
+          (yield* _this.fiber$putchar(_thread, " "));
+          
+        }
+        if (ch!==10) {
+          (yield* _this.fiber$poke(_thread, _this.cx, _this.cy, ch));
+          _this.cx+=(ch>=256?2:1);
+          
+        }
+        if (_this.cx>=_this.col||ch===10) {
+          _this.cx=0;
+          _this.cy++;
+          if (_this.cy>=_this.row) {
+            (yield* _this.fiber$scroll(_thread));
+            _this.cy=_this.row-1;
+            
+          }
+          
+        }
+        
+      },
+      poke :function _trc_ConsolePanel2_poke(cx,cy,ch,fg,bg) {
+        var _this=this;
+        var ctx;
+        var hp;
+        var w;
+        var d;
+        
+        if (typeof  ch==="object") {
+          fg=ch.fg;
+          bg=ch.bg;
+          ch=ch.text;
+          
+        }
+        if (typeof  ch==="string") {
+          ch=ch.charCodeAt(0);
+          
+        }
+        fg=fg||_this.fg;
+        bg=bg||_this.bg;
+        ctx = _this.context;
+        
+        hp = _this.size/2;
+        
+        w = (ch>=256?_this.size:_this.size/2);
+        
+        ctx.save();
+        ctx.textBaseline="top";
+        ctx.font=_this.size+"px Monospace";
+        ctx.clearRect(cx*hp,cy*_this.size,w,_this.size);
+        ctx.fillStyle=bg;
+        ctx.fillRect(cx*hp,cy*_this.size,w,_this.size);
+        ctx.fillStyle=fg;
+        ctx.fillText(String.fromCharCode(ch),cx*hp,cy*_this.size);
+        d = _this.mat.get(cx,cy);
+        
+        d.text=ch;
+        d.fg=fg;
+        d.bg=bg;
+        if (ch>=256) {
+          _this.mat.get(cx+1,cy).text=- 1;
+        }
+        ctx.restore();
+      },
+      fiber$poke :function* _trc_ConsolePanel2_f_poke(_thread,cx,cy,ch,fg,bg) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var ctx;
+        var hp;
+        var w;
+        var d;
+        
+        if (typeof  ch==="object") {
+          fg=ch.fg;
+          bg=ch.bg;
+          ch=ch.text;
+          
+        }
+        if (typeof  ch==="string") {
+          ch=ch.charCodeAt(0);
+          
+        }
+        fg=fg||_this.fg;
+        bg=bg||_this.bg;
+        ctx = _this.context;
+        
+        hp = _this.size/2;
+        
+        w = (ch>=256?_this.size:_this.size/2);
+        
+        ctx.save();
+        ctx.textBaseline="top";
+        ctx.font=_this.size+"px Monospace";
+        ctx.clearRect(cx*hp,cy*_this.size,w,_this.size);
+        ctx.fillStyle=bg;
+        ctx.fillRect(cx*hp,cy*_this.size,w,_this.size);
+        ctx.fillStyle=fg;
+        ctx.fillText(String.fromCharCode(ch),cx*hp,cy*_this.size);
+        d = _this.mat.get(cx,cy);
+        
+        d.text=ch;
+        d.fg=fg;
+        d.bg=bg;
+        if (ch>=256) {
+          _this.mat.get(cx+1,cy).text=- 1;
+        }
+        ctx.restore();
+        
+      },
+      peek :function _trc_ConsolePanel2_peek(cx,cy) {
+        var _this=this;
+        
+        return _this.mat.get(cx,cy).text;
+      },
+      fiber$peek :function* _trc_ConsolePanel2_f_peek(_thread,cx,cy) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        return _this.mat.get(cx,cy).text;
+        
+      },
+      peekAttr :function _trc_ConsolePanel2_peekAttr(cx,cy) {
+        var _this=this;
+        
+        return _this.mat.get(cx,cy);
+      },
+      fiber$peekAttr :function* _trc_ConsolePanel2_f_peekAttr(_thread,cx,cy) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        return _this.mat.get(cx,cy);
+        
+      },
+      scroll :function _trc_ConsolePanel2_scroll(dx,dy) {
+        var _this=this;
+        var range;
+        var nm;
+        var x;
+        var y;
+        var c;
+        var dsx;
+        var dsy;
+        var hs;
+        var cp;
+        
+        if (dx==null) {
+          dx=0;
+        }
+        if (dy==null) {
+          dy=- 1;
+        }
+        range = {left: 0,top: 0,row: _this.row,col: _this.col};
+        
+        nm = new Tonyu.classes.kernel.Matrix;
+        
+        nm.on("newCell",(function anonymous_2966(e) {
+          
+          e.set({});
+        }));
+        for ([x, y, c] of Tonyu.iterator2(_this.mat,3)) {
+          dsx = x+dx;
+          
+          dsy = y+dy;
+          
+          if (dsy>=0&&dsy<_this.row&&dsx>=0&&dsx<_this.col) {
+            nm.set(dsx,dsy,c);
+          }
+          
+        }
+        hs = _this.size/2;
+        
+        _this.mat=nm;
+        _this.context.save();
+        _this.context.globalCompositeOperation="copy";
+        cp = {src: {x: range.left*hs,y: range.top*_this.size},dst: {x: range.left*hs,y: range.top*_this.size},sz: {w: range.col*hs,h: range.row*_this.size}};
+        
+        if (dy<0) {
+          cp.src.y-=dy*_this.size;
+        }
+        if (dy>0) {
+          cp.dst.y+=dy*_this.size;
+        }
+        if (dx<0) {
+          cp.src.x-=dx*hs;
+        }
+        if (dx>0) {
+          cp.dst.x+=dx*hs;
+        }
+        cp.sz.w-=_this.abs(dx*hs);
+        cp.sz.h-=_this.abs(dy*_this.size);
+        _this.context.drawImage(_this.image,cp.src.x,cp.src.y,cp.sz.w,cp.sz.h,cp.dst.x,cp.dst.y,cp.sz.w,cp.sz.h);
+        _this.context.restore();
+      },
+      fiber$scroll :function* _trc_ConsolePanel2_f_scroll(_thread,dx,dy) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        var range;
+        var nm;
+        var x;
+        var y;
+        var c;
+        var dsx;
+        var dsy;
+        var hs;
+        var cp;
+        
+        if (dx==null) {
+          dx=0;
+        }
+        if (dy==null) {
+          dy=- 1;
+        }
+        range = {left: 0,top: 0,row: _this.row,col: _this.col};
+        
+        nm = new Tonyu.classes.kernel.Matrix;
+        
+        nm.on("newCell",(function anonymous_2966(e) {
+          
+          e.set({});
+        }));
+        for ([x, y, c] of Tonyu.iterator2(_this.mat,3)) {
+          dsx = x+dx;
+          
+          dsy = y+dy;
+          
+          if (dsy>=0&&dsy<_this.row&&dsx>=0&&dsx<_this.col) {
+            nm.set(dsx,dsy,c);
+          }
+          
+        }
+        hs = _this.size/2;
+        
+        _this.mat=nm;
+        _this.context.save();
+        _this.context.globalCompositeOperation="copy";
+        cp = {src: {x: range.left*hs,y: range.top*_this.size},dst: {x: range.left*hs,y: range.top*_this.size},sz: {w: range.col*hs,h: range.row*_this.size}};
+        
+        if (dy<0) {
+          cp.src.y-=dy*_this.size;
+        }
+        if (dy>0) {
+          cp.dst.y+=dy*_this.size;
+        }
+        if (dx<0) {
+          cp.src.x-=dx*hs;
+        }
+        if (dx>0) {
+          cp.dst.x+=dx*hs;
+        }
+        cp.sz.w-=_this.abs(dx*hs);
+        cp.sz.h-=_this.abs(dy*_this.size);
+        _this.context.drawImage(_this.image,cp.src.x,cp.src.y,cp.sz.w,cp.sz.h,cp.dst.x,cp.dst.y,cp.sz.w,cp.sz.h);
+        _this.context.restore();
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"locate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"color":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"cprint":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"print":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"puts":{"nowait":false,"isMain":false,"vtype":{"params":["String"],"returnValue":null}},"putchar":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"poke":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"peek":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"peekAttr":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scroll":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"size":{},"row":{},"col":{},"cx":{},"cy":{},"mat":{},"font":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.FadeEffect',
   shortName: 'FadeEffect',
   namespace: 'kernel',
