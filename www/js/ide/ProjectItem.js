@@ -55,6 +55,7 @@ submenuExpr:function submenuExpr(t) {
             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.newWindow}},R("openProjectInNewWindow")],
             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.rename}},R("rename")],
             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.download}},R("downloadAsZip")],
+            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.copy}},R("copy")],
             ["a",{href:HNOP,class:"submenu nwmenu",on:{click:t.$bind.openFolder}},R("openFolder")],
             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.remove}},R("delete")]
         ]
@@ -66,6 +67,24 @@ newWindow(t) {
 download: function (t) {
     S.closeSubmenu();
     return FS.zip.zip(t.projectDir).catch(DU.E);
+},
+copy(t) {
+    let np=prompt(R("inputNewProjectName"),
+    t.name);
+    if (!np || np=="") return;
+    np=FS.PathUtil.truncSEP(np);
+    let npd=t.projectDir.sibling(np+"/");
+    return npd.exists((e)=>{
+        if (e) {
+            alert(R("renamedProjectExists",np));
+            return;
+        }
+        return t.projectDir.copyTo(npd).then(function () {
+            //console.log("Renamed",t.url);
+            S.closeSubmenu();
+            location.reload();
+        }).catch(DU.E);
+    });
 },
 remove: function (t) {
     S.closeSubmenu();
