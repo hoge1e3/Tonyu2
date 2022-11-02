@@ -3,16 +3,16 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="BaseActor">BaseActor</a></p>
-<h1 id="print-">printメソッド</h1>
-<p><a href="console">コンソール</a>に値を表示します．(JavaScriptのconsole.logと同じ)</p>
-<h2 id="-">書式</h2>
-<pre><code class="lang-JS">print(value1,value2...);
+<h1 id="printメソッド">printメソッド</h1>
+<p><a href="console">コンソール</a>と画面に値を表示します．</p>
+<h2 id="書式">書式</h2>
+<pre><code class="language-JS">print(value1,value2...);
 </code></pre>
 <p>value（複数指定可）の値をコンソールに表示します．</p>
-<h1 id="-printcolor-printsize">$printColor/$printSize</h1>
+<h1 id="printcolorprintsize">$printColor/$printSize</h1>
 <ul>
 <li>$printColor: コンソールに表示する文字色を指定します．<ul>
 <li>文字色をあらわす文字列（HTMLの色指定方法に準ずる）を指定します．</li>
@@ -22,13 +22,16 @@
 <li>$printSize: コンソールに表示する際の文字サイズを指定します. 初期値は20です</li>
 </ul>
 <p>Main</p>
-<pre><code class="lang-JS">$printColor=&quot;#0f0&quot;;
+<pre><code class="language-JS">$printColor=&quot;#0f0&quot;;
 $printSize=30;
 print(&quot;文字色：緑、文字サイズ：30&quot;);
 </code></pre>
+<ul>
+<li>表示位置を設定したり，色を指定したり，すでにコンソールに表示した文字を取得したい場合は，<a href="ConsolePanel2">ConsolePanel2</a>を使います．</li>
+</ul>
 <h1 id="backlink">Backlink</h1>
 <ul>
-<li><a href="文字を画面下部に表示する">文字をコンソールに表示する</a></li>
+<li><a href="%E6%96%87%E5%AD%97%E3%82%92%E7%94%BB%E9%9D%A2%E4%B8%8B%E9%83%A8%E3%81%AB%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B">文字をコンソールに表示する</a></li>
 <li><a href="api">標準クラス</a></li>
 </ul>
 </body></html>

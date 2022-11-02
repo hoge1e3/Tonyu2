@@ -1,0 +1,62 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="print">print</a>文による画面への文字出力について，機能拡張を行ったものです．</p>
+<ul>
+<li>文字の表示位置指定や色の変更，表示済の文字の取得が可能です．</li>
+<li>半角文字は縦横比2:1，全角文字は半角文字2文字分の領域を使用し縦横比1:1で表示します．</li>
+</ul>
+<p>print文で出力した文字列をConsolePanel2に表示したい場合，次のようにしてからprintを行います．</p>
+<pre><code>$consolePanel=new ConsolePanel2;
+</code></pre>
+<h2 id="メソッド">メソッド</h2>
+<p>これらのメソッドは，$consolePanel.メソッド名(引数...)のように使います．</p>
+<ul>
+<li>locate(x,y) 文字列の表示位置をx列y行目に設定します．</li>
+<li>color(fg,bg) 表示色(fg:文字色，bg:背景色)を指定します．<ul>
+<li>fg,bgは文字列か<a href="Color">Color</a>オブジェクト．bgは省略可能．</li>
+</ul>
+</li>
+<li>print(...args) 文字列，または値を表示して改行します．</li>
+<li>puts(str) 文字列を表示し，改行しません．</li>
+<li>peek(x,y) x列y行目に表示されている文字の文字コードを取得します．<ul>
+<li>何も表示されていない場合はundefinedを返します．</li>
+<li>列番号xは半角文字での文字数です．</li>
+<li>全角文字が表示されている場合，列番号xに全角文字の左半分の座標が指定された場合，その全角文字の文字コードを返し，右半分が指定された場合は-1を返します．</li>
+</ul>
+</li>
+<li>poke(x,y,c) x列y行目に文字コードcで指定された文字を書き込みます．</li>
+<li>scroll() 一行上にスクロールします．printで最下段に表示された場合は自動的にスクロールします．</li>
+</ul>
+<h2 id="使用例">使用例</h2>
+<pre><code>$consolePanel=new ConsolePanel2;
+for (let i=0;i&lt;25;i++) {
+    $consolePanel.locate(rnd(40),rnd(25));
+    $consolePanel.color(&quot;white&quot;, new Color(rnd(128),rnd(128),rnd(128)));
+    print(&quot;TESTです．&quot;);
+    update();
+}
+</code></pre>
+<h2 id="consolepanel以外のconsolepanel2オブジェクトの作成">$consolePanel以外のConsolePanel2オブジェクトの作成</h2>
+<p>既存のコンソール(print文で表示される領域）とは独立したConsolePanel2オブジェクトも作成可能です．
+コンストラクタには次のパラメータを渡すことができます．</p>
+<ul>
+<li>size: 半角文字の縦のサイズ．単位ピクセル数．省略すると16．</li>
+<li>width, height: パネルの幅，高さ．省略するとrow,col,sizeから自動設定，row,col,sizeが指定されていない場合は$Screenの大きさに収まる最大の大きさになる．</li>
+<li>left, top: パネルの左上の座標． 省略するとx,yの値と大きさから設定</li>
+<li>x, y:　パネルの中央の座標．省略するとleft,topの値と大きさから設定</li>
+<li>row, col: 表示される文字の行数と列数（半角文字で数えた文字数）．省略するとパネルの大きさとsizeから自動設定．</li>
+<li>fg, bg: 前景色と背景色</li>
+</ul>
+<p>例：</p>
+<pre><code>let c=new ConsolePanel2{size:30, left:100, top:100, row:5, col:10};
+
+c.print(&quot;これは&quot;);
+c.color(&quot;red&quot;);
+c.print(&quot;TEST&quot;);
+c.color(&quot;white&quot;);
+c.print(&quot;です&quot;);
+</code></pre>
+</body></html>

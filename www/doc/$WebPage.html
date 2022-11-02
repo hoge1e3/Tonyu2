@@ -3,12 +3,18 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="api">api</a></p>
-<h1 id="-webpage-">$WebPage オブジェクト</h1>
+<h1 id="webpage-オブジェクト">$WebPage オブジェクト</h1>
 <p>他のWebページを開くためのオブジェクトです。</p>
 <ul>
+<li>$WebPage.param(name, default)<ul>
+<li>Query string（アドレスに付与されたパラメータ．例：?x=10&amp;y=20 ）の値を取得します．</li>
+<li>nameにパラメータの名前を指定します</li>
+<li>nameで指定されたパラメータが存在しない場合，defaultで指定された値（defaultを省略した場合はundefined）を返します．</li>
+</ul>
+</li>
 <li>$WebPage.openPage(url)<ul>
 <li>指定したアドレスに移動します。</li>
 </ul>
@@ -41,17 +47,20 @@
 // Tonyu2 ツイート機能テスト1 http://imahiraiteiru.adoresu/game1/
 // -------------------
 $WebPage.openShareTweet(&quot;Tonyu2 ツイート機能テスト1&quot;);
-</code></pre><p>Twitter投稿の例2：</p>
+</code></pre>
+<p>Twitter投稿の例2：</p>
 <pre><code>// リンクをあなたのフォロワーに共有する
 // -------------------
 // Tonyu2 ツイート機能テスト2 http://www.tonyu.jp #tonyu2 #tonyusystem @twitterdevさんから
 // -------------------
 $WebPage.openShareTweet(&quot;Tonyu2 ツイート機能テスト2&quot;, &quot;http://www.tonyu.jp&quot;, &quot;tonyu2,tonyusystem&quot;, &quot;twitterdev&quot;, &quot;twitterapi,twitter&quot;);
-</code></pre><p>Twitter投稿の例3：</p>
+</code></pre>
+<p>Twitter投稿の例3：</p>
 <pre><code>// いまどうしてる？
 // -------------------
 // Tonyu2 ツイート機能テスト3
 // -------------------
 $WebPage.openTweet(&quot;Tonyu2 ツイート機能テスト3&quot;);
-</code></pre><p>.</p>
+</code></pre>
+<p>.</p>
 </body></html>

@@ -1,0 +1,16 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="HTMLUI">HTMLUI</a></p>
+<pre><code>h=new HTMLUI{
+    content: [
+    &quot;div&quot;,[&quot;input&quot;,{type:&quot;file&quot;,name:&quot;file&quot;,multiple:true}]
+    ],left:10, top:10, width:300, height:300,
+};
+while(!h.hasFile(&quot;file&quot;)) update();
+let c=waitFor( h.getFile(&quot;file&quot;) );
+print(c.name, c.dataURL);
+</code></pre>
+</body></html>

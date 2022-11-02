@@ -47,9 +47,9 @@ room.send{content:&quot;Hello&quot;};
 </code></pre>
 <h2 id="websocketクラス-1">WebSocketクラス</h2>
 <ul>
-<li>コンストラクタ：引数なしでWebSocetオブジェクトを作成します．</li>
+<li>コンストラクタ：引数なしでWebSocketオブジェクトを作成します．</li>
 <li>enterRoom(<code>ルーム名</code>): 指定したルームに入ります（指定されたルームがない場合は新規作成されます）<ul>
-<li>戻り値は RoomオブジェクトのPromiseになります．Roomオブジェクト自身はwaitForで受け取ってください．</li>
+<li>戻り値は Roomオブジェクトの<a href="Promise">Promiseオブジェクト</a>になります．Roomオブジェクト自身はwaitForで受け取ってください．</li>
 <li>異なるルーム名でenterRoomを複数回呼び出すことも可能です．複数のルームに同時に入ることができます．</li>
 </ul>
 </li>

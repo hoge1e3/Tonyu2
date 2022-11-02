@@ -27,5 +27,14 @@
 <li><code>name</code>指定されたname属性をもつ要素の値(value属性)をクリップボードにコピーします．</li>
 </ul>
 </li>
+<li>hasFile(name)<ul>
+<li><code>name</code>指定されたname属性をもつ要素(type=&quot;file&quot;)にファイルが設定されているかどうかを返します．</li>
+</ul>
+</li>
+<li>getFile(name)<ul>
+<li><code>name</code>指定されたname属性をもつ要素(type=&quot;file&quot;)からファイルを読み出します．</li>
+<li>戻り値は，<code>{name: &quot;ファイル名&quot;,  dataURL:&quot;内容のDataURL&quot;}</code>を返す<a href="Promise">Promiseオブジェクト</a>です．<a href="HTMLUI.getFile%E3%81%AE%E4%BE%8B">例...</a></li>
+</ul>
+</li>
 </ul>
 </body></html>
