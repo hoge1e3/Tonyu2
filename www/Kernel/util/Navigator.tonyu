@@ -4,11 +4,14 @@
 
 native navigator;
 native document;
-
+native process;
 \getUserAgent() {
     return navigator.userAgent;
 }
 
+\isNW() {
+    return typeof process!=="undefined";
+}
 \isTablet() {
     var u = getUserAgent().toLowerCase();
     var isIPad = u.indexOf("ipad") != -1 || (u.indexOf("macintosh") != -1 && document.ontouchend); // iPadOS(iOS13.0以降)の判定に対応

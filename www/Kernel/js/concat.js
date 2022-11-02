@@ -2980,6 +2980,18 @@ Tonyu.klass.define({
         return navigator.userAgent;
         
       },
+      isNW :function _trc_Navigator_isNW() {
+        var _this=this;
+        
+        return typeof  process!=="undefined";
+      },
+      fiber$isNW :function* _trc_Navigator_f_isNW(_thread) {
+        var _this=this;
+        //var _arguments=Tonyu.A(arguments);
+        
+        return typeof  process!=="undefined";
+        
+      },
       isTablet :function _trc_Navigator_isTablet() {
         var _this=this;
         var u;
@@ -3139,7 +3151,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"getUserAgent":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isTablet":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isMobile":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isWindows":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isAndroid":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isIOS":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isFirefoxOS":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isKindle":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isBlackBerry":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"getUserAgent":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isNW":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isTablet":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isMobile":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isWindows":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isAndroid":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isIOS":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isFirefoxOS":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isKindle":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isBlackBerry":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.ObjectPool',
