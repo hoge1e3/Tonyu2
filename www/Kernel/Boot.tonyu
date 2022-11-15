@@ -19,6 +19,7 @@ native FS;
 native R;
 native RPGAtsumaru;
 native parent;
+native opener;
 
 // old browser support
 if (typeof performance==="undefined") {
@@ -278,7 +279,8 @@ mainLoop();
 }
 \getIDE() {
     try {
-        return (parent.Tonyu.globals.$currentProject.ide);
+        let p=parent||opener;
+        return (p.Tonyu.globals.$currentProject.ide);
     }catch(e) {
         return null;
     }
