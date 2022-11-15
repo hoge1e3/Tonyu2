@@ -64,7 +64,11 @@ if (isNW || localStorage.noconcat) {
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index2.html">Tonyu System 2</a>
+				<span id="mobileBar" style="display:none;">
+					<select id="fileSel"></select>
+					<button id="mobileRun">Run</button>
+				</span>
+				<a class="navbar-brand" id="homeLink" href="index2.html">Tonyu System 2</a>
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
@@ -130,10 +134,12 @@ if (isNW || localStorage.noconcat) {
 			<div id=mainArea class="col-xs-10">
 				<div id=errorPos >
 				</div>
+				<!-- 
 				<span id="mobileBar" style="display:none;">
 					<select id="fileSel"></select>
 					<button id="mobileRun">Run</button>
 				</span>
+				-->
 				<div id=progs>
 					<div id="welcome">
 					</div>

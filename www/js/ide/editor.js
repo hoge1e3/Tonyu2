@@ -42,12 +42,13 @@ $(function () {
     const F=EC.f;
     const FC=(f)=>EC.f((...args)=>{ collapseMenu(); f(...args);});
     root.$LASTPOS=0;
-    var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists();
+    var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists() || localStorage.mobile;
     if (mobile) {
         $("#fileViewer").hide();
         $("#runAreaParent").hide();
         $("#mainArea").attr("class","col-xs-12");
         $("#mobileBar").show();
+        $("#homeLink").text("🔙");
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     const autoRun=Util.getQueryString("autoRun");
