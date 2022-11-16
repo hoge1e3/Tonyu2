@@ -292,7 +292,7 @@ $(function () {
     }
     function stop(opt) {
         if (!setCmdStat("stop")) return;
-        return $.when(curPrj.stop()).then(function () {
+        return Promise.resolve(curPrj.stop()).then(function () {
             curPrj.disconnectDebugger();
             displayMode("edit");
             console.log("Boot stopped");
@@ -304,7 +304,7 @@ $(function () {
     //\run
     function run(name) {
         if (!setCmdStat("run")) return;
-        return $.when(curPrj.stop()).then(function () {
+        return Promise.resolve(curPrj.stop()).then(function () {
             return run2(name);
         }).catch(Tonyu.onRuntimeError).finally(function () {
             setCmdStat();

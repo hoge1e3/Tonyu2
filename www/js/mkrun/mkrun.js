@@ -77,7 +77,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
         console.log("jsDir",jsDir);
         //var sampleImgDir=wwwDir.rel("images/");
         if (options.copySrc) copySrc();
-        return $.when(
+        return Promise.all([
                 copySampleImages(),
                 convertLSURL(resc.images),
                 convertLSURL(resc.sounds),
@@ -90,7 +90,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
                 copyResources("sounds/"),
                 copyIndexHtml(),
                 genReadme()
-        );
+        ]);
         function changeDependencies(opt) {
             const newDep=[];
             for (let dep of prj.getDependingProjects()) {
@@ -171,25 +171,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
                 await runScr2Map.copyTo(dest.rel(`js/${runScrFileName}.map`));
             }
         }
-        function copyScriptsOLD() {
-            var usrjs=prjDir.rel("js/concat.js");
-            var usrjsmap=prjDir.rel("js/concat.js.map");
-            //TODO async...
-            //dest.rel("js/concat.js").text(usrjs.text()+"\n//# sourceMappingURL=concat.js.map");// js/ is needed??
-            var kerjs=FS.get(WebSite.kernelDir).rel("js/concat.js");
-            var runScr2=jsDir.rel(`${genDir}/${runScrFileName}`);
-            var runScr2Map=jsDir.rel(`${genDir}/${runScrFileName}.map`);
-            return $.when(
-                usrjsmap.exists() && usrjsmap.copyTo(dest.rel("js/concat.js.map")),
-                usrjs.copyTo(dest.rel("js/concat.js")),
-                kerjs.copyTo(dest.rel("js/kernel.js")),
-                runScr2.copyTo(dest.rel(`js/${runScrFileName}`)),
-                (runScr2Map.exists() ?
-                    runScr2Map.copyTo(dest.rel(`js/${runScrFileName}.map`)) :
-                    Promise.resolve()
-                )
-            );
-        }
+        
         function copyPlugins() {
             var pluginDir=jsDir.rel("plugins/");
             if (!opt.plugins) return;
@@ -200,13 +182,13 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
                 var pf=pluginDir.rel(plugins.installed[n].src);
                 args.push( pf.copyTo(dest.rel("js/plugins/")) );
             }
-            return $.when.apply($,args);
+            return Promise.all(args);
         }
         function copyLibs() {
-            return $.when(
+            return Promise.all([
                     jsDir.rel("lib/jquery-1.12.1.js").copyTo(dest.rel("js/lib/")),
                     jsDir.rel("lib/require.js").copyTo(dest.rel("js/lib/"))
-            );
+            ]);
         }
         function addFileToLoadFiles(name, data) {
             var file=prjDir.rel(name);
@@ -268,7 +250,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
                     }
                 }
             }
-            return $.when.apply($,args);
+            return Promise.all(args);
         }
         function copySrc() {
             prjDir.copyTo(dest.rel("src/"));
