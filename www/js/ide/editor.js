@@ -106,7 +106,7 @@ $(function () {
     const em=RealtimeErrorMarker(ide);
     $("#mobileRun").click(FC(run));
     KeyEventChecker.down(document,"F9",F(run));
-    KeyEventChecker.down(document,"F2",F(stop));
+    KeyEventChecker.down(document,"F2",F(stopCmd));
     KeyEventChecker.down(document,"ctrl+s",F(save));
     $(window).resize(F(onResize));
     $("body")[0].spellcheck=false;
@@ -194,9 +194,7 @@ $(function () {
         });
         $("#runMenu").append(
                 $("<li>").append(
-                        $("<a>").attr("href","#").text(R("stop")).click(FC(function () {
-                            stop();
-                        }))));
+                        $("<a>").attr("href","#").text(R("stop")).click(FC(stopCmd))));
         $("#runMenu").append(
                 $("<li>").append(
                         $("<a>").attr("href","#").text(R("selectMain")).click(FC(dialogs.selectMain))
@@ -282,16 +280,20 @@ $(function () {
     }
     let cmdStat;
     function setCmdStat(c) {
-        console.log("setCmtStat",cmdStat,"to",c);
+        console.log("setCmdStat",cmdStat,"to",c);
         if (c && cmdStat) {
+            console.trace();
             alert(R("otherCommandInProgress",cmdStat));
             return;
         }
         cmdStat=c;
         return c;
     }
-    function stop(opt) {
+    function stopCmd(opt) {
         if (!setCmdStat("stop")) return;
+        return stop(opt);
+    }
+    function stop(opt) {
         return Promise.resolve(curPrj.stop()).then(function () {
             curPrj.disconnectDebugger();
             displayMode("edit");
