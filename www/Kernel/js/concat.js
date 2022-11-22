@@ -34873,7 +34873,7 @@ Tonyu.klass.define({
         }
         scl = 1;
         
-        isPC = ! (Tonyu.globals.$Navigator.isTablet()||Tonyu.globals.$Navigator.isMobile());
+        isPC = ! (Tonyu.globals.$Navigator.isMobile());
         
         if (isPC&&_this.shouldDraw1x1(width,height,calcw,calch)) {
           calcw=width;
@@ -34919,7 +34919,7 @@ Tonyu.klass.define({
         }
         scl = 1;
         
-        isPC = ! (Tonyu.globals.$Navigator.isTablet()||Tonyu.globals.$Navigator.isMobile());
+        isPC = ! (Tonyu.globals.$Navigator.isMobile());
         
         if (isPC&&_this.shouldDraw1x1(width,height,calcw,calch)) {
           calcw=width;

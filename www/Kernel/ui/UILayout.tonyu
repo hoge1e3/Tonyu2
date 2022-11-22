@@ -14,7 +14,7 @@ $uiScreen.on("resize",doLayout);
     if (calch>ch) calch=ch;
     if (calcw>cw) calcw=cw;
     var scl=1;
-    var isPC = !($Navigator.isTablet()||$Navigator.isMobile());
+    var isPC = !(/*$Navigator.isTablet()||*/$Navigator.isMobile());
     if (isPC&&shouldDraw1x1(width,height,calcw,calch)) {
         calcw=width;calch=height;
         $Screen.scaleX=1;
