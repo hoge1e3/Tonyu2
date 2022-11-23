@@ -486,7 +486,13 @@ class SourceFile {
             const params = text;
             sourceMap = params.sourceMap;
             //functions=params.functions;
-            text = params.text;
+            if (params.file) {
+                this.file = params.file;
+                text = this.file.text();
+            }
+            else {
+                text = params.text;
+            }
             if (params.url) {
                 this.url = params.url;
             }
@@ -539,6 +545,10 @@ class SourceFile {
                 require(uniqFile.path());
                 uniqFile.rm();
                 mapFile.rm();
+                resolve(void (0));
+            }
+            else if (this.file && typeof require === "function") {
+                require(this.file.path());
                 resolve(void (0));
             }
             else if (root_1.default.importScripts && this.url) {
@@ -3917,7 +3927,8 @@ module.exports = root;
                 const outJS=this.getOutputFile();
                 const map=outJS.sibling(outJS.name()+".map");
                 const sf=sourceFiles.add({
-                    text:outJS.text(),
+                    //text:outJS.text(),
+                    file: outJS,
                     sourceMap:map.exists() && map.text(),
                 });
                 await sf.exec();

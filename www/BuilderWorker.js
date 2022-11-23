@@ -1981,7 +1981,18 @@ function genJS(klass, env, genOptions) {
             buf.printf("[%j].join('')", [",", node.body]);
         },
         backquoteText(node) {
-            buf.printf("%l", node.text);
+            let s = node.text;
+            s = s.replace(/\\(.)/g, (_, r) => {
+                switch (r) {
+                    case "b": return "\b";
+                    case "f": return "\f";
+                    case "n": return "\n";
+                    case "r": return "\r";
+                    case "t": return "\t";
+                }
+                return r;
+            });
+            buf.printf("%l", s);
         },
         dotExpr(node) {
             buf.printf("...%v", node.expr);
@@ -3100,7 +3111,7 @@ var annotation3 = cu.annotation;
 var getMethod2 = cu.getMethod;
 var getDependingClasses = cu.getDependingClasses;
 var getParams = cu.getParams;
-var JSNATIVES = { Array: ["a"], String: "a", Boolean: true, Number: 1, Object: {}, RegExp: /a/, Error: new Error("a"), Date: new Date() };
+var JSNATIVES = { Array: ["a"], String: "a", Boolean: true, Number: 1, Object: {}, RegExp: /a/, Error: new Error("a"), Date: new Date(), Promise: Promise.resolve() };
 function visitSub(node) {
     var t = this;
     if (!node || typeof node != "object")
@@ -4092,7 +4103,13 @@ class SourceFile {
             const params = text;
             sourceMap = params.sourceMap;
             //functions=params.functions;
-            text = params.text;
+            if (params.file) {
+                this.file = params.file;
+                text = this.file.text();
+            }
+            else {
+                text = params.text;
+            }
             if (params.url) {
                 this.url = params.url;
             }
@@ -4145,6 +4162,10 @@ class SourceFile {
                 require(uniqFile.path());
                 uniqFile.rm();
                 mapFile.rm();
+                resolve(void (0));
+            }
+            else if (this.file && typeof require === "function") {
+                require(this.file.path());
                 resolve(void (0));
             }
             else if (root_1.default.importScripts && this.url) {
@@ -14047,7 +14068,8 @@ module.exports = root;
                 const outJS=this.getOutputFile();
                 const map=outJS.sibling(outJS.name()+".map");
                 const sf=sourceFiles.add({
-                    text:outJS.text(),
+                    //text:outJS.text(),
+                    file: outJS,
                     sourceMap:map.exists() && map.text(),
                 });
                 await sf.exec();
