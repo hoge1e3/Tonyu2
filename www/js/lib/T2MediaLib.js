@@ -432,7 +432,7 @@ var T2MediaLib = (function(){
         }
         if (isMezonetSource(soundData.decodedData)) {
             var playback=soundData.decodedData.playback(this.context);
-            playback.Start({volume:typeof vol==="number"?vol:1});//destination:
+            playback.Start({volume:(typeof vol==="number"?vol:1)* this.seMasterVolume * this.masterVolume });//destination:
             return playback;
         }
 
@@ -1000,7 +1000,7 @@ var T2MediaLib_BGMPlayer = (function(){
         if (isMezonetSource(decodedData)) {
             var m=decodedData.playback(this.t2MediaLib.context);
             this.playingBGM = m;
-            m.Start({volume:this.bgmVolume});
+            m.Start({volume:this.bgmVolume * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume});
         } else if (decodedData instanceof AudioBuffer) {
             // MP3, Ogg, AAC, WAV
             if (this.isTagLoop) {
