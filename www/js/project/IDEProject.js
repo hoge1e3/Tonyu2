@@ -51,7 +51,10 @@ define(function (require,exports) {
             const ifrm=root.document.querySelector("iframe");
             if (ifrm) return ifrm.contentWindow.Project;
         };
-        res.disconnectDebugger=()=>c.setDebugger();
+        res.disconnectDebugger=()=>{
+            curDebugger=null;
+            c.setDebugger();
+        };
         const handler=new EventHandler();
         res.on=function (...args){return handler.on(...args);};
         res.fire=function (...args){return handler.fire(...args);};
