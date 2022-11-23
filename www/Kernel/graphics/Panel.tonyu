@@ -374,21 +374,21 @@ nowait \copy() {
 }
 \load(fn) {
     if (typeof fn==="string") fn=file(fn);
-    var d=new $.Deferred();
-    var url=fn.text();
-    var element=$("<img>").css{display:"none"}.appendTo("body");
-    element.on("load") \{
-        var img = new Image();
-        img.src = element.attr('src');
-        var width = img.width;
-        var height = img.height;
-        //print(width,height);
-        resize(width,height);
-        context.drawImage(img, 0,0);
-        d.resolve(this);
+    return new Promise \(resolve) {
+        var url=fn.text();
+        var element=$("<img>").css{display:"none"}.appendTo("body");
+        element.on("load") \{
+            var img = new Image();
+            img.src = element.attr('src');
+            var width = img.width;
+            var height = img.height;
+            //print(width,height);
+            resize(width,height);
+            context.drawImage(img, 0,0);
+            resolve(this);
+        };
+        element.attr{src=url};
     };
-    element.attr{src=url};
-    return d.promise();
 }
 \imageSmoothingEnabled=v {
     var context=this.context;

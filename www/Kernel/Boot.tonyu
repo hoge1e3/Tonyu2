@@ -353,26 +353,28 @@ mainLoop();
     if (typeof options.onLoad==="function") options.onLoad{page:res};
 }
 \stop() {
-    var res=new $.Deferred();
-    var evt={
-        die: \{
-            die();
-            res.resolve();
+    return new Promise \(resolve) {
+        //var res=new $.Deferred();
+        var evt={
+            die: \{
+                die();
+                resolve();
             //print("ISDEAD",isDead());
-        },
-        preventDefault: \{evt.defaultPrevented=true;}
+            },
+            preventDefault: \{evt.defaultPrevented=true;}
+        };
+        try {
+            $sound.stopAllSE();
+        } catch(e) {
+            console.error(e.stack);
+        }
+        var r=fireEvent("stop",evt);
+        if(!evt.defaultPrevented) {
+            evt.die();
+            resolve();
+        }
     };
-    try {
-        $sound.stopAllSE();
-    } catch(e) {
-        console.error(e.stack);
-    }
-    var r=fireEvent("stop",evt);
-    if(!evt.defaultPrevented) {
-        evt.die();
-        res.resolve();
-    }
-    return res;
+    //return res;
 }
 \hide() {
 }

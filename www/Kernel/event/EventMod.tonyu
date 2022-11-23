@@ -93,7 +93,7 @@ nowait \sendEvent(type, arg) {
 }
 
 \runPromise(f) {
-    var pr=$DeferredUtil.promise (f);
+    var pr=new Promise(f);
     if (!_thread) {
         return pr;
     } else {

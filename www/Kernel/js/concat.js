@@ -256,7 +256,7 @@ Tonyu.klass.define({
         var _this=this;
         var pr;
         
-        pr = Tonyu.globals.$DeferredUtil.promise(f);
+        pr = new Promise(f);
         
         if (! null) {
           return pr;
@@ -271,7 +271,7 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var pr;
         
-        pr = Tonyu.globals.$DeferredUtil.promise(f);
+        pr = new Promise(f);
         
         if (! _thread) {
           return pr;
@@ -19045,72 +19045,70 @@ Tonyu.klass.define({
       },
       load :function _trc_PanelMod_load(fn) {
         var _this=this;
-        var d;
-        var url;
-        var element;
         
         if (typeof  fn==="string") {
           fn=_this.file(fn);
         }
-        d = new $.Deferred();
-        
-        url = fn.text();
-        
-        element = $("<img>").css({display: "none"}).appendTo("body");
-        
-        element.on("load",(function anonymous_7204() {
-          var img;
-          var width;
-          var height;
+        return new Promise((function anonymous_7085(resolve) {
+          var url;
+          var element;
           
-          img = new Image();
+          url = fn.text();
           
-          img.src=element.attr('src');
-          width = img.width;
+          element = $("<img>").css({display: "none"}).appendTo("body");
           
-          height = img.height;
-          
-          _this.resize(width,height);
-          _this.context.drawImage(img,0,0);
-          d.resolve(_this);
+          element.on("load",(function anonymous_7224() {
+            var img;
+            var width;
+            var height;
+            
+            img = new Image();
+            
+            img.src=element.attr('src');
+            width = img.width;
+            
+            height = img.height;
+            
+            _this.resize(width,height);
+            _this.context.drawImage(img,0,0);
+            resolve(_this);
+          }));
+          element.attr({src: url});
         }));
-        element.attr({src: url});
-        return d.promise();
       },
       fiber$load :function* _trc_PanelMod_f_load(_thread,fn) {
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var d;
-        var url;
-        var element;
         
         if (typeof  fn==="string") {
           fn=(yield* _this.fiber$file(_thread, fn));
         }
-        d = new $.Deferred();
-        
-        url = fn.text();
-        
-        element = $("<img>").css({display: "none"}).appendTo("body");
-        
-        element.on("load",(function anonymous_7204() {
-          var img;
-          var width;
-          var height;
+        return new Promise((function anonymous_7085(resolve) {
+          var url;
+          var element;
           
-          img = new Image();
+          url = fn.text();
           
-          img.src=element.attr('src');
-          width = img.width;
+          element = $("<img>").css({display: "none"}).appendTo("body");
           
-          height = img.height;
-          
-          _this.resize(width,height);
-          _this.context.drawImage(img,0,0);
-          d.resolve(_this);
+          element.on("load",(function anonymous_7224() {
+            var img;
+            var width;
+            var height;
+            
+            img = new Image();
+            
+            img.src=element.attr('src');
+            width = img.width;
+            
+            height = img.height;
+            
+            _this.resize(width,height);
+            _this.context.drawImage(img,0,0);
+            resolve(_this);
+          }));
+          element.attr({src: url});
         }));
-        element.attr({src: url});
-        return d.promise();
         
       },
       __setter__imageSmoothingEnabled :function _trc_PanelMod___setter__imageSmoothingEnabled(v) {
@@ -23435,72 +23433,70 @@ Tonyu.klass.define({
       },
       load :function _trc_Panel_load(fn) {
         var _this=this;
-        var d;
-        var url;
-        var element;
         
         if (typeof  fn==="string") {
           fn=_this.file(fn);
         }
-        d = new $.Deferred();
-        
-        url = fn.text();
-        
-        element = $("<img>").css({display: "none"}).appendTo("body");
-        
-        element.on("load",(function anonymous_11648() {
-          var img;
-          var width;
-          var height;
+        return new Promise((function anonymous_11529(resolve) {
+          var url;
+          var element;
           
-          img = new Image();
+          url = fn.text();
           
-          img.src=element.attr('src');
-          width = img.width;
+          element = $("<img>").css({display: "none"}).appendTo("body");
           
-          height = img.height;
-          
-          _this.resize(width,height);
-          _this.context.drawImage(img,0,0);
-          d.resolve(_this);
+          element.on("load",(function anonymous_11668() {
+            var img;
+            var width;
+            var height;
+            
+            img = new Image();
+            
+            img.src=element.attr('src');
+            width = img.width;
+            
+            height = img.height;
+            
+            _this.resize(width,height);
+            _this.context.drawImage(img,0,0);
+            resolve(_this);
+          }));
+          element.attr({src: url});
         }));
-        element.attr({src: url});
-        return d.promise();
       },
       fiber$load :function* _trc_Panel_f_load(_thread,fn) {
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var d;
-        var url;
-        var element;
         
         if (typeof  fn==="string") {
           fn=(yield* _this.fiber$file(_thread, fn));
         }
-        d = new $.Deferred();
-        
-        url = fn.text();
-        
-        element = $("<img>").css({display: "none"}).appendTo("body");
-        
-        element.on("load",(function anonymous_11648() {
-          var img;
-          var width;
-          var height;
+        return new Promise((function anonymous_11529(resolve) {
+          var url;
+          var element;
           
-          img = new Image();
+          url = fn.text();
           
-          img.src=element.attr('src');
-          width = img.width;
+          element = $("<img>").css({display: "none"}).appendTo("body");
           
-          height = img.height;
-          
-          _this.resize(width,height);
-          _this.context.drawImage(img,0,0);
-          d.resolve(_this);
+          element.on("load",(function anonymous_11668() {
+            var img;
+            var width;
+            var height;
+            
+            img = new Image();
+            
+            img.src=element.attr('src');
+            width = img.width;
+            
+            height = img.height;
+            
+            _this.resize(width,height);
+            _this.context.drawImage(img,0,0);
+            resolve(_this);
+          }));
+          element.attr({src: url});
         }));
-        element.attr({src: url});
-        return d.promise();
         
       },
       __setter__imageSmoothingEnabled :function _trc_Panel___setter__imageSmoothingEnabled(v) {
@@ -36271,72 +36267,70 @@ Tonyu.klass.define({
       },
       stop :function _trc_Boot_stop() {
         var _this=this;
-        var res;
-        var evt;
-        var e;
-        var r;
         
-        res = new $.Deferred();
-        
-        evt = {die: (function anonymous_9645() {
+        return new Promise((function anonymous_9609(resolve) {
+          var evt;
+          var e;
+          var r;
           
-          _this.die();
-          res.resolve();
-        }),preventDefault: (function anonymous_9774() {
+          evt = {die: (function anonymous_9696() {
+            
+            _this.die();
+            resolve();
+          }),preventDefault: (function anonymous_9837() {
+            
+            evt.defaultPrevented=true;
+          })};
           
-          evt.defaultPrevented=true;
-        })};
-        
-        try {
-          Tonyu.globals.$sound.stopAllSE();
+          try {
+            Tonyu.globals.$sound.stopAllSE();
+            
+          } catch (e) {
+            console.error(e.stack);
+            
+          }
+          r = _this.fireEvent("stop",evt);
           
-        } catch (e) {
-          console.error(e.stack);
-          
-        }
-        r = _this.fireEvent("stop",evt);
-        
-        if (! evt.defaultPrevented) {
-          evt.die();
-          res.resolve();
-          
-        }
-        return res;
+          if (! evt.defaultPrevented) {
+            evt.die();
+            resolve();
+            
+          }
+        }));
       },
       fiber$stop :function* _trc_Boot_f_stop(_thread) {
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
-        var res;
-        var evt;
-        var e;
-        var r;
         
-        res = new $.Deferred();
-        
-        evt = {die: (function anonymous_9645() {
+        return new Promise((function anonymous_9609(resolve) {
+          var evt;
+          var e;
+          var r;
           
-          _this.die();
-          res.resolve();
-        }),preventDefault: (function anonymous_9774() {
+          evt = {die: (function anonymous_9696() {
+            
+            _this.die();
+            resolve();
+          }),preventDefault: (function anonymous_9837() {
+            
+            evt.defaultPrevented=true;
+          })};
           
-          evt.defaultPrevented=true;
-        })};
-        
-        try {
-          Tonyu.globals.$sound.stopAllSE();
+          try {
+            Tonyu.globals.$sound.stopAllSE();
+            
+          } catch (e) {
+            console.error(e.stack);
+            
+          }
+          r = _this.fireEvent("stop",evt);
           
-        } catch (e) {
-          console.error(e.stack);
-          
-        }
-        r = _this.fireEvent("stop",evt);
-        
-        if (! evt.defaultPrevented) {
-          evt.die();
-          res.resolve();
-          
-        }
-        return res;
+          if (! evt.defaultPrevented) {
+            evt.die();
+            resolve();
+            
+          }
+        }));
         
       },
       hide :function _trc_Boot_hide() {
@@ -36850,7 +36844,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16386() {
+        requestAnimationFrame((function anonymous_16499() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -36867,7 +36861,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16386() {
+        requestAnimationFrame((function anonymous_16499() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
