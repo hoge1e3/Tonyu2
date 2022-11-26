@@ -12,7 +12,7 @@ Windows 7/8/10
   - Firefox 72
   - Edge 44
 
-## How to build
+## How to build(full build, including compiler build)
 
 - Clone [tonyu2-compiler](https://github.com/hoge1e3/tonyu2-compiler/) repository to the same directory.
   - ex.  `/some/folder/Tonyu2` and `/some/folder/tonyu2-compiler`
@@ -25,6 +25,14 @@ npm install
 npm run build
 ~~~
 - If you want to build again, just `npm run build`
+
+## How to host Tonyu2 IDE on your Web server
+(Currently the build is tested only in windows)
+~~~
+npm install
+npm run build:g2
+~~~
+and copy www folder to your Web server.
 
 ## How to run your project as a native application
 
