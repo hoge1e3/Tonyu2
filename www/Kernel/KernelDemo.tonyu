@@ -5,3 +5,5 @@ $Screen.on("touch") \(e){
     let f=e.finger;
     print(f.x, f.y);
 };
+new Button{top:100, text:"test"};
+new Button{top:200, text:"test", width:50};

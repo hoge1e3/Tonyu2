@@ -132,14 +132,35 @@ on("touch") \(touchEvent) {
     }
     c.fillRect(eleft, etop, e.width, e.height);
     c.strokeRect(eleft, etop, e.width, e.height);
-    var size=e.height-e.padding*2;
-    var f=c.font.replace(/^[0-9]+px /,"");
-    c.font=size+"px "+f;//monospace";
-    c.textBaseline="top";
-    c.fillStyle=e.strokeStyle;
-    //clicked?clickedStyle+"":
-    //disabled?disabledStrokeStyle+"":strokeStyle+"";
-    var r=c.measureText(text);
+    for (let i=0;i<2;i++) {
+        var size=e.height-e.padding*2;
+        var f=c.font.replace(/^[0-9]+px /,"");
+        c.font=size+"px "+f;//monospace";
+        c.textBaseline="top";
+        c.fillStyle=e.strokeStyle;
+        var r=c.measureText(text);
+        let maxWidth=e.width-e.padding*2;
+        if (i>=1 || r.width<=maxWidth)break;
+        /*maxWidth/r.width=60%
+        /* e.padding=10 */
+        /* size=30  */
+        /* --10--+++15+++ */
+        /* ----16--++9+++ */
+        /* e.padding += 15*40% = 6 
+        //size*=maxWidth/r.width;
+        /* pad   sz/2    */
+        /* <p1->++s1+++   */
+        /* <--p2-->+s2+   */
+        // s2=s1*maxWidth/r.width
+        // p1+s1=p2+s2
+        // p1+s1=p2+s1*maxWidth/r.width
+        // p1+s1-s1*maxWidth/r.width=p2
+        // p1+s1*(1-maxWidth/r.width)=p2
+        //print (e.width, e.padding, size, maxWidth, r.width,size/2*(1-maxWidth/r.width) );
+        //let pp=e.padding;
+        e.padding+=size/2*(1-maxWidth/r.width);
+        //print(maxWidth/r.width, (e.height-e.padding*2)/(e.height-pp*2) );
+    }
     c.fillText(text, eleft+e.width/2-r.width/2, etop+e.padding);
 }
 /*

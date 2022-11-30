@@ -24547,6 +24547,8 @@ Tonyu.klass.define({
           
           _this.print(f.x,f.y);
         }));
+        new Tonyu.classes.kernel.Button({top: 100,text: "test"});
+        new Tonyu.classes.kernel.Button({top: 200,text: "test",width: 50});
       },
       fiber$main :function* _trc_KernelDemo_f_main(_thread) {
         var _this=this;
@@ -24560,6 +24562,8 @@ Tonyu.klass.define({
           
           _this.print(f.x,f.y);
         }));
+        new Tonyu.classes.kernel.Button({top: 100,text: "test"});
+        new Tonyu.classes.kernel.Button({top: 200,text: "test",width: 50});
         
       },
       __dummy: false
@@ -28367,15 +28371,27 @@ Tonyu.klass.define({
         }
         c.fillRect(eleft,etop,e.width,e.height);
         c.strokeRect(eleft,etop,e.width,e.height);
-        size = e.height-e.padding*2;
-        
-        f = c.font.replace(/^[0-9]+px /,"");
-        
-        c.font=size+"px "+f;
-        c.textBaseline="top";
-        c.fillStyle=e.strokeStyle;
-        r = c.measureText(_this.text);
-        
+        for (let i = 0;
+         i<2 ; i++) {
+          {
+            size = e.height-e.padding*2;
+            
+            f = c.font.replace(/^[0-9]+px /,"");
+            
+            c.font=size+"px "+f;
+            c.textBaseline="top";
+            c.fillStyle=e.strokeStyle;
+            r = c.measureText(_this.text);
+            
+            let maxWidth = e.width-e.padding*2;
+            
+            if (i>=1||r.width<=maxWidth) {
+              break;
+              
+            }
+            e.padding+=size/2*(1-maxWidth/r.width);
+          }
+        }
         c.fillText(_this.text,eleft+e.width/2-r.width/2,etop+e.padding);
       },
       __getter__clicked :function _trc_Button___getter__clicked() {
