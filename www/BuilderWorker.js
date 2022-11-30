@@ -470,7 +470,7 @@ module.exports = class Builder {
         }
         await this.showProgress("genJS");
         //throw "test break";
-        const buf = new IndentBuffer_1.IndentBuffer({ fixLazyLength: 6 });
+        const buf = new IndentBuffer_1.IndentBuffer({ fixLazyLength: 6, compress: env.options.compiler.compress });
         buf.traceIndex = {};
         await this.genJS(ord, {
             codeBuffer: buf,
@@ -486,10 +486,15 @@ module.exports = class Builder {
     genJS(ord, genOptions) {
         // 途中でコンパイルエラーを起こすと。。。
         const env = this.getEnv();
+        // TODO: delete polyfill
+        genOptions.codeBuffer.printf("if(!Tonyu.load)Tonyu.load=(_,f)=>f();%n");
+        //
+        genOptions.codeBuffer.printf("Tonyu.load(%s, ()=>{%n", JSON.stringify(env.options));
         for (let c of ord) {
             console.log("genJS", c.fullName);
             JSGenerator.genJS(c, env, genOptions);
         }
+        genOptions.codeBuffer.printf("%n});%n");
         return Promise.resolve();
     }
     showProgress(m) {
@@ -1290,6 +1295,7 @@ class IndentBuffer {
         this.options.fixLazyLength = this.options.fixLazyLength || 6;
         $.dstFile = options.dstFile;
         $.mapFile = options.mapFile;
+        $.compress = options.compress;
     }
     get printf() { return this._printf.bind(this); }
     _printf(fmt, ...args) {
@@ -1436,18 +1442,21 @@ class IndentBuffer {
         if (rc) {
             //console.log("Map",{src:{file:$.srcFile+"",row:rc.row,col:rc.col},
             //dst:{row:$.bufRow,col:$.bufCol}  });
+            // line is 1 origin, column is 0 origin, WOW!!
+            //https://github.com/mozilla/source-map#sourcemapgeneratorprototypeaddmappingmapping
             $.srcmap.addMapping({
                 generated: {
                     line: $.bufRow,
-                    column: $.bufCol
+                    column: $.bufCol - 1
                 },
                 source: $.srcFile + "",
                 original: {
                     line: rc.row,
-                    column: rc.col
+                    column: rc.col - 1
                 }
                 //name: "christopher"
             });
+            //console.log("SRCM", $.bufRow, $.bufCol, rc.row, rc.col, token+"" );
         }
     }
     ;
@@ -1519,15 +1528,21 @@ class IndentBuffer {
         //return {put: function () {} };
     }
     ln() {
+        if (this.compress)
+            return;
         const $ = this;
         $.print("\n" + $.indentBuf);
     }
     indent() {
+        if (this.compress)
+            return;
         const $ = this;
         $.indentBuf += $.indentStr;
         $.print("\n" + $.indentBuf);
     }
     dedent() {
+        if (this.compress)
+            return;
         const $ = this;
         var len = $.indentStr.length;
         if (!$.buf.last(len).match(/^\s*$/)) {
@@ -1873,7 +1888,8 @@ function genJS(klass, env, genOptions) {
     }
     genOptions = genOptions || {};
     // env.codeBuffer is not recommended(if generate in parallel...?)
-    const buf = (genOptions.codeBuffer || env.codeBuffer || new IndentBuffer_1.IndentBuffer({ fixLazyLength: 6 }));
+    const buf = (genOptions.codeBuffer || env.codeBuffer ||
+        new IndentBuffer_1.IndentBuffer({ fixLazyLength: 6, compress: env.options.compiler.compress }));
     var traceIndex = genOptions.traceIndex || {};
     buf.setSrcFile(srcFile);
     var printf = buf.printf;
@@ -2101,7 +2117,7 @@ function genJS(klass, env, genOptions) {
             }
             else {
                 buf.printf("%v: %f", node.key, function () {
-                    /*const si=*/ varAccess(node.key.text, annotation(node).scopeInfo, annotation(node));
+                    varAccess(node.key.text, annotation(node).scopeInfo, annotation(node));
                 });
             }
         },
@@ -2118,8 +2134,9 @@ function genJS(klass, env, genOptions) {
             buf.printf("(%v)", node.expr);
         },
         varAccess: function (node) {
+            buf.addMapping(node);
             var n = node.name.text;
-            /*const si=*/ varAccess(n, annotation(node).scopeInfo, annotation(node));
+            varAccess(n, annotation(node).scopeInfo, annotation(node));
         },
         exprstmt: function (node) {
             //var t:any={};
@@ -2345,6 +2362,7 @@ function genJS(klass, env, genOptions) {
                         var an = annotation(v);
                         if (i > 0)
                             buf.printf(", ");
+                        buf.addMapping(v);
                         varAccess(v.text, an.scopeInfo, an);
                     });
                 };
@@ -2604,12 +2622,13 @@ function genJS(klass, env, genOptions) {
         var opt = true;
         //waitStmts=stmts;
         printf("%s%s :function* %s(%j) {%{" +
-            //USE_STRICT+
-            "var %s=%s;%n" +
-            "%svar %s=%s;%n" +
+            "var %s=%s;%n", FIBPRE, fiber.name, genFn("f_" + fiber.name), [",", [THNode].concat(fiber.params)], THIZ, GET_THIS);
+        if (fiber.useArgs) {
+            printf("var %s=%s;%n", ARGS, "Tonyu.A(arguments)");
+        }
+        printf("%f%n" +
             "%f%n" +
-            "%f%n" +
-            "%}},%n", FIBPRE, fiber.name, genFn("f_" + fiber.name), [",", [THNode].concat(fiber.params)], THIZ, GET_THIS, (fiber.useArgs ? "" : "//"), ARGS, "Tonyu.A(arguments)", genLocalsF(fiber), fbody);
+            "%}},%n", genLocalsF(fiber), fbody);
         function fbody() {
             ctx.enter({ method: fiber, noWait: false, threadAvail: true,
                 finfo: fiber }, function () {
@@ -14581,6 +14600,9 @@ var klass = {
         }
         return o;
     },
+    hasNamespace(top, nsp) {
+        return nsp in top;
+    },
     /*Function.prototype.constructor=function () {
         throw new Error("This method should not be called");
     };*/
@@ -14918,11 +14940,31 @@ function is(obj, klass) {
     }
     return false;
 }
+function load(options, definitions) {
+    let myns = "user";
+    if (options.compiler && options.compiler.namespace && options.compiler.dependingProjects) {
+        myns = options.compiler.namespace;
+        for (let dp of options.compiler.dependingProjects) {
+            if (dp.namespace && !klass.hasNamespace(Tonyu.classes, dp.namespace)) {
+                console.warn("Missing dependencies: ", dp.namespace, " is required from ", myns);
+                Tonyu.loadEvent({ type: "missing", from: myns, to: dp.namespace });
+            }
+        }
+    }
+    try {
+        definitions();
+        Tonyu.loadEvent({ type: "success", namespace: myns, options });
+    }
+    catch (e) {
+        Tonyu.loadEvent({ type: "error", namespace: myns, e, options });
+        throw e;
+    }
+}
 //setInterval(resetLoopCheck,16);
 const Tonyu = {
     thread,
     supports_await: true,
-    klass, bless, extend, messages: R_1.default,
+    klass, bless, extend, messages: R_1.default, load, loadEvent: (e) => { },
     globals, classes, classMetas, setGlobal, getGlobal, getClass,
     timeout,
     bindFunc, not_a_tonyu_object, is,

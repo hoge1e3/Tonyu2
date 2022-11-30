@@ -634,6 +634,9 @@ var klass = {
         }
         return o;
     },
+    hasNamespace(top, nsp) {
+        return nsp in top;
+    },
     /*Function.prototype.constructor=function () {
         throw new Error("This method should not be called");
     };*/
@@ -971,11 +974,31 @@ function is(obj, klass) {
     }
     return false;
 }
+function load(options, definitions) {
+    let myns = "user";
+    if (options.compiler && options.compiler.namespace && options.compiler.dependingProjects) {
+        myns = options.compiler.namespace;
+        for (let dp of options.compiler.dependingProjects) {
+            if (dp.namespace && !klass.hasNamespace(Tonyu.classes, dp.namespace)) {
+                console.warn("Missing dependencies: ", dp.namespace, " is required from ", myns);
+                Tonyu.loadEvent({ type: "missing", from: myns, to: dp.namespace });
+            }
+        }
+    }
+    try {
+        definitions();
+        Tonyu.loadEvent({ type: "success", namespace: myns, options });
+    }
+    catch (e) {
+        Tonyu.loadEvent({ type: "error", namespace: myns, e, options });
+        throw e;
+    }
+}
 //setInterval(resetLoopCheck,16);
 const Tonyu = {
     thread,
     supports_await: true,
-    klass, bless, extend, messages: R_1.default,
+    klass, bless, extend, messages: R_1.default, load, loadEvent: (e) => { },
     globals, classes, classMetas, setGlobal, getGlobal, getClass,
     timeout,
     bindFunc, not_a_tonyu_object, is,
