@@ -1,3 +1,5 @@
+if(!Tonyu.load)Tonyu.load=(_,f)=>f();
+Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
 Tonyu.klass.define({
   fullName: 'kernel.EventHandlerCaller',
   shortName: 'EventHandlerCaller',
@@ -11,7 +13,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_EventHandlerCaller_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -32,7 +33,6 @@ Tonyu.klass.define({
       },
       fiber$callEventHandler :function* _trc_EventHandlerCaller_f_callEventHandler(_thread,h,args) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var t;
         
         
@@ -67,7 +67,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_EventMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -236,7 +235,6 @@ Tonyu.klass.define({
       },
       fiber$waitFor :function* _trc_EventMod_f_waitFor(_thread,f) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         if (_thread) {
@@ -268,7 +266,6 @@ Tonyu.klass.define({
       },
       fiber$runPromise :function* _trc_EventMod_f_runPromise(_thread,f) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var pr;
         
         pr = new Promise(f);
@@ -301,7 +298,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_OneframeSpriteMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -459,7 +455,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_SpriteMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -487,7 +482,6 @@ Tonyu.klass.define({
       },
       fiber$initSpriteMod :function* _trc_SpriteMod_f_initSpriteMod(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.position=new Tonyu.classes.kernel.Vec3View(_this);
         if (_this.scaleX==null) {
@@ -511,7 +505,6 @@ Tonyu.klass.define({
       },
       fiber$initTransform :function* _trc_SpriteMod_f_initTransform(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -620,7 +613,6 @@ Tonyu.klass.define({
       },
       fiber$setVisible :function* _trc_SpriteMod_f_setVisible(_thread,v) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this._isInvisible=! v;
         
@@ -648,7 +640,6 @@ Tonyu.klass.define({
       },
       fiber$detectSpriteType :function* _trc_SpriteMod_f_detectSpriteType(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.text!=null) {
           return "Text";
@@ -689,7 +680,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_SpriteMod3D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -708,7 +698,6 @@ Tonyu.klass.define({
       },
       fiber$detectSpriteType :function* _trc_SpriteMod3D_f_detectSpriteType(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var t;
         
         t = __superClass.prototype.detectSpriteType.apply( _this, []);
@@ -737,7 +726,6 @@ Tonyu.klass.define({
       },
       fiber$initTransform :function* _trc_SpriteMod3D_f_initTransform(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var givenTransform;
         
         if (_this.direction) {
@@ -798,7 +786,6 @@ Tonyu.klass.define({
       },
       fiber$draw3D :function* _trc_SpriteMod3D_f_draw3D(_thread,ctx3d) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var t;
         
         t=yield* _this.fiber$detectSpriteType(_thread);
@@ -844,7 +831,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_TextRectMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -936,7 +922,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T2Mod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -952,7 +937,6 @@ Tonyu.klass.define({
       },
       fiber$bvec :function* _trc_T2Mod_f_bvec(_thread,tx,ty) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var b2Vec2;
         
         b2Vec2 = Box2D.Common.Math.b2Vec2;
@@ -967,7 +951,6 @@ Tonyu.klass.define({
       },
       fiber$defv :function* _trc_T2Mod_f_defv(_thread,t,d) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return (t===t&&(typeof  t)==="number")?t:d;
         
@@ -990,7 +973,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_PrintMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -1026,7 +1008,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_MediaPlayer_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -1037,7 +1018,6 @@ Tonyu.klass.define({
       },
       fiber$play :function* _trc_MediaPlayer_f_play(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$sound.playBGM(s);
         
@@ -1049,7 +1029,6 @@ Tonyu.klass.define({
       },
       fiber$stop :function* _trc_MediaPlayer_f_stop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$sound.stopBGM(_this.s);
         
@@ -1061,7 +1040,6 @@ Tonyu.klass.define({
       },
       fiber$playSE :function* _trc_MediaPlayer_f_playSE(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$sound.playSE(_this.s);
         
@@ -1072,7 +1050,6 @@ Tonyu.klass.define({
       },
       fiber$setDelay :function* _trc_MediaPlayer_f_setDelay(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -1082,7 +1059,6 @@ Tonyu.klass.define({
       },
       fiber$setVolume :function* _trc_MediaPlayer_f_setVolume(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -1104,7 +1080,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T1Array_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -1120,7 +1095,6 @@ Tonyu.klass.define({
       },
       fiber$ary :function* _trc_T1Array_f_ary(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.data;
         
@@ -1132,7 +1106,6 @@ Tonyu.klass.define({
       },
       fiber$add :function* _trc_T1Array_f_add(_thread,d) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.data.push(d);
         
@@ -1144,7 +1117,6 @@ Tonyu.klass.define({
       },
       fiber$clear :function* _trc_T1Array_f_clear(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.data.splice(0);
         
@@ -1156,7 +1128,6 @@ Tonyu.klass.define({
       },
       fiber$_delete :function* _trc_T1Array_f__delete(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.data.splice(i,1);
         
@@ -1168,7 +1139,6 @@ Tonyu.klass.define({
       },
       fiber$get :function* _trc_T1Array_f_get(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.data[i];
         
@@ -1180,7 +1150,6 @@ Tonyu.klass.define({
       },
       fiber$indexOf :function* _trc_T1Array_f_indexOf(_thread,d) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.data.indexOf(d);
         
@@ -1192,7 +1161,6 @@ Tonyu.klass.define({
       },
       fiber$insert :function* _trc_T1Array_f_insert(_thread,i,d) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.data.splice(i,0,d);
         
@@ -1204,7 +1172,6 @@ Tonyu.klass.define({
       },
       fiber$lightIndexOf :function* _trc_T1Array_f_lightIndexOf(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.data.indexOf(_this.d);
         
@@ -1215,7 +1182,6 @@ Tonyu.klass.define({
       },
       fiber$load :function* _trc_T1Array_f_load(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -1229,7 +1195,6 @@ Tonyu.klass.define({
       },
       fiber$remove :function* _trc_T1Array_f_remove(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         
         i = _this.data.indexOf(_this.d);
@@ -1243,7 +1208,6 @@ Tonyu.klass.define({
       },
       fiber$save :function* _trc_T1Array_f_save(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -1254,7 +1218,6 @@ Tonyu.klass.define({
       },
       fiber$set :function* _trc_T1Array_f_set(_thread,i,d) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.data[i]=d;
         
@@ -1266,7 +1229,6 @@ Tonyu.klass.define({
       },
       fiber$size :function* _trc_T1Array_f_size(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.data.length;
         
@@ -1290,7 +1252,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ParallelMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -1322,7 +1283,6 @@ Tonyu.klass.define({
       },
       fiber$para_no_op :function* _trc_ParallelMod_f_para_no_op(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -1442,7 +1402,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_SchedulerMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -1456,7 +1415,6 @@ Tonyu.klass.define({
       },
       fiber$initSchedulerMod :function* _trc_SchedulerMod_f_initSchedulerMod(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this._scheduler=_this._scheduler||Tonyu.globals.$Scheduler;
         _this._th=Tonyu.globals.$Boot.schedule(_this,"main",[]);
@@ -1480,7 +1438,6 @@ Tonyu.klass.define({
       },
       fiber$update :function* _trc_SchedulerMod_f_update(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.onUpdate();
         if (_thread) {
@@ -1513,7 +1470,6 @@ Tonyu.klass.define({
       },
       fiber$updateEx :function* _trc_SchedulerMod_f_updateEx(_thread,updateT) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var updateCount;
         
         for (updateCount = 0;
@@ -1560,7 +1516,6 @@ Tonyu.klass.define({
       },
       fiber$wait :function* _trc_SchedulerMod_f_wait(_thread,t) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_thread) {
           _thread.suspend();
@@ -1612,7 +1567,6 @@ Tonyu.klass.define({
       },
       fiber$timeStop :function* _trc_SchedulerMod_f_timeStop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$Boot.timeStop(_this);
         
@@ -1635,7 +1589,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ThreadGroupMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -1646,7 +1599,6 @@ Tonyu.klass.define({
       },
       fiber$isDeadThreadGroup :function* _trc_ThreadGroupMod_f_isDeadThreadGroup(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this._isDeadThreadGroup=_this._isDeadThreadGroup||(_this._threadGroup&&(_this._threadGroup.objectPoolAge!=_this.tGrpObjectPoolAge||_this._threadGroup.isDeadThreadGroup()));
         
@@ -1659,7 +1611,6 @@ Tonyu.klass.define({
       },
       fiber$setThreadGroup :function* _trc_ThreadGroupMod_f_setThreadGroup(_thread,g) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this._threadGroup=g;
         _this.tGrpObjectPoolAge=g.objectPoolAge;
@@ -1672,7 +1623,6 @@ Tonyu.klass.define({
       },
       fiber$killThreadGroup :function* _trc_ThreadGroupMod_f_killThreadGroup(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this._isDeadThreadGroup=true;
         
@@ -1695,7 +1645,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_InputDevice_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -1730,7 +1679,6 @@ Tonyu.klass.define({
       },
       fiber$handleListeners :function* _trc_InputDevice_f_handleListeners(_thread,type,evt) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var l;
         
         l = _this.listeners;
@@ -1758,7 +1706,6 @@ Tonyu.klass.define({
       },
       fiber$addOnetimeListener :function* _trc_InputDevice_f_addOnetimeListener(_thread,l) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.listeners.push(l);
         
@@ -1770,7 +1717,6 @@ Tonyu.klass.define({
       },
       fiber$newTouch :function* _trc_InputDevice_f_newTouch(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return {index: i,px: 0,py: 0,x: 0,y: 0,vx: 0,vy: 0,touched: 0,identifier: - 1,ended: false,layer: _this.defaultLayer};
         
@@ -1782,7 +1728,6 @@ Tonyu.klass.define({
       },
       fiber$changeTouchLayer :function* _trc_InputDevice_f_changeTouchLayer(_thread,t,toLayer) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return t.layer=toLayer;
         
@@ -1987,7 +1932,6 @@ Tonyu.klass.define({
       },
       fiber$initCanvasEvents :function* _trc_InputDevice_f_initCanvasEvents(_thread,cvj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var cv;
         var ID_MOUSE;
         var bmap;
@@ -2193,7 +2137,6 @@ Tonyu.klass.define({
       },
       fiber$update :function* _trc_InputDevice_f_update(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.wheelVy=0;
         return _this.touch.updateFingers();
@@ -2224,7 +2167,6 @@ Tonyu.klass.define({
       },
       fiber$reset :function* _trc_InputDevice_f_reset(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.touch.reset();
         
@@ -2247,7 +2189,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_API_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -2267,7 +2208,6 @@ Tonyu.klass.define({
       },
       fiber$info :function* _trc_API_f_info(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ide;
         
         ide = Tonyu.globals.$Boot.getIDE();
@@ -2299,7 +2239,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ArgParser_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -2325,7 +2264,6 @@ Tonyu.klass.define({
       },
       fiber$push :function* _trc_ArgParser_f_push(_thread,v) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.a[_this.length++]=v;
         
@@ -2345,7 +2283,6 @@ Tonyu.klass.define({
       },
       fiber$trimUndefs :function* _trc_ArgParser_f_trimUndefs(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         while (_this.length>0) {
           if (_this.a[_this.length-1]!==_this._undef) {
@@ -2365,7 +2302,6 @@ Tonyu.klass.define({
       },
       fiber$peek :function* _trc_ArgParser_f_peek(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.a[i||0];
         
@@ -2418,7 +2354,6 @@ Tonyu.klass.define({
       },
       fiber$shift :function* _trc_ArgParser_f_shift(_thread,type) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var i;
         
@@ -2481,7 +2416,6 @@ Tonyu.klass.define({
       },
       fiber$toArray :function* _trc_ArgParser_f_toArray(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var i;
         
@@ -2550,7 +2484,6 @@ Tonyu.klass.define({
       },
       fiber$parseOptions :function* _trc_ArgParser_f_parseOptions(_thread,spec) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var speca;
         var res;
         var name;
@@ -2622,7 +2555,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_FileMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -2642,7 +2574,6 @@ Tonyu.klass.define({
       },
       fiber$file :function* _trc_FileMod_f_file(_thread,path) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var d;
         var files;
         
@@ -2674,7 +2605,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_GeneratorMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -2743,7 +2673,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_MathMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -2941,7 +2870,6 @@ Tonyu.klass.define({
       },
       fiber$log :function* _trc_MathMod_f_log(_thread,n) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Math.log(n);
         
@@ -2964,7 +2892,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Navigator_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -2975,7 +2902,6 @@ Tonyu.klass.define({
       },
       fiber$getUserAgent :function* _trc_Navigator_f_getUserAgent(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return navigator.userAgent;
         
@@ -2987,7 +2913,6 @@ Tonyu.klass.define({
       },
       fiber$isNW :function* _trc_Navigator_f_isNW(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return typeof  process!=="undefined";
         
@@ -3005,7 +2930,6 @@ Tonyu.klass.define({
       },
       fiber$isTablet :function* _trc_Navigator_f_isTablet(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var u;
         var isIPad;
         
@@ -3026,7 +2950,6 @@ Tonyu.klass.define({
       },
       fiber$isMobile :function* _trc_Navigator_f_isMobile(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var u;
         
         u = _this.getUserAgent().toLowerCase();
@@ -3044,7 +2967,6 @@ Tonyu.klass.define({
       },
       fiber$isWindows :function* _trc_Navigator_f_isWindows(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var u;
         
         u = _this.getUserAgent().toLowerCase();
@@ -3062,7 +2984,6 @@ Tonyu.klass.define({
       },
       fiber$isAndroid :function* _trc_Navigator_f_isAndroid(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var u;
         
         u = _this.getUserAgent().toLowerCase();
@@ -3083,7 +3004,6 @@ Tonyu.klass.define({
       },
       fiber$isIOS :function* _trc_Navigator_f_isIOS(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var u;
         var isIPad;
         
@@ -3104,7 +3024,6 @@ Tonyu.klass.define({
       },
       fiber$isFirefoxOS :function* _trc_Navigator_f_isFirefoxOS(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var u;
         
         u = _this.getUserAgent().toLowerCase();
@@ -3122,7 +3041,6 @@ Tonyu.klass.define({
       },
       fiber$isKindle :function* _trc_Navigator_f_isKindle(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var u;
         
         u = _this.getUserAgent().toLowerCase();
@@ -3140,7 +3058,6 @@ Tonyu.klass.define({
       },
       fiber$isBlackBerry :function* _trc_Navigator_f_isBlackBerry(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var u;
         
         u = _this.getUserAgent().toLowerCase();
@@ -3166,7 +3083,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ObjectPool_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -3181,7 +3097,6 @@ Tonyu.klass.define({
       },
       fiber$pool :function* _trc_ObjectPool_f_pool(_thread,key,o) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var list;
         
         list=yield* _this.fiber$poolList(_thread, key);
@@ -3200,7 +3115,6 @@ Tonyu.klass.define({
       },
       fiber$withdraw :function* _trc_ObjectPool_f_withdraw(_thread,key) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var list;
         
         list=yield* _this.fiber$poolList(_thread, key);
@@ -3216,7 +3130,6 @@ Tonyu.klass.define({
       },
       fiber$poolList :function* _trc_ObjectPool_f_poolList(_thread,key) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.lists=_this.lists||{};
         return _this.lists[key]=_this.lists[key]||[];
@@ -3240,7 +3153,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_TObject_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -3278,7 +3190,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_TQuery_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -3311,7 +3222,6 @@ Tonyu.klass.define({
       },
       fiber$create :function* _trc_TQuery_f_create(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Tonyu.classes.kernel.TQuery(_this.context);
         
@@ -3330,7 +3240,6 @@ Tonyu.klass.define({
       },
       fiber$contains :function* _trc_TQuery_f_contains(_thread,t) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var o;
         
         for ([o] of Tonyu.iterator2(_this,1)) {
@@ -3379,7 +3288,6 @@ Tonyu.klass.define({
       },
       fiber$tonyuIterator :function* _trc_TQuery_f_tonyuIterator(_thread,arity) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         
         res = {};
@@ -3502,7 +3410,6 @@ Tonyu.klass.define({
       },
       fiber$genKeyfunc :function* _trc_TQuery_f_genKeyfunc(_thread,key) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  key!="function") {
           return (function anonymous_1703(o) {
@@ -3533,7 +3440,6 @@ Tonyu.klass.define({
       },
       fiber$applyArrayMethod :function* _trc_TQuery_f_applyArrayMethod(_thread,name,args) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var a;
         var r;
@@ -3563,7 +3469,6 @@ Tonyu.klass.define({
       },
       fiber$toArray :function* _trc_TQuery_f_toArray(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var i;
         
@@ -3631,7 +3536,6 @@ Tonyu.klass.define({
       },
       fiber$maxs :function* _trc_TQuery_f_maxs(_thread,key) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var f;
         var res;
         var reso;
@@ -3687,7 +3591,6 @@ Tonyu.klass.define({
       },
       fiber$mins :function* _trc_TQuery_f_mins(_thread,key) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var f;
         var res;
         var reso;
@@ -3721,7 +3624,6 @@ Tonyu.klass.define({
       },
       fiber$minObj :function* _trc_TQuery_f_minObj(_thread,key) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.mins(key)[0];
         
@@ -3733,7 +3635,6 @@ Tonyu.klass.define({
       },
       fiber$maxObj :function* _trc_TQuery_f_maxObj(_thread,key) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.maxs(key)[0];
         
@@ -3774,7 +3675,6 @@ Tonyu.klass.define({
       },
       fiber$nearests :function* _trc_TQuery_f_nearests(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var z;
         
         
@@ -3817,7 +3717,6 @@ Tonyu.klass.define({
       },
       fiber$nearest :function* _trc_TQuery_f_nearest(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.nearests(x,y)[0];
         
@@ -3919,7 +3818,6 @@ Tonyu.klass.define({
       },
       fiber$within :function* _trc_TQuery_f_within(_thread,xo,yd,d) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.withins(xo,yd,d).nearest();
         
@@ -3981,7 +3879,6 @@ Tonyu.klass.define({
       },
       fiber$push :function* _trc_TQuery_f_push(_thread,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ee;
         
         if (Tonyu.is(e,Tonyu.classes.kernel.TQuery)||Tonyu.is(e,Array)) {
@@ -4003,7 +3900,6 @@ Tonyu.klass.define({
       },
       fiber$size :function* _trc_TQuery_f_size(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.length;
         
@@ -4043,7 +3939,6 @@ Tonyu.klass.define({
       },
       fiber$find :function* _trc_TQuery_f_find(_thread,f) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var no;
         var q;
         var o;
@@ -4083,7 +3978,6 @@ Tonyu.klass.define({
       },
       fiber$find1 :function* _trc_TQuery_f_find1(_thread,f) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.find(f)[0];
         
@@ -4098,7 +3992,6 @@ Tonyu.klass.define({
       },
       fiber$random :function* _trc_TQuery_f_random(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.length===0) {
           return null;
@@ -4129,7 +4022,6 @@ Tonyu.klass.define({
       },
       fiber$apply :function* _trc_TQuery_f_apply(_thread,name,args) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var o;
         var f;
@@ -4160,7 +4052,6 @@ Tonyu.klass.define({
       },
       fiber$alive :function* _trc_TQuery_f_alive(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$find(_thread, (function anonymous_5141(o) {
           
@@ -4183,7 +4074,6 @@ Tonyu.klass.define({
       },
       fiber$die :function* _trc_TQuery_f_die(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var a;
         
         a=yield* _this.fiber$alive(_thread);
@@ -4205,7 +4095,6 @@ Tonyu.klass.define({
       },
       fiber$klass :function* _trc_TQuery_f_klass(_thread,k) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$find(_thread, (function anonymous_5328(o) {
           
@@ -4244,7 +4133,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Zip_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -4257,7 +4145,6 @@ Tonyu.klass.define({
       },
       fiber$zip :function* _trc_Zip_f_zip(_thread,srcdir,zipfile) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$currentProject.requestPlugin("JSZip");
         FS.zip.setJSZip(JSZip);
@@ -4273,7 +4160,6 @@ Tonyu.klass.define({
       },
       fiber$unzip :function* _trc_Zip_f_unzip(_thread,zipfile,dstdir) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$currentProject.requestPlugin("JSZip");
         FS.zip.setJSZip(JSZip);
@@ -4301,7 +4187,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_EventHandler_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -4403,7 +4288,6 @@ Tonyu.klass.define({
       },
       fiber$fire :function* _trc_EventHandler_f_fire(_thread,args) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var listener;
         
         if (_this.released) {
@@ -4440,7 +4324,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ScreenOutHandler_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -4480,7 +4363,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_WithinHandler_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -4522,7 +4404,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_AbstractShape_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -4536,7 +4417,6 @@ Tonyu.klass.define({
       },
       fiber$clone :function* _trc_AbstractShape_f_clone(_thread,value) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         throw new Error("clone::abstract");
         
@@ -4550,7 +4430,6 @@ Tonyu.klass.define({
       },
       fiber$changeLayer :function* _trc_AbstractShape_f_changeLayer(_thread,value) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         throw new Error("changeLayer::abstract");
         
@@ -4570,7 +4449,6 @@ Tonyu.klass.define({
       },
       fiber$intersects :function* _trc_AbstractShape_f_intersects(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! s) {
           return false;
@@ -4592,7 +4470,6 @@ Tonyu.klass.define({
       },
       fiber$intersectsRaw :function* _trc_AbstractShape_f_intersectsRaw(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         throw new Error("intersectsRaw::abstract");
         
@@ -4615,7 +4492,6 @@ Tonyu.klass.define({
       },
       fiber$contains :function* _trc_AbstractShape_f_contains(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var cv;
         
         if (! s) {
@@ -4640,7 +4516,6 @@ Tonyu.klass.define({
       },
       fiber$containsRaw :function* _trc_AbstractShape_f_containsRaw(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         throw new Error("containsRaw::abstract");
         
@@ -4657,7 +4532,6 @@ Tonyu.klass.define({
       },
       fiber$layerChanged :function* _trc_AbstractShape_f_layerChanged(_thread,layer) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         
         res=yield* _this.fiber$clone(_thread);
@@ -4706,7 +4580,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_CubeShape_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -4719,7 +4592,6 @@ Tonyu.klass.define({
       },
       fiber$intersects :function* _trc_CubeShape_f_intersects(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return s&&Math.abs(_this.x-s.x)*2<_this.width+s.width&&Math.abs(_this.y-s.y)*2<_this.height+s.height&&Math.abs(_this.z-s.z)*2<_this.depth+s.depth;
         
@@ -4746,7 +4618,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Direction_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -4763,7 +4634,6 @@ Tonyu.klass.define({
       },
       fiber$initAxis :function* _trc_Direction_f_initAxis(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! Tonyu.classes.kernel.Direction.axis) {
           Tonyu.classes.kernel.Direction.axis={roll: new Tonyu.classes.kernel.Vec3(0,0,1),pitch: new Tonyu.classes.kernel.Vec3(1,0,0),yaw: new Tonyu.classes.kernel.Vec3(0,1,0)};
@@ -4778,7 +4648,6 @@ Tonyu.klass.define({
       },
       fiber$clone :function* _trc_Direction_f_clone(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Tonyu.classes.kernel.Direction().set(_this);
         
@@ -4791,7 +4660,6 @@ Tonyu.klass.define({
       },
       fiber$set :function* _trc_Direction_f_set(_thread,d) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.quaternion.set(d.quaternion);
         return _this;
@@ -4865,7 +4733,6 @@ Tonyu.klass.define({
       },
       fiber$rotate :function* _trc_Direction_f_rotate(_thread,mode,angle,unit) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var x;
         var y;
         var nx;
@@ -4898,7 +4765,6 @@ Tonyu.klass.define({
       },
       fiber$localToWorld :function* _trc_Direction_f_localToWorld(_thread,local,dst) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.quaternion.rotate(local,dst);
         
@@ -4910,7 +4776,6 @@ Tonyu.klass.define({
       },
       fiber$worldToLocal :function* _trc_Direction_f_worldToLocal(_thread,world,dst) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.quaternion.inverse.rotate(world,dst);
         
@@ -4937,7 +4802,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ParentChanger_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -4985,7 +4849,6 @@ Tonyu.klass.define({
       },
       fiber$cn :function* _trc_ParentChanger_f_cn(_thread,n) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         switch (n.relation) {
         case "parent":
@@ -5016,7 +4879,6 @@ Tonyu.klass.define({
       },
       fiber$chk :function* _trc_ParentChanger_f_chk(_thread,b,mesg) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! b) {
           throw new Error("ParentChanger::"+mesg);
@@ -5066,7 +4928,6 @@ Tonyu.klass.define({
       },
       fiber$getNode :function* _trc_ParentChanger_f_getNode(_thread,tt) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var cnode;
         var prev;
         var path;
@@ -5149,7 +5010,6 @@ Tonyu.klass.define({
       },
       fiber$change :function* _trc_ParentChanger_f_change(_thread,t,res) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var n;
         var dstNode;
         
@@ -5211,7 +5071,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_PointShape_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -5224,7 +5083,6 @@ Tonyu.klass.define({
       },
       fiber$clone :function* _trc_PointShape_f_clone(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Tonyu.classes.kernel.PointShape({x: _this.x,y: _this.y,_layer: _this._layer});
         
@@ -5241,7 +5099,6 @@ Tonyu.klass.define({
       },
       fiber$changeLayer :function* _trc_PointShape_f_changeLayer(_thread,newLayer) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var c;
         
         c = _this.screen.convert({x: _this.x,y: _this.y,layer: _this._layer},newLayer);
@@ -5258,7 +5115,6 @@ Tonyu.klass.define({
       },
       fiber$intersectsRaw :function* _trc_PointShape_f_intersectsRaw(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return s.containsRaw(_this);
         
@@ -5270,7 +5126,6 @@ Tonyu.klass.define({
       },
       fiber$containsRaw :function* _trc_PointShape_f_containsRaw(_thread,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return p.x===_this.x&&p.y===_this.y;
         
@@ -5317,7 +5172,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Quaternion_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -5359,7 +5213,6 @@ Tonyu.klass.define({
       },
       fiber$set :function* _trc_Quaternion_f_set(_thread,q) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.x=q.x;
         _this.y=q.y;
@@ -5385,7 +5238,6 @@ Tonyu.klass.define({
       },
       fiber$clone :function* _trc_Quaternion_f_clone(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Tonyu.classes.kernel.Quaternion({x: _this.x,y: _this.y,z: _this.z,w: _this.w});
         
@@ -5401,7 +5253,6 @@ Tonyu.klass.define({
       },
       fiber$addX :function* _trc_Quaternion_f_addX(_thread,q) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.x+=q.x;
         _this.y+=q.y;
@@ -5417,7 +5268,6 @@ Tonyu.klass.define({
       },
       fiber$add :function* _trc_Quaternion_f_add(_thread,q) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.clone().addX(q);
         
@@ -5433,7 +5283,6 @@ Tonyu.klass.define({
       },
       fiber$subX :function* _trc_Quaternion_f_subX(_thread,q) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.x-=q.x;
         _this.y-=q.y;
@@ -5449,7 +5298,6 @@ Tonyu.klass.define({
       },
       fiber$sub :function* _trc_Quaternion_f_sub(_thread,q) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.clone().subX(q);
         
@@ -5465,7 +5313,6 @@ Tonyu.klass.define({
       },
       fiber$mulX :function* _trc_Quaternion_f_mulX(_thread,k) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.x*=k;
         _this.y*=k;
@@ -5481,7 +5328,6 @@ Tonyu.klass.define({
       },
       fiber$mul :function* _trc_Quaternion_f_mul(_thread,k) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.clone().mulX(k);
         
@@ -5521,7 +5367,6 @@ Tonyu.klass.define({
       },
       fiber$product :function* _trc_Quaternion_f_product(_thread,b,dst) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var a;
         var qax;
         var qay;
@@ -5609,7 +5454,6 @@ Tonyu.klass.define({
       },
       fiber$rotate :function* _trc_Quaternion_f_rotate(_thread,p,dst) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var x;
         var y;
         var z;
@@ -5661,7 +5505,6 @@ Tonyu.klass.define({
       },
       fiber$calcTheta :function* _trc_Quaternion_f_calcTheta(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.theta=_this.atanxy(_this.w,_this.sqrt(_this.x*_this.x+_this.y*_this.y+_this.z*_this.z));
         _this.r=_this.theta*2;
@@ -5689,7 +5532,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_RectShape_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -5702,7 +5544,6 @@ Tonyu.klass.define({
       },
       fiber$clone :function* _trc_RectShape_f_clone(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Tonyu.classes.kernel.RectShape({x: _this.x,y: _this.y,width: _this.width,height: _this.height,_layer: _this._layer});
         
@@ -5724,7 +5565,6 @@ Tonyu.klass.define({
       },
       fiber$changeLayer :function* _trc_RectShape_f_changeLayer(_thread,newLayer) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var c;
         var rb;
         
@@ -5750,7 +5590,6 @@ Tonyu.klass.define({
       },
       fiber$intersectsRaw :function* _trc_RectShape_f_intersectsRaw(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (Tonyu.is(s,Tonyu.classes.kernel.RectShape)) {
           return Math.abs(_this.x-s.x)*2<_this.width+s.width&&Math.abs(_this.y-s.y)*2<_this.height+s.height;
@@ -5767,7 +5606,6 @@ Tonyu.klass.define({
       },
       fiber$containsRaw :function* _trc_RectShape_f_containsRaw(_thread,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return p.x>=_this.xmin&&p.x<=_this.xmax&&p.y>=_this.ymin&&p.y<=_this.ymax;
         
@@ -5817,7 +5655,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Transform_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -5839,7 +5676,6 @@ Tonyu.klass.define({
       },
       fiber$_static :function* _trc_Transform_f__static(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! Tonyu.classes.kernel.Transform._static) {
           Tonyu.classes.kernel.Transform._static=true;
@@ -5885,7 +5721,6 @@ Tonyu.klass.define({
       },
       fiber$child :function* _trc_Transform_f_child(_thread,param) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         param.parent=_this;
         return new Tonyu.classes.kernel.Transform(param);
@@ -5903,7 +5738,6 @@ Tonyu.klass.define({
       },
       fiber$clone :function* _trc_Transform_f_clone(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Tonyu.classes.kernel.Transform().set(_this);
         
@@ -5919,7 +5753,6 @@ Tonyu.klass.define({
       },
       fiber$set :function* _trc_Transform_f_set(_thread,t) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.position.set(t.position);
         _this.direction.set(t.direction);
@@ -5953,7 +5786,6 @@ Tonyu.klass.define({
       },
       fiber$product :function* _trc_Transform_f_product(_thread,t,dst) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var writeToThis;
         
         
@@ -5986,7 +5818,6 @@ Tonyu.klass.define({
       },
       fiber$parentChanged :function* _trc_Transform_f_parentChanged(_thread,to,dst) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var p;
         
         p = new Tonyu.classes.kernel.ParentChanger(to);
@@ -6004,7 +5835,6 @@ Tonyu.klass.define({
       },
       fiber$changeParent :function* _trc_Transform_f_changeParent(_thread,to) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var c;
         
         c=yield* _this.fiber$parentChanged(_thread, to);
@@ -6020,7 +5850,6 @@ Tonyu.klass.define({
       },
       fiber$localToWorld :function* _trc_Transform_f_localToWorld(_thread,local,dst) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$childToSibling(_thread, local, dst);
         
@@ -6044,7 +5873,6 @@ Tonyu.klass.define({
       },
       fiber$childToSibling :function* _trc_Transform_f_childToSibling(_thread,child,dst) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         
         if (Tonyu.is(child,Tonyu.classes.kernel.Transform)) {
@@ -6067,7 +5895,6 @@ Tonyu.klass.define({
       },
       fiber$worldToLocal :function* _trc_Transform_f_worldToLocal(_thread,local,dst) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$siblingToChild(_thread, local, dst);
         
@@ -6110,7 +5937,6 @@ Tonyu.klass.define({
       },
       fiber$siblingToChild :function* _trc_Transform_f_siblingToChild(_thread,sibling,dst) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var copyToSibling;
         
         
@@ -6152,7 +5978,6 @@ Tonyu.klass.define({
       },
       fiber$changeScale :function* _trc_Transform_f_changeScale(_thread,vec,by) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return vec.mulX(by);
         
@@ -6164,7 +5989,6 @@ Tonyu.klass.define({
       },
       fiber$isSibling :function* _trc_Transform_f_isSibling(_thread,sib) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return sib.parent===_this.parent;
         
@@ -6176,7 +6000,6 @@ Tonyu.klass.define({
       },
       fiber$isParentOf :function* _trc_Transform_f_isParentOf(_thread,child) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return child.parent===_this;
         
@@ -6188,7 +6011,6 @@ Tonyu.klass.define({
       },
       fiber$isChildOf :function* _trc_Transform_f_isChildOf(_thread,parent) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.parent===parent;
         
@@ -6219,7 +6041,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Transform2D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -6270,7 +6091,6 @@ Tonyu.klass.define({
       },
       fiber$localToWorld :function* _trc_Transform2D_f_localToWorld(_thread,pos) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var b;
         
         b = _this.base;
@@ -6293,7 +6113,6 @@ Tonyu.klass.define({
       },
       fiber$worldToLocal :function* _trc_Transform2D_f_worldToLocal(_thread,pos) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var b;
         var det;
         
@@ -6325,7 +6144,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Vec3_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -6358,7 +6176,6 @@ Tonyu.klass.define({
       },
       fiber$checkNum :function* _trc_Vec3_f_checkNum(_thread,o) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var name;
         var val;
         
@@ -6396,7 +6213,6 @@ Tonyu.klass.define({
       },
       fiber$parsePointArgs :function* _trc_Vec3_f_parsePointArgs(_thread,args) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var a;
         var p;
         
@@ -6452,7 +6268,6 @@ Tonyu.klass.define({
       },
       fiber$addX_v :function* _trc_Vec3_f_addX_v(_thread,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.x+=p.x;
         _this.y+=p.y;
@@ -6494,7 +6309,6 @@ Tonyu.klass.define({
       },
       fiber$subX_v :function* _trc_Vec3_f_subX_v(_thread,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.x-=p.x;
         _this.y-=p.y;
@@ -6512,7 +6326,6 @@ Tonyu.klass.define({
       },
       fiber$mulX :function* _trc_Vec3_f_mulX(_thread,k) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.x=_this.x*k;
         _this.y=_this.y*k;
@@ -6530,7 +6343,6 @@ Tonyu.klass.define({
       },
       fiber$divX :function* _trc_Vec3_f_divX(_thread,k) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.x=_this.x/k;
         _this.y=_this.y/k;
@@ -6545,7 +6357,6 @@ Tonyu.klass.define({
       },
       fiber$add :function* _trc_Vec3_f_add(_thread,x,y,z) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.clone().addX(x,y,z);
         
@@ -6557,7 +6368,6 @@ Tonyu.klass.define({
       },
       fiber$sub :function* _trc_Vec3_f_sub(_thread,x,y,z) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.clone().subX(x,y,z);
         
@@ -6569,7 +6379,6 @@ Tonyu.klass.define({
       },
       fiber$mul :function* _trc_Vec3_f_mul(_thread,k) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.clone().mulX(k);
         
@@ -6581,7 +6390,6 @@ Tonyu.klass.define({
       },
       fiber$div :function* _trc_Vec3_f_div(_thread,k) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.clone().divX(k);
         
@@ -6593,7 +6401,6 @@ Tonyu.klass.define({
       },
       fiber$clone :function* _trc_Vec3_f_clone(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Tonyu.classes.kernel.Vec3(_this.x,_this.y,_this.z);
         
@@ -6620,7 +6427,6 @@ Tonyu.klass.define({
       },
       fiber$set :function* _trc_Vec3_f_set(_thread,x,y,z) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  x==="object") {
           y=x.y;
@@ -6649,7 +6455,6 @@ Tonyu.klass.define({
       },
       fiber$setTo :function* _trc_Vec3_f_setTo(_thread,t) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         t.x=_this.x;
         t.y=_this.y;
@@ -6665,7 +6470,6 @@ Tonyu.klass.define({
       },
       fiber$addTo :function* _trc_Vec3_f_addTo(_thread,t) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         t.x+=_this.x;
         t.y+=_this.y;
@@ -6707,7 +6511,6 @@ Tonyu.klass.define({
       },
       fiber$lerp :function* _trc_Vec3_f_lerp(_thread,to,t) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.mul(1-t).addX_v(to.mul(t));
         
@@ -6719,7 +6522,6 @@ Tonyu.klass.define({
       },
       fiber$slerp :function* _trc_Vec3_f_slerp(_thread,to,t) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.mul(1-t).addX_v(to.mul(t));
         
@@ -6741,7 +6543,6 @@ Tonyu.klass.define({
       },
       fiber$normalizeX :function* _trc_Vec3_f_normalizeX(_thread,len) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var l;
         
         l = _this.length;
@@ -6763,7 +6564,6 @@ Tonyu.klass.define({
       },
       fiber$normalize :function* _trc_Vec3_f_normalize(_thread,len) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.clone().normalizeX(len);
         
@@ -6829,7 +6629,6 @@ Tonyu.klass.define({
       },
       fiber$product :function* _trc_Vec3_f_product(_thread,x,y,z) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.clone().productX(x,y,z);
         
@@ -6881,7 +6680,6 @@ Tonyu.klass.define({
       },
       fiber$rotate :function* _trc_Vec3_f_rotate(_thread,angle,axis) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var v90;
         
         if (! axis) {
@@ -6900,7 +6698,6 @@ Tonyu.klass.define({
       },
       fiber$rotateX :function* _trc_Vec3_f_rotateX(_thread,angle,axis) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$set(_thread, _this.rotate(angle,axis));
         
@@ -6913,7 +6710,6 @@ Tonyu.klass.define({
       },
       fiber$toString :function* _trc_Vec3_f_toString(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return "("+[_this.x,_this.y,_this.z].join(",")+")";
         
@@ -6937,7 +6733,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Vec3View_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -6997,7 +6792,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ActorTouch_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -7037,7 +6831,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Align2D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -7179,7 +6972,6 @@ Tonyu.klass.define({
       },
       fiber$getDrawRect :function* _trc_Align2D_f_getDrawRect(_thread,obj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var width;
         var height;
         var res;
@@ -7233,7 +7025,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_AnimMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -7255,7 +7046,6 @@ Tonyu.klass.define({
       },
       fiber$initAnimMod :function* _trc_AnimMod_f_initAnimMod(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.anim instanceof Array) {
           _this.startAnim();
@@ -7313,7 +7103,6 @@ Tonyu.klass.define({
       },
       fiber$_animation :function* _trc_AnimMod_f__animation(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var age;
         
         age = 0;
@@ -7349,7 +7138,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Color_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -7612,7 +7400,6 @@ Tonyu.klass.define({
       },
       fiber$setHSLA :function* _trc_Color_f_setHSLA(_thread,h,s,l,a) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.value.h=h;
         _this.value.s=s;
@@ -7661,7 +7448,6 @@ Tonyu.klass.define({
       },
       fiber$setRGBA :function* _trc_Color_f_setRGBA(_thread,r,g,b,a) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var n;
         var i;
         
@@ -7693,7 +7479,6 @@ Tonyu.klass.define({
       },
       fiber$hasRGBA :function* _trc_Color_f_hasRGBA(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.imageData||typeof  (_this.value.r)==="number";
         
@@ -7705,7 +7490,6 @@ Tonyu.klass.define({
       },
       fiber$hasHSLA :function* _trc_Color_f_hasHSLA(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return typeof  (_this.value.h)==="number";
         
@@ -7717,7 +7501,6 @@ Tonyu.klass.define({
       },
       fiber$hasName :function* _trc_Color_f_hasName(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return typeof  (_this.value.name)==="string";
         
@@ -7729,7 +7512,6 @@ Tonyu.klass.define({
       },
       fiber$clearRGBA :function* _trc_Color_f_clearRGBA(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         delete _this.value.r;
         
@@ -7741,7 +7523,6 @@ Tonyu.klass.define({
       },
       fiber$clearHSLA :function* _trc_Color_f_clearHSLA(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         delete _this.value.h;
         
@@ -7753,7 +7534,6 @@ Tonyu.klass.define({
       },
       fiber$clearName :function* _trc_Color_f_clearName(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         delete _this.value.name;
         
@@ -7766,7 +7546,6 @@ Tonyu.klass.define({
       },
       fiber$lerpRGBA :function* _trc_Color_f_lerpRGBA(_thread,c,t) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         t=t||0;
         return new Tonyu.classes.kernel.Color(_this.r*(1-t)+c.r*t,_this.g*(1-t)+c.g*t,_this.b*(1-t)+c.b*t,_this.a*(1-t)+c.a*t);
@@ -7798,7 +7577,6 @@ Tonyu.klass.define({
       },
       fiber$distRGBA :function* _trc_Color_f_distRGBA(_thread,other) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var dr;
         var dg;
         var db;
@@ -7848,7 +7626,6 @@ Tonyu.klass.define({
       },
       fiber$distHSLA :function* _trc_Color_f_distHSLA(_thread,other) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var dh;
         var ds;
         var dl;
@@ -7902,7 +7679,6 @@ Tonyu.klass.define({
       },
       fiber$makeRGBA :function* _trc_Color_f_makeRGBA(_thread,force) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var rgb;
         var i;
         
@@ -7959,7 +7735,6 @@ Tonyu.klass.define({
       },
       fiber$nameToRGB :function* _trc_Color_f_nameToRGB(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         var d;
         var i;
@@ -8011,7 +7786,6 @@ Tonyu.klass.define({
       },
       fiber$makeHSLA :function* _trc_Color_f_makeHSLA(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var hsl;
         
         if (_this.hasHSLA()) {
@@ -8064,7 +7838,6 @@ Tonyu.klass.define({
       },
       fiber$makeName :function* _trc_Color_f_makeName(_thread,type) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         function p(r) {
           
           return _this.floor(r*100)+"%";
@@ -8112,7 +7885,6 @@ Tonyu.klass.define({
       },
       fiber$tmpCanvas :function* _trc_Color_f_tmpCanvas(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var cv;
         
         if (Tonyu.classes.kernel.Color.ctx) {
@@ -8149,7 +7921,6 @@ Tonyu.klass.define({
       },
       fiber$RGBToHSL :function* _trc_Color_f_RGBToHSL(_thread,r,g,b) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var min;
         var max;
         var diff;
@@ -8209,7 +7980,6 @@ Tonyu.klass.define({
       },
       fiber$HSLToRGB :function* _trc_Color_f_HSLToRGB(_thread,h,s,l) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var temp2;
         var temp1;
         var rtemp;
@@ -8280,7 +8050,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Context3D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -8299,7 +8068,6 @@ Tonyu.klass.define({
       },
       fiber$addSprite2D :function* _trc_Context3D_f_addSprite2D(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! (Tonyu.is(s,Tonyu.classes.kernel.ActorSprite))) {
           s=new Tonyu.classes.kernel.ActorSprite(s);
@@ -8326,7 +8094,6 @@ Tonyu.klass.define({
       },
       fiber$addSprite3D :function* _trc_Context3D_f_addSprite3D(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var pos3d;
         var pt;
         var scl;
@@ -8362,7 +8129,6 @@ Tonyu.klass.define({
       },
       fiber$to2D :function* _trc_Context3D_f_to2D(_thread,pos) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! pos) {
           return _this.camera.to2D(_this.curTransform.position);
@@ -8378,7 +8144,6 @@ Tonyu.klass.define({
       },
       fiber$setTransform :function* _trc_Context3D_f_setTransform(_thread,t) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.curTransform=t;
         
@@ -8390,7 +8155,6 @@ Tonyu.klass.define({
       },
       fiber$transform :function* _trc_Context3D_f_transform(_thread,t) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.curTransform=_this.curTransform.childToSibling(t);
         
@@ -8402,7 +8166,6 @@ Tonyu.klass.define({
       },
       fiber$save :function* _trc_Context3D_f_save(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.stack.push({curTransform: _this.curTransform});
         
@@ -8414,7 +8177,6 @@ Tonyu.klass.define({
       },
       fiber$restore :function* _trc_Context3D_f_restore(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.extend(_this.stack.pop());
         
@@ -8438,7 +8200,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_GIFWriter_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -8520,7 +8281,6 @@ Tonyu.klass.define({
       },
       fiber$start :function* _trc_GIFWriter_f_start(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var cnt;
         
         if (_this.e) {
@@ -8574,7 +8334,6 @@ Tonyu.klass.define({
       },
       fiber$addFrame :function* _trc_GIFWriter_f_addFrame(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.e) {
           (yield* _this.fiber$start(_thread));
@@ -8601,7 +8360,6 @@ Tonyu.klass.define({
       },
       fiber$finish :function* _trc_GIFWriter_f_finish(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         r=yield* _this.fiber$runPromise(_thread, (function anonymous_2016(onFinish,fail) {
@@ -8640,7 +8398,6 @@ Tonyu.klass.define({
       },
       fiber$download :function* _trc_GIFWriter_f_download(_thread,f) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         f=f||_this.filename||"download.gif";
@@ -8685,7 +8442,6 @@ Tonyu.klass.define({
       },
       fiber$save :function* _trc_GIFWriter_f_save(_thread,f) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         console.log("Save",f);
@@ -8730,7 +8486,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_MapChip_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -8768,7 +8523,6 @@ Tonyu.klass.define({
       },
       fiber$moved :function* _trc_MapChip_f_moved(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Tonyu.classes.kernel.MapChip({map: _this.map,x: x,y: y,layers: _this.layers});
         
@@ -8780,7 +8534,6 @@ Tonyu.klass.define({
       },
       fiber$movedBy :function* _trc_MapChip_f_movedBy(_thread,dx,dy) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$moved(_thread, _this.x+dx, _this.y+dy);
         
@@ -8889,7 +8642,6 @@ Tonyu.klass.define({
       },
       fiber$has :function* _trc_MapChip_f_has(_thread,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var chipLayer;
         
         if (p==null) {
@@ -8928,7 +8680,6 @@ Tonyu.klass.define({
       },
       fiber$hasExcept :function* _trc_MapChip_f_hasExcept(_thread,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var chipLayer;
         
         if (typeof  p==="number") {
@@ -8970,7 +8721,6 @@ Tonyu.klass.define({
       },
       fiber$toActor :function* _trc_MapChip_f_toActor(_thread,options,params) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var klass;
         var w;
         var res;
@@ -9000,7 +8750,6 @@ Tonyu.klass.define({
       },
       fiber$toWorld :function* _trc_MapChip_f_toWorld(_thread,align) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.map.chipToWorld(_this.x,_this.y,align);
         
@@ -9012,7 +8761,6 @@ Tonyu.klass.define({
       },
       fiber$getBuffer :function* _trc_MapChip_f_getBuffer(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.map.getBuf(_this.x,_this.y);
         
@@ -9053,7 +8801,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_MapCodec_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -9360,7 +9107,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_MultiLayerTouches_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -9386,7 +9132,6 @@ Tonyu.klass.define({
       },
       fiber$add :function* _trc_MultiLayerTouches_f_add(_thread,a) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var layer;
         var ts;
         
@@ -9423,7 +9168,6 @@ Tonyu.klass.define({
       },
       fiber$remove :function* _trc_MultiLayerTouches_f_remove(_thread,a) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var layer;
         var ts;
         var idx;
@@ -9461,7 +9205,6 @@ Tonyu.klass.define({
       },
       fiber$getOrNewTouchables :function* _trc_MultiLayerTouches_f_getOrNewTouchables(_thread,layer) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         
         if (! layer) {
@@ -9485,7 +9228,6 @@ Tonyu.klass.define({
       },
       fiber$getTouchables :function* _trc_MultiLayerTouches_f_getTouchables(_thread,layer) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.layers.get(layer);
         
@@ -9580,7 +9322,6 @@ Tonyu.klass.define({
       },
       fiber$findActor :function* _trc_MultiLayerTouches_f_findActor(_thread,shape) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var cands;
         var i;
         var layer;
@@ -9679,7 +9420,6 @@ Tonyu.klass.define({
       },
       fiber$saveAndClear :function* _trc_MultiLayerTouches_f_saveAndClear(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var saved;
         
         saved = _this.layers;
@@ -9695,7 +9435,6 @@ Tonyu.klass.define({
       },
       fiber$restore :function* _trc_MultiLayerTouches_f_restore(_thread,saved) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.layers=saved;
         
@@ -9719,7 +9458,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_OneframeSprite_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -9741,7 +9479,6 @@ Tonyu.klass.define({
       },
       fiber$die :function* _trc_OneframeSprite_f_die(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -9751,7 +9488,6 @@ Tonyu.klass.define({
       },
       fiber$isDead :function* _trc_OneframeSprite_f_isDead(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -9775,7 +9511,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_PanelTouchStart_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -9817,7 +9552,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ScreenLayer_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
         
@@ -9872,7 +9606,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_SpriteGroup_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
         
@@ -9885,7 +9618,6 @@ Tonyu.klass.define({
       },
       fiber$get :function* _trc_SpriteGroup_f_get(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.sprites[i];
         
@@ -9910,7 +9642,6 @@ Tonyu.klass.define({
       },
       fiber$add :function* _trc_SpriteGroup_f_add(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         throw new Error("SpriteGroup::add abstract");
         
@@ -9923,7 +9654,6 @@ Tonyu.klass.define({
       },
       fiber$has :function* _trc_SpriteGroup_f_has(_thread,a) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.sprites.indexOf(a)>=0;
         
@@ -9946,7 +9676,6 @@ Tonyu.klass.define({
       },
       fiber$saveAndClear :function* _trc_SpriteGroup_f_saveAndClear(_thread,excludes) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var saved;
         
         saved = _this.sprites;
@@ -9973,7 +9702,6 @@ Tonyu.klass.define({
       },
       fiber$restore :function* _trc_SpriteGroup_f_restore(_thread,saved) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! saved) {
           throw new Error("Invalid data "+saved);
@@ -10002,7 +9730,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_SpriteMod2D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -10016,7 +9743,6 @@ Tonyu.klass.define({
       },
       fiber$initSpriteMod :function* _trc_SpriteMod2D_f_initSpriteMod(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* __superClass.prototype.fiber$initSpriteMod.apply( _this, [_thread]));
         _this._align=_this._align||new Tonyu.classes.kernel.Align2D();
@@ -10035,7 +9761,6 @@ Tonyu.klass.define({
       },
       fiber$initTransform :function* _trc_SpriteMod2D_f_initTransform(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.transform=new Tonyu.classes.kernel.Transform2D(_this);
         
@@ -10159,7 +9884,6 @@ Tonyu.klass.define({
       },
       fiber$drawAsShape :function* _trc_SpriteMod2D_f_drawAsShape(_thread,ctx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         ctx.save();
@@ -10210,7 +9934,6 @@ Tonyu.klass.define({
       },
       fiber$drawAsCustom :function* _trc_SpriteMod2D_f_drawAsCustom(_thread,ctx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         ctx.save();
         _this.performTransform(ctx);
@@ -10246,7 +9969,6 @@ Tonyu.klass.define({
       },
       fiber$drawAsImage :function* _trc_SpriteMod2D_f_drawAsImage(_thread,ctx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         _this.prepareImage();
@@ -10289,7 +10011,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Sprites_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -10340,7 +10061,6 @@ Tonyu.klass.define({
       },
       fiber$add :function* _trc_Sprites_f_add(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (Tonyu.globals.$Boot.newLimit) {
           Tonyu.globals.$Boot.newLimitCount--;
@@ -10386,7 +10106,6 @@ Tonyu.klass.define({
       },
       fiber$remove :function* _trc_Sprites_f_remove(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var idx;
         
         idx = _this.sprites.indexOf(s);
@@ -10418,7 +10137,6 @@ Tonyu.klass.define({
       },
       fiber$removeOneframes :function* _trc_Sprites_f_removeOneframes(_thread,drawn) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var s;
         var i;
         
@@ -10443,7 +10161,6 @@ Tonyu.klass.define({
       },
       fiber$clear :function* _trc_Sprites_f_clear(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.sprites.splice(0,_this.sprites.length);
         
@@ -10481,7 +10198,6 @@ Tonyu.klass.define({
       },
       fiber$compOrder :function* _trc_Sprites_f_compOrder(_thread,obj1,obj2) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var val1;
         var val2;
         
@@ -10553,7 +10269,6 @@ Tonyu.klass.define({
       },
       fiber$draw :function* _trc_Sprites_f_draw(_thread,ctx,camera) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var orderArray;
         
         ctx.save();
@@ -10626,7 +10341,6 @@ Tonyu.klass.define({
       },
       fiber$checkHit :function* _trc_Sprites_f_checkHit(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.hitWatchers.forEach((function anonymous_2800(w) {
           
@@ -10668,7 +10382,6 @@ Tonyu.klass.define({
       },
       fiber$watchHit :function* _trc_Sprites_f_watchHit(_thread,typeA,typeB,onHit) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var p;
         
         p = {A: typeA,B: typeB,h: onHit};
@@ -10726,7 +10439,6 @@ Tonyu.klass.define({
       },
       fiber$drawGrid :function* _trc_Sprites_f_drawGrid(_thread,c) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         var i;
         
@@ -10782,7 +10494,6 @@ Tonyu.klass.define({
       },
       fiber$scrollTo :function* _trc_Sprites_f_scrollTo(_thread,scrollX,scrollY) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.sx=scrollX;
         _this.sy=scrollY;
@@ -10830,7 +10541,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Sprites3D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -10864,7 +10574,6 @@ Tonyu.klass.define({
       },
       fiber$add :function* _trc_Sprites3D_f_add(_thread,a) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var curLayer;
         
         curLayer = a.getSpriteGroup();
@@ -10895,7 +10604,6 @@ Tonyu.klass.define({
       },
       fiber$draw3D :function* _trc_Sprites3D_f_draw3D(_thread,ctx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var s;
         
         for ([s] of Tonyu.iterator2(_this.sprites,1)) {
@@ -10959,7 +10667,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_M_T2Room_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -11042,7 +10749,6 @@ Tonyu.klass.define({
       },
       fiber$enter :function* _trc_M_T2Room_f_enter(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Promise((function anonymous_182(s,e) {
           
@@ -11124,7 +10830,6 @@ Tonyu.klass.define({
       },
       fiber$close :function* _trc_M_T2Room_f_close(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.m.close();
         
@@ -11136,7 +10841,6 @@ Tonyu.klass.define({
       },
       fiber$getMembers :function* _trc_M_T2Room_f_getMembers(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Promise.resolve(_this.members);
         
@@ -11148,7 +10852,6 @@ Tonyu.klass.define({
       },
       fiber$cloneEvent :function* _trc_M_T2Room_f_cloneEvent(_thread,ev) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Object.assign({},ev);
         
@@ -11163,7 +10866,6 @@ Tonyu.klass.define({
       },
       fiber$send :function* _trc_M_T2Room_f_send(_thread,mesg) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         mesg=(yield* _this.fiber$cloneEvent(_thread, mesg));
         mesg[_this.SYM_CLIENTID]=_this.myId;
@@ -11184,7 +10886,6 @@ Tonyu.klass.define({
       },
       fiber$keepAlive :function* _trc_M_T2Room_f_keepAlive(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.timer) {
           clearTimeout(_this.timer);
@@ -11242,7 +10943,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_M_T2Web_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -11256,7 +10956,6 @@ Tonyu.klass.define({
       },
       fiber$connect :function* _trc_M_T2Web_f_connect(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Promise.resolve(_this);
         
@@ -11271,7 +10970,6 @@ Tonyu.klass.define({
       },
       fiber$enterRoom :function* _trc_M_T2Web_f_enterRoom(_thread,name) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var room;
         
         room = new Tonyu.classes.kernel.M_T2Room({info: _this.info,name: name});
@@ -11300,7 +10998,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ScaledroneImpl_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -11319,7 +11016,6 @@ Tonyu.klass.define({
       },
       fiber$loadScript :function* _trc_ScaledroneImpl_f_loadScript(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  Scaledrone==="undefined") {
           return $.getScript("https://cdn.scaledrone.com/scaledrone.min.js");
@@ -11342,7 +11038,6 @@ Tonyu.klass.define({
       },
       fiber$connect :function* _trc_ScaledroneImpl_f_connect(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.loadScript().then((function anonymous_344() {
           
@@ -11359,7 +11054,6 @@ Tonyu.klass.define({
       },
       fiber$newRoom :function* _trc_ScaledroneImpl_f_newRoom(_thread,name) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$enterRoom(_thread, name);
         
@@ -11390,7 +11084,6 @@ Tonyu.klass.define({
       },
       fiber$enterRoom :function* _trc_ScaledroneImpl_f_enterRoom(_thread,name) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Promise((function anonymous_553(s,e) {
           var observable;
@@ -11443,7 +11136,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ScaledroneRoom_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -11499,7 +11191,6 @@ Tonyu.klass.define({
       },
       fiber$close :function* _trc_ScaledroneRoom_f_close(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.drone.close();
         
@@ -11511,7 +11202,6 @@ Tonyu.klass.define({
       },
       fiber$send :function* _trc_ScaledroneRoom_f_send(_thread,message) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.drone.publish({room: _this.rawName,message: message});
         
@@ -11533,7 +11223,6 @@ Tonyu.klass.define({
       },
       fiber$getMembers :function* _trc_ScaledroneRoom_f_getMembers(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.members) {
           return Promise.resolve(_this.members);
@@ -11570,7 +11259,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T2WebSocket_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         _this.sock = null;
@@ -11613,7 +11301,6 @@ Tonyu.klass.define({
       },
       fiber$connect :function* _trc_T2WebSocket_f_connect(_thread,url) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var e;
         
         if (_this.sock) {
@@ -11658,7 +11345,6 @@ Tonyu.klass.define({
       },
       fiber$close :function* _trc_T2WebSocket_f_close(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.sock) {
           _this.sock.close();
@@ -11691,7 +11377,6 @@ Tonyu.klass.define({
       },
       fiber$send :function* _trc_T2WebSocket_f_send(_thread,d) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.sock&&_this.sock.readyState==1) {
           if (Tonyu.is(d,String)||Tonyu.is(d,ArrayBuffer)||Tonyu.is(d,Blob)||_this._isTypedArray(d)) {
@@ -11737,7 +11422,6 @@ Tonyu.klass.define({
       },
       fiber$recv :function* _trc_T2WebSocket_f_recv(_thread,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var d;
         var obj;
         var ne;
@@ -11766,7 +11450,6 @@ Tonyu.klass.define({
       },
       fiber$_isTypedArray :function* _trc_T2WebSocket_f__isTypedArray(_thread,value) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return ArrayBuffer.isView(value)&&! (value instanceof DataView);
         
@@ -11792,7 +11475,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_WebSocket_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -11816,7 +11498,6 @@ Tonyu.klass.define({
       },
       fiber$getConnectionInfo :function* _trc_WebSocket_f_getConnectionInfo(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$API.info().then((function anonymous_110(r) {
           var re;
@@ -11856,7 +11537,6 @@ Tonyu.klass.define({
       },
       fiber$connect :function* _trc_WebSocket_f_connect(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var services;
         
         if (_this.impl) {
@@ -11892,7 +11572,6 @@ Tonyu.klass.define({
       },
       fiber$enterRoom :function* _trc_WebSocket_f_enterRoom(_thread,name) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.connect().then((function anonymous_750() {
           
@@ -11929,7 +11608,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Beep_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -11980,7 +11658,6 @@ Tonyu.klass.define({
       },
       fiber$init :function* _trc_Beep_f_init(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var chd;
         var i;
         
@@ -12029,7 +11706,6 @@ Tonyu.klass.define({
       },
       fiber$createSource :function* _trc_Beep_f_createSource(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.source=_this.context.createBufferSource();
         _this.source.buffer=_this.buffer;
@@ -12047,7 +11723,6 @@ Tonyu.klass.define({
       },
       fiber$initScaleTable :function* _trc_Beep_f_initScaleTable(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$sound.m2t=Tonyu.globals.$sound.m2t||[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14].map((function anonymous_1701(e) {
           
@@ -12075,7 +11750,6 @@ Tonyu.klass.define({
       },
       fiber$setScale :function* _trc_Beep_f_setScale(_thread,scale,detune) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         let s=yield* _this.fiber$initScaleTable(_thread);
         
@@ -12120,7 +11794,6 @@ Tonyu.klass.define({
       },
       fiber$set :function* _trc_Beep_f_set(_thread,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (options.reset) {
           let curs = _this.source;
@@ -12158,7 +11831,6 @@ Tonyu.klass.define({
       },
       fiber$setFreq :function* _trc_Beep_f_setFreq(_thread,f) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.init()) {
           return _this;
@@ -12183,7 +11855,6 @@ Tonyu.klass.define({
       },
       fiber$setVolume :function* _trc_Beep_f_setVolume(_thread,v) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.init()) {
           return _this;
@@ -12202,7 +11873,6 @@ Tonyu.klass.define({
       },
       fiber$hzToRate :function* _trc_Beep_f_hzToRate(_thread,hz) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return hz/_this.sampleRate*_this.buflen;
         
@@ -12220,7 +11890,6 @@ Tonyu.klass.define({
       },
       fiber$dieAfter :function* _trc_Beep_f_dieAfter(_thread,after) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.source.stop(_this.time+_this.delay+after);
         setTimeout(Tonyu.bindFunc(_this,_this.die),(_this.delay+after)*1000);
@@ -12233,7 +11902,6 @@ Tonyu.klass.define({
       },
       fiber$die :function* _trc_Beep_f_die(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.gainNode.disconnect();
         
@@ -12258,7 +11926,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_MML_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.mmlBuf=[];
         
@@ -12274,7 +11941,6 @@ Tonyu.klass.define({
       },
       fiber$play :function* _trc_MML_f_play(_thread,mmls) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.mmlBuf.push(mmls);
         if (! _this.isPlaying()) {
@@ -12310,7 +11976,6 @@ Tonyu.klass.define({
       },
       fiber$playNext :function* _trc_MML_f_playNext(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var mml;
         
         if (_this.cTimeBase==null) {
@@ -12345,7 +12010,6 @@ Tonyu.klass.define({
       },
       fiber$id :function* _trc_MML_f_id(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this._id) {
           _this._id=_this.rnd()+"";
@@ -12360,7 +12024,6 @@ Tonyu.klass.define({
       },
       fiber$bufferCount :function* _trc_MML_f_bufferCount(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.mmlBuf.length;
         
@@ -12372,7 +12035,6 @@ Tonyu.klass.define({
       },
       fiber$isPlaying :function* _trc_MML_f_isPlaying(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.m;
         
@@ -12387,7 +12049,6 @@ Tonyu.klass.define({
       },
       fiber$currentTime :function* _trc_MML_f_currentTime(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.m) {
           return _this.m.currentTime+_this.cTimeBase;
@@ -12414,7 +12075,6 @@ Tonyu.klass.define({
       },
       fiber$stop :function* _trc_MML_f_stop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.m) {
           if (_this.mwav) {
@@ -12463,7 +12123,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_MMTimer_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -12499,7 +12158,6 @@ Tonyu.klass.define({
       },
       fiber$check :function* _trc_MMTimer_f_check(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.isDead) {
           return _this;
@@ -12530,7 +12188,6 @@ Tonyu.klass.define({
       },
       fiber$proc :function* _trc_MMTimer_f_proc(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.resetLoopCheck();
         if (_this.isDead) {
@@ -12569,7 +12226,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_WaveTable_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.wav={};
         _this.env={};
@@ -12588,7 +12244,6 @@ Tonyu.klass.define({
       },
       fiber$setWav :function* _trc_WaveTable_f_setWav(_thread,num,synth) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.wav[num]=synth;
         
@@ -12600,7 +12255,6 @@ Tonyu.klass.define({
       },
       fiber$setEnv :function* _trc_WaveTable_f_setEnv(_thread,num,synth) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.env[num]=synth;
         
@@ -12615,7 +12269,6 @@ Tonyu.klass.define({
       },
       fiber$get :function* _trc_WaveTable_f_get(_thread,w,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var synth;
         
         synth = T("OscGen",{osc: _this.wav[w],env: _this.env[e],mul: 0.25});
@@ -12629,7 +12282,6 @@ Tonyu.klass.define({
       },
       fiber$stop :function* _trc_WaveTable_f_stop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -12652,7 +12304,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T1FillPolygon_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -12688,7 +12339,6 @@ Tonyu.klass.define({
       },
       fiber$draw :function* _trc_T1FillPolygon_f_draw(_thread,ctx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var xx;
         var yy;
@@ -12737,7 +12387,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T1Line_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -12767,7 +12416,6 @@ Tonyu.klass.define({
       },
       fiber$draw :function* _trc_T1Line_f_draw(_thread,ctx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var bx;
         var by;
         
@@ -12810,7 +12458,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T1Rect_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -12834,7 +12481,6 @@ Tonyu.klass.define({
       },
       fiber$draw :function* _trc_T1Rect_f_draw(_thread,ctx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         ctx.save();
         if (_this.fill) {
@@ -12871,7 +12517,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T1Sprite_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -12902,7 +12547,6 @@ Tonyu.klass.define({
       },
       fiber$draw :function* _trc_T1Sprite_f_draw(_thread,ctx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var sgn;
         
         _this.pImg=Tonyu.globals.$imageList[Math.floor(_this.p||0)];
@@ -12946,7 +12590,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T1Text_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -13001,7 +12644,6 @@ Tonyu.klass.define({
       },
       fiber$draw :function* _trc_T1Text_f_draw(_thread,ctx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var splitsText;
         var drawY;
         var textCount;
@@ -13082,7 +12724,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Scheduler_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  performance==="undefined") {
           _this.window.performance={};
@@ -13106,7 +12747,6 @@ Tonyu.klass.define({
       },
       fiber$addObj :function* _trc_Scheduler_f_addObj(_thread,obj,name,args) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$newThread(_thread, obj, name, args);
         
@@ -13127,7 +12767,6 @@ Tonyu.klass.define({
       },
       fiber$newThread :function* _trc_Scheduler_f_newThread(_thread,obj,name,args,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var th;
         
         name=name||"main";
@@ -13159,7 +12798,6 @@ Tonyu.klass.define({
       },
       fiber$addToCur :function* _trc_Scheduler_f_addToCur(_thread,th) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (th.scheduled) {
           return _this;
@@ -13187,7 +12825,6 @@ Tonyu.klass.define({
       },
       fiber$addToNext :function* _trc_Scheduler_f_addToNext(_thread,th) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (th.scheduled) {
           return _this;
@@ -13218,7 +12855,6 @@ Tonyu.klass.define({
       },
       fiber$unschedule :function* _trc_Scheduler_f_unschedule(_thread,th) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         
         i = _this.cur.indexOf(th);
@@ -13252,7 +12888,6 @@ Tonyu.klass.define({
       },
       fiber$checkTimeout :function* _trc_Scheduler_f_checkTimeout(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var now;
         
         now = performance.now();
@@ -13290,7 +12925,6 @@ Tonyu.klass.define({
       },
       fiber$checkDuplicate :function* _trc_Scheduler_f_checkDuplicate(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var dupc;
         var t;
         
@@ -13323,7 +12957,6 @@ Tonyu.klass.define({
       },
       fiber$doTimeStop :function* _trc_Scheduler_f_doTimeStop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.next=_this.allThreads;
         _this.cur=[];
@@ -13337,7 +12970,6 @@ Tonyu.klass.define({
       },
       fiber$resetLastSteps :function* _trc_Scheduler_f_resetLastSteps(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.lastSteps=performance.now();
         
@@ -13382,7 +13014,6 @@ Tonyu.klass.define({
       },
       fiber$stepsAll :function* _trc_Scheduler_f_stepsAll(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var dupc;
         var t;
         
@@ -13435,7 +13066,6 @@ Tonyu.klass.define({
       },
       fiber$findByThreadGroup :function* _trc_Scheduler_f_findByThreadGroup(_thread,o) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.allThreads.filter((function anonymous_3200(t) {
           
@@ -13466,7 +13096,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_DialogMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -13481,7 +13110,6 @@ Tonyu.klass.define({
       },
       fiber$prompt :function* _trc_DialogMod_f_prompt(_thread,mesg,val,geom) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         Tonyu.globals.$currentProject.requestPlugin("jquery_ui");
@@ -13497,7 +13125,6 @@ Tonyu.klass.define({
       },
       fiber$waitInput :function* _trc_DialogMod_f_waitInput(_thread,title,mesg,val,geom) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$prompt(_thread, {title: title,body: mesg}, val, geom);
         
@@ -13513,7 +13140,6 @@ Tonyu.klass.define({
       },
       fiber$promptNumber :function* _trc_DialogMod_f_promptNumber(_thread,mesg,val,geom) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         
@@ -13532,7 +13158,6 @@ Tonyu.klass.define({
       },
       fiber$confirm :function* _trc_DialogMod_f_confirm(_thread,mesg) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         
@@ -13552,7 +13177,6 @@ Tonyu.klass.define({
       },
       fiber$alert :function* _trc_DialogMod_f_alert(_thread,mesg) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         
@@ -13586,7 +13210,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_GamePad_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.available=false;
         _this.useGamePad=false;
@@ -13603,7 +13226,6 @@ Tonyu.klass.define({
       },
       fiber$setEnable :function* _trc_GamePad_f_setEnable(_thread,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.enable=e;
         
@@ -13619,7 +13241,6 @@ Tonyu.klass.define({
       },
       fiber$enableGamePad :function* _trc_GamePad_f_enableGamePad(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.useGamePad) {
           (yield* _this.fiber$update(_thread));
@@ -13639,7 +13260,6 @@ Tonyu.klass.define({
       },
       fiber$getGamepads :function* _trc_GamePad_f_getGamepads(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var pads;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -13659,7 +13279,6 @@ Tonyu.klass.define({
       },
       fiber$get :function* _trc_GamePad_f_get(_thread,no) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.gamepadones[no]==null) {
           _this.gamepadones[no]=new Tonyu.classes.kernel.GamePadOne(_this,no);
@@ -13688,7 +13307,6 @@ Tonyu.klass.define({
       },
       fiber$padsCount :function* _trc_GamePad_f_padsCount(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var count;
         var i;
         
@@ -13720,7 +13338,6 @@ Tonyu.klass.define({
       },
       fiber$getPad :function* _trc_GamePad_f_getPad(_thread,index) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -13746,7 +13363,6 @@ Tonyu.klass.define({
       },
       fiber$getPadId :function* _trc_GamePad_f_getPadId(_thread,index) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -13772,7 +13388,6 @@ Tonyu.klass.define({
       },
       fiber$isConnected :function* _trc_GamePad_f_isConnected(_thread,index) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -13798,7 +13413,6 @@ Tonyu.klass.define({
       },
       fiber$getMapping :function* _trc_GamePad_f_getMapping(_thread,index) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -13824,7 +13438,6 @@ Tonyu.klass.define({
       },
       fiber$getButton :function* _trc_GamePad_f_getButton(_thread,index,no) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -13850,7 +13463,6 @@ Tonyu.klass.define({
       },
       fiber$getButtonValue :function* _trc_GamePad_f_getButtonValue(_thread,index,no) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -13876,7 +13488,6 @@ Tonyu.klass.define({
       },
       fiber$getButtonCount :function* _trc_GamePad_f_getButtonCount(_thread,index) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -13902,7 +13513,6 @@ Tonyu.klass.define({
       },
       fiber$getAxis :function* _trc_GamePad_f_getAxis(_thread,index,no) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -13928,7 +13538,6 @@ Tonyu.klass.define({
       },
       fiber$getAxisCount :function* _trc_GamePad_f_getAxisCount(_thread,index) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -13954,7 +13563,6 @@ Tonyu.klass.define({
       },
       fiber$getUp :function* _trc_GamePad_f_getUp(_thread,index) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -13980,7 +13588,6 @@ Tonyu.klass.define({
       },
       fiber$getDown :function* _trc_GamePad_f_getDown(_thread,index) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -14006,7 +13613,6 @@ Tonyu.klass.define({
       },
       fiber$getLeft :function* _trc_GamePad_f_getLeft(_thread,index) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -14032,7 +13638,6 @@ Tonyu.klass.define({
       },
       fiber$getRight :function* _trc_GamePad_f_getRight(_thread,index) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var gp;
         
         (yield* _this.fiber$enableGamePad(_thread));
@@ -14158,7 +13763,6 @@ Tonyu.klass.define({
       },
       fiber$update :function* _trc_GamePad_f_update(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var pads;
         var i;
         var pad;
@@ -14289,7 +13893,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_GamePadOne_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -14306,7 +13909,6 @@ Tonyu.klass.define({
       },
       fiber$getGamePad :function* _trc_GamePadOne_f_getGamePad(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad;
         
@@ -14318,7 +13920,6 @@ Tonyu.klass.define({
       },
       fiber$getPadNo :function* _trc_GamePadOne_f_getPadNo(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.padNo;
         
@@ -14330,7 +13931,6 @@ Tonyu.klass.define({
       },
       fiber$getPad :function* _trc_GamePadOne_f_getPad(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.gamePadCount(_this.padNo);
         
@@ -14342,7 +13942,6 @@ Tonyu.klass.define({
       },
       fiber$getPadId :function* _trc_GamePadOne_f_getPadId(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.getPadId(_this.padNo);
         
@@ -14354,7 +13953,6 @@ Tonyu.klass.define({
       },
       fiber$isConnected :function* _trc_GamePadOne_f_isConnected(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.isConnected(_this.padNo);
         
@@ -14366,7 +13964,6 @@ Tonyu.klass.define({
       },
       fiber$getMapping :function* _trc_GamePadOne_f_getMapping(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.getMapping(_this.padNo);
         
@@ -14378,7 +13975,6 @@ Tonyu.klass.define({
       },
       fiber$getButton :function* _trc_GamePadOne_f_getButton(_thread,btnNo) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.getButton(_this.padNo,btnNo);
         
@@ -14390,7 +13986,6 @@ Tonyu.klass.define({
       },
       fiber$getButtonValue :function* _trc_GamePadOne_f_getButtonValue(_thread,btnNo) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.getButtonValue(_this.padNo,btnNo);
         
@@ -14402,7 +13997,6 @@ Tonyu.klass.define({
       },
       fiber$getButtonCount :function* _trc_GamePadOne_f_getButtonCount(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.getButtonCount(_this.padNo);
         
@@ -14414,7 +14008,6 @@ Tonyu.klass.define({
       },
       fiber$getAxis :function* _trc_GamePadOne_f_getAxis(_thread,btnNo) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.getAxis(_this.padNo,btnNo);
         
@@ -14426,7 +14019,6 @@ Tonyu.klass.define({
       },
       fiber$getAxisCount :function* _trc_GamePadOne_f_getAxisCount(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.getAxisCount(_this.padNo);
         
@@ -14438,7 +14030,6 @@ Tonyu.klass.define({
       },
       fiber$getUp :function* _trc_GamePadOne_f_getUp(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.getUp(_this.padNo);
         
@@ -14450,7 +14041,6 @@ Tonyu.klass.define({
       },
       fiber$getDown :function* _trc_GamePadOne_f_getDown(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.getDown(_this.padNo);
         
@@ -14462,7 +14052,6 @@ Tonyu.klass.define({
       },
       fiber$getLeft :function* _trc_GamePadOne_f_getLeft(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.getLeft(_this.padNo);
         
@@ -14474,7 +14063,6 @@ Tonyu.klass.define({
       },
       fiber$getRight :function* _trc_GamePadOne_f_getRight(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.gamePad.getRight(_this.padNo);
         
@@ -14502,7 +14090,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ExtLink_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.exec = (WebSite.isNW?require('child_process').exec:(function anonymous_110() {
           
@@ -14543,7 +14130,6 @@ Tonyu.klass.define({
       },
       fiber$getOpt :function* _trc_ExtLink_f_getOpt(_thread,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var p;
         var afterClick;
         
@@ -14587,7 +14173,6 @@ Tonyu.klass.define({
       },
       fiber$ext :function* _trc_ExtLink_f_ext(_thread,cmd,href,afterClick) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return (function anonymous_902() {
           
@@ -14619,7 +14204,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_JQExpr_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -14632,7 +14216,6 @@ Tonyu.klass.define({
       },
       fiber$isArray :function* _trc_JQExpr_f_isArray(_thread,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return e&&typeof  e.splice==="function";
         
@@ -14644,7 +14227,6 @@ Tonyu.klass.define({
       },
       fiber$isPlainObj :function* _trc_JQExpr_f_isPlainObj(_thread,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return e&&! _this.isArray(e)&&typeof  e==="object";
         
@@ -14658,7 +14240,6 @@ Tonyu.klass.define({
       },
       fiber$genid :function* _trc_JQExpr_f_genid(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$dom_idSeq=Tonyu.globals.$dom_idSeq||0;
         Tonyu.globals.$dom_idSeq++;
@@ -14672,7 +14253,6 @@ Tonyu.klass.define({
       },
       fiber$isPrimitive :function* _trc_JQExpr_f_isPrimitive(_thread,v) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return ({number: 1,string: 1,boolean: 1})[typeof  v];
         
@@ -14684,7 +14264,6 @@ Tonyu.klass.define({
       },
       fiber$extLink :function* _trc_JQExpr_f_extLink(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$JQEX_extLink||(Tonyu.globals.$JQEX_extLink=new Tonyu.classes.kernel.ExtLink);
         
@@ -14793,7 +14372,6 @@ Tonyu.klass.define({
       },
       fiber$add2 :function* _trc_JQExpr_f_add2(_thread,parentID,expr) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var esc;
         var tagname;
         var elem;
@@ -14916,7 +14494,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_KeyDownHandler_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -14952,7 +14529,6 @@ Tonyu.klass.define({
       },
       fiber$createEvent :function* _trc_KeyDownHandler_f_createEvent(_thread,raw) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var e;
         
         e = {};
@@ -15128,7 +14704,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Keys_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.stats={};
         _this.codes={left: 37,up: 38,right: 39,down: 40,space: 32,enter: 13,shift: 16,ctrl: 17,alt: 18,esc: 27,bs: 8,del: 46,mouseleft: 1,mouseright: 2,mousewheel: 4};
@@ -15209,7 +14784,6 @@ Tonyu.klass.define({
       },
       fiber$getkey :function* _trc_Keys_f_getkey(_thread,code) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  code=="string") {
           code=_this.codes[code.toLowerCase()];
@@ -15249,7 +14823,6 @@ Tonyu.klass.define({
       },
       fiber$update :function* _trc_Keys_f_update(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         
         for ([i] of Tonyu.iterator2(_this.stats,1)) {
@@ -15290,7 +14863,6 @@ Tonyu.klass.define({
       },
       fiber$keydown :function* _trc_Keys_f_keydown(_thread,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var s;
         
         if (_this.preventDefaults[e.keyCode+""]&&e.preventDefault) {
@@ -15324,7 +14896,6 @@ Tonyu.klass.define({
       },
       fiber$keyup :function* _trc_Keys_f_keyup(_thread,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.preventDefaults[e.keyCode+""]&&e.preventDefault) {
           e.preventDefault();
@@ -15360,7 +14931,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_TouchFinger_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -15388,7 +14958,6 @@ Tonyu.klass.define({
       },
       fiber$reset :function* _trc_TouchFinger_f_reset(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.identifier=- 1;
         _this.px=_this.py=0;
@@ -15450,7 +15019,6 @@ Tonyu.klass.define({
       },
       fiber$update :function* _trc_TouchFinger_f_update(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.touched>0) {
           _this.touched++;
@@ -15482,7 +15050,6 @@ Tonyu.klass.define({
       },
       fiber$show :function* _trc_TouchFinger_f_show(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return "["+_this.oid+":"+_this.floor(_this.x*100)/100+","+_this.floor(_this.px*100)/100+"]";
         
@@ -15504,7 +15071,6 @@ Tonyu.klass.define({
       },
       fiber$doStart :function* _trc_TouchFinger_f_doStart(_thread,id,point) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.identifier=id;
         _this.px=_this.x=point.x;
@@ -15543,7 +15109,6 @@ Tonyu.klass.define({
       },
       fiber$doMove :function* _trc_TouchFinger_f_doMove(_thread,point) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var p;
         var px;
         var py;
@@ -15579,7 +15144,6 @@ Tonyu.klass.define({
       },
       fiber$doEnd :function* _trc_TouchFinger_f_doEnd(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.vx=_this.vy=_this.touched=0;
         _this.ended=true;
@@ -15610,7 +15174,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_TouchFingers_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -15704,7 +15267,6 @@ Tonyu.klass.define({
       },
       fiber$handleStart :function* _trc_TouchFingers_f_handleStart(_thread,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var p;
         var ts;
         var dst;
@@ -15790,7 +15352,6 @@ Tonyu.klass.define({
       },
       fiber$handleMove :function* _trc_TouchFingers_f_handleMove(_thread,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var p;
         var ts;
         var dst;
@@ -15857,7 +15418,6 @@ Tonyu.klass.define({
       },
       fiber$handleEnd :function* _trc_TouchFingers_f_handleEnd(_thread,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ts;
         var i;
         var src;
@@ -15908,7 +15468,6 @@ Tonyu.klass.define({
       },
       fiber$unsetEmu :function* _trc_TouchFingers_f_unsetEmu(_thread,ID_MOUSE) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var t;
         var i;
         
@@ -15944,7 +15503,6 @@ Tonyu.klass.define({
       },
       fiber$updateFingers :function* _trc_TouchFingers_f_updateFingers(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var t;
         var i;
         
@@ -15969,7 +15527,6 @@ Tonyu.klass.define({
       },
       fiber$reset :function* _trc_TouchFingers_f_reset(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var t;
         
         for ([t] of Tonyu.iterator2(_this.fingerArray,1)) {
@@ -15998,7 +15555,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_LifeCycleMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -16111,7 +15667,6 @@ Tonyu.klass.define({
       },
       fiber$appear :function* _trc_LifeCycleMod_f_appear(_thread,o,param) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var p;
         var k;
         
@@ -16158,7 +15713,6 @@ Tonyu.klass.define({
       },
       fiber$getSpriteGroup :function* _trc_LifeCycleMod_f_getSpriteGroup(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (Tonyu.is(_this.__addedToSprites,Tonyu.classes.kernel.SpriteGroup)) {
           return _this.__addedToSprites;
@@ -16195,7 +15749,6 @@ Tonyu.klass.define({
       },
       fiber$addToLayer :function* _trc_LifeCycleMod_f_addToLayer(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.layer&&typeof  _this.layer.addSubsprite==="function") {
           _this.layer.addSubsprite(_this);
@@ -16235,7 +15788,6 @@ Tonyu.klass.define({
       },
       fiber$changeLayer :function* _trc_LifeCycleMod_f_changeLayer(_thread,l) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var curLayer;
         
         if (! l||typeof  l.addSubsprite!=="function") {
@@ -16257,7 +15809,6 @@ Tonyu.klass.define({
       },
       fiber$onAppear :function* _trc_LifeCycleMod_f_onAppear(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -16281,7 +15832,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Matrix_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
         
@@ -16308,7 +15858,6 @@ Tonyu.klass.define({
       },
       fiber$fromArray :function* _trc_Matrix_f_fromArray(_thread,array) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var row;
         var j;
@@ -16350,7 +15899,6 @@ Tonyu.klass.define({
       },
       fiber$toArray :function* _trc_Matrix_f_toArray(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var i;
         var row;
@@ -16407,7 +15955,6 @@ Tonyu.klass.define({
       },
       fiber$load :function* _trc_Matrix_f_load(_thread,csvFile) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var f;
         var x;
         var y;
@@ -16450,7 +15997,6 @@ Tonyu.klass.define({
       },
       fiber$cross :function* _trc_Matrix_f_cross(_thread,col,row) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var colr;
         var rowr;
         
@@ -16477,7 +16023,6 @@ Tonyu.klass.define({
       },
       fiber$search :function* _trc_Matrix_f_search(_thread,cell,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var k;
         var v;
         
@@ -16536,7 +16081,6 @@ Tonyu.klass.define({
       },
       fiber$clone :function* _trc_Matrix_f_clone(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var nm;
         var x;
         var y;
@@ -16658,7 +16202,6 @@ Tonyu.klass.define({
       },
       fiber$rev :function* _trc_Matrix_f_rev(_thread,line) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var e;
         
@@ -16678,7 +16221,6 @@ Tonyu.klass.define({
       },
       fiber$keysIterator :function* _trc_Matrix_f_keysIterator(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return {tonyuIterator: Tonyu.bindFunc(_this,_this.tonyuIteratorKeys)};
         
@@ -16690,7 +16232,6 @@ Tonyu.klass.define({
       },
       fiber$rectIterator :function* _trc_Matrix_f_rectIterator(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return {tonyuIterator: Tonyu.bindFunc(_this,_this.tonyuIteratorRect)};
         
@@ -16736,7 +16277,6 @@ Tonyu.klass.define({
       },
       fiber$tonyuIteratorKeys :function* _trc_Matrix_f_tonyuIteratorKeys(_thread,arity) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var k;
         var v;
@@ -16785,7 +16325,6 @@ Tonyu.klass.define({
       },
       fiber$tonyuIterator :function* _trc_Matrix_f_tonyuIterator(_thread,arity) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.iterateMode==="keys") {
           return yield* _this.fiber$tonyuIteratorKeys(_thread, arity);
@@ -16838,7 +16377,6 @@ Tonyu.klass.define({
       },
       fiber$tonyuIteratorRect :function* _trc_Matrix_f_tonyuIteratorRect(_thread,arity) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         
         res = {x: _this.xmin,y: _this.ymin,cnt: 0};
@@ -16889,7 +16427,6 @@ Tonyu.klass.define({
       },
       fiber$unkey :function* _trc_Matrix_f_unkey(_thread,key) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         r = key.split(",");
@@ -16921,7 +16458,6 @@ Tonyu.klass.define({
       },
       fiber$key :function* _trc_Matrix_f_key(_thread,x,y,updateRange) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         x=_this.floor(x)||0;
         y=_this.floor(y)||0;
@@ -16975,7 +16511,6 @@ Tonyu.klass.define({
       },
       fiber$get :function* _trc_Matrix_f_get(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var e;
         
@@ -17002,7 +16537,6 @@ Tonyu.klass.define({
       },
       fiber$exists :function* _trc_Matrix_f_exists(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.data[_this.key(x,y)]!==undefined;
         
@@ -17032,7 +16566,6 @@ Tonyu.klass.define({
       },
       fiber$set :function* _trc_Matrix_f_set(_thread,x,y,v) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var k;
         
         
@@ -17102,7 +16635,6 @@ Tonyu.klass.define({
       },
       fiber$neighbors :function* _trc_Matrix_f_neighbors(_thread,x,y,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var dirs;
         var res;
         var dir;
@@ -17179,7 +16711,6 @@ Tonyu.klass.define({
       },
       fiber$fill :function* _trc_Matrix_f_fill(_thread,left,top,cols,rows,data) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var j;
         var d;
@@ -17252,7 +16783,6 @@ Tonyu.klass.define({
       },
       fiber$pack :function* _trc_Matrix_f_pack(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var t;
         var k;
         var v;
@@ -17313,7 +16843,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_QueryMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -17380,7 +16909,6 @@ Tonyu.klass.define({
       },
       fiber$getCrashShape :function* _trc_QueryMod_f_getCrashShape(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         throw new Error("getCrashShape::abstract");
         
@@ -17435,7 +16963,6 @@ Tonyu.klass.define({
       },
       fiber$crashToChecker :function* _trc_QueryMod_f_crashToChecker(_thread,d,f) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var obj;
         
         while (true) {
@@ -17525,7 +17052,6 @@ Tonyu.klass.define({
       },
       fiber$withinChecker :function* _trc_QueryMod_f_withinChecker(_thread,d,r,f) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var obj;
         
         while (true) {
@@ -17583,7 +17109,6 @@ Tonyu.klass.define({
       },
       fiber$screenOutChecker :function* _trc_QueryMod_f_screenOutChecker(_thread,d,f) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         while (true) {
           while (true) {
@@ -17618,7 +17143,6 @@ Tonyu.klass.define({
       },
       fiber$screenOut :function* _trc_QueryMod_f_screenOut(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         throw new Error("screenOut::abstract");
         
@@ -17654,7 +17178,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_QueryMod2D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -17666,7 +17189,6 @@ Tonyu.klass.define({
       },
       fiber$getCrashShape :function* _trc_QueryMod2D_f_getCrashShape(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Tonyu.classes.kernel.RectShape(_this.getCrashRect());
         
@@ -17725,7 +17247,6 @@ Tonyu.klass.define({
       },
       fiber$getTouchShape :function* _trc_QueryMod2D_f_getTouchShape(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Tonyu.classes.kernel.RectShape(_this.getTouchRect());
         
@@ -17737,7 +17258,6 @@ Tonyu.klass.define({
       },
       fiber$getTouchRect :function* _trc_QueryMod2D_f_getTouchRect(_thread,scale) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.getCrashRect();
         
@@ -17755,7 +17275,6 @@ Tonyu.klass.define({
       },
       fiber$screenOut :function* _trc_QueryMod2D_f_screenOut(_thread,a) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var cp;
         
         if (! a) {
@@ -17785,7 +17304,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_QueryMod3D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -17822,7 +17340,6 @@ Tonyu.klass.define({
       },
       fiber$getCrashShape :function* _trc_QueryMod3D_f_getCrashShape(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var actWidth;
         var actHeight;
         
@@ -17852,7 +17369,6 @@ Tonyu.klass.define({
       },
       fiber$screenOut :function* _trc_QueryMod3D_f_screenOut(_thread,a) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var cp;
         
         if (! a) {
@@ -17883,7 +17399,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Random_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -17945,7 +17460,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_CrashToHandler_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -17985,7 +17499,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ComputedVec3_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -18001,7 +17514,6 @@ Tonyu.klass.define({
       },
       fiber$requestCompute :function* _trc_ComputedVec3_f_requestCompute(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.computed=null;
         
@@ -18019,7 +17531,6 @@ Tonyu.klass.define({
       },
       fiber$compute :function* _trc_ComputedVec3_f_compute(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var c;
         
         if (_this.computed) {
@@ -18038,7 +17549,6 @@ Tonyu.klass.define({
       },
       fiber$keep :function* _trc_ComputedVec3_f_keep(_thread,c) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.computed=c;
         return c;
@@ -18096,7 +17606,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ActorSprite_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -18127,7 +17636,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Layer2D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -18156,7 +17664,6 @@ Tonyu.klass.define({
       },
       fiber$draw :function* _trc_Layer2D_f_draw(_thread,c) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var rt;
         var sc;
         var wpOnSX;
@@ -18199,7 +17706,6 @@ Tonyu.klass.define({
       },
       fiber$world2screen :function* _trc_Layer2D_f_world2screen(_thread,obj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var dx;
         var dy;
         var rt;
@@ -18241,7 +17747,6 @@ Tonyu.klass.define({
       },
       fiber$screen2world :function* _trc_Layer2D_f_screen2world(_thread,obj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var rt;
         var dx;
         var dy;
@@ -18282,7 +17787,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Layer3D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -18321,7 +17825,6 @@ Tonyu.klass.define({
       },
       fiber$draw :function* _trc_Layer3D_f_draw(_thread,c2) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var c3;
         var s2ds;
         var s2d;
@@ -18359,7 +17862,6 @@ Tonyu.klass.define({
       },
       fiber$world2screen :function* _trc_Layer3D_f_world2screen(_thread,obj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         _this.spx=Tonyu.globals.$screenWidth/2;
@@ -18379,7 +17881,6 @@ Tonyu.klass.define({
       },
       fiber$screen2world :function* _trc_Layer3D_f_screen2world(_thread,obj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         throw new Error("cannot call screen2world for Layer3D");
         
@@ -18406,7 +17907,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_PanelMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -18442,7 +17942,6 @@ Tonyu.klass.define({
       },
       fiber$initPanelMod :function* _trc_PanelMod_f_initPanelMod(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         throw "Check overrides in spritesmod /oneframeSpritemod";
         
@@ -18485,7 +17984,6 @@ Tonyu.klass.define({
       },
       fiber$setPanel :function* _trc_PanelMod_f_setPanel(_thread,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var buf;
         
         _this.width=_this.trunc(width);
@@ -18508,7 +18006,6 @@ Tonyu.klass.define({
       },
       fiber$resize :function* _trc_PanelMod_f_resize(_thread,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.width==width&&_this.height==height) {
           return _this;
@@ -18524,7 +18021,6 @@ Tonyu.klass.define({
       },
       fiber$getContext :function* _trc_PanelMod_f_getContext(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this._drawn=true;
         return _this.canvas.getContext("2d");
@@ -18549,7 +18045,6 @@ Tonyu.klass.define({
       },
       fiber$setFillStyle :function* _trc_PanelMod_f_setFillStyle(_thread,color) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.fillStyle=color;
         
@@ -18592,7 +18087,6 @@ Tonyu.klass.define({
       },
       fiber$fillCircle :function* _trc_PanelMod_f_fillCircle(_thread,x,y,r) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         
         ctx = _this.context;
@@ -18614,7 +18108,6 @@ Tonyu.klass.define({
       },
       fiber$fillRect :function* _trc_PanelMod_f_fillRect(_thread,x,y,w,h) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         
         ctx=yield* _this.fiber$getContext(_thread);
@@ -18652,7 +18145,6 @@ Tonyu.klass.define({
       },
       fiber$fillText :function* _trc_PanelMod_f_fillText(_thread,text,x,y,size,align) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         var splits;
         var f;
@@ -18728,7 +18220,6 @@ Tonyu.klass.define({
       },
       fiber$getPixel :function* _trc_PanelMod_f_getPixel(_thread,getX,getY) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         var imagedata;
         var colordata;
@@ -18762,7 +18253,6 @@ Tonyu.klass.define({
       },
       fiber$scroll :function* _trc_PanelMod_f_scroll(_thread,scrollX,scrollY) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         var imagedata;
         
@@ -18940,7 +18430,6 @@ Tonyu.klass.define({
       },
       fiber$drawLine :function* _trc_PanelMod_f_drawLine(_thread,x,y,dx,dy) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (dx==null&&dy==null) {
           if (x==null&&y==null) {
@@ -18976,7 +18465,6 @@ Tonyu.klass.define({
       },
       fiber$slicePattern :function* _trc_PanelMod_f_slicePattern(_thread,x,y,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return {image: _this.canvas,x: x,y: y,width: width,height: height};
         
@@ -18989,7 +18477,6 @@ Tonyu.klass.define({
       },
       fiber$addPattern :function* _trc_PanelMod_f_addPattern(_thread,x,y,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$imageList.push(_this.slicePattern(x,y,width,height));
         return Tonyu.globals.$imageList.length-1;
@@ -19002,7 +18489,6 @@ Tonyu.klass.define({
       },
       fiber$getImageData :function* _trc_PanelMod_f_getImageData(_thread,x,y,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.context.getImageData(x,y,width,height);
         
@@ -19014,7 +18500,6 @@ Tonyu.klass.define({
       },
       fiber$putImageData :function* _trc_PanelMod_f_putImageData(_thread,data,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.context.putImageData(data,x,y);
         
@@ -19032,7 +18517,6 @@ Tonyu.klass.define({
       },
       fiber$save :function* _trc_PanelMod_f_save(_thread,fn) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var url;
         
         url = _this.canvas.toDataURL();
@@ -19078,7 +18562,6 @@ Tonyu.klass.define({
       },
       fiber$load :function* _trc_PanelMod_f_load(_thread,fn) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  fn==="string") {
           fn=(yield* _this.fiber$file(_thread, fn));
@@ -19285,7 +18768,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_PlayMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -19424,7 +18906,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_InputMod_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -19444,7 +18925,6 @@ Tonyu.klass.define({
       },
       fiber$waitInputDevice :function* _trc_InputMod_f_waitInputDevice(_thread,fl) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$runPromise(_thread, (function anonymous_244(f) {
           
@@ -19471,7 +18951,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_InputMod2D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -19537,7 +19016,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_BaseActor_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -19613,7 +19091,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_NoviceActor_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -19629,7 +19106,6 @@ Tonyu.klass.define({
       },
       fiber$sleep :function* _trc_NoviceActor_f_sleep(_thread,n) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! n) {
           n=1;
@@ -19650,7 +19126,6 @@ Tonyu.klass.define({
       },
       fiber$initSprite :function* _trc_NoviceActor_f_initSprite(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this._sprite) {
           _this._sprite=new Tonyu.classes.kernel.BaseActor({owner: _this});
@@ -19670,7 +19145,6 @@ Tonyu.klass.define({
       },
       fiber$say :function* _trc_NoviceActor_f_say(_thread,text,size) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! size) {
           size=15;
@@ -19686,7 +19160,6 @@ Tonyu.klass.define({
       },
       fiber$sprite :function* _trc_NoviceActor_f_sprite(_thread,x,y,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$go(_thread, x, y, p));
         
@@ -19708,7 +19181,6 @@ Tonyu.klass.define({
       },
       fiber$getCrashRect :function* _trc_NoviceActor_f_getCrashRect(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this._sprite.getCrashRect();
         
@@ -19725,7 +19197,6 @@ Tonyu.klass.define({
       },
       fiber$go :function* _trc_NoviceActor_f_go(_thread,x,y,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$initSprite(_thread));
         _this._sprite.x=x;
@@ -19743,7 +19214,6 @@ Tonyu.klass.define({
       },
       fiber$change :function* _trc_NoviceActor_f_change(_thread,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$initSprite(_thread));
         _this._sprite.p=p;
@@ -19769,7 +19239,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Actor_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -19785,7 +19254,6 @@ Tonyu.klass.define({
       },
       fiber$addSubsprite :function* _trc_Actor_f_addSubsprite(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.subsprites=_this.subsprites||new Tonyu.classes.kernel.Sprites({layer: _this});
         _this.subsprites.add(s);
@@ -19826,7 +19294,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Actor3D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -19857,7 +19324,6 @@ Tonyu.klass.define({
       },
       fiber$rotate :function* _trc_Actor3D_f_rotate(_thread,axis,angle) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.direction.rotate(axis,angle);
         return _this;
@@ -19894,7 +19360,6 @@ Tonyu.klass.define({
       },
       fiber$addSubsprite :function* _trc_Actor3D_f_addSubsprite(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.subsprites=_this.subsprites||new Tonyu.classes.kernel.Sprites3D({layer: _this,transform: _this.transform});
         _this.subsprites.add(s);
@@ -19924,7 +19389,6 @@ Tonyu.klass.define({
       },
       fiber$localToWorld :function* _trc_Actor3D_f_localToWorld(_thread,fru) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var name;
         var k;
@@ -19954,7 +19418,6 @@ Tonyu.klass.define({
       },
       fiber$moveBy :function* _trc_Actor3D_f_moveBy(_thread,by) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  by==="number") {
           return yield* _this.fiber$moveBy(_thread, {forward: by});
@@ -19985,7 +19448,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Camera3D_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -20022,7 +19484,6 @@ Tonyu.klass.define({
       },
       fiber$to2D :function* _trc_Camera3D_f_to2D(_thread,pos) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var c;
         var x;
         var y;
@@ -20054,7 +19515,6 @@ Tonyu.klass.define({
       },
       fiber$draw3D :function* _trc_Camera3D_f_draw3D(_thread,ctx3d) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (ctx3d.camera===_this) {
           return _this;
@@ -20073,7 +19533,6 @@ Tonyu.klass.define({
       },
       fiber$goBehind :function* _trc_Camera3D_f_goBehind(_thread,target,dist) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! dist) {
           dist=_this.z1;
@@ -20101,7 +19560,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_GameScreen_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -20124,7 +19582,6 @@ Tonyu.klass.define({
       },
       fiber$resize :function* _trc_GameScreen_f_resize(_thread,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.width=width;
         _this.height=height;
@@ -20140,7 +19597,6 @@ Tonyu.klass.define({
       },
       fiber$setBounds :function* _trc_GameScreen_f_setBounds(_thread,b) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.bounds=b;
         
@@ -20168,7 +19624,6 @@ Tonyu.klass.define({
       },
       fiber$canvas2buf :function* _trc_GameScreen_f_canvas2buf(_thread,point) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var b;
         
         b = _this.bounds;
@@ -20186,7 +19641,6 @@ Tonyu.klass.define({
       },
       fiber$setBGColor :function* _trc_GameScreen_f_setBGColor(_thread,c) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.bgColor=c;
         
@@ -20204,7 +19658,6 @@ Tonyu.klass.define({
       },
       fiber$fillCanvas :function* _trc_GameScreen_f_fillCanvas(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         
         ctx = _this.buf[0].getContext("2d");
@@ -20222,7 +19675,6 @@ Tonyu.klass.define({
       },
       fiber$scrollTo :function* _trc_GameScreen_f_scrollTo(_thread,scrollX,scrollY) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.sprites.scrollTo(scrollX,scrollY);
         
@@ -20246,7 +19698,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Map_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -20358,7 +19809,6 @@ Tonyu.klass.define({
       },
       fiber$createBuf :function* _trc_Map_f_createBuf(_thread,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var rh;
         var ary;
         var j;
@@ -20434,7 +19884,6 @@ Tonyu.klass.define({
       },
       fiber$initMap :function* _trc_Map_f_initMap(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var j;
         
@@ -20464,7 +19913,6 @@ Tonyu.klass.define({
       },
       fiber$redrawMap :function* _trc_Map_f_redrawMap(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$redraw(_thread);
         
@@ -20507,7 +19955,6 @@ Tonyu.klass.define({
       },
       fiber$redraw :function* _trc_Map_f_redraw(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var j;
         
@@ -20560,7 +20007,6 @@ Tonyu.klass.define({
       },
       fiber$resolve :function* _trc_Map_f_resolve(_thread,fileName,fallback) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         if (typeof  fileName==="string") {
@@ -20591,7 +20037,6 @@ Tonyu.klass.define({
       },
       fiber$load :function* _trc_Map_f_load(_thread,dataFile) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         dataFile=(yield* _this.fiber$resolve(_thread, dataFile, true));
         if (! dataFile||! dataFile.obj) {
@@ -20624,7 +20069,6 @@ Tonyu.klass.define({
       },
       fiber$loadFromBaseData :function* _trc_Map_f_loadFromBaseData(_thread,baseData) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.mapTable=baseData[0];
         _this.mapData=_this.mapTable;
@@ -20655,7 +20099,6 @@ Tonyu.klass.define({
       },
       fiber$save :function* _trc_Map_f_save(_thread,saveFileName) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var saveDataFile;
         var data;
         
@@ -20750,7 +20193,6 @@ Tonyu.klass.define({
       },
       fiber$setAll :function* _trc_Map_f_setAll(_thread,setCol,setRow,p,onP) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var oldP;
         var oldOnP;
         var x1;
@@ -20842,7 +20284,6 @@ Tonyu.klass.define({
       },
       fiber$set :function* _trc_Map_f_set(_thread,setCol,setRow,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
           return _this;
@@ -20860,7 +20301,6 @@ Tonyu.klass.define({
       },
       fiber$setOn :function* _trc_Map_f_setOn(_thread,setCol,setRow,onP) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
           return _this;
@@ -20875,7 +20315,6 @@ Tonyu.klass.define({
       },
       fiber$setOnAt :function* _trc_Map_f_setOnAt(_thread,setX,setY,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$setOn(_thread, Math.floor((setX-_this.sx)/_this.chipWidth), Math.floor((setY-_this.sy)/_this.chipHeight), p));
         
@@ -20887,7 +20326,6 @@ Tonyu.klass.define({
       },
       fiber$setAt :function* _trc_Map_f_setAt(_thread,setX,setY,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$set(_thread, Math.floor((setX-_this.sx)/_this.chipWidth), Math.floor((setY-_this.sy)/_this.chipHeight), p));
         
@@ -20902,7 +20340,6 @@ Tonyu.klass.define({
       },
       fiber$get :function* _trc_Map_f_get(_thread,getCol,getRow) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
           return _this.mapTable[getRow][getCol];
@@ -20917,7 +20354,6 @@ Tonyu.klass.define({
       },
       fiber$getAt :function* _trc_Map_f_getAt(_thread,getX,getY) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$get(_thread, Math.floor((getX-_this.sx)/_this.chipWidth), Math.floor((getY-_this.sy)/_this.chipHeight));
         
@@ -20933,7 +20369,6 @@ Tonyu.klass.define({
       },
       fiber$getOn :function* _trc_Map_f_getOn(_thread,getCol,getRow) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
           return _this.mapOnTable[getRow][getCol];
@@ -20948,7 +20383,6 @@ Tonyu.klass.define({
       },
       fiber$getOnAt :function* _trc_Map_f_getOnAt(_thread,getX,getY) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$getOn(_thread, Math.floor((getX-_this.sx)/_this.chipWidth), Math.floor((getY-_this.sy)/_this.chipHeight));
         
@@ -20962,7 +20396,6 @@ Tonyu.klass.define({
       },
       fiber$scrollTo :function* _trc_Map_f_scrollTo(_thread,scrollX,scrollY) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.sx=- scrollX;
         _this.sy=- scrollY;
@@ -21083,7 +20516,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Map2_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -21107,7 +20539,6 @@ Tonyu.klass.define({
       },
       fiber$getChipLayer :function* _trc_Map2_f_getChipLayer(_thread,name) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var mp;
         
         for ([mp] of Tonyu.iterator2(_this.chipLayers,1)) {
@@ -21131,7 +20562,6 @@ Tonyu.klass.define({
       },
       fiber$addChipLayer :function* _trc_Map2_f_addChipLayer(_thread,name) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         
         res = new Tonyu.classes.kernel.Matrix;
@@ -21221,7 +20651,6 @@ Tonyu.klass.define({
       },
       fiber$setPivot :function* _trc_Map2_f_setPivot(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.align=["left","top",x,y];
         
@@ -21249,7 +20678,6 @@ Tonyu.klass.define({
       },
       fiber$initBuf :function* _trc_Map2_f_initBuf(_thread,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var pImg;
         
         if (_this.bufMat) {
@@ -21294,7 +20722,6 @@ Tonyu.klass.define({
       },
       fiber$parseBufferSize :function* _trc_Map2_f_parseBufferSize(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         function fitSize(size,unit) {
           
           size=_this.floor(size/unit)*unit;
@@ -21350,7 +20777,6 @@ Tonyu.klass.define({
       },
       fiber$getBuf :function* _trc_Map2_f_getBuf(_thread,col,row) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var w;
         var h;
         var cPerBuf;
@@ -21399,7 +20825,6 @@ Tonyu.klass.define({
       },
       fiber$pack :function* _trc_Map2_f_pack(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var chipLayer;
         
         _this.row=_this.col=0;
@@ -21434,7 +20859,6 @@ Tonyu.klass.define({
       },
       fiber$redraw :function* _trc_Map2_f_redraw(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var j;
         
@@ -21470,7 +20894,6 @@ Tonyu.klass.define({
       },
       fiber$resolve :function* _trc_Map2_f_resolve(_thread,fileName,fallback) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         if (typeof  fileName==="string") {
@@ -21505,7 +20928,6 @@ Tonyu.klass.define({
       },
       fiber$load :function* _trc_Map2_f_load(_thread,dataFile) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var c;
         
         _this.bufMat=null;
@@ -21535,7 +20957,6 @@ Tonyu.klass.define({
       },
       fiber$save :function* _trc_Map2_f_save(_thread,saveFileName) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var c;
         var saveDataFile;
         
@@ -21590,7 +21011,6 @@ Tonyu.klass.define({
       },
       fiber$redrawChip :function* _trc_Map2_f_redrawChip(_thread,setCol,setRow) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var buf;
         var cv;
         var drawX;
@@ -21661,7 +21081,6 @@ Tonyu.klass.define({
       },
       fiber$setWithLayerName :function* _trc_Map2_f_setWithLayerName(_thread,name,setCol,setRow,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var l;
         
         (yield* _this.fiber$initBuf(_thread, p));
@@ -21776,7 +21195,6 @@ Tonyu.klass.define({
       },
       fiber$range :function* _trc_Map2_f_range(_thread,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var s;
         var world;
         var left;
@@ -21897,7 +21315,6 @@ Tonyu.klass.define({
       },
       fiber$isWallAt :function* _trc_Map2_f_isWallAt(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var o;
         
         o=yield* _this.fiber$worldToChip(_thread, x, y);
@@ -21913,7 +21330,6 @@ Tonyu.klass.define({
       },
       fiber$isWall :function* _trc_Map2_f_isWall(_thread,cx,cy) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this._wallFilter(cx,cy,_this);
         
@@ -21975,7 +21391,6 @@ Tonyu.klass.define({
       },
       fiber$chipFilter :function* _trc_Map2_f_chipFilter(_thread,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var func;
         var p;
         var not;
@@ -22046,7 +21461,6 @@ Tonyu.klass.define({
       },
       fiber$setWallFilter :function* _trc_Map2_f_setWallFilter(_thread,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (options.wall!=null) {
           options.p=options.wall;
@@ -22067,7 +21481,6 @@ Tonyu.klass.define({
       },
       fiber$set :function* _trc_Map2_f_set(_thread,setCol,setRow,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$setWithLayerName(_thread, "base", setCol, setRow, p));
         
@@ -22079,7 +21492,6 @@ Tonyu.klass.define({
       },
       fiber$setOn :function* _trc_Map2_f_setOn(_thread,setCol,setRow,onP) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$setWithLayerName(_thread, "on", setCol, setRow, onP));
         
@@ -22098,7 +21510,6 @@ Tonyu.klass.define({
       },
       fiber$worldToChip :function* _trc_Map2_f_worldToChip(_thread,o) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var l;
         var r;
         
@@ -22131,7 +21542,6 @@ Tonyu.klass.define({
       },
       fiber$chipToWorld :function* _trc_Map2_f_chipToWorld(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var o;
         var r;
         var co;
@@ -22160,7 +21570,6 @@ Tonyu.klass.define({
       },
       fiber$setOnAt :function* _trc_Map2_f_setOnAt(_thread,x,y,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var l;
         
         l=yield* _this.fiber$worldToChip(_thread, {x: x,y: y});
@@ -22178,7 +21587,6 @@ Tonyu.klass.define({
       },
       fiber$setAt :function* _trc_Map2_f_setAt(_thread,x,y,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var l;
         
         l=yield* _this.fiber$worldToChip(_thread, {x: x,y: y});
@@ -22206,7 +21614,6 @@ Tonyu.klass.define({
       },
       fiber$getWithLayerName :function* _trc_Map2_f_getWithLayerName(_thread,name,setCol,setRow) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var l;
         var r;
         
@@ -22231,7 +21638,6 @@ Tonyu.klass.define({
       },
       fiber$get :function* _trc_Map2_f_get(_thread,getCol,getRow) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$getWithLayerName(_thread, "base", getCol, getRow);
         
@@ -22247,7 +21653,6 @@ Tonyu.klass.define({
       },
       fiber$getAt :function* _trc_Map2_f_getAt(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var l;
         
         l=yield* _this.fiber$worldToChip(_thread, {x: x,y: y});
@@ -22263,7 +21668,6 @@ Tonyu.klass.define({
       },
       fiber$getOn :function* _trc_Map2_f_getOn(_thread,getCol,getRow) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$getWithLayerName(_thread, "on", getCol, getRow);
         
@@ -22279,7 +21683,6 @@ Tonyu.klass.define({
       },
       fiber$getOnAt :function* _trc_Map2_f_getOnAt(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var l;
         
         l=yield* _this.fiber$worldToChip(_thread, {x: x,y: y});
@@ -22303,7 +21706,6 @@ Tonyu.klass.define({
       },
       fiber$chip :function* _trc_Map2_f_chip(_thread,x,y,layers) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Tonyu.classes.kernel.MapChip({map: _this,x: x,y: y,layers: layers});
         
@@ -22318,7 +21720,6 @@ Tonyu.klass.define({
       },
       fiber$chipAt :function* _trc_Map2_f_chipAt(_thread,x,y,layers) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var l;
         
         l=yield* _this.fiber$worldToChip(_thread, {x: x,y: y});
@@ -22334,7 +21735,6 @@ Tonyu.klass.define({
       },
       fiber$has :function* _trc_Map2_f_has(_thread,x,y,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.chip(x,y).has(p);
         
@@ -22349,7 +21749,6 @@ Tonyu.klass.define({
       },
       fiber$hasAt :function* _trc_Map2_f_hasAt(_thread,x,y,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var l;
         
         l=yield* _this.fiber$worldToChip(_thread, {x: x,y: y});
@@ -22366,7 +21765,6 @@ Tonyu.klass.define({
       },
       fiber$scrollTo :function* _trc_Map2_f_scrollTo(_thread,scrollX,scrollY) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.x=- scrollX;
         _this.y=- scrollY;
@@ -22385,7 +21783,6 @@ Tonyu.klass.define({
       },
       fiber$getDrawRect :function* _trc_Map2_f_getDrawRect(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         (yield* _this.fiber$initBuf(_thread));
@@ -22473,7 +21870,6 @@ Tonyu.klass.define({
       },
       fiber$chipToActor :function* _trc_Map2_f_chipToActor(_thread,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var p;
         var klass;
         var params;
@@ -22518,7 +21914,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Panel_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -22564,7 +21959,6 @@ Tonyu.klass.define({
       },
       fiber$watchResize :function* _trc_Panel_f_watchResize(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         while (true) {
           if (_this.width!=_this.canvas.width||_this.height!=_this.canvas.height) {
@@ -22596,7 +21990,6 @@ Tonyu.klass.define({
       },
       fiber$setPanel :function* _trc_Panel_f_setPanel(_thread,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! (width*height>0)) {
           throw new Error("Invalid Panel size: "+width+"x"+height);
@@ -22622,7 +22015,6 @@ Tonyu.klass.define({
       },
       fiber$resize :function* _trc_Panel_f_resize(_thread,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.width==width&&_this.height==height) {
           return _this;
@@ -22638,7 +22030,6 @@ Tonyu.klass.define({
       },
       fiber$getContext :function* _trc_Panel_f_getContext(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this._drawn=true;
         return _this.canvas.getContext("2d");
@@ -22663,7 +22054,6 @@ Tonyu.klass.define({
       },
       fiber$setFillStyle :function* _trc_Panel_f_setFillStyle(_thread,color) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.fillStyle=color;
         
@@ -22706,7 +22096,6 @@ Tonyu.klass.define({
       },
       fiber$fillCircle :function* _trc_Panel_f_fillCircle(_thread,x,y,r) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         
         ctx = _this.context;
@@ -22757,7 +22146,6 @@ Tonyu.klass.define({
       },
       fiber$fillText :function* _trc_Panel_f_fillText(_thread,text,x,y,size,align,baseline) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         var splits;
         var f;
@@ -22824,7 +22212,6 @@ Tonyu.klass.define({
       },
       fiber$getPixelColor :function* _trc_Panel_f_getPixelColor(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var d;
         
         d=yield* _this.fiber$getPixel(_thread, x, y);
@@ -22850,7 +22237,6 @@ Tonyu.klass.define({
       },
       fiber$getPixel :function* _trc_Panel_f_getPixel(_thread,getX,getY) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         
         
@@ -22880,7 +22266,6 @@ Tonyu.klass.define({
       },
       fiber$scroll :function* _trc_Panel_f_scroll(_thread,scrollX,scrollY) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         
         ctx=yield* _this.fiber$getContext(_thread);
@@ -23088,7 +22473,6 @@ Tonyu.klass.define({
       },
       fiber$convert :function* _trc_Panel_f_convert(_thread,obj,toLayer) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var fromLayer;
         var scaleY;
         var r;
@@ -23210,7 +22594,6 @@ Tonyu.klass.define({
       },
       fiber$slicePattern :function* _trc_Panel_f_slicePattern(_thread,x,y,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return {image: _this.canvas,x: x,y: y,width: width,height: height};
         
@@ -23223,7 +22606,6 @@ Tonyu.klass.define({
       },
       fiber$addPattern :function* _trc_Panel_f_addPattern(_thread,x,y,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$imageList.push(_this.slicePattern(x,y,width,height));
         return Tonyu.globals.$imageList.length-1;
@@ -23236,7 +22618,6 @@ Tonyu.klass.define({
       },
       fiber$getImageData :function* _trc_Panel_f_getImageData(_thread,x,y,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.context.getImageData(x,y,width,height);
         
@@ -23248,7 +22629,6 @@ Tonyu.klass.define({
       },
       fiber$putImageData :function* _trc_Panel_f_putImageData(_thread,data,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.context.putImageData(data,x,y);
         
@@ -23316,7 +22696,6 @@ Tonyu.klass.define({
       },
       fiber$setAsText :function* _trc_Panel_f_setAsText(_thread,text,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var padding;
         var f;
         var size;
@@ -23383,7 +22762,6 @@ Tonyu.klass.define({
       },
       fiber$replace :function* _trc_Panel_f_replace(_thread,x,y,width,height,replacement) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -23400,7 +22778,6 @@ Tonyu.klass.define({
       },
       fiber$save :function* _trc_Panel_f_save(_thread,fn) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var url;
         
         url = _this.buf[0].toDataURL();
@@ -23422,7 +22799,6 @@ Tonyu.klass.define({
       },
       fiber$download :function* _trc_Panel_f_download(_thread,filename) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var url;
         
         filename=filename||"download.png";
@@ -23466,7 +22842,6 @@ Tonyu.klass.define({
       },
       fiber$load :function* _trc_Panel_f_load(_thread,fn) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  fn==="string") {
           fn=(yield* _this.fiber$file(_thread, fn));
@@ -23684,7 +23059,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ScaledCanvas_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -23726,7 +23100,6 @@ Tonyu.klass.define({
       },
       fiber$resize :function* _trc_ScaledCanvas_f_resize(_thread,width,height) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.width=width;
         _this.height=height;
@@ -23762,7 +23135,6 @@ Tonyu.klass.define({
       },
       fiber$shouldDraw1x1 :function* _trc_ScaledCanvas_f_shouldDraw1x1(_thread,srcw,srch,dstw,dsth) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var larger;
         var smaller;
         
@@ -23835,7 +23207,6 @@ Tonyu.klass.define({
       },
       fiber$canvas2buf :function* _trc_ScaledCanvas_f_canvas2buf(_thread,point) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var calcw;
         var calch;
         var marginw;
@@ -23871,7 +23242,6 @@ Tonyu.klass.define({
       },
       fiber$setBGColor :function* _trc_ScaledCanvas_f_setBGColor(_thread,color) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this._color=color;
         
@@ -23892,7 +23262,6 @@ Tonyu.klass.define({
       },
       fiber$fillCanvas :function* _trc_ScaledCanvas_f_fillCanvas(_thread,cv) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         
         ctx = cv.getContext("2d");
@@ -23913,7 +23282,6 @@ Tonyu.klass.define({
       },
       fiber$scrollTo :function* _trc_ScaledCanvas_f_scrollTo(_thread,scrollX,scrollY) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$Sprites.scrollTo(scrollX,scrollY);
         
@@ -23937,7 +23305,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Screen_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -23984,7 +23351,6 @@ Tonyu.klass.define({
       },
       fiber$drawLayers :function* _trc_Screen_f_drawLayers(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var c;
         var i;
         var l;
@@ -24053,7 +23419,6 @@ Tonyu.klass.define({
       },
       fiber$addLayer :function* _trc_Screen_f_addLayer(_thread,group,at) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var layer;
         
         
@@ -24094,7 +23459,6 @@ Tonyu.klass.define({
       },
       fiber$removeLayer :function* _trc_Screen_f_removeLayer(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         r=yield* _this.fiber$findLayerIndex(_thread, i);
@@ -24117,7 +23481,6 @@ Tonyu.klass.define({
       },
       fiber$selectLayer :function* _trc_Screen_f_selectLayer(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         
         r=yield* _this.fiber$findLayerIndex(_thread, i);
@@ -24152,7 +23515,6 @@ Tonyu.klass.define({
       },
       fiber$findLayerIndex :function* _trc_Screen_f_findLayerIndex(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var j;
         
         if (typeof  i=="number") {
@@ -24188,7 +23550,6 @@ Tonyu.klass.define({
       },
       fiber$findLayer :function* _trc_Screen_f_findLayer(_thread,key) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var idx;
         
         idx=yield* _this.fiber$findLayerIndex(_thread, key);
@@ -24207,7 +23568,6 @@ Tonyu.klass.define({
       },
       fiber$setPivot :function* _trc_Screen_f_setPivot(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.layers[_this.index].spx=x;
         _this.layers[_this.index].spy=y;
@@ -24227,7 +23587,6 @@ Tonyu.klass.define({
       },
       fiber$scrollTo :function* _trc_Screen_f_scrollTo(_thread,x,y,scl,rot) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.layers[_this.index].wpx=x;
         _this.layers[_this.index].wpy=y;
@@ -24247,7 +23606,6 @@ Tonyu.klass.define({
       },
       fiber$canvas2buf :function* _trc_Screen_f_canvas2buf(_thread,p) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         p.layer=_this.layer;
         return yield* _this.fiber$convert(_thread, p, _this);
@@ -24305,7 +23663,6 @@ Tonyu.klass.define({
       },
       fiber$convert :function* _trc_Screen_f_convert(_thread,obj,toLayer) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var p;
         var l;
         
@@ -24362,7 +23719,6 @@ Tonyu.klass.define({
       },
       fiber$setBGColor :function* _trc_Screen_f_setBGColor(_thread,color) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this._color=color;
         
@@ -24399,7 +23755,6 @@ Tonyu.klass.define({
       },
       fiber$saveAndClear :function* _trc_Screen_f_saveAndClear(_thread,excludes) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var l;
         
@@ -24432,7 +23787,6 @@ Tonyu.klass.define({
       },
       fiber$restore :function* _trc_Screen_f_restore(_thread,saved) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var l;
         
@@ -24487,7 +23841,6 @@ Tonyu.klass.define({
       },
       fiber$touchedFingers :function* _trc_Screen_f_touchedFingers(_thread,q,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var e;
         var r;
@@ -24552,7 +23905,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_KernelDemo_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         new Tonyu.classes.kernel.Label({x: Tonyu.globals.$screenWidth/2,y: 0,text: "Tonyu System",size: 20});
         new Tonyu.classes.kernel.Actor({x: 0,y: 0,align: "left top",fillStyle: "red",width: 50,height: 50});
@@ -24591,7 +23943,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_BodyActor_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -24625,7 +23976,6 @@ Tonyu.klass.define({
       },
       fiber$getWorld :function* _trc_BodyActor_f_getWorld(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (Tonyu.is(_this.world,Tonyu.classes.kernel.T2World)) {
           return _this.world;
@@ -24645,7 +23995,6 @@ Tonyu.klass.define({
       },
       fiber$update :function* _trc_BodyActor_f_update(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$initBody(_thread));
         (yield* __superClass.prototype.fiber$update.apply( _this, [_thread]));
@@ -24764,7 +24113,6 @@ Tonyu.klass.define({
       },
       fiber$initBody :function* _trc_BodyActor_f_initBody(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var wworld;
         var b2Vec2;
         var b2BodyDef;
@@ -24936,7 +24284,6 @@ Tonyu.klass.define({
       },
       fiber$allContactPoints :function* _trc_BodyActor_f_allContactPoints(_thread,klass) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var m;
         var point;
@@ -25002,7 +24349,6 @@ Tonyu.klass.define({
       },
       fiber$contactPoint :function* _trc_BodyActor_f_contactPoint(_thread,klass) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.allContactPoints(klass)[0];
         
@@ -25014,7 +24360,6 @@ Tonyu.klass.define({
       },
       fiber$allContact :function* _trc_BodyActor_f_allContact(_thread,klass) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$allContacts(_thread, klass);
         
@@ -25063,7 +24408,6 @@ Tonyu.klass.define({
       },
       fiber$allContacts :function* _trc_BodyActor_f_allContacts(_thread,klass) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         var c;
         var a;
@@ -25123,7 +24467,6 @@ Tonyu.klass.define({
       },
       fiber$applyForce :function* _trc_BodyActor_f_applyForce(_thread,fx,fy,px,py) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var b2Vec2;
         var scale;
         var fps;
@@ -25159,7 +24502,6 @@ Tonyu.klass.define({
       },
       fiber$applyImpulse :function* _trc_BodyActor_f_applyImpulse(_thread,fx,fy,px,py) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var b2Vec2;
         var scale;
         var fps;
@@ -25186,7 +24528,6 @@ Tonyu.klass.define({
       },
       fiber$applyTorque :function* _trc_BodyActor_f_applyTorque(_thread,a) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.initBody()) {
           return _this;
@@ -25209,7 +24550,6 @@ Tonyu.klass.define({
       },
       fiber$moveBy :function* _trc_BodyActor_f_moveBy(_thread,dx,dy) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var pos;
         
         if (! _this.initBody()) {
@@ -25229,7 +24569,6 @@ Tonyu.klass.define({
       },
       fiber$contactTo :function* _trc_BodyActor_f_contactTo(_thread,t) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.allContact(t)[0];
         
@@ -25306,7 +24645,6 @@ Tonyu.klass.define({
       },
       fiber$addRevoluteJoint :function* _trc_BodyActor_f_addRevoluteJoint(_thread,params) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var px;
         var py;
         var wworld;
@@ -25525,7 +24863,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T2Body_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -25548,7 +24885,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T2World_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -25561,7 +24897,6 @@ Tonyu.klass.define({
       },
       fiber$onAppear :function* _trc_T2World_f_onAppear(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$currentProject.requestPlugin("box2d");
         (yield* _this.fiber$initWorld(_thread));
@@ -25592,7 +24927,6 @@ Tonyu.klass.define({
       },
       fiber$initWorld :function* _trc_T2World_f_initWorld(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var b2World;
         var b2Vec2;
         
@@ -25623,7 +24957,6 @@ Tonyu.klass.define({
       },
       fiber$releaseWorld :function* _trc_T2World_f_releaseWorld(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (Tonyu.globals.$t2World===_this) {
           Tonyu.globals.$t2World=null;
@@ -25643,7 +24976,6 @@ Tonyu.klass.define({
       },
       fiber$loop :function* _trc_T2World_f_loop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         while (true) {
           _this.fps=Tonyu.globals.$Boot.getFrameRate();
@@ -25672,7 +25004,6 @@ Tonyu.klass.define({
       },
       fiber$updatePos :function* _trc_T2World_f_updatePos(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var b;
         var d;
         
@@ -25707,7 +25038,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T2MediaPlayer_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -25728,7 +25058,6 @@ Tonyu.klass.define({
       },
       fiber$initT2MediaPlayer :function* _trc_T2MediaPlayer_f_initT2MediaPlayer(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! Tonyu.globals.$t2MediaLib) {
           Tonyu.globals.$t2MediaLib=new T2MediaLib();
@@ -25746,7 +25075,6 @@ Tonyu.klass.define({
       },
       fiber$allClearSoundData :function* _trc_T2MediaPlayer_f_allClearSoundData(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$t2MediaLib.allResetBGM();
         Tonyu.globals.$t2MediaLib.allClearSoundData();
@@ -25759,7 +25087,6 @@ Tonyu.klass.define({
       },
       fiber$clearSoundData :function* _trc_T2MediaPlayer_f_clearSoundData(_thread,idx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$t2MediaLib.clearSoundData(idx);
         
@@ -25771,7 +25098,6 @@ Tonyu.klass.define({
       },
       fiber$allRemoveDecodedSoundData :function* _trc_T2MediaPlayer_f_allRemoveDecodedSoundData(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$t2MediaLib.allRemoveDecodedSoundData();
         
@@ -25783,7 +25109,6 @@ Tonyu.klass.define({
       },
       fiber$removeDecodedSoundData :function* _trc_T2MediaPlayer_f_removeDecodedSoundData(_thread,idx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$t2MediaLib.removeDecodedSoundData(idx);
         
@@ -25795,7 +25120,6 @@ Tonyu.klass.define({
       },
       fiber$getMasterVolume :function* _trc_T2MediaPlayer_f_getMasterVolume(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getMasterVolume()*128;
         
@@ -25817,7 +25141,6 @@ Tonyu.klass.define({
       },
       fiber$setMasterVolume :function* _trc_T2MediaPlayer_f_setMasterVolume(_thread,vol) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  vol==="number") {
           vol/=128;
@@ -25842,7 +25165,6 @@ Tonyu.klass.define({
       },
       fiber$loadSound :function* _trc_T2MediaPlayer_f_loadSound(_thread,idx,src,callbacks) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var isLoadAndDecode;
         
         isLoadAndDecode = Tonyu.globals.$soundLoadAndDecode||false;
@@ -25954,7 +25276,6 @@ Tonyu.klass.define({
       },
       fiber$loadFromProject :function* _trc_T2MediaPlayer_f_loadFromProject(_thread,prj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         var jobs;
         var cnt;
@@ -26058,7 +25379,6 @@ Tonyu.klass.define({
       },
       fiber$decodeSound :function* _trc_T2MediaPlayer_f_decodeSound(_thread,idx,callbacks) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$t2MediaLib.decodeSound(idx,callbacks);
         
@@ -26070,7 +25390,6 @@ Tonyu.klass.define({
       },
       fiber$getSoundFileData :function* _trc_T2MediaPlayer_f_getSoundFileData(_thread,idx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getSoundFileData(idx);
         
@@ -26082,7 +25401,6 @@ Tonyu.klass.define({
       },
       fiber$getSoundDecodedData :function* _trc_T2MediaPlayer_f_getSoundDecodedData(_thread,idx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getSoundDecodedData(idx);
         
@@ -26094,7 +25412,6 @@ Tonyu.klass.define({
       },
       fiber$getCurrentTime :function* _trc_T2MediaPlayer_f_getCurrentTime(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getCurrentTime();
         
@@ -26106,7 +25423,6 @@ Tonyu.klass.define({
       },
       fiber$getContext :function* _trc_T2MediaPlayer_f_getContext(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.context;
         
@@ -26158,7 +25474,6 @@ Tonyu.klass.define({
       },
       fiber$stopSE :function* _trc_T2MediaPlayer_f_stopSE(_thread,sourceObj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.stopSE(sourceObj);
         
@@ -26170,7 +25485,6 @@ Tonyu.klass.define({
       },
       fiber$stopAllSE :function* _trc_T2MediaPlayer_f_stopAllSE(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.stopAllSE();
         
@@ -26182,7 +25496,6 @@ Tonyu.klass.define({
       },
       fiber$getSEMasterVolume :function* _trc_T2MediaPlayer_f_getSEMasterVolume(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getSEMasterVolume()*128;
         
@@ -26204,7 +25517,6 @@ Tonyu.klass.define({
       },
       fiber$setSEMasterVolume :function* _trc_T2MediaPlayer_f_setSEMasterVolume(_thread,vol) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  vol==="number") {
           vol/=128;
@@ -26229,7 +25541,6 @@ Tonyu.klass.define({
       },
       fiber$getSEVolume :function* _trc_T2MediaPlayer_f_getSEVolume(_thread,sourceObj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var vol;
         
         vol = Tonyu.globals.$t2MediaLib.getSEVolume(sourceObj);
@@ -26254,7 +25565,6 @@ Tonyu.klass.define({
       },
       fiber$setSEVolume :function* _trc_T2MediaPlayer_f_setSEVolume(_thread,sourceObj,vol) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  vol==="number") {
           vol/=128;
@@ -26276,7 +25586,6 @@ Tonyu.klass.define({
       },
       fiber$getSERate :function* _trc_T2MediaPlayer_f_getSERate(_thread,sourceObj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getSERate(sourceObj);
         
@@ -26288,7 +25597,6 @@ Tonyu.klass.define({
       },
       fiber$setSERate :function* _trc_T2MediaPlayer_f_setSERate(_thread,sourceObj,rate) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setSERate(sourceObj,rate);
         
@@ -26300,7 +25608,6 @@ Tonyu.klass.define({
       },
       fiber$getSEPan :function* _trc_T2MediaPlayer_f_getSEPan(_thread,sourceObj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getSEPan(sourceObj);
         
@@ -26312,7 +25619,6 @@ Tonyu.klass.define({
       },
       fiber$setSEPan :function* _trc_T2MediaPlayer_f_setSEPan(_thread,sourceObj,pan) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setSEPan(sourceObj,pan);
         
@@ -26324,7 +25630,6 @@ Tonyu.klass.define({
       },
       fiber$isSELoop :function* _trc_T2MediaPlayer_f_isSELoop(_thread,sourceObj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.isSELoop(sourceObj);
         
@@ -26336,7 +25641,6 @@ Tonyu.klass.define({
       },
       fiber$setSELoop :function* _trc_T2MediaPlayer_f_setSELoop(_thread,sourceObj,loop) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setSELoop(sourceObj,loop);
         
@@ -26348,7 +25652,6 @@ Tonyu.klass.define({
       },
       fiber$getSELoopStartTime :function* _trc_T2MediaPlayer_f_getSELoopStartTime(_thread,sourceObj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getSELoopStartTime(sourceObj);
         
@@ -26360,7 +25663,6 @@ Tonyu.klass.define({
       },
       fiber$setSELoopStartTime :function* _trc_T2MediaPlayer_f_setSELoopStartTime(_thread,sourceObj,loopStart) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setSELoopStartTime(sourceObj,loopStart);
         
@@ -26372,7 +25674,6 @@ Tonyu.klass.define({
       },
       fiber$getSELoopEndTime :function* _trc_T2MediaPlayer_f_getSELoopEndTime(_thread,sourceObj) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getSELoopEndTime(sourceObj);
         
@@ -26384,7 +25685,6 @@ Tonyu.klass.define({
       },
       fiber$setSELoopEndTime :function* _trc_T2MediaPlayer_f_setSELoopEndTime(_thread,sourceObj,loopEnd) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setSELoopEndTime(sourceObj,loopEnd);
         
@@ -26405,7 +25705,6 @@ Tonyu.klass.define({
       },
       fiber$playBGM :function* _trc_T2MediaPlayer_f_playBGM(_thread,idx,loop,offset,loopStart,loopEnd) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.mute) {
           return _this;
@@ -26426,7 +25725,6 @@ Tonyu.klass.define({
       },
       fiber$stopBGM :function* _trc_T2MediaPlayer_f_stopBGM(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.stopBGM(0);
         
@@ -26438,7 +25736,6 @@ Tonyu.klass.define({
       },
       fiber$pauseBGM :function* _trc_T2MediaPlayer_f_pauseBGM(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.pauseBGM(0);
         
@@ -26453,7 +25750,6 @@ Tonyu.klass.define({
       },
       fiber$resumeBGM :function* _trc_T2MediaPlayer_f_resumeBGM(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.mute) {
           return _this;
@@ -26468,7 +25764,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMMasterVolume :function* _trc_T2MediaPlayer_f_getBGMMasterVolume(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMMasterVolume()*128;
         
@@ -26490,7 +25785,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMMasterVolume :function* _trc_T2MediaPlayer_f_setBGMMasterVolume(_thread,vol) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  vol==="number") {
           vol/=128;
@@ -26515,7 +25809,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMVolume :function* _trc_T2MediaPlayer_f_getBGMVolume(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var vol;
         
         vol = Tonyu.globals.$t2MediaLib.getBGMVolume(0);
@@ -26540,7 +25833,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMVolume :function* _trc_T2MediaPlayer_f_setBGMVolume(_thread,vol) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  vol==="number") {
           vol/=128;
@@ -26562,7 +25854,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMTempo :function* _trc_T2MediaPlayer_f_getBGMTempo(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMTempo(0);
         
@@ -26574,7 +25865,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMTempo :function* _trc_T2MediaPlayer_f_setBGMTempo(_thread,tempo) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setBGMTempo(0,tempo);
         
@@ -26586,7 +25876,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMPan :function* _trc_T2MediaPlayer_f_getBGMPan(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMPan(0);
         
@@ -26598,7 +25887,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMPan :function* _trc_T2MediaPlayer_f_setBGMPan(_thread,pan) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setBGMPan(0,pan);
         
@@ -26610,7 +25898,6 @@ Tonyu.klass.define({
       },
       fiber$isBGMLoop :function* _trc_T2MediaPlayer_f_isBGMLoop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.isBGMLoop(0);
         
@@ -26622,7 +25909,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMLoop :function* _trc_T2MediaPlayer_f_setBGMLoop(_thread,loop) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setBGMLoop(0,loop);
         
@@ -26634,7 +25920,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMLoopStartTime :function* _trc_T2MediaPlayer_f_getBGMLoopStartTime(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMLoopStartTime(0);
         
@@ -26646,7 +25931,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMLoopStartTime :function* _trc_T2MediaPlayer_f_setBGMLoopStartTime(_thread,loopStart) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setBGMLoopStartTime(0,loopStart);
         
@@ -26658,7 +25942,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMLoopEndTime :function* _trc_T2MediaPlayer_f_getBGMLoopEndTime(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMLoopEndTime(0);
         
@@ -26670,7 +25953,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMLoopEndTime :function* _trc_T2MediaPlayer_f_setBGMLoopEndTime(_thread,loopEnd) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setBGMLoopEndTime(0,loopEnd);
         
@@ -26682,7 +25964,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMCurrentTime :function* _trc_T2MediaPlayer_f_getBGMCurrentTime(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMCurrentTime(0);
         
@@ -26694,7 +25975,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMLength :function* _trc_T2MediaPlayer_f_getBGMLength(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMLength(0);
         
@@ -26706,7 +25986,6 @@ Tonyu.klass.define({
       },
       fiber$getPlayingBGMName :function* _trc_T2MediaPlayer_f_getPlayingBGMName(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getPlayingBGMName(0);
         
@@ -26718,7 +25997,6 @@ Tonyu.klass.define({
       },
       fiber$setOnBGMEndListener :function* _trc_T2MediaPlayer_f_setOnBGMEndListener(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setOnBGMEndListener(0);
         
@@ -26730,7 +26008,6 @@ Tonyu.klass.define({
       },
       fiber$getPlayingBGMState :function* _trc_T2MediaPlayer_f_getPlayingBGMState(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getPlayingBGMState(0);
         
@@ -26742,7 +26019,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMPicoAudio :function* _trc_T2MediaPlayer_f_getBGMPicoAudio(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMPicoAudio(0);
         
@@ -26754,7 +26030,6 @@ Tonyu.klass.define({
       },
       fiber$isTagLoop :function* _trc_T2MediaPlayer_f_isTagLoop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.isTagLoop(0);
         
@@ -26766,7 +26041,6 @@ Tonyu.klass.define({
       },
       fiber$setTagLoop :function* _trc_T2MediaPlayer_f_setTagLoop(_thread,isTagLoop) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setTagLoop(0,isTagLoop);
         
@@ -26778,7 +26052,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMPlayerMax :function* _trc_T2MediaPlayer_f_getBGMPlayerMax(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMPlayerMax();
         
@@ -26790,7 +26063,6 @@ Tonyu.klass.define({
       },
       fiber$allStopBGM :function* _trc_T2MediaPlayer_f_allStopBGM(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$t2MediaLib.allStopBGM();
         
@@ -26802,7 +26074,6 @@ Tonyu.klass.define({
       },
       fiber$allResetBGM :function* _trc_T2MediaPlayer_f_allResetBGM(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$t2MediaLib.allResetBGM();
         
@@ -26823,7 +26094,6 @@ Tonyu.klass.define({
       },
       fiber$playBGMID :function* _trc_T2MediaPlayer_f_playBGMID(_thread,id,idx,loop,offset,loopStart,loopEnd) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.mute) {
           return _this;
@@ -26844,7 +26114,6 @@ Tonyu.klass.define({
       },
       fiber$stopBGMID :function* _trc_T2MediaPlayer_f_stopBGMID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.stopBGM(id);
         
@@ -26856,7 +26125,6 @@ Tonyu.klass.define({
       },
       fiber$pauseBGMID :function* _trc_T2MediaPlayer_f_pauseBGMID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.pauseBGM(id);
         
@@ -26871,7 +26139,6 @@ Tonyu.klass.define({
       },
       fiber$resumeBGMID :function* _trc_T2MediaPlayer_f_resumeBGMID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.mute) {
           return _this;
@@ -26889,7 +26156,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMVolumeID :function* _trc_T2MediaPlayer_f_getBGMVolumeID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var vol;
         
         vol = Tonyu.globals.$t2MediaLib.getBGMVolume(id);
@@ -26914,7 +26180,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMVolumeID :function* _trc_T2MediaPlayer_f_setBGMVolumeID(_thread,id,vol) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  vol==="number") {
           vol/=128;
@@ -26936,7 +26201,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMTempoID :function* _trc_T2MediaPlayer_f_getBGMTempoID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMTempo(id);
         
@@ -26948,7 +26212,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMTempoID :function* _trc_T2MediaPlayer_f_setBGMTempoID(_thread,id,tempo) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setBGMTempo(id,tempo);
         
@@ -26960,7 +26223,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMPanID :function* _trc_T2MediaPlayer_f_getBGMPanID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMPan(id);
         
@@ -26972,7 +26234,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMPanID :function* _trc_T2MediaPlayer_f_setBGMPanID(_thread,id,pan) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setBGMPan(id,pan);
         
@@ -26984,7 +26245,6 @@ Tonyu.klass.define({
       },
       fiber$isBGMLoopID :function* _trc_T2MediaPlayer_f_isBGMLoopID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.isBGMLoop(id);
         
@@ -26996,7 +26256,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMLoopID :function* _trc_T2MediaPlayer_f_setBGMLoopID(_thread,id,loop) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setBGMLoop(id,loop);
         
@@ -27008,7 +26267,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMLoopStartTimeID :function* _trc_T2MediaPlayer_f_getBGMLoopStartTimeID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMLoopStartTime(id);
         
@@ -27020,7 +26278,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMLoopStartTimeID :function* _trc_T2MediaPlayer_f_setBGMLoopStartTimeID(_thread,id,loopStart) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setBGMLoopStartTime(id,loopStart);
         
@@ -27032,7 +26289,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMLoopEndTimeID :function* _trc_T2MediaPlayer_f_getBGMLoopEndTimeID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMLoopEndTime(id);
         
@@ -27044,7 +26300,6 @@ Tonyu.klass.define({
       },
       fiber$setBGMLoopEndTimeID :function* _trc_T2MediaPlayer_f_setBGMLoopEndTimeID(_thread,id,loopEnd) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setBGMLoopEndTime(id,loopEnd);
         
@@ -27056,7 +26311,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMCurrentTimeID :function* _trc_T2MediaPlayer_f_getBGMCurrentTimeID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMCurrentTime(id);
         
@@ -27068,7 +26322,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMLengthID :function* _trc_T2MediaPlayer_f_getBGMLengthID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMLength(id);
         
@@ -27080,7 +26333,6 @@ Tonyu.klass.define({
       },
       fiber$getPlayingBGMNameID :function* _trc_T2MediaPlayer_f_getPlayingBGMNameID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getPlayingBGMName(id);
         
@@ -27092,7 +26344,6 @@ Tonyu.klass.define({
       },
       fiber$setOnBGMEndListenerID :function* _trc_T2MediaPlayer_f_setOnBGMEndListenerID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setOnBGMEndListener(id);
         
@@ -27104,7 +26355,6 @@ Tonyu.klass.define({
       },
       fiber$getPlayingBGMStateID :function* _trc_T2MediaPlayer_f_getPlayingBGMStateID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getPlayingBGMState(id);
         
@@ -27116,7 +26366,6 @@ Tonyu.klass.define({
       },
       fiber$getBGMPicoAudioID :function* _trc_T2MediaPlayer_f_getBGMPicoAudioID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getBGMPicoAudio(id);
         
@@ -27128,7 +26377,6 @@ Tonyu.klass.define({
       },
       fiber$isTagLoopID :function* _trc_T2MediaPlayer_f_isTagLoopID(_thread,id) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.isTagLoop(id);
         
@@ -27140,7 +26388,6 @@ Tonyu.klass.define({
       },
       fiber$setTagLoopID :function* _trc_T2MediaPlayer_f_setTagLoopID(_thread,id,isTagLoop) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setTagLoop(id,isTagLoop);
         
@@ -27155,7 +26402,6 @@ Tonyu.klass.define({
       },
       fiber$loadAudio :function* _trc_T2MediaPlayer_f_loadAudio(_thread,idx,src) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$t2MediaLib.loadAudio(idx,src);
         while (Tonyu.globals.$t2MediaLib.getAudioData(idx)==null) {
@@ -27179,7 +26425,6 @@ Tonyu.klass.define({
       },
       fiber$playAudio :function* _trc_T2MediaPlayer_f_playAudio(_thread,idx,loop,startTime) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.mute) {
           return _this;
@@ -27200,7 +26445,6 @@ Tonyu.klass.define({
       },
       fiber$stopAudio :function* _trc_T2MediaPlayer_f_stopAudio(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.stopAudio();
         
@@ -27212,7 +26456,6 @@ Tonyu.klass.define({
       },
       fiber$pauseAudio :function* _trc_T2MediaPlayer_f_pauseAudio(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.pauseAudio();
         
@@ -27227,7 +26470,6 @@ Tonyu.klass.define({
       },
       fiber$resumeAudio :function* _trc_T2MediaPlayer_f_resumeAudio(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.mute) {
           return _this;
@@ -27250,7 +26492,6 @@ Tonyu.klass.define({
       },
       fiber$setAudioVolume :function* _trc_T2MediaPlayer_f_setAudioVolume(_thread,vol) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         vol=vol/128;
         if (vol>1) {
@@ -27277,7 +26518,6 @@ Tonyu.klass.define({
       },
       fiber$setAudioTempo :function* _trc_T2MediaPlayer_f_setAudioTempo(_thread,tempo) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (tempo>4) {
           tempo=4;
@@ -27296,7 +26536,6 @@ Tonyu.klass.define({
       },
       fiber$setAudioPosition :function* _trc_T2MediaPlayer_f_setAudioPosition(_thread,time) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.setAudioPosition(time);
         
@@ -27308,7 +26547,6 @@ Tonyu.klass.define({
       },
       fiber$getAudioCurrentTime :function* _trc_T2MediaPlayer_f_getAudioCurrentTime(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getAudioCurrentTime();
         
@@ -27320,7 +26558,6 @@ Tonyu.klass.define({
       },
       fiber$getAudioLength :function* _trc_T2MediaPlayer_f_getAudioLength(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getAudioLength();
         
@@ -27332,7 +26569,6 @@ Tonyu.klass.define({
       },
       fiber$getAudioData :function* _trc_T2MediaPlayer_f_getAudioData(_thread,idx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$t2MediaLib.getAudioData(idx);
         
@@ -27344,7 +26580,6 @@ Tonyu.klass.define({
       },
       fiber$resetSEFrame :function* _trc_T2MediaPlayer_f_resetSEFrame(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.seStaredAtThisFrame={};
         
@@ -27367,7 +26602,6 @@ Tonyu.klass.define({
       },
       fiber$initMMTimer :function* _trc_T2MediaPlayer_f_initMMTimer(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.mmTimer) {
           return _this.mmTimer;
@@ -27407,7 +26641,6 @@ Tonyu.klass.define({
       },
       fiber$beep :function* _trc_T2MediaPlayer_f_beep(_thread,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.initMMTimer()) {
           return _this;
@@ -27438,7 +26671,6 @@ Tonyu.klass.define({
       },
       fiber$checkTimer :function* _trc_T2MediaPlayer_f_checkTimer(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.mmTimer) {
           _this.mmTimer.check();
@@ -27472,7 +26704,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_PlainChar_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -27510,7 +26741,6 @@ Tonyu.klass.define({
       },
       fiber$setVisible :function* _trc_PlainChar_f_setVisible(_thread,v) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this._isInvisible=! v;
         
@@ -27521,7 +26751,6 @@ Tonyu.klass.define({
       },
       fiber$onDraw :function* _trc_PlainChar_f_onDraw(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -27533,7 +26762,6 @@ Tonyu.klass.define({
       },
       fiber$update :function* _trc_PlainChar_f_update(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.onUpdate();
         (yield* __superClass.prototype.fiber$update.apply( _this, [_thread]));
@@ -27551,7 +26779,6 @@ Tonyu.klass.define({
       },
       fiber$tMain :function* _trc_PlainChar_f_tMain(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$main(_thread));
         _this.die();
@@ -27576,7 +26803,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_SecretChar_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -27604,7 +26830,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_SpriteChar_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -27655,7 +26880,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T1Map_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -27666,7 +26890,6 @@ Tonyu.klass.define({
       },
       fiber$setBGColor :function* _trc_T1Map_f_setBGColor(_thread,c) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$Screen.setBGColor(c);
         
@@ -27694,7 +26917,6 @@ Tonyu.klass.define({
       },
       fiber$load :function* _trc_T1Map_f_load(_thread,fileName) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var f;
         var o;
         
@@ -27743,7 +26965,6 @@ Tonyu.klass.define({
       },
       fiber$conv :function* _trc_T1Map_f_conv(_thread,mat,tbl) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var res;
         
         res = [];
@@ -27788,7 +27009,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_T1Page_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -27809,7 +27029,6 @@ Tonyu.klass.define({
       },
       fiber$initGlobals :function* _trc_T1Page_f_initGlobals(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$chars=Tonyu.globals.$Sprites.sprites;
         Tonyu.globals.$Boot.setFrameRate(60);
@@ -27843,7 +27062,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_TextChar_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -27901,7 +27119,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_APad_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.auto) {
           (yield* _this.fiber$loop(_thread));
@@ -28035,7 +27252,6 @@ Tonyu.klass.define({
       },
       fiber$loop :function* _trc_APad_f_loop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var vx;
         var vy;
         
@@ -28140,7 +27356,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Button_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -28252,7 +27467,6 @@ Tonyu.klass.define({
       },
       fiber$handleClickEvent :function* _trc_Button_f_handleClickEvent(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.fireEvent("click");
         if (typeof  _this.onClick==="function") {
@@ -28278,7 +27492,6 @@ Tonyu.klass.define({
       },
       fiber$doStartClick :function* _trc_Button_f_doStartClick(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this._clicked=Tonyu.globals.$frameCount;
         Tonyu.classes.kernel.Button.last=_this;
@@ -28308,7 +27521,6 @@ Tonyu.klass.define({
       },
       fiber$doEndClick :function* _trc_Button_f_doEndClick(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.fireEvent("release");
         if (_this.clickTiming==="release") {
@@ -28332,7 +27544,6 @@ Tonyu.klass.define({
       },
       fiber$procAR :function* _trc_Button_f_procAR(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$updateEx(_thread, _this.autoRepeat));
         while (true) {
@@ -28453,7 +27664,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_GameConsole_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -28482,7 +27692,6 @@ Tonyu.klass.define({
       },
       fiber$shouldDraw1x1 :function* _trc_GameConsole_f_shouldDraw1x1(_thread,srcw,srch,dstw,dsth) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var larger;
         var smaller;
         
@@ -28531,7 +27740,6 @@ Tonyu.klass.define({
       },
       fiber$layout :function* _trc_GameConsole_f_layout(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var width;
         var height;
         var calcw;
@@ -28595,7 +27803,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_HTMLUI_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -28676,7 +27883,6 @@ Tonyu.klass.define({
       },
       fiber$toUI :function* _trc_HTMLUI_f_toUI(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var sc;
         var scale;
         var left;
@@ -28721,7 +27927,6 @@ Tonyu.klass.define({
       },
       fiber$fit :function* _trc_HTMLUI_f_fit(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var sc;
         var scale;
         var u1;
@@ -28760,7 +27965,6 @@ Tonyu.klass.define({
       },
       fiber$checkExists :function* _trc_HTMLUI_f_checkExists(_thread,name) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.name2id[name]) {
           _this.print(_this.name2id);
@@ -28781,7 +27985,6 @@ Tonyu.klass.define({
       },
       fiber$getValue :function* _trc_HTMLUI_f_getValue(_thread,name) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.name2id) {
           return "";
@@ -28799,7 +28002,6 @@ Tonyu.klass.define({
       },
       fiber$setValue :function* _trc_HTMLUI_f_setValue(_thread,name,value) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.name2id) {
           return "";
@@ -28822,7 +28024,6 @@ Tonyu.klass.define({
       },
       fiber$hasFile :function* _trc_HTMLUI_f_hasFile(_thread,name) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.name2id) {
           return "";
@@ -28864,7 +28065,6 @@ Tonyu.klass.define({
       },
       fiber$getFile :function* _trc_HTMLUI_f_getFile(_thread,name) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.name2id) {
           return "";
@@ -28898,7 +28098,6 @@ Tonyu.klass.define({
       },
       fiber$copyToClipboard :function* _trc_HTMLUI_f_copyToClipboard(_thread,name) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         navigator.clipboard.writeText(_this.getValue(name));
         
@@ -28923,7 +28122,6 @@ Tonyu.klass.define({
       },
       fiber$loop :function* _trc_HTMLUI_f_loop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var k;
         
         k=yield* _this.fiber$toUI(_thread, _this.left, _this.top);
@@ -28954,7 +28152,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Label_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -29013,7 +28210,6 @@ Tonyu.klass.define({
       },
       fiber$expandVal :function* _trc_Label_f_expandVal(_thread,obj,flds) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         while (flds.length>0) {
           if (! obj) {
@@ -29397,7 +28593,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_MapEditor_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$Screen.resize(480,640);
         _this.loadMode=false;
@@ -29755,7 +28950,6 @@ Tonyu.klass.define({
       },
       fiber$getCurFileName :function* _trc_MapEditor_f_getCurFileName(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.saveFileName||_this.loadedFile;
         
@@ -29786,7 +28980,6 @@ Tonyu.klass.define({
       },
       fiber$st :function* _trc_MapEditor_f_st(_thread,e) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var curFileName;
         var r;
         
@@ -29821,7 +29014,6 @@ Tonyu.klass.define({
       },
       fiber$save :function* _trc_MapEditor_f_save(_thread,fileName) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.saveDataFile=_this.file("../maps/").rel(fileName);
         _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable,Tonyu.globals.$map.chipWidth,Tonyu.globals.$map.chipHeight];
@@ -29837,7 +29029,6 @@ Tonyu.klass.define({
       },
       fiber$inRect :function* _trc_MapEditor_f_inRect(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$mouseX>40&&Tonyu.globals.$mouseX<Tonyu.globals.$screenWidth-40&&Tonyu.globals.$mouseY>40&&Tonyu.globals.$mouseY<Tonyu.globals.$screenHeight-200;
         
@@ -29880,7 +29071,6 @@ Tonyu.klass.define({
       },
       fiber$drawPanel :function* _trc_MapEditor_f_drawPanel(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$panel.setFillStyle("gray");
         Tonyu.globals.$panel.alpha=128;
@@ -29949,7 +29139,6 @@ Tonyu.klass.define({
       },
       fiber$drawLetter :function* _trc_MapEditor_f_drawLetter(_thread,mode) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (mode=="set") {
           Tonyu.globals.$panel.setFillStyle("red");
@@ -30220,7 +29409,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_MapEditorOLD_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.loadMode=false;
         _this.print("Load Data?: Y or N");
@@ -30751,7 +29939,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_MapEditorOLD2_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$Screen.resize(480,640);
         _this.loadMode=false;
@@ -31049,7 +30236,6 @@ Tonyu.klass.define({
       },
       fiber$inRect :function* _trc_MapEditorOLD2_f_inRect(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Tonyu.globals.$mouseX>40&&Tonyu.globals.$mouseX<Tonyu.globals.$screenWidth-40&&Tonyu.globals.$mouseY>40&&Tonyu.globals.$mouseY<Tonyu.globals.$screenHeight-200;
         
@@ -31092,7 +30278,6 @@ Tonyu.klass.define({
       },
       fiber$drawPanel :function* _trc_MapEditorOLD2_f_drawPanel(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$panel.setFillStyle("gray");
         Tonyu.globals.$panel.alpha=128;
@@ -31152,7 +30337,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Pad_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         while (true) {
           (yield* _this.fiber$padUpdate(_thread));
@@ -31208,7 +30392,6 @@ Tonyu.klass.define({
       },
       fiber$activate :function* _trc_Pad_f_activate(_thread,opt) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (opt) {
           if (opt.buttonCnt) {
@@ -31246,7 +30429,6 @@ Tonyu.klass.define({
       },
       fiber$newPadV2 :function* _trc_Pad_f_newPadV2(_thread,opt) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.died=false;
         if (_this.layout==null) {
@@ -31291,7 +30473,6 @@ Tonyu.klass.define({
       },
       fiber$newPadV1 :function* _trc_Pad_f_newPadV1(_thread,opt) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.APAD_DIAG_SIZE=96;
         _this.died=false;
@@ -31369,7 +30550,6 @@ Tonyu.klass.define({
       },
       fiber$dieV2 :function* _trc_Pad_f_dieV2(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var obj;
         
@@ -31427,7 +30607,6 @@ Tonyu.klass.define({
       },
       fiber$dieV1 :function* _trc_Pad_f_dieV1(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.died=true;
         _this.jujiKey.die();
@@ -31461,7 +30640,6 @@ Tonyu.klass.define({
       },
       fiber$initButton :function* _trc_Pad_f_initButton(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.DEFALT_SCREEN_WIDTH=465;
         _this.p=- 1;
@@ -31724,7 +30902,6 @@ Tonyu.klass.define({
       },
       fiber$initButtonLayout1 :function* _trc_Pad_f_initButtonLayout1(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var screenSize;
         var sw;
         var sh;
@@ -32064,7 +31241,6 @@ Tonyu.klass.define({
       },
       fiber$drawPanel :function* _trc_Pad_f_drawPanel(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var screenSize;
         var sw;
         var sh;
@@ -32166,7 +31342,6 @@ Tonyu.klass.define({
       },
       fiber$setXYPanel :function* _trc_Pad_f_setXYPanel(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.layout==1) {
           (yield* _this.fiber$setXYPanelLayout1(_thread));
@@ -32229,7 +31404,6 @@ Tonyu.klass.define({
       },
       fiber$setXYPanelLayout1 :function* _trc_Pad_f_setXYPanelLayout1(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var sw;
         var sh;
         
@@ -32299,7 +31473,6 @@ Tonyu.klass.define({
       },
       fiber$padUpdate :function* _trc_Pad_f_padUpdate(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.active) {
           return _this;
@@ -32355,7 +31528,6 @@ Tonyu.klass.define({
       },
       fiber$padUpdateV2 :function* _trc_Pad_f_padUpdateV2(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var screenSize;
         var sw;
         var sh;
@@ -32489,7 +31661,6 @@ Tonyu.klass.define({
       },
       fiber$padUpdateV1 :function* _trc_Pad_f_padUpdateV1(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var t;
         
@@ -32614,7 +31785,6 @@ Tonyu.klass.define({
       },
       fiber$padsUpdateV2 :function* _trc_Pad_f_padsUpdateV2(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var obj;
         
@@ -32671,7 +31841,6 @@ Tonyu.klass.define({
       },
       fiber$getUp :function* _trc_Pad_f_getUp(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var value;
         
         if (_this.died) {
@@ -32723,7 +31892,6 @@ Tonyu.klass.define({
       },
       fiber$getDown :function* _trc_Pad_f_getDown(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var value;
         
         if (_this.died) {
@@ -32775,7 +31943,6 @@ Tonyu.klass.define({
       },
       fiber$getLeft :function* _trc_Pad_f_getLeft(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var value;
         
         if (_this.died) {
@@ -32827,7 +31994,6 @@ Tonyu.klass.define({
       },
       fiber$getRight :function* _trc_Pad_f_getRight(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var value;
         
         if (_this.died) {
@@ -32898,7 +32064,6 @@ Tonyu.klass.define({
       },
       fiber$getButton :function* _trc_Pad_f_getButton(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var value;
         
         if (_this.died) {
@@ -32962,7 +32127,6 @@ Tonyu.klass.define({
       },
       fiber$getJujiPadObj :function* _trc_Pad_f_getJujiPadObj(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var obj;
         
         (yield* _this.fiber$activate(_thread));
@@ -32991,7 +32155,6 @@ Tonyu.klass.define({
       },
       fiber$getJujiPadObjLength :function* _trc_Pad_f_getJujiPadObjLength(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$activate(_thread));
         if (_this.jujiPads==null) {
@@ -33020,7 +32183,6 @@ Tonyu.klass.define({
       },
       fiber$getButtonObj :function* _trc_Pad_f_getButtonObj(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var obj;
         
         (yield* _this.fiber$activate(_thread));
@@ -33049,7 +32211,6 @@ Tonyu.klass.define({
       },
       fiber$getButtonObjLength :function* _trc_Pad_f_getButtonObjLength(_thread,i) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$activate(_thread));
         if (_this.buttons==null) {
@@ -33065,7 +32226,6 @@ Tonyu.klass.define({
       },
       fiber$getPadUp :function* _trc_Pad_f_getPadUp(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$getUp(_thread);
         
@@ -33078,7 +32238,6 @@ Tonyu.klass.define({
       },
       fiber$getPadDown :function* _trc_Pad_f_getPadDown(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$getDown(_thread);
         
@@ -33091,7 +32250,6 @@ Tonyu.klass.define({
       },
       fiber$getPadLeft :function* _trc_Pad_f_getPadLeft(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$getLeft(_thread);
         
@@ -33104,7 +32262,6 @@ Tonyu.klass.define({
       },
       fiber$getPadRight :function* _trc_Pad_f_getPadRight(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$getRight(_thread);
         
@@ -33117,7 +32274,6 @@ Tonyu.klass.define({
       },
       fiber$getPadButton :function* _trc_Pad_f_getPadButton(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return yield* _this.fiber$getButton(_thread);
         
@@ -33130,7 +32286,6 @@ Tonyu.klass.define({
       },
       fiber$isOnRect :function* _trc_Pad_f_isOnRect(_thread,mx,my,rx,ry,rx2,ry2) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return (rx<=mx&&mx<rx2&&ry<=my&&my<ry2);
         
@@ -33142,7 +32297,6 @@ Tonyu.klass.define({
       },
       fiber$isOnRectWH :function* _trc_Pad_f_isOnRectWH(_thread,mx,my,rx,ry,rw,rh) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return (rx<=mx&&mx<rx+rw&&ry<=my&&my<ry+rh);
         
@@ -33171,7 +32325,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_PadButton_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         while (_this.loop) {
           (yield* _this.fiber$padUpdate(_thread));
@@ -33412,7 +32565,6 @@ Tonyu.klass.define({
       },
       fiber$init :function* _trc_PadButton_f_init(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         
         _this.TOUCHES_MAX=5;
@@ -33597,7 +32749,6 @@ Tonyu.klass.define({
       },
       fiber$drawPanel :function* _trc_PadButton_f_drawPanel(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.mode==10000) {
           (yield* _this.fiber$drawPanelMode10000(_thread));
@@ -33658,7 +32809,6 @@ Tonyu.klass.define({
       },
       fiber$drawPanelMode10000 :function* _trc_PadButton_f_drawPanelMode10000(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var w;
         var h;
         var bw;
@@ -33776,7 +32926,6 @@ Tonyu.klass.define({
       },
       fiber$drawPanelMode10001 :function* _trc_PadButton_f_drawPanelMode10001(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var screenSize;
         var w;
         var h;
@@ -33857,7 +33006,6 @@ Tonyu.klass.define({
       },
       fiber$drawPanelMode10002 :function* _trc_PadButton_f_drawPanelMode10002(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -33900,7 +33048,6 @@ Tonyu.klass.define({
       },
       fiber$padUpdate :function* _trc_PadButton_f_padUpdate(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.padUpdateFrame==Tonyu.globals.$frameCount) {
           return _this;
@@ -33943,7 +33090,6 @@ Tonyu.klass.define({
       },
       fiber$padUpdateMode0 :function* _trc_PadButton_f_padUpdateMode0(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -33953,7 +33099,6 @@ Tonyu.klass.define({
       },
       fiber$padUpdateMode1 :function* _trc_PadButton_f_padUpdateMode1(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -33963,7 +33108,6 @@ Tonyu.klass.define({
       },
       fiber$padUpdateMode2 :function* _trc_PadButton_f_padUpdateMode2(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -34030,7 +33174,6 @@ Tonyu.klass.define({
       },
       fiber$padUpdateMode10000 :function* _trc_PadButton_f_padUpdateMode10000(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var allNoTouche;
         var i;
         var t;
@@ -34285,7 +33428,6 @@ Tonyu.klass.define({
       },
       fiber$padUpdateMode10001 :function* _trc_PadButton_f_padUpdateMode10001(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var w;
         var h;
         var cw;
@@ -34483,7 +33625,6 @@ Tonyu.klass.define({
       },
       fiber$padUpdateMode10002 :function* _trc_PadButton_f_padUpdateMode10002(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -34500,7 +33641,6 @@ Tonyu.klass.define({
       },
       fiber$toScaledX :function* _trc_PadButton_f_toScaledX(_thread,mx) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.layer==Tonyu.globals.$uiLayer) {
           return (mx*Tonyu.globals.$Screen.scaleX+(Tonyu.globals.$uiScreen.width-Tonyu.globals.$Screen.width*Tonyu.globals.$Screen.scaleX)/2);
@@ -34524,7 +33664,6 @@ Tonyu.klass.define({
       },
       fiber$toScaledY :function* _trc_PadButton_f_toScaledY(_thread,my) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.layer==Tonyu.globals.$uiLayer) {
           return (my*Tonyu.globals.$Screen.scaleX+(Tonyu.globals.$uiScreen.height-Tonyu.globals.$Screen.height*Tonyu.globals.$Screen.scaleX)/2);
@@ -34552,7 +33691,6 @@ Tonyu.klass.define({
       },
       fiber$isOnRect :function* _trc_PadButton_f_isOnRect(_thread,_mx,_my,rx,ry,rx2,ry2) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var mx;
         var my;
         
@@ -34584,7 +33722,6 @@ Tonyu.klass.define({
       },
       fiber$isOnRectWH :function* _trc_PadButton_f_isOnRectWH(_thread,_mx,_my,rx,ry,rw,rh) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var mx;
         var my;
         
@@ -34620,7 +33757,6 @@ Tonyu.klass.define({
       },
       fiber$crashXY :function* _trc_PadButton_f_crashXY(_thread,_mx,_my) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var w;
         var h;
         var mx;
@@ -34660,7 +33796,6 @@ Tonyu.klass.define({
       },
       fiber$crashXY10000 :function* _trc_PadButton_f_crashXY10000(_thread,_mx,_my) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var w;
         var h;
         var mx;
@@ -34698,7 +33833,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_PadPanel_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -34724,7 +33858,6 @@ Tonyu.klass.define({
       },
       fiber$fillPolygon3 :function* _trc_PadPanel_f_fillPolygon3(_thread,x1,y1,x2,y2,x3,y3,color,color2) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.ctx=(yield* _this.fiber$getContext(_thread));
         _this.ctx.save();
@@ -34793,7 +33926,6 @@ Tonyu.klass.define({
       },
       fiber$fillText :function* _trc_PadPanel_f_fillText(_thread,text,x,y,color,size,align,baseline) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var splits;
         var colCount;
         
@@ -34847,7 +33979,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_UILayout_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$doLayout(_thread));
         Tonyu.globals.$Screen.on("resize",Tonyu.bindFunc(_this,_this.doLayout));
@@ -34901,7 +34032,6 @@ Tonyu.klass.define({
       },
       fiber$doLayout :function* _trc_UILayout_f_doLayout(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var cw;
         var ch;
         var width;
@@ -34959,7 +34089,6 @@ Tonyu.klass.define({
       },
       fiber$shouldDraw1x1 :function* _trc_UILayout_f_shouldDraw1x1(_thread,srcw,srch,dstw,dsth) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var larger;
         var smaller;
         
@@ -35013,7 +34142,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_WebPage_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.eventWindowOpen=(function anonymous_114(e) {
           
@@ -35067,7 +34195,6 @@ Tonyu.klass.define({
       },
       fiber$openNewWindow :function* _trc_WebPage_f_openNewWindow(_thread,url,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.postUrl=url;
         options=options||{};
@@ -35098,7 +34225,6 @@ Tonyu.klass.define({
       },
       fiber$openPage :function* _trc_WebPage_f_openPage(_thread,url) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         window.location.href=url;
         
@@ -35139,7 +34265,6 @@ Tonyu.klass.define({
       },
       fiber$openTweet :function* _trc_WebPage_f_openTweet(_thread,text,url,hashtags,via,related,tl) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var sendUrl;
         
         sendUrl = "https://twitter.com/intent/tweet?";
@@ -35298,7 +34423,6 @@ Tonyu.klass.define({
       },
       fiber$showLink :function* _trc_WebPage_f_showLink(_thread,url,text,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var $;
         var domain;
         var sz;
@@ -35330,7 +34454,6 @@ Tonyu.klass.define({
       },
       fiber$param :function* _trc_WebPage_f_param(_thread,name,def) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return Util.getQueryString(name,def);
         
@@ -35385,7 +34508,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_Boot_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  performance==="undefined") {
           _this.window.performance={};
@@ -35442,7 +34564,6 @@ Tonyu.klass.define({
       },
       fiber$initSymbol :function* _trc_Boot_f_initSymbol(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$Symbol={subActors: "__SUBACTOR"};
         
@@ -35454,7 +34575,6 @@ Tonyu.klass.define({
       },
       fiber$setScheduler :function* _trc_Boot_f_setScheduler(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this._scheduler=Tonyu.globals.$Scheduler=s;
         
@@ -35475,7 +34595,6 @@ Tonyu.klass.define({
       },
       fiber$moveToScheduler :function* _trc_Boot_f_moveToScheduler(_thread,a,oldS,newS) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         a._scheduler=newS;
         oldS.findByThreadGroup(a).forEach((function anonymous_1359(th) {
@@ -35527,7 +34646,6 @@ Tonyu.klass.define({
       },
       fiber$timeStop :function* _trc_Boot_f_timeStop(_thread,except) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var oldS;
         var newS;
         var res;
@@ -35570,7 +34688,6 @@ Tonyu.klass.define({
       },
       fiber$update :function* _trc_Boot_f_update(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$waitFor(_thread, Tonyu.timeout(50)));
         
@@ -35596,7 +34713,6 @@ Tonyu.klass.define({
       },
       fiber$initGlobals :function* _trc_Boot_f_initGlobals(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var opt;
         var g;
         var name;
@@ -35691,7 +34807,6 @@ Tonyu.klass.define({
       },
       fiber$initPeripherals :function* _trc_Boot_f_initPeripherals(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$InputDevice=new Tonyu.classes.kernel.InputDevice;
         Tonyu.globals.$Screen.multiLayerTouches=new Tonyu.classes.kernel.MultiLayerTouches({screen: Tonyu.globals.$Screen});
@@ -35779,7 +34894,6 @@ Tonyu.klass.define({
       },
       fiber$doAutoReload :function* _trc_Boot_f_doAutoReload(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  _this.autoReload==="function") {
           return _this.autoReload({mainClass: _this.mainClass});
@@ -35837,7 +34951,6 @@ Tonyu.klass.define({
       },
       fiber$initLayers :function* _trc_Boot_f_initLayers(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$screenWidth=465;
         Tonyu.globals.$screenHeight=465;
@@ -35923,7 +35036,6 @@ Tonyu.klass.define({
       },
       fiber$loadPlugins :function* _trc_Boot_f_loadPlugins(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$progress(_thread, "Loading plugins.."));
         (yield* _this.fiber$runPromise(_thread, (function anonymous_6584(r) {
@@ -35957,7 +35069,6 @@ Tonyu.klass.define({
       },
       fiber$loadImages :function* _trc_Boot_f_loadImages(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var rs;
         var r;
         var name;
@@ -35994,7 +35105,6 @@ Tonyu.klass.define({
       },
       fiber$loadSounds :function* _trc_Boot_f_loadSounds(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$progress(_thread, "Loading sounds..."));
         (yield* _this.fiber$initT2MediaPlayer(_thread));
@@ -36019,7 +35129,6 @@ Tonyu.klass.define({
       },
       fiber$loadAssets :function* _trc_Boot_f_loadAssets(_thread,para) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$loadImages(_thread));
         (yield* _this.fiber$loadSounds(_thread));
@@ -36045,7 +35154,6 @@ Tonyu.klass.define({
       },
       fiber$getIDE :function* _trc_Boot_f_getIDE(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var e;
         
         try {
@@ -36078,7 +35186,6 @@ Tonyu.klass.define({
       },
       fiber$getMainClass :function* _trc_Boot_f_getMainClass(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var o;
         var mainClassName;
         
@@ -36104,7 +35211,6 @@ Tonyu.klass.define({
       },
       fiber$createMainObject :function* _trc_Boot_f_createMainObject(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         (yield* _this.fiber$getMainClass(_thread));
         Tonyu.globals.$excludeFromAll=Tonyu.globals.$Screen.all();
@@ -36197,7 +35303,6 @@ Tonyu.klass.define({
       },
       fiber$loadPage :function* _trc_Boot_f_loadPage(_thread,page,arg,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var push;
         var pass;
         var res;
@@ -36316,7 +35421,6 @@ Tonyu.klass.define({
       },
       fiber$stop :function* _trc_Boot_f_stop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return new Promise((function anonymous_9609(resolve) {
           var evt;
@@ -36373,7 +35477,6 @@ Tonyu.klass.define({
       },
       fiber$schedule :function* _trc_Boot_f_schedule(_thread,obj,method,args) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var s;
         var th;
         
@@ -36436,7 +35539,6 @@ Tonyu.klass.define({
       },
       fiber$progressNoLog :function* _trc_Boot_f_progressNoLog(_thread,m) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (typeof  SplashScreen=="undefined") {
           return _this;
@@ -36471,7 +35573,6 @@ Tonyu.klass.define({
       },
       fiber$mainLoop :function* _trc_Boot_f_mainLoop(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         Tonyu.globals.$frameCount=0;
         Tonyu.globals.$drawnFrameCount=0;
@@ -36542,7 +35643,6 @@ Tonyu.klass.define({
       },
       fiber$loopRAF :function* _trc_Boot_f_loopRAF(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var nowTime;
         var frameTime;
         var moves;
@@ -36615,7 +35715,6 @@ Tonyu.klass.define({
       },
       fiber$loopTimer :function* _trc_Boot_f_loopTimer(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.moveFrame();
         _this.doDraw=_this.now()<_this.deadLine;
@@ -36661,7 +35760,6 @@ Tonyu.klass.define({
       },
       fiber$handlePause :function* _trc_Boot_f_handlePause(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (_this.economyMode&&_this._scheduler.isEmpty) {
           _this.isIdle=true;
@@ -36772,7 +35870,6 @@ Tonyu.klass.define({
       },
       fiber$waitFrame :function* _trc_Boot_f_waitFrame(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var wt;
         
         wt = _this.deadLine-_this.now();
@@ -36868,7 +35965,6 @@ Tonyu.klass.define({
       },
       fiber$requestDrawFrame :function* _trc_Boot_f_requestDrawFrame(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (! _this.isIdle) {
           return _this;
@@ -36891,7 +35987,6 @@ Tonyu.klass.define({
       },
       fiber$setEconomyMode :function* _trc_Boot_f_setEconomyMode(_thread,options) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.economyMode=options;
         
@@ -36915,7 +36010,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ConsolePanel_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -37048,7 +36142,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_ConsolePanel2_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -37092,7 +36185,6 @@ Tonyu.klass.define({
       },
       fiber$locate :function* _trc_ConsolePanel2_f_locate(_thread,x,y) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         _this.cx=x;
         _this.cy=y;
@@ -37146,7 +36238,6 @@ Tonyu.klass.define({
       },
       fiber$cprint :function* _trc_ConsolePanel2_f_cprint(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var r;
         var i;
         var ch;
@@ -37207,7 +36298,6 @@ Tonyu.klass.define({
       },
       fiber$puts :function* _trc_ConsolePanel2_f_puts(_thread,s) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var ch;
         
@@ -37248,7 +36338,6 @@ Tonyu.klass.define({
       },
       fiber$putchar :function* _trc_ConsolePanel2_f_putchar(_thread,ch) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         if (ch>=256&&_this.cx==_this.col-1) {
           (yield* _this.fiber$putchar(_thread, " "));
@@ -37316,7 +36405,6 @@ Tonyu.klass.define({
       },
       fiber$poke :function* _trc_ConsolePanel2_f_poke(_thread,cx,cy,ch,fg,bg) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var ctx;
         var hp;
         var w;
@@ -37366,7 +36454,6 @@ Tonyu.klass.define({
       },
       fiber$peek :function* _trc_ConsolePanel2_f_peek(_thread,cx,cy) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.mat.get(cx,cy).text;
         
@@ -37378,7 +36465,6 @@ Tonyu.klass.define({
       },
       fiber$peekAttr :function* _trc_ConsolePanel2_f_peekAttr(_thread,cx,cy) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         return _this.mat.get(cx,cy);
         
@@ -37445,7 +36531,6 @@ Tonyu.klass.define({
       },
       fiber$scroll :function* _trc_ConsolePanel2_f_scroll(_thread,dx,dy) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var range;
         var nm;
         var x;
@@ -37560,7 +36645,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_FadeEffect_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         "field strict";
         
@@ -37623,7 +36707,6 @@ Tonyu.klass.define({
       },
       fiber$morph :function* _trc_FadeEffect_f_morph(_thread,from,to) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         var i;
         var progress;
         
@@ -37658,7 +36741,6 @@ Tonyu.klass.define({
       },
       fiber$main :function* _trc_DxChar_f_main(_thread) {
         var _this=this;
-        //var _arguments=Tonyu.A(arguments);
         
         
       },
@@ -37693,6 +36775,8 @@ Tonyu.klass.define({
     };
   },
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"angle":{}}}
+});
+
 });
 
 //# sourceMappingURL=concat.js.map
