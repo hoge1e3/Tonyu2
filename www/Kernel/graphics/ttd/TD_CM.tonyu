@@ -1,0 +1,109 @@
+extends SecretChar;
+
+/*---------------------
+     カメラクラス
+---------------------*/
+
+var x, y, z;
+var xz, yz, xy;
+var gk, k_max;
+var GL, GU, GR, GD;
+var TD_visible;
+
+\new(opt){
+    cons();
+    super(opt);
+}
+
+// \new(zx,zy,zz, zxz,zyz,zxy, zgk,zk_max, zGL,zGU,zGR,zGD){
+//     x=zx;
+//     y=zy;
+//     z=zz;
+  
+//     xz=zxz;
+//     yz=zyz;
+//     xy=zxy;
+  
+//     gk=zgk;
+//     k_max=zk_max;
+  
+//     GL=zGL;
+//     GU=zGU;
+//     GR=zGR;
+//     GD=zGD;
+  
+//     TD_visible=1;
+// }
+
+\cons(){
+    x=0;
+    y=0;
+    z=0;
+  
+    xz=0;
+    yz=0;
+    xy=0;
+  
+    gk=0;
+    k_max=10;
+  
+    GL=0;
+    GU=0;
+    GR=$screenWidth;
+    GD=$screenHeight;
+    
+    TD_visible=1;
+}
+
+
+
+function onAppear(){ // 生まれた時
+    $TD_M_ACM.push(this); // 3D配列に自分を登録
+}
+
+function onDie(){ // 死んだ時
+    if($TD_M_ACM.indexOf(this)>=0)$TD_M_ACM.splice($TD_M_ACM.indexOf(this), 1);//$TD_M_ACM.remove(this); // 3D配列から自分を削除
+}
+
+
+
+
+function cameraSet(zx,zy,zz, zxz,zyz,zxy, zgk,zk_max, zGL,zGU,zGR,zGD){
+    /* カメラの位置・角度などの情報をセット */
+    if(zx!=null)x=zx;
+    if(zy!=null)y=zy;
+    if(zz!=null)z=zz;
+  
+    if(zxz!=null)xz=zxz;
+    if(zyz!=null)yz=zyz;
+    if(zxy!=null)xy=zxy;
+  
+    if(zgk!=null)gk=zgk;
+    if(zk_max!=null)k_max=zk_max;
+  
+    if(zGL!=null)GL=zGL;
+    if(zGU!=null)GU=zGU;
+    if(zGR!=null)GR=zGR;
+    if(zGD!=null)GD=zGD;
+}
+
+
+
+function cameraMain(){
+    /* このカメラをメインの画面に出力 */
+    $TD_Z_x=x;
+    $TD_Z_y=y;
+    $TD_Z_z=z;
+  
+    $TD_Z_xz=xz;
+    $TD_Z_yz=yz;
+    $TD_Z_xy=xy;
+  
+    $TD_Z_gk=gk;
+    $TD_Z_k_max=k_max;
+  
+    $TD_G_GL=GL;
+    $TD_G_GU=GU;
+    $TD_G_GR=GR;
+    $TD_G_GD=GD;
+}

@@ -1,0 +1,604 @@
+extends TD_DR_1;
+
+/*---------------------
+    図形表示クラス
+---------------------*/
+
+
+\new(nn,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12){
+    var i;
+  
+    n=nn;
+    if(n==1){//■DX(DXSprite)設定
+        //(m,p1,c,f,angle,alpha,scaleX,scaleY)
+        //(モード,座標１,画像,反転,回転,透過,拡大縮小Ｘ,拡大縮小Ｙ)
+        m=a1;
+        p1=a2;c=a3;f=a4;
+        angle=a5;alpha=a6;
+        scaleX=a7;scaleY=a8;
+        LR=1;//●左寄せ・右寄せ
+        UD=1;//●上寄せ・下寄せ
+        xx=0;
+        yy=0;
+    }else
+    if(n==2){//■L(線)設定
+        //(m,p1,p2,c,zt,h,paint)
+        //(モード,座標１,座標２,色,表示前後,反射,終点塗りつぶし)
+        /*
+        モード:
+        1:標準
+        2:透過あり(***,透過)
+        
+        */
+    
+        m=a1;
+        p1=a2;p2=a3;
+        c=a4;zt=a5;h=a6;paint=a7;alpha=a8;
+        dp1=new TD_P(0,0,0);//●座標交換用
+        dp2=new TD_P(0,0,0);
+    }else
+    if(n==3){//■T(三角形)設定
+        //(m,p1,p2,p3,c,zt,h,paint)
+        //(モード,座標１,座標２,座標３,色,表示前後,反射,終点塗りつぶし)
+        /*
+        モード:
+        1:標準
+        2:透過あり(***,透過)
+        
+        */
+    
+        m=a1;
+        p1=a2;p2=a3;p3=a4;
+        c=a5;zt=a6;h=a7;paint=a8;alpha=a9;
+        dp1=new TD_P(0,0,0);
+        dp2=new TD_P(0,0,0);
+        dp3=new TD_P(0,0,0);
+        dp4=new TD_P(0,0,0);
+    
+        dp5=new TD_P(0,0,0);
+        dp6=new TD_P(0,0,0);
+        dp7=new TD_P(0,0,0);
+        dp8=new TD_P(0,0,0);
+    
+        //dp9=new TD_P(0,0,0);
+        //dp10=new TD_P(0,0,0);
+        cpA=[];
+        for(i=0;i<10;i++)cpA.push(new TD_P(0,0,0));
+    
+    }else
+    if(n==4){//■S(四角形)設定
+        //(m,p1,p2,p3,p4,c,zt,h,paint)
+        //(モード,座標１,座標２,座標３,座標４,色,表示前後,反射,終点塗りつぶし)
+        /*
+        モード:
+        1:標準
+        2:透過あり(***,透過)
+        3:
+        
+        */
+    
+        m=a1;
+        p1=a2;p2=a3;p3=a4;p4=a5;
+        c=a6;zt=a7;h=a8;paint=a9;alpha=a10;
+        dp1=new TD_P(0,0,0);
+        dp2=new TD_P(0,0,0);
+        dp3=new TD_P(0,0,0);
+        dp4=new TD_P(0,0,0);
+        dp5=new TD_P(0,0,0);
+    
+        dp6=new TD_P(0,0,0);
+        dp7=new TD_P(0,0,0);
+        dp8=new TD_P(0,0,0);
+        dp9=new TD_P(0,0,0);
+        dp10=new TD_P(0,0,0);
+    
+        cpA=[];
+        for(i=0;i<16;i++)cpA.push(new TD_P(0,0,0));//print(c);
+    }
+  
+    if(n==3||n==4){
+        ep=new TD_P;
+        dpA=[];
+        dpAsw=[];
+        setPolygonTempAry = [];
+    }
+  
+  
+  
+    if(alpha==null)alpha=255;
+  
+  
+    TD_visible=1;//●表示・非表示
+  
+    /*
+    四角形：２つの三角形で１つの四角形を表示する機能は廃止することにした。
+    表示前後：
+  　　0:一番遠くの頂点を基準とする
+  　　null,1:すべての頂点の平均（中央）を基準とする
+  　　2:一番近くの頂点を基準とする
+  
+    DXSprite:座標を右寄せ・左寄せ、上寄せ・下寄せができるようにする。
+    
+    */
+}
+//function mouseDrag(){}
+//function mouseDown(){}
+
+
+
+
+function ZukeiDraw(angleDX,alphaDX,scaleXDX,scaleYDX){//■図形表示
+    var p,i,GL,GU,GR,GD,width,height,bmpWidth,bmpHeight;
+    
+    if(!TD_visible)return;
+    if(s==-1)return;
+    
+    if(m==1||m==2){ // 標準
+        if(s==0)return;//●表示しない
+        if(n==1){//■DX(DXSprite)表示
+        
+            //■カメラの手前にあったら実行
+            ss=1/p1.k;
+            k1=ss*scaleX*scaleXDX;
+            if(scaleYDX){
+                if(scaleY)k2=ss*scaleY*scaleYDX;//●縦の拡大あり(オブジェクト)・あり(点)
+                else      k2=ss*scaleX*scaleYDX;//●縦の拡大あり(オブジェクト)・なし(点)
+                drawDxSprite(p1.xx+xx,p1.yy+yy,c,f,1000+zo,-$TD_Z_xy+angle+angleDX,alpha*alphaDX/255,k1,k2*(1-2*(amod($TD_Z_yz+90,360)>=180)));
+                //print("c:"+c);
+            }else{
+                if(scaleY){//●縦の拡大なし(オブジェクト)・あり(点)
+                    k2=ss*scaleY*scaleXDX;
+                    drawDxSprite(p1.xx+xx,p1.yy+yy,c,f,1000+zo,-$TD_Z_xy+angle+angleDX,alpha*alphaDX/255,k1,k2*(1-2*(amod($TD_Z_yz+90,360)>=180)));
+                    //print("c2:"+c);
+                }else{//●縦の拡大なし(オブジェクト)・なし(点)
+                    drawDxSprite(p1.xx+xx,p1.yy+yy,c,f,1000+zo,-$TD_Z_xy+angle+angleDX,alpha*alphaDX/255,k1,k1*(1-2*(amod($TD_Z_yz+90,360)>=180)));
+                    //print("c3:"+c);
+                }
+            }
+        }else
+        if(n==2){//■L(線)表示
+            if(s==1){//●修正不要の図形表示
+                drawLine(p1.xx,p1.yy,p2.xx,p2.yy,c,1000+zo);
+            }else if(s>=2){//●修正された図形の表示
+                drawLine(dp1.xx,dp1.yy,dp2.xx,dp2.yy,c,1000+zo);
+            }
+      
+        }else
+        if(n==3||n==4){//■T(三角形),S(四角形)表示
+            if(s==1){//●修正不要の図形表示
+                
+                setPolygon(0,p1.xx,p1.yy);
+                setPolygon(1,p2.xx,p2.yy);
+                setPolygon(2,p3.xx,p3.yy);
+                if(pr>=4)setPolygon(3,p4.xx,p4.yy);
+                
+                
+            }else if(s==2){//●修正された図形の表示
+                setPolygon(0,dp1.xx,dp1.yy);
+                setPolygon(1,dp2.xx,dp2.yy);
+                setPolygon(2,dp3.xx,dp3.yy);
+                if(pr>=4)setPolygon(3,dp4.xx,dp4.yy);
+                if(pr>=5)setPolygon(4,dp5.xx,dp5.yy);
+                /*
+                if($TD_Z_hamidasiSyusei){
+                    if(pr>=6)setPolygon(5,dp6.xx,dp6.yy);
+                    if(pr>=7)setPolygon(6,dp7.xx,dp7.yy);
+                    if(pr>=8)setPolygon(7,dp8.xx,dp8.yy);
+                    if(pr>=9)setPolygon(8,dp9.xx,dp9.yy);
+                    if(pr>=10)setPolygon(9,dp10.xx,dp10.yy);
+                }
+                */
+            }else if(s==3){//●配列に登録してから図形表示
+                pr=dpA.length;
+                if(pr<=1)return;
+                for(i=0;i<pr;i++){
+                    p=dpA[i];
+                    setPolygon(i,p.xx,p.yy);
+                }
+            }
+            
+            
+            fillPolygon(0,0,pr,c,1000+zo,alpha);
+            
+            
+        }
+    }else if(false/*m==2*/){ // 透過あり // Tonyu2ではここのロジックは無効化(透過色が使えるため、パネルで表示する必要がないため)
+    
+    
+    
+        if($TD_M_tenmetuKeigen==0){
+            $TD_M_APL_I=$TD_M_APL_I%1000;
+        }
+    
+    
+        // if($TD_M_APL_I<$TD_M_APL.length){
+        //     $TD_M_PL=$TD_M_APL[$TD_M_APL_I];
+        // }else{
+        //     $TD_M_PL=new Panel(2,2);
+        //     $TD_M_APL.push($TD_M_PL);
+        // }
+        // $TD_M_APL_I++;
+    
+    
+        if(s==0)return; // 処理しない
+    
+    
+        if(n==2){//■L(線)表示
+            if(s==1){//●修正不要の図形表示
+                if(p1.xx<p2.xx)GL=p1.xx;else GL=p2.xx;
+                if(p1.yy<p2.yy)GU=p1.yy;else GU=p2.yy;
+                if(p1.xx>p2.xx)GR=p1.xx;else GR=p2.xx;
+                if(p1.yy>p2.yy)GD=p1.yy;else GD=p2.yy;
+        
+                GL=floor(GL);
+                GU=floor(GU);
+                GR=floor(GR);
+                GD=floor(GD);
+                width =GR-GL+1;if(width <2)width =2;if(width >10000)width =10000;
+                height=GD-GU+1;if(height<2)height=2;if(height>10000)height=10000;
+                // $TD_M_PL.resize(width,height);
+                // $TD_M_PL.clearRect(0,0,width,height);//$TD_M_PL.clear();
+        
+                //$TD_M_PL.fillRect(0,0,999,999,$clRed);
+                // $TD_M_PL.drawLine(p1.xx-GL,p1.yy-GU,p2.xx-GL,p2.yy-GU,c);
+                drawLine(p1.xx,p1.yy,p2.xx,p2.yy,c,1000+zo);
+        
+            }else if(s>=2){//●修正された図形の表示
+                if(dp1.xx<dp2.xx)GL=dp1.xx;else GL=dp2.xx;
+                if(dp1.yy<dp2.yy)GU=dp1.yy;else GU=dp2.yy;
+                if(dp1.xx>dp2.xx)GR=dp1.xx;else GR=dp2.xx;
+                if(dp1.yy>dp2.yy)GD=dp1.yy;else GD=dp2.yy;
+        
+                GL=floor(GL);
+                GU=floor(GU);
+                GR=floor(GR);
+                GD=floor(GD);
+                width =GR-GL+1;if(width <2)width =2;if(width >10000)width =10000;
+                height=GD-GU+1;if(height<2)height=2;if(height>10000)height=10000;
+                // $TD_M_PL.resize(width,height);
+                // $TD_M_PL.clearRect(0,0,width,height);//$TD_M_PL.clear();
+        
+                //$TD_M_PL.fillRect(0,0,999,999,$clRed);
+                // $TD_M_PL.drawLine(dp1.xx-GL,dp1.yy-GU,dp2.xx-GL,dp2.yy-GU,c);
+                drawLine(dp1.xx,dp1.yy,dp2.xx,dp2.yy,c,1000+zo);
+            }
+      
+        }else
+        if(n==3||n==4){//■T(三角形),S(四角形)表示
+            if(s==1){//●修正不要の図形表示
+        
+        
+                if(p1.xx<p2.xx)GL=p1.xx;else GL=p2.xx;
+                if(p1.yy<p2.yy)GU=p1.yy;else GU=p2.yy;
+                if(p1.xx>p2.xx)GR=p1.xx;else GR=p2.xx;
+                if(p1.yy>p2.yy)GD=p1.yy;else GD=p2.yy;
+                if(p3.xx<GL)GL=p3.xx;
+                if(p3.yy<GU)GU=p3.yy;
+                if(p3.xx>GR)GR=p3.xx;
+                if(p3.yy>GD)GD=p3.yy;
+                if(pr>=4){
+                    if(p4.xx<GL)GL=p4.xx;
+                    if(p4.yy<GU)GU=p4.yy;
+                    if(p4.xx>GR)GR=p4.xx;
+                    if(p4.yy>GD)GD=p4.yy;
+                }
+        
+        
+                if(pr==3){
+                    setPolygon(0,p1.xx,p1.yy);
+                    setPolygon(1,p2.xx-1,p2.yy);
+                    setPolygon(2,p3.xx-1,p3.yy-1);
+                }else if(pr>=4){
+                    if(p1.xx<=p2.xx&&p1.yy<=p4.yy){
+                        setPolygon(0,p1.xx,p1.yy);
+                        setPolygon(1,p2.xx-1,p2.yy);
+                        setPolygon(2,p3.xx-1,p3.yy-1);
+                        if(pr>=4)setPolygon(3,p4.xx,p4.yy-1);
+                    }else if(p1.xx>p2.xx&&p1.yy<=p4.yy){
+                        setPolygon(0,p1.xx,p1.yy);
+                        setPolygon(1,p2.xx+1,p2.yy);
+                        setPolygon(2,p3.xx+1,p3.yy-1);
+                        if(pr>=4)setPolygon(3,p4.xx,p4.yy-1);
+                    }else if(p1.xx<=p2.xx&&p1.yy>p4.yy){
+                        setPolygon(0,p1.xx,p1.yy);
+                        setPolygon(1,p2.xx-1,p2.yy);
+                        setPolygon(2,p3.xx-1,p3.yy+1);
+                        if(pr>=4)setPolygon(3,p4.xx,p4.yy+1);
+                    }else if(p1.xx>p2.xx&&p1.yy>p4.yy){
+                        setPolygon(0,p1.xx,p1.yy);
+                        setPolygon(1,p2.xx+1,p2.yy);
+                        setPolygon(2,p3.xx+1,p3.yy+1);
+                        if(pr>=4)setPolygon(3,p4.xx,p4.yy+1);
+                    }
+                }
+        
+            }else if(s==2){//●修正された図形の表示
+        
+        
+                if(dp1.xx<dp2.xx)GL=dp1.xx;else GL=dp2.xx;
+                if(dp1.yy<dp2.yy)GU=dp1.yy;else GU=dp2.yy;
+                if(dp1.xx>dp2.xx)GR=dp1.xx;else GR=dp2.xx;
+                if(dp1.yy>dp2.yy)GD=dp1.yy;else GD=dp2.yy;
+                if(dp3.xx<GL)GL=dp3.xx;
+                if(dp3.yy<GU)GU=dp3.yy;
+                if(dp3.xx>GR)GR=dp3.xx;
+                if(dp3.yy>GD)GD=dp3.yy;
+                if(pr>=4){
+                    if(dp4.xx<GL)GL=dp4.xx;
+                    if(dp4.yy<GU)GU=dp4.yy;
+                    if(dp4.xx>GR)GR=dp4.xx;
+                    if(dp4.yy>GD)GD=dp4.yy;
+                }
+                if(pr>=5){
+                    if(dp5.xx<GL)GL=dp5.xx;
+                    if(dp5.yy<GU)GU=dp5.yy;
+                    if(dp5.xx>GR)GR=dp5.xx;
+                    if(dp5.yy>GD)GD=dp5.yy;
+                }
+        
+                setPolygon(0,dp1.xx,dp1.yy);
+                setPolygon(1,dp2.xx,dp2.yy);
+                setPolygon(2,dp3.xx,dp3.yy);
+                if(pr>=4)setPolygon(3,dp4.xx,dp4.yy);
+                if(pr>=5)setPolygon(4,dp5.xx,dp5.yy);
+                /*
+                if($TD_Z_hamidasiSyusei){
+                  if(pr>=6)setPolygon(5,dp6.xx,dp6.yy);
+                  if(pr>=7)setPolygon(6,dp7.xx,dp7.yy);
+                  if(pr>=8)setPolygon(7,dp8.xx,dp8.yy);
+                  if(pr>=9)setPolygon(8,dp9.xx,dp9.yy);
+                  if(pr>=10)setPolygon(9,dp10.xx,dp10.yy);
+                }
+                */
+            }else if(s==3){//●配列に登録してから図形表示
+                pr=dpA.length;
+                if(pr<=1)return;
+                for(i=0;i<pr;i++){
+                    p=dpA[i];
+          
+                    if(i==0){
+                        GL=p.xx;
+                        GU=p.yy;
+                        GR=p.xx;
+                        GD=p.yy;
+                    }else{
+                        if(p.xx<GL)GL=p.xx;
+                        if(p.yy<GU)GU=p.yy;
+                        if(p.xx>GR)GR=p.xx;
+                        if(p.yy>GD)GD=p.yy;
+                    }
+          
+                    setPolygon(i,p.xx,p.yy);
+                }
+            }
+      
+            GL=floor(GL);
+            GU=floor(GU);
+            GR=floor(GR);
+            GD=floor(GD);
+            width =GR-GL+1;if(width <2)width =2;if(width >5000)width =5000;
+            height=GD-GU+1;if(height<2)height=2;if(height>5000)height=5000;
+            // $TD_M_PL.resize(width,height);
+            // $TD_M_PL.clearRect(0,0,width,height);//$TD_M_PL.clear();
+      
+            //$TD_M_PL.fillPolygon(-GL,-GU,pr,c);
+            // fillPolygonP($TD_M_PL,-GL,-GU,pr,c);
+            
+            fillPolygon(0,0,pr,c,1000+zo,alpha);
+        }
+    
+        // パネルの表示
+        // $TD_M_PL.zOrder=1000+zo;
+        // $TD_M_PL.alpha=alpha;
+    
+        //$TD_M_PL.draw(GL,GU,width,height,0,0);
+        // $TD_M_PL.x=GL+width/2;
+        // $TD_M_PL.y=GU+height/2;
+    
+    
+    }else if(m==3){ // ビットマップ
+    
+    
+    
+        if($TD_M_tenmetuKeigen==0){
+            $TD_M_APL_I=$TD_M_APL_I%1000;
+        }
+    
+    
+        if($TD_M_APL_I<$TD_M_APL.length){
+            $TD_M_PL=$TD_M_APL[$TD_M_APL_I];
+        }else{
+            $TD_M_PL=new Panel(2,2);
+            $TD_M_APL.push($TD_M_PL);
+        }
+        $TD_M_APL_I++;
+    
+    
+        if(s==0)return; // 処理しない
+    
+        /*
+        if(n==2){//■L(線)表示
+          if(s==1){//●修正不要の図形表示
+            if(p1.xx<p2.xx)GL=p1.xx;else GL=p2.xx;
+            if(p1.yy<p2.yy)GU=p1.yy;else GU=p2.yy;
+            if(p1.xx>p2.xx)GR=p1.xx;else GR=p2.xx;
+            if(p1.yy>p2.yy)GD=p1.yy;else GD=p2.yy;
+            
+            GL=floor(GL);
+            GU=floor(GU);
+            GR=floor(GR);
+            GD=floor(GD);
+            width =GR-GL+1;if(width <2)width =2;if(width >10000)width =10000;
+            height=GD-GU+1;if(height<2)height=2;if(height>10000)height=10000;
+            $TD_M_PL.resize(width,height);
+            $TD_M_PL.clearRect(0,0,width,height);//$TD_M_PL.clear();
+            
+            //$TD_M_PL.fillRect(0,0,999,999,$clRed);
+            $TD_M_PL.drawLine(p1.xx-GL,p1.yy-GU,p2.xx-GL,p2.yy-GU,c);
+            
+          }else if(s>=2){//●修正された図形の表示
+            if(dp1.xx<dp2.xx)GL=dp1.xx;else GL=dp2.xx;
+            if(dp1.yy<dp2.yy)GU=dp1.yy;else GU=dp2.yy;
+            if(dp1.xx>dp2.xx)GR=dp1.xx;else GR=dp2.xx;
+            if(dp1.yy>dp2.yy)GD=dp1.yy;else GD=dp2.yy;
+            
+            GL=floor(GL);
+            GU=floor(GU);
+            GR=floor(GR);
+            GD=floor(GD);
+            width =GR-GL+1;if(width <2)width =2;if(width >10000)width =10000;
+            height=GD-GU+1;if(height<2)height=2;if(height>10000)height=10000;
+            $TD_M_PL.resize(width,height);
+            $TD_M_PL.clearRect(0,0,width,height);//$TD_M_PL.clear();
+            
+            //$TD_M_PL.fillRect(0,0,999,999,$clRed);
+            $TD_M_PL.drawLine(dp1.xx-GL,dp1.yy-GU,dp2.xx-GL,dp2.yy-GU,c);
+          }
+          
+        }else */
+    
+        if(n==3||n==4){//■T(三角形),S(四角形)表示
+            if(s==1){//●修正不要の図形表示
+        
+        
+                if(p1.xx<p2.xx)GL=p1.xx;else GL=p2.xx;
+                if(p1.yy<p2.yy)GU=p1.yy;else GU=p2.yy;
+                if(p1.xx>p2.xx)GR=p1.xx;else GR=p2.xx;
+                if(p1.yy>p2.yy)GD=p1.yy;else GD=p2.yy;
+                if(p3.xx<GL)GL=p3.xx;
+                if(p3.yy<GU)GU=p3.yy;
+                if(p3.xx>GR)GR=p3.xx;
+                if(p3.yy>GD)GD=p3.yy;
+                if(pr>=4){
+                    if(p4.xx<GL)GL=p4.xx;
+                    if(p4.yy<GU)GU=p4.yy;
+                    if(p4.xx>GR)GR=p4.xx;
+                    if(p4.yy>GD)GD=p4.yy;
+                }
+        
+        
+                if(pr==3){
+                    setPolygon(0,p1.xx,p1.yy);
+                    setPolygon(1,p2.xx-1,p2.yy);
+                    setPolygon(2,p3.xx-1,p3.yy-1);
+                }else if(pr>=4){
+                    if(p1.xx<=p2.xx&&p1.yy<=p4.yy){
+                        setPolygon(0,p1.xx,p1.yy);
+                        setPolygon(1,p2.xx-1,p2.yy);
+                        setPolygon(2,p3.xx-1,p3.yy-1);
+                        setPolygon(3,p4.xx,p4.yy-1);
+                    }else if(p1.xx>p2.xx&&p1.yy<=p4.yy){
+                        setPolygon(0,p1.xx,p1.yy);
+                        setPolygon(1,p2.xx+1,p2.yy);
+                        setPolygon(2,p3.xx+1,p3.yy-1);
+                        setPolygon(3,p4.xx,p4.yy-1);
+                    }else if(p1.xx<=p2.xx&&p1.yy>p4.yy){
+                        setPolygon(0,p1.xx,p1.yy);
+                        setPolygon(1,p2.xx-1,p2.yy);
+                        setPolygon(2,p3.xx-1,p3.yy+1);
+                        setPolygon(3,p4.xx,p4.yy+1);
+                    }else if(p1.xx>p2.xx&&p1.yy>p4.yy){
+                        setPolygon(0,p1.xx,p1.yy);
+                        setPolygon(1,p2.xx+1,p2.yy);
+                        setPolygon(2,p3.xx+1,p3.yy+1);
+                        setPolygon(3,p4.xx,p4.yy+1);
+                    }
+                }
+        
+            }else if(s==2){//●修正された図形の表示
+        
+        
+                if(dp1.xx<dp2.xx)GL=dp1.xx;else GL=dp2.xx;
+                if(dp1.yy<dp2.yy)GU=dp1.yy;else GU=dp2.yy;
+                if(dp1.xx>dp2.xx)GR=dp1.xx;else GR=dp2.xx;
+                if(dp1.yy>dp2.yy)GD=dp1.yy;else GD=dp2.yy;
+                if(dp3.xx<GL)GL=dp3.xx;
+                if(dp3.yy<GU)GU=dp3.yy;
+                if(dp3.xx>GR)GR=dp3.xx;
+                if(dp3.yy>GD)GD=dp3.yy;
+                if(pr>=4){
+                    if(dp4.xx<GL)GL=dp4.xx;
+                    if(dp4.yy<GU)GU=dp4.yy;
+                    if(dp4.xx>GR)GR=dp4.xx;
+                    if(dp4.yy>GD)GD=dp4.yy;
+                }
+                if(pr>=5){
+                    if(dp5.xx<GL)GL=dp5.xx;
+                    if(dp5.yy<GU)GU=dp5.yy;
+                    if(dp5.xx>GR)GR=dp5.xx;
+                    if(dp5.yy>GD)GD=dp5.yy;
+                }
+        
+                setPolygon(0,dp1.xx,dp1.yy);
+                setPolygon(1,dp2.xx,dp2.yy);
+                setPolygon(2,dp3.xx,dp3.yy);
+                if(pr>=4)setPolygon(3,dp4.xx,dp4.yy);
+                if(pr>=5)setPolygon(4,dp5.xx,dp5.yy);
+            /*
+            if($TD_Z_hamidasiSyusei){
+              if(pr>=6)setPolygon(5,dp6.xx,dp6.yy);
+              if(pr>=7)setPolygon(6,dp7.xx,dp7.yy);
+              if(pr>=8)setPolygon(7,dp8.xx,dp8.yy);
+              if(pr>=9)setPolygon(8,dp9.xx,dp9.yy);
+              if(pr>=10)setPolygon(9,dp10.xx,dp10.yy);
+            }
+            */
+            }else if(s==3){//●配列に登録してから図形表示
+                pr=dpA.length;
+                if(pr<=1)return;
+                for(i=0;i<pr;i++){
+                    p=dpA[i];
+          
+                    if(i==0){
+                        GL=p.xx;
+                        GU=p.yy;
+                        GR=p.xx;
+                        GD=p.yy;
+                    }else{
+                        if(p.xx<GL)GL=p.xx;
+                        if(p.yy<GU)GU=p.yy;
+                        if(p.xx>GR)GR=p.xx;
+                        if(p.yy>GD)GD=p.yy;
+                    }
+          
+                    setPolygon(i,p.xx,p.yy);
+                }
+            }
+      
+            GL=floor(GL);
+            GU=floor(GU);
+            GR=floor(GR);
+            GD=floor(GD);
+            width =GR-GL+1;if(width <2)width =2;if(width >5000)width =5000;
+            height=GD-GU+1;if(height<2)height=2;if(height>5000)height=5000;
+            $TD_M_PL.resize(width,height);
+            $TD_M_PL.clearRect(0,0,width,height);//$TD_M_PL.clear();
+      
+      
+            //$TD_M_PL.drawDxSprite(-GL,-GU,3);
+      
+            //$TD_M_PL.fillRect(0,0,width,height,255);
+            var panel=new Panel(width,height);
+            //panel.setTransparentColor($clRed);
+            //panel.fillPolygon(-GL,-GU,pr,$clRed);
+            fillPolygonP(panel,-GL,-GU,pr,"rgb(255,0,0)");
+      
+            var bmpWidth=bmpGR-bmpGL;
+            var bmpHeight=bmpGD-bmpGU;
+            $TD_M_PL.drawDxSprite(bmpWidth/2+(bmpGL-GL),bmpHeight/2+(bmpGU-GU),c,0,0,(bmpWidth)/($imageList[floor(c||0)].width-1),(bmpHeight)/($imageList[floor(c||0)].height-1));
+            //$TD_M_PL.drawDxSprite($screenWidth/2-GL,$screenHeight/2-GU,c,0,0,1);
+            $TD_M_PL.copyRect(0,0,width,height,panel,0,0,width,height);
+      
+        }
+    
+        // パネルの表示
+        $TD_M_PL.zOrder=1000+zo;
+        $TD_M_PL.alpha=alpha;
+    
+        $TD_M_PL.draw(GL,GU,width,height,0,0);
+    
+    
+    }
+  
+  
+}

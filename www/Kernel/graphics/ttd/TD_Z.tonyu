@@ -1,0 +1,398 @@
+extends Actor;
+//■システムサブクラス■
+
+native performance;
+
+//■■■■■■■■■■■■■■■
+//■初期値設定■■■■■■■■■
+
+var sindata, cosdata;
+
+\new(){
+    p=-1;
+    super();
+    $TD_M_A3D=[]; // 3Dオブジェクト配列
+    $TD_M_ACM=[]; // カメラ配列
+    // $TD_M_APS=[]; // プロセス配列
+    $TD_M_APL=[]; // パネル配列
+}
+function STARTING(){ // ３Ｄに必要な初期セッティング
+    var t;
+    /*
+    ●…値を変更してもいい
+    ○…値を変更してもいい（あまり変更は薦めない）
+    */
+  
+  
+    /* 三角関数精密度 */
+    $TD_SC_B=10; // ●精密度(標準のsin,cosの精密度の何倍にするか)
+  
+  
+    /* ユーザ設定 */
+    $TD_Z_hamidasiSyusei=1; // ●画面はみ出し修正機能のスイッチ
+    $TD_M_tenmetuKeigen=1;  // ●点滅軽減機能のスイッチ
+    $TD_M_multiGamen=0;
+  
+  
+    /* 点滅軽減機能の設定 */
+    // $TD_M_oyaObjMax=40; // ○親プロセス数
+    // $TD_M_koObjMax=20;  // ○親プロセス当たりの子プロセス数
+    // $TD_M_syoriMax=50;  // ○子プロセス当たりの処理する量(100以上だとたまにエラーを起こす)
+    $TD_M_oyaObjMax=99999999; 
+    $TD_M_koObjMax=99999999;
+    $TD_M_syoriMax=99999999;
+  
+  
+    /* 設定が済むまで全Objectの動作停止 */
+    //t=timeStop();
+  
+  
+    /* 三角関数の計算結果をセット */
+    if(!($sinA instanceof Array)||!($cosA instanceof Array)||$TD_SC_B!=$TD_SC_B_k){
+        /* 計算結果が既にある時は実行しない */
+        //set($TD_SC_B,0);  // 計算結果をセットする
+        $TD_SC_B_k=$TD_SC_B; // 精密度が変更されたか？
+    }
+  
+  
+    /* 座標設定 */
+    $TD_Z_x=0; // ●横
+    $TD_Z_y=0; // ●高さ
+    $TD_Z_z=0; // ●奥行き
+  
+    $TD_Z_xz=0; // ●方位
+    $TD_Z_yz=0; // ●上下角
+    $TD_Z_xy=0; // ●傾き
+  
+    $TD_Z_gk=0;                 // ●ゲーム内の拡大率
+    $TD_Z_k=$screenWidth+$TD_Z_gk; //   基準拡大率
+    $TD_Z_k_max=10;             // ●scaleXの最大値
+  
+  
+    /* 画面領域設定（画面はみ出し修正機能） */
+    /*$TD_G_GL=-1;            // ●画面左端
+    $TD_G_GU=-1;            // ●画面上端
+    $TD_G_GR=$screenWidth;  // ●画面右端
+    $TD_G_GD=$screenHeight; // ●画面下端
+  */
+    
+    $TD_G_GL=50;               // ●画面左端
+    $TD_G_GU=50;               // ●画面上端
+    $TD_G_GR=$screenWidth-51;  // ●画面右端
+    $TD_G_GD=$screenHeight-51; // ●画面下端
+    
+  
+  
+    /* あらかじめ計算変数 */
+    $TD_K_k=$TD_Z_k/$TD_Z_k_max;    // ●拡大率あらかじめ計算
+    $TD_K_hw=$screenWidth/2;  // ●画面の幅の半分
+    $TD_K_hh=$screenHeight/2; // ●画面の高さの半分
+    $TD_K_xzsin=0;
+    $TD_K_xzcos=0;
+    $TD_K_yzsin=0;
+    $TD_K_yzcos=0;
+    $TD_K_xysin=0;
+    $TD_K_xycos=0;
+  
+    /* RSCやGKKが重複して計算されないようにする */
+    $TD_K_F=0; // $frameCountと値が違ったら処理
+  
+  
+    /* ＦＰＳ計測 */
+    $TD_FPS_fps=0;
+    $TD_FPS_fps2=0;
+    $TD_FPS_v=0;
+    $TD_FPS_dv=0;
+    $TD_FPS_gt=0;
+  
+    $TD_FPS_dv2=0;
+    $TD_FPS_gt2=0;
+    $TD_FPS_fps3=0;
+  
+  
+    /* 描画の分散処理（マルチタスク？） */
+    // for(i=0;i<$TD_M_oyaObjMax;i++){
+    //     $TD_M_APS.push(new Process(new TD_PS(0),"",1));
+    // }
+    //print("TD_Z: "+$TD_M_APS.length+" : "+i);
+    $TD_PS=new TD_PS();
+  
+  
+    /* 分散処理の添え字・サイズ */
+    $TD_M_A3D_I=0; // TD_A3D配列 (    3Dオブジェクト) の添え字
+    $TD_M_A3D_S=0; // TD_A3D配列 (    3Dオブジェクト) のサイズ
+    $TD_M_ACM_I=0; // TD_A3D配列 (カメラオブジェクト) の添え字
+    $TD_M_ACM_S=0; // TD_A3D配列 (カメラオブジェクト) のサイズ
+    $TD_M_AP_I=0;  // TD_AP配列  (    点オブジェクト) の添え字
+    $TD_M_AP_S=0;  // TD_AP配列  (    点オブジェクト) のサイズ
+    $TD_M_ADR_I=0; // TD_ADR配列 (  図形オブジェクト) の添え字
+    $TD_M_ADR_S=0; // TD_ADR配列 (  図形オブジェクト) のサイズ
+  
+    $TD_M_M=0;
+    $TD_M_O=null;
+    $TD_M_CM=null;
+    $TD_M_PL=null;
+    $TD_M_EOF=0;
+  
+  
+    /* Objectの動作再開 */
+    //t.releaseAll();
+  
+}
+
+
+//■■■■■■■■■■■■■■■
+//■メソッド一覧■■■■■■■■
+
+function RSC(){//■三角関数の計算
+    $TD_K_xzsin=rsin($TD_Z_xz); // xyのsin
+    $TD_K_xzcos=rcos($TD_Z_xz); // xyのcos
+    $TD_K_yzsin=rsin($TD_Z_yz); // xyのsin
+    $TD_K_yzcos=rcos($TD_Z_yz); // xyのcos
+    $TD_K_xysin=rsin($TD_Z_xy); // xyのsin
+    $TD_K_xycos=rcos($TD_Z_xy); // xyのcos
+}
+
+function GKK(zGL,zGU,zGR,zGD){//■画面関係計算
+    var ww,hh,GL,GU,GR,GD;
+  
+    if(zGL==null)GL=$TD_G_GL; else GL=zGL;
+    if(zGU==null)GU=$TD_G_GU; else GU=zGU;
+    if(zGR==null)GR=$TD_G_GR; else GR=zGR;
+    if(zGD==null)GD=$TD_G_GD; else GD=zGD;
+  
+  
+    ww=GR-GL; // width
+    hh=GD-GU; // height
+  
+    $TD_K_hw=GL+ww/2;//●ウィンドウの横の半分
+    $TD_K_hh=GU+hh/2;//●ウィンドウの縦の半分
+    if(ww<=hh)$TD_Z_k=ww+$TD_Z_gk;//●基準拡大率
+    else      $TD_Z_k=hh+$TD_Z_gk;//●基準拡大率
+    $TD_K_k=$TD_Z_k/$TD_Z_k_max;//●拡大率
+  
+}
+
+function FPS(visible, x1, y1, x2, y2){//■ＦＰＳ測定
+    var col;
+    //■ＦＰＳ
+    if(performance.now()-$TD_FPS_gt>=1000){$TD_FPS_fps=$TD_FPS_dv;$TD_FPS_fps2=$TD_FPS_v;$TD_FPS_gt=performance.now();$TD_FPS_v=0;$TD_FPS_dv=0;}
+    $TD_FPS_v++;
+    $TD_FPS_dv+=$_doDraw?1:0;
+  
+    if(performance.now()-$TD_FPS_gt2>=100){$TD_FPS_fps3=$TD_FPS_dv2;$TD_FPS_gt2=performance.now();$TD_FPS_dv2=0;}
+    $TD_FPS_dv2+=$_doDraw?1:0;
+  
+    //■表示
+    if(visible){
+        //fillRect($screenWidth-70,$screenHeight-40,$screenWidth,$screenHeight,"#101010",0);
+        if (x1 == null) x1 = $screenWidth-70;
+        if (y1 == null) y1 = $screenWidth-40;
+        if (x2 == null) x2 = $screenWidth-70;
+        if (y2 == null) y2 = $screenWidth-20;
+        drawText(x1,y1,"FPS:"+$TD_FPS_fps,colorHSL(140-($TD_FPS_fps-1)*140/59,240,120),16,-1);
+        drawText(x2,y2,"RPS:"+$TD_FPS_fps2,colorHSL(140-($TD_FPS_fps2-1)*140/59,240,120),16,-1);
+        // drawText(2,80+30,"chars:"+all().length,"#FFF",12,-1);
+        // drawText(2,80+15*3,"$TD_Z_xz:"+$TD_Z_xz,"#FFF",12,-1);
+        // drawText(2,80+15*4,"$TD_K_xzsin:"+$TD_K_xzsin,"#FFF",12,-1);
+        // drawText(2,80+15*5,"$TD_K_xzcos:"+$TD_K_xzcos,"#FFF",12,-1);
+        // drawText(2,80+15*6,"$TD_Z_yz:"+$TD_Z_yz,"#FFF",12,-1);
+        // drawText(2,80+15*7,"$TD_K_yzsin:"+$TD_K_yzsin,"#FFF",12,-1);
+        // drawText(2,80+15*8,"$TD_K_yzcos:"+$TD_K_yzcos,"#FFF",12,-1);
+    }
+}
+
+\draw(ctx){
+    // $TD_FPS_dv++;
+    // $TD_FPS_dv2++;
+}
+
+function draw3D(){//■描画
+    var o,ps,i;
+  
+    if($TD_M_tenmetuKeigen!=1)return;
+  
+  
+    //if($TD_M_APL.length>0)$TD_M_APL.splice($TD_M_APL.length-1, 1);
+    //print($frameCount);
+    // if($frameCount%30==0){
+    //     if($TD_M_APL.length>0){
+    //         for(i=0;i<5;i++){
+    //             $TD_M_PL=new Panel(2,2);
+    //             $TD_M_APL.push($TD_M_PL);
+    //             $TD_M_APL.splice(0, 1);
+    //         }
+    //     }
+    // }
+  
+    //if($frameCount%60==0)$TD_M_APL=new Array();
+    //if($frameCount%300==0)$TD_M_APL.splice(0);//$TD_M_APL.clear();
+    //drawText(300,0,"$TD_M_APL.size:"+$TD_M_APL.length,$clWhite,20,-999);
+  
+  
+  
+    if(!$_doDraw)return;
+  
+    //$System.setFrameRate(2,1);
+    //print("---START---");
+  
+    $TD_M_M=0;
+    $TD_M_EOF=0;
+    $TD_M_A3D_I=0;
+    $TD_M_ACM_I=0;
+    $TD_M_AP_I=0;
+    $TD_M_ADR_I=0;
+    $TD_M_APL_I=0;
+  
+  
+    $TD_M_A3D_S=$TD_M_A3D.length;//3Dの個数
+    $TD_M_ACM_S=$TD_M_ACM.length;//カメラの個数
+    if($TD_M_A3D_S<=0)return;
+  
+  
+    // for(i=0;i<$TD_M_APS.length;i++){
+    //     $TD_M_APS[i].exec();
+    //     if($TD_M_M>5)break;
+    // }
+    $TD_PS.run();
+  
+  
+    /*
+    if($TD_M_M<=5&&$_doDraw){
+        if($frameCount/12%2)fillRect(40-2,40-2,410+2,90+2,"rgb(224,224,224)",-999999997);
+        fillRect(40,40,410,90,"rgb(64,64,64)",-999999998);
+        drawText(50,50,"エラー(Polygon_Overflow)",$clRed,20,-999999999);
+    
+    fillRect(0,180,400,290,"rgb(64,64,64)",-9);
+    drawText(5,200,"ポリゴン（図形）が多すぎです！！",$clRed,16,-999999999);
+    drawText(5,220,"描画するオブジェクトが足りません",$clRed,12,-999999999);
+    drawText(5,240,"$TD_M_oyaObjMax  $TD_M_koObjMax  $TD_M_syoriMax",$clRed,12,-999999999);
+    drawText(5,260,"これらの値を調整してください",$clRed,12,-10);
+    }
+    */
+    //print("---END---");
+}
+
+
+
+updateEx();
+
+
+//■■■■■■■■■■■■■■■
+//■精密三角関数■■■■■■■■
+function set(b,h){
+    var t,i;
+    sindata=[];
+    cosdata=[];
+    sindata.push(0);
+    sindata.push(0.0017453284);
+    sindata.push(0.0034906514);
+    sindata.push(0.0052359638);
+    sindata.push(0.0069812603);
+    sindata.push(0.0087265355);
+    sindata.push(0.0104717841);
+    sindata.push(0.0122170008);
+    sindata.push(0.0139621803);
+    sindata.push(0.0157073173);
+    sindata.push(0);
+    sindata.push(0.0001745329);
+    sindata.push(0.0003490658);
+    sindata.push(0.0005235988);
+    sindata.push(0.0006981316);
+    sindata.push(0.0008726645);
+    sindata.push(0.0010471974);
+    sindata.push(0.0012217302);
+    sindata.push(0.0013962629);
+    sindata.push(0.0015707957);
+    sindata.push(0);
+    sindata.push(0.0000174533);
+    sindata.push(0.0000349066);
+    sindata.push(0.0000523599);
+    sindata.push(0.0000698132);
+    sindata.push(0.0000872665);
+    sindata.push(0.0001047198);
+    sindata.push(0.0001221730);
+    sindata.push(0.0001396263);
+    sindata.push(0.0001570796);
+    cosdata.push(1);
+    cosdata.push(0.999998477);
+    cosdata.push(0.999993908);
+    cosdata.push(0.999986292);
+    cosdata.push(0.999975631);
+    cosdata.push(0.999961923);
+    cosdata.push(0.999945169);
+    cosdata.push(0.99992537);
+    cosdata.push(0.999902524);
+    cosdata.push(0.999876632);
+    cosdata.push(1);
+    cosdata.push(0.999999985);
+    cosdata.push(0.999999939);
+    cosdata.push(0.999999863);
+    cosdata.push(0.999999756);
+    cosdata.push(0.999999619);
+    cosdata.push(0.999999452);
+    cosdata.push(0.999999254);
+    cosdata.push(0.999999025);
+    cosdata.push(0.999998766);
+    cosdata.push(1);
+    cosdata.push(1);
+    cosdata.push(0.999999999);
+    cosdata.push(0.999999999);
+    cosdata.push(0.999999998);
+    cosdata.push(0.999999996);
+    cosdata.push(0.999999995);
+    cosdata.push(0.999999993);
+    cosdata.push(0.99999999);
+    cosdata.push(0.999999988);
+  
+    $sinA=[];
+    $cosA=[];
+  
+    for(i=0;i<360*b;i++){
+        $sinA.push(rsin2(i/b));
+        $cosA.push(rcos2(i/b));
+        if(h&&i%70==0)drawText(0,0,trunc(i*100/(360*b))+"%",$clWhite,50);
+    }
+  
+}
+
+function rsin(a){
+    return sin(a);
+    // return $sinA[amod(a*$TD_SC_B,360*$TD_SC_B)];
+}
+function rcos(a){
+    return cos(a);
+    // return $cosA[amod(a*$TD_SC_B,360*$TD_SC_B)];
+}
+function rsin2(theta,lev){
+    var value,i,alpha,beta,level;
+    alpha=floor(theta);
+    beta=theta-alpha;
+    if(lev==null){
+        value=sin(alpha)*rcos2(10*beta,1)+cos(alpha)*rsin2(10*beta,1);
+    }else{
+        level=lev;
+        if(level<3){
+            value=sindata[alpha+level*10-10]*rcos2(10*beta,level+1)+cosdata[alpha+level*10-10]*rsin2(10*beta,level+1);
+        }else{
+            value=sindata[alpha+level*10-10];
+        }
+    }
+    return value;
+}
+function rcos2(theta,lev){
+    var value,i,alpha,beta,level;
+    alpha=floor(theta);
+    beta=theta-alpha;
+    if(lev==null){
+        value=cos(alpha)*rcos2(10*beta,1)-sin(alpha)*rsin2(10*beta,1);
+    }else{
+        level=lev;
+        if(level<3){
+            value=cosdata[alpha+level*10-10]*rcos2(10*beta,level+1)-sindata.get(alpha+level*10-10)*rsin2(10*beta,level+1);
+        }else{
+            value=cosdata[alpha+level*10-10];
+        }
+    }
+    return value;
+}

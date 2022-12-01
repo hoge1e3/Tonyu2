@@ -1,0 +1,496 @@
+extends DxChar;
+// extends Actor;
+
+/*---------------------------
+     ３Ｄ処理総合クラス
+---------------------------*/
+
+
+// コンストラクター
+\new(opt) {
+    cons();
+    super(opt);
+}
+// \new(xx,yy,zz, x,y,p,f,zOrder,angle,alpha,scaleX,scaleY) {
+//     // if (typeof x=="object") {
+//     //     cons();
+//     //     Tonyu.extend(this,x);
+//     // } else {
+//     super(x,y,p,f,scaleX,angle,alpha);
+//     cons(xx,yy,zz, x,y,p,f,zOrder,angle,alpha,scaleX,scaleY);
+//     // }
+// }
+
+var z;
+var TD_x, TD_y, TD_z;
+var TD_angleX, TD_angleY, TD_angleZ;
+var TD_angleXZ, TD_angleYZ, TD_angleXY;
+var TD_angleDX, TD_alphaDX, TD_scaleXDX, TD_scaleYDX;
+var TD_AP, TD_ADR, TD_A2;
+var TD_visible;
+var TD_xzsin, TD_xzcos;
+var TD_yzsin, TD_yzcos;
+var TD_xysin, TD_xycos;
+var TD_k_xzsin, TD_k_xzcos;
+var TD_k_yzsin, TD_k_yzcos;
+var TD_k_xysin, TD_k_xycos;
+
+//\cons(xx,yy,zz, x,y,p,f,zOrder,angle,alpha,scaleX,scaleY){
+\cons(){
+    if(z==null)z=0;
+    //setVisible(0);
+    // オブジェクトの基本座標
+    TD_x = 0;
+    TD_y = 0;
+    TD_z = 0;
+  
+    // 回転するときの中心の座標
+    TD_angleX = 0;
+    TD_angleY = 0;
+    TD_angleZ = 0;
+  
+    // (TD_angleX,angleY,angleZ)を中心として回転する。
+    TD_angleXZ = 0;
+    TD_angleYZ = 0;
+    TD_angleXY = 0;
+  
+    // DXだけ有効
+    TD_angleDX  = 0;
+    TD_alphaDX  = 255;
+    TD_scaleXDX = 1;
+    TD_scaleYDX = 0;
+  
+    // ３Ｄ情報
+    TD_AP   = []; // TD_Pオブジェクト格納
+    TD_ADR  = []; // TD_DRオブジェクト格納
+    TD_A2 = []; // draw3D2の情報格納
+  
+    // 描画情報
+    TD_visible=1;
+    
+    this.scaleY=scaleY||0;
+    
+    if ($TD_M_A3D.indexOf() == -1) $TD_M_A3D.push(this); // 3D配列に自分を登録
+    //onAppear();
+    on("die") \{
+        onDie();
+    };
+}
+
+\draw(ctx){
+}
+
+// イベント設定
+function RSC() { // 三角関数の計算
+  
+    //座標が入れ替わってる
+    //print(this+" "+x+":"+y+":"+z);
+    TD_x = x;
+    TD_y = y;
+    TD_z = z;
+    TD_angleDX=angle;
+    TD_alphaDX=alpha;
+    TD_scaleXDX=scaleX;
+    TD_scaleYDX=scaleY;
+  
+    //print(this+" "+TD_x+":"+TD_y+":"+TD_z);
+  
+  
+  
+    TD_xzsin = $TD_Z.rsin(TD_angleXZ); // xzのsin
+    TD_xzcos = $TD_Z.rcos(TD_angleXZ); // xzのcos
+    TD_yzsin = $TD_Z.rsin(TD_angleYZ); // yzのsin
+    TD_yzcos = $TD_Z.rcos(TD_angleYZ); // yzのcos
+    TD_xysin = $TD_Z.rsin(TD_angleXY); // xyのsin
+    TD_xycos = $TD_Z.rcos(TD_angleXY); // xyのcos
+}
+
+
+
+
+
+//----- イベント設定 -----//
+
+function update(){
+    
+    apudeto();
+    super.update();
+}
+
+// UPDATEされた時
+function apudeto() { 
+    var i,t;
+  
+    // 点滅軽減機能がありなら実行しない
+    if ($TD_M_tenmetuKeigen!=0) return;
+  
+    // 描画する時だけメソッドを実行
+    if (!$_doDraw) return;
+  
+  
+  
+    if (TD_visible) {
+        // 表示状態
+        if ($TD_K_F!=$frameCount/*||$Navigator.isIOS()*/) {
+            // 処理がまだ１回もされてなかったら処理
+            
+            $TD_Z.RSC(); // 三角関数計算
+            $TD_Z.GKK(); // 画面関係計算
+            $TD_K_F=$frameCount;
+        }
+    
+        _Draw3D(); // ３Ｄ描画
+    
+    }
+  
+    /*
+    else if (TD_visible==2) {
+      for (i=0;i<TD_A2.length;i++) {
+        t=TD_A2[i];
+        _Draw3D2(t.zx,t.zy,t.zz, t.xz,t.yz,t.xy, t.gk,t.k_max, t.GL,t.GU,t.GR,t.GD);
+      }
+    }
+    */
+  
+}
+
+
+// 生まれた時
+function onAppear() {
+    //$TD_M_A3D.push(this); // 3D配列に自分を登録
+}
+
+
+// 死んだ時
+function onDie() {
+    if($TD_M_A3D.indexOf(this)>=0)$TD_M_A3D.splice($TD_M_A3D.indexOf(this), 1);//$TD_M_A3D.remove(this); // 3D配列から自分を削除
+    TD_AP.splice(0);
+    for(var t of TD_ADR){
+        t.die();
+    }
+    TD_ADR.splice(0);
+}
+
+
+
+
+
+//----- ３Ｄ描画（標準）-----//
+
+
+// 表示・非表示
+function Draw3D(v) {
+    TD_visible=v;
+}
+
+native console;
+
+// ３Ｄ描画（標準）
+function _Draw3D() { 
+    var t;
+    
+    // 座標が入れ替わってるよ
+    TD_x = x;
+    TD_y = z;
+    TD_z = y;
+  
+    // オブジェクト回転の三角関数
+    RSC();
+  
+    // 座標回転
+    for (t of TD_AP) {
+        t.kaiten(TD_x,TD_y,TD_z,
+        TD_angleX,TD_angleY,TD_angleZ,
+        TD_angleXZ,TD_angleYZ,TD_angleXY,
+        TD_xzsin,TD_yzsin,TD_xysin,TD_xzcos,TD_yzcos,TD_xycos,
+        $TD_Z_x,$TD_Z_y,$TD_Z_z,
+        $TD_K_xzsin,$TD_K_yzsin,$TD_K_xysin,$TD_K_xzcos,$TD_K_yzcos,$TD_K_xycos);
+    }
+    
+    // バックフェースカリング（ポリゴンが裏の場合表示しない）
+    // for (t of TD_ADR) {
+    //     t.backFaceCulling($TD_Z_x,$TD_Z_y,$TD_Z_z);
+    // }
+    
+    // めり込み修正
+    for (t of TD_ADR) {
+        t.merikomiSyusei($TD_K_k,$TD_Z_k,$TD_K_hw,$TD_K_hh);
+    }
+    // 座標変換
+    for (t of TD_AP) {
+        t.henkan2D($TD_K_k,$TD_Z_k,$TD_K_hw,$TD_K_hh);
+        //console.log("henkan2D",t.x,t.y,t.z,t.xx,t.yy,t.k, " ",$TD_K_k,$TD_Z_k,$TD_K_hw,$TD_K_hh);
+    }
+  
+    // はみ出し修正
+    for (t of TD_ADR) {
+        t.hamidasiSyusei($TD_G_GL,$TD_G_GU,$TD_G_GR,$TD_G_GD,TD_scaleXDX,TD_scaleYDX);
+    }
+  
+  
+  
+    /*
+    $TD_M_A3D_I=0;
+    for(i=0;i<$chars.length;i++){
+      t=$chars[i];
+      if(t is TD_3D){
+        if(t==this)break;else $TD_M_A3D_I++;
+      }
+    }
+    $TD_M_ADR_I=0;
+    */
+  
+  
+    // 図形表示
+    for (t of TD_ADR) {
+        t.ZukeiDraw(TD_angleDX,TD_alphaDX,TD_scaleXDX,TD_scaleYDX);
+    
+        /*
+        if(t.TD_visible){
+        drawLine($TD_M_A3D_I*50+0,$TD_M_ADR_I,$TD_M_A3D_I*50+20,$TD_M_ADR_I,colorHSL((t.n-1)*60+30,240,120));
+        if(t.s!=0)drawLine($TD_M_A3D_I*50+20,$TD_M_ADR_I,$TD_M_A3D_I*50+40,$TD_M_ADR_I,colorHSL((t.s==3)*40,240,120));
+        $TD_M_ADR_I++;
+        }
+        */
+    
+    }
+  
+}
+
+
+
+
+
+// ３Ｄ描画（値指定）
+
+
+function addDraw3D2(zx,zy,zz, xz,yz,xy, gk,k_max, GL,GU,GR,GD) {
+    var t;
+    //要素12
+    t=new TD_CM(zx,zy,zz, xz,yz,xy, gk,k_max, GL,GU,GR,GD);
+    TD_A2.push(t);
+    return t;
+}
+
+
+function setDraw3D2(i, zx,zy,zz, xz,yz,xy, gk,k_max, GL,GU,GR,GD) {
+    var t;
+    t=TD_A2[i];
+    t.zx=zx;t.zy=zy;t.zz=zz;
+    t.xz=xz;t.yz=yz;t.xy=xy;
+    t.gk=gk;t.k_max=k_max;
+    t.GL=GL;t.GU=GU;t.GR=GR;t.GD=GD;
+}
+
+
+function deleteDraw3D2(i) {
+    TD_A2.splice(i, 1);
+}
+
+
+function removeDraw3D2(t) {
+    if(TD_A2.indexOf(t)>=0)TD_A2.splice(TD_A2.indexOf(t), 1);//TD_A2.remove(t);
+}
+
+
+// ３Ｄ描画（値指定）
+function _Draw3D2(zx,zy,zz, xz,yz,xy, gk,k_max, GL,GU,GR,GD) {
+    var t,ww,hh,kk,zk;
+    
+    // 描画する時だけメソッドを実行
+    if(!$_doDraw)return;
+  
+  
+    // オブジェクト回転の三角関数
+    RSC();
+  
+    // カメラ回転の計算の三角関数 
+    TD_k_xzsin=$TD_Z.rsin(xz); TD_k_yzsin=$TD_Z.rsin(yz); TD_k_xysin=$TD_Z.rsin(xy);
+    TD_k_xzcos=$TD_Z.rcos(xz); TD_k_yzcos=$TD_Z.rcos(yz); TD_k_xycos=$TD_Z.rcos(xy);
+  
+  
+    ww = GR-GL; // width
+    hh = GD-GU; // height
+    if ($screenWidth>=$screenHeight) zk = ww+gk; // 基準拡大率
+    else                             zk = hh+gk; // 基準拡大率
+    kk = zk/k_max; // 拡大率
+  
+    ww = GL+ww/2; // width/2
+    hh = GU+hh/2; // height/2
+  
+    // 座標回転
+    for (t of TD_AP) {
+        t.kaiten(x,y,z,
+        TD_angleX,TD_angleY,TD_angleZ,
+        TD_angleXZ,TD_angleYZ,TD_angleXY,
+        TD_xzsin,TD_yzsin,TD_xysin,TD_xzcos,TD_yzcos,TD_xycos,
+        zx,zy,zz,
+        TD_k_xzsin,TD_k_yzsin,TD_k_xysin,TD_k_xzcos,TD_k_yzcos,TD_k_xycos);
+    }
+  
+    // めり込み修正
+    for (t of TD_ADR) {
+        t.merikomiSyusei(kk,zk,ww,hh);
+    }
+  
+    // 座標変換
+    for (t of TD_AP) {
+        t.henkan2D(kk,zk,ww,hh);
+    }
+  
+    // はみ出し修正
+    for (t of TD_ADR) {
+        t.hamidasiSyusei(GL,GU,GR,GD);
+    }
+  
+  
+  
+    /*
+    $TD_M_A3D_I=0;
+    for(i=0;i<$chars.length;i++){
+      t=$chars[i];
+      if(t is TD_3D){
+        if(t==this)break;else $TD_M_A3D_I++;
+      }
+    }
+    $TD_M_ADR_I=0;
+    */
+  
+    
+    // 図形表示
+    for (t of TD_ADR) {
+        t.ZukeiDraw(TD_angleDX,TD_alphaDX,TD_scaleXDX,TD_scaleYDX);
+        
+        /*
+        drawLine($TD_M_A3D_I*50+0,$TD_M_ADR_I,$TD_M_A3D_I*50+20,$TD_M_ADR_I,colorHSL((t.n-1)*60+30,240,120));
+        if(t.s!=0)drawLine($TD_M_A3D_I*50+20,$TD_M_ADR_I,$TD_M_A3D_I*50+40,$TD_M_ADR_I,colorHSL((t.s==3)*40,240,120));
+        $TD_M_ADR_I++;
+        */
+    
+    }
+  
+}
+
+
+
+
+
+
+
+
+//----- add3D_P命令（[１つの頂点]を追加する） -----//
+
+function add3D_P(x,y,z) {
+    //■点を追加
+    var p;
+    p = new TD_P(x,y,z);
+    TD_AP.push(p);
+    return p;
+}
+
+
+
+
+
+//----- add3D_XX命令（[１つの図形]を追加する）-----//
+
+
+// DX(DxSprite)追加
+function add3D_DX(m,p1,p,f,angle,alpha,scaleX,scaleY) {
+    var t;
+    t = new TD_DR(1,m,p1,p,f,angle,alpha,scaleX,scaleY);
+    TD_ADR.push(t);
+    return t;
+}
+
+
+// L(線)追加
+function add3D_L(m,p1,p2,c,zt,h,blw,al) {
+    var t;
+    t = new TD_DR(2,m,p1,p2,c,zt,h,blw,al);
+    TD_ADR.push(t);
+    return t;
+}
+
+
+// T(三角形)追加
+function add3D_T(m,p1,p2,p3,c,zt,h,blw,al) {
+    var t;
+    t = new TD_DR(3,m,p1,p2,p3,c,zt,h,blw,al);
+    TD_ADR.push(t);
+    return t;
+}
+
+
+// S(四角形)追加
+function add3D_S(m,p1,p2,p3,p4,c,zt,h,blw,al){
+    var t;
+    t = new TD_DR(4,m,p1,p2,p3,p4,c,zt,h,blw,al);
+    TD_ADR.push(t);
+    return t;
+}
+
+
+
+
+
+//----- add3D_XX_P命令（[頂点]と[１つの図形]をセットで追加する）-----//
+
+
+// DX(DxSprite)追加
+function add3D_DX_P(m,x,y,z,p,f,angle,alpha,scaleX,scaleY) {
+    var t,p1;
+    p1 = new TD_P(x,y,z);
+    t  = new TD_DR(1,m,p1,p,f,angle,alpha,scaleX,scaleY);
+    TD_AP .push(p1);
+    TD_ADR.push(t);
+    return t;
+}
+
+
+// L(線)追加
+function add3D_L_P(m,x,y,z,x2,y2,z2,c,zt,h,blw,al) {
+    var t,p1,p2;
+    p1 = new TD_P(x,y,z);
+    p2 = new TD_P(x2,y2,z2);
+    t  = new TD_DR(2,m,p1,p2,c,zt,h,blw,al);
+    TD_AP .push(p1);
+    TD_AP .push(p2);
+    TD_ADR.push(t);
+    return t;
+}
+
+
+// T(三角形)追加
+function add3D_T_P(m,x,y,z,x2,y2,z2,x3,y3,z3,c,zt,h,blw,al) {
+    var t,p1,p2,p3;
+    p1 = new TD_P(x,y,z);
+    p2 = new TD_P(x2,y2,z2);
+    p3 = new TD_P(x3,y3,z3);
+    t  = new TD_DR(3,m,p1,p2,p3,c,zt,h,blw,al);
+    TD_AP .push(p1);
+    TD_AP .push(p2);
+    TD_AP .push(p3);
+    TD_ADR.push(t);
+    return t;
+}
+
+
+// S(四角形)追加
+function add3D_S_P(m,x,y,z,x2,y2,z2,x3,y3,z3,x4,y4,z4,c,zt,h,blw,al) {
+    var t,p1,p2,p3,p4;
+    p1 = new TD_P(x,y,z);
+    p2 = new TD_P(x2,y2,z2);
+    p3 = new TD_P(x3,y3,z3);
+    p4 = new TD_P(x4,y4,z4);
+    t  = new TD_DR(4,m,p1,p2,p3,p4,c,zt,h,blw,al);
+    TD_AP .push(p1);
+    TD_AP .push(p2);
+    TD_AP .push(p3);
+    TD_AP .push(p4);
+    TD_ADR.push(t);
+    return t;
+}
+
+
+
