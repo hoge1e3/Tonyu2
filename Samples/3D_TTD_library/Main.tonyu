@@ -1,0 +1,51 @@
+// TTD (Tonyu 3D) ライブラリ
+// 
+// Tonyu1 と Tonyu2 の3Dグラフィックを表示するライブラリです。
+// サンプルは下記URLにあります。
+// https://www.tonyu.jp/project/viewProject.cgi?mainkey=301&
+// 
+// WebGLではなくCanvasで描画しているため、下記の制限があります。
+// ・ポリゴンの前後関係がおかしく表示される場合がある
+// ・交差するポリゴンは表現できない(どちらかが手前に表示されてしまう)
+// ・テクスチャは使えない(ポリゴン1枚1色のみ)
+
+// Tonyu1のFrameManagerと同じ動作にする
+onStart();
+onBeforeMove();
+$Boot.on("beforeMove") \{ onBeforeMove(); };
+$Boot.on("afterMove") \{ onAfterMove(); };
+
+function onStart() { // 最初に1度のみ実行される
+    $printSize = 12;
+    print("操作:\n←→:向き\n↑↓:前進後進\nA,Z:上下移動\nS,X:上下角\nD,F:傾き\nQ,W:ズーム");
+    
+    // オブジェクト生成の制限に引っ掛かった場合使います（オブジェクトが多いと制限に引っ掛かることがあります）
+    //$Boot.newLimit=100000; // 現在の オブジェクト数+スレッド数 の限度
+    //update(); // 次フレームから適用されます
+    
+    // 画面サイズ変更
+    //$Screen.resize(600,400);
+    
+    // 初期設定 //
+    $TD_Z=new TD_Z;
+    $TD_Z.STARTING();
+    
+    // カメラ作成 //
+    $Camera=new Camera{
+        x:0, y:500, z:0, // 初期カメラ座標
+        xz:0, yz:0, xy:0, // 初期カメラ角度
+        gk:0, k_max:10, // 初期カメラズーム率, 表示する最大scaleX数
+        GL:0, GU:0, GR:$screenWidth, GD:$screenHeight // 2D画面表示領域
+    };
+    
+    // 3Dオブジェクト作成 //
+    new MyChar{x:-250, y:-250, z:700}; // 初期位置
+}
+
+function onBeforeMove() { // 毎フレーム、全オブジェクトよりも1番最初に実行される
+}
+
+function onAfterMove() { // 毎フレーム、全オブジェクトよりも1番最後に実行される
+    //$TD_Z.FPS(true);   // 描画回数計算
+    $TD_Z.draw3D(); // ３Ｄ描画
+}

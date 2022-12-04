@@ -31,7 +31,7 @@ function STARTING(){ // ３Ｄに必要な初期セッティング
     /* ユーザ設定 */
     $TD_Z_hamidasiSyusei=1; // ●画面はみ出し修正機能のスイッチ
     $TD_M_tenmetuKeigen=1;  // ●点滅軽減機能のスイッチ
-    $TD_M_multiGamen=0;
+    $TD_M_multiGamen=1;     // ●複数カメラ表示機能のスイッチ
   
   
     /* 点滅軽減機能の設定 */
