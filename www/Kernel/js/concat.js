@@ -908,6 +908,339 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"drawTextRect":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null,null,"kernel.Align2D",null],"returnValue":null}},"setFontSize":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"fukidashi":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}}},"fields":{}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.TD_P',
+  shortName: 'TD_P',
+  namespace: 'kernel',
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_TD_P_main() {
+        var _this=this;
+        
+        
+        
+      },
+      fiber$main :function* _trc_TD_P_f_main(_thread) {
+        var _this=this;
+        
+        
+        
+        
+      },
+      initialize :function _trc_TD_P_initialize(xxx,yyy,zzz) {
+        var _this=this;
+        
+        _this.x=xxx;
+        _this.y=yyy;
+        _this.z=zzz;
+        _this.gp=0;
+        _this.gxz=0;
+        _this.gxy=0;
+        _this.gyz=0;
+        _this.ggx=0;
+        _this.ggy=0;
+        _this.ggz=0;
+        _this.x2=0;
+        _this.y2=0;
+        _this.z2=0;
+      },
+      zikuSet :function _trc_TD_P_zikuSet(ggp,xxx,yyy,zzz) {
+        var _this=this;
+        
+        _this.gp=ggp;
+        _this.x2=xxx;
+        _this.y2=yyy;
+        _this.z2=zzz;
+      },
+      fiber$zikuSet :function* _trc_TD_P_f_zikuSet(_thread,ggp,xxx,yyy,zzz) {
+        var _this=this;
+        
+        _this.gp=ggp;
+        _this.x2=xxx;
+        _this.y2=yyy;
+        _this.z2=zzz;
+        
+      },
+      kaiten :function _trc_TD_P_kaiten(xx,yy,zz,ax,ay,az,axz,ayz,axy,xzsin,yzsin,xysin,xzcos,yzcos,xycos,z_x,z_y,z_z,k_xzsin,k_yzsin,k_xysin,k_xzcos,k_yzcos,k_xycos) {
+        var _this=this;
+        var kx;
+        var ky;
+        var gxzsin;
+        var gyzsin;
+        var gxysin;
+        var gxzcos;
+        var gyzcos;
+        var gxycos;
+        var wx;
+        var wy;
+        var wz;
+        
+        
+        if (Tonyu.is(_this.gp,Tonyu.classes.kernel.TD_P)) {
+          _this.sx=_this.gp.x;
+          _this.sy=_this.gp.y;
+          _this.sz=_this.gp.z;
+          
+        } else {
+          _this.sx=_this.x;
+          _this.sy=- _this.y;
+          _this.sz=_this.z;
+          
+        }
+        if (Tonyu.is(_this.gp,Tonyu.classes.kernel.TD_P)) {
+          wx=_this.x2;
+          wy=- _this.y2;
+          wz=_this.z2;
+          gxzsin=Tonyu.globals.$TD_Z.rsin(_this.gxz);
+          gyzsin=Tonyu.globals.$TD_Z.rsin(_this.gyz);
+          gxysin=Tonyu.globals.$TD_Z.rsin(_this.gxy);
+          gxzcos=Tonyu.globals.$TD_Z.rcos(_this.gxz);
+          gyzcos=Tonyu.globals.$TD_Z.rcos(_this.gyz);
+          gxycos=Tonyu.globals.$TD_Z.rcos(_this.gxy);
+          kx=wx*gxycos-wy*gxysin;
+          wy=wy*gxycos+wx*gxysin;
+          wx=kx;
+          ky=wy*gyzcos-wz*gyzsin;
+          wz=wz*gyzcos+wy*gyzsin;
+          wy=ky;
+          kx=wx*gxzcos+wz*gxzsin;
+          wz=wz*gxzcos-wx*gxzsin;
+          wx=kx;
+          _this.sx+=wx;
+          _this.sy+=wy;
+          _this.sz+=wz;
+          _this.x=_this.sx;
+          _this.y=_this.sy;
+          _this.z=_this.sz;
+          
+        }
+        _this.sx-=ax;
+        _this.sy+=ay;
+        _this.sz-=az;
+        kx=_this.sx*xycos-_this.sy*xysin;
+        _this.sy=_this.sy*xycos+_this.sx*xysin;
+        _this.sx=kx;
+        ky=_this.sy*yzcos-_this.sz*yzsin;
+        _this.sz=_this.sz*yzcos+_this.sy*yzsin;
+        _this.sy=ky;
+        kx=_this.sx*xzcos+_this.sz*xzsin;
+        _this.sz=_this.sz*xzcos-_this.sx*xzsin;
+        _this.sx=kx;
+        _this.sx+=ax;
+        _this.sy-=ay;
+        _this.sz+=az;
+        _this.sx+=xx-z_x;
+        _this.sy+=yy+z_y;
+        _this.sz+=zz-z_z;
+        kx=_this.sx*k_xzcos-_this.sz*k_xzsin;
+        _this.sz=_this.sz*k_xzcos+_this.sx*k_xzsin;
+        _this.sx=kx;
+        ky=_this.sy*k_yzcos+_this.sz*k_yzsin;
+        _this.sz=_this.sz*k_yzcos-_this.sy*k_yzsin;
+        _this.sy=ky;
+        kx=_this.sx*k_xycos+_this.sy*k_xysin;
+        _this.sy=_this.sy*k_xycos-_this.sx*k_xysin;
+        _this.sx=kx;
+      },
+      fiber$kaiten :function* _trc_TD_P_f_kaiten(_thread,xx,yy,zz,ax,ay,az,axz,ayz,axy,xzsin,yzsin,xysin,xzcos,yzcos,xycos,z_x,z_y,z_z,k_xzsin,k_yzsin,k_xysin,k_xzcos,k_yzcos,k_xycos) {
+        var _this=this;
+        var kx;
+        var ky;
+        var gxzsin;
+        var gyzsin;
+        var gxysin;
+        var gxzcos;
+        var gyzcos;
+        var gxycos;
+        var wx;
+        var wy;
+        var wz;
+        
+        
+        if (Tonyu.is(_this.gp,Tonyu.classes.kernel.TD_P)) {
+          _this.sx=_this.gp.x;
+          _this.sy=_this.gp.y;
+          _this.sz=_this.gp.z;
+          
+        } else {
+          _this.sx=_this.x;
+          _this.sy=- _this.y;
+          _this.sz=_this.z;
+          
+        }
+        if (Tonyu.is(_this.gp,Tonyu.classes.kernel.TD_P)) {
+          wx=_this.x2;
+          wy=- _this.y2;
+          wz=_this.z2;
+          gxzsin=Tonyu.globals.$TD_Z.rsin(_this.gxz);
+          gyzsin=Tonyu.globals.$TD_Z.rsin(_this.gyz);
+          gxysin=Tonyu.globals.$TD_Z.rsin(_this.gxy);
+          gxzcos=Tonyu.globals.$TD_Z.rcos(_this.gxz);
+          gyzcos=Tonyu.globals.$TD_Z.rcos(_this.gyz);
+          gxycos=Tonyu.globals.$TD_Z.rcos(_this.gxy);
+          kx=wx*gxycos-wy*gxysin;
+          wy=wy*gxycos+wx*gxysin;
+          wx=kx;
+          ky=wy*gyzcos-wz*gyzsin;
+          wz=wz*gyzcos+wy*gyzsin;
+          wy=ky;
+          kx=wx*gxzcos+wz*gxzsin;
+          wz=wz*gxzcos-wx*gxzsin;
+          wx=kx;
+          _this.sx+=wx;
+          _this.sy+=wy;
+          _this.sz+=wz;
+          _this.x=_this.sx;
+          _this.y=_this.sy;
+          _this.z=_this.sz;
+          
+        }
+        _this.sx-=ax;
+        _this.sy+=ay;
+        _this.sz-=az;
+        kx=_this.sx*xycos-_this.sy*xysin;
+        _this.sy=_this.sy*xycos+_this.sx*xysin;
+        _this.sx=kx;
+        ky=_this.sy*yzcos-_this.sz*yzsin;
+        _this.sz=_this.sz*yzcos+_this.sy*yzsin;
+        _this.sy=ky;
+        kx=_this.sx*xzcos+_this.sz*xzsin;
+        _this.sz=_this.sz*xzcos-_this.sx*xzsin;
+        _this.sx=kx;
+        _this.sx+=ax;
+        _this.sy-=ay;
+        _this.sz+=az;
+        _this.sx+=xx-z_x;
+        _this.sy+=yy+z_y;
+        _this.sz+=zz-z_z;
+        kx=_this.sx*k_xzcos-_this.sz*k_xzsin;
+        _this.sz=_this.sz*k_xzcos+_this.sx*k_xzsin;
+        _this.sx=kx;
+        ky=_this.sy*k_yzcos+_this.sz*k_yzsin;
+        _this.sz=_this.sz*k_yzcos-_this.sy*k_yzsin;
+        _this.sy=ky;
+        kx=_this.sx*k_xycos+_this.sy*k_xysin;
+        _this.sy=_this.sy*k_xycos-_this.sx*k_xysin;
+        _this.sx=kx;
+        
+      },
+      henkan2D :function _trc_TD_P_henkan2D(kk,zk,hw,hh) {
+        var _this=this;
+        
+        if (_this.sz>=0) {
+          if (zk!=0) {
+            _this.k=(_this.sz+kk)/zk;
+          }
+          _this.xx=_this.sx/_this.k+hw;
+          _this.yy=_this.sy/_this.k+hh;
+          
+        }
+      },
+      fiber$henkan2D :function* _trc_TD_P_f_henkan2D(_thread,kk,zk,hw,hh) {
+        var _this=this;
+        
+        if (_this.sz>=0) {
+          if (zk!=0) {
+            _this.k=(_this.sz+kk)/zk;
+          }
+          _this.xx=_this.sx/_this.k+hw;
+          _this.yy=_this.sy/_this.k+hh;
+          
+        }
+        
+      },
+      xyzSet :function _trc_TD_P_xyzSet(x,y,z) {
+        var _this=this;
+        
+        _this.x=x;
+        _this.y=y;
+        _this.z=z;
+      },
+      fiber$xyzSet :function* _trc_TD_P_f_xyzSet(_thread,x,y,z) {
+        var _this=this;
+        
+        _this.x=x;
+        _this.y=y;
+        _this.z=z;
+        
+      },
+      sxyzSet :function _trc_TD_P_sxyzSet(sx,sy,sz) {
+        var _this=this;
+        
+        _this.sx=sx;
+        _this.sy=sy;
+        _this.sz=sz;
+      },
+      fiber$sxyzSet :function* _trc_TD_P_f_sxyzSet(_thread,sx,sy,sz) {
+        var _this=this;
+        
+        _this.sx=sx;
+        _this.sy=sy;
+        _this.sz=sz;
+        
+      },
+      xySet :function _trc_TD_P_xySet(xx,yy) {
+        var _this=this;
+        
+        _this.xx=xx;
+        _this.yy=yy;
+      },
+      fiber$xySet :function* _trc_TD_P_f_xySet(_thread,xx,yy) {
+        var _this=this;
+        
+        _this.xx=xx;
+        _this.yy=yy;
+        
+      },
+      xyzSetP :function _trc_TD_P_xyzSetP(p) {
+        var _this=this;
+        
+        _this.x=p.x;
+        _this.y=p.y;
+        _this.z=p.z;
+      },
+      fiber$xyzSetP :function* _trc_TD_P_f_xyzSetP(_thread,p) {
+        var _this=this;
+        
+        _this.x=p.x;
+        _this.y=p.y;
+        _this.z=p.z;
+        
+      },
+      sxyzSetP :function _trc_TD_P_sxyzSetP(p) {
+        var _this=this;
+        
+        _this.sx=p.sx;
+        _this.sy=p.sy;
+        _this.sz=p.sz;
+      },
+      fiber$sxyzSetP :function* _trc_TD_P_f_sxyzSetP(_thread,p) {
+        var _this=this;
+        
+        _this.sx=p.sx;
+        _this.sy=p.sy;
+        _this.sz=p.sz;
+        
+      },
+      xySetP :function _trc_TD_P_xySetP(p) {
+        var _this=this;
+        
+        _this.xx=p.xx;
+        _this.yy=p.yy;
+      },
+      fiber$xySetP :function* _trc_TD_P_f_xySetP(_thread,p) {
+        var _this=this;
+        
+        _this.xx=p.xx;
+        _this.yy=p.yy;
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"zikuSet":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"kaiten":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"henkan2D":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"xyzSet":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"sxyzSet":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"xySet":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"xyzSetP":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"sxyzSetP":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"xySetP":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"x":{},"y":{},"z":{},"gp":{},"gxz":{},"gxy":{},"gyz":{},"ggx":{},"ggy":{},"ggz":{},"x2":{},"y2":{},"z2":{},"sx":{},"sy":{},"sz":{},"k":{},"xx":{},"yy":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.T2Mod',
   shortName: 'T2Mod',
   namespace: 'kernel',
@@ -23882,6 +24215,703 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"drawLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"removeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"selectLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayerIndex":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"canvas2buf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"setBGColor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"all":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":["Array"],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"touchedFingers":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.TQuery",null],"returnValue":null}}},"fields":{"layers":{},"_color":{},"camera":{},"_drawing":{},"clearBG":{},"index":{},"multiLayerTouches":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.TD_Z',
+  shortName: 'TD_Z',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.Actor,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_TD_Z_main() {
+        var _this=this;
+        
+        
+        _this.updateEx();
+      },
+      fiber$main :function* _trc_TD_Z_f_main(_thread) {
+        var _this=this;
+        
+        
+        (yield* _this.fiber$updateEx(_thread));
+        
+      },
+      initialize :function _trc_TD_Z_initialize() {
+        var _this=this;
+        
+        _this.p=- 1;
+        __superClass.apply( _this, []);
+        Tonyu.globals.$TD_M_A3D=[];
+        Tonyu.globals.$TD_M_ACM=[];
+        Tonyu.globals.$TD_M_APL=[];
+      },
+      STARTING :function _trc_TD_Z_STARTING() {
+        var _this=this;
+        var t;
+        
+        
+        Tonyu.globals.$TD_SC_B=10;
+        Tonyu.globals.$TD_Z_hamidasiSyusei=1;
+        Tonyu.globals.$TD_M_tenmetuKeigen=1;
+        Tonyu.globals.$TD_M_multiGamen=1;
+        Tonyu.globals.$TD_M_oyaObjMax=99999999;
+        Tonyu.globals.$TD_M_koObjMax=99999999;
+        Tonyu.globals.$TD_M_syoriMax=99999999;
+        if (! (Tonyu.globals.$sinA instanceof Array)||! (Tonyu.globals.$cosA instanceof Array)||Tonyu.globals.$TD_SC_B!=Tonyu.globals.$TD_SC_B_k) {
+          Tonyu.globals.$TD_SC_B_k=Tonyu.globals.$TD_SC_B;
+          
+        }
+        Tonyu.globals.$TD_Z_x=0;
+        Tonyu.globals.$TD_Z_y=0;
+        Tonyu.globals.$TD_Z_z=0;
+        Tonyu.globals.$TD_Z_xz=0;
+        Tonyu.globals.$TD_Z_yz=0;
+        Tonyu.globals.$TD_Z_xy=0;
+        Tonyu.globals.$TD_Z_gk=0;
+        Tonyu.globals.$TD_Z_k=Tonyu.globals.$screenWidth+Tonyu.globals.$TD_Z_gk;
+        Tonyu.globals.$TD_Z_k_max=10;
+        Tonyu.globals.$TD_G_GL=50;
+        Tonyu.globals.$TD_G_GU=50;
+        Tonyu.globals.$TD_G_GR=Tonyu.globals.$screenWidth-51;
+        Tonyu.globals.$TD_G_GD=Tonyu.globals.$screenHeight-51;
+        Tonyu.globals.$TD_K_k=Tonyu.globals.$TD_Z_k/Tonyu.globals.$TD_Z_k_max;
+        Tonyu.globals.$TD_K_hw=Tonyu.globals.$screenWidth/2;
+        Tonyu.globals.$TD_K_hh=Tonyu.globals.$screenHeight/2;
+        Tonyu.globals.$TD_K_xzsin=0;
+        Tonyu.globals.$TD_K_xzcos=0;
+        Tonyu.globals.$TD_K_yzsin=0;
+        Tonyu.globals.$TD_K_yzcos=0;
+        Tonyu.globals.$TD_K_xysin=0;
+        Tonyu.globals.$TD_K_xycos=0;
+        Tonyu.globals.$TD_K_F=0;
+        Tonyu.globals.$TD_FPS_fps=0;
+        Tonyu.globals.$TD_FPS_fps2=0;
+        Tonyu.globals.$TD_FPS_v=0;
+        Tonyu.globals.$TD_FPS_dv=0;
+        Tonyu.globals.$TD_FPS_gt=0;
+        Tonyu.globals.$TD_FPS_dv2=0;
+        Tonyu.globals.$TD_FPS_gt2=0;
+        Tonyu.globals.$TD_FPS_fps3=0;
+        Tonyu.globals.$TD_PS=new Tonyu.classes.kernel.TD_PS();
+        Tonyu.globals.$TD_M_A3D_I=0;
+        Tonyu.globals.$TD_M_A3D_S=0;
+        Tonyu.globals.$TD_M_ACM_I=0;
+        Tonyu.globals.$TD_M_ACM_S=0;
+        Tonyu.globals.$TD_M_AP_I=0;
+        Tonyu.globals.$TD_M_AP_S=0;
+        Tonyu.globals.$TD_M_ADR_I=0;
+        Tonyu.globals.$TD_M_ADR_S=0;
+        Tonyu.globals.$TD_M_M=0;
+        Tonyu.globals.$TD_M_O=null;
+        Tonyu.globals.$TD_M_CM=null;
+        Tonyu.globals.$TD_M_PL=null;
+        Tonyu.globals.$TD_M_EOF=0;
+      },
+      fiber$STARTING :function* _trc_TD_Z_f_STARTING(_thread) {
+        var _this=this;
+        var t;
+        
+        
+        Tonyu.globals.$TD_SC_B=10;
+        Tonyu.globals.$TD_Z_hamidasiSyusei=1;
+        Tonyu.globals.$TD_M_tenmetuKeigen=1;
+        Tonyu.globals.$TD_M_multiGamen=1;
+        Tonyu.globals.$TD_M_oyaObjMax=99999999;
+        Tonyu.globals.$TD_M_koObjMax=99999999;
+        Tonyu.globals.$TD_M_syoriMax=99999999;
+        if (! (Tonyu.globals.$sinA instanceof Array)||! (Tonyu.globals.$cosA instanceof Array)||Tonyu.globals.$TD_SC_B!=Tonyu.globals.$TD_SC_B_k) {
+          Tonyu.globals.$TD_SC_B_k=Tonyu.globals.$TD_SC_B;
+          
+        }
+        Tonyu.globals.$TD_Z_x=0;
+        Tonyu.globals.$TD_Z_y=0;
+        Tonyu.globals.$TD_Z_z=0;
+        Tonyu.globals.$TD_Z_xz=0;
+        Tonyu.globals.$TD_Z_yz=0;
+        Tonyu.globals.$TD_Z_xy=0;
+        Tonyu.globals.$TD_Z_gk=0;
+        Tonyu.globals.$TD_Z_k=Tonyu.globals.$screenWidth+Tonyu.globals.$TD_Z_gk;
+        Tonyu.globals.$TD_Z_k_max=10;
+        Tonyu.globals.$TD_G_GL=50;
+        Tonyu.globals.$TD_G_GU=50;
+        Tonyu.globals.$TD_G_GR=Tonyu.globals.$screenWidth-51;
+        Tonyu.globals.$TD_G_GD=Tonyu.globals.$screenHeight-51;
+        Tonyu.globals.$TD_K_k=Tonyu.globals.$TD_Z_k/Tonyu.globals.$TD_Z_k_max;
+        Tonyu.globals.$TD_K_hw=Tonyu.globals.$screenWidth/2;
+        Tonyu.globals.$TD_K_hh=Tonyu.globals.$screenHeight/2;
+        Tonyu.globals.$TD_K_xzsin=0;
+        Tonyu.globals.$TD_K_xzcos=0;
+        Tonyu.globals.$TD_K_yzsin=0;
+        Tonyu.globals.$TD_K_yzcos=0;
+        Tonyu.globals.$TD_K_xysin=0;
+        Tonyu.globals.$TD_K_xycos=0;
+        Tonyu.globals.$TD_K_F=0;
+        Tonyu.globals.$TD_FPS_fps=0;
+        Tonyu.globals.$TD_FPS_fps2=0;
+        Tonyu.globals.$TD_FPS_v=0;
+        Tonyu.globals.$TD_FPS_dv=0;
+        Tonyu.globals.$TD_FPS_gt=0;
+        Tonyu.globals.$TD_FPS_dv2=0;
+        Tonyu.globals.$TD_FPS_gt2=0;
+        Tonyu.globals.$TD_FPS_fps3=0;
+        Tonyu.globals.$TD_PS=new Tonyu.classes.kernel.TD_PS();
+        Tonyu.globals.$TD_M_A3D_I=0;
+        Tonyu.globals.$TD_M_A3D_S=0;
+        Tonyu.globals.$TD_M_ACM_I=0;
+        Tonyu.globals.$TD_M_ACM_S=0;
+        Tonyu.globals.$TD_M_AP_I=0;
+        Tonyu.globals.$TD_M_AP_S=0;
+        Tonyu.globals.$TD_M_ADR_I=0;
+        Tonyu.globals.$TD_M_ADR_S=0;
+        Tonyu.globals.$TD_M_M=0;
+        Tonyu.globals.$TD_M_O=null;
+        Tonyu.globals.$TD_M_CM=null;
+        Tonyu.globals.$TD_M_PL=null;
+        Tonyu.globals.$TD_M_EOF=0;
+        
+      },
+      RSC :function _trc_TD_Z_RSC() {
+        var _this=this;
+        
+        Tonyu.globals.$TD_K_xzsin=_this.rsin(Tonyu.globals.$TD_Z_xz);
+        Tonyu.globals.$TD_K_xzcos=_this.rcos(Tonyu.globals.$TD_Z_xz);
+        Tonyu.globals.$TD_K_yzsin=_this.rsin(Tonyu.globals.$TD_Z_yz);
+        Tonyu.globals.$TD_K_yzcos=_this.rcos(Tonyu.globals.$TD_Z_yz);
+        Tonyu.globals.$TD_K_xysin=_this.rsin(Tonyu.globals.$TD_Z_xy);
+        Tonyu.globals.$TD_K_xycos=_this.rcos(Tonyu.globals.$TD_Z_xy);
+      },
+      fiber$RSC :function* _trc_TD_Z_f_RSC(_thread) {
+        var _this=this;
+        
+        Tonyu.globals.$TD_K_xzsin=(yield* _this.fiber$rsin(_thread, Tonyu.globals.$TD_Z_xz));
+        Tonyu.globals.$TD_K_xzcos=(yield* _this.fiber$rcos(_thread, Tonyu.globals.$TD_Z_xz));
+        Tonyu.globals.$TD_K_yzsin=(yield* _this.fiber$rsin(_thread, Tonyu.globals.$TD_Z_yz));
+        Tonyu.globals.$TD_K_yzcos=(yield* _this.fiber$rcos(_thread, Tonyu.globals.$TD_Z_yz));
+        Tonyu.globals.$TD_K_xysin=(yield* _this.fiber$rsin(_thread, Tonyu.globals.$TD_Z_xy));
+        Tonyu.globals.$TD_K_xycos=(yield* _this.fiber$rcos(_thread, Tonyu.globals.$TD_Z_xy));
+        
+      },
+      GKK :function _trc_TD_Z_GKK(zGL,zGU,zGR,zGD) {
+        var _this=this;
+        var ww;
+        var hh;
+        var GL;
+        var GU;
+        var GR;
+        var GD;
+        
+        
+        if (zGL==null) {
+          GL=Tonyu.globals.$TD_G_GL;
+        } else {
+          GL=zGL;
+        }
+        if (zGU==null) {
+          GU=Tonyu.globals.$TD_G_GU;
+        } else {
+          GU=zGU;
+        }
+        if (zGR==null) {
+          GR=Tonyu.globals.$TD_G_GR;
+        } else {
+          GR=zGR;
+        }
+        if (zGD==null) {
+          GD=Tonyu.globals.$TD_G_GD;
+        } else {
+          GD=zGD;
+        }
+        ww=GR-GL;
+        hh=GD-GU;
+        Tonyu.globals.$TD_K_hw=GL+ww/2;
+        Tonyu.globals.$TD_K_hh=GU+hh/2;
+        if (ww<=hh) {
+          Tonyu.globals.$TD_Z_k=ww+Tonyu.globals.$TD_Z_gk;
+        } else {
+          Tonyu.globals.$TD_Z_k=hh+Tonyu.globals.$TD_Z_gk;
+        }
+        Tonyu.globals.$TD_K_k=Tonyu.globals.$TD_Z_k/Tonyu.globals.$TD_Z_k_max;
+      },
+      fiber$GKK :function* _trc_TD_Z_f_GKK(_thread,zGL,zGU,zGR,zGD) {
+        var _this=this;
+        var ww;
+        var hh;
+        var GL;
+        var GU;
+        var GR;
+        var GD;
+        
+        
+        if (zGL==null) {
+          GL=Tonyu.globals.$TD_G_GL;
+        } else {
+          GL=zGL;
+        }
+        if (zGU==null) {
+          GU=Tonyu.globals.$TD_G_GU;
+        } else {
+          GU=zGU;
+        }
+        if (zGR==null) {
+          GR=Tonyu.globals.$TD_G_GR;
+        } else {
+          GR=zGR;
+        }
+        if (zGD==null) {
+          GD=Tonyu.globals.$TD_G_GD;
+        } else {
+          GD=zGD;
+        }
+        ww=GR-GL;
+        hh=GD-GU;
+        Tonyu.globals.$TD_K_hw=GL+ww/2;
+        Tonyu.globals.$TD_K_hh=GU+hh/2;
+        if (ww<=hh) {
+          Tonyu.globals.$TD_Z_k=ww+Tonyu.globals.$TD_Z_gk;
+        } else {
+          Tonyu.globals.$TD_Z_k=hh+Tonyu.globals.$TD_Z_gk;
+        }
+        Tonyu.globals.$TD_K_k=Tonyu.globals.$TD_Z_k/Tonyu.globals.$TD_Z_k_max;
+        
+      },
+      FPS :function _trc_TD_Z_FPS(visible,x1,y1,x2,y2) {
+        var _this=this;
+        var col;
+        
+        
+        if (performance.now()-Tonyu.globals.$TD_FPS_gt>=1000) {
+          Tonyu.globals.$TD_FPS_fps=Tonyu.globals.$TD_FPS_dv;
+          Tonyu.globals.$TD_FPS_fps2=Tonyu.globals.$TD_FPS_v;
+          Tonyu.globals.$TD_FPS_gt=performance.now();
+          Tonyu.globals.$TD_FPS_v=0;
+          Tonyu.globals.$TD_FPS_dv=0;
+          
+        }
+        Tonyu.globals.$TD_FPS_v++;
+        Tonyu.globals.$TD_FPS_dv+=Tonyu.globals.$_doDraw?1:0;
+        if (performance.now()-Tonyu.globals.$TD_FPS_gt2>=100) {
+          Tonyu.globals.$TD_FPS_fps3=Tonyu.globals.$TD_FPS_dv2;
+          Tonyu.globals.$TD_FPS_gt2=performance.now();
+          Tonyu.globals.$TD_FPS_dv2=0;
+          
+        }
+        Tonyu.globals.$TD_FPS_dv2+=Tonyu.globals.$_doDraw?1:0;
+        if (visible) {
+          if (x1==null) {
+            x1=Tonyu.globals.$screenWidth-70;
+          }
+          if (y1==null) {
+            y1=Tonyu.globals.$screenWidth-40;
+          }
+          if (x2==null) {
+            x2=Tonyu.globals.$screenWidth-70;
+          }
+          if (y2==null) {
+            y2=Tonyu.globals.$screenWidth-20;
+          }
+          _this.drawText(x1,y1,"FPS:"+Tonyu.globals.$TD_FPS_fps,_this.colorHSL(140-(Tonyu.globals.$TD_FPS_fps-1)*140/59,240,120),16,- 1);
+          _this.drawText(x2,y2,"RPS:"+Tonyu.globals.$TD_FPS_fps2,_this.colorHSL(140-(Tonyu.globals.$TD_FPS_fps2-1)*140/59,240,120),16,- 1);
+          
+        }
+      },
+      fiber$FPS :function* _trc_TD_Z_f_FPS(_thread,visible,x1,y1,x2,y2) {
+        var _this=this;
+        var col;
+        
+        
+        if (performance.now()-Tonyu.globals.$TD_FPS_gt>=1000) {
+          Tonyu.globals.$TD_FPS_fps=Tonyu.globals.$TD_FPS_dv;
+          Tonyu.globals.$TD_FPS_fps2=Tonyu.globals.$TD_FPS_v;
+          Tonyu.globals.$TD_FPS_gt=performance.now();
+          Tonyu.globals.$TD_FPS_v=0;
+          Tonyu.globals.$TD_FPS_dv=0;
+          
+        }
+        Tonyu.globals.$TD_FPS_v++;
+        Tonyu.globals.$TD_FPS_dv+=Tonyu.globals.$_doDraw?1:0;
+        if (performance.now()-Tonyu.globals.$TD_FPS_gt2>=100) {
+          Tonyu.globals.$TD_FPS_fps3=Tonyu.globals.$TD_FPS_dv2;
+          Tonyu.globals.$TD_FPS_gt2=performance.now();
+          Tonyu.globals.$TD_FPS_dv2=0;
+          
+        }
+        Tonyu.globals.$TD_FPS_dv2+=Tonyu.globals.$_doDraw?1:0;
+        if (visible) {
+          if (x1==null) {
+            x1=Tonyu.globals.$screenWidth-70;
+          }
+          if (y1==null) {
+            y1=Tonyu.globals.$screenWidth-40;
+          }
+          if (x2==null) {
+            x2=Tonyu.globals.$screenWidth-70;
+          }
+          if (y2==null) {
+            y2=Tonyu.globals.$screenWidth-20;
+          }
+          _this.drawText(x1,y1,"FPS:"+Tonyu.globals.$TD_FPS_fps,_this.colorHSL(140-(Tonyu.globals.$TD_FPS_fps-1)*140/59,240,120),16,- 1);
+          _this.drawText(x2,y2,"RPS:"+Tonyu.globals.$TD_FPS_fps2,_this.colorHSL(140-(Tonyu.globals.$TD_FPS_fps2-1)*140/59,240,120),16,- 1);
+          
+        }
+        
+      },
+      draw :function _trc_TD_Z_draw(ctx) {
+        var _this=this;
+        
+      },
+      draw3D :function _trc_TD_Z_draw3D() {
+        var _this=this;
+        var o;
+        var ps;
+        var i;
+        
+        
+        if (Tonyu.globals.$TD_M_tenmetuKeigen!=1) {
+          return _this;
+        }
+        if (! Tonyu.globals.$_doDraw) {
+          return _this;
+        }
+        Tonyu.globals.$TD_M_M=0;
+        Tonyu.globals.$TD_M_EOF=0;
+        Tonyu.globals.$TD_M_A3D_I=0;
+        Tonyu.globals.$TD_M_ACM_I=0;
+        Tonyu.globals.$TD_M_AP_I=0;
+        Tonyu.globals.$TD_M_ADR_I=0;
+        Tonyu.globals.$TD_M_APL_I=0;
+        Tonyu.globals.$TD_M_A3D_S=Tonyu.globals.$TD_M_A3D.length;
+        Tonyu.globals.$TD_M_ACM_S=Tonyu.globals.$TD_M_ACM.length;
+        if (Tonyu.globals.$TD_M_A3D_S<=0) {
+          return _this;
+        }
+        Tonyu.globals.$TD_PS.run();
+      },
+      fiber$draw3D :function* _trc_TD_Z_f_draw3D(_thread) {
+        var _this=this;
+        var o;
+        var ps;
+        var i;
+        
+        
+        if (Tonyu.globals.$TD_M_tenmetuKeigen!=1) {
+          return _this;
+        }
+        if (! Tonyu.globals.$_doDraw) {
+          return _this;
+        }
+        Tonyu.globals.$TD_M_M=0;
+        Tonyu.globals.$TD_M_EOF=0;
+        Tonyu.globals.$TD_M_A3D_I=0;
+        Tonyu.globals.$TD_M_ACM_I=0;
+        Tonyu.globals.$TD_M_AP_I=0;
+        Tonyu.globals.$TD_M_ADR_I=0;
+        Tonyu.globals.$TD_M_APL_I=0;
+        Tonyu.globals.$TD_M_A3D_S=Tonyu.globals.$TD_M_A3D.length;
+        Tonyu.globals.$TD_M_ACM_S=Tonyu.globals.$TD_M_ACM.length;
+        if (Tonyu.globals.$TD_M_A3D_S<=0) {
+          return _this;
+        }
+        Tonyu.globals.$TD_PS.run();
+        
+      },
+      set :function _trc_TD_Z_set(b,h) {
+        var _this=this;
+        var t;
+        var i;
+        
+        
+        _this.sindata=[];
+        _this.cosdata=[];
+        _this.sindata.push(0);
+        _this.sindata.push(0.0017453284);
+        _this.sindata.push(0.0034906514);
+        _this.sindata.push(0.0052359638);
+        _this.sindata.push(0.0069812603);
+        _this.sindata.push(0.0087265355);
+        _this.sindata.push(0.0104717841);
+        _this.sindata.push(0.0122170008);
+        _this.sindata.push(0.0139621803);
+        _this.sindata.push(0.0157073173);
+        _this.sindata.push(0);
+        _this.sindata.push(0.0001745329);
+        _this.sindata.push(0.0003490658);
+        _this.sindata.push(0.0005235988);
+        _this.sindata.push(0.0006981316);
+        _this.sindata.push(0.0008726645);
+        _this.sindata.push(0.0010471974);
+        _this.sindata.push(0.0012217302);
+        _this.sindata.push(0.0013962629);
+        _this.sindata.push(0.0015707957);
+        _this.sindata.push(0);
+        _this.sindata.push(0.0000174533);
+        _this.sindata.push(0.0000349066);
+        _this.sindata.push(0.0000523599);
+        _this.sindata.push(0.0000698132);
+        _this.sindata.push(0.0000872665);
+        _this.sindata.push(0.0001047198);
+        _this.sindata.push(0.000122173);
+        _this.sindata.push(0.0001396263);
+        _this.sindata.push(0.0001570796);
+        _this.cosdata.push(1);
+        _this.cosdata.push(0.999998477);
+        _this.cosdata.push(0.999993908);
+        _this.cosdata.push(0.999986292);
+        _this.cosdata.push(0.999975631);
+        _this.cosdata.push(0.999961923);
+        _this.cosdata.push(0.999945169);
+        _this.cosdata.push(0.99992537);
+        _this.cosdata.push(0.999902524);
+        _this.cosdata.push(0.999876632);
+        _this.cosdata.push(1);
+        _this.cosdata.push(0.999999985);
+        _this.cosdata.push(0.999999939);
+        _this.cosdata.push(0.999999863);
+        _this.cosdata.push(0.999999756);
+        _this.cosdata.push(0.999999619);
+        _this.cosdata.push(0.999999452);
+        _this.cosdata.push(0.999999254);
+        _this.cosdata.push(0.999999025);
+        _this.cosdata.push(0.999998766);
+        _this.cosdata.push(1);
+        _this.cosdata.push(1);
+        _this.cosdata.push(0.999999999);
+        _this.cosdata.push(0.999999999);
+        _this.cosdata.push(0.999999998);
+        _this.cosdata.push(0.999999996);
+        _this.cosdata.push(0.999999995);
+        _this.cosdata.push(0.999999993);
+        _this.cosdata.push(0.99999999);
+        _this.cosdata.push(0.999999988);
+        Tonyu.globals.$sinA=[];
+        Tonyu.globals.$cosA=[];
+        for (i=0; i<360*b ; i++) {
+          {
+            Tonyu.globals.$sinA.push(_this.rsin2(i/b));
+            Tonyu.globals.$cosA.push(_this.rcos2(i/b));
+            if (h&&i%70==0) {
+              _this.drawText(0,0,_this.trunc(i*100/(360*b))+"%",Tonyu.globals.$clWhite,50);
+            }
+          }
+        }
+      },
+      fiber$set :function* _trc_TD_Z_f_set(_thread,b,h) {
+        var _this=this;
+        var t;
+        var i;
+        
+        
+        _this.sindata=[];
+        _this.cosdata=[];
+        _this.sindata.push(0);
+        _this.sindata.push(0.0017453284);
+        _this.sindata.push(0.0034906514);
+        _this.sindata.push(0.0052359638);
+        _this.sindata.push(0.0069812603);
+        _this.sindata.push(0.0087265355);
+        _this.sindata.push(0.0104717841);
+        _this.sindata.push(0.0122170008);
+        _this.sindata.push(0.0139621803);
+        _this.sindata.push(0.0157073173);
+        _this.sindata.push(0);
+        _this.sindata.push(0.0001745329);
+        _this.sindata.push(0.0003490658);
+        _this.sindata.push(0.0005235988);
+        _this.sindata.push(0.0006981316);
+        _this.sindata.push(0.0008726645);
+        _this.sindata.push(0.0010471974);
+        _this.sindata.push(0.0012217302);
+        _this.sindata.push(0.0013962629);
+        _this.sindata.push(0.0015707957);
+        _this.sindata.push(0);
+        _this.sindata.push(0.0000174533);
+        _this.sindata.push(0.0000349066);
+        _this.sindata.push(0.0000523599);
+        _this.sindata.push(0.0000698132);
+        _this.sindata.push(0.0000872665);
+        _this.sindata.push(0.0001047198);
+        _this.sindata.push(0.000122173);
+        _this.sindata.push(0.0001396263);
+        _this.sindata.push(0.0001570796);
+        _this.cosdata.push(1);
+        _this.cosdata.push(0.999998477);
+        _this.cosdata.push(0.999993908);
+        _this.cosdata.push(0.999986292);
+        _this.cosdata.push(0.999975631);
+        _this.cosdata.push(0.999961923);
+        _this.cosdata.push(0.999945169);
+        _this.cosdata.push(0.99992537);
+        _this.cosdata.push(0.999902524);
+        _this.cosdata.push(0.999876632);
+        _this.cosdata.push(1);
+        _this.cosdata.push(0.999999985);
+        _this.cosdata.push(0.999999939);
+        _this.cosdata.push(0.999999863);
+        _this.cosdata.push(0.999999756);
+        _this.cosdata.push(0.999999619);
+        _this.cosdata.push(0.999999452);
+        _this.cosdata.push(0.999999254);
+        _this.cosdata.push(0.999999025);
+        _this.cosdata.push(0.999998766);
+        _this.cosdata.push(1);
+        _this.cosdata.push(1);
+        _this.cosdata.push(0.999999999);
+        _this.cosdata.push(0.999999999);
+        _this.cosdata.push(0.999999998);
+        _this.cosdata.push(0.999999996);
+        _this.cosdata.push(0.999999995);
+        _this.cosdata.push(0.999999993);
+        _this.cosdata.push(0.99999999);
+        _this.cosdata.push(0.999999988);
+        Tonyu.globals.$sinA=[];
+        Tonyu.globals.$cosA=[];
+        for (i=0; i<360*b ; i++) {
+          {
+            Tonyu.globals.$sinA.push(_this.rsin2(i/b));
+            Tonyu.globals.$cosA.push(_this.rcos2(i/b));
+            if (h&&i%70==0) {
+              _this.drawText(0,0,_this.trunc(i*100/(360*b))+"%",Tonyu.globals.$clWhite,50);
+            }
+          }
+        }
+        
+      },
+      rsin :function _trc_TD_Z_rsin(a) {
+        var _this=this;
+        
+        return _this.sin(a);
+      },
+      fiber$rsin :function* _trc_TD_Z_f_rsin(_thread,a) {
+        var _this=this;
+        
+        return _this.sin(a);
+        
+      },
+      rcos :function _trc_TD_Z_rcos(a) {
+        var _this=this;
+        
+        return _this.cos(a);
+      },
+      fiber$rcos :function* _trc_TD_Z_f_rcos(_thread,a) {
+        var _this=this;
+        
+        return _this.cos(a);
+        
+      },
+      rsin2 :function _trc_TD_Z_rsin2(theta,lev) {
+        var _this=this;
+        var value;
+        var i;
+        var alpha;
+        var beta;
+        var level;
+        
+        
+        alpha=_this.floor(theta);
+        beta=theta-alpha;
+        if (lev==null) {
+          value=_this.sin(alpha)*_this.rcos2(10*beta,1)+_this.cos(alpha)*_this.rsin2(10*beta,1);
+          
+        } else {
+          level=lev;
+          if (level<3) {
+            value=_this.sindata[alpha+level*10-10]*_this.rcos2(10*beta,level+1)+_this.cosdata[alpha+level*10-10]*_this.rsin2(10*beta,level+1);
+            
+          } else {
+            value=_this.sindata[alpha+level*10-10];
+            
+          }
+          
+        }
+        return value;
+      },
+      fiber$rsin2 :function* _trc_TD_Z_f_rsin2(_thread,theta,lev) {
+        var _this=this;
+        var value;
+        var i;
+        var alpha;
+        var beta;
+        var level;
+        
+        
+        alpha=_this.floor(theta);
+        beta=theta-alpha;
+        if (lev==null) {
+          value=_this.sin(alpha)*_this.rcos2(10*beta,1)+_this.cos(alpha)*_this.rsin2(10*beta,1);
+          
+        } else {
+          level=lev;
+          if (level<3) {
+            value=_this.sindata[alpha+level*10-10]*_this.rcos2(10*beta,level+1)+_this.cosdata[alpha+level*10-10]*_this.rsin2(10*beta,level+1);
+            
+          } else {
+            value=_this.sindata[alpha+level*10-10];
+            
+          }
+          
+        }
+        return value;
+        
+      },
+      rcos2 :function _trc_TD_Z_rcos2(theta,lev) {
+        var _this=this;
+        var value;
+        var i;
+        var alpha;
+        var beta;
+        var level;
+        
+        
+        alpha=_this.floor(theta);
+        beta=theta-alpha;
+        if (lev==null) {
+          value=_this.cos(alpha)*_this.rcos2(10*beta,1)-_this.sin(alpha)*_this.rsin2(10*beta,1);
+          
+        } else {
+          level=lev;
+          if (level<3) {
+            value=_this.cosdata[alpha+level*10-10]*_this.rcos2(10*beta,level+1)-_this.sindata.get(alpha+level*10-10)*_this.rsin2(10*beta,level+1);
+            
+          } else {
+            value=_this.cosdata[alpha+level*10-10];
+            
+          }
+          
+        }
+        return value;
+      },
+      fiber$rcos2 :function* _trc_TD_Z_f_rcos2(_thread,theta,lev) {
+        var _this=this;
+        var value;
+        var i;
+        var alpha;
+        var beta;
+        var level;
+        
+        
+        alpha=_this.floor(theta);
+        beta=theta-alpha;
+        if (lev==null) {
+          value=_this.cos(alpha)*_this.rcos2(10*beta,1)-_this.sin(alpha)*_this.rsin2(10*beta,1);
+          
+        } else {
+          level=lev;
+          if (level<3) {
+            value=_this.cosdata[alpha+level*10-10]*_this.rcos2(10*beta,level+1)-_this.sindata.get(alpha+level*10-10)*_this.rsin2(10*beta,level+1);
+            
+          } else {
+            value=_this.cosdata[alpha+level*10-10];
+            
+          }
+          
+        }
+        return value;
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"STARTING":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"RSC":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"GKK":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"FPS":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"draw3D":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"rsin":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rcos":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rsin2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"rcos2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"sindata":{},"cosdata":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.KernelDemo',
   shortName: 'KernelDemo',
   namespace: 'kernel',
@@ -35803,6 +36833,7 @@ Tonyu.klass.define({
         if (_this.newLimit) {
           _this.newLimitCount=_this.newLimit;
         }
+        _this.fireEvent("beforeMove");
         sc = _this._scheduler.stepsAll();
         
         Tonyu.globals.$Keys.update();
@@ -35811,6 +36842,7 @@ Tonyu.klass.define({
         if (Tonyu.globals.$sound) {
           Tonyu.globals.$sound.resetSEFrame();
         }
+        _this.fireEvent("afterMove");
         Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
         Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
         _this.moveTime=_this.now()-s;
@@ -35957,7 +36989,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16499() {
+        requestAnimationFrame((function anonymous_16560() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -35973,7 +37005,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16499() {
+        requestAnimationFrame((function anonymous_16560() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -36728,6 +37760,3238 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"__getter__defaultLayer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"morph":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"type":{"vtype":"String"},"fillStyle":{"vtype":"String"},"page":{},"params":{},"duration":{"vtype":"Number"},"pass":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.TD_CM',
+  shortName: 'TD_CM',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.SecretChar,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_TD_CM_main() {
+        var _this=this;
+        
+        
+        
+        
+        
+        
+      },
+      fiber$main :function* _trc_TD_CM_f_main(_thread) {
+        var _this=this;
+        
+        
+        
+        
+        
+        
+        
+      },
+      initialize :function _trc_TD_CM_initialize(opt) {
+        var _this=this;
+        
+        _this.cons();
+        __superClass.apply( _this, [opt]);
+      },
+      cons :function _trc_TD_CM_cons() {
+        var _this=this;
+        
+        _this.x=0;
+        _this.y=0;
+        _this.z=0;
+        _this.xz=0;
+        _this.yz=0;
+        _this.xy=0;
+        _this.gk=0;
+        _this.k_max=10;
+        _this.GL=0;
+        _this.GU=0;
+        _this.GR=Tonyu.globals.$screenWidth;
+        _this.GD=Tonyu.globals.$screenHeight;
+        _this.TD_visible=1;
+      },
+      fiber$cons :function* _trc_TD_CM_f_cons(_thread) {
+        var _this=this;
+        
+        _this.x=0;
+        _this.y=0;
+        _this.z=0;
+        _this.xz=0;
+        _this.yz=0;
+        _this.xy=0;
+        _this.gk=0;
+        _this.k_max=10;
+        _this.GL=0;
+        _this.GU=0;
+        _this.GR=Tonyu.globals.$screenWidth;
+        _this.GD=Tonyu.globals.$screenHeight;
+        _this.TD_visible=1;
+        
+      },
+      onAppear :function _trc_TD_CM_onAppear() {
+        var _this=this;
+        
+        Tonyu.globals.$TD_M_ACM.push(_this);
+      },
+      fiber$onAppear :function* _trc_TD_CM_f_onAppear(_thread) {
+        var _this=this;
+        
+        Tonyu.globals.$TD_M_ACM.push(_this);
+        
+      },
+      onDie :function _trc_TD_CM_onDie() {
+        var _this=this;
+        
+        if (Tonyu.globals.$TD_M_ACM.indexOf(_this)>=0) {
+          Tonyu.globals.$TD_M_ACM.splice(Tonyu.globals.$TD_M_ACM.indexOf(_this),1);
+        }
+      },
+      fiber$onDie :function* _trc_TD_CM_f_onDie(_thread) {
+        var _this=this;
+        
+        if (Tonyu.globals.$TD_M_ACM.indexOf(_this)>=0) {
+          Tonyu.globals.$TD_M_ACM.splice(Tonyu.globals.$TD_M_ACM.indexOf(_this),1);
+        }
+        
+      },
+      cameraSet :function _trc_TD_CM_cameraSet(zx,zy,zz,zxz,zyz,zxy,zgk,zk_max,zGL,zGU,zGR,zGD) {
+        var _this=this;
+        
+        if (zx!=null) {
+          _this.x=zx;
+        }
+        if (zy!=null) {
+          _this.y=zy;
+        }
+        if (zz!=null) {
+          _this.z=zz;
+        }
+        if (zxz!=null) {
+          _this.xz=zxz;
+        }
+        if (zyz!=null) {
+          _this.yz=zyz;
+        }
+        if (zxy!=null) {
+          _this.xy=zxy;
+        }
+        if (zgk!=null) {
+          _this.gk=zgk;
+        }
+        if (zk_max!=null) {
+          _this.k_max=zk_max;
+        }
+        if (zGL!=null) {
+          _this.GL=zGL;
+        }
+        if (zGU!=null) {
+          _this.GU=zGU;
+        }
+        if (zGR!=null) {
+          _this.GR=zGR;
+        }
+        if (zGD!=null) {
+          _this.GD=zGD;
+        }
+      },
+      fiber$cameraSet :function* _trc_TD_CM_f_cameraSet(_thread,zx,zy,zz,zxz,zyz,zxy,zgk,zk_max,zGL,zGU,zGR,zGD) {
+        var _this=this;
+        
+        if (zx!=null) {
+          _this.x=zx;
+        }
+        if (zy!=null) {
+          _this.y=zy;
+        }
+        if (zz!=null) {
+          _this.z=zz;
+        }
+        if (zxz!=null) {
+          _this.xz=zxz;
+        }
+        if (zyz!=null) {
+          _this.yz=zyz;
+        }
+        if (zxy!=null) {
+          _this.xy=zxy;
+        }
+        if (zgk!=null) {
+          _this.gk=zgk;
+        }
+        if (zk_max!=null) {
+          _this.k_max=zk_max;
+        }
+        if (zGL!=null) {
+          _this.GL=zGL;
+        }
+        if (zGU!=null) {
+          _this.GU=zGU;
+        }
+        if (zGR!=null) {
+          _this.GR=zGR;
+        }
+        if (zGD!=null) {
+          _this.GD=zGD;
+        }
+        
+      },
+      cameraMain :function _trc_TD_CM_cameraMain() {
+        var _this=this;
+        
+        Tonyu.globals.$TD_Z_x=_this.x;
+        Tonyu.globals.$TD_Z_y=_this.y;
+        Tonyu.globals.$TD_Z_z=_this.z;
+        Tonyu.globals.$TD_Z_xz=_this.xz;
+        Tonyu.globals.$TD_Z_yz=_this.yz;
+        Tonyu.globals.$TD_Z_xy=_this.xy;
+        Tonyu.globals.$TD_Z_gk=_this.gk;
+        Tonyu.globals.$TD_Z_k_max=_this.k_max;
+        Tonyu.globals.$TD_G_GL=_this.GL;
+        Tonyu.globals.$TD_G_GU=_this.GU;
+        Tonyu.globals.$TD_G_GR=_this.GR;
+        Tonyu.globals.$TD_G_GD=_this.GD;
+      },
+      fiber$cameraMain :function* _trc_TD_CM_f_cameraMain(_thread) {
+        var _this=this;
+        
+        Tonyu.globals.$TD_Z_x=_this.x;
+        Tonyu.globals.$TD_Z_y=_this.y;
+        Tonyu.globals.$TD_Z_z=_this.z;
+        Tonyu.globals.$TD_Z_xz=_this.xz;
+        Tonyu.globals.$TD_Z_yz=_this.yz;
+        Tonyu.globals.$TD_Z_xy=_this.xy;
+        Tonyu.globals.$TD_Z_gk=_this.gk;
+        Tonyu.globals.$TD_Z_k_max=_this.k_max;
+        Tonyu.globals.$TD_G_GL=_this.GL;
+        Tonyu.globals.$TD_G_GU=_this.GU;
+        Tonyu.globals.$TD_G_GR=_this.GR;
+        Tonyu.globals.$TD_G_GD=_this.GD;
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cons":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onAppear":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onDie":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"cameraSet":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"cameraMain":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{},"z":{},"xz":{},"yz":{},"xy":{},"gk":{},"k_max":{},"GL":{},"GU":{},"GR":{},"GD":{},"TD_visible":{}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.TD_DR_1',
+  shortName: 'TD_DR_1',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.PlainChar,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_TD_DR_1_main() {
+        var _this=this;
+        
+        
+        
+        
+        
+        
+        
+      },
+      fiber$main :function* _trc_TD_DR_1_f_main(_thread) {
+        var _this=this;
+        
+        
+        
+        
+        
+        
+        
+        
+      },
+      backFaceCulling :function _trc_TD_DR_1_backFaceCulling(z_x,z_y,z_z) {
+        var _this=this;
+        
+        if (! _this.TD_visible) {
+          return _this;
+        }
+        _this.s=0;
+        if (_this.n!=3&&_this.n!=4) {
+          return _this;
+        }
+        _this.s=- 1;
+        _this.ep.x=(_this.p1.sy-_this.p2.sy)*(_this.p2.sz-_this.p3.sz)-(_this.p1.sz-_this.p2.sz)*(_this.p2.sy-_this.p3.sy);
+        _this.ep.y=(_this.p1.sz-_this.p2.sz)*(_this.p2.sx-_this.p3.sx)-(_this.p1.sx-_this.p2.sx)*(_this.p2.sz-_this.p3.sz);
+        _this.ep.z=(_this.p1.sx-_this.p2.sx)*(_this.p2.sy-_this.p3.sy)-(_this.p1.sy-_this.p2.sy)*(_this.p2.sx-_this.p3.sx);
+        if (_this.ep.x*(_this.p1.sx-z_x*0)+_this.ep.y*(_this.p1.sy-z_y*0)+_this.ep.z*(_this.p1.sz-z_z*0)>0) {
+          _this.s=0;
+          
+        }
+      },
+      fiber$backFaceCulling :function* _trc_TD_DR_1_f_backFaceCulling(_thread,z_x,z_y,z_z) {
+        var _this=this;
+        
+        if (! _this.TD_visible) {
+          return _this;
+        }
+        _this.s=0;
+        if (_this.n!=3&&_this.n!=4) {
+          return _this;
+        }
+        _this.s=- 1;
+        _this.ep.x=(_this.p1.sy-_this.p2.sy)*(_this.p2.sz-_this.p3.sz)-(_this.p1.sz-_this.p2.sz)*(_this.p2.sy-_this.p3.sy);
+        _this.ep.y=(_this.p1.sz-_this.p2.sz)*(_this.p2.sx-_this.p3.sx)-(_this.p1.sx-_this.p2.sx)*(_this.p2.sz-_this.p3.sz);
+        _this.ep.z=(_this.p1.sx-_this.p2.sx)*(_this.p2.sy-_this.p3.sy)-(_this.p1.sy-_this.p2.sy)*(_this.p2.sx-_this.p3.sx);
+        if (_this.ep.x*(_this.p1.sx-z_x*0)+_this.ep.y*(_this.p1.sy-z_y*0)+_this.ep.z*(_this.p1.sz-z_z*0)>0) {
+          _this.s=0;
+          
+        }
+        
+      },
+      merikomiSyusei :function _trc_TD_DR_1_merikomiSyusei(kk,zk,hw,hh) {
+        var _this=this;
+        
+        if (! _this.TD_visible) {
+          return _this;
+        }
+        if (_this.s==- 1) {
+          return _this;
+        }
+        if (_this.n==1) {
+          _this.s=(_this.p1.sz>=0);
+          if (_this.s==0) {
+            return _this;
+          }
+          _this.zo=_this.sqrt(_this.p1.sx*_this.p1.sx+_this.p1.sy*_this.p1.sy+_this.p1.sz*_this.p1.sz);
+          
+        } else {
+          if (_this.n==2) {
+            _this.s=0;
+            _this.np=(_this.p1.sz<0)+(_this.p2.sz<0);
+            if (_this.np==2) {
+              return _this;
+            }
+            if (_this.np==1) {
+              _this.s=2;
+              if (_this.p1.sz<0) {
+                _this.merikomiSyusei_L(_this.p1,_this.p2,kk,zk,hw,hh);
+              } else {
+                if (_this.p2.sz<0) {
+                  _this.merikomiSyusei_L(_this.p2,_this.p1,kk,zk,hw,hh);
+                }
+              }
+              
+            } else {
+              _this.s=1;
+              
+            }
+            if (_this.zt==0||_this.zt==2) {
+              if (_this.np==0) {
+                _this.zo=_this.sqrt(_this.p1.sx*_this.p1.sx+_this.p1.sy*_this.p1.sy+_this.p1.sz*_this.p1.sz);
+                _this.zo2=_this.sqrt(_this.p2.sx*_this.p2.sx+_this.p2.sy*_this.p2.sy+_this.p2.sz*_this.p2.sz);
+                if (! _this.zt) {
+                  if (_this.zo<_this.zo2) {
+                    _this.zo=_this.zo2;
+                  }
+                  
+                } else {
+                  if (_this.zt==2) {
+                    if (_this.zo>_this.zo2) {
+                      _this.zo=_this.zo2;
+                    }
+                    
+                  }
+                }
+                
+              } else {
+                if (! _this.zt) {
+                  _this.zo=_this.sqrt(_this.p2.sx*_this.p2.sx+_this.p2.sy*_this.p2.sy+_this.p2.sz*_this.p2.sz);
+                  
+                } else {
+                  if (_this.zt==2) {
+                    _this.zo=_this.sqrt(_this.p1.sx*_this.p1.sx+_this.p1.sy*_this.p1.sy+_this.p1.sz*_this.p1.sz);
+                    
+                  }
+                }
+                
+              }
+              
+            } else {
+              if (_this.zt==null||_this.zt==1) {
+                _this.zosx=(_this.p1.sx+_this.p2.sx)/2;
+                _this.zosy=(_this.p1.sy+_this.p2.sy)/2;
+                _this.zosz=(_this.p1.sz+_this.p2.sz)/2;
+                if (_this.zosz<0) {
+                  _this.zosz=0;
+                }
+                _this.zo=_this.sqrt(_this.zosx*_this.zosx+_this.zosy*_this.zosy+_this.zosz*_this.zosz);
+                
+              }
+            }
+            
+          } else {
+            if (_this.n==3) {
+              _this.pr=0;
+              _this.s=0;
+              _this.np=(_this.p1.sz<0)+(_this.p2.sz<0)+(_this.p3.sz<0);
+              if (_this.np==3) {
+                return _this;
+              }
+              if (_this.np==1) {
+                _this.pr=4;
+                _this.s=2;
+                if (_this.p1.sz<0) {
+                  _this.merikomiSyusei_T(_this.np,_this.p2,_this.p1,_this.p3,kk,zk,hw,hh);
+                } else {
+                  if (_this.p2.sz<0) {
+                    _this.merikomiSyusei_T(_this.np,_this.p3,_this.p2,_this.p1,kk,zk,hw,hh);
+                  } else {
+                    if (_this.p3.sz<0) {
+                      _this.merikomiSyusei_T(_this.np,_this.p1,_this.p3,_this.p2,kk,zk,hw,hh);
+                    }
+                  }
+                }
+                
+              } else {
+                if (_this.np==2) {
+                  _this.pr=3;
+                  _this.s=2;
+                  if (_this.p1.sz>=0) {
+                    _this.merikomiSyusei_T(_this.np,_this.p2,_this.p1,_this.p3,kk,zk,hw,hh);
+                  } else {
+                    if (_this.p2.sz>=0) {
+                      _this.merikomiSyusei_T(_this.np,_this.p3,_this.p2,_this.p1,kk,zk,hw,hh);
+                    } else {
+                      if (_this.p3.sz>=0) {
+                        _this.merikomiSyusei_T(_this.np,_this.p1,_this.p3,_this.p2,kk,zk,hw,hh);
+                      }
+                    }
+                  }
+                  
+                } else {
+                  if (_this.np==0) {
+                    _this.pr=3;
+                    _this.s=1;
+                    
+                  }
+                }
+              }
+              if (_this.zt==0||_this.zt==2) {
+                if (_this.np==0) {
+                  _this.zo=_this.sqrt(_this.p1.sx*_this.p1.sx+_this.p1.sy*_this.p1.sy+_this.p1.sz*_this.p1.sz);
+                  _this.zo2=_this.sqrt(_this.p2.sx*_this.p2.sx+_this.p2.sy*_this.p2.sy+_this.p2.sz*_this.p2.sz);
+                  _this.zo3=_this.sqrt(_this.p3.sx*_this.p3.sx+_this.p3.sy*_this.p3.sy+_this.p3.sz*_this.p3.sz);
+                  if (! _this.zt) {
+                    if (_this.zo<_this.zo2) {
+                      _this.zo=_this.zo2;
+                    }
+                    if (_this.zo<_this.zo3) {
+                      _this.zo=_this.zo3;
+                    }
+                    
+                  } else {
+                    if (_this.zt==2) {
+                      if (_this.zo>_this.zo2) {
+                        _this.zo=_this.zo2;
+                      }
+                      if (_this.zo>_this.zo3) {
+                        _this.zo=_this.zo3;
+                      }
+                      
+                    }
+                  }
+                  
+                } else {
+                  if (! _this.zt) {
+                    _this.zo=_this.sqrt(_this.dp2.sx*_this.dp2.sx+_this.dp2.sy*_this.dp2.sy+_this.dp2.sz*_this.dp2.sz);
+                    _this.zo2=_this.sqrt(_this.dp3.sx*_this.dp3.sx+_this.dp3.sy*_this.dp3.sy+_this.dp3.sz*_this.dp3.sz);
+                    if (_this.zo<_this.zo2) {
+                      _this.zo=_this.zo2;
+                    }
+                    
+                  } else {
+                    if (_this.zt==2) {
+                      _this.zo=_this.sqrt(_this.dp1.sx*_this.dp1.sx+_this.dp1.sy*_this.dp1.sy+_this.dp1.sz*_this.dp1.sz);
+                      _this.zo2=_this.sqrt(_this.dp3.sx*_this.dp3.sx+_this.dp3.sy*_this.dp3.sy+_this.dp3.sz*_this.dp3.sz);
+                      _this.zo3=_this.sqrt(_this.dp4.sx*_this.dp4.sx+_this.dp4.sy*_this.dp4.sy+_this.dp4.sz*_this.dp4.sz);
+                      if (_this.zo>_this.zo2) {
+                        _this.zo=_this.zo2;
+                      }
+                      if (_this.zo>_this.zo3) {
+                        _this.zo=_this.zo3;
+                      }
+                      
+                    }
+                  }
+                  
+                }
+                
+              } else {
+                if (_this.zt==null||_this.zt==1) {
+                  _this.zosx=(_this.p1.sx+_this.p2.sx+_this.p3.sx)/3;
+                  _this.zosy=(_this.p1.sy+_this.p2.sy+_this.p3.sy)/3;
+                  _this.zosz=(_this.p1.sz+_this.p2.sz+_this.p3.sz)/3;
+                  if (_this.zosz<0) {
+                    _this.zosz=0;
+                  }
+                  _this.zo=_this.sqrt(_this.zosx*_this.zosx+_this.zosy*_this.zosy+_this.zosz*_this.zosz);
+                  
+                }
+              }
+              
+            } else {
+              if (_this.n==4) {
+                _this.pr=0;
+                _this.s=0;
+                _this.np=(_this.p1.sz<0)+(_this.p2.sz<0)+(_this.p3.sz<0)+(_this.p4.sz<0);
+                if (_this.np==4) {
+                  return _this;
+                }
+                if (_this.np==1) {
+                  _this.pr=5;
+                  _this.s=2;
+                  if (_this.p1.sz<0) {
+                    _this.merikomiSyusei_S(_this.np,_this.p2,_this.p1,_this.p4,_this.p3,kk,zk,hw,hh);
+                  } else {
+                    if (_this.p2.sz<0) {
+                      _this.merikomiSyusei_S(_this.np,_this.p3,_this.p2,_this.p1,_this.p4,kk,zk,hw,hh);
+                    } else {
+                      if (_this.p3.sz<0) {
+                        _this.merikomiSyusei_S(_this.np,_this.p4,_this.p3,_this.p2,_this.p1,kk,zk,hw,hh);
+                      } else {
+                        if (_this.p4.sz<0) {
+                          _this.merikomiSyusei_S(_this.np,_this.p1,_this.p4,_this.p3,_this.p2,kk,zk,hw,hh);
+                        }
+                      }
+                    }
+                  }
+                  
+                } else {
+                  if (_this.np==2) {
+                    _this.pr=4;
+                    _this.s=2;
+                    if (_this.p1.sz<0&&_this.p4.sz<0) {
+                      _this.merikomiSyusei_S(_this.np,_this.p2,_this.p1,_this.p4,_this.p3,kk,zk,hw,hh);
+                    } else {
+                      if (_this.p2.sz<0&&_this.p1.sz<0) {
+                        _this.merikomiSyusei_S(_this.np,_this.p3,_this.p2,_this.p1,_this.p4,kk,zk,hw,hh);
+                      } else {
+                        if (_this.p3.sz<0&&_this.p2.sz<0) {
+                          _this.merikomiSyusei_S(_this.np,_this.p4,_this.p3,_this.p2,_this.p1,kk,zk,hw,hh);
+                        } else {
+                          if (_this.p4.sz<0&&_this.p3.sz<0) {
+                            _this.merikomiSyusei_S(_this.np,_this.p1,_this.p4,_this.p3,_this.p2,kk,zk,hw,hh);
+                          }
+                        }
+                      }
+                    }
+                    
+                  } else {
+                    if (_this.np==3) {
+                      _this.pr=3;
+                      _this.s=2;
+                      if (_this.p1.sz>=0) {
+                        _this.merikomiSyusei_S(_this.np,_this.p4,_this.p1,_this.p2,null,kk,zk,hw,hh);
+                      } else {
+                        if (_this.p2.sz>=0) {
+                          _this.merikomiSyusei_S(_this.np,_this.p1,_this.p2,_this.p3,null,kk,zk,hw,hh);
+                        } else {
+                          if (_this.p3.sz>=0) {
+                            _this.merikomiSyusei_S(_this.np,_this.p2,_this.p3,_this.p4,null,kk,zk,hw,hh);
+                          } else {
+                            if (_this.p4.sz>=0) {
+                              _this.merikomiSyusei_S(_this.np,_this.p3,_this.p4,_this.p1,null,kk,zk,hw,hh);
+                            }
+                          }
+                        }
+                      }
+                      
+                    } else {
+                      if (_this.np==0) {
+                        _this.pr=4;
+                        _this.s=1;
+                        
+                      }
+                    }
+                  }
+                }
+                if (_this.zt==0||_this.zt==2) {
+                  if (_this.np==0) {
+                    _this.zo=_this.sqrt(_this.p1.sx*_this.p1.sx+_this.p1.sy*_this.p1.sy+_this.p1.sz*_this.p1.sz);
+                    _this.zo2=_this.sqrt(_this.p2.sx*_this.p2.sx+_this.p2.sy*_this.p2.sy+_this.p2.sz*_this.p2.sz);
+                    _this.zo3=_this.sqrt(_this.p3.sx*_this.p3.sx+_this.p3.sy*_this.p3.sy+_this.p3.sz*_this.p3.sz);
+                    _this.zo4=_this.sqrt(_this.p4.sx*_this.p4.sx+_this.p4.sy*_this.p4.sy+_this.p4.sz*_this.p4.sz);
+                    if (! _this.zt) {
+                      if (_this.zo<_this.zo2) {
+                        _this.zo=_this.zo2;
+                      }
+                      if (_this.zo<_this.zo3) {
+                        _this.zo=_this.zo3;
+                      }
+                      if (_this.zo<_this.zo4) {
+                        _this.zo=_this.zo4;
+                      }
+                      
+                    } else {
+                      if (_this.zt==2) {
+                        if (_this.zo>_this.zo2) {
+                          _this.zo=_this.zo2;
+                        }
+                        if (_this.zo>_this.zo3) {
+                          _this.zo=_this.zo3;
+                        }
+                        if (_this.zo>_this.zo4) {
+                          _this.zo=_this.zo4;
+                        }
+                        
+                      }
+                    }
+                    
+                  } else {
+                    if (! _this.zt) {
+                      _this.zo=_this.sqrt(_this.dp2.sx*_this.dp2.sx+_this.dp2.sy*_this.dp2.sy+_this.dp2.sz*_this.dp2.sz);
+                      _this.zo2=_this.sqrt(_this.dp3.sx*_this.dp3.sx+_this.dp3.sy*_this.dp3.sy+_this.dp3.sz*_this.dp3.sz);
+                      _this.zo3=_this.sqrt(_this.dp4.sx*_this.dp4.sx+_this.dp4.sy*_this.dp4.sy+_this.dp4.sz*_this.dp4.sz);
+                      if (_this.zo<_this.zo2) {
+                        _this.zo=_this.zo2;
+                      }
+                      if (_this.zo<_this.zo3) {
+                        _this.zo=_this.zo3;
+                      }
+                      
+                    } else {
+                      if (_this.zt==2) {
+                        _this.zo=_this.sqrt(_this.dp1.sx*_this.dp1.sx+_this.dp1.sy*_this.dp1.sy+_this.dp1.sz*_this.dp1.sz);
+                        _this.zo2=_this.sqrt(_this.dp3.sx*_this.dp3.sx+_this.dp3.sy*_this.dp3.sy+_this.dp3.sz*_this.dp3.sz);
+                        _this.zo3=_this.sqrt(_this.dp4.sx*_this.dp4.sx+_this.dp4.sy*_this.dp4.sy+_this.dp4.sz*_this.dp4.sz);
+                        _this.zo4=_this.sqrt(_this.dp5.sx*_this.dp5.sx+_this.dp5.sy*_this.dp5.sy+_this.dp5.sz*_this.dp5.sz);
+                        if (_this.zo>_this.zo2) {
+                          _this.zo=_this.zo2;
+                        }
+                        if (_this.zo>_this.zo3) {
+                          _this.zo=_this.zo3;
+                        }
+                        if (_this.zo>_this.zo4) {
+                          _this.zo=_this.zo4;
+                        }
+                        
+                      }
+                    }
+                    
+                  }
+                  
+                } else {
+                  if (_this.zt==null||_this.zt==1) {
+                    _this.zosx=(_this.p1.sx+_this.p2.sx+_this.p3.sx+_this.p4.sx)/4;
+                    _this.zosy=(_this.p1.sy+_this.p2.sy+_this.p3.sy+_this.p4.sy)/4;
+                    _this.zosz=(_this.p1.sz+_this.p2.sz+_this.p3.sz+_this.p4.sz)/4;
+                    if (_this.zosz<0) {
+                      _this.zosz=0;
+                    }
+                    _this.zo=_this.sqrt(_this.zosx*_this.zosx+_this.zosy*_this.zosy+_this.zosz*_this.zosz);
+                    
+                  }
+                }
+                
+              }
+            }
+          }
+        }
+      },
+      fiber$merikomiSyusei :function* _trc_TD_DR_1_f_merikomiSyusei(_thread,kk,zk,hw,hh) {
+        var _this=this;
+        
+        if (! _this.TD_visible) {
+          return _this;
+        }
+        if (_this.s==- 1) {
+          return _this;
+        }
+        if (_this.n==1) {
+          _this.s=(_this.p1.sz>=0);
+          if (_this.s==0) {
+            return _this;
+          }
+          _this.zo=_this.sqrt(_this.p1.sx*_this.p1.sx+_this.p1.sy*_this.p1.sy+_this.p1.sz*_this.p1.sz);
+          
+        } else {
+          if (_this.n==2) {
+            _this.s=0;
+            _this.np=(_this.p1.sz<0)+(_this.p2.sz<0);
+            if (_this.np==2) {
+              return _this;
+            }
+            if (_this.np==1) {
+              _this.s=2;
+              if (_this.p1.sz<0) {
+                (yield* _this.fiber$merikomiSyusei_L(_thread, _this.p1, _this.p2, kk, zk, hw, hh));
+              } else {
+                if (_this.p2.sz<0) {
+                  (yield* _this.fiber$merikomiSyusei_L(_thread, _this.p2, _this.p1, kk, zk, hw, hh));
+                }
+              }
+              
+            } else {
+              _this.s=1;
+              
+            }
+            if (_this.zt==0||_this.zt==2) {
+              if (_this.np==0) {
+                _this.zo=_this.sqrt(_this.p1.sx*_this.p1.sx+_this.p1.sy*_this.p1.sy+_this.p1.sz*_this.p1.sz);
+                _this.zo2=_this.sqrt(_this.p2.sx*_this.p2.sx+_this.p2.sy*_this.p2.sy+_this.p2.sz*_this.p2.sz);
+                if (! _this.zt) {
+                  if (_this.zo<_this.zo2) {
+                    _this.zo=_this.zo2;
+                  }
+                  
+                } else {
+                  if (_this.zt==2) {
+                    if (_this.zo>_this.zo2) {
+                      _this.zo=_this.zo2;
+                    }
+                    
+                  }
+                }
+                
+              } else {
+                if (! _this.zt) {
+                  _this.zo=_this.sqrt(_this.p2.sx*_this.p2.sx+_this.p2.sy*_this.p2.sy+_this.p2.sz*_this.p2.sz);
+                  
+                } else {
+                  if (_this.zt==2) {
+                    _this.zo=_this.sqrt(_this.p1.sx*_this.p1.sx+_this.p1.sy*_this.p1.sy+_this.p1.sz*_this.p1.sz);
+                    
+                  }
+                }
+                
+              }
+              
+            } else {
+              if (_this.zt==null||_this.zt==1) {
+                _this.zosx=(_this.p1.sx+_this.p2.sx)/2;
+                _this.zosy=(_this.p1.sy+_this.p2.sy)/2;
+                _this.zosz=(_this.p1.sz+_this.p2.sz)/2;
+                if (_this.zosz<0) {
+                  _this.zosz=0;
+                }
+                _this.zo=_this.sqrt(_this.zosx*_this.zosx+_this.zosy*_this.zosy+_this.zosz*_this.zosz);
+                
+              }
+            }
+            
+          } else {
+            if (_this.n==3) {
+              _this.pr=0;
+              _this.s=0;
+              _this.np=(_this.p1.sz<0)+(_this.p2.sz<0)+(_this.p3.sz<0);
+              if (_this.np==3) {
+                return _this;
+              }
+              if (_this.np==1) {
+                _this.pr=4;
+                _this.s=2;
+                if (_this.p1.sz<0) {
+                  (yield* _this.fiber$merikomiSyusei_T(_thread, _this.np, _this.p2, _this.p1, _this.p3, kk, zk, hw, hh));
+                } else {
+                  if (_this.p2.sz<0) {
+                    (yield* _this.fiber$merikomiSyusei_T(_thread, _this.np, _this.p3, _this.p2, _this.p1, kk, zk, hw, hh));
+                  } else {
+                    if (_this.p3.sz<0) {
+                      (yield* _this.fiber$merikomiSyusei_T(_thread, _this.np, _this.p1, _this.p3, _this.p2, kk, zk, hw, hh));
+                    }
+                  }
+                }
+                
+              } else {
+                if (_this.np==2) {
+                  _this.pr=3;
+                  _this.s=2;
+                  if (_this.p1.sz>=0) {
+                    (yield* _this.fiber$merikomiSyusei_T(_thread, _this.np, _this.p2, _this.p1, _this.p3, kk, zk, hw, hh));
+                  } else {
+                    if (_this.p2.sz>=0) {
+                      (yield* _this.fiber$merikomiSyusei_T(_thread, _this.np, _this.p3, _this.p2, _this.p1, kk, zk, hw, hh));
+                    } else {
+                      if (_this.p3.sz>=0) {
+                        (yield* _this.fiber$merikomiSyusei_T(_thread, _this.np, _this.p1, _this.p3, _this.p2, kk, zk, hw, hh));
+                      }
+                    }
+                  }
+                  
+                } else {
+                  if (_this.np==0) {
+                    _this.pr=3;
+                    _this.s=1;
+                    
+                  }
+                }
+              }
+              if (_this.zt==0||_this.zt==2) {
+                if (_this.np==0) {
+                  _this.zo=_this.sqrt(_this.p1.sx*_this.p1.sx+_this.p1.sy*_this.p1.sy+_this.p1.sz*_this.p1.sz);
+                  _this.zo2=_this.sqrt(_this.p2.sx*_this.p2.sx+_this.p2.sy*_this.p2.sy+_this.p2.sz*_this.p2.sz);
+                  _this.zo3=_this.sqrt(_this.p3.sx*_this.p3.sx+_this.p3.sy*_this.p3.sy+_this.p3.sz*_this.p3.sz);
+                  if (! _this.zt) {
+                    if (_this.zo<_this.zo2) {
+                      _this.zo=_this.zo2;
+                    }
+                    if (_this.zo<_this.zo3) {
+                      _this.zo=_this.zo3;
+                    }
+                    
+                  } else {
+                    if (_this.zt==2) {
+                      if (_this.zo>_this.zo2) {
+                        _this.zo=_this.zo2;
+                      }
+                      if (_this.zo>_this.zo3) {
+                        _this.zo=_this.zo3;
+                      }
+                      
+                    }
+                  }
+                  
+                } else {
+                  if (! _this.zt) {
+                    _this.zo=_this.sqrt(_this.dp2.sx*_this.dp2.sx+_this.dp2.sy*_this.dp2.sy+_this.dp2.sz*_this.dp2.sz);
+                    _this.zo2=_this.sqrt(_this.dp3.sx*_this.dp3.sx+_this.dp3.sy*_this.dp3.sy+_this.dp3.sz*_this.dp3.sz);
+                    if (_this.zo<_this.zo2) {
+                      _this.zo=_this.zo2;
+                    }
+                    
+                  } else {
+                    if (_this.zt==2) {
+                      _this.zo=_this.sqrt(_this.dp1.sx*_this.dp1.sx+_this.dp1.sy*_this.dp1.sy+_this.dp1.sz*_this.dp1.sz);
+                      _this.zo2=_this.sqrt(_this.dp3.sx*_this.dp3.sx+_this.dp3.sy*_this.dp3.sy+_this.dp3.sz*_this.dp3.sz);
+                      _this.zo3=_this.sqrt(_this.dp4.sx*_this.dp4.sx+_this.dp4.sy*_this.dp4.sy+_this.dp4.sz*_this.dp4.sz);
+                      if (_this.zo>_this.zo2) {
+                        _this.zo=_this.zo2;
+                      }
+                      if (_this.zo>_this.zo3) {
+                        _this.zo=_this.zo3;
+                      }
+                      
+                    }
+                  }
+                  
+                }
+                
+              } else {
+                if (_this.zt==null||_this.zt==1) {
+                  _this.zosx=(_this.p1.sx+_this.p2.sx+_this.p3.sx)/3;
+                  _this.zosy=(_this.p1.sy+_this.p2.sy+_this.p3.sy)/3;
+                  _this.zosz=(_this.p1.sz+_this.p2.sz+_this.p3.sz)/3;
+                  if (_this.zosz<0) {
+                    _this.zosz=0;
+                  }
+                  _this.zo=_this.sqrt(_this.zosx*_this.zosx+_this.zosy*_this.zosy+_this.zosz*_this.zosz);
+                  
+                }
+              }
+              
+            } else {
+              if (_this.n==4) {
+                _this.pr=0;
+                _this.s=0;
+                _this.np=(_this.p1.sz<0)+(_this.p2.sz<0)+(_this.p3.sz<0)+(_this.p4.sz<0);
+                if (_this.np==4) {
+                  return _this;
+                }
+                if (_this.np==1) {
+                  _this.pr=5;
+                  _this.s=2;
+                  if (_this.p1.sz<0) {
+                    (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p2, _this.p1, _this.p4, _this.p3, kk, zk, hw, hh));
+                  } else {
+                    if (_this.p2.sz<0) {
+                      (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p3, _this.p2, _this.p1, _this.p4, kk, zk, hw, hh));
+                    } else {
+                      if (_this.p3.sz<0) {
+                        (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p4, _this.p3, _this.p2, _this.p1, kk, zk, hw, hh));
+                      } else {
+                        if (_this.p4.sz<0) {
+                          (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p1, _this.p4, _this.p3, _this.p2, kk, zk, hw, hh));
+                        }
+                      }
+                    }
+                  }
+                  
+                } else {
+                  if (_this.np==2) {
+                    _this.pr=4;
+                    _this.s=2;
+                    if (_this.p1.sz<0&&_this.p4.sz<0) {
+                      (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p2, _this.p1, _this.p4, _this.p3, kk, zk, hw, hh));
+                    } else {
+                      if (_this.p2.sz<0&&_this.p1.sz<0) {
+                        (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p3, _this.p2, _this.p1, _this.p4, kk, zk, hw, hh));
+                      } else {
+                        if (_this.p3.sz<0&&_this.p2.sz<0) {
+                          (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p4, _this.p3, _this.p2, _this.p1, kk, zk, hw, hh));
+                        } else {
+                          if (_this.p4.sz<0&&_this.p3.sz<0) {
+                            (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p1, _this.p4, _this.p3, _this.p2, kk, zk, hw, hh));
+                          }
+                        }
+                      }
+                    }
+                    
+                  } else {
+                    if (_this.np==3) {
+                      _this.pr=3;
+                      _this.s=2;
+                      if (_this.p1.sz>=0) {
+                        (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p4, _this.p1, _this.p2, null, kk, zk, hw, hh));
+                      } else {
+                        if (_this.p2.sz>=0) {
+                          (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p1, _this.p2, _this.p3, null, kk, zk, hw, hh));
+                        } else {
+                          if (_this.p3.sz>=0) {
+                            (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p2, _this.p3, _this.p4, null, kk, zk, hw, hh));
+                          } else {
+                            if (_this.p4.sz>=0) {
+                              (yield* _this.fiber$merikomiSyusei_S(_thread, _this.np, _this.p3, _this.p4, _this.p1, null, kk, zk, hw, hh));
+                            }
+                          }
+                        }
+                      }
+                      
+                    } else {
+                      if (_this.np==0) {
+                        _this.pr=4;
+                        _this.s=1;
+                        
+                      }
+                    }
+                  }
+                }
+                if (_this.zt==0||_this.zt==2) {
+                  if (_this.np==0) {
+                    _this.zo=_this.sqrt(_this.p1.sx*_this.p1.sx+_this.p1.sy*_this.p1.sy+_this.p1.sz*_this.p1.sz);
+                    _this.zo2=_this.sqrt(_this.p2.sx*_this.p2.sx+_this.p2.sy*_this.p2.sy+_this.p2.sz*_this.p2.sz);
+                    _this.zo3=_this.sqrt(_this.p3.sx*_this.p3.sx+_this.p3.sy*_this.p3.sy+_this.p3.sz*_this.p3.sz);
+                    _this.zo4=_this.sqrt(_this.p4.sx*_this.p4.sx+_this.p4.sy*_this.p4.sy+_this.p4.sz*_this.p4.sz);
+                    if (! _this.zt) {
+                      if (_this.zo<_this.zo2) {
+                        _this.zo=_this.zo2;
+                      }
+                      if (_this.zo<_this.zo3) {
+                        _this.zo=_this.zo3;
+                      }
+                      if (_this.zo<_this.zo4) {
+                        _this.zo=_this.zo4;
+                      }
+                      
+                    } else {
+                      if (_this.zt==2) {
+                        if (_this.zo>_this.zo2) {
+                          _this.zo=_this.zo2;
+                        }
+                        if (_this.zo>_this.zo3) {
+                          _this.zo=_this.zo3;
+                        }
+                        if (_this.zo>_this.zo4) {
+                          _this.zo=_this.zo4;
+                        }
+                        
+                      }
+                    }
+                    
+                  } else {
+                    if (! _this.zt) {
+                      _this.zo=_this.sqrt(_this.dp2.sx*_this.dp2.sx+_this.dp2.sy*_this.dp2.sy+_this.dp2.sz*_this.dp2.sz);
+                      _this.zo2=_this.sqrt(_this.dp3.sx*_this.dp3.sx+_this.dp3.sy*_this.dp3.sy+_this.dp3.sz*_this.dp3.sz);
+                      _this.zo3=_this.sqrt(_this.dp4.sx*_this.dp4.sx+_this.dp4.sy*_this.dp4.sy+_this.dp4.sz*_this.dp4.sz);
+                      if (_this.zo<_this.zo2) {
+                        _this.zo=_this.zo2;
+                      }
+                      if (_this.zo<_this.zo3) {
+                        _this.zo=_this.zo3;
+                      }
+                      
+                    } else {
+                      if (_this.zt==2) {
+                        _this.zo=_this.sqrt(_this.dp1.sx*_this.dp1.sx+_this.dp1.sy*_this.dp1.sy+_this.dp1.sz*_this.dp1.sz);
+                        _this.zo2=_this.sqrt(_this.dp3.sx*_this.dp3.sx+_this.dp3.sy*_this.dp3.sy+_this.dp3.sz*_this.dp3.sz);
+                        _this.zo3=_this.sqrt(_this.dp4.sx*_this.dp4.sx+_this.dp4.sy*_this.dp4.sy+_this.dp4.sz*_this.dp4.sz);
+                        _this.zo4=_this.sqrt(_this.dp5.sx*_this.dp5.sx+_this.dp5.sy*_this.dp5.sy+_this.dp5.sz*_this.dp5.sz);
+                        if (_this.zo>_this.zo2) {
+                          _this.zo=_this.zo2;
+                        }
+                        if (_this.zo>_this.zo3) {
+                          _this.zo=_this.zo3;
+                        }
+                        if (_this.zo>_this.zo4) {
+                          _this.zo=_this.zo4;
+                        }
+                        
+                      }
+                    }
+                    
+                  }
+                  
+                } else {
+                  if (_this.zt==null||_this.zt==1) {
+                    _this.zosx=(_this.p1.sx+_this.p2.sx+_this.p3.sx+_this.p4.sx)/4;
+                    _this.zosy=(_this.p1.sy+_this.p2.sy+_this.p3.sy+_this.p4.sy)/4;
+                    _this.zosz=(_this.p1.sz+_this.p2.sz+_this.p3.sz+_this.p4.sz)/4;
+                    if (_this.zosz<0) {
+                      _this.zosz=0;
+                    }
+                    _this.zo=_this.sqrt(_this.zosx*_this.zosx+_this.zosy*_this.zosy+_this.zosz*_this.zosz);
+                    
+                  }
+                }
+                
+              }
+            }
+          }
+        }
+        
+      },
+      merikomiSyusei_L :function _trc_TD_DR_1_merikomiSyusei_L(up,sp,kk,zk,hw,hh) {
+        var _this=this;
+        var w;
+        
+        
+        _this.dp1.sxyzSetP(up);
+        _this.dp2.sxyzSetP(sp);
+        w=- up.sz/(sp.sz-up.sz);
+        _this.dp1.sx+=(sp.sx-up.sx)*w;
+        _this.dp1.sy+=(sp.sy-up.sy)*w;
+        _this.dp1.sz=0;
+        _this.dp1.henkan2D(kk,zk,hw,hh);
+        _this.dp2.henkan2D(kk,zk,hw,hh);
+      },
+      fiber$merikomiSyusei_L :function* _trc_TD_DR_1_f_merikomiSyusei_L(_thread,up,sp,kk,zk,hw,hh) {
+        var _this=this;
+        var w;
+        
+        
+        _this.dp1.sxyzSetP(up);
+        _this.dp2.sxyzSetP(sp);
+        w=- up.sz/(sp.sz-up.sz);
+        _this.dp1.sx+=(sp.sx-up.sx)*w;
+        _this.dp1.sy+=(sp.sy-up.sy)*w;
+        _this.dp1.sz=0;
+        _this.dp1.henkan2D(kk,zk,hw,hh);
+        _this.dp2.henkan2D(kk,zk,hw,hh);
+        
+      },
+      merikomiSyusei_T :function _trc_TD_DR_1_merikomiSyusei_T(np,sp1,up,sp2,kk,zk,hw,hh) {
+        var _this=this;
+        var w;
+        
+        
+        if (np==1) {
+          _this.dp1.sxyzSetP(up);
+          _this.dp4.sxyzSetP(up);
+          _this.dp2.sxyzSetP(sp1);
+          _this.dp3.sxyzSetP(sp2);
+          w=- up.sz/(sp1.sz-up.sz);
+          _this.dp1.sx+=(sp1.sx-up.sx)*w;
+          _this.dp1.sy+=(sp1.sy-up.sy)*w;
+          _this.dp1.sz=0;
+          w=- up.sz/(sp2.sz-up.sz);
+          _this.dp4.sx+=(sp2.sx-up.sx)*w;
+          _this.dp4.sy+=(sp2.sy-up.sy)*w;
+          _this.dp4.sz=0;
+          _this.dp1.henkan2D(kk,zk,hw,hh);
+          _this.dp2.henkan2D(kk,zk,hw,hh);
+          _this.dp3.henkan2D(kk,zk,hw,hh);
+          _this.dp4.henkan2D(kk,zk,hw,hh);
+          
+        } else {
+          if (np==2) {
+            _this.dp1.sxyzSetP(up);
+            _this.dp2.sxyzSetP(sp1);
+            _this.dp3.sxyzSetP(sp2);
+            w=- sp1.sz/(up.sz-sp1.sz);
+            _this.dp2.sx+=(up.sx-sp1.sx)*w;
+            _this.dp2.sy+=(up.sy-sp1.sy)*w;
+            _this.dp2.sz=0;
+            w=- sp2.sz/(up.sz-sp2.sz);
+            _this.dp3.sx+=(up.sx-sp2.sx)*w;
+            _this.dp3.sy+=(up.sy-sp2.sy)*w;
+            _this.dp3.sz=0;
+            _this.dp1.henkan2D(kk,zk,hw,hh);
+            _this.dp2.henkan2D(kk,zk,hw,hh);
+            _this.dp3.henkan2D(kk,zk,hw,hh);
+            
+          }
+        }
+      },
+      fiber$merikomiSyusei_T :function* _trc_TD_DR_1_f_merikomiSyusei_T(_thread,np,sp1,up,sp2,kk,zk,hw,hh) {
+        var _this=this;
+        var w;
+        
+        
+        if (np==1) {
+          _this.dp1.sxyzSetP(up);
+          _this.dp4.sxyzSetP(up);
+          _this.dp2.sxyzSetP(sp1);
+          _this.dp3.sxyzSetP(sp2);
+          w=- up.sz/(sp1.sz-up.sz);
+          _this.dp1.sx+=(sp1.sx-up.sx)*w;
+          _this.dp1.sy+=(sp1.sy-up.sy)*w;
+          _this.dp1.sz=0;
+          w=- up.sz/(sp2.sz-up.sz);
+          _this.dp4.sx+=(sp2.sx-up.sx)*w;
+          _this.dp4.sy+=(sp2.sy-up.sy)*w;
+          _this.dp4.sz=0;
+          _this.dp1.henkan2D(kk,zk,hw,hh);
+          _this.dp2.henkan2D(kk,zk,hw,hh);
+          _this.dp3.henkan2D(kk,zk,hw,hh);
+          _this.dp4.henkan2D(kk,zk,hw,hh);
+          
+        } else {
+          if (np==2) {
+            _this.dp1.sxyzSetP(up);
+            _this.dp2.sxyzSetP(sp1);
+            _this.dp3.sxyzSetP(sp2);
+            w=- sp1.sz/(up.sz-sp1.sz);
+            _this.dp2.sx+=(up.sx-sp1.sx)*w;
+            _this.dp2.sy+=(up.sy-sp1.sy)*w;
+            _this.dp2.sz=0;
+            w=- sp2.sz/(up.sz-sp2.sz);
+            _this.dp3.sx+=(up.sx-sp2.sx)*w;
+            _this.dp3.sy+=(up.sy-sp2.sy)*w;
+            _this.dp3.sz=0;
+            _this.dp1.henkan2D(kk,zk,hw,hh);
+            _this.dp2.henkan2D(kk,zk,hw,hh);
+            _this.dp3.henkan2D(kk,zk,hw,hh);
+            
+          }
+        }
+        
+      },
+      merikomiSyusei_S :function _trc_TD_DR_1_merikomiSyusei_S(np,sp1,up,sp2,sp3,kk,zk,hw,hh) {
+        var _this=this;
+        var w;
+        
+        
+        if (np==1) {
+          _this.dp1.sxyzSetP(up);
+          _this.dp5.sxyzSetP(up);
+          _this.dp2.sxyzSetP(sp1);
+          _this.dp3.sxyzSetP(sp3);
+          _this.dp4.sxyzSetP(sp2);
+          w=- up.sz/(sp1.sz-up.sz);
+          _this.dp1.sx+=(sp1.sx-up.sx)*w;
+          _this.dp1.sy+=(sp1.sy-up.sy)*w;
+          _this.dp1.sz=0;
+          w=- up.sz/(sp2.sz-up.sz);
+          _this.dp5.sx+=(sp2.sx-up.sx)*w;
+          _this.dp5.sy+=(sp2.sy-up.sy)*w;
+          _this.dp5.sz=0;
+          _this.dp1.henkan2D(kk,zk,hw,hh);
+          _this.dp2.henkan2D(kk,zk,hw,hh);
+          _this.dp3.henkan2D(kk,zk,hw,hh);
+          _this.dp4.henkan2D(kk,zk,hw,hh);
+          _this.dp5.henkan2D(kk,zk,hw,hh);
+          
+        } else {
+          if (np==2) {
+            _this.dp1.sxyzSetP(up);
+            _this.dp2.sxyzSetP(sp1);
+            _this.dp3.sxyzSetP(sp3);
+            _this.dp4.sxyzSetP(sp2);
+            w=- up.sz/(sp1.sz-up.sz);
+            _this.dp1.sx+=(sp1.sx-up.sx)*w;
+            _this.dp1.sy+=(sp1.sy-up.sy)*w;
+            _this.dp1.sz=0;
+            w=- sp2.sz/(sp3.sz-sp2.sz);
+            _this.dp4.sx+=(sp3.sx-sp2.sx)*w;
+            _this.dp4.sy+=(sp3.sy-sp2.sy)*w;
+            _this.dp4.sz=0;
+            _this.dp1.henkan2D(kk,zk,hw,hh);
+            _this.dp2.henkan2D(kk,zk,hw,hh);
+            _this.dp3.henkan2D(kk,zk,hw,hh);
+            _this.dp4.henkan2D(kk,zk,hw,hh);
+            
+          } else {
+            if (np==3) {
+              _this.dp1.sxyzSetP(sp1);
+              _this.dp2.sxyzSetP(up);
+              _this.dp3.sxyzSetP(sp2);
+              w=- sp1.sz/(up.sz-sp1.sz);
+              _this.dp1.sx+=(up.sx-sp1.sx)*w;
+              _this.dp1.sy+=(up.sy-sp1.sy)*w;
+              _this.dp1.sz=0;
+              w=- sp2.sz/(up.sz-sp2.sz);
+              _this.dp3.sx+=(up.sx-sp2.sx)*w;
+              _this.dp3.sy+=(up.sy-sp2.sy)*w;
+              _this.dp3.sz=0;
+              _this.dp1.henkan2D(kk,zk,hw,hh);
+              _this.dp2.henkan2D(kk,zk,hw,hh);
+              _this.dp3.henkan2D(kk,zk,hw,hh);
+              
+            }
+          }
+        }
+      },
+      fiber$merikomiSyusei_S :function* _trc_TD_DR_1_f_merikomiSyusei_S(_thread,np,sp1,up,sp2,sp3,kk,zk,hw,hh) {
+        var _this=this;
+        var w;
+        
+        
+        if (np==1) {
+          _this.dp1.sxyzSetP(up);
+          _this.dp5.sxyzSetP(up);
+          _this.dp2.sxyzSetP(sp1);
+          _this.dp3.sxyzSetP(sp3);
+          _this.dp4.sxyzSetP(sp2);
+          w=- up.sz/(sp1.sz-up.sz);
+          _this.dp1.sx+=(sp1.sx-up.sx)*w;
+          _this.dp1.sy+=(sp1.sy-up.sy)*w;
+          _this.dp1.sz=0;
+          w=- up.sz/(sp2.sz-up.sz);
+          _this.dp5.sx+=(sp2.sx-up.sx)*w;
+          _this.dp5.sy+=(sp2.sy-up.sy)*w;
+          _this.dp5.sz=0;
+          _this.dp1.henkan2D(kk,zk,hw,hh);
+          _this.dp2.henkan2D(kk,zk,hw,hh);
+          _this.dp3.henkan2D(kk,zk,hw,hh);
+          _this.dp4.henkan2D(kk,zk,hw,hh);
+          _this.dp5.henkan2D(kk,zk,hw,hh);
+          
+        } else {
+          if (np==2) {
+            _this.dp1.sxyzSetP(up);
+            _this.dp2.sxyzSetP(sp1);
+            _this.dp3.sxyzSetP(sp3);
+            _this.dp4.sxyzSetP(sp2);
+            w=- up.sz/(sp1.sz-up.sz);
+            _this.dp1.sx+=(sp1.sx-up.sx)*w;
+            _this.dp1.sy+=(sp1.sy-up.sy)*w;
+            _this.dp1.sz=0;
+            w=- sp2.sz/(sp3.sz-sp2.sz);
+            _this.dp4.sx+=(sp3.sx-sp2.sx)*w;
+            _this.dp4.sy+=(sp3.sy-sp2.sy)*w;
+            _this.dp4.sz=0;
+            _this.dp1.henkan2D(kk,zk,hw,hh);
+            _this.dp2.henkan2D(kk,zk,hw,hh);
+            _this.dp3.henkan2D(kk,zk,hw,hh);
+            _this.dp4.henkan2D(kk,zk,hw,hh);
+            
+          } else {
+            if (np==3) {
+              _this.dp1.sxyzSetP(sp1);
+              _this.dp2.sxyzSetP(up);
+              _this.dp3.sxyzSetP(sp2);
+              w=- sp1.sz/(up.sz-sp1.sz);
+              _this.dp1.sx+=(up.sx-sp1.sx)*w;
+              _this.dp1.sy+=(up.sy-sp1.sy)*w;
+              _this.dp1.sz=0;
+              w=- sp2.sz/(up.sz-sp2.sz);
+              _this.dp3.sx+=(up.sx-sp2.sx)*w;
+              _this.dp3.sy+=(up.sy-sp2.sy)*w;
+              _this.dp3.sz=0;
+              _this.dp1.henkan2D(kk,zk,hw,hh);
+              _this.dp2.henkan2D(kk,zk,hw,hh);
+              _this.dp3.henkan2D(kk,zk,hw,hh);
+              
+            }
+          }
+        }
+        
+      },
+      hamidasiSyusei :function _trc_TD_DR_1_hamidasiSyusei(GL,GU,GR,GD,scaleXDX,scaleYDX) {
+        var _this=this;
+        var hh;
+        var hx;
+        var hy;
+        var hx1;
+        var hy1;
+        var hx2;
+        var hy2;
+        var hx3;
+        var hy3;
+        var hx4;
+        var hy4;
+        var hx5;
+        var hy5;
+        var i;
+        var ss;
+        var pp1;
+        var pp2;
+        var cc;
+        var width;
+        var height;
+        
+        
+        if (! _this.TD_visible) {
+          return _this;
+        }
+        if (_this.s==- 1) {
+          return _this;
+        }
+        if (_this.n==1) {
+          cc = Tonyu.globals.$imageList[_this.floor(_this.c||0)];
+          
+          width = 2;
+          height = 2;
+          
+          if (cc) {
+            _this.ccwidth=cc.width;
+            _this.ccheight=cc.height;
+            
+          }
+          ss = 1/_this.p1.k;
+          
+          _this.k1=ss*_this.scaleX*scaleXDX;
+          if (scaleYDX) {
+            if (_this.scaleY) {
+              _this.k2=ss*_this.scaleY*scaleYDX;
+            } else {
+              _this.k2=ss*_this.scaleX*scaleYDX;
+            }
+            
+          } else {
+            if (_this.scaleY) {
+              _this.k2=ss*_this.scaleY*scaleXDX;
+              
+            }
+            
+          }
+          hx=_this.hamidasiSyusei_hantei_X(_this.p1,GL,GR,_this.abs(_this.ccwidth*_this.k1/2));
+          hy=_this.hamidasiSyusei_hantei_Y(_this.p1,GU,GD,_this.abs(_this.ccheight*_this.k2/2));
+          if (hx!=0||hy!=0) {
+            _this.s=0;
+          }
+          
+        } else {
+          if (_this.n==2) {
+            if (_this.s!=0) {
+              if (_this.s==1) {
+                hx1=_this.hamidasiSyusei_hantei_X(_this.p1,GL,GR);
+                hy1=_this.hamidasiSyusei_hantei_Y(_this.p1,GU,GD);
+                hx2=_this.hamidasiSyusei_hantei_X(_this.p2,GL,GR);
+                hy2=_this.hamidasiSyusei_hantei_Y(_this.p2,GU,GD);
+                
+              } else {
+                if (_this.s==2) {
+                  hx1=_this.hamidasiSyusei_hantei_X(_this.dp1,GL,GR);
+                  hy1=_this.hamidasiSyusei_hantei_Y(_this.dp1,GU,GD);
+                  hx2=_this.hamidasiSyusei_hantei_X(_this.dp2,GL,GR);
+                  hy2=_this.hamidasiSyusei_hantei_Y(_this.dp2,GU,GD);
+                  
+                }
+              }
+              hx=hx1+hx2;
+              hy=hy1+hy2;
+              if (hx==0&&hy==0) {
+                return _this;
+              }
+              if (hx!=0&&hx1==hx2) {
+                _this.s=0;
+                return _this;
+                
+              }
+              if (hy!=0&&hy1==hy2) {
+                _this.s=0;
+                return _this;
+                
+              }
+              if (Tonyu.globals.$TD_Z_hamidasiSyusei==0) {
+                return _this;
+              }
+              if (_this.s==1) {
+                _this.dp1.xySetP(_this.p1);
+                _this.dp2.xySetP(_this.p2);
+                
+              }
+              _this.s=_this.hamidasiSyusei_L(_this.dp1,_this.dp2,GL,GU,GR,GD);
+              
+            }
+            
+          } else {
+            if (_this.n==3||_this.n==4) {
+              if (_this.s!=0) {
+                if (_this.m==3) {
+                  if (_this.s==1) {
+                    if (_this.p1.xx<_this.p2.xx) {
+                      _this.bmpGL=_this.p1.xx;
+                    } else {
+                      _this.bmpGL=_this.p2.xx;
+                    }
+                    if (_this.p1.yy<_this.p2.yy) {
+                      _this.bmpGU=_this.p1.yy;
+                    } else {
+                      _this.bmpGU=_this.p2.yy;
+                    }
+                    if (_this.p1.xx>_this.p2.xx) {
+                      _this.bmpGR=_this.p1.xx;
+                    } else {
+                      _this.bmpGR=_this.p2.xx;
+                    }
+                    if (_this.p1.yy>_this.p2.yy) {
+                      _this.bmpGD=_this.p1.yy;
+                    } else {
+                      _this.bmpGD=_this.p2.yy;
+                    }
+                    if (_this.p3.xx<_this.bmpGL) {
+                      _this.bmpGL=_this.p3.xx;
+                    }
+                    if (_this.p3.yy<_this.bmpGU) {
+                      _this.bmpGU=_this.p3.yy;
+                    }
+                    if (_this.p3.xx>_this.bmpGR) {
+                      _this.bmpGR=_this.p3.xx;
+                    }
+                    if (_this.p3.yy>_this.bmpGD) {
+                      _this.bmpGD=_this.p3.yy;
+                    }
+                    if (_this.pr>=4) {
+                      if (_this.p4.xx<_this.bmpGL) {
+                        _this.bmpGL=_this.p4.xx;
+                      }
+                      if (_this.p4.yy<_this.bmpGU) {
+                        _this.bmpGU=_this.p4.yy;
+                      }
+                      if (_this.p4.xx>_this.bmpGR) {
+                        _this.bmpGR=_this.p4.xx;
+                      }
+                      if (_this.p4.yy>_this.bmpGD) {
+                        _this.bmpGD=_this.p4.yy;
+                      }
+                      
+                    }
+                    
+                  } else {
+                    if (_this.s==2) {
+                      if (_this.dp1.xx<_this.dp2.xx) {
+                        _this.bmpGL=_this.dp1.xx;
+                      } else {
+                        _this.bmpGL=_this.dp2.xx;
+                      }
+                      if (_this.dp1.yy<_this.dp2.yy) {
+                        _this.bmpGU=_this.dp1.yy;
+                      } else {
+                        _this.bmpGU=_this.dp2.yy;
+                      }
+                      if (_this.dp1.xx>_this.dp2.xx) {
+                        _this.bmpGR=_this.dp1.xx;
+                      } else {
+                        _this.bmpGR=_this.dp2.xx;
+                      }
+                      if (_this.dp1.yy>_this.dp2.yy) {
+                        _this.bmpGD=_this.dp1.yy;
+                      } else {
+                        _this.bmpGD=_this.dp2.yy;
+                      }
+                      if (_this.dp3.xx<_this.bmpGL) {
+                        _this.bmpGL=_this.dp3.xx;
+                      }
+                      if (_this.dp3.yy<_this.bmpGU) {
+                        _this.bmpGU=_this.dp3.yy;
+                      }
+                      if (_this.dp3.xx>_this.bmpGR) {
+                        _this.bmpGR=_this.dp3.xx;
+                      }
+                      if (_this.dp3.yy>_this.bmpGD) {
+                        _this.bmpGD=_this.dp3.yy;
+                      }
+                      if (_this.pr>=4) {
+                        if (_this.dp4.xx<_this.bmpGL) {
+                          _this.bmpGL=_this.dp4.xx;
+                        }
+                        if (_this.dp4.yy<_this.bmpGU) {
+                          _this.bmpGU=_this.dp4.yy;
+                        }
+                        if (_this.dp4.xx>_this.bmpGR) {
+                          _this.bmpGR=_this.dp4.xx;
+                        }
+                        if (_this.dp4.yy>_this.bmpGD) {
+                          _this.bmpGD=_this.dp4.yy;
+                        }
+                        
+                      }
+                      if (_this.pr>=5) {
+                        if (_this.dp5.xx<_this.bmpGL) {
+                          _this.bmpGL=_this.dp5.xx;
+                        }
+                        if (_this.dp5.yy<_this.bmpGU) {
+                          _this.bmpGU=_this.dp5.yy;
+                        }
+                        if (_this.dp5.xx>_this.bmpGR) {
+                          _this.bmpGR=_this.dp5.xx;
+                        }
+                        if (_this.dp5.yy>_this.bmpGD) {
+                          _this.bmpGD=_this.dp5.yy;
+                        }
+                        
+                      }
+                      
+                    }
+                  }
+                  
+                }
+                if (_this.s==1) {
+                  hx1=_this.hamidasiSyusei_hantei_X(_this.p1,GL,GR);
+                  hy1=_this.hamidasiSyusei_hantei_Y(_this.p1,GU,GD);
+                  hx2=_this.hamidasiSyusei_hantei_X(_this.p2,GL,GR);
+                  hy2=_this.hamidasiSyusei_hantei_Y(_this.p2,GU,GD);
+                  hx3=_this.hamidasiSyusei_hantei_X(_this.p3,GL,GR);
+                  hy3=_this.hamidasiSyusei_hantei_Y(_this.p3,GU,GD);
+                  if (_this.pr>=4) {
+                    hx4=_this.hamidasiSyusei_hantei_X(_this.p4,GL,GR);
+                    hy4=_this.hamidasiSyusei_hantei_Y(_this.p4,GU,GD);
+                    
+                  }
+                  
+                } else {
+                  if (_this.s==2) {
+                    hx1=_this.hamidasiSyusei_hantei_X(_this.dp1,GL,GR);
+                    hy1=_this.hamidasiSyusei_hantei_Y(_this.dp1,GU,GD);
+                    hx2=_this.hamidasiSyusei_hantei_X(_this.dp2,GL,GR);
+                    hy2=_this.hamidasiSyusei_hantei_Y(_this.dp2,GU,GD);
+                    hx3=_this.hamidasiSyusei_hantei_X(_this.dp3,GL,GR);
+                    hy3=_this.hamidasiSyusei_hantei_Y(_this.dp3,GU,GD);
+                    if (_this.pr>=4) {
+                      hx4=_this.hamidasiSyusei_hantei_X(_this.dp4,GL,GR);
+                      hy4=_this.hamidasiSyusei_hantei_Y(_this.dp4,GU,GD);
+                      
+                    }
+                    if (_this.pr>=5) {
+                      hx5=_this.hamidasiSyusei_hantei_X(_this.dp5,GL,GR);
+                      hy5=_this.hamidasiSyusei_hantei_Y(_this.dp5,GU,GD);
+                      
+                    }
+                    
+                  }
+                }
+                if (_this.pr==3) {
+                  hx=hx1+hx2+hx3;
+                  hy=hy1+hy2+hy3;
+                  if (hx==0&&hy==0) {
+                    return _this;
+                  }
+                  if (hx!=0&&(hx1==hx2&&hx2==hx3)) {
+                    _this.s=0;
+                    return _this;
+                    
+                  }
+                  if (hy!=0&&(hy1==hy2&&hy2==hy3)) {
+                    _this.s=0;
+                    return _this;
+                    
+                  }
+                  
+                } else {
+                  if (_this.pr==4) {
+                    hx=hx1+hx2+hx3+hx4;
+                    hy=hy1+hy2+hy3+hy4;
+                    if (hx==0&&hy==0) {
+                      return _this;
+                    }
+                    if (hx!=0&&(hx1==hx2&&hx2==hx3&&hx3==hx4)) {
+                      _this.s=0;
+                      return _this;
+                      
+                    }
+                    if (hy!=0&&(hy1==hy2&&hy2==hy3&&hy3==hy4)) {
+                      _this.s=0;
+                      return _this;
+                      
+                    }
+                    
+                  } else {
+                    if (_this.pr==5) {
+                      hx=hx1+hx2+hx3+hx4+hx5;
+                      hy=hy1+hy2+hy3+hy4+hy5;
+                      if (hx==0&&hy==0) {
+                        return _this;
+                      }
+                      if (hx!=0&&(hx1==hx2&&hx2==hx3&&hx3==hx4&&hx4==hx5)) {
+                        _this.s=0;
+                        return _this;
+                        
+                      }
+                      if (hy!=0&&(hy1==hy2&&hy2==hy3&&hy3==hy4&&hy4==hy5)) {
+                        _this.s=0;
+                        return _this;
+                        
+                      }
+                      
+                    }
+                  }
+                }
+                if (Tonyu.globals.$TD_Z_hamidasiSyusei==0) {
+                  return _this;
+                }
+                if (_this.dpA.length) {
+                  _this.dpA.splice(0);
+                }
+                if (_this.dpAsw.length) {
+                  _this.dpAsw.splice(0);
+                }
+                if (_this.s==1) {
+                  _this.dp1.xySetP(_this.p1);
+                  _this.dp2.xySetP(_this.p2);
+                  _this.dp3.xySetP(_this.p3);
+                  if (_this.pr>=4) {
+                    _this.dp4.xySetP(_this.p4);
+                  }
+                  
+                }
+                if (_this.pr>=5) {
+                  _this.dp10.xySetP(_this.dp5);
+                  _this.dp9.xySetP(_this.dp5);
+                  
+                }
+                if (_this.pr>=4) {
+                  _this.dp8.xySetP(_this.dp4);
+                  _this.dp7.xySetP(_this.dp4);
+                  
+                }
+                _this.dp6.xySetP(_this.dp3);
+                _this.dp5.xySetP(_this.dp3);
+                _this.dp4.xySetP(_this.dp2);
+                _this.dp3.xySetP(_this.dp2);
+                _this.dp2.xySetP(_this.dp1);
+                hh=_this.hamidasiSyusei_X(_this.dp2,_this.dp3,GL,GR);
+                if (hh!=0) {
+                  _this.dpAsw.push(_this.dp2);
+                  if (hh==2) {
+                    _this.dpAsw.push(_this.dp3);
+                  }
+                  
+                }
+                hh=_this.hamidasiSyusei_X(_this.dp4,_this.dp5,GL,GR);
+                if (hh!=0) {
+                  _this.dpAsw.push(_this.dp4);
+                  if (hh==2) {
+                    _this.dpAsw.push(_this.dp5);
+                  }
+                  
+                }
+                if (_this.pr==3) {
+                  hh=_this.hamidasiSyusei_X(_this.dp6,_this.dp1,GL,GR);
+                  if (hh!=0) {
+                    _this.dpAsw.push(_this.dp6);
+                    if (hh==2) {
+                      _this.dpAsw.push(_this.dp1);
+                    }
+                    
+                  }
+                  
+                } else {
+                  if (_this.pr==4) {
+                    hh=_this.hamidasiSyusei_X(_this.dp6,_this.dp7,GL,GR);
+                    if (hh!=0) {
+                      _this.dpAsw.push(_this.dp6);
+                      if (hh==2) {
+                        _this.dpAsw.push(_this.dp7);
+                      }
+                      
+                    }
+                    hh=_this.hamidasiSyusei_X(_this.dp8,_this.dp1,GL,GR);
+                    if (hh!=0) {
+                      _this.dpAsw.push(_this.dp8);
+                      if (hh==2) {
+                        _this.dpAsw.push(_this.dp1);
+                      }
+                      
+                    }
+                    
+                  } else {
+                    if (_this.pr==5) {
+                      hh=_this.hamidasiSyusei_X(_this.dp6,_this.dp7,GL,GR);
+                      if (hh!=0) {
+                        _this.dpAsw.push(_this.dp6);
+                        if (hh==2) {
+                          _this.dpAsw.push(_this.dp7);
+                        }
+                        
+                      }
+                      hh=_this.hamidasiSyusei_X(_this.dp8,_this.dp9,GL,GR);
+                      if (hh!=0) {
+                        _this.dpAsw.push(_this.dp8);
+                        if (hh==2) {
+                          _this.dpAsw.push(_this.dp9);
+                        }
+                        
+                      }
+                      hh=_this.hamidasiSyusei_X(_this.dp10,_this.dp1,GL,GR);
+                      if (hh!=0) {
+                        _this.dpAsw.push(_this.dp10);
+                        if (hh==2) {
+                          _this.dpAsw.push(_this.dp1);
+                        }
+                        
+                      }
+                      
+                    }
+                  }
+                }
+                ss=_this.dpAsw.length;
+                for (i=0; i<ss ; i++) {
+                  {
+                    pp1=_this.dpAsw[i*2];
+                    pp2=_this.cpA[i];
+                    pp2.xySetP(pp1);
+                    _this.dpAsw.splice(i*2,0,pp2);
+                  }
+                }
+                ss=_this.dpAsw.length;
+                for (i=1; i<ss ; i+=2) {
+                  {
+                    pp1=_this.dpAsw[i%ss];
+                    pp2=_this.dpAsw[(i+1)%ss];
+                    hh=_this.hamidasiSyusei_Y(pp1,pp2,GU,GD);
+                    if (hh!=0) {
+                      _this.dpA.push(pp1);
+                      if (hh==2) {
+                        _this.dpA.push(pp2);
+                      }
+                      
+                    }
+                  }
+                }
+                Tonyu.globals.$printSize=12;
+                _this.s=3;
+                
+              }
+              
+            }
+          }
+        }
+      },
+      fiber$hamidasiSyusei :function* _trc_TD_DR_1_f_hamidasiSyusei(_thread,GL,GU,GR,GD,scaleXDX,scaleYDX) {
+        var _this=this;
+        var hh;
+        var hx;
+        var hy;
+        var hx1;
+        var hy1;
+        var hx2;
+        var hy2;
+        var hx3;
+        var hy3;
+        var hx4;
+        var hy4;
+        var hx5;
+        var hy5;
+        var i;
+        var ss;
+        var pp1;
+        var pp2;
+        var cc;
+        var width;
+        var height;
+        
+        
+        if (! _this.TD_visible) {
+          return _this;
+        }
+        if (_this.s==- 1) {
+          return _this;
+        }
+        if (_this.n==1) {
+          cc = Tonyu.globals.$imageList[_this.floor(_this.c||0)];
+          
+          width = 2;
+          height = 2;
+          
+          if (cc) {
+            _this.ccwidth=cc.width;
+            _this.ccheight=cc.height;
+            
+          }
+          ss = 1/_this.p1.k;
+          
+          _this.k1=ss*_this.scaleX*scaleXDX;
+          if (scaleYDX) {
+            if (_this.scaleY) {
+              _this.k2=ss*_this.scaleY*scaleYDX;
+            } else {
+              _this.k2=ss*_this.scaleX*scaleYDX;
+            }
+            
+          } else {
+            if (_this.scaleY) {
+              _this.k2=ss*_this.scaleY*scaleXDX;
+              
+            }
+            
+          }
+          hx=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.p1, GL, GR, _this.abs(_this.ccwidth*_this.k1/2)));
+          hy=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.p1, GU, GD, _this.abs(_this.ccheight*_this.k2/2)));
+          if (hx!=0||hy!=0) {
+            _this.s=0;
+          }
+          
+        } else {
+          if (_this.n==2) {
+            if (_this.s!=0) {
+              if (_this.s==1) {
+                hx1=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.p1, GL, GR));
+                hy1=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.p1, GU, GD));
+                hx2=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.p2, GL, GR));
+                hy2=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.p2, GU, GD));
+                
+              } else {
+                if (_this.s==2) {
+                  hx1=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.dp1, GL, GR));
+                  hy1=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.dp1, GU, GD));
+                  hx2=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.dp2, GL, GR));
+                  hy2=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.dp2, GU, GD));
+                  
+                }
+              }
+              hx=hx1+hx2;
+              hy=hy1+hy2;
+              if (hx==0&&hy==0) {
+                return _this;
+              }
+              if (hx!=0&&hx1==hx2) {
+                _this.s=0;
+                return _this;
+                
+              }
+              if (hy!=0&&hy1==hy2) {
+                _this.s=0;
+                return _this;
+                
+              }
+              if (Tonyu.globals.$TD_Z_hamidasiSyusei==0) {
+                return _this;
+              }
+              if (_this.s==1) {
+                _this.dp1.xySetP(_this.p1);
+                _this.dp2.xySetP(_this.p2);
+                
+              }
+              _this.s=(yield* _this.fiber$hamidasiSyusei_L(_thread, _this.dp1, _this.dp2, GL, GU, GR, GD));
+              
+            }
+            
+          } else {
+            if (_this.n==3||_this.n==4) {
+              if (_this.s!=0) {
+                if (_this.m==3) {
+                  if (_this.s==1) {
+                    if (_this.p1.xx<_this.p2.xx) {
+                      _this.bmpGL=_this.p1.xx;
+                    } else {
+                      _this.bmpGL=_this.p2.xx;
+                    }
+                    if (_this.p1.yy<_this.p2.yy) {
+                      _this.bmpGU=_this.p1.yy;
+                    } else {
+                      _this.bmpGU=_this.p2.yy;
+                    }
+                    if (_this.p1.xx>_this.p2.xx) {
+                      _this.bmpGR=_this.p1.xx;
+                    } else {
+                      _this.bmpGR=_this.p2.xx;
+                    }
+                    if (_this.p1.yy>_this.p2.yy) {
+                      _this.bmpGD=_this.p1.yy;
+                    } else {
+                      _this.bmpGD=_this.p2.yy;
+                    }
+                    if (_this.p3.xx<_this.bmpGL) {
+                      _this.bmpGL=_this.p3.xx;
+                    }
+                    if (_this.p3.yy<_this.bmpGU) {
+                      _this.bmpGU=_this.p3.yy;
+                    }
+                    if (_this.p3.xx>_this.bmpGR) {
+                      _this.bmpGR=_this.p3.xx;
+                    }
+                    if (_this.p3.yy>_this.bmpGD) {
+                      _this.bmpGD=_this.p3.yy;
+                    }
+                    if (_this.pr>=4) {
+                      if (_this.p4.xx<_this.bmpGL) {
+                        _this.bmpGL=_this.p4.xx;
+                      }
+                      if (_this.p4.yy<_this.bmpGU) {
+                        _this.bmpGU=_this.p4.yy;
+                      }
+                      if (_this.p4.xx>_this.bmpGR) {
+                        _this.bmpGR=_this.p4.xx;
+                      }
+                      if (_this.p4.yy>_this.bmpGD) {
+                        _this.bmpGD=_this.p4.yy;
+                      }
+                      
+                    }
+                    
+                  } else {
+                    if (_this.s==2) {
+                      if (_this.dp1.xx<_this.dp2.xx) {
+                        _this.bmpGL=_this.dp1.xx;
+                      } else {
+                        _this.bmpGL=_this.dp2.xx;
+                      }
+                      if (_this.dp1.yy<_this.dp2.yy) {
+                        _this.bmpGU=_this.dp1.yy;
+                      } else {
+                        _this.bmpGU=_this.dp2.yy;
+                      }
+                      if (_this.dp1.xx>_this.dp2.xx) {
+                        _this.bmpGR=_this.dp1.xx;
+                      } else {
+                        _this.bmpGR=_this.dp2.xx;
+                      }
+                      if (_this.dp1.yy>_this.dp2.yy) {
+                        _this.bmpGD=_this.dp1.yy;
+                      } else {
+                        _this.bmpGD=_this.dp2.yy;
+                      }
+                      if (_this.dp3.xx<_this.bmpGL) {
+                        _this.bmpGL=_this.dp3.xx;
+                      }
+                      if (_this.dp3.yy<_this.bmpGU) {
+                        _this.bmpGU=_this.dp3.yy;
+                      }
+                      if (_this.dp3.xx>_this.bmpGR) {
+                        _this.bmpGR=_this.dp3.xx;
+                      }
+                      if (_this.dp3.yy>_this.bmpGD) {
+                        _this.bmpGD=_this.dp3.yy;
+                      }
+                      if (_this.pr>=4) {
+                        if (_this.dp4.xx<_this.bmpGL) {
+                          _this.bmpGL=_this.dp4.xx;
+                        }
+                        if (_this.dp4.yy<_this.bmpGU) {
+                          _this.bmpGU=_this.dp4.yy;
+                        }
+                        if (_this.dp4.xx>_this.bmpGR) {
+                          _this.bmpGR=_this.dp4.xx;
+                        }
+                        if (_this.dp4.yy>_this.bmpGD) {
+                          _this.bmpGD=_this.dp4.yy;
+                        }
+                        
+                      }
+                      if (_this.pr>=5) {
+                        if (_this.dp5.xx<_this.bmpGL) {
+                          _this.bmpGL=_this.dp5.xx;
+                        }
+                        if (_this.dp5.yy<_this.bmpGU) {
+                          _this.bmpGU=_this.dp5.yy;
+                        }
+                        if (_this.dp5.xx>_this.bmpGR) {
+                          _this.bmpGR=_this.dp5.xx;
+                        }
+                        if (_this.dp5.yy>_this.bmpGD) {
+                          _this.bmpGD=_this.dp5.yy;
+                        }
+                        
+                      }
+                      
+                    }
+                  }
+                  
+                }
+                if (_this.s==1) {
+                  hx1=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.p1, GL, GR));
+                  hy1=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.p1, GU, GD));
+                  hx2=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.p2, GL, GR));
+                  hy2=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.p2, GU, GD));
+                  hx3=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.p3, GL, GR));
+                  hy3=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.p3, GU, GD));
+                  if (_this.pr>=4) {
+                    hx4=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.p4, GL, GR));
+                    hy4=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.p4, GU, GD));
+                    
+                  }
+                  
+                } else {
+                  if (_this.s==2) {
+                    hx1=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.dp1, GL, GR));
+                    hy1=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.dp1, GU, GD));
+                    hx2=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.dp2, GL, GR));
+                    hy2=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.dp2, GU, GD));
+                    hx3=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.dp3, GL, GR));
+                    hy3=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.dp3, GU, GD));
+                    if (_this.pr>=4) {
+                      hx4=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.dp4, GL, GR));
+                      hy4=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.dp4, GU, GD));
+                      
+                    }
+                    if (_this.pr>=5) {
+                      hx5=(yield* _this.fiber$hamidasiSyusei_hantei_X(_thread, _this.dp5, GL, GR));
+                      hy5=(yield* _this.fiber$hamidasiSyusei_hantei_Y(_thread, _this.dp5, GU, GD));
+                      
+                    }
+                    
+                  }
+                }
+                if (_this.pr==3) {
+                  hx=hx1+hx2+hx3;
+                  hy=hy1+hy2+hy3;
+                  if (hx==0&&hy==0) {
+                    return _this;
+                  }
+                  if (hx!=0&&(hx1==hx2&&hx2==hx3)) {
+                    _this.s=0;
+                    return _this;
+                    
+                  }
+                  if (hy!=0&&(hy1==hy2&&hy2==hy3)) {
+                    _this.s=0;
+                    return _this;
+                    
+                  }
+                  
+                } else {
+                  if (_this.pr==4) {
+                    hx=hx1+hx2+hx3+hx4;
+                    hy=hy1+hy2+hy3+hy4;
+                    if (hx==0&&hy==0) {
+                      return _this;
+                    }
+                    if (hx!=0&&(hx1==hx2&&hx2==hx3&&hx3==hx4)) {
+                      _this.s=0;
+                      return _this;
+                      
+                    }
+                    if (hy!=0&&(hy1==hy2&&hy2==hy3&&hy3==hy4)) {
+                      _this.s=0;
+                      return _this;
+                      
+                    }
+                    
+                  } else {
+                    if (_this.pr==5) {
+                      hx=hx1+hx2+hx3+hx4+hx5;
+                      hy=hy1+hy2+hy3+hy4+hy5;
+                      if (hx==0&&hy==0) {
+                        return _this;
+                      }
+                      if (hx!=0&&(hx1==hx2&&hx2==hx3&&hx3==hx4&&hx4==hx5)) {
+                        _this.s=0;
+                        return _this;
+                        
+                      }
+                      if (hy!=0&&(hy1==hy2&&hy2==hy3&&hy3==hy4&&hy4==hy5)) {
+                        _this.s=0;
+                        return _this;
+                        
+                      }
+                      
+                    }
+                  }
+                }
+                if (Tonyu.globals.$TD_Z_hamidasiSyusei==0) {
+                  return _this;
+                }
+                if (_this.dpA.length) {
+                  _this.dpA.splice(0);
+                }
+                if (_this.dpAsw.length) {
+                  _this.dpAsw.splice(0);
+                }
+                if (_this.s==1) {
+                  _this.dp1.xySetP(_this.p1);
+                  _this.dp2.xySetP(_this.p2);
+                  _this.dp3.xySetP(_this.p3);
+                  if (_this.pr>=4) {
+                    _this.dp4.xySetP(_this.p4);
+                  }
+                  
+                }
+                if (_this.pr>=5) {
+                  _this.dp10.xySetP(_this.dp5);
+                  _this.dp9.xySetP(_this.dp5);
+                  
+                }
+                if (_this.pr>=4) {
+                  _this.dp8.xySetP(_this.dp4);
+                  _this.dp7.xySetP(_this.dp4);
+                  
+                }
+                _this.dp6.xySetP(_this.dp3);
+                _this.dp5.xySetP(_this.dp3);
+                _this.dp4.xySetP(_this.dp2);
+                _this.dp3.xySetP(_this.dp2);
+                _this.dp2.xySetP(_this.dp1);
+                hh=(yield* _this.fiber$hamidasiSyusei_X(_thread, _this.dp2, _this.dp3, GL, GR));
+                if (hh!=0) {
+                  _this.dpAsw.push(_this.dp2);
+                  if (hh==2) {
+                    _this.dpAsw.push(_this.dp3);
+                  }
+                  
+                }
+                hh=(yield* _this.fiber$hamidasiSyusei_X(_thread, _this.dp4, _this.dp5, GL, GR));
+                if (hh!=0) {
+                  _this.dpAsw.push(_this.dp4);
+                  if (hh==2) {
+                    _this.dpAsw.push(_this.dp5);
+                  }
+                  
+                }
+                if (_this.pr==3) {
+                  hh=(yield* _this.fiber$hamidasiSyusei_X(_thread, _this.dp6, _this.dp1, GL, GR));
+                  if (hh!=0) {
+                    _this.dpAsw.push(_this.dp6);
+                    if (hh==2) {
+                      _this.dpAsw.push(_this.dp1);
+                    }
+                    
+                  }
+                  
+                } else {
+                  if (_this.pr==4) {
+                    hh=(yield* _this.fiber$hamidasiSyusei_X(_thread, _this.dp6, _this.dp7, GL, GR));
+                    if (hh!=0) {
+                      _this.dpAsw.push(_this.dp6);
+                      if (hh==2) {
+                        _this.dpAsw.push(_this.dp7);
+                      }
+                      
+                    }
+                    hh=(yield* _this.fiber$hamidasiSyusei_X(_thread, _this.dp8, _this.dp1, GL, GR));
+                    if (hh!=0) {
+                      _this.dpAsw.push(_this.dp8);
+                      if (hh==2) {
+                        _this.dpAsw.push(_this.dp1);
+                      }
+                      
+                    }
+                    
+                  } else {
+                    if (_this.pr==5) {
+                      hh=(yield* _this.fiber$hamidasiSyusei_X(_thread, _this.dp6, _this.dp7, GL, GR));
+                      if (hh!=0) {
+                        _this.dpAsw.push(_this.dp6);
+                        if (hh==2) {
+                          _this.dpAsw.push(_this.dp7);
+                        }
+                        
+                      }
+                      hh=(yield* _this.fiber$hamidasiSyusei_X(_thread, _this.dp8, _this.dp9, GL, GR));
+                      if (hh!=0) {
+                        _this.dpAsw.push(_this.dp8);
+                        if (hh==2) {
+                          _this.dpAsw.push(_this.dp9);
+                        }
+                        
+                      }
+                      hh=(yield* _this.fiber$hamidasiSyusei_X(_thread, _this.dp10, _this.dp1, GL, GR));
+                      if (hh!=0) {
+                        _this.dpAsw.push(_this.dp10);
+                        if (hh==2) {
+                          _this.dpAsw.push(_this.dp1);
+                        }
+                        
+                      }
+                      
+                    }
+                  }
+                }
+                ss=_this.dpAsw.length;
+                for (i=0; i<ss ; i++) {
+                  {
+                    pp1=_this.dpAsw[i*2];
+                    pp2=_this.cpA[i];
+                    pp2.xySetP(pp1);
+                    _this.dpAsw.splice(i*2,0,pp2);
+                  }
+                }
+                ss=_this.dpAsw.length;
+                for (i=1; i<ss ; i+=2) {
+                  {
+                    pp1=_this.dpAsw[i%ss];
+                    pp2=_this.dpAsw[(i+1)%ss];
+                    hh=(yield* _this.fiber$hamidasiSyusei_Y(_thread, pp1, pp2, GU, GD));
+                    if (hh!=0) {
+                      _this.dpA.push(pp1);
+                      if (hh==2) {
+                        _this.dpA.push(pp2);
+                      }
+                      
+                    }
+                  }
+                }
+                Tonyu.globals.$printSize=12;
+                _this.s=3;
+                
+              }
+              
+            }
+          }
+        }
+        
+      },
+      hamidasiSyusei_hantei_X :function _trc_TD_DR_1_hamidasiSyusei_hantei_X(p1,GL,GR,out) {
+        var _this=this;
+        
+        if (out==null) {
+          out=0;
+        }
+        if (p1.xx<GL-out) {
+          return 1;
+        } else {
+          if (p1.xx>GR+out) {
+            return 2;
+          } else {
+            return 0;
+          }
+        }
+      },
+      fiber$hamidasiSyusei_hantei_X :function* _trc_TD_DR_1_f_hamidasiSyusei_hantei_X(_thread,p1,GL,GR,out) {
+        var _this=this;
+        
+        if (out==null) {
+          out=0;
+        }
+        if (p1.xx<GL-out) {
+          return 1;
+        } else {
+          if (p1.xx>GR+out) {
+            return 2;
+          } else {
+            return 0;
+          }
+        }
+        
+      },
+      hamidasiSyusei_hantei_Y :function _trc_TD_DR_1_hamidasiSyusei_hantei_Y(p1,GU,GD,out) {
+        var _this=this;
+        
+        if (out==null) {
+          out=0;
+        }
+        if (p1.yy<GU-out) {
+          return 1;
+        } else {
+          if (p1.yy>GD+out) {
+            return 2;
+          } else {
+            return 0;
+          }
+        }
+      },
+      fiber$hamidasiSyusei_hantei_Y :function* _trc_TD_DR_1_f_hamidasiSyusei_hantei_Y(_thread,p1,GU,GD,out) {
+        var _this=this;
+        
+        if (out==null) {
+          out=0;
+        }
+        if (p1.yy<GU-out) {
+          return 1;
+        } else {
+          if (p1.yy>GD+out) {
+            return 2;
+          } else {
+            return 0;
+          }
+        }
+        
+      },
+      hamidasiSyusei_L :function _trc_TD_DR_1_hamidasiSyusei_L(p1,p2,GL,GU,GR,GD) {
+        var _this=this;
+        var w;
+        var s1_x;
+        var s2_x;
+        var s1_y;
+        var s2_y;
+        
+        
+        if (p1.xx<GL) {
+          s1_x=1;
+        } else {
+          if (p1.xx>GR) {
+            s1_x=2;
+          } else {
+            s1_x=0;
+          }
+        }
+        if (p2.xx<GL) {
+          s2_x=1;
+        } else {
+          if (p2.xx>GR) {
+            s2_x=2;
+          } else {
+            s2_x=0;
+          }
+        }
+        if (p1.yy<GU) {
+          s1_y=1;
+        } else {
+          if (p1.yy>GD) {
+            s1_y=2;
+          } else {
+            s1_y=0;
+          }
+        }
+        if (p2.yy<GU) {
+          s2_y=1;
+        } else {
+          if (p2.yy>GD) {
+            s2_y=2;
+          } else {
+            s2_y=0;
+          }
+        }
+        if ((s1_x+s2_x==0)&&(s1_y+s2_y==0)) {
+          return 1;
+        }
+        if ((s1_x!=0&&s2_x!=0)&&s1_x==s2_x) {
+          return 0;
+        }
+        if ((s1_y!=0&&s2_y!=0)&&s1_y==s2_y) {
+          return 0;
+        }
+        if (! (s1_x==0&&s2_x==0)&&(p2.xx-p1.xx)!=0) {
+          if (s1_x==1) {
+            w=(GL-p1.xx)/(p2.xx-p1.xx);
+            p1.yy+=(p2.yy-p1.yy)*w;
+            p1.xx=GL;
+            
+          } else {
+            if (s1_x==2) {
+              w=(p1.xx-GR)/(p1.xx-p2.xx);
+              p1.yy+=(p2.yy-p1.yy)*w;
+              p1.xx=GR;
+              
+            }
+          }
+          if (s2_x==1) {
+            w=(GL-p2.xx)/(p1.xx-p2.xx);
+            p2.yy+=(p1.yy-p2.yy)*w;
+            p2.xx=GL;
+            
+          } else {
+            if (s2_x==2) {
+              w=(p2.xx-GR)/(p2.xx-p1.xx);
+              p2.yy+=(p1.yy-p2.yy)*w;
+              p2.xx=GR;
+              
+            }
+          }
+          if (p1.yy<GU) {
+            s1_y=1;
+          } else {
+            if (p1.yy>GD) {
+              s1_y=2;
+            } else {
+              s1_y=0;
+            }
+          }
+          if (p2.yy<GU) {
+            s2_y=1;
+          } else {
+            if (p2.yy>GD) {
+              s2_y=2;
+            } else {
+              s2_y=0;
+            }
+          }
+          if (! (s1_y==0||s2_y==0)&&s1_y==s2_y) {
+            return 0;
+          }
+          
+        }
+        if (! (s1_y==0&&s2_y==0)&&(p2.yy-p1.yy)!=0) {
+          if (s1_y==1) {
+            w=(GU-p1.yy)/(p2.yy-p1.yy);
+            p1.xx+=(p2.xx-p1.xx)*w;
+            p1.yy=GU;
+            
+          } else {
+            if (s1_y==2) {
+              w=(p1.yy-GD)/(p1.yy-p2.yy);
+              p1.xx+=(p2.xx-p1.xx)*w;
+              p1.yy=GD;
+              
+            }
+          }
+          if (s2_y==1) {
+            w=(GU-p2.yy)/(p1.yy-p2.yy);
+            p2.xx+=(p1.xx-p2.xx)*w;
+            p2.yy=GU;
+            
+          } else {
+            if (s2_y==2) {
+              w=(p2.yy-GD)/(p2.yy-p1.yy);
+              p2.xx+=(p1.xx-p2.xx)*w;
+              p2.yy=GD;
+              
+            }
+          }
+          
+        }
+        return 3;
+      },
+      fiber$hamidasiSyusei_L :function* _trc_TD_DR_1_f_hamidasiSyusei_L(_thread,p1,p2,GL,GU,GR,GD) {
+        var _this=this;
+        var w;
+        var s1_x;
+        var s2_x;
+        var s1_y;
+        var s2_y;
+        
+        
+        if (p1.xx<GL) {
+          s1_x=1;
+        } else {
+          if (p1.xx>GR) {
+            s1_x=2;
+          } else {
+            s1_x=0;
+          }
+        }
+        if (p2.xx<GL) {
+          s2_x=1;
+        } else {
+          if (p2.xx>GR) {
+            s2_x=2;
+          } else {
+            s2_x=0;
+          }
+        }
+        if (p1.yy<GU) {
+          s1_y=1;
+        } else {
+          if (p1.yy>GD) {
+            s1_y=2;
+          } else {
+            s1_y=0;
+          }
+        }
+        if (p2.yy<GU) {
+          s2_y=1;
+        } else {
+          if (p2.yy>GD) {
+            s2_y=2;
+          } else {
+            s2_y=0;
+          }
+        }
+        if ((s1_x+s2_x==0)&&(s1_y+s2_y==0)) {
+          return 1;
+        }
+        if ((s1_x!=0&&s2_x!=0)&&s1_x==s2_x) {
+          return 0;
+        }
+        if ((s1_y!=0&&s2_y!=0)&&s1_y==s2_y) {
+          return 0;
+        }
+        if (! (s1_x==0&&s2_x==0)&&(p2.xx-p1.xx)!=0) {
+          if (s1_x==1) {
+            w=(GL-p1.xx)/(p2.xx-p1.xx);
+            p1.yy+=(p2.yy-p1.yy)*w;
+            p1.xx=GL;
+            
+          } else {
+            if (s1_x==2) {
+              w=(p1.xx-GR)/(p1.xx-p2.xx);
+              p1.yy+=(p2.yy-p1.yy)*w;
+              p1.xx=GR;
+              
+            }
+          }
+          if (s2_x==1) {
+            w=(GL-p2.xx)/(p1.xx-p2.xx);
+            p2.yy+=(p1.yy-p2.yy)*w;
+            p2.xx=GL;
+            
+          } else {
+            if (s2_x==2) {
+              w=(p2.xx-GR)/(p2.xx-p1.xx);
+              p2.yy+=(p1.yy-p2.yy)*w;
+              p2.xx=GR;
+              
+            }
+          }
+          if (p1.yy<GU) {
+            s1_y=1;
+          } else {
+            if (p1.yy>GD) {
+              s1_y=2;
+            } else {
+              s1_y=0;
+            }
+          }
+          if (p2.yy<GU) {
+            s2_y=1;
+          } else {
+            if (p2.yy>GD) {
+              s2_y=2;
+            } else {
+              s2_y=0;
+            }
+          }
+          if (! (s1_y==0||s2_y==0)&&s1_y==s2_y) {
+            return 0;
+          }
+          
+        }
+        if (! (s1_y==0&&s2_y==0)&&(p2.yy-p1.yy)!=0) {
+          if (s1_y==1) {
+            w=(GU-p1.yy)/(p2.yy-p1.yy);
+            p1.xx+=(p2.xx-p1.xx)*w;
+            p1.yy=GU;
+            
+          } else {
+            if (s1_y==2) {
+              w=(p1.yy-GD)/(p1.yy-p2.yy);
+              p1.xx+=(p2.xx-p1.xx)*w;
+              p1.yy=GD;
+              
+            }
+          }
+          if (s2_y==1) {
+            w=(GU-p2.yy)/(p1.yy-p2.yy);
+            p2.xx+=(p1.xx-p2.xx)*w;
+            p2.yy=GU;
+            
+          } else {
+            if (s2_y==2) {
+              w=(p2.yy-GD)/(p2.yy-p1.yy);
+              p2.xx+=(p1.xx-p2.xx)*w;
+              p2.yy=GD;
+              
+            }
+          }
+          
+        }
+        return 3;
+        
+      },
+      hamidasiSyusei_X :function _trc_TD_DR_1_hamidasiSyusei_X(p1,p2,GL,GR) {
+        var _this=this;
+        var w;
+        var s1_x;
+        var s2_x;
+        
+        
+        if (p1.xx<GL) {
+          s1_x=1;
+        } else {
+          if (p1.xx>GR) {
+            s1_x=2;
+          } else {
+            s1_x=0;
+          }
+        }
+        if (p2.xx<GL) {
+          s2_x=1;
+        } else {
+          if (p2.xx>GR) {
+            s2_x=2;
+          } else {
+            s2_x=0;
+          }
+        }
+        if ((s1_x!=0&&s2_x!=0)&&s1_x==s2_x) {
+          return 0;
+        }
+        if (! (s1_x==0&&s2_x==0)&&(p2.xx-p1.xx)!=0) {
+          if (s1_x==1) {
+            w=(GL-p1.xx)/(p2.xx-p1.xx);
+            p1.yy+=(p2.yy-p1.yy)*w;
+            p1.xx=GL;
+            
+          } else {
+            if (s1_x==2) {
+              w=(p1.xx-GR)/(p1.xx-p2.xx);
+              p1.yy+=(p2.yy-p1.yy)*w;
+              p1.xx=GR;
+              
+            }
+          }
+          if (s2_x==1) {
+            w=(GL-p2.xx)/(p1.xx-p2.xx);
+            p2.yy+=(p1.yy-p2.yy)*w;
+            p2.xx=GL;
+            
+          } else {
+            if (s2_x==2) {
+              w=(p2.xx-GR)/(p2.xx-p1.xx);
+              p2.yy+=(p1.yy-p2.yy)*w;
+              p2.xx=GR;
+              
+            }
+          }
+          
+        }
+        return (1+(s2_x!=0));
+      },
+      fiber$hamidasiSyusei_X :function* _trc_TD_DR_1_f_hamidasiSyusei_X(_thread,p1,p2,GL,GR) {
+        var _this=this;
+        var w;
+        var s1_x;
+        var s2_x;
+        
+        
+        if (p1.xx<GL) {
+          s1_x=1;
+        } else {
+          if (p1.xx>GR) {
+            s1_x=2;
+          } else {
+            s1_x=0;
+          }
+        }
+        if (p2.xx<GL) {
+          s2_x=1;
+        } else {
+          if (p2.xx>GR) {
+            s2_x=2;
+          } else {
+            s2_x=0;
+          }
+        }
+        if ((s1_x!=0&&s2_x!=0)&&s1_x==s2_x) {
+          return 0;
+        }
+        if (! (s1_x==0&&s2_x==0)&&(p2.xx-p1.xx)!=0) {
+          if (s1_x==1) {
+            w=(GL-p1.xx)/(p2.xx-p1.xx);
+            p1.yy+=(p2.yy-p1.yy)*w;
+            p1.xx=GL;
+            
+          } else {
+            if (s1_x==2) {
+              w=(p1.xx-GR)/(p1.xx-p2.xx);
+              p1.yy+=(p2.yy-p1.yy)*w;
+              p1.xx=GR;
+              
+            }
+          }
+          if (s2_x==1) {
+            w=(GL-p2.xx)/(p1.xx-p2.xx);
+            p2.yy+=(p1.yy-p2.yy)*w;
+            p2.xx=GL;
+            
+          } else {
+            if (s2_x==2) {
+              w=(p2.xx-GR)/(p2.xx-p1.xx);
+              p2.yy+=(p1.yy-p2.yy)*w;
+              p2.xx=GR;
+              
+            }
+          }
+          
+        }
+        return (1+(s2_x!=0));
+        
+      },
+      hamidasiSyusei_Y :function _trc_TD_DR_1_hamidasiSyusei_Y(p1,p2,GU,GD) {
+        var _this=this;
+        var w;
+        var s1_y;
+        var s2_y;
+        
+        
+        if (p1.yy<GU) {
+          s1_y=1;
+        } else {
+          if (p1.yy>GD) {
+            s1_y=2;
+          } else {
+            s1_y=0;
+          }
+        }
+        if (p2.yy<GU) {
+          s2_y=1;
+        } else {
+          if (p2.yy>GD) {
+            s2_y=2;
+          } else {
+            s2_y=0;
+          }
+        }
+        if ((s1_y!=0&&s2_y!=0)&&s1_y==s2_y) {
+          return 0;
+        }
+        if (! (s1_y==0&&s2_y==0)&&(p2.yy-p1.yy)!=0) {
+          if (s1_y==1) {
+            w=(GU-p1.yy)/(p2.yy-p1.yy);
+            p1.xx+=(p2.xx-p1.xx)*w;
+            p1.yy=GU;
+            
+          } else {
+            if (s1_y==2) {
+              w=(p1.yy-GD)/(p1.yy-p2.yy);
+              p1.xx+=(p2.xx-p1.xx)*w;
+              p1.yy=GD;
+              
+            }
+          }
+          if (s2_y==1) {
+            w=(GU-p2.yy)/(p1.yy-p2.yy);
+            p2.xx+=(p1.xx-p2.xx)*w;
+            p2.yy=GU;
+            
+          } else {
+            if (s2_y==2) {
+              w=(p2.yy-GD)/(p2.yy-p1.yy);
+              p2.xx+=(p1.xx-p2.xx)*w;
+              p2.yy=GD;
+              
+            }
+          }
+          
+        }
+        return (1+(s2_y!=0));
+      },
+      fiber$hamidasiSyusei_Y :function* _trc_TD_DR_1_f_hamidasiSyusei_Y(_thread,p1,p2,GU,GD) {
+        var _this=this;
+        var w;
+        var s1_y;
+        var s2_y;
+        
+        
+        if (p1.yy<GU) {
+          s1_y=1;
+        } else {
+          if (p1.yy>GD) {
+            s1_y=2;
+          } else {
+            s1_y=0;
+          }
+        }
+        if (p2.yy<GU) {
+          s2_y=1;
+        } else {
+          if (p2.yy>GD) {
+            s2_y=2;
+          } else {
+            s2_y=0;
+          }
+        }
+        if ((s1_y!=0&&s2_y!=0)&&s1_y==s2_y) {
+          return 0;
+        }
+        if (! (s1_y==0&&s2_y==0)&&(p2.yy-p1.yy)!=0) {
+          if (s1_y==1) {
+            w=(GU-p1.yy)/(p2.yy-p1.yy);
+            p1.xx+=(p2.xx-p1.xx)*w;
+            p1.yy=GU;
+            
+          } else {
+            if (s1_y==2) {
+              w=(p1.yy-GD)/(p1.yy-p2.yy);
+              p1.xx+=(p2.xx-p1.xx)*w;
+              p1.yy=GD;
+              
+            }
+          }
+          if (s2_y==1) {
+            w=(GU-p2.yy)/(p1.yy-p2.yy);
+            p2.xx+=(p1.xx-p2.xx)*w;
+            p2.yy=GU;
+            
+          } else {
+            if (s2_y==2) {
+              w=(p2.yy-GD)/(p2.yy-p1.yy);
+              p2.xx+=(p1.xx-p2.xx)*w;
+              p2.yy=GD;
+              
+            }
+          }
+          
+        }
+        return (1+(s2_y!=0));
+        
+      },
+      paintHantei :function _trc_TD_DR_1_paintHantei(sp1,up,sp2) {
+        var _this=this;
+        
+        if (sp1.xx<up.xx||sp2.xx<up.xx) {
+          up.xx--;
+        }
+        if (sp1.yy<up.yy||sp2.yy<up.yy) {
+          up.yy--;
+        }
+      },
+      fiber$paintHantei :function* _trc_TD_DR_1_f_paintHantei(_thread,sp1,up,sp2) {
+        var _this=this;
+        
+        if (sp1.xx<up.xx||sp2.xx<up.xx) {
+          up.xx--;
+        }
+        if (sp1.yy<up.yy||sp2.yy<up.yy) {
+          up.yy--;
+        }
+        
+      },
+      fillPolygonP :function _trc_TD_DR_1_fillPolygonP(panel,x,y,points,col) {
+        var _this=this;
+        var ctx;
+        var i;
+        var p;
+        
+        
+        points=_this.setPolygonTempAry;
+        ctx=panel.getContext();
+        ctx.save();
+        ctx.fillStyle=col+"";
+        ctx.beginPath();
+        for (i = 0;
+         i<points.length ; i++) {
+          {
+            p = points[i];
+            
+            if (i==0) {
+              ctx.moveTo(x+p.x,y+p.y);
+            } else {
+              ctx.lineTo(x+p.x,y+p.y);
+            }
+          }
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"backFaceCulling":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"merikomiSyusei":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"merikomiSyusei_L":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"merikomiSyusei_T":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null],"returnValue":null}},"merikomiSyusei_S":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null],"returnValue":null}},"hamidasiSyusei":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"hamidasiSyusei_hantei_X":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"hamidasiSyusei_hantei_Y":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"hamidasiSyusei_L":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"hamidasiSyusei_X":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"hamidasiSyusei_Y":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"paintHantei":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"fillPolygonP":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}}},"fields":{"TD_visible":{},"s":{},"n":{},"ep":{},"p1":{},"p2":{},"p3":{},"p4":{},"zo":{},"zo2":{},"zo3":{},"zo4":{},"np":{},"zt":{},"zosx":{},"zosy":{},"zosz":{},"pr":{},"dp1":{},"dp2":{},"dp3":{},"dp4":{},"dp5":{},"dp6":{},"dp7":{},"dp8":{},"dp9":{},"dp10":{},"c":{},"ccwidth":{},"ccheight":{},"m":{},"bmpGL":{},"bmpGU":{},"bmpGR":{},"bmpGD":{},"dpA":{},"dpAsw":{},"cpA":{},"setPolygonTempAry":{},"f":{},"angle":{},"LR":{},"UD":{},"xx":{},"yy":{},"h":{},"paint":{},"ss":{},"k1":{},"k2":{}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.TD_PS',
+  shortName: 'TD_PS',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.PlainChar,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_TD_PS_main() {
+        var _this=this;
+        
+      },
+      fiber$main :function* _trc_TD_PS_f_main(_thread) {
+        var _this=this;
+        
+        
+      },
+      run :function _trc_TD_PS_run() {
+        var _this=this;
+        var i;
+        
+        if (Tonyu.globals.$TD_M_M==0) {
+          if (Tonyu.globals.$TD_M_multiGamen==0) {
+            Tonyu.globals.$TD_Z.RSC();
+            Tonyu.globals.$TD_Z.GKK();
+            Tonyu.globals.$TD_M_M++;
+            
+          } else {
+            if (Tonyu.globals.$TD_M_multiGamen==1) {
+              if (Tonyu.globals.$TD_M_ACM_I>=Tonyu.globals.$TD_M_ACM_S) {
+                Tonyu.globals.$TD_M_EOF=1;
+                Tonyu.globals.$TD_M_M=6;
+                
+              } else {
+                Tonyu.globals.$TD_M_CM=Tonyu.globals.$TD_M_ACM[Tonyu.globals.$TD_M_ACM_I];
+                if (Tonyu.globals.$TD_M_CM.TD_visible) {
+                  Tonyu.globals.$TD_M_CM.cameraMain();
+                  Tonyu.globals.$TD_Z.RSC();
+                  Tonyu.globals.$TD_Z.GKK(Tonyu.globals.$TD_G_GL,Tonyu.globals.$TD_G_GU,Tonyu.globals.$TD_G_GR,Tonyu.globals.$TD_G_GD);
+                  Tonyu.globals.$TD_M_M++;
+                  
+                }
+                Tonyu.globals.$TD_M_ACM_I++;
+                Tonyu.globals.$TD_M_A3D_I=0;
+                
+              }
+              
+            }
+          }
+          
+        }
+        if (Tonyu.globals.$TD_M_M==1) {
+          for (i = 0;
+           i<Tonyu.globals.$TD_M_syoriMax ; i++) {
+            {
+              if (Tonyu.globals.$TD_M_AP_I==0) {
+                if (Tonyu.globals.$TD_M_A3D_I>=Tonyu.globals.$TD_M_A3D_S) {
+                  Tonyu.globals.$TD_M_EOF=1;
+                  Tonyu.globals.$TD_M_M++;
+                  Tonyu.globals.$TD_M_A3D_I=0;
+                  break;
+                  
+                  
+                }
+                Tonyu.globals.$TD_M_O=Tonyu.globals.$TD_M_A3D[Tonyu.globals.$TD_M_A3D_I];
+                Tonyu.globals.$TD_M_AP_S=Tonyu.globals.$TD_M_O.TD_AP.length;
+                if (Tonyu.globals.$TD_M_O.TD_visible==0) {
+                  Tonyu.globals.$TD_M_AP_I=Tonyu.globals.$TD_M_AP_S;
+                  
+                } else {
+                  Tonyu.globals.$TD_M_O.RSC();
+                  
+                }
+                
+              }
+              if (Tonyu.globals.$TD_M_AP_I<Tonyu.globals.$TD_M_AP_S) {
+                Tonyu.globals.$TD_M_O.TD_AP[Tonyu.globals.$TD_M_AP_I].kaiten(Tonyu.globals.$TD_M_O.TD_x,Tonyu.globals.$TD_M_O.TD_y,Tonyu.globals.$TD_M_O.TD_z,Tonyu.globals.$TD_M_O.TD_angleX,Tonyu.globals.$TD_M_O.TD_angleY,Tonyu.globals.$TD_M_O.TD_angleZ,Tonyu.globals.$TD_M_O.TD_angleXZ,Tonyu.globals.$TD_M_O.TD_angleYZ,Tonyu.globals.$TD_M_O.TD_angleXY,Tonyu.globals.$TD_M_O.TD_xzsin,Tonyu.globals.$TD_M_O.TD_yzsin,Tonyu.globals.$TD_M_O.TD_xysin,Tonyu.globals.$TD_M_O.TD_xzcos,Tonyu.globals.$TD_M_O.TD_yzcos,Tonyu.globals.$TD_M_O.TD_xycos,Tonyu.globals.$TD_Z_x,Tonyu.globals.$TD_Z_y,Tonyu.globals.$TD_Z_z,Tonyu.globals.$TD_K_xzsin,Tonyu.globals.$TD_K_yzsin,Tonyu.globals.$TD_K_xysin,Tonyu.globals.$TD_K_xzcos,Tonyu.globals.$TD_K_yzcos,Tonyu.globals.$TD_K_xycos);
+                Tonyu.globals.$TD_M_AP_I++;
+                
+              }
+              if (Tonyu.globals.$TD_M_AP_I>=Tonyu.globals.$TD_M_AP_S) {
+                Tonyu.globals.$TD_M_AP_I=0;
+                Tonyu.globals.$TD_M_A3D_I++;
+                
+              }
+            }
+          }
+          
+        }
+        if (Tonyu.globals.$TD_M_M==2) {
+          for (i=0; i<Tonyu.globals.$TD_M_syoriMax ; i++) {
+            {
+              if (Tonyu.globals.$TD_M_ADR_I==0) {
+                if (Tonyu.globals.$TD_M_A3D_I>=Tonyu.globals.$TD_M_A3D_S) {
+                  Tonyu.globals.$TD_M_EOF=1;
+                  Tonyu.globals.$TD_M_M++;
+                  Tonyu.globals.$TD_M_A3D_I=0;
+                  break;
+                  
+                  
+                }
+                Tonyu.globals.$TD_M_O=Tonyu.globals.$TD_M_A3D[Tonyu.globals.$TD_M_A3D_I];
+                Tonyu.globals.$TD_M_ADR_S=Tonyu.globals.$TD_M_O.TD_ADR.length;
+                if (Tonyu.globals.$TD_M_O.TD_visible==0) {
+                  Tonyu.globals.$TD_M_ADR_I=Tonyu.globals.$TD_M_ADR_S;
+                  
+                }
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I<Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_O.TD_ADR[Tonyu.globals.$TD_M_ADR_I].merikomiSyusei(Tonyu.globals.$TD_K_k,Tonyu.globals.$TD_Z_k,Tonyu.globals.$TD_K_hw,Tonyu.globals.$TD_K_hh);
+                Tonyu.globals.$TD_M_ADR_I++;
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I>=Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_ADR_I=0;
+                Tonyu.globals.$TD_M_A3D_I++;
+                
+              }
+            }
+          }
+          
+        }
+        if (Tonyu.globals.$TD_M_M==3) {
+          for (i=0; i<Tonyu.globals.$TD_M_syoriMax ; i++) {
+            {
+              if (Tonyu.globals.$TD_M_AP_I==0) {
+                if (Tonyu.globals.$TD_M_A3D_I>=Tonyu.globals.$TD_M_A3D_S) {
+                  Tonyu.globals.$TD_M_EOF=1;
+                  Tonyu.globals.$TD_M_M++;
+                  Tonyu.globals.$TD_M_A3D_I=0;
+                  break;
+                  
+                  
+                }
+                Tonyu.globals.$TD_M_O=Tonyu.globals.$TD_M_A3D[Tonyu.globals.$TD_M_A3D_I];
+                Tonyu.globals.$TD_M_AP_S=Tonyu.globals.$TD_M_O.TD_AP.length;
+                if (Tonyu.globals.$TD_M_O.TD_visible==0) {
+                  Tonyu.globals.$TD_M_AP_I=Tonyu.globals.$TD_M_AP_S;
+                  
+                }
+                
+              }
+              if (Tonyu.globals.$TD_M_AP_I<Tonyu.globals.$TD_M_AP_S) {
+                Tonyu.globals.$TD_M_O.TD_AP[Tonyu.globals.$TD_M_AP_I].henkan2D(Tonyu.globals.$TD_K_k,Tonyu.globals.$TD_Z_k,Tonyu.globals.$TD_K_hw,Tonyu.globals.$TD_K_hh);
+                Tonyu.globals.$TD_M_AP_I++;
+                
+              }
+              if (Tonyu.globals.$TD_M_AP_I>=Tonyu.globals.$TD_M_AP_S) {
+                Tonyu.globals.$TD_M_AP_I=0;
+                Tonyu.globals.$TD_M_A3D_I++;
+                
+              }
+            }
+          }
+          
+        }
+        if (Tonyu.globals.$TD_M_M==4) {
+          for (i=0; i<Tonyu.globals.$TD_M_syoriMax ; i++) {
+            {
+              if (Tonyu.globals.$TD_M_ADR_I==0) {
+                if (Tonyu.globals.$TD_M_A3D_I>=Tonyu.globals.$TD_M_A3D_S) {
+                  Tonyu.globals.$TD_M_EOF=1;
+                  Tonyu.globals.$TD_M_M++;
+                  Tonyu.globals.$TD_M_A3D_I=0;
+                  break;
+                  
+                  
+                }
+                Tonyu.globals.$TD_M_O=Tonyu.globals.$TD_M_A3D[Tonyu.globals.$TD_M_A3D_I];
+                Tonyu.globals.$TD_M_ADR_S=Tonyu.globals.$TD_M_O.TD_ADR.length;
+                if (Tonyu.globals.$TD_M_O.TD_visible==0) {
+                  Tonyu.globals.$TD_M_ADR_I=Tonyu.globals.$TD_M_ADR_S;
+                  
+                }
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I<Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_O.TD_ADR[Tonyu.globals.$TD_M_ADR_I].hamidasiSyusei(Tonyu.globals.$TD_G_GL,Tonyu.globals.$TD_G_GU,Tonyu.globals.$TD_G_GR,Tonyu.globals.$TD_G_GD);
+                Tonyu.globals.$TD_M_ADR_I++;
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I>=Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_ADR_I=0;
+                Tonyu.globals.$TD_M_A3D_I++;
+                
+              }
+            }
+          }
+          
+        }
+        if (Tonyu.globals.$TD_M_M==5) {
+          for (i=0; i<Tonyu.globals.$TD_M_syoriMax ; i++) {
+            {
+              if (Tonyu.globals.$TD_M_ADR_I==0) {
+                if (Tonyu.globals.$TD_M_A3D_I>=Tonyu.globals.$TD_M_A3D_S) {
+                  Tonyu.globals.$TD_M_EOF=1;
+                  if (Tonyu.globals.$TD_M_multiGamen==1) {
+                    Tonyu.globals.$TD_M_M=0;
+                  } else {
+                    Tonyu.globals.$TD_M_M++;
+                  }
+                  Tonyu.globals.$TD_M_A3D_I=0;
+                  break;
+                  
+                  
+                }
+                Tonyu.globals.$TD_M_O=Tonyu.globals.$TD_M_A3D[Tonyu.globals.$TD_M_A3D_I];
+                Tonyu.globals.$TD_M_ADR_S=Tonyu.globals.$TD_M_O.TD_ADR.length;
+                if (Tonyu.globals.$TD_M_O.TD_visible==0) {
+                  Tonyu.globals.$TD_M_ADR_I=Tonyu.globals.$TD_M_ADR_S;
+                  
+                }
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I<Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_O.TD_ADR[Tonyu.globals.$TD_M_ADR_I].ZukeiDraw(Tonyu.globals.$TD_M_O.TD_angleDX,Tonyu.globals.$TD_M_O.TD_alphaDX,Tonyu.globals.$TD_M_O.TD_scaleXDX,Tonyu.globals.$TD_M_O.TD_scaleYDX);
+                Tonyu.globals.$TD_M_ADR_I++;
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I>=Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_A3D_I++;
+                Tonyu.globals.$TD_M_ADR_I=0;
+                
+              }
+            }
+          }
+          
+        }
+      },
+      fiber$run :function* _trc_TD_PS_f_run(_thread) {
+        var _this=this;
+        var i;
+        
+        if (Tonyu.globals.$TD_M_M==0) {
+          if (Tonyu.globals.$TD_M_multiGamen==0) {
+            Tonyu.globals.$TD_Z.RSC();
+            Tonyu.globals.$TD_Z.GKK();
+            Tonyu.globals.$TD_M_M++;
+            
+          } else {
+            if (Tonyu.globals.$TD_M_multiGamen==1) {
+              if (Tonyu.globals.$TD_M_ACM_I>=Tonyu.globals.$TD_M_ACM_S) {
+                Tonyu.globals.$TD_M_EOF=1;
+                Tonyu.globals.$TD_M_M=6;
+                
+              } else {
+                Tonyu.globals.$TD_M_CM=Tonyu.globals.$TD_M_ACM[Tonyu.globals.$TD_M_ACM_I];
+                if (Tonyu.globals.$TD_M_CM.TD_visible) {
+                  Tonyu.globals.$TD_M_CM.cameraMain();
+                  Tonyu.globals.$TD_Z.RSC();
+                  Tonyu.globals.$TD_Z.GKK(Tonyu.globals.$TD_G_GL,Tonyu.globals.$TD_G_GU,Tonyu.globals.$TD_G_GR,Tonyu.globals.$TD_G_GD);
+                  Tonyu.globals.$TD_M_M++;
+                  
+                }
+                Tonyu.globals.$TD_M_ACM_I++;
+                Tonyu.globals.$TD_M_A3D_I=0;
+                
+              }
+              
+            }
+          }
+          
+        }
+        if (Tonyu.globals.$TD_M_M==1) {
+          for (i = 0;
+           i<Tonyu.globals.$TD_M_syoriMax ; i++) {
+            {
+              if (Tonyu.globals.$TD_M_AP_I==0) {
+                if (Tonyu.globals.$TD_M_A3D_I>=Tonyu.globals.$TD_M_A3D_S) {
+                  Tonyu.globals.$TD_M_EOF=1;
+                  Tonyu.globals.$TD_M_M++;
+                  Tonyu.globals.$TD_M_A3D_I=0;
+                  break;
+                  
+                  
+                }
+                Tonyu.globals.$TD_M_O=Tonyu.globals.$TD_M_A3D[Tonyu.globals.$TD_M_A3D_I];
+                Tonyu.globals.$TD_M_AP_S=Tonyu.globals.$TD_M_O.TD_AP.length;
+                if (Tonyu.globals.$TD_M_O.TD_visible==0) {
+                  Tonyu.globals.$TD_M_AP_I=Tonyu.globals.$TD_M_AP_S;
+                  
+                } else {
+                  Tonyu.globals.$TD_M_O.RSC();
+                  
+                }
+                
+              }
+              if (Tonyu.globals.$TD_M_AP_I<Tonyu.globals.$TD_M_AP_S) {
+                Tonyu.globals.$TD_M_O.TD_AP[Tonyu.globals.$TD_M_AP_I].kaiten(Tonyu.globals.$TD_M_O.TD_x,Tonyu.globals.$TD_M_O.TD_y,Tonyu.globals.$TD_M_O.TD_z,Tonyu.globals.$TD_M_O.TD_angleX,Tonyu.globals.$TD_M_O.TD_angleY,Tonyu.globals.$TD_M_O.TD_angleZ,Tonyu.globals.$TD_M_O.TD_angleXZ,Tonyu.globals.$TD_M_O.TD_angleYZ,Tonyu.globals.$TD_M_O.TD_angleXY,Tonyu.globals.$TD_M_O.TD_xzsin,Tonyu.globals.$TD_M_O.TD_yzsin,Tonyu.globals.$TD_M_O.TD_xysin,Tonyu.globals.$TD_M_O.TD_xzcos,Tonyu.globals.$TD_M_O.TD_yzcos,Tonyu.globals.$TD_M_O.TD_xycos,Tonyu.globals.$TD_Z_x,Tonyu.globals.$TD_Z_y,Tonyu.globals.$TD_Z_z,Tonyu.globals.$TD_K_xzsin,Tonyu.globals.$TD_K_yzsin,Tonyu.globals.$TD_K_xysin,Tonyu.globals.$TD_K_xzcos,Tonyu.globals.$TD_K_yzcos,Tonyu.globals.$TD_K_xycos);
+                Tonyu.globals.$TD_M_AP_I++;
+                
+              }
+              if (Tonyu.globals.$TD_M_AP_I>=Tonyu.globals.$TD_M_AP_S) {
+                Tonyu.globals.$TD_M_AP_I=0;
+                Tonyu.globals.$TD_M_A3D_I++;
+                
+              }
+            }
+          }
+          
+        }
+        if (Tonyu.globals.$TD_M_M==2) {
+          for (i=0; i<Tonyu.globals.$TD_M_syoriMax ; i++) {
+            {
+              if (Tonyu.globals.$TD_M_ADR_I==0) {
+                if (Tonyu.globals.$TD_M_A3D_I>=Tonyu.globals.$TD_M_A3D_S) {
+                  Tonyu.globals.$TD_M_EOF=1;
+                  Tonyu.globals.$TD_M_M++;
+                  Tonyu.globals.$TD_M_A3D_I=0;
+                  break;
+                  
+                  
+                }
+                Tonyu.globals.$TD_M_O=Tonyu.globals.$TD_M_A3D[Tonyu.globals.$TD_M_A3D_I];
+                Tonyu.globals.$TD_M_ADR_S=Tonyu.globals.$TD_M_O.TD_ADR.length;
+                if (Tonyu.globals.$TD_M_O.TD_visible==0) {
+                  Tonyu.globals.$TD_M_ADR_I=Tonyu.globals.$TD_M_ADR_S;
+                  
+                }
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I<Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_O.TD_ADR[Tonyu.globals.$TD_M_ADR_I].merikomiSyusei(Tonyu.globals.$TD_K_k,Tonyu.globals.$TD_Z_k,Tonyu.globals.$TD_K_hw,Tonyu.globals.$TD_K_hh);
+                Tonyu.globals.$TD_M_ADR_I++;
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I>=Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_ADR_I=0;
+                Tonyu.globals.$TD_M_A3D_I++;
+                
+              }
+            }
+          }
+          
+        }
+        if (Tonyu.globals.$TD_M_M==3) {
+          for (i=0; i<Tonyu.globals.$TD_M_syoriMax ; i++) {
+            {
+              if (Tonyu.globals.$TD_M_AP_I==0) {
+                if (Tonyu.globals.$TD_M_A3D_I>=Tonyu.globals.$TD_M_A3D_S) {
+                  Tonyu.globals.$TD_M_EOF=1;
+                  Tonyu.globals.$TD_M_M++;
+                  Tonyu.globals.$TD_M_A3D_I=0;
+                  break;
+                  
+                  
+                }
+                Tonyu.globals.$TD_M_O=Tonyu.globals.$TD_M_A3D[Tonyu.globals.$TD_M_A3D_I];
+                Tonyu.globals.$TD_M_AP_S=Tonyu.globals.$TD_M_O.TD_AP.length;
+                if (Tonyu.globals.$TD_M_O.TD_visible==0) {
+                  Tonyu.globals.$TD_M_AP_I=Tonyu.globals.$TD_M_AP_S;
+                  
+                }
+                
+              }
+              if (Tonyu.globals.$TD_M_AP_I<Tonyu.globals.$TD_M_AP_S) {
+                Tonyu.globals.$TD_M_O.TD_AP[Tonyu.globals.$TD_M_AP_I].henkan2D(Tonyu.globals.$TD_K_k,Tonyu.globals.$TD_Z_k,Tonyu.globals.$TD_K_hw,Tonyu.globals.$TD_K_hh);
+                Tonyu.globals.$TD_M_AP_I++;
+                
+              }
+              if (Tonyu.globals.$TD_M_AP_I>=Tonyu.globals.$TD_M_AP_S) {
+                Tonyu.globals.$TD_M_AP_I=0;
+                Tonyu.globals.$TD_M_A3D_I++;
+                
+              }
+            }
+          }
+          
+        }
+        if (Tonyu.globals.$TD_M_M==4) {
+          for (i=0; i<Tonyu.globals.$TD_M_syoriMax ; i++) {
+            {
+              if (Tonyu.globals.$TD_M_ADR_I==0) {
+                if (Tonyu.globals.$TD_M_A3D_I>=Tonyu.globals.$TD_M_A3D_S) {
+                  Tonyu.globals.$TD_M_EOF=1;
+                  Tonyu.globals.$TD_M_M++;
+                  Tonyu.globals.$TD_M_A3D_I=0;
+                  break;
+                  
+                  
+                }
+                Tonyu.globals.$TD_M_O=Tonyu.globals.$TD_M_A3D[Tonyu.globals.$TD_M_A3D_I];
+                Tonyu.globals.$TD_M_ADR_S=Tonyu.globals.$TD_M_O.TD_ADR.length;
+                if (Tonyu.globals.$TD_M_O.TD_visible==0) {
+                  Tonyu.globals.$TD_M_ADR_I=Tonyu.globals.$TD_M_ADR_S;
+                  
+                }
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I<Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_O.TD_ADR[Tonyu.globals.$TD_M_ADR_I].hamidasiSyusei(Tonyu.globals.$TD_G_GL,Tonyu.globals.$TD_G_GU,Tonyu.globals.$TD_G_GR,Tonyu.globals.$TD_G_GD);
+                Tonyu.globals.$TD_M_ADR_I++;
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I>=Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_ADR_I=0;
+                Tonyu.globals.$TD_M_A3D_I++;
+                
+              }
+            }
+          }
+          
+        }
+        if (Tonyu.globals.$TD_M_M==5) {
+          for (i=0; i<Tonyu.globals.$TD_M_syoriMax ; i++) {
+            {
+              if (Tonyu.globals.$TD_M_ADR_I==0) {
+                if (Tonyu.globals.$TD_M_A3D_I>=Tonyu.globals.$TD_M_A3D_S) {
+                  Tonyu.globals.$TD_M_EOF=1;
+                  if (Tonyu.globals.$TD_M_multiGamen==1) {
+                    Tonyu.globals.$TD_M_M=0;
+                  } else {
+                    Tonyu.globals.$TD_M_M++;
+                  }
+                  Tonyu.globals.$TD_M_A3D_I=0;
+                  break;
+                  
+                  
+                }
+                Tonyu.globals.$TD_M_O=Tonyu.globals.$TD_M_A3D[Tonyu.globals.$TD_M_A3D_I];
+                Tonyu.globals.$TD_M_ADR_S=Tonyu.globals.$TD_M_O.TD_ADR.length;
+                if (Tonyu.globals.$TD_M_O.TD_visible==0) {
+                  Tonyu.globals.$TD_M_ADR_I=Tonyu.globals.$TD_M_ADR_S;
+                  
+                }
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I<Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_O.TD_ADR[Tonyu.globals.$TD_M_ADR_I].ZukeiDraw(Tonyu.globals.$TD_M_O.TD_angleDX,Tonyu.globals.$TD_M_O.TD_alphaDX,Tonyu.globals.$TD_M_O.TD_scaleXDX,Tonyu.globals.$TD_M_O.TD_scaleYDX);
+                Tonyu.globals.$TD_M_ADR_I++;
+                
+              }
+              if (Tonyu.globals.$TD_M_ADR_I>=Tonyu.globals.$TD_M_ADR_S) {
+                Tonyu.globals.$TD_M_A3D_I++;
+                Tonyu.globals.$TD_M_ADR_I=0;
+                
+              }
+            }
+          }
+          
+        }
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"run":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.DxChar',
   shortName: 'DxChar',
   namespace: 'kernel',
@@ -36775,6 +41039,2259 @@ Tonyu.klass.define({
     };
   },
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"angle":{}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.TD_3D',
+  shortName: 'TD_3D',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.DxChar,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_TD_3D_main() {
+        var _this=this;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      },
+      fiber$main :function* _trc_TD_3D_f_main(_thread) {
+        var _this=this;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      },
+      initialize :function _trc_TD_3D_initialize(opt) {
+        var _this=this;
+        
+        _this.cons();
+        __superClass.apply( _this, [opt]);
+      },
+      cons :function _trc_TD_3D_cons() {
+        var _this=this;
+        
+        if (_this.z==null) {
+          _this.z=0;
+        }
+        _this.TD_x=0;
+        _this.TD_y=0;
+        _this.TD_z=0;
+        _this.TD_angleX=0;
+        _this.TD_angleY=0;
+        _this.TD_angleZ=0;
+        _this.TD_angleXZ=0;
+        _this.TD_angleYZ=0;
+        _this.TD_angleXY=0;
+        _this.TD_angleDX=0;
+        _this.TD_alphaDX=255;
+        _this.TD_scaleXDX=1;
+        _this.TD_scaleYDX=0;
+        _this.TD_AP=[];
+        _this.TD_ADR=[];
+        _this.TD_A2=[];
+        _this.TD_visible=1;
+        _this.scaleY=_this.scaleY||0;
+        if (Tonyu.globals.$TD_M_A3D.indexOf()==- 1) {
+          Tonyu.globals.$TD_M_A3D.push(_this);
+        }
+        _this.on("die",(function anonymous_1650() {
+          
+          _this.onDie();
+        }));
+      },
+      fiber$cons :function* _trc_TD_3D_f_cons(_thread) {
+        var _this=this;
+        
+        if (_this.z==null) {
+          _this.z=0;
+        }
+        _this.TD_x=0;
+        _this.TD_y=0;
+        _this.TD_z=0;
+        _this.TD_angleX=0;
+        _this.TD_angleY=0;
+        _this.TD_angleZ=0;
+        _this.TD_angleXZ=0;
+        _this.TD_angleYZ=0;
+        _this.TD_angleXY=0;
+        _this.TD_angleDX=0;
+        _this.TD_alphaDX=255;
+        _this.TD_scaleXDX=1;
+        _this.TD_scaleYDX=0;
+        _this.TD_AP=[];
+        _this.TD_ADR=[];
+        _this.TD_A2=[];
+        _this.TD_visible=1;
+        _this.scaleY=_this.scaleY||0;
+        if (Tonyu.globals.$TD_M_A3D.indexOf()==- 1) {
+          Tonyu.globals.$TD_M_A3D.push(_this);
+        }
+        _this.on("die",(function anonymous_1650() {
+          
+          _this.onDie();
+        }));
+        
+      },
+      draw :function _trc_TD_3D_draw(ctx) {
+        var _this=this;
+        
+      },
+      RSC :function _trc_TD_3D_RSC() {
+        var _this=this;
+        
+        _this.TD_x=_this.x;
+        _this.TD_y=_this.y;
+        _this.TD_z=_this.z;
+        _this.TD_angleDX=_this.angle;
+        _this.TD_alphaDX=_this.alpha;
+        _this.TD_scaleXDX=_this.scaleX;
+        _this.TD_scaleYDX=_this.scaleY;
+        _this.TD_xzsin=Tonyu.globals.$TD_Z.rsin(_this.TD_angleXZ);
+        _this.TD_xzcos=Tonyu.globals.$TD_Z.rcos(_this.TD_angleXZ);
+        _this.TD_yzsin=Tonyu.globals.$TD_Z.rsin(_this.TD_angleYZ);
+        _this.TD_yzcos=Tonyu.globals.$TD_Z.rcos(_this.TD_angleYZ);
+        _this.TD_xysin=Tonyu.globals.$TD_Z.rsin(_this.TD_angleXY);
+        _this.TD_xycos=Tonyu.globals.$TD_Z.rcos(_this.TD_angleXY);
+      },
+      fiber$RSC :function* _trc_TD_3D_f_RSC(_thread) {
+        var _this=this;
+        
+        _this.TD_x=_this.x;
+        _this.TD_y=_this.y;
+        _this.TD_z=_this.z;
+        _this.TD_angleDX=_this.angle;
+        _this.TD_alphaDX=_this.alpha;
+        _this.TD_scaleXDX=_this.scaleX;
+        _this.TD_scaleYDX=_this.scaleY;
+        _this.TD_xzsin=Tonyu.globals.$TD_Z.rsin(_this.TD_angleXZ);
+        _this.TD_xzcos=Tonyu.globals.$TD_Z.rcos(_this.TD_angleXZ);
+        _this.TD_yzsin=Tonyu.globals.$TD_Z.rsin(_this.TD_angleYZ);
+        _this.TD_yzcos=Tonyu.globals.$TD_Z.rcos(_this.TD_angleYZ);
+        _this.TD_xysin=Tonyu.globals.$TD_Z.rsin(_this.TD_angleXY);
+        _this.TD_xycos=Tonyu.globals.$TD_Z.rcos(_this.TD_angleXY);
+        
+      },
+      update :function _trc_TD_3D_update() {
+        var _this=this;
+        
+        _this.apudeto();
+        __superClass.prototype.update.apply( _this, []);
+      },
+      fiber$update :function* _trc_TD_3D_f_update(_thread) {
+        var _this=this;
+        
+        (yield* _this.fiber$apudeto(_thread));
+        (yield* __superClass.prototype.fiber$update.apply( _this, [_thread]));
+        
+      },
+      apudeto :function _trc_TD_3D_apudeto() {
+        var _this=this;
+        var i;
+        var t;
+        
+        
+        if (Tonyu.globals.$TD_M_tenmetuKeigen!=0) {
+          return _this;
+        }
+        if (! Tonyu.globals.$_doDraw) {
+          return _this;
+        }
+        if (_this.TD_visible) {
+          if (Tonyu.globals.$TD_K_F!=Tonyu.globals.$frameCount) {
+            Tonyu.globals.$TD_Z.RSC();
+            Tonyu.globals.$TD_Z.GKK();
+            Tonyu.globals.$TD_K_F=Tonyu.globals.$frameCount;
+            
+          }
+          _this._Draw3D();
+          
+        }
+      },
+      fiber$apudeto :function* _trc_TD_3D_f_apudeto(_thread) {
+        var _this=this;
+        var i;
+        var t;
+        
+        
+        if (Tonyu.globals.$TD_M_tenmetuKeigen!=0) {
+          return _this;
+        }
+        if (! Tonyu.globals.$_doDraw) {
+          return _this;
+        }
+        if (_this.TD_visible) {
+          if (Tonyu.globals.$TD_K_F!=Tonyu.globals.$frameCount) {
+            Tonyu.globals.$TD_Z.RSC();
+            Tonyu.globals.$TD_Z.GKK();
+            Tonyu.globals.$TD_K_F=Tonyu.globals.$frameCount;
+            
+          }
+          (yield* _this.fiber$_Draw3D(_thread));
+          
+        }
+        
+      },
+      onAppear :function _trc_TD_3D_onAppear() {
+        var _this=this;
+        
+      },
+      fiber$onAppear :function* _trc_TD_3D_f_onAppear(_thread) {
+        var _this=this;
+        
+        
+      },
+      onDie :function _trc_TD_3D_onDie() {
+        var _this=this;
+        var t;
+        
+        if (Tonyu.globals.$TD_M_A3D.indexOf(_this)>=0) {
+          Tonyu.globals.$TD_M_A3D.splice(Tonyu.globals.$TD_M_A3D.indexOf(_this),1);
+        }
+        _this.TD_AP.splice(0);
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.die();
+          
+        }
+        _this.TD_ADR.splice(0);
+      },
+      fiber$onDie :function* _trc_TD_3D_f_onDie(_thread) {
+        var _this=this;
+        var t;
+        
+        if (Tonyu.globals.$TD_M_A3D.indexOf(_this)>=0) {
+          Tonyu.globals.$TD_M_A3D.splice(Tonyu.globals.$TD_M_A3D.indexOf(_this),1);
+        }
+        _this.TD_AP.splice(0);
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.die();
+          
+        }
+        _this.TD_ADR.splice(0);
+        
+      },
+      Draw3D :function _trc_TD_3D_Draw3D(v) {
+        var _this=this;
+        
+        _this.TD_visible=v;
+      },
+      fiber$Draw3D :function* _trc_TD_3D_f_Draw3D(_thread,v) {
+        var _this=this;
+        
+        _this.TD_visible=v;
+        
+      },
+      _Draw3D :function _trc_TD_3D__Draw3D() {
+        var _this=this;
+        var t;
+        
+        
+        _this.TD_x=_this.x;
+        _this.TD_y=_this.z;
+        _this.TD_z=_this.y;
+        _this.RSC();
+        for ([t] of Tonyu.iterator2(_this.TD_AP,1)) {
+          t.kaiten(_this.TD_x,_this.TD_y,_this.TD_z,_this.TD_angleX,_this.TD_angleY,_this.TD_angleZ,_this.TD_angleXZ,_this.TD_angleYZ,_this.TD_angleXY,_this.TD_xzsin,_this.TD_yzsin,_this.TD_xysin,_this.TD_xzcos,_this.TD_yzcos,_this.TD_xycos,Tonyu.globals.$TD_Z_x,Tonyu.globals.$TD_Z_y,Tonyu.globals.$TD_Z_z,Tonyu.globals.$TD_K_xzsin,Tonyu.globals.$TD_K_yzsin,Tonyu.globals.$TD_K_xysin,Tonyu.globals.$TD_K_xzcos,Tonyu.globals.$TD_K_yzcos,Tonyu.globals.$TD_K_xycos);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.merikomiSyusei(Tonyu.globals.$TD_K_k,Tonyu.globals.$TD_Z_k,Tonyu.globals.$TD_K_hw,Tonyu.globals.$TD_K_hh);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_AP,1)) {
+          t.henkan2D(Tonyu.globals.$TD_K_k,Tonyu.globals.$TD_Z_k,Tonyu.globals.$TD_K_hw,Tonyu.globals.$TD_K_hh);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.hamidasiSyusei(Tonyu.globals.$TD_G_GL,Tonyu.globals.$TD_G_GU,Tonyu.globals.$TD_G_GR,Tonyu.globals.$TD_G_GD,_this.TD_scaleXDX,_this.TD_scaleYDX);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.ZukeiDraw(_this.TD_angleDX,_this.TD_alphaDX,_this.TD_scaleXDX,_this.TD_scaleYDX);
+          
+        }
+      },
+      fiber$_Draw3D :function* _trc_TD_3D_f__Draw3D(_thread) {
+        var _this=this;
+        var t;
+        
+        
+        _this.TD_x=_this.x;
+        _this.TD_y=_this.z;
+        _this.TD_z=_this.y;
+        (yield* _this.fiber$RSC(_thread));
+        for ([t] of Tonyu.iterator2(_this.TD_AP,1)) {
+          t.kaiten(_this.TD_x,_this.TD_y,_this.TD_z,_this.TD_angleX,_this.TD_angleY,_this.TD_angleZ,_this.TD_angleXZ,_this.TD_angleYZ,_this.TD_angleXY,_this.TD_xzsin,_this.TD_yzsin,_this.TD_xysin,_this.TD_xzcos,_this.TD_yzcos,_this.TD_xycos,Tonyu.globals.$TD_Z_x,Tonyu.globals.$TD_Z_y,Tonyu.globals.$TD_Z_z,Tonyu.globals.$TD_K_xzsin,Tonyu.globals.$TD_K_yzsin,Tonyu.globals.$TD_K_xysin,Tonyu.globals.$TD_K_xzcos,Tonyu.globals.$TD_K_yzcos,Tonyu.globals.$TD_K_xycos);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.merikomiSyusei(Tonyu.globals.$TD_K_k,Tonyu.globals.$TD_Z_k,Tonyu.globals.$TD_K_hw,Tonyu.globals.$TD_K_hh);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_AP,1)) {
+          t.henkan2D(Tonyu.globals.$TD_K_k,Tonyu.globals.$TD_Z_k,Tonyu.globals.$TD_K_hw,Tonyu.globals.$TD_K_hh);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.hamidasiSyusei(Tonyu.globals.$TD_G_GL,Tonyu.globals.$TD_G_GU,Tonyu.globals.$TD_G_GR,Tonyu.globals.$TD_G_GD,_this.TD_scaleXDX,_this.TD_scaleYDX);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.ZukeiDraw(_this.TD_angleDX,_this.TD_alphaDX,_this.TD_scaleXDX,_this.TD_scaleYDX);
+          
+        }
+        
+      },
+      addDraw3D2 :function _trc_TD_3D_addDraw3D2(zx,zy,zz,xz,yz,xy,gk,k_max,GL,GU,GR,GD) {
+        var _this=this;
+        var t;
+        
+        
+        t=new Tonyu.classes.kernel.TD_CM(zx,zy,zz,xz,yz,xy,gk,k_max,GL,GU,GR,GD);
+        _this.TD_A2.push(t);
+        return t;
+      },
+      fiber$addDraw3D2 :function* _trc_TD_3D_f_addDraw3D2(_thread,zx,zy,zz,xz,yz,xy,gk,k_max,GL,GU,GR,GD) {
+        var _this=this;
+        var t;
+        
+        
+        t=new Tonyu.classes.kernel.TD_CM(zx,zy,zz,xz,yz,xy,gk,k_max,GL,GU,GR,GD);
+        _this.TD_A2.push(t);
+        return t;
+        
+      },
+      setDraw3D2 :function _trc_TD_3D_setDraw3D2(i,zx,zy,zz,xz,yz,xy,gk,k_max,GL,GU,GR,GD) {
+        var _this=this;
+        var t;
+        
+        
+        t=_this.TD_A2[i];
+        t.zx=zx;
+        t.zy=zy;
+        t.zz=zz;
+        t.xz=xz;
+        t.yz=yz;
+        t.xy=xy;
+        t.gk=gk;
+        t.k_max=k_max;
+        t.GL=GL;
+        t.GU=GU;
+        t.GR=GR;
+        t.GD=GD;
+      },
+      fiber$setDraw3D2 :function* _trc_TD_3D_f_setDraw3D2(_thread,i,zx,zy,zz,xz,yz,xy,gk,k_max,GL,GU,GR,GD) {
+        var _this=this;
+        var t;
+        
+        
+        t=_this.TD_A2[i];
+        t.zx=zx;
+        t.zy=zy;
+        t.zz=zz;
+        t.xz=xz;
+        t.yz=yz;
+        t.xy=xy;
+        t.gk=gk;
+        t.k_max=k_max;
+        t.GL=GL;
+        t.GU=GU;
+        t.GR=GR;
+        t.GD=GD;
+        
+      },
+      deleteDraw3D2 :function _trc_TD_3D_deleteDraw3D2(i) {
+        var _this=this;
+        
+        _this.TD_A2.splice(i,1);
+      },
+      fiber$deleteDraw3D2 :function* _trc_TD_3D_f_deleteDraw3D2(_thread,i) {
+        var _this=this;
+        
+        _this.TD_A2.splice(i,1);
+        
+      },
+      removeDraw3D2 :function _trc_TD_3D_removeDraw3D2(t) {
+        var _this=this;
+        
+        if (_this.TD_A2.indexOf(t)>=0) {
+          _this.TD_A2.splice(_this.TD_A2.indexOf(t),1);
+        }
+      },
+      fiber$removeDraw3D2 :function* _trc_TD_3D_f_removeDraw3D2(_thread,t) {
+        var _this=this;
+        
+        if (_this.TD_A2.indexOf(t)>=0) {
+          _this.TD_A2.splice(_this.TD_A2.indexOf(t),1);
+        }
+        
+      },
+      _Draw3D2 :function _trc_TD_3D__Draw3D2(zx,zy,zz,xz,yz,xy,gk,k_max,GL,GU,GR,GD) {
+        var _this=this;
+        var t;
+        var ww;
+        var hh;
+        var kk;
+        var zk;
+        
+        
+        if (! Tonyu.globals.$_doDraw) {
+          return _this;
+        }
+        _this.RSC();
+        _this.TD_k_xzsin=Tonyu.globals.$TD_Z.rsin(xz);
+        _this.TD_k_yzsin=Tonyu.globals.$TD_Z.rsin(yz);
+        _this.TD_k_xysin=Tonyu.globals.$TD_Z.rsin(xy);
+        _this.TD_k_xzcos=Tonyu.globals.$TD_Z.rcos(xz);
+        _this.TD_k_yzcos=Tonyu.globals.$TD_Z.rcos(yz);
+        _this.TD_k_xycos=Tonyu.globals.$TD_Z.rcos(xy);
+        ww=GR-GL;
+        hh=GD-GU;
+        if (Tonyu.globals.$screenWidth>=Tonyu.globals.$screenHeight) {
+          zk=ww+gk;
+        } else {
+          zk=hh+gk;
+        }
+        kk=zk/k_max;
+        ww=GL+ww/2;
+        hh=GU+hh/2;
+        for ([t] of Tonyu.iterator2(_this.TD_AP,1)) {
+          t.kaiten(_this.x,_this.y,_this.z,_this.TD_angleX,_this.TD_angleY,_this.TD_angleZ,_this.TD_angleXZ,_this.TD_angleYZ,_this.TD_angleXY,_this.TD_xzsin,_this.TD_yzsin,_this.TD_xysin,_this.TD_xzcos,_this.TD_yzcos,_this.TD_xycos,zx,zy,zz,_this.TD_k_xzsin,_this.TD_k_yzsin,_this.TD_k_xysin,_this.TD_k_xzcos,_this.TD_k_yzcos,_this.TD_k_xycos);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.merikomiSyusei(kk,zk,ww,hh);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_AP,1)) {
+          t.henkan2D(kk,zk,ww,hh);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.hamidasiSyusei(GL,GU,GR,GD);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.ZukeiDraw(_this.TD_angleDX,_this.TD_alphaDX,_this.TD_scaleXDX,_this.TD_scaleYDX);
+          
+        }
+      },
+      fiber$_Draw3D2 :function* _trc_TD_3D_f__Draw3D2(_thread,zx,zy,zz,xz,yz,xy,gk,k_max,GL,GU,GR,GD) {
+        var _this=this;
+        var t;
+        var ww;
+        var hh;
+        var kk;
+        var zk;
+        
+        
+        if (! Tonyu.globals.$_doDraw) {
+          return _this;
+        }
+        (yield* _this.fiber$RSC(_thread));
+        _this.TD_k_xzsin=Tonyu.globals.$TD_Z.rsin(xz);
+        _this.TD_k_yzsin=Tonyu.globals.$TD_Z.rsin(yz);
+        _this.TD_k_xysin=Tonyu.globals.$TD_Z.rsin(xy);
+        _this.TD_k_xzcos=Tonyu.globals.$TD_Z.rcos(xz);
+        _this.TD_k_yzcos=Tonyu.globals.$TD_Z.rcos(yz);
+        _this.TD_k_xycos=Tonyu.globals.$TD_Z.rcos(xy);
+        ww=GR-GL;
+        hh=GD-GU;
+        if (Tonyu.globals.$screenWidth>=Tonyu.globals.$screenHeight) {
+          zk=ww+gk;
+        } else {
+          zk=hh+gk;
+        }
+        kk=zk/k_max;
+        ww=GL+ww/2;
+        hh=GU+hh/2;
+        for ([t] of Tonyu.iterator2(_this.TD_AP,1)) {
+          t.kaiten(_this.x,_this.y,_this.z,_this.TD_angleX,_this.TD_angleY,_this.TD_angleZ,_this.TD_angleXZ,_this.TD_angleYZ,_this.TD_angleXY,_this.TD_xzsin,_this.TD_yzsin,_this.TD_xysin,_this.TD_xzcos,_this.TD_yzcos,_this.TD_xycos,zx,zy,zz,_this.TD_k_xzsin,_this.TD_k_yzsin,_this.TD_k_xysin,_this.TD_k_xzcos,_this.TD_k_yzcos,_this.TD_k_xycos);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.merikomiSyusei(kk,zk,ww,hh);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_AP,1)) {
+          t.henkan2D(kk,zk,ww,hh);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.hamidasiSyusei(GL,GU,GR,GD);
+          
+        }
+        for ([t] of Tonyu.iterator2(_this.TD_ADR,1)) {
+          t.ZukeiDraw(_this.TD_angleDX,_this.TD_alphaDX,_this.TD_scaleXDX,_this.TD_scaleYDX);
+          
+        }
+        
+      },
+      add3D_P :function _trc_TD_3D_add3D_P(x,y,z) {
+        var _this=this;
+        var p;
+        
+        
+        p=new Tonyu.classes.kernel.TD_P(x,y,z);
+        _this.TD_AP.push(p);
+        return p;
+      },
+      fiber$add3D_P :function* _trc_TD_3D_f_add3D_P(_thread,x,y,z) {
+        var _this=this;
+        var p;
+        
+        
+        p=new Tonyu.classes.kernel.TD_P(x,y,z);
+        _this.TD_AP.push(p);
+        return p;
+        
+      },
+      add3D_DX :function _trc_TD_3D_add3D_DX(m,p1,p,f,angle,alpha,scaleX,scaleY) {
+        var _this=this;
+        var t;
+        
+        
+        t=new Tonyu.classes.kernel.TD_DR(1,m,p1,p,f,angle,alpha,scaleX,scaleY);
+        _this.TD_ADR.push(t);
+        return t;
+      },
+      fiber$add3D_DX :function* _trc_TD_3D_f_add3D_DX(_thread,m,p1,p,f,angle,alpha,scaleX,scaleY) {
+        var _this=this;
+        var t;
+        
+        
+        t=new Tonyu.classes.kernel.TD_DR(1,m,p1,p,f,angle,alpha,scaleX,scaleY);
+        _this.TD_ADR.push(t);
+        return t;
+        
+      },
+      add3D_L :function _trc_TD_3D_add3D_L(m,p1,p2,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        
+        
+        t=new Tonyu.classes.kernel.TD_DR(2,m,p1,p2,c,zt,h,blw,al);
+        _this.TD_ADR.push(t);
+        return t;
+      },
+      fiber$add3D_L :function* _trc_TD_3D_f_add3D_L(_thread,m,p1,p2,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        
+        
+        t=new Tonyu.classes.kernel.TD_DR(2,m,p1,p2,c,zt,h,blw,al);
+        _this.TD_ADR.push(t);
+        return t;
+        
+      },
+      add3D_T :function _trc_TD_3D_add3D_T(m,p1,p2,p3,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        
+        
+        t=new Tonyu.classes.kernel.TD_DR(3,m,p1,p2,p3,c,zt,h,blw,al);
+        _this.TD_ADR.push(t);
+        return t;
+      },
+      fiber$add3D_T :function* _trc_TD_3D_f_add3D_T(_thread,m,p1,p2,p3,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        
+        
+        t=new Tonyu.classes.kernel.TD_DR(3,m,p1,p2,p3,c,zt,h,blw,al);
+        _this.TD_ADR.push(t);
+        return t;
+        
+      },
+      add3D_S :function _trc_TD_3D_add3D_S(m,p1,p2,p3,p4,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        
+        
+        t=new Tonyu.classes.kernel.TD_DR(4,m,p1,p2,p3,p4,c,zt,h,blw,al);
+        _this.TD_ADR.push(t);
+        return t;
+      },
+      fiber$add3D_S :function* _trc_TD_3D_f_add3D_S(_thread,m,p1,p2,p3,p4,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        
+        
+        t=new Tonyu.classes.kernel.TD_DR(4,m,p1,p2,p3,p4,c,zt,h,blw,al);
+        _this.TD_ADR.push(t);
+        return t;
+        
+      },
+      add3D_DX_P :function _trc_TD_3D_add3D_DX_P(m,x,y,z,p,f,angle,alpha,scaleX,scaleY) {
+        var _this=this;
+        var t;
+        var p1;
+        
+        
+        p1=new Tonyu.classes.kernel.TD_P(x,y,z);
+        t=new Tonyu.classes.kernel.TD_DR(1,m,p1,p,f,angle,alpha,scaleX,scaleY);
+        _this.TD_AP.push(p1);
+        _this.TD_ADR.push(t);
+        return t;
+      },
+      fiber$add3D_DX_P :function* _trc_TD_3D_f_add3D_DX_P(_thread,m,x,y,z,p,f,angle,alpha,scaleX,scaleY) {
+        var _this=this;
+        var t;
+        var p1;
+        
+        
+        p1=new Tonyu.classes.kernel.TD_P(x,y,z);
+        t=new Tonyu.classes.kernel.TD_DR(1,m,p1,p,f,angle,alpha,scaleX,scaleY);
+        _this.TD_AP.push(p1);
+        _this.TD_ADR.push(t);
+        return t;
+        
+      },
+      add3D_L_P :function _trc_TD_3D_add3D_L_P(m,x,y,z,x2,y2,z2,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        var p1;
+        var p2;
+        
+        
+        p1=new Tonyu.classes.kernel.TD_P(x,y,z);
+        p2=new Tonyu.classes.kernel.TD_P(x2,y2,z2);
+        t=new Tonyu.classes.kernel.TD_DR(2,m,p1,p2,c,zt,h,blw,al);
+        _this.TD_AP.push(p1);
+        _this.TD_AP.push(p2);
+        _this.TD_ADR.push(t);
+        return t;
+      },
+      fiber$add3D_L_P :function* _trc_TD_3D_f_add3D_L_P(_thread,m,x,y,z,x2,y2,z2,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        var p1;
+        var p2;
+        
+        
+        p1=new Tonyu.classes.kernel.TD_P(x,y,z);
+        p2=new Tonyu.classes.kernel.TD_P(x2,y2,z2);
+        t=new Tonyu.classes.kernel.TD_DR(2,m,p1,p2,c,zt,h,blw,al);
+        _this.TD_AP.push(p1);
+        _this.TD_AP.push(p2);
+        _this.TD_ADR.push(t);
+        return t;
+        
+      },
+      add3D_T_P :function _trc_TD_3D_add3D_T_P(m,x,y,z,x2,y2,z2,x3,y3,z3,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        var p1;
+        var p2;
+        var p3;
+        
+        
+        p1=new Tonyu.classes.kernel.TD_P(x,y,z);
+        p2=new Tonyu.classes.kernel.TD_P(x2,y2,z2);
+        p3=new Tonyu.classes.kernel.TD_P(x3,y3,z3);
+        t=new Tonyu.classes.kernel.TD_DR(3,m,p1,p2,p3,c,zt,h,blw,al);
+        _this.TD_AP.push(p1);
+        _this.TD_AP.push(p2);
+        _this.TD_AP.push(p3);
+        _this.TD_ADR.push(t);
+        return t;
+      },
+      fiber$add3D_T_P :function* _trc_TD_3D_f_add3D_T_P(_thread,m,x,y,z,x2,y2,z2,x3,y3,z3,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        var p1;
+        var p2;
+        var p3;
+        
+        
+        p1=new Tonyu.classes.kernel.TD_P(x,y,z);
+        p2=new Tonyu.classes.kernel.TD_P(x2,y2,z2);
+        p3=new Tonyu.classes.kernel.TD_P(x3,y3,z3);
+        t=new Tonyu.classes.kernel.TD_DR(3,m,p1,p2,p3,c,zt,h,blw,al);
+        _this.TD_AP.push(p1);
+        _this.TD_AP.push(p2);
+        _this.TD_AP.push(p3);
+        _this.TD_ADR.push(t);
+        return t;
+        
+      },
+      add3D_S_P :function _trc_TD_3D_add3D_S_P(m,x,y,z,x2,y2,z2,x3,y3,z3,x4,y4,z4,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        var p1;
+        var p2;
+        var p3;
+        var p4;
+        
+        
+        p1=new Tonyu.classes.kernel.TD_P(x,y,z);
+        p2=new Tonyu.classes.kernel.TD_P(x2,y2,z2);
+        p3=new Tonyu.classes.kernel.TD_P(x3,y3,z3);
+        p4=new Tonyu.classes.kernel.TD_P(x4,y4,z4);
+        t=new Tonyu.classes.kernel.TD_DR(4,m,p1,p2,p3,p4,c,zt,h,blw,al);
+        _this.TD_AP.push(p1);
+        _this.TD_AP.push(p2);
+        _this.TD_AP.push(p3);
+        _this.TD_AP.push(p4);
+        _this.TD_ADR.push(t);
+        return t;
+      },
+      fiber$add3D_S_P :function* _trc_TD_3D_f_add3D_S_P(_thread,m,x,y,z,x2,y2,z2,x3,y3,z3,x4,y4,z4,c,zt,h,blw,al) {
+        var _this=this;
+        var t;
+        var p1;
+        var p2;
+        var p3;
+        var p4;
+        
+        
+        p1=new Tonyu.classes.kernel.TD_P(x,y,z);
+        p2=new Tonyu.classes.kernel.TD_P(x2,y2,z2);
+        p3=new Tonyu.classes.kernel.TD_P(x3,y3,z3);
+        p4=new Tonyu.classes.kernel.TD_P(x4,y4,z4);
+        t=new Tonyu.classes.kernel.TD_DR(4,m,p1,p2,p3,p4,c,zt,h,blw,al);
+        _this.TD_AP.push(p1);
+        _this.TD_AP.push(p2);
+        _this.TD_AP.push(p3);
+        _this.TD_AP.push(p4);
+        _this.TD_ADR.push(t);
+        return t;
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cons":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"RSC":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"apudeto":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onAppear":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onDie":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"Draw3D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"_Draw3D":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"addDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"setDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"deleteDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"removeDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"_Draw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"add3D_DX":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_L":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_T":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_S":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_DX_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_L_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_T_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_S_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}}},"fields":{"z":{},"TD_x":{},"TD_y":{},"TD_z":{},"TD_angleX":{},"TD_angleY":{},"TD_angleZ":{},"TD_angleXZ":{},"TD_angleYZ":{},"TD_angleXY":{},"TD_angleDX":{},"TD_alphaDX":{},"TD_scaleXDX":{},"TD_scaleYDX":{},"TD_AP":{},"TD_ADR":{},"TD_A2":{},"TD_visible":{},"TD_xzsin":{},"TD_xzcos":{},"TD_yzsin":{},"TD_yzcos":{},"TD_xysin":{},"TD_xycos":{},"TD_k_xzsin":{},"TD_k_xzcos":{},"TD_k_yzsin":{},"TD_k_yzcos":{},"TD_k_xysin":{},"TD_k_xycos":{}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.TD_DR',
+  shortName: 'TD_DR',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.TD_DR_1,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_TD_DR_main() {
+        var _this=this;
+        
+      },
+      fiber$main :function* _trc_TD_DR_f_main(_thread) {
+        var _this=this;
+        
+        
+      },
+      initialize :function _trc_TD_DR_initialize(nn,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12) {
+        var _this=this;
+        var i;
+        
+        
+        _this.n=nn;
+        if (_this.n==1) {
+          _this.m=a1;
+          _this.p1=a2;
+          _this.c=a3;
+          _this.f=a4;
+          _this.angle=a5;
+          _this.alpha=a6;
+          _this.scaleX=a7;
+          _this.scaleY=a8;
+          _this.LR=1;
+          _this.UD=1;
+          _this.xx=0;
+          _this.yy=0;
+          
+        } else {
+          if (_this.n==2) {
+            _this.m=a1;
+            _this.p1=a2;
+            _this.p2=a3;
+            _this.c=a4;
+            _this.zt=a5;
+            _this.h=a6;
+            _this.paint=a7;
+            _this.alpha=a8;
+            _this.dp1=new Tonyu.classes.kernel.TD_P(0,0,0);
+            _this.dp2=new Tonyu.classes.kernel.TD_P(0,0,0);
+            
+          } else {
+            if (_this.n==3) {
+              _this.m=a1;
+              _this.p1=a2;
+              _this.p2=a3;
+              _this.p3=a4;
+              _this.c=a5;
+              _this.zt=a6;
+              _this.h=a7;
+              _this.paint=a8;
+              _this.alpha=a9;
+              _this.dp1=new Tonyu.classes.kernel.TD_P(0,0,0);
+              _this.dp2=new Tonyu.classes.kernel.TD_P(0,0,0);
+              _this.dp3=new Tonyu.classes.kernel.TD_P(0,0,0);
+              _this.dp4=new Tonyu.classes.kernel.TD_P(0,0,0);
+              _this.dp5=new Tonyu.classes.kernel.TD_P(0,0,0);
+              _this.dp6=new Tonyu.classes.kernel.TD_P(0,0,0);
+              _this.dp7=new Tonyu.classes.kernel.TD_P(0,0,0);
+              _this.dp8=new Tonyu.classes.kernel.TD_P(0,0,0);
+              _this.cpA=[];
+              for (i=0; i<10 ; i++) {
+                _this.cpA.push(new Tonyu.classes.kernel.TD_P(0,0,0));
+              }
+              
+            } else {
+              if (_this.n==4) {
+                _this.m=a1;
+                _this.p1=a2;
+                _this.p2=a3;
+                _this.p3=a4;
+                _this.p4=a5;
+                _this.c=a6;
+                _this.zt=a7;
+                _this.h=a8;
+                _this.paint=a9;
+                _this.alpha=a10;
+                _this.dp1=new Tonyu.classes.kernel.TD_P(0,0,0);
+                _this.dp2=new Tonyu.classes.kernel.TD_P(0,0,0);
+                _this.dp3=new Tonyu.classes.kernel.TD_P(0,0,0);
+                _this.dp4=new Tonyu.classes.kernel.TD_P(0,0,0);
+                _this.dp5=new Tonyu.classes.kernel.TD_P(0,0,0);
+                _this.dp6=new Tonyu.classes.kernel.TD_P(0,0,0);
+                _this.dp7=new Tonyu.classes.kernel.TD_P(0,0,0);
+                _this.dp8=new Tonyu.classes.kernel.TD_P(0,0,0);
+                _this.dp9=new Tonyu.classes.kernel.TD_P(0,0,0);
+                _this.dp10=new Tonyu.classes.kernel.TD_P(0,0,0);
+                _this.cpA=[];
+                for (i=0; i<16 ; i++) {
+                  _this.cpA.push(new Tonyu.classes.kernel.TD_P(0,0,0));
+                }
+                
+              }
+            }
+          }
+        }
+        if (_this.n==3||_this.n==4) {
+          _this.ep=new Tonyu.classes.kernel.TD_P;
+          _this.dpA=[];
+          _this.dpAsw=[];
+          _this.setPolygonTempAry=[];
+          
+        }
+        if (_this.alpha==null) {
+          _this.alpha=255;
+        }
+        _this.TD_visible=1;
+      },
+      ZukeiDraw :function _trc_TD_DR_ZukeiDraw(angleDX,alphaDX,scaleXDX,scaleYDX) {
+        var _this=this;
+        var p;
+        var i;
+        var GL;
+        var GU;
+        var GR;
+        var GD;
+        var width;
+        var height;
+        var bmpWidth;
+        var bmpHeight;
+        var panel;
+        
+        
+        if (! _this.TD_visible) {
+          return _this;
+        }
+        if (_this.s==- 1) {
+          return _this;
+        }
+        if (_this.m==1||_this.m==2) {
+          if (_this.s==0) {
+            return _this;
+          }
+          if (_this.n==1) {
+            _this.ss=1/_this.p1.k;
+            _this.k1=_this.ss*_this.scaleX*scaleXDX;
+            if (scaleYDX) {
+              if (_this.scaleY) {
+                _this.k2=_this.ss*_this.scaleY*scaleYDX;
+              } else {
+                _this.k2=_this.ss*_this.scaleX*scaleYDX;
+              }
+              _this.drawDxSprite(_this.p1.xx+_this.xx,_this.p1.yy+_this.yy,_this.c,_this.f,1000+_this.zo,- Tonyu.globals.$TD_Z_xy+_this.angle+angleDX,_this.alpha*alphaDX/255,_this.k1,_this.k2*(1-2*(_this.amod(Tonyu.globals.$TD_Z_yz+90,360)>=180)));
+              
+            } else {
+              if (_this.scaleY) {
+                _this.k2=_this.ss*_this.scaleY*scaleXDX;
+                _this.drawDxSprite(_this.p1.xx+_this.xx,_this.p1.yy+_this.yy,_this.c,_this.f,1000+_this.zo,- Tonyu.globals.$TD_Z_xy+_this.angle+angleDX,_this.alpha*alphaDX/255,_this.k1,_this.k2*(1-2*(_this.amod(Tonyu.globals.$TD_Z_yz+90,360)>=180)));
+                
+              } else {
+                _this.drawDxSprite(_this.p1.xx+_this.xx,_this.p1.yy+_this.yy,_this.c,_this.f,1000+_this.zo,- Tonyu.globals.$TD_Z_xy+_this.angle+angleDX,_this.alpha*alphaDX/255,_this.k1,_this.k1*(1-2*(_this.amod(Tonyu.globals.$TD_Z_yz+90,360)>=180)));
+                
+              }
+              
+            }
+            
+          } else {
+            if (_this.n==2) {
+              if (_this.s==1) {
+                _this.drawLine(_this.p1.xx,_this.p1.yy,_this.p2.xx,_this.p2.yy,_this.c,1000+_this.zo);
+                
+              } else {
+                if (_this.s>=2) {
+                  _this.drawLine(_this.dp1.xx,_this.dp1.yy,_this.dp2.xx,_this.dp2.yy,_this.c,1000+_this.zo);
+                  
+                }
+              }
+              
+            } else {
+              if (_this.n==3||_this.n==4) {
+                if (_this.s==1) {
+                  _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                  _this.setPolygon(1,_this.p2.xx,_this.p2.yy);
+                  _this.setPolygon(2,_this.p3.xx,_this.p3.yy);
+                  if (_this.pr>=4) {
+                    _this.setPolygon(3,_this.p4.xx,_this.p4.yy);
+                  }
+                  
+                } else {
+                  if (_this.s==2) {
+                    _this.setPolygon(0,_this.dp1.xx,_this.dp1.yy);
+                    _this.setPolygon(1,_this.dp2.xx,_this.dp2.yy);
+                    _this.setPolygon(2,_this.dp3.xx,_this.dp3.yy);
+                    if (_this.pr>=4) {
+                      _this.setPolygon(3,_this.dp4.xx,_this.dp4.yy);
+                    }
+                    if (_this.pr>=5) {
+                      _this.setPolygon(4,_this.dp5.xx,_this.dp5.yy);
+                    }
+                    
+                  } else {
+                    if (_this.s==3) {
+                      _this.pr=_this.dpA.length;
+                      if (_this.pr<=1) {
+                        return _this;
+                      }
+                      for (i=0; i<_this.pr ; i++) {
+                        {
+                          p=_this.dpA[i];
+                          _this.setPolygon(i,p.xx,p.yy);
+                        }
+                      }
+                      
+                    }
+                  }
+                }
+                _this.fillPolygon(0,0,_this.pr,_this.c,1000+_this.zo,_this.alpha);
+                
+              }
+            }
+          }
+          
+        } else {
+          if (false) {
+            if (Tonyu.globals.$TD_M_tenmetuKeigen==0) {
+              Tonyu.globals.$TD_M_APL_I=Tonyu.globals.$TD_M_APL_I%1000;
+              
+            }
+            if (_this.s==0) {
+              return _this;
+            }
+            if (_this.n==2) {
+              if (_this.s==1) {
+                if (_this.p1.xx<_this.p2.xx) {
+                  GL=_this.p1.xx;
+                } else {
+                  GL=_this.p2.xx;
+                }
+                if (_this.p1.yy<_this.p2.yy) {
+                  GU=_this.p1.yy;
+                } else {
+                  GU=_this.p2.yy;
+                }
+                if (_this.p1.xx>_this.p2.xx) {
+                  GR=_this.p1.xx;
+                } else {
+                  GR=_this.p2.xx;
+                }
+                if (_this.p1.yy>_this.p2.yy) {
+                  GD=_this.p1.yy;
+                } else {
+                  GD=_this.p2.yy;
+                }
+                GL=_this.floor(GL);
+                GU=_this.floor(GU);
+                GR=_this.floor(GR);
+                GD=_this.floor(GD);
+                width=GR-GL+1;
+                if (width<2) {
+                  width=2;
+                }
+                if (width>10000) {
+                  width=10000;
+                }
+                height=GD-GU+1;
+                if (height<2) {
+                  height=2;
+                }
+                if (height>10000) {
+                  height=10000;
+                }
+                _this.drawLine(_this.p1.xx,_this.p1.yy,_this.p2.xx,_this.p2.yy,_this.c,1000+_this.zo);
+                
+              } else {
+                if (_this.s>=2) {
+                  if (_this.dp1.xx<_this.dp2.xx) {
+                    GL=_this.dp1.xx;
+                  } else {
+                    GL=_this.dp2.xx;
+                  }
+                  if (_this.dp1.yy<_this.dp2.yy) {
+                    GU=_this.dp1.yy;
+                  } else {
+                    GU=_this.dp2.yy;
+                  }
+                  if (_this.dp1.xx>_this.dp2.xx) {
+                    GR=_this.dp1.xx;
+                  } else {
+                    GR=_this.dp2.xx;
+                  }
+                  if (_this.dp1.yy>_this.dp2.yy) {
+                    GD=_this.dp1.yy;
+                  } else {
+                    GD=_this.dp2.yy;
+                  }
+                  GL=_this.floor(GL);
+                  GU=_this.floor(GU);
+                  GR=_this.floor(GR);
+                  GD=_this.floor(GD);
+                  width=GR-GL+1;
+                  if (width<2) {
+                    width=2;
+                  }
+                  if (width>10000) {
+                    width=10000;
+                  }
+                  height=GD-GU+1;
+                  if (height<2) {
+                    height=2;
+                  }
+                  if (height>10000) {
+                    height=10000;
+                  }
+                  _this.drawLine(_this.dp1.xx,_this.dp1.yy,_this.dp2.xx,_this.dp2.yy,_this.c,1000+_this.zo);
+                  
+                }
+              }
+              
+            } else {
+              if (_this.n==3||_this.n==4) {
+                if (_this.s==1) {
+                  if (_this.p1.xx<_this.p2.xx) {
+                    GL=_this.p1.xx;
+                  } else {
+                    GL=_this.p2.xx;
+                  }
+                  if (_this.p1.yy<_this.p2.yy) {
+                    GU=_this.p1.yy;
+                  } else {
+                    GU=_this.p2.yy;
+                  }
+                  if (_this.p1.xx>_this.p2.xx) {
+                    GR=_this.p1.xx;
+                  } else {
+                    GR=_this.p2.xx;
+                  }
+                  if (_this.p1.yy>_this.p2.yy) {
+                    GD=_this.p1.yy;
+                  } else {
+                    GD=_this.p2.yy;
+                  }
+                  if (_this.p3.xx<GL) {
+                    GL=_this.p3.xx;
+                  }
+                  if (_this.p3.yy<GU) {
+                    GU=_this.p3.yy;
+                  }
+                  if (_this.p3.xx>GR) {
+                    GR=_this.p3.xx;
+                  }
+                  if (_this.p3.yy>GD) {
+                    GD=_this.p3.yy;
+                  }
+                  if (_this.pr>=4) {
+                    if (_this.p4.xx<GL) {
+                      GL=_this.p4.xx;
+                    }
+                    if (_this.p4.yy<GU) {
+                      GU=_this.p4.yy;
+                    }
+                    if (_this.p4.xx>GR) {
+                      GR=_this.p4.xx;
+                    }
+                    if (_this.p4.yy>GD) {
+                      GD=_this.p4.yy;
+                    }
+                    
+                  }
+                  if (_this.pr==3) {
+                    _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                    _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                    _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy-1);
+                    
+                  } else {
+                    if (_this.pr>=4) {
+                      if (_this.p1.xx<=_this.p2.xx&&_this.p1.yy<=_this.p4.yy) {
+                        _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                        _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                        _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy-1);
+                        if (_this.pr>=4) {
+                          _this.setPolygon(3,_this.p4.xx,_this.p4.yy-1);
+                        }
+                        
+                      } else {
+                        if (_this.p1.xx>_this.p2.xx&&_this.p1.yy<=_this.p4.yy) {
+                          _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                          _this.setPolygon(1,_this.p2.xx+1,_this.p2.yy);
+                          _this.setPolygon(2,_this.p3.xx+1,_this.p3.yy-1);
+                          if (_this.pr>=4) {
+                            _this.setPolygon(3,_this.p4.xx,_this.p4.yy-1);
+                          }
+                          
+                        } else {
+                          if (_this.p1.xx<=_this.p2.xx&&_this.p1.yy>_this.p4.yy) {
+                            _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                            _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                            _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy+1);
+                            if (_this.pr>=4) {
+                              _this.setPolygon(3,_this.p4.xx,_this.p4.yy+1);
+                            }
+                            
+                          } else {
+                            if (_this.p1.xx>_this.p2.xx&&_this.p1.yy>_this.p4.yy) {
+                              _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                              _this.setPolygon(1,_this.p2.xx+1,_this.p2.yy);
+                              _this.setPolygon(2,_this.p3.xx+1,_this.p3.yy+1);
+                              if (_this.pr>=4) {
+                                _this.setPolygon(3,_this.p4.xx,_this.p4.yy+1);
+                              }
+                              
+                            }
+                          }
+                        }
+                      }
+                      
+                    }
+                  }
+                  
+                } else {
+                  if (_this.s==2) {
+                    if (_this.dp1.xx<_this.dp2.xx) {
+                      GL=_this.dp1.xx;
+                    } else {
+                      GL=_this.dp2.xx;
+                    }
+                    if (_this.dp1.yy<_this.dp2.yy) {
+                      GU=_this.dp1.yy;
+                    } else {
+                      GU=_this.dp2.yy;
+                    }
+                    if (_this.dp1.xx>_this.dp2.xx) {
+                      GR=_this.dp1.xx;
+                    } else {
+                      GR=_this.dp2.xx;
+                    }
+                    if (_this.dp1.yy>_this.dp2.yy) {
+                      GD=_this.dp1.yy;
+                    } else {
+                      GD=_this.dp2.yy;
+                    }
+                    if (_this.dp3.xx<GL) {
+                      GL=_this.dp3.xx;
+                    }
+                    if (_this.dp3.yy<GU) {
+                      GU=_this.dp3.yy;
+                    }
+                    if (_this.dp3.xx>GR) {
+                      GR=_this.dp3.xx;
+                    }
+                    if (_this.dp3.yy>GD) {
+                      GD=_this.dp3.yy;
+                    }
+                    if (_this.pr>=4) {
+                      if (_this.dp4.xx<GL) {
+                        GL=_this.dp4.xx;
+                      }
+                      if (_this.dp4.yy<GU) {
+                        GU=_this.dp4.yy;
+                      }
+                      if (_this.dp4.xx>GR) {
+                        GR=_this.dp4.xx;
+                      }
+                      if (_this.dp4.yy>GD) {
+                        GD=_this.dp4.yy;
+                      }
+                      
+                    }
+                    if (_this.pr>=5) {
+                      if (_this.dp5.xx<GL) {
+                        GL=_this.dp5.xx;
+                      }
+                      if (_this.dp5.yy<GU) {
+                        GU=_this.dp5.yy;
+                      }
+                      if (_this.dp5.xx>GR) {
+                        GR=_this.dp5.xx;
+                      }
+                      if (_this.dp5.yy>GD) {
+                        GD=_this.dp5.yy;
+                      }
+                      
+                    }
+                    _this.setPolygon(0,_this.dp1.xx,_this.dp1.yy);
+                    _this.setPolygon(1,_this.dp2.xx,_this.dp2.yy);
+                    _this.setPolygon(2,_this.dp3.xx,_this.dp3.yy);
+                    if (_this.pr>=4) {
+                      _this.setPolygon(3,_this.dp4.xx,_this.dp4.yy);
+                    }
+                    if (_this.pr>=5) {
+                      _this.setPolygon(4,_this.dp5.xx,_this.dp5.yy);
+                    }
+                    
+                  } else {
+                    if (_this.s==3) {
+                      _this.pr=_this.dpA.length;
+                      if (_this.pr<=1) {
+                        return _this;
+                      }
+                      for (i=0; i<_this.pr ; i++) {
+                        {
+                          p=_this.dpA[i];
+                          if (i==0) {
+                            GL=p.xx;
+                            GU=p.yy;
+                            GR=p.xx;
+                            GD=p.yy;
+                            
+                          } else {
+                            if (p.xx<GL) {
+                              GL=p.xx;
+                            }
+                            if (p.yy<GU) {
+                              GU=p.yy;
+                            }
+                            if (p.xx>GR) {
+                              GR=p.xx;
+                            }
+                            if (p.yy>GD) {
+                              GD=p.yy;
+                            }
+                            
+                          }
+                          _this.setPolygon(i,p.xx,p.yy);
+                        }
+                      }
+                      
+                    }
+                  }
+                }
+                GL=_this.floor(GL);
+                GU=_this.floor(GU);
+                GR=_this.floor(GR);
+                GD=_this.floor(GD);
+                width=GR-GL+1;
+                if (width<2) {
+                  width=2;
+                }
+                if (width>5000) {
+                  width=5000;
+                }
+                height=GD-GU+1;
+                if (height<2) {
+                  height=2;
+                }
+                if (height>5000) {
+                  height=5000;
+                }
+                _this.fillPolygon(0,0,_this.pr,_this.c,1000+_this.zo,_this.alpha);
+                
+              }
+            }
+            
+          } else {
+            if (_this.m==3) {
+              if (Tonyu.globals.$TD_M_tenmetuKeigen==0) {
+                Tonyu.globals.$TD_M_APL_I=Tonyu.globals.$TD_M_APL_I%1000;
+                
+              }
+              if (Tonyu.globals.$TD_M_APL_I<Tonyu.globals.$TD_M_APL.length) {
+                Tonyu.globals.$TD_M_PL=Tonyu.globals.$TD_M_APL[Tonyu.globals.$TD_M_APL_I];
+                
+              } else {
+                Tonyu.globals.$TD_M_PL=new Tonyu.classes.kernel.Panel(2,2);
+                Tonyu.globals.$TD_M_APL.push(Tonyu.globals.$TD_M_PL);
+                
+              }
+              Tonyu.globals.$TD_M_APL_I++;
+              if (_this.s==0) {
+                return _this;
+              }
+              if (_this.n==3||_this.n==4) {
+                if (_this.s==1) {
+                  if (_this.p1.xx<_this.p2.xx) {
+                    GL=_this.p1.xx;
+                  } else {
+                    GL=_this.p2.xx;
+                  }
+                  if (_this.p1.yy<_this.p2.yy) {
+                    GU=_this.p1.yy;
+                  } else {
+                    GU=_this.p2.yy;
+                  }
+                  if (_this.p1.xx>_this.p2.xx) {
+                    GR=_this.p1.xx;
+                  } else {
+                    GR=_this.p2.xx;
+                  }
+                  if (_this.p1.yy>_this.p2.yy) {
+                    GD=_this.p1.yy;
+                  } else {
+                    GD=_this.p2.yy;
+                  }
+                  if (_this.p3.xx<GL) {
+                    GL=_this.p3.xx;
+                  }
+                  if (_this.p3.yy<GU) {
+                    GU=_this.p3.yy;
+                  }
+                  if (_this.p3.xx>GR) {
+                    GR=_this.p3.xx;
+                  }
+                  if (_this.p3.yy>GD) {
+                    GD=_this.p3.yy;
+                  }
+                  if (_this.pr>=4) {
+                    if (_this.p4.xx<GL) {
+                      GL=_this.p4.xx;
+                    }
+                    if (_this.p4.yy<GU) {
+                      GU=_this.p4.yy;
+                    }
+                    if (_this.p4.xx>GR) {
+                      GR=_this.p4.xx;
+                    }
+                    if (_this.p4.yy>GD) {
+                      GD=_this.p4.yy;
+                    }
+                    
+                  }
+                  if (_this.pr==3) {
+                    _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                    _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                    _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy-1);
+                    
+                  } else {
+                    if (_this.pr>=4) {
+                      if (_this.p1.xx<=_this.p2.xx&&_this.p1.yy<=_this.p4.yy) {
+                        _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                        _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                        _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy-1);
+                        _this.setPolygon(3,_this.p4.xx,_this.p4.yy-1);
+                        
+                      } else {
+                        if (_this.p1.xx>_this.p2.xx&&_this.p1.yy<=_this.p4.yy) {
+                          _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                          _this.setPolygon(1,_this.p2.xx+1,_this.p2.yy);
+                          _this.setPolygon(2,_this.p3.xx+1,_this.p3.yy-1);
+                          _this.setPolygon(3,_this.p4.xx,_this.p4.yy-1);
+                          
+                        } else {
+                          if (_this.p1.xx<=_this.p2.xx&&_this.p1.yy>_this.p4.yy) {
+                            _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                            _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                            _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy+1);
+                            _this.setPolygon(3,_this.p4.xx,_this.p4.yy+1);
+                            
+                          } else {
+                            if (_this.p1.xx>_this.p2.xx&&_this.p1.yy>_this.p4.yy) {
+                              _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                              _this.setPolygon(1,_this.p2.xx+1,_this.p2.yy);
+                              _this.setPolygon(2,_this.p3.xx+1,_this.p3.yy+1);
+                              _this.setPolygon(3,_this.p4.xx,_this.p4.yy+1);
+                              
+                            }
+                          }
+                        }
+                      }
+                      
+                    }
+                  }
+                  
+                } else {
+                  if (_this.s==2) {
+                    if (_this.dp1.xx<_this.dp2.xx) {
+                      GL=_this.dp1.xx;
+                    } else {
+                      GL=_this.dp2.xx;
+                    }
+                    if (_this.dp1.yy<_this.dp2.yy) {
+                      GU=_this.dp1.yy;
+                    } else {
+                      GU=_this.dp2.yy;
+                    }
+                    if (_this.dp1.xx>_this.dp2.xx) {
+                      GR=_this.dp1.xx;
+                    } else {
+                      GR=_this.dp2.xx;
+                    }
+                    if (_this.dp1.yy>_this.dp2.yy) {
+                      GD=_this.dp1.yy;
+                    } else {
+                      GD=_this.dp2.yy;
+                    }
+                    if (_this.dp3.xx<GL) {
+                      GL=_this.dp3.xx;
+                    }
+                    if (_this.dp3.yy<GU) {
+                      GU=_this.dp3.yy;
+                    }
+                    if (_this.dp3.xx>GR) {
+                      GR=_this.dp3.xx;
+                    }
+                    if (_this.dp3.yy>GD) {
+                      GD=_this.dp3.yy;
+                    }
+                    if (_this.pr>=4) {
+                      if (_this.dp4.xx<GL) {
+                        GL=_this.dp4.xx;
+                      }
+                      if (_this.dp4.yy<GU) {
+                        GU=_this.dp4.yy;
+                      }
+                      if (_this.dp4.xx>GR) {
+                        GR=_this.dp4.xx;
+                      }
+                      if (_this.dp4.yy>GD) {
+                        GD=_this.dp4.yy;
+                      }
+                      
+                    }
+                    if (_this.pr>=5) {
+                      if (_this.dp5.xx<GL) {
+                        GL=_this.dp5.xx;
+                      }
+                      if (_this.dp5.yy<GU) {
+                        GU=_this.dp5.yy;
+                      }
+                      if (_this.dp5.xx>GR) {
+                        GR=_this.dp5.xx;
+                      }
+                      if (_this.dp5.yy>GD) {
+                        GD=_this.dp5.yy;
+                      }
+                      
+                    }
+                    _this.setPolygon(0,_this.dp1.xx,_this.dp1.yy);
+                    _this.setPolygon(1,_this.dp2.xx,_this.dp2.yy);
+                    _this.setPolygon(2,_this.dp3.xx,_this.dp3.yy);
+                    if (_this.pr>=4) {
+                      _this.setPolygon(3,_this.dp4.xx,_this.dp4.yy);
+                    }
+                    if (_this.pr>=5) {
+                      _this.setPolygon(4,_this.dp5.xx,_this.dp5.yy);
+                    }
+                    
+                  } else {
+                    if (_this.s==3) {
+                      _this.pr=_this.dpA.length;
+                      if (_this.pr<=1) {
+                        return _this;
+                      }
+                      for (i=0; i<_this.pr ; i++) {
+                        {
+                          p=_this.dpA[i];
+                          if (i==0) {
+                            GL=p.xx;
+                            GU=p.yy;
+                            GR=p.xx;
+                            GD=p.yy;
+                            
+                          } else {
+                            if (p.xx<GL) {
+                              GL=p.xx;
+                            }
+                            if (p.yy<GU) {
+                              GU=p.yy;
+                            }
+                            if (p.xx>GR) {
+                              GR=p.xx;
+                            }
+                            if (p.yy>GD) {
+                              GD=p.yy;
+                            }
+                            
+                          }
+                          _this.setPolygon(i,p.xx,p.yy);
+                        }
+                      }
+                      
+                    }
+                  }
+                }
+                GL=_this.floor(GL);
+                GU=_this.floor(GU);
+                GR=_this.floor(GR);
+                GD=_this.floor(GD);
+                width=GR-GL+1;
+                if (width<2) {
+                  width=2;
+                }
+                if (width>5000) {
+                  width=5000;
+                }
+                height=GD-GU+1;
+                if (height<2) {
+                  height=2;
+                }
+                if (height>5000) {
+                  height=5000;
+                }
+                Tonyu.globals.$TD_M_PL.resize(width,height);
+                Tonyu.globals.$TD_M_PL.clearRect(0,0,width,height);
+                panel = new Tonyu.classes.kernel.Panel(width,height);
+                
+                _this.fillPolygonP(panel,- GL,- GU,_this.pr,"rgb(255,0,0)");
+                bmpWidth = _this.bmpGR-_this.bmpGL;
+                
+                bmpHeight = _this.bmpGD-_this.bmpGU;
+                
+                Tonyu.globals.$TD_M_PL.drawDxSprite(bmpWidth/2+(_this.bmpGL-GL),bmpHeight/2+(_this.bmpGU-GU),_this.c,0,0,(bmpWidth)/(Tonyu.globals.$imageList[_this.floor(_this.c||0)].width-1),(bmpHeight)/(Tonyu.globals.$imageList[_this.floor(_this.c||0)].height-1));
+                Tonyu.globals.$TD_M_PL.copyRect(0,0,width,height,panel,0,0,width,height);
+                
+              }
+              Tonyu.globals.$TD_M_PL.zOrder=1000+_this.zo;
+              Tonyu.globals.$TD_M_PL.alpha=_this.alpha;
+              Tonyu.globals.$TD_M_PL.draw(GL,GU,width,height,0,0);
+              
+            }
+          }
+        }
+      },
+      fiber$ZukeiDraw :function* _trc_TD_DR_f_ZukeiDraw(_thread,angleDX,alphaDX,scaleXDX,scaleYDX) {
+        var _this=this;
+        var p;
+        var i;
+        var GL;
+        var GU;
+        var GR;
+        var GD;
+        var width;
+        var height;
+        var bmpWidth;
+        var bmpHeight;
+        var panel;
+        
+        
+        if (! _this.TD_visible) {
+          return _this;
+        }
+        if (_this.s==- 1) {
+          return _this;
+        }
+        if (_this.m==1||_this.m==2) {
+          if (_this.s==0) {
+            return _this;
+          }
+          if (_this.n==1) {
+            _this.ss=1/_this.p1.k;
+            _this.k1=_this.ss*_this.scaleX*scaleXDX;
+            if (scaleYDX) {
+              if (_this.scaleY) {
+                _this.k2=_this.ss*_this.scaleY*scaleYDX;
+              } else {
+                _this.k2=_this.ss*_this.scaleX*scaleYDX;
+              }
+              _this.drawDxSprite(_this.p1.xx+_this.xx,_this.p1.yy+_this.yy,_this.c,_this.f,1000+_this.zo,- Tonyu.globals.$TD_Z_xy+_this.angle+angleDX,_this.alpha*alphaDX/255,_this.k1,_this.k2*(1-2*(_this.amod(Tonyu.globals.$TD_Z_yz+90,360)>=180)));
+              
+            } else {
+              if (_this.scaleY) {
+                _this.k2=_this.ss*_this.scaleY*scaleXDX;
+                _this.drawDxSprite(_this.p1.xx+_this.xx,_this.p1.yy+_this.yy,_this.c,_this.f,1000+_this.zo,- Tonyu.globals.$TD_Z_xy+_this.angle+angleDX,_this.alpha*alphaDX/255,_this.k1,_this.k2*(1-2*(_this.amod(Tonyu.globals.$TD_Z_yz+90,360)>=180)));
+                
+              } else {
+                _this.drawDxSprite(_this.p1.xx+_this.xx,_this.p1.yy+_this.yy,_this.c,_this.f,1000+_this.zo,- Tonyu.globals.$TD_Z_xy+_this.angle+angleDX,_this.alpha*alphaDX/255,_this.k1,_this.k1*(1-2*(_this.amod(Tonyu.globals.$TD_Z_yz+90,360)>=180)));
+                
+              }
+              
+            }
+            
+          } else {
+            if (_this.n==2) {
+              if (_this.s==1) {
+                _this.drawLine(_this.p1.xx,_this.p1.yy,_this.p2.xx,_this.p2.yy,_this.c,1000+_this.zo);
+                
+              } else {
+                if (_this.s>=2) {
+                  _this.drawLine(_this.dp1.xx,_this.dp1.yy,_this.dp2.xx,_this.dp2.yy,_this.c,1000+_this.zo);
+                  
+                }
+              }
+              
+            } else {
+              if (_this.n==3||_this.n==4) {
+                if (_this.s==1) {
+                  _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                  _this.setPolygon(1,_this.p2.xx,_this.p2.yy);
+                  _this.setPolygon(2,_this.p3.xx,_this.p3.yy);
+                  if (_this.pr>=4) {
+                    _this.setPolygon(3,_this.p4.xx,_this.p4.yy);
+                  }
+                  
+                } else {
+                  if (_this.s==2) {
+                    _this.setPolygon(0,_this.dp1.xx,_this.dp1.yy);
+                    _this.setPolygon(1,_this.dp2.xx,_this.dp2.yy);
+                    _this.setPolygon(2,_this.dp3.xx,_this.dp3.yy);
+                    if (_this.pr>=4) {
+                      _this.setPolygon(3,_this.dp4.xx,_this.dp4.yy);
+                    }
+                    if (_this.pr>=5) {
+                      _this.setPolygon(4,_this.dp5.xx,_this.dp5.yy);
+                    }
+                    
+                  } else {
+                    if (_this.s==3) {
+                      _this.pr=_this.dpA.length;
+                      if (_this.pr<=1) {
+                        return _this;
+                      }
+                      for (i=0; i<_this.pr ; i++) {
+                        {
+                          p=_this.dpA[i];
+                          _this.setPolygon(i,p.xx,p.yy);
+                        }
+                      }
+                      
+                    }
+                  }
+                }
+                _this.fillPolygon(0,0,_this.pr,_this.c,1000+_this.zo,_this.alpha);
+                
+              }
+            }
+          }
+          
+        } else {
+          if (false) {
+            if (Tonyu.globals.$TD_M_tenmetuKeigen==0) {
+              Tonyu.globals.$TD_M_APL_I=Tonyu.globals.$TD_M_APL_I%1000;
+              
+            }
+            if (_this.s==0) {
+              return _this;
+            }
+            if (_this.n==2) {
+              if (_this.s==1) {
+                if (_this.p1.xx<_this.p2.xx) {
+                  GL=_this.p1.xx;
+                } else {
+                  GL=_this.p2.xx;
+                }
+                if (_this.p1.yy<_this.p2.yy) {
+                  GU=_this.p1.yy;
+                } else {
+                  GU=_this.p2.yy;
+                }
+                if (_this.p1.xx>_this.p2.xx) {
+                  GR=_this.p1.xx;
+                } else {
+                  GR=_this.p2.xx;
+                }
+                if (_this.p1.yy>_this.p2.yy) {
+                  GD=_this.p1.yy;
+                } else {
+                  GD=_this.p2.yy;
+                }
+                GL=_this.floor(GL);
+                GU=_this.floor(GU);
+                GR=_this.floor(GR);
+                GD=_this.floor(GD);
+                width=GR-GL+1;
+                if (width<2) {
+                  width=2;
+                }
+                if (width>10000) {
+                  width=10000;
+                }
+                height=GD-GU+1;
+                if (height<2) {
+                  height=2;
+                }
+                if (height>10000) {
+                  height=10000;
+                }
+                _this.drawLine(_this.p1.xx,_this.p1.yy,_this.p2.xx,_this.p2.yy,_this.c,1000+_this.zo);
+                
+              } else {
+                if (_this.s>=2) {
+                  if (_this.dp1.xx<_this.dp2.xx) {
+                    GL=_this.dp1.xx;
+                  } else {
+                    GL=_this.dp2.xx;
+                  }
+                  if (_this.dp1.yy<_this.dp2.yy) {
+                    GU=_this.dp1.yy;
+                  } else {
+                    GU=_this.dp2.yy;
+                  }
+                  if (_this.dp1.xx>_this.dp2.xx) {
+                    GR=_this.dp1.xx;
+                  } else {
+                    GR=_this.dp2.xx;
+                  }
+                  if (_this.dp1.yy>_this.dp2.yy) {
+                    GD=_this.dp1.yy;
+                  } else {
+                    GD=_this.dp2.yy;
+                  }
+                  GL=_this.floor(GL);
+                  GU=_this.floor(GU);
+                  GR=_this.floor(GR);
+                  GD=_this.floor(GD);
+                  width=GR-GL+1;
+                  if (width<2) {
+                    width=2;
+                  }
+                  if (width>10000) {
+                    width=10000;
+                  }
+                  height=GD-GU+1;
+                  if (height<2) {
+                    height=2;
+                  }
+                  if (height>10000) {
+                    height=10000;
+                  }
+                  _this.drawLine(_this.dp1.xx,_this.dp1.yy,_this.dp2.xx,_this.dp2.yy,_this.c,1000+_this.zo);
+                  
+                }
+              }
+              
+            } else {
+              if (_this.n==3||_this.n==4) {
+                if (_this.s==1) {
+                  if (_this.p1.xx<_this.p2.xx) {
+                    GL=_this.p1.xx;
+                  } else {
+                    GL=_this.p2.xx;
+                  }
+                  if (_this.p1.yy<_this.p2.yy) {
+                    GU=_this.p1.yy;
+                  } else {
+                    GU=_this.p2.yy;
+                  }
+                  if (_this.p1.xx>_this.p2.xx) {
+                    GR=_this.p1.xx;
+                  } else {
+                    GR=_this.p2.xx;
+                  }
+                  if (_this.p1.yy>_this.p2.yy) {
+                    GD=_this.p1.yy;
+                  } else {
+                    GD=_this.p2.yy;
+                  }
+                  if (_this.p3.xx<GL) {
+                    GL=_this.p3.xx;
+                  }
+                  if (_this.p3.yy<GU) {
+                    GU=_this.p3.yy;
+                  }
+                  if (_this.p3.xx>GR) {
+                    GR=_this.p3.xx;
+                  }
+                  if (_this.p3.yy>GD) {
+                    GD=_this.p3.yy;
+                  }
+                  if (_this.pr>=4) {
+                    if (_this.p4.xx<GL) {
+                      GL=_this.p4.xx;
+                    }
+                    if (_this.p4.yy<GU) {
+                      GU=_this.p4.yy;
+                    }
+                    if (_this.p4.xx>GR) {
+                      GR=_this.p4.xx;
+                    }
+                    if (_this.p4.yy>GD) {
+                      GD=_this.p4.yy;
+                    }
+                    
+                  }
+                  if (_this.pr==3) {
+                    _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                    _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                    _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy-1);
+                    
+                  } else {
+                    if (_this.pr>=4) {
+                      if (_this.p1.xx<=_this.p2.xx&&_this.p1.yy<=_this.p4.yy) {
+                        _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                        _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                        _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy-1);
+                        if (_this.pr>=4) {
+                          _this.setPolygon(3,_this.p4.xx,_this.p4.yy-1);
+                        }
+                        
+                      } else {
+                        if (_this.p1.xx>_this.p2.xx&&_this.p1.yy<=_this.p4.yy) {
+                          _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                          _this.setPolygon(1,_this.p2.xx+1,_this.p2.yy);
+                          _this.setPolygon(2,_this.p3.xx+1,_this.p3.yy-1);
+                          if (_this.pr>=4) {
+                            _this.setPolygon(3,_this.p4.xx,_this.p4.yy-1);
+                          }
+                          
+                        } else {
+                          if (_this.p1.xx<=_this.p2.xx&&_this.p1.yy>_this.p4.yy) {
+                            _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                            _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                            _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy+1);
+                            if (_this.pr>=4) {
+                              _this.setPolygon(3,_this.p4.xx,_this.p4.yy+1);
+                            }
+                            
+                          } else {
+                            if (_this.p1.xx>_this.p2.xx&&_this.p1.yy>_this.p4.yy) {
+                              _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                              _this.setPolygon(1,_this.p2.xx+1,_this.p2.yy);
+                              _this.setPolygon(2,_this.p3.xx+1,_this.p3.yy+1);
+                              if (_this.pr>=4) {
+                                _this.setPolygon(3,_this.p4.xx,_this.p4.yy+1);
+                              }
+                              
+                            }
+                          }
+                        }
+                      }
+                      
+                    }
+                  }
+                  
+                } else {
+                  if (_this.s==2) {
+                    if (_this.dp1.xx<_this.dp2.xx) {
+                      GL=_this.dp1.xx;
+                    } else {
+                      GL=_this.dp2.xx;
+                    }
+                    if (_this.dp1.yy<_this.dp2.yy) {
+                      GU=_this.dp1.yy;
+                    } else {
+                      GU=_this.dp2.yy;
+                    }
+                    if (_this.dp1.xx>_this.dp2.xx) {
+                      GR=_this.dp1.xx;
+                    } else {
+                      GR=_this.dp2.xx;
+                    }
+                    if (_this.dp1.yy>_this.dp2.yy) {
+                      GD=_this.dp1.yy;
+                    } else {
+                      GD=_this.dp2.yy;
+                    }
+                    if (_this.dp3.xx<GL) {
+                      GL=_this.dp3.xx;
+                    }
+                    if (_this.dp3.yy<GU) {
+                      GU=_this.dp3.yy;
+                    }
+                    if (_this.dp3.xx>GR) {
+                      GR=_this.dp3.xx;
+                    }
+                    if (_this.dp3.yy>GD) {
+                      GD=_this.dp3.yy;
+                    }
+                    if (_this.pr>=4) {
+                      if (_this.dp4.xx<GL) {
+                        GL=_this.dp4.xx;
+                      }
+                      if (_this.dp4.yy<GU) {
+                        GU=_this.dp4.yy;
+                      }
+                      if (_this.dp4.xx>GR) {
+                        GR=_this.dp4.xx;
+                      }
+                      if (_this.dp4.yy>GD) {
+                        GD=_this.dp4.yy;
+                      }
+                      
+                    }
+                    if (_this.pr>=5) {
+                      if (_this.dp5.xx<GL) {
+                        GL=_this.dp5.xx;
+                      }
+                      if (_this.dp5.yy<GU) {
+                        GU=_this.dp5.yy;
+                      }
+                      if (_this.dp5.xx>GR) {
+                        GR=_this.dp5.xx;
+                      }
+                      if (_this.dp5.yy>GD) {
+                        GD=_this.dp5.yy;
+                      }
+                      
+                    }
+                    _this.setPolygon(0,_this.dp1.xx,_this.dp1.yy);
+                    _this.setPolygon(1,_this.dp2.xx,_this.dp2.yy);
+                    _this.setPolygon(2,_this.dp3.xx,_this.dp3.yy);
+                    if (_this.pr>=4) {
+                      _this.setPolygon(3,_this.dp4.xx,_this.dp4.yy);
+                    }
+                    if (_this.pr>=5) {
+                      _this.setPolygon(4,_this.dp5.xx,_this.dp5.yy);
+                    }
+                    
+                  } else {
+                    if (_this.s==3) {
+                      _this.pr=_this.dpA.length;
+                      if (_this.pr<=1) {
+                        return _this;
+                      }
+                      for (i=0; i<_this.pr ; i++) {
+                        {
+                          p=_this.dpA[i];
+                          if (i==0) {
+                            GL=p.xx;
+                            GU=p.yy;
+                            GR=p.xx;
+                            GD=p.yy;
+                            
+                          } else {
+                            if (p.xx<GL) {
+                              GL=p.xx;
+                            }
+                            if (p.yy<GU) {
+                              GU=p.yy;
+                            }
+                            if (p.xx>GR) {
+                              GR=p.xx;
+                            }
+                            if (p.yy>GD) {
+                              GD=p.yy;
+                            }
+                            
+                          }
+                          _this.setPolygon(i,p.xx,p.yy);
+                        }
+                      }
+                      
+                    }
+                  }
+                }
+                GL=_this.floor(GL);
+                GU=_this.floor(GU);
+                GR=_this.floor(GR);
+                GD=_this.floor(GD);
+                width=GR-GL+1;
+                if (width<2) {
+                  width=2;
+                }
+                if (width>5000) {
+                  width=5000;
+                }
+                height=GD-GU+1;
+                if (height<2) {
+                  height=2;
+                }
+                if (height>5000) {
+                  height=5000;
+                }
+                _this.fillPolygon(0,0,_this.pr,_this.c,1000+_this.zo,_this.alpha);
+                
+              }
+            }
+            
+          } else {
+            if (_this.m==3) {
+              if (Tonyu.globals.$TD_M_tenmetuKeigen==0) {
+                Tonyu.globals.$TD_M_APL_I=Tonyu.globals.$TD_M_APL_I%1000;
+                
+              }
+              if (Tonyu.globals.$TD_M_APL_I<Tonyu.globals.$TD_M_APL.length) {
+                Tonyu.globals.$TD_M_PL=Tonyu.globals.$TD_M_APL[Tonyu.globals.$TD_M_APL_I];
+                
+              } else {
+                Tonyu.globals.$TD_M_PL=new Tonyu.classes.kernel.Panel(2,2);
+                Tonyu.globals.$TD_M_APL.push(Tonyu.globals.$TD_M_PL);
+                
+              }
+              Tonyu.globals.$TD_M_APL_I++;
+              if (_this.s==0) {
+                return _this;
+              }
+              if (_this.n==3||_this.n==4) {
+                if (_this.s==1) {
+                  if (_this.p1.xx<_this.p2.xx) {
+                    GL=_this.p1.xx;
+                  } else {
+                    GL=_this.p2.xx;
+                  }
+                  if (_this.p1.yy<_this.p2.yy) {
+                    GU=_this.p1.yy;
+                  } else {
+                    GU=_this.p2.yy;
+                  }
+                  if (_this.p1.xx>_this.p2.xx) {
+                    GR=_this.p1.xx;
+                  } else {
+                    GR=_this.p2.xx;
+                  }
+                  if (_this.p1.yy>_this.p2.yy) {
+                    GD=_this.p1.yy;
+                  } else {
+                    GD=_this.p2.yy;
+                  }
+                  if (_this.p3.xx<GL) {
+                    GL=_this.p3.xx;
+                  }
+                  if (_this.p3.yy<GU) {
+                    GU=_this.p3.yy;
+                  }
+                  if (_this.p3.xx>GR) {
+                    GR=_this.p3.xx;
+                  }
+                  if (_this.p3.yy>GD) {
+                    GD=_this.p3.yy;
+                  }
+                  if (_this.pr>=4) {
+                    if (_this.p4.xx<GL) {
+                      GL=_this.p4.xx;
+                    }
+                    if (_this.p4.yy<GU) {
+                      GU=_this.p4.yy;
+                    }
+                    if (_this.p4.xx>GR) {
+                      GR=_this.p4.xx;
+                    }
+                    if (_this.p4.yy>GD) {
+                      GD=_this.p4.yy;
+                    }
+                    
+                  }
+                  if (_this.pr==3) {
+                    _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                    _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                    _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy-1);
+                    
+                  } else {
+                    if (_this.pr>=4) {
+                      if (_this.p1.xx<=_this.p2.xx&&_this.p1.yy<=_this.p4.yy) {
+                        _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                        _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                        _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy-1);
+                        _this.setPolygon(3,_this.p4.xx,_this.p4.yy-1);
+                        
+                      } else {
+                        if (_this.p1.xx>_this.p2.xx&&_this.p1.yy<=_this.p4.yy) {
+                          _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                          _this.setPolygon(1,_this.p2.xx+1,_this.p2.yy);
+                          _this.setPolygon(2,_this.p3.xx+1,_this.p3.yy-1);
+                          _this.setPolygon(3,_this.p4.xx,_this.p4.yy-1);
+                          
+                        } else {
+                          if (_this.p1.xx<=_this.p2.xx&&_this.p1.yy>_this.p4.yy) {
+                            _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                            _this.setPolygon(1,_this.p2.xx-1,_this.p2.yy);
+                            _this.setPolygon(2,_this.p3.xx-1,_this.p3.yy+1);
+                            _this.setPolygon(3,_this.p4.xx,_this.p4.yy+1);
+                            
+                          } else {
+                            if (_this.p1.xx>_this.p2.xx&&_this.p1.yy>_this.p4.yy) {
+                              _this.setPolygon(0,_this.p1.xx,_this.p1.yy);
+                              _this.setPolygon(1,_this.p2.xx+1,_this.p2.yy);
+                              _this.setPolygon(2,_this.p3.xx+1,_this.p3.yy+1);
+                              _this.setPolygon(3,_this.p4.xx,_this.p4.yy+1);
+                              
+                            }
+                          }
+                        }
+                      }
+                      
+                    }
+                  }
+                  
+                } else {
+                  if (_this.s==2) {
+                    if (_this.dp1.xx<_this.dp2.xx) {
+                      GL=_this.dp1.xx;
+                    } else {
+                      GL=_this.dp2.xx;
+                    }
+                    if (_this.dp1.yy<_this.dp2.yy) {
+                      GU=_this.dp1.yy;
+                    } else {
+                      GU=_this.dp2.yy;
+                    }
+                    if (_this.dp1.xx>_this.dp2.xx) {
+                      GR=_this.dp1.xx;
+                    } else {
+                      GR=_this.dp2.xx;
+                    }
+                    if (_this.dp1.yy>_this.dp2.yy) {
+                      GD=_this.dp1.yy;
+                    } else {
+                      GD=_this.dp2.yy;
+                    }
+                    if (_this.dp3.xx<GL) {
+                      GL=_this.dp3.xx;
+                    }
+                    if (_this.dp3.yy<GU) {
+                      GU=_this.dp3.yy;
+                    }
+                    if (_this.dp3.xx>GR) {
+                      GR=_this.dp3.xx;
+                    }
+                    if (_this.dp3.yy>GD) {
+                      GD=_this.dp3.yy;
+                    }
+                    if (_this.pr>=4) {
+                      if (_this.dp4.xx<GL) {
+                        GL=_this.dp4.xx;
+                      }
+                      if (_this.dp4.yy<GU) {
+                        GU=_this.dp4.yy;
+                      }
+                      if (_this.dp4.xx>GR) {
+                        GR=_this.dp4.xx;
+                      }
+                      if (_this.dp4.yy>GD) {
+                        GD=_this.dp4.yy;
+                      }
+                      
+                    }
+                    if (_this.pr>=5) {
+                      if (_this.dp5.xx<GL) {
+                        GL=_this.dp5.xx;
+                      }
+                      if (_this.dp5.yy<GU) {
+                        GU=_this.dp5.yy;
+                      }
+                      if (_this.dp5.xx>GR) {
+                        GR=_this.dp5.xx;
+                      }
+                      if (_this.dp5.yy>GD) {
+                        GD=_this.dp5.yy;
+                      }
+                      
+                    }
+                    _this.setPolygon(0,_this.dp1.xx,_this.dp1.yy);
+                    _this.setPolygon(1,_this.dp2.xx,_this.dp2.yy);
+                    _this.setPolygon(2,_this.dp3.xx,_this.dp3.yy);
+                    if (_this.pr>=4) {
+                      _this.setPolygon(3,_this.dp4.xx,_this.dp4.yy);
+                    }
+                    if (_this.pr>=5) {
+                      _this.setPolygon(4,_this.dp5.xx,_this.dp5.yy);
+                    }
+                    
+                  } else {
+                    if (_this.s==3) {
+                      _this.pr=_this.dpA.length;
+                      if (_this.pr<=1) {
+                        return _this;
+                      }
+                      for (i=0; i<_this.pr ; i++) {
+                        {
+                          p=_this.dpA[i];
+                          if (i==0) {
+                            GL=p.xx;
+                            GU=p.yy;
+                            GR=p.xx;
+                            GD=p.yy;
+                            
+                          } else {
+                            if (p.xx<GL) {
+                              GL=p.xx;
+                            }
+                            if (p.yy<GU) {
+                              GU=p.yy;
+                            }
+                            if (p.xx>GR) {
+                              GR=p.xx;
+                            }
+                            if (p.yy>GD) {
+                              GD=p.yy;
+                            }
+                            
+                          }
+                          _this.setPolygon(i,p.xx,p.yy);
+                        }
+                      }
+                      
+                    }
+                  }
+                }
+                GL=_this.floor(GL);
+                GU=_this.floor(GU);
+                GR=_this.floor(GR);
+                GD=_this.floor(GD);
+                width=GR-GL+1;
+                if (width<2) {
+                  width=2;
+                }
+                if (width>5000) {
+                  width=5000;
+                }
+                height=GD-GU+1;
+                if (height<2) {
+                  height=2;
+                }
+                if (height>5000) {
+                  height=5000;
+                }
+                Tonyu.globals.$TD_M_PL.resize(width,height);
+                Tonyu.globals.$TD_M_PL.clearRect(0,0,width,height);
+                panel = new Tonyu.classes.kernel.Panel(width,height);
+                
+                _this.fillPolygonP(panel,- GL,- GU,_this.pr,"rgb(255,0,0)");
+                bmpWidth = _this.bmpGR-_this.bmpGL;
+                
+                bmpHeight = _this.bmpGD-_this.bmpGU;
+                
+                Tonyu.globals.$TD_M_PL.drawDxSprite(bmpWidth/2+(_this.bmpGL-GL),bmpHeight/2+(_this.bmpGU-GU),_this.c,0,0,(bmpWidth)/(Tonyu.globals.$imageList[_this.floor(_this.c||0)].width-1),(bmpHeight)/(Tonyu.globals.$imageList[_this.floor(_this.c||0)].height-1));
+                Tonyu.globals.$TD_M_PL.copyRect(0,0,width,height,panel,0,0,width,height);
+                
+              }
+              Tonyu.globals.$TD_M_PL.zOrder=1000+_this.zo;
+              Tonyu.globals.$TD_M_PL.alpha=_this.alpha;
+              Tonyu.globals.$TD_M_PL.draw(GL,GU,width,height,0,0);
+              
+            }
+          }
+        }
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"ZukeiDraw":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}}},"fields":{}}
 });
 
 });
