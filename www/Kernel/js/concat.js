@@ -41567,6 +41567,42 @@ Tonyu.klass.define({
         return p;
         
       },
+      addPoint :function _trc_TD_3D_addPoint(x,y,z) {
+        var _this=this;
+        
+        if (x instanceof Tonyu.classes.kernel.TD_P) {
+          return x;
+        }
+        if (typeof  x.slice==="function"&&x.length>=3) {
+          return _this.add3D_P(...x);
+          
+        }
+        if (typeof  x==="object") {
+          return _this.add3D_P(x.x,x.y,x.z);
+          
+        }
+        return _this.add3D_P(x,y,z);
+      },
+      fiber$addPoint :function* _trc_TD_3D_f_addPoint(_thread,x,y,z) {
+        var _this=this;
+        
+        if (x instanceof Tonyu.classes.kernel.TD_P) {
+          return x;
+        }
+        if (typeof  x.slice==="function"&&x.length>=3) {
+          return yield* _this.fiber$add3D_P(_thread, ...x);
+          
+          
+        }
+        if (typeof  x==="object") {
+          return yield* _this.fiber$add3D_P(_thread, x.x, x.y, x.z);
+          
+          
+        }
+        return yield* _this.fiber$add3D_P(_thread, x, y, z);
+        
+        
+      },
       add3D_DX :function _trc_TD_3D_add3D_DX(m,p1,p,f,angle,alpha,scaleX,scaleY) {
         var _this=this;
         var t;
@@ -41584,6 +41620,64 @@ Tonyu.klass.define({
         t=new Tonyu.classes.kernel.TD_DR(1,m,p1,p,f,angle,alpha,scaleX,scaleY);
         _this.TD_ADR.push(t);
         return t;
+        
+      },
+      addSprite :function _trc_TD_3D_addSprite(o) {
+        var _this=this;
+        
+        let p;
+        if (typeof  o.x==="number") {
+          p=_this.addPoint(o);
+          
+        } else {
+          if (o.position) {
+            p=_this.addPoint(o.position);
+            
+          }
+        }
+        let rot = (typeof  o.rotation==="number"?o.rotation:o.angle)||0;
+        
+        let scx = 1;
+        
+        if (typeof  o.scaleX=="number") {
+          scx=o.scaleX;
+          
+        }
+        _this.scy=scx;
+        if (typeof  o.scaleY=="number") {
+          scx=o.scaleY;
+          
+        }
+        return _this.add3D_DX(1,p,o.p,o.f,rot,o.alpha||255,scx,_this.scy);
+      },
+      fiber$addSprite :function* _trc_TD_3D_f_addSprite(_thread,o) {
+        var _this=this;
+        
+        let p;
+        if (typeof  o.x==="number") {
+          p=(yield* _this.fiber$addPoint(_thread, o));
+          
+        } else {
+          if (o.position) {
+            p=(yield* _this.fiber$addPoint(_thread, o.position));
+            
+          }
+        }
+        let rot = (typeof  o.rotation==="number"?o.rotation:o.angle)||0;
+        
+        let scx = 1;
+        
+        if (typeof  o.scaleX=="number") {
+          scx=o.scaleX;
+          
+        }
+        _this.scy=scx;
+        if (typeof  o.scaleY=="number") {
+          scx=o.scaleY;
+          
+        }
+        return yield* _this.fiber$add3D_DX(_thread, 1, p, o.p, o.f, rot, o.alpha||255, scx, _this.scy);
+        
         
       },
       add3D_L :function _trc_TD_3D_add3D_L(m,p1,p2,c,zt,h,blw,al) {
@@ -41643,6 +41737,54 @@ Tonyu.klass.define({
         return t;
         
       },
+      addPolygon :function _trc_TD_3D_addPolygon(...args) {
+        var _this=this;
+        
+        let o = args.pop();
+        
+        let v = args.map((function anonymous_9548(a) {
+          
+          return _this.addPoint(a);
+        }));
+        
+        switch (v.length) {
+        case 2:
+          return _this.add3D_L(1,v[0],v[1],o.color,o.zt,o.h);
+        case 3:
+          return _this.add3D_T(1,v[0],v[1],v[2],o.color,o.zt,o.h);
+        case 4:
+          return _this.add3D_S(1,v[0],v[1],v[2],v[3],o.color,o.zt,o.h);
+        default:
+          throw new Error("addPolygonに指定できる頂点数は4までです．");
+          
+        }
+      },
+      fiber$addPolygon :function* _trc_TD_3D_f_addPolygon(_thread,...args) {
+        var _this=this;
+        
+        let o = args.pop();
+        
+        let v = args.map((function anonymous_9548(a) {
+          
+          return _this.addPoint(a);
+        }));
+        
+        switch (v.length) {
+        case 2:
+          return yield* _this.fiber$add3D_L(_thread, 1, v[0], v[1], o.color, o.zt, o.h);
+          
+        case 3:
+          return yield* _this.fiber$add3D_T(_thread, 1, v[0], v[1], v[2], o.color, o.zt, o.h);
+          
+        case 4:
+          return yield* _this.fiber$add3D_S(_thread, 1, v[0], v[1], v[2], v[3], o.color, o.zt, o.h);
+          
+        default:
+          throw new Error("addPolygonに指定できる頂点数は4までです．");
+          
+        }
+        
+      },
       add3D_DX_P :function _trc_TD_3D_add3D_DX_P(m,x,y,z,p,f,angle,alpha,scaleX,scaleY) {
         var _this=this;
         var t;
@@ -41697,6 +41839,21 @@ Tonyu.klass.define({
         _this.TD_AP.push(p2);
         _this.TD_ADR.push(t);
         return t;
+        
+      },
+      setPivot :function _trc_TD_3D_setPivot(x,y,z) {
+        var _this=this;
+        
+        _this.TD_angleX=x;
+        _this.TD_angleY=y;
+        _this.TD_angleZ=z;
+      },
+      fiber$setPivot :function* _trc_TD_3D_f_setPivot(_thread,x,y,z) {
+        var _this=this;
+        
+        _this.TD_angleX=x;
+        _this.TD_angleY=y;
+        _this.TD_angleZ=z;
         
       },
       add3D_T_P :function _trc_TD_3D_add3D_T_P(m,x,y,z,x2,y2,z2,x3,y3,z3,c,zt,h,blw,al) {
@@ -41782,7 +41939,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cons":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"RSC":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"apudeto":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onAppear":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onDie":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"Draw3D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"_Draw3D":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"addDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"setDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"deleteDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"removeDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"_Draw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"add3D_DX":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_L":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_T":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_S":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_DX_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_L_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_T_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_S_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}}},"fields":{"z":{},"TD_x":{},"TD_y":{},"TD_z":{},"TD_angleX":{},"TD_angleY":{},"TD_angleZ":{},"TD_angleXZ":{},"TD_angleYZ":{},"TD_angleXY":{},"TD_angleDX":{},"TD_alphaDX":{},"TD_scaleXDX":{},"TD_scaleYDX":{},"TD_AP":{},"TD_ADR":{},"TD_A2":{},"TD_visible":{},"TD_xzsin":{},"TD_xzcos":{},"TD_yzsin":{},"TD_yzcos":{},"TD_xysin":{},"TD_xycos":{},"TD_k_xzsin":{},"TD_k_xzcos":{},"TD_k_yzsin":{},"TD_k_yzcos":{},"TD_k_xysin":{},"TD_k_xycos":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cons":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"RSC":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"apudeto":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onAppear":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onDie":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"Draw3D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"_Draw3D":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"addDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"setDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"deleteDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"removeDraw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"_Draw3D2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"addPoint":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":"kernel.TD_P"}},"add3D_DX":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null],"returnValue":null}},"addSprite":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"add3D_L":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_T":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_S":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"addPolygon":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"add3D_DX_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_L_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"add3D_T_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}},"add3D_S_P":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"returnValue":null}}},"fields":{"z":{},"TD_x":{},"TD_y":{},"TD_z":{},"TD_angleX":{},"TD_angleY":{},"TD_angleZ":{},"TD_angleXZ":{},"TD_angleYZ":{},"TD_angleXY":{},"TD_angleDX":{},"TD_alphaDX":{},"TD_scaleXDX":{},"TD_scaleYDX":{},"TD_AP":{},"TD_ADR":{},"TD_A2":{},"TD_visible":{},"TD_xzsin":{},"TD_xzcos":{},"TD_yzsin":{},"TD_yzcos":{},"TD_xysin":{},"TD_xycos":{},"TD_k_xzsin":{},"TD_k_xzcos":{},"TD_k_yzsin":{},"TD_k_yzcos":{},"TD_k_xysin":{},"TD_k_xycos":{},"scy":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.TD_DR',

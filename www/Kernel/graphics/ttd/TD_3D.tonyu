@@ -388,7 +388,16 @@ function add3D_P(x,y,z) {
     return p;
 }
 
-
+\addPoint(x,y,z):TD_P {
+    if (x instanceof TD_P) return x;
+    if (typeof x.slice==="function" && x.length>=3) {
+        return add3D_P(...x);
+    }
+    if (typeof x==="object") {
+        return add3D_P(x.x,x.y,x.z);
+    }
+    return add3D_P(x,y,z);
+}
 
 
 
@@ -402,7 +411,24 @@ function add3D_DX(m,p1,p,f,angle,alpha,scaleX,scaleY) {
     TD_ADR.push(t);
     return t;
 }
-
+\addSprite(o) {
+    let p;
+    if (typeof o.x==="number") {
+        p=addPoint(o);
+    } else if (o.position) {
+        p=addPoint(o.position);
+    }
+    let rot=(typeof o.rotation==="number"? o.rotation : o.angle)||0;
+    let scx=1;
+    if (typeof o.scaleX=="number") {
+        scx=o.scaleX;
+    }
+    scy=scx;
+    if (typeof o.scaleY=="number") {
+        scx=o.scaleY;
+    }
+    return add3D_DX(1, p, o.p, o.f, rot, o.alpha||255, scx, scy );
+}
 
 // L(線)追加
 function add3D_L(m,p1,p2,c,zt,h,blw,al) {
@@ -428,6 +454,22 @@ function add3D_S(m,p1,p2,p3,p4,c,zt,h,blw,al){
     t = new TD_DR(4,m,p1,p2,p3,p4,c,zt,h,blw,al);
     TD_ADR.push(t);
     return t;
+}
+\addPolygon(...args) {
+    let o=args.pop();
+    let v=args.map\(a) {
+        return addPoint(a);
+    };
+    switch (v.length){
+        case 2:
+        return add3D_L(1,v[0],v[1],o.color, o.zt, o.h);
+        case 3:
+        return add3D_T(1,v[0],v[1],v[2],o.color, o.zt, o.h);
+        case 4:
+        return add3D_S(1,v[0],v[1],v[2],v[3],o.color, o.zt, o.h);
+        default:
+        throw new Error("addPolygonに指定できる頂点数は4までです．");
+    }
 }
 
 
@@ -458,6 +500,11 @@ function add3D_L_P(m,x,y,z,x2,y2,z2,c,zt,h,blw,al) {
     TD_AP .push(p2);
     TD_ADR.push(t);
     return t;
+}
+function setPivot(x,y,z){
+    TD_angleX=x;
+    TD_angleY=y;
+    TD_angleZ=z;
 }
 
 
