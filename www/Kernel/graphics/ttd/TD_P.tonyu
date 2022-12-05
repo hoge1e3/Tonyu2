@@ -1,0 +1,246 @@
+//extends Object;
+extends null;
+
+/*---------------------------
+    点クラス(座標クラス)
+---------------------------*/
+
+var x, y, z, gp, gxz, gxy, gyz, ggx, ggy, ggz, x2, y2, z2;
+var sx, sy, sz, k, xx, yy;
+
+\new(xxx,yyy,zzz) {
+    //super();
+  
+    // 基本の座標
+    x = xxx;
+    y = yyy;
+    z = zzz;
+  
+    // 回転後の座標
+    //sx;sy;sz;
+    
+    // 比率
+    //k;
+    
+    // ２Ｄの座標
+    //xx;yy;
+    
+    // グループ回転
+    //gx=0; gy=0; gz=0;
+    //gxz=0; gxy=0; gyz=0;
+    gp=0;
+    gxz=0; gxy=0; gyz=0;
+    ggx=0; ggy=0; ggz=0;
+  
+    // 相対座標
+    x2 = 0;
+    y2 = 0;
+    z2 = 0;
+}
+
+
+
+
+// 点のグループ化 
+function zikuSet(ggp,xxx,yyy,zzz) {
+  
+    // 中心軸をセット
+    gp = ggp; // 中心となる点を決定
+    x2 = xxx; // 点gpからの相対座標Ｘ
+    y2 = yyy; // 点gpからの相対座標Ｙ
+    z2 = zzz; // 点gpからの相対座標Ｚ
+}
+
+
+
+
+
+// 座標回転
+function kaiten(xx,yy,zz,
+ax,ay,az,
+axz,ayz,axy,
+xzsin,yzsin,xysin,xzcos,yzcos,xycos,
+z_x,z_y,z_z,
+k_xzsin,k_yzsin,k_xysin,k_xzcos,k_yzcos,k_xycos) {
+  
+    var kx,ky,
+    gxzsin,gyzsin,gxysin,
+    gxzcos,gyzcos,gxycos,
+    wx,wy,wz;
+  
+    // (x,y,z)→(sx,sy,sz)に変換
+    // (sx,sy,sz)は回転後の座標
+  
+  
+  
+    if (gp is TD_P) {
+        // グループ回転あり（相対座標）
+        sx = gp.x;
+        sy = gp.y;
+        sz = gp.z;
+    } else {
+        // グループ回転なし
+        sx =  x;
+        sy = -y;
+        sz =  z;
+    }
+  
+  
+  
+    // グループ回転 //
+    if (gp is TD_P) {
+        // 点が指定されてたら実行
+    
+        // ワークスペースに相対座標セット
+        wx =  x2;
+        wy = -y2;
+        wz =  z2;
+    
+        // グループ回転の三角関数
+        gxzsin = $TD_Z.rsin(gxz);
+        gyzsin = $TD_Z.rsin(gyz);
+        gxysin = $TD_Z.rsin(gxy);
+        gxzcos = $TD_Z.rcos(gxz);
+        gyzcos = $TD_Z.rcos(gyz);
+        gxycos = $TD_Z.rcos(gxy);
+    
+        // 座標回転
+        kx = wx*gxycos - wy*gxysin;
+        wy = wy*gxycos + wx*gxysin;
+        wx = kx;
+        ky = wy*gyzcos - wz*gyzsin;
+        wz = wz*gyzcos + wy*gyzsin;
+        wy = ky;
+        kx = wx*gxzcos + wz*gxzsin;
+        wz = wz*gxzcos - wx*gxzsin;
+        wx = kx;
+    
+        // 結果を回転後座標に足す
+        sx += wx;
+        sy += wy;
+        sz += wz;
+    
+        // 他のグループに参照される座標
+        x = sx;
+        y = sy;
+        z = sz;
+    }
+  
+  
+  
+    // 自分の回転 //
+  
+    // 座標を足す
+    sx -= ax;
+    sy += ay;
+    sz -= az;
+  
+    // 座標を回転
+    kx = sx*xycos - sy*xysin;
+    sy = sy*xycos + sx*xysin;
+    sx = kx;
+    ky = sy*yzcos - sz*yzsin;
+    sz = sz*yzcos + sy*yzsin;
+    sy = ky;
+    kx = sx*xzcos + sz*xzsin;
+    sz = sz*xzcos - sx*xzsin;
+    sx = kx;
+  
+    // 座標を引く
+    sx += ax;
+    sy -= ay;
+    sz += az;
+  
+  
+  
+    // カメラによる回転 //
+  
+    // 座標を足す
+    sx += xx-z_x;
+    sy += yy+z_y;
+    sz += zz-z_z;
+  
+    // 座標を回転
+    kx = sx*k_xzcos - sz*k_xzsin;
+    sz = sz*k_xzcos + sx*k_xzsin;
+    sx = kx;
+    ky = sy*k_yzcos + sz*k_yzsin;
+    sz = sz*k_yzcos - sy*k_yzsin;
+    sy = ky;
+    kx = sx*k_xycos + sy*k_xysin;
+    sy = sy*k_xycos - sx*k_xysin;
+    sx = kx;
+}
+
+
+
+
+
+
+function henkan2D(kk,zk,hw,hh) {
+    // 座標を２Ｄに変換 //
+  
+    // ３Ｄ座標 (x,y,z)→(xx,yy),kに変換
+    if (sz>=0) {
+        if (zk!=0) k = (sz+kk)/zk;
+        xx = sx/k + hw;
+        yy = sy/k + hh;
+    }
+}
+
+
+
+
+
+//----- 座標をセット（引数：座標） -----//
+
+
+// 座標をセット
+function xyzSet(x,y,z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+}
+
+
+// 回転済み座標をセット
+function sxyzSet(sx,sy,sz) { 
+    this.sx = sx;
+    this.sy = sy;
+    this.sz = sz;
+}
+
+// ２Ｄ座標をセット
+function xySet(xx,yy) {
+    this.xx=xx;
+    this.yy=yy;
+}
+
+
+
+
+
+//----- 座標をセット（引数：点オブジェクト） -----//
+
+
+// 座標をセット
+function xyzSetP(p) {
+    x = p.x;
+    y = p.y;
+    z = p.z;
+}
+
+
+// 回転済み座標をセット
+function sxyzSetP(p) {
+    sx = p.sx;
+    sy = p.sy;
+    sz = p.sz;
+}
+
+
+// ２Ｄ座標をセット
+function xySetP(p) { 
+    xx = p.xx;
+    yy = p.yy;
+}

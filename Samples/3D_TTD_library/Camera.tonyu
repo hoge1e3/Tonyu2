@@ -1,0 +1,37 @@
+extends TD_CM;
+// カメラオブジェクト
+
+// 移動のパラメータ //
+var sp  = 5;  // スピード
+var spk = 2; // 回転スピード
+
+while (true) {
+    // 方位回転(xz面) //
+    if (getkey(37)) xz-=spk; // ←
+    if (getkey(39)) xz+=spk; // →
+    
+    // 上下角回転(yz面) //
+    if (getkey(83)) yz-=spk; // Ｓ
+    if (getkey(88)) yz+=spk; // Ｘ
+    
+    // 傾き回転(xy面) //
+    if (getkey(68)) xy-=spk; // Ｄ
+    if (getkey(70)) xy+=spk; // Ｆ
+    
+    // 移動 //
+    if (getkey(38)) { x+=sp*sin(xz); z+=sp*cos(xz); } // ↑
+    if (getkey(40)) { x-=sp*sin(xz); z-=sp*cos(xz); } // ↓
+    if (getkey(65)) y+=sp; // Ａ
+    if (getkey(90)) y-=sp; // Ｚ
+    
+    // カメラのズーム調整 //
+    if (getkey(81)&&gk>0)     gk-=20+(gk/20); // Ｑ
+    if (getkey(87)&&gk<10000) gk+=20+(gk/20); // Ｗ
+    if      (gk<0)            gk=0;
+    else if (gk>10000)        gk=10000;
+    
+    // カメラをメイン画面に表示
+    //cameraMain();
+    
+    update();
+}

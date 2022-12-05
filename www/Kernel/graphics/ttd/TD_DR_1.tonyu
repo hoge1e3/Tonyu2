@@ -1,0 +1,805 @@
+extends PlainChar;
+native console;
+
+/*---------------------
+    図形表示クラス
+---------------------*/
+var TD_visible;
+var s, n, ep, p1, p2, p3, p4, zo, zo2, zo3, zo4, np, zt;
+var zosx, zosy, zosz, pr;
+var dp1, dp2, dp3, dp4, dp5, dp6, dp7, dp8, dp9, dp10, c, ccwidth, ccheight;
+var m, bmpGL, bmpGU, bmpGR, bmpGD, dpA, dpAsw, cpA, setPolygonTempAry;
+var f, angle, LR, UD, xx, yy, h, paint, ss, k1, k2;
+
+function backFaceCulling(z_x,z_y,z_z){//■バックフェースカリング（ポリゴンが裏の場合表示しない）■
+    if(!TD_visible)return;
+    s=0;
+    if(n!=3&&n!=4)return;
+    s=-1;
+    
+    ep.x=(p1.sy-p2.sy)*(p2.sz-p3.sz)-(p1.sz-p2.sz)*(p2.sy-p3.sy);
+    ep.y=(p1.sz-p2.sz)*(p2.sx-p3.sx)-(p1.sx-p2.sx)*(p2.sz-p3.sz);
+    ep.z=(p1.sx-p2.sx)*(p2.sy-p3.sy)-(p1.sy-p2.sy)*(p2.sx-p3.sx);
+    
+    // console.log($frameCount,ep.x*(p1.sx-z_x)+ep.y*(p1.sy-z_y)+ep.z*(p1.sz-z_z),ep.x,ep.y,ep.z);
+    if(ep.x*(p1.sx-z_x*0)+ep.y*(p1.sy-z_y*0)+ep.z*(p1.sz-z_z*0)>0){
+        s=0;
+    }
+}
+
+
+function merikomiSyusei(kk,zk,hw,hh){//■めり込み修正■
+    if(!TD_visible)return;
+    if(s==-1)return;
+  
+    if(n==1){//■DX(DxSprite)座標変化のみ
+        s=(p1.sz>=0);
+        if(s==0)return;
+        zo=sqrt(p1.sx*p1.sx+p1.sy*p1.sy+p1.sz*p1.sz);
+    
+    }else
+    if(n==2){//■L(線)修正
+        s=0;
+    
+        np=(p1.sz<0)+(p2.sz<0);//●見えない点の個数
+        if(np==2)return;//●全く見えないと終了
+        if(np==1){//■１点見えない
+            s=2;
+            if(p1.sz<0)merikomiSyusei_L(p1,p2,kk,zk,hw,hh);else
+            if(p2.sz<0)merikomiSyusei_L(p2,p1,kk,zk,hw,hh);
+        }else{//■すべて見える
+            s=1;
+        }
+    
+    
+        //■表示前後
+        if(zt==0||zt==2){//■最前点・最後点が基準
+            if(np==0){//■すべての点が見える時
+                zo=sqrt(p1.sx*p1.sx+p1.sy*p1.sy+p1.sz*p1.sz);
+                zo2=sqrt(p2.sx*p2.sx+p2.sy*p2.sy+p2.sz*p2.sz);
+        
+                if(!zt){//■最後点が基準
+                    if(zo<zo2)zo=zo2;
+                }else if(zt==2){//■最前点が基準
+                    if(zo>zo2)zo=zo2;
+                }
+            }else{//■いくつかの点が見えない時
+                if(!zt){//■最後点が基準
+                    zo=sqrt(p2.sx*p2.sx+p2.sy*p2.sy+p2.sz*p2.sz);
+                }else if(zt==2){//■最前点が基準
+                    zo=sqrt(p1.sx*p1.sx+p1.sy*p1.sy+p1.sz*p1.sz);
+                }
+            }
+        }else if(zt==null||zt==1){//■中央点が基準
+            zosx=(p1.sx+p2.sx)/2;
+            zosy=(p1.sy+p2.sy)/2;
+            zosz=(p1.sz+p2.sz)/2;
+            if(zosz<0)zosz=0;
+            zo=sqrt(zosx*zosx+zosy*zosy+zosz*zosz);
+        }
+    
+    
+    }else
+    if(n==3){//■T(三角形)修正
+        pr=0;
+        s=0;
+    
+        np=(p1.sz<0)+(p2.sz<0)+(p3.sz<0);//●見えない点の個数
+        if(np==3)return;//●全く見えないと終了
+        if(np==1){//■１点見えない
+            pr=4;s=2;
+            if(p1.sz<0)merikomiSyusei_T(np,p2,p1,p3,kk,zk,hw,hh);else
+            if(p2.sz<0)merikomiSyusei_T(np,p3,p2,p1,kk,zk,hw,hh);else
+            if(p3.sz<0)merikomiSyusei_T(np,p1,p3,p2,kk,zk,hw,hh);
+        }else if(np==2){//■２点見えない
+            pr=3;s=2;
+            if(p1.sz>=0)merikomiSyusei_T(np,p2,p1,p3,kk,zk,hw,hh);else
+            if(p2.sz>=0)merikomiSyusei_T(np,p3,p2,p1,kk,zk,hw,hh);else
+            if(p3.sz>=0)merikomiSyusei_T(np,p1,p3,p2,kk,zk,hw,hh);
+        }else if(np==0){//■すべて見える
+            pr=3;s=1;
+        }
+    
+        //■表示前後
+        if(zt==0||zt==2){//■最前点・最後点が基準
+            if(np==0){//■すべての点が見える時
+                zo=sqrt(p1.sx*p1.sx+p1.sy*p1.sy+p1.sz*p1.sz);
+                zo2=sqrt(p2.sx*p2.sx+p2.sy*p2.sy+p2.sz*p2.sz);
+                zo3=sqrt(p3.sx*p3.sx+p3.sy*p3.sy+p3.sz*p3.sz);
+        
+                if(!zt){//■最後点が基準
+                    if(zo<zo2)zo=zo2;
+                    if(zo<zo3)zo=zo3;
+                }else if(zt==2){//■最前点が基準
+                    if(zo>zo2)zo=zo2;
+                    if(zo>zo3)zo=zo3;
+                }
+            }else{//■いくつかの点が見えない時
+                if(!zt){//■最後点が基準
+                    zo=sqrt(dp2.sx*dp2.sx+dp2.sy*dp2.sy+dp2.sz*dp2.sz);
+                    zo2=sqrt(dp3.sx*dp3.sx+dp3.sy*dp3.sy+dp3.sz*dp3.sz);
+                    if(zo<zo2)zo=zo2;
+                }else if(zt==2){//■最前点が基準
+                    zo=sqrt(dp1.sx*dp1.sx+dp1.sy*dp1.sy+dp1.sz*dp1.sz);
+                    zo2=sqrt(dp3.sx*dp3.sx+dp3.sy*dp3.sy+dp3.sz*dp3.sz);
+                    zo3=sqrt(dp4.sx*dp4.sx+dp4.sy*dp4.sy+dp4.sz*dp4.sz);
+                    if(zo>zo2)zo=zo2;
+                    if(zo>zo3)zo=zo3;
+                }
+            }
+        }else if(zt==null||zt==1){//■中央点が基準
+            zosx=(p1.sx+p2.sx+p3.sx)/3;
+            zosy=(p1.sy+p2.sy+p3.sy)/3;
+            zosz=(p1.sz+p2.sz+p3.sz)/3;
+            if(zosz<0)zosz=0;
+            zo=sqrt(zosx*zosx+zosy*zosy+zosz*zosz);
+        }
+    
+    }else
+    if(n==4){//■S(四角形)修正
+        pr=0;
+        s=0;
+    
+        np=(p1.sz<0)+(p2.sz<0)+(p3.sz<0)+(p4.sz<0);//●見えない点の個数
+        
+        if(np==4)return;//●全く見えないと終了
+        if(np==1){//■１点見えない
+            pr=5;s=2;
+            if(p1.sz<0)merikomiSyusei_S(np,p2,p1,p4,p3,kk,zk,hw,hh);else
+            if(p2.sz<0)merikomiSyusei_S(np,p3,p2,p1,p4,kk,zk,hw,hh);else
+            if(p3.sz<0)merikomiSyusei_S(np,p4,p3,p2,p1,kk,zk,hw,hh);else
+            if(p4.sz<0)merikomiSyusei_S(np,p1,p4,p3,p2,kk,zk,hw,hh);
+        }else if(np==2){//■２点見えない
+            pr=4;s=2;
+            if(p1.sz<0&&p4.sz<0)merikomiSyusei_S(np,p2,p1,p4,p3,kk,zk,hw,hh);else
+            if(p2.sz<0&&p1.sz<0)merikomiSyusei_S(np,p3,p2,p1,p4,kk,zk,hw,hh);else
+            if(p3.sz<0&&p2.sz<0)merikomiSyusei_S(np,p4,p3,p2,p1,kk,zk,hw,hh);else
+            if(p4.sz<0&&p3.sz<0)merikomiSyusei_S(np,p1,p4,p3,p2,kk,zk,hw,hh);
+        }else if(np==3){//■３点見えない
+            pr=3;s=2;
+            if(p1.sz>=0)merikomiSyusei_S(np,p4,p1,p2,null,kk,zk,hw,hh);else
+            if(p2.sz>=0)merikomiSyusei_S(np,p1,p2,p3,null,kk,zk,hw,hh);else
+            if(p3.sz>=0)merikomiSyusei_S(np,p2,p3,p4,null,kk,zk,hw,hh);else
+            if(p4.sz>=0)merikomiSyusei_S(np,p3,p4,p1,null,kk,zk,hw,hh);
+        }else if(np==0){//■すべて見える
+            pr=4;s=1;
+        }
+    
+        //■表示前後
+        if(zt==0||zt==2){//■最前点・最後点が基準
+            if(np==0){//■すべての点が見える時
+                zo=sqrt(p1.sx*p1.sx+p1.sy*p1.sy+p1.sz*p1.sz);
+                zo2=sqrt(p2.sx*p2.sx+p2.sy*p2.sy+p2.sz*p2.sz);
+                zo3=sqrt(p3.sx*p3.sx+p3.sy*p3.sy+p3.sz*p3.sz);
+                zo4=sqrt(p4.sx*p4.sx+p4.sy*p4.sy+p4.sz*p4.sz);
+        
+                if(!zt){//■最後点が基準
+                    if(zo<zo2)zo=zo2;
+                    if(zo<zo3)zo=zo3;
+                    if(zo<zo4)zo=zo4;
+                }else if(zt==2){//■最前点が基準
+                    if(zo>zo2)zo=zo2;
+                    if(zo>zo3)zo=zo3;
+                    if(zo>zo4)zo=zo4;
+                }
+            }else{//■いくつかの点が見えない時
+                if(!zt){//■最後点が基準
+                    zo=sqrt(dp2.sx*dp2.sx+dp2.sy*dp2.sy+dp2.sz*dp2.sz);
+                    zo2=sqrt(dp3.sx*dp3.sx+dp3.sy*dp3.sy+dp3.sz*dp3.sz);
+                    zo3=sqrt(dp4.sx*dp4.sx+dp4.sy*dp4.sy+dp4.sz*dp4.sz);
+                    if(zo<zo2)zo=zo2;
+                    if(zo<zo3)zo=zo3;
+                }else if(zt==2){//■最前点が基準
+                    zo=sqrt(dp1.sx*dp1.sx+dp1.sy*dp1.sy+dp1.sz*dp1.sz);
+                    zo2=sqrt(dp3.sx*dp3.sx+dp3.sy*dp3.sy+dp3.sz*dp3.sz);
+                    zo3=sqrt(dp4.sx*dp4.sx+dp4.sy*dp4.sy+dp4.sz*dp4.sz);
+                    zo4=sqrt(dp5.sx*dp5.sx+dp5.sy*dp5.sy+dp5.sz*dp5.sz);
+                    if(zo>zo2)zo=zo2;
+                    if(zo>zo3)zo=zo3;
+                    if(zo>zo4)zo=zo4;
+                }
+            }
+        }else if(zt==null||zt==1){//■中央点が基準
+            zosx=(p1.sx+p2.sx+p3.sx+p4.sx)/4;
+            zosy=(p1.sy+p2.sy+p3.sy+p4.sy)/4;
+            zosz=(p1.sz+p2.sz+p3.sz+p4.sz)/4;
+            if(zosz<0)zosz=0;
+            zo=sqrt(zosx*zosx+zosy*zosy+zosz*zosz);
+        }
+    
+    }
+}
+
+
+
+
+function merikomiSyusei_L(up,sp,kk,zk,hw,hh){//■T(三角形)のめり込み修正セット
+    //■(内点１,外点)
+    var w;
+  
+    dp1.sxyzSetP(up);
+    dp2.sxyzSetP(sp);
+  
+    w=-up.sz/(sp.sz-up.sz);
+    dp1.sx+=(sp.sx-up.sx)*w;
+    dp1.sy+=(sp.sy-up.sy)*w;
+    dp1.sz=0;
+  
+    dp1.henkan2D(kk,zk,hw,hh);
+    dp2.henkan2D(kk,zk,hw,hh);
+}
+
+function merikomiSyusei_T(np,sp1,up,sp2,kk,zk,hw,hh){//■T(三角形)のめり込み修正セット
+    //■(見えない点の数,外点１,内点１,外点２)
+    var w;
+  
+    if(np==1){
+        dp1.sxyzSetP(up);
+        dp4.sxyzSetP(up);
+        dp2.sxyzSetP(sp1);
+        dp3.sxyzSetP(sp2);
+    
+        w=-up.sz/(sp1.sz-up.sz);
+        dp1.sx+=(sp1.sx-up.sx)*w;
+        dp1.sy+=(sp1.sy-up.sy)*w;
+        dp1.sz=0;
+        w=-up.sz/(sp2.sz-up.sz);
+        dp4.sx+=(sp2.sx-up.sx)*w;
+        dp4.sy+=(sp2.sy-up.sy)*w;
+        dp4.sz=0;
+    
+        dp1.henkan2D(kk,zk,hw,hh);
+        dp2.henkan2D(kk,zk,hw,hh);
+        dp3.henkan2D(kk,zk,hw,hh);
+        dp4.henkan2D(kk,zk,hw,hh);
+    
+    }else if(np==2){
+        dp1.sxyzSetP(up);
+        dp2.sxyzSetP(sp1);
+        dp3.sxyzSetP(sp2);
+    
+        w=-sp1.sz/(up.sz-sp1.sz);
+        dp2.sx+=(up.sx-sp1.sx)*w;
+        dp2.sy+=(up.sy-sp1.sy)*w;
+        dp2.sz=0;
+        w=-sp2.sz/(up.sz-sp2.sz);
+        dp3.sx+=(up.sx-sp2.sx)*w;
+        dp3.sy+=(up.sy-sp2.sy)*w;
+        dp3.sz=0;
+    
+        dp1.henkan2D(kk,zk,hw,hh);
+        dp2.henkan2D(kk,zk,hw,hh);
+        dp3.henkan2D(kk,zk,hw,hh);
+    
+    }
+}
+
+
+
+function merikomiSyusei_S(np,sp1,up,sp2,sp3,kk,zk,hw,hh){//■S(四角形)のめり込み修正セット
+    //■(見えない点の数,外点１,内点１,外点２,外点３)
+    var w;
+  
+    if(np==1){
+        dp1.sxyzSetP(up);
+        dp5.sxyzSetP(up);
+        dp2.sxyzSetP(sp1);
+        dp3.sxyzSetP(sp3);
+        dp4.sxyzSetP(sp2);
+    
+        w=-up.sz/(sp1.sz-up.sz);
+        dp1.sx+=(sp1.sx-up.sx)*w;
+        dp1.sy+=(sp1.sy-up.sy)*w;
+        dp1.sz=0;
+        w=-up.sz/(sp2.sz-up.sz);
+        dp5.sx+=(sp2.sx-up.sx)*w;
+        dp5.sy+=(sp2.sy-up.sy)*w;
+        dp5.sz=0;
+    
+        dp1.henkan2D(kk,zk,hw,hh);
+        dp2.henkan2D(kk,zk,hw,hh);
+        dp3.henkan2D(kk,zk,hw,hh);
+        dp4.henkan2D(kk,zk,hw,hh);
+        dp5.henkan2D(kk,zk,hw,hh);
+    
+    }else if(np==2){//■(外点１,内点１,内点１,外点２)と考える
+        dp1.sxyzSetP(up);
+        dp2.sxyzSetP(sp1);
+        dp3.sxyzSetP(sp3);
+        dp4.sxyzSetP(sp2);
+    
+        w=-up.sz/(sp1.sz-up.sz);
+        dp1.sx+=(sp1.sx-up.sx)*w;
+        dp1.sy+=(sp1.sy-up.sy)*w;
+        dp1.sz=0;
+        w=-sp2.sz/(sp3.sz-sp2.sz);
+        dp4.sx+=(sp3.sx-sp2.sx)*w;
+        dp4.sy+=(sp3.sy-sp2.sy)*w;
+        dp4.sz=0;
+    
+        dp1.henkan2D(kk,zk,hw,hh);
+        dp2.henkan2D(kk,zk,hw,hh);
+        dp3.henkan2D(kk,zk,hw,hh);
+        dp4.henkan2D(kk,zk,hw,hh);
+    
+    }else if(np==3){//■(外点１,内点１,外点２)と考える
+        dp1.sxyzSetP(sp1);
+        dp2.sxyzSetP(up);
+        dp3.sxyzSetP(sp2);
+    
+        w=-sp1.sz/(up.sz-sp1.sz);
+        dp1.sx+=(up.sx-sp1.sx)*w;
+        dp1.sy+=(up.sy-sp1.sy)*w;
+        dp1.sz=0;
+        w=-sp2.sz/(up.sz-sp2.sz);
+        dp3.sx+=(up.sx-sp2.sx)*w;
+        dp3.sy+=(up.sy-sp2.sy)*w;
+        dp3.sz=0;
+    
+        dp1.henkan2D(kk,zk,hw,hh);
+        dp2.henkan2D(kk,zk,hw,hh);
+        dp3.henkan2D(kk,zk,hw,hh);
+    
+    }
+}
+
+
+function hamidasiSyusei(GL,GU,GR,GD,scaleXDX,scaleYDX){//■はみ出し修正■
+    var hh,hx,hy,hx1,hy1,hx2,hy2,hx3,hy3,hx4,hy4,hx5,hy5,i,ss,pp1,pp2;
+    
+    if(!TD_visible)return;
+    if(s==-1)return;
+  
+    if(n==1){//■DX(DxSprite)判定のみ
+        var cc = $imageList[floor(c||0)];
+        var width=2,height=2;
+        if (cc) {
+            ccwidth=cc.width;
+            ccheight=cc.height;
+        }
+        
+        var ss=1/p1.k;
+        k1=ss*scaleX*scaleXDX;
+        if(scaleYDX){
+            if(scaleY)k2=ss*scaleY*scaleYDX;//●縦の拡大あり(オブジェクト)・あり(点)
+            else      k2=ss*scaleX*scaleYDX;//●縦の拡大あり(オブジェクト)・なし(点)
+        }else{
+            if(scaleY){//●縦の拡大なし(オブジェクト)・あり(点)
+                k2=ss*scaleY*scaleXDX;
+            }
+        }
+        hx=hamidasiSyusei_hantei_X(p1,GL,GR,abs(ccwidth*k1/2));
+        hy=hamidasiSyusei_hantei_Y(p1,GU,GD,abs(ccheight*k2/2));
+        if(hx!=0||hy!=0)s=0;
+    
+    }else if(n==2){//■L(線)修正
+        if(s!=0){
+      
+            //表示判定
+            if(s==1){
+                hx1=hamidasiSyusei_hantei_X(p1,GL,GR);
+                hy1=hamidasiSyusei_hantei_Y(p1,GU,GD);
+                hx2=hamidasiSyusei_hantei_X(p2,GL,GR);
+                hy2=hamidasiSyusei_hantei_Y(p2,GU,GD);
+            }else
+            if(s==2){
+                hx1=hamidasiSyusei_hantei_X(dp1,GL,GR);
+                hy1=hamidasiSyusei_hantei_Y(dp1,GU,GD);
+                hx2=hamidasiSyusei_hantei_X(dp2,GL,GR);
+                hy2=hamidasiSyusei_hantei_Y(dp2,GU,GD);
+            }
+            hx=hx1+hx2;
+            hy=hy1+hy2;
+            if(hx==0&&hy==0)return;
+            if(hx!=0&&hx1==hx2){s=0;return;}
+            if(hy!=0&&hy1==hy2){s=0;return;}
+      
+            if($TD_Z_hamidasiSyusei==0)return;
+      
+      
+            if(s==1){
+                dp1.xySetP(p1);
+                dp2.xySetP(p2);
+            }
+            s=hamidasiSyusei_L(dp1,dp2,GL,GU,GR,GD);
+            /*
+            hh=hamidasiSyusei_X(dp1,dp2,GL,GR);
+            hh=hamidasiSyusei_Y(dp1,dp2,GU,GD);
+            */
+      
+            //s=2;
+        }
+    }else if(n==3||n==4){//■T(三角形)修正
+        
+        if(s!=0){
+            // ビットマップ表示で画像の大きさを測る
+            if (m==3) {
+                if(s==1){
+                    if(p1.xx<p2.xx)bmpGL=p1.xx;else bmpGL=p2.xx;
+                    if(p1.yy<p2.yy)bmpGU=p1.yy;else bmpGU=p2.yy;
+                    if(p1.xx>p2.xx)bmpGR=p1.xx;else bmpGR=p2.xx;
+                    if(p1.yy>p2.yy)bmpGD=p1.yy;else bmpGD=p2.yy;
+                    if(p3.xx<bmpGL)bmpGL=p3.xx;
+                    if(p3.yy<bmpGU)bmpGU=p3.yy;
+                    if(p3.xx>bmpGR)bmpGR=p3.xx;
+                    if(p3.yy>bmpGD)bmpGD=p3.yy;
+                    if(pr>=4){
+                        if(p4.xx<bmpGL)bmpGL=p4.xx;
+                        if(p4.yy<bmpGU)bmpGU=p4.yy;
+                        if(p4.xx>bmpGR)bmpGR=p4.xx;
+                        if(p4.yy>bmpGD)bmpGD=p4.yy;
+                    }
+                }else if(s==2){
+                    if(dp1.xx<dp2.xx)bmpGL=dp1.xx;else bmpGL=dp2.xx;
+                    if(dp1.yy<dp2.yy)bmpGU=dp1.yy;else bmpGU=dp2.yy;
+                    if(dp1.xx>dp2.xx)bmpGR=dp1.xx;else bmpGR=dp2.xx;
+                    if(dp1.yy>dp2.yy)bmpGD=dp1.yy;else bmpGD=dp2.yy;
+                    if(dp3.xx<bmpGL)bmpGL=dp3.xx;
+                    if(dp3.yy<bmpGU)bmpGU=dp3.yy;
+                    if(dp3.xx>bmpGR)bmpGR=dp3.xx;
+                    if(dp3.yy>bmpGD)bmpGD=dp3.yy;
+                    if(pr>=4){
+                        if(dp4.xx<bmpGL)bmpGL=dp4.xx;
+                        if(dp4.yy<bmpGU)bmpGU=dp4.yy;
+                        if(dp4.xx>bmpGR)bmpGR=dp4.xx;
+                        if(dp4.yy>bmpGD)bmpGD=dp4.yy;
+                    }
+                    if(pr>=5){
+                        if(dp5.xx<bmpGL)bmpGL=dp5.xx;
+                        if(dp5.yy<bmpGU)bmpGU=dp5.yy;
+                        if(dp5.xx>bmpGR)bmpGR=dp5.xx;
+                        if(dp5.yy>bmpGD)bmpGD=dp5.yy;
+                    }
+                }
+            }
+            
+            
+            //表示判定
+            if(s==1){
+                hx1=hamidasiSyusei_hantei_X(p1,GL,GR);
+                hy1=hamidasiSyusei_hantei_Y(p1,GU,GD);
+                hx2=hamidasiSyusei_hantei_X(p2,GL,GR);
+                hy2=hamidasiSyusei_hantei_Y(p2,GU,GD);
+                hx3=hamidasiSyusei_hantei_X(p3,GL,GR);
+                hy3=hamidasiSyusei_hantei_Y(p3,GU,GD);
+                if(pr>=4){
+                    hx4=hamidasiSyusei_hantei_X(p4,GL,GR);
+                    hy4=hamidasiSyusei_hantei_Y(p4,GU,GD);
+                }
+            }else
+            if(s==2){
+                hx1=hamidasiSyusei_hantei_X(dp1,GL,GR);
+                hy1=hamidasiSyusei_hantei_Y(dp1,GU,GD);
+                hx2=hamidasiSyusei_hantei_X(dp2,GL,GR);
+                hy2=hamidasiSyusei_hantei_Y(dp2,GU,GD);
+                hx3=hamidasiSyusei_hantei_X(dp3,GL,GR);
+                hy3=hamidasiSyusei_hantei_Y(dp3,GU,GD);
+                if(pr>=4){
+                    hx4=hamidasiSyusei_hantei_X(dp4,GL,GR);
+                    hy4=hamidasiSyusei_hantei_Y(dp4,GU,GD);
+                }
+                if(pr>=5){
+                    hx5=hamidasiSyusei_hantei_X(dp5,GL,GR);
+                    hy5=hamidasiSyusei_hantei_Y(dp5,GU,GD);
+                }
+            }
+            
+            if(pr==3){
+                hx=hx1+hx2+hx3;
+                hy=hy1+hy2+hy3;
+                if(hx==0&&hy==0)return;
+                if(hx!=0&&(hx1==hx2&&hx2==hx3)){s=0;return;}
+                if(hy!=0&&(hy1==hy2&&hy2==hy3)){s=0;return;}
+            }else
+            if(pr==4){
+                hx=hx1+hx2+hx3+hx4;
+                hy=hy1+hy2+hy3+hy4;
+                if(hx==0&&hy==0)return;
+                if(hx!=0&&(hx1==hx2&&hx2==hx3&&hx3==hx4)){s=0;return;}
+                if(hy!=0&&(hy1==hy2&&hy2==hy3&&hy3==hy4)){s=0;return;}
+            }else
+            if(pr==5){
+                hx=hx1+hx2+hx3+hx4+hx5;
+                hy=hy1+hy2+hy3+hy4+hy5;
+                if(hx==0&&hy==0)return;
+                if(hx!=0&&(hx1==hx2&&hx2==hx3&&hx3==hx4&&hx4==hx5)){s=0;return;}
+                if(hy!=0&&(hy1==hy2&&hy2==hy3&&hy3==hy4&&hy4==hy5)){s=0;return;}
+            }
+            
+            
+            if($TD_Z_hamidasiSyusei==0)return;
+            
+            
+            
+            //描画用配列クリア
+            if(dpA.length)dpA.splice(0);//dpA.clear();
+            if(dpAsw.length)dpAsw.splice(0);//dpAsw.clear();
+            
+            //座標変換
+            if(s==1){
+                dp1.xySetP(p1);
+                dp2.xySetP(p2);
+                dp3.xySetP(p3);
+                if(pr>=4)dp4.xySetP(p4);
+            }
+            if(pr>=5){
+                dp10.xySetP(dp5);//10<=5
+                dp9.xySetP(dp5);//9<=5
+            }
+            if(pr>=4){
+                dp8.xySetP(dp4);//8<=4
+                dp7.xySetP(dp4);//7<=4
+            }
+            dp6.xySetP(dp3);//6<=3
+            dp5.xySetP(dp3);//5<=3
+            dp4.xySetP(dp2);//4<=2
+            dp3.xySetP(dp2);//3<=2
+            dp2.xySetP(dp1);//2<=1
+                            //1<=1
+            
+            
+            //はみ出し判定X
+            hh=hamidasiSyusei_X(dp2,dp3,GL,GR);if(hh!=0){dpAsw.push(dp2);if(hh==2)dpAsw.push(dp3);}
+            hh=hamidasiSyusei_X(dp4,dp5,GL,GR);if(hh!=0){dpAsw.push(dp4);if(hh==2)dpAsw.push(dp5);}
+            if(pr==3){
+                hh=hamidasiSyusei_X(dp6,dp1,GL,GR);if(hh!=0){dpAsw.push(dp6);if(hh==2)dpAsw.push(dp1);}
+            }else
+            if(pr==4){
+                hh=hamidasiSyusei_X(dp6,dp7,GL,GR);if(hh!=0){dpAsw.push(dp6);if(hh==2)dpAsw.push(dp7);}
+                hh=hamidasiSyusei_X(dp8,dp1,GL,GR);if(hh!=0){dpAsw.push(dp8);if(hh==2)dpAsw.push(dp1);}
+            }else
+            if(pr==5){
+                hh=hamidasiSyusei_X(dp6,dp7,GL,GR);if(hh!=0){dpAsw.push(dp6);if(hh==2)dpAsw.push(dp7);}
+                hh=hamidasiSyusei_X(dp8,dp9,GL,GR);if(hh!=0){dpAsw.push(dp8);if(hh==2)dpAsw.push(dp9);}
+                hh=hamidasiSyusei_X(dp10,dp1,GL,GR);if(hh!=0){dpAsw.push(dp10);if(hh==2)dpAsw.push(dp1);}
+            }
+            
+            //座標コピー
+            ss=dpAsw.length;
+            for(i=0;i<ss;i++){
+                pp1=dpAsw[i*2];
+                pp2=cpA[i];
+                pp2.xySetP(pp1);
+                dpAsw.splice(i*2, 0, pp2); // dpAsw.insert(i*2,pp2);
+            }
+            
+            
+            //はみ出し判定Y
+            ss=dpAsw.length;
+            for(i=1;i<ss;i+=2){
+                pp1=dpAsw[i%ss];
+                pp2=dpAsw[(i+1)%ss];
+                hh=hamidasiSyusei_Y(pp1,pp2,GU,GD);
+                if(hh!=0){dpA.push(pp1);if(hh==2)dpA.push(pp2);}
+                //print(pp1.x, pp1.y, pp2.x, pp2.y);
+            }
+            $printSize=12;
+            //print(pr, s, ss, dpA.length, dpA, dpAsw.length, dpAsw);
+      
+      
+            s=3;
+        }
+    }
+}
+
+
+function hamidasiSyusei_hantei_X(p1,GL,GR,out){//■X座標のはみ出し判定■
+    if(out==null)out=0;
+    if(p1.xx<GL-out)return 1;else
+    if(p1.xx>GR+out)return 2;else return 0;
+}
+function hamidasiSyusei_hantei_Y(p1,GU,GD,out){//■Y座標のはみ出し判定■
+    if(out==null)out=0;
+    if(p1.yy<GU-out)return 1;else
+    if(p1.yy>GD+out)return 2;else return 0;
+}
+
+function hamidasiSyusei_L(p1,p2,GL,GU,GR,GD){//■L(線)のはみ出し修正■
+    //戻り値
+    //0:非表示
+    //1:表示
+    var w,s1_x,s2_x,s1_y,s2_y;
+  
+    //はみ出し判定
+    if(p1.xx<GL)s1_x=1;else
+    if(p1.xx>GR)s1_x=2;else s1_x=0;
+    if(p2.xx<GL)s2_x=1;else
+    if(p2.xx>GR)s2_x=2;else s2_x=0;
+  
+    if(p1.yy<GU)s1_y=1;else
+    if(p1.yy>GD)s1_y=2;else s1_y=0;
+    if(p2.yy<GU)s2_y=1;else
+    if(p2.yy>GD)s2_y=2;else s2_y=0;
+  
+  
+    //表示判定
+    if((s1_x+s2_x==0)&&(s1_y+s2_y==0))return 1;
+    if((s1_x!=0&&s2_x!=0)&&s1_x==s2_x)return 0;
+    if((s1_y!=0&&s2_y!=0)&&s1_y==s2_y)return 0;
+  
+    //座標修正X
+    if(!(s1_x==0&&s2_x==0)&&(p2.xx-p1.xx)!=0){
+        if(s1_x==1){
+            w=(GL-p1.xx)/(p2.xx-p1.xx);
+            p1.yy+=(p2.yy-p1.yy)*w;
+            p1.xx=GL;
+        }else if(s1_x==2){
+            w=(p1.xx-GR)/(p1.xx-p2.xx);
+            p1.yy+=(p2.yy-p1.yy)*w;
+            p1.xx=GR;
+        }
+        if(s2_x==1){
+            w=(GL-p2.xx)/(p1.xx-p2.xx);
+            p2.yy+=(p1.yy-p2.yy)*w;
+            p2.xx=GL;
+        }else if(s2_x==2){
+            w=(p2.xx-GR)/(p2.xx-p1.xx);
+            p2.yy+=(p1.yy-p2.yy)*w;
+            p2.xx=GR;
+        }
+    
+        //はみ出し判定
+        if(p1.yy<GU)s1_y=1;else
+        if(p1.yy>GD)s1_y=2;else s1_y=0;
+        if(p2.yy<GU)s2_y=1;else
+        if(p2.yy>GD)s2_y=2;else s2_y=0;
+    
+        //表示判定
+        if(!(s1_y==0||s2_y==0)&&s1_y==s2_y)return 0;
+    }
+  
+  
+    //座標修正Y
+    if(!(s1_y==0&&s2_y==0)&&(p2.yy-p1.yy)!=0){
+        if(s1_y==1){
+            w=(GU-p1.yy)/(p2.yy-p1.yy);
+            p1.xx+=(p2.xx-p1.xx)*w;
+            p1.yy=GU;
+        }else if(s1_y==2){
+            w=(p1.yy-GD)/(p1.yy-p2.yy);
+            p1.xx+=(p2.xx-p1.xx)*w;
+            p1.yy=GD;
+        }
+        if(s2_y==1){
+            w=(GU-p2.yy)/(p1.yy-p2.yy);
+            p2.xx+=(p1.xx-p2.xx)*w;
+            p2.yy=GU;
+        }else if(s2_y==2){
+            w=(p2.yy-GD)/(p2.yy-p1.yy);
+            p2.xx+=(p1.xx-p2.xx)*w;
+            p2.yy=GD;
+        }
+    }
+  
+    return 3;
+}
+
+
+function hamidasiSyusei_X(p1,p2,GL,GR){//■X座標のはみ出し修正■
+    //戻り値
+    //0:非表示
+    //1:表示
+    //2:p2が修正された
+    var w,s1_x,s2_x;
+  
+    //はみ出し判定
+    if(p1.xx<GL)s1_x=1;else
+    if(p1.xx>GR)s1_x=2;else s1_x=0;
+    if(p2.xx<GL)s2_x=1;else
+    if(p2.xx>GR)s2_x=2;else s2_x=0;
+  
+    //表示判定
+    if((s1_x!=0&&s2_x!=0)&&s1_x==s2_x)return 0;
+  
+    //座標修正X
+    if(!(s1_x==0&&s2_x==0)&&(p2.xx-p1.xx)!=0){
+        if(s1_x==1){
+            w=(GL-p1.xx)/(p2.xx-p1.xx);
+            p1.yy+=(p2.yy-p1.yy)*w;
+            p1.xx=GL;
+        }else if(s1_x==2){
+            w=(p1.xx-GR)/(p1.xx-p2.xx);
+            p1.yy+=(p2.yy-p1.yy)*w;
+            p1.xx=GR;
+        }
+        if(s2_x==1){
+            w=(GL-p2.xx)/(p1.xx-p2.xx);
+            p2.yy+=(p1.yy-p2.yy)*w;
+            p2.xx=GL;
+        }else if(s2_x==2){
+            w=(p2.xx-GR)/(p2.xx-p1.xx);
+            p2.yy+=(p1.yy-p2.yy)*w;
+            p2.xx=GR;
+        }
+    }
+    return (1+(s2_x!=0));
+}
+
+function hamidasiSyusei_Y(p1,p2,GU,GD){//■Y座標のはみ出し修正■
+    //戻り値
+    //0:非表示
+    //1:表示
+    //2:p2が修正された
+    var w,s1_y,s2_y;
+  
+    //はみ出し判定
+    if(p1.yy<GU)s1_y=1;else
+    if(p1.yy>GD)s1_y=2;else s1_y=0;
+    if(p2.yy<GU)s2_y=1;else
+    if(p2.yy>GD)s2_y=2;else s2_y=0;
+  
+    //表示判定
+    if((s1_y!=0&&s2_y!=0)&&s1_y==s2_y)return 0;
+  
+    //座標修正Y
+    if(!(s1_y==0&&s2_y==0)&&(p2.yy-p1.yy)!=0){
+        if(s1_y==1){
+            w=(GU-p1.yy)/(p2.yy-p1.yy);
+            p1.xx+=(p2.xx-p1.xx)*w;
+            p1.yy=GU;
+        }else if(s1_y==2){
+            w=(p1.yy-GD)/(p1.yy-p2.yy);
+            p1.xx+=(p2.xx-p1.xx)*w;
+            p1.yy=GD;
+        }
+        if(s2_y==1){
+            w=(GU-p2.yy)/(p1.yy-p2.yy);
+            p2.xx+=(p1.xx-p2.xx)*w;
+            p2.yy=GU;
+        }else if(s2_y==2){
+            w=(p2.yy-GD)/(p2.yy-p1.yy);
+            p2.xx+=(p1.xx-p2.xx)*w;
+            p2.yy=GD;
+        }
+    }
+    return (1+(s2_y!=0));
+}
+
+function paintHantei(sp1,up,sp2){//■終点を塗りつぶすか判定
+    if(sp1.xx<up.xx||sp2.xx<up.xx)up.xx--;
+    if(sp1.yy<up.yy||sp2.yy<up.yy)up.yy--;
+  
+}
+
+
+
+
+
+
+
+// \setPolygon(seq,x,y) {
+//     if (seq == 0) {
+//         setPolygonTempAry.splice(0);
+//     }
+//     setPolygonTempAry[seq] = {x,y};
+// }
+
+// nowait \fillPolygon(x,y,posCnt,col,zOrder,alpha) {
+//     // if(!(setPolygonTempAry instanceof Array))return;
+//     // for (var i=0; i<setPolygonTempAry.length/*points*/; i++) {
+//     //     var p = setPolygonTempAry[i];
+//     //     // var p2 = setPolygonTempAry[(i+1)%setPolygonTempAry.length];
+//     //     // drawLine(x+p.x,y+p.y,x+p2.x,y+p2.y,/*col*/"#FF0000",zOrder);
+//     //     drawDxSprite(x+p.x,y+p.y,3,0,1000+zo,0,255,1);
+//     //     drawSprite(p.x,p.y,3);
+//     // }
+//     //if(m==2&&alpha!=255&&c=="rgb(0,0,255)")print($frameCount,setPolygonTempAry);//print($frameCount,x,y,posCnt,col,alpha);
+//     appear(T1FillPolygon) {x,y,posCnt:posCnt,points:setPolygonTempAry,col,zOrder,alpha,owner:this};   
+// }
+
+nowait \fillPolygonP(panel,x,y,points,col) {
+    var ctx;
+    points = setPolygonTempAry;
+    ctx = panel.getContext();
+    ctx.save();
+    ctx.fillStyle=col+"";
+    ctx.beginPath();
+    for (var i=0; i<points.length; i++) {
+        var p = points[i];
+        if (i == 0) ctx.moveTo(x+p.x, y+p.y);
+        else ctx.lineTo(x+p.x, y+p.y);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+}

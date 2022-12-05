@@ -47,7 +47,6 @@ while(true) {
     if (pad.getButton(1)) { // 1ボタン
         p=$pat_base+4;
         spd=5;
-        pad.alpha -= 50;
     } else {
         p=$pat_base;
         spd=3;

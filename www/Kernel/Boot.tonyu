@@ -413,6 +413,7 @@ mainLoop();
         $drawnFrameCount++;
     }
 }
+
 \loopRAF() {
     var nowTime=now();
     //var elapsed;
@@ -505,6 +506,7 @@ nowait \moveFrame() {
     $_printCount=0;
     Tonyu.resetLoopCheck();
     if (newLimit) newLimitCount=newLimit;
+    fireEvent("beforeMove");
     //debug("MoveFrame",1);
     var sc=_scheduler.stepsAll();
     //debug("MoveFrame",2);
@@ -513,6 +515,7 @@ nowait \moveFrame() {
     $GamePad.update();
     $InputDevice.update();
     if ($sound )$sound.resetSEFrame();
+    fireEvent("afterMove");
     //console.log("running");
     //debug("MoveFrame",4);
     $screenWidth=$Screen.width;

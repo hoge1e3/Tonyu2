@@ -1,0 +1,208 @@
+extends PlainChar;
+//extends SecretChar;
+
+// \new(m) {
+//     var i;
+//     this.m = m;
+  
+//     if(m==0){//親プロセスの初期化
+//         TD_APS = [];
+//         for (i=0;i<$TD_M_koObjMax;i++) {
+//             TD_APS.push(new Process(new TD_PS(1),"",1));
+//         }
+//     }
+// }
+
+// //親プロセス
+// if(m==0){
+//     while(1){
+//         for(o of TD_APS){
+//             o.exec();
+//             if($TD_M_M>5)break;
+//         }
+//         update();
+//     }
+// }
+
+//子プロセス
+// while(1){
+  
+\run() {
+    if($TD_M_M==0){ /* 座標回転 */
+    
+    
+        if($TD_M_multiGamen==0){ /* シングル画面表示 */
+      
+            $TD_Z.RSC();
+            $TD_Z.GKK();
+      
+            $TD_M_M++;
+      
+      
+        }else if($TD_M_multiGamen==1){ /* マルチ画面表示 */
+            if($TD_M_ACM_I >= $TD_M_ACM_S){ /* 処理を終了させる */
+                $TD_M_EOF=1;$TD_M_M=6;
+        
+            }else{ /* カメラを１つずつ処理していく */
+        
+        //print($frameCount+" "+$TD_M_ACM_I+" "+$TD_M_ACM_S);
+                $TD_M_CM=$TD_M_ACM[$TD_M_ACM_I]; // カメラオブジェクトを選択
+                if($TD_M_CM.TD_visible){
+                    $TD_M_CM.cameraMain();
+                    $TD_Z.RSC();
+                    $TD_Z.GKK($TD_G_GL,$TD_G_GU,$TD_G_GR,$TD_G_GD);
+                    $TD_M_M++;
+                }
+        
+                $TD_M_ACM_I++;
+                $TD_M_A3D_I=0;
+            }
+        }
+    
+    
+    }
+    if($TD_M_M==1){ /* 座標回転 */
+    
+        for(var i=0;i<$TD_M_syoriMax;i++){
+            if($TD_M_AP_I==0){ // 
+                if($TD_M_A3D_I >= $TD_M_A3D_S){$TD_M_EOF=1;$TD_M_M++;$TD_M_A3D_I=0;break;}
+                $TD_M_O=$TD_M_A3D[$TD_M_A3D_I];//オブジェクト
+                $TD_M_AP_S=$TD_M_O.TD_AP.length;//点の個数
+        
+                if($TD_M_O.TD_visible==0){
+                    $TD_M_AP_I=$TD_M_AP_S;
+                }else{//非表示なら終了
+                    //●あらかじめ、三角関数計算
+                    $TD_M_O.RSC();
+                }
+            }
+      
+            if($TD_M_AP_I < $TD_M_AP_S){ // 点配列の範囲内
+                //●座標回転
+                $TD_M_O.TD_AP[$TD_M_AP_I].kaiten(
+                $TD_M_O.TD_x,$TD_M_O.TD_y,$TD_M_O.TD_z,
+                $TD_M_O.TD_angleX,$TD_M_O.TD_angleY,$TD_M_O.TD_angleZ,
+                $TD_M_O.TD_angleXZ,$TD_M_O.TD_angleYZ,$TD_M_O.TD_angleXY,
+                $TD_M_O.TD_xzsin,$TD_M_O.TD_yzsin,$TD_M_O.TD_xysin,$TD_M_O.TD_xzcos,$TD_M_O.TD_yzcos,$TD_M_O.TD_xycos,
+                $TD_Z_x,$TD_Z_y,$TD_Z_z,
+                $TD_K_xzsin,$TD_K_yzsin,$TD_K_xysin,$TD_K_xzcos,$TD_K_yzcos,$TD_K_xycos
+                );
+                $TD_M_AP_I++;
+            }
+      
+      
+            if($TD_M_AP_I >= $TD_M_AP_S){//点配列の添え字オーバー
+                $TD_M_AP_I=0;//点配列の添え字
+                $TD_M_A3D_I++;//3D配列の添え字
+            }
+        }
+    
+    }
+    if($TD_M_M==2){ /* めり込み修正 */
+    
+        for(i=0;i<$TD_M_syoriMax;i++){
+      
+            if($TD_M_ADR_I==0){
+                if($TD_M_A3D_I >= $TD_M_A3D_S){$TD_M_EOF=1;$TD_M_M++;$TD_M_A3D_I=0;break;}
+                $TD_M_O=$TD_M_A3D[$TD_M_A3D_I];//オブジェクト
+                $TD_M_ADR_S=$TD_M_O.TD_ADR.length;//DRの個数
+                if($TD_M_O.TD_visible==0){$TD_M_ADR_I=$TD_M_ADR_S;}//非表示なら終了
+            }
+      
+            if($TD_M_ADR_I < $TD_M_ADR_S){//TD_ADR配列の範囲内
+                //●めり込み修正
+                $TD_M_O.TD_ADR[$TD_M_ADR_I].merikomiSyusei($TD_K_k,$TD_Z_k,$TD_K_hw,$TD_K_hh);
+                $TD_M_ADR_I++;
+            }
+      
+            if($TD_M_ADR_I >= $TD_M_ADR_S){
+                $TD_M_ADR_I=0;//点配列の添え字
+                $TD_M_A3D_I++;//3D配列の添え字
+            }
+        }
+    
+    }
+    if($TD_M_M==3){ /* 座標変換 */
+    
+        for(i=0;i<$TD_M_syoriMax;i++){
+            if($TD_M_AP_I==0){
+                if($TD_M_A3D_I >= $TD_M_A3D_S){$TD_M_EOF=1;$TD_M_M++;$TD_M_A3D_I=0;break;}
+                $TD_M_O=$TD_M_A3D[$TD_M_A3D_I];//オブジェクト
+                $TD_M_AP_S=$TD_M_O.TD_AP.length;//点の個数
+                if($TD_M_O.TD_visible==0){$TD_M_AP_I=$TD_M_AP_S;}//非表示なら終了
+            }
+      
+            if($TD_M_AP_I < $TD_M_AP_S){//点配列の範囲内
+                //●座標変換
+                $TD_M_O.TD_AP[$TD_M_AP_I].henkan2D($TD_K_k,$TD_Z_k,$TD_K_hw,$TD_K_hh);
+                $TD_M_AP_I++;
+            }
+      
+            if($TD_M_AP_I >= $TD_M_AP_S){//点配列の添え字オーバー
+                $TD_M_AP_I=0;//点配列の添え字
+                $TD_M_A3D_I++;//3D配列の添え字
+            }
+        }
+    
+    }
+    if($TD_M_M==4){ /* はみ出し修正 */
+    
+        for(i=0;i<$TD_M_syoriMax;i++){
+            if($TD_M_ADR_I==0){
+                if($TD_M_A3D_I >= $TD_M_A3D_S){$TD_M_EOF=1;$TD_M_M++;$TD_M_A3D_I=0;break;}
+                $TD_M_O=$TD_M_A3D[$TD_M_A3D_I];//オブジェクト
+                $TD_M_ADR_S=$TD_M_O.TD_ADR.length;//DRの個数
+                if($TD_M_O.TD_visible==0){$TD_M_ADR_I=$TD_M_ADR_S;}//非表示なら終了
+            }
+      
+            if($TD_M_ADR_I < $TD_M_ADR_S){//TD_ADR配列の範囲内
+                //●はみ出し修正
+                $TD_M_O.TD_ADR[$TD_M_ADR_I].hamidasiSyusei($TD_G_GL,$TD_G_GU,$TD_G_GR,$TD_G_GD);
+                $TD_M_ADR_I++;
+            }
+      
+            if($TD_M_ADR_I >= $TD_M_ADR_S){
+                $TD_M_ADR_I=0;//DR配列の添え字
+                $TD_M_A3D_I++;//3D配列の添え字
+            }
+        }
+    
+    }
+    if($TD_M_M==5){ /* 図形表示 */
+    
+        for(i=0;i<$TD_M_syoriMax;i++){
+            if($TD_M_ADR_I==0){
+                if($TD_M_A3D_I >= $TD_M_A3D_S){
+                    $TD_M_EOF=1;
+                    if($TD_M_multiGamen==1)$TD_M_M=0; else $TD_M_M++;
+                    $TD_M_A3D_I=0;break;
+                }
+                $TD_M_O=$TD_M_A3D[$TD_M_A3D_I];//オブジェクト
+                $TD_M_ADR_S=$TD_M_O.TD_ADR.length;//DRの個数
+                if($TD_M_O.TD_visible==0){$TD_M_ADR_I=$TD_M_ADR_S;}//非表示なら終了
+            }
+      
+            if($TD_M_ADR_I < $TD_M_ADR_S){//TD_ADR配列の範囲内
+                //●図形表示
+                $TD_M_O.TD_ADR[$TD_M_ADR_I].ZukeiDraw($TD_M_O.TD_angleDX,$TD_M_O.TD_alphaDX,$TD_M_O.TD_scaleXDX,$TD_M_O.TD_scaleYDX);
+        
+                /*
+                if($TD_M_O.TD_ADR[$TD_M_ADR_I].TD_visible){
+                  drawLine($TD_M_A3D_I*50+0,$TD_M_ADR_I,$TD_M_A3D_I*50+20,$TD_M_ADR_I,colorHSL(($TD_M_O.TD_ADR[$TD_M_ADR_I].n-1)*60+30,240,120));
+                  if($TD_M_O.TD_ADR[$TD_M_ADR_I].s!=0)drawLine($TD_M_A3D_I*50+20,$TD_M_ADR_I,$TD_M_A3D_I*50+40,$TD_M_ADR_I,colorHSL(($TD_M_O.TD_ADR.[$TD_M_ADR_I].s==3)*40,240,120));
+                }
+                */
+        
+                $TD_M_ADR_I++;
+            }
+      
+            if($TD_M_ADR_I >= $TD_M_ADR_S){
+                $TD_M_A3D_I++;//3D配列の添え字
+                $TD_M_ADR_I=0;//DR配列の添え字
+            }
+        }
+    }
+}
+  
+    // update();
+// }
