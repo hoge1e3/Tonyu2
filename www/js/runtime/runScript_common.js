@@ -1,6 +1,6 @@
 define(["root","WebSite"], function (root,WebSite) {
     root.SplashScreen={
-        hide: function () {$("#splash").hide();},
+        hide: function () {$("#splash .progress").text("");$("#splash").hide();},
         show:function(){},
         progress:function(t) {$("#splash .progress").text(t);}
     };

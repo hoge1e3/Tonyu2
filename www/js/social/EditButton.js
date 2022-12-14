@@ -6,8 +6,16 @@ define(function (require, exports) {
         thePrj=prj;
         if (WebSite.useEditButton) {
             Mesg.init().then(()=>{
-                button=$("<button>").text("Edit...").click(()=>doEdit(prj)).
-                css({"position":"absolute",left:0,top:0}).appendTo("body");
+                /*
+                <button style="position:absolute; left: 10px; top:10px; opacity:75%; padding:5px 10px 5px 10px;">
+                    <div style="font-size: 20px">🖊</div>
+                    <div>Edit</div>
+                </button>*/
+                button=$("<button>").
+                html(`<div style="font-size: 20px">🖊</div><div>Edit</div>`).
+                click(()=>doEdit(prj)).
+                css({"position":"absolute",left:10,top:10,opacity:"75%",padding:"5px 10px 5px 10px"}).
+                appendTo("body");
             });
         }
     };

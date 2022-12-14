@@ -62,6 +62,9 @@ $(function () {
             ["div", R("newProject")]
         ]);
         u.appendTo(prj1dirList);
+        var zi=new ZipImporter(curDir,prj1dirList,{
+            onComplete: refresh
+        });
         function newDiag() {
             NPD.show(curDir, function (prjDir) {
                 prjDir.mkdir();
@@ -74,32 +77,26 @@ $(function () {
                 ["button",{"class":"showAll",on:{
             click:function () {
                 showAll.remove();
+                if (!zipchecked) {
+                    zipchecked=true;
+                    zi.checkFromPrjB();
+                }  
                 dols(curDir,prj1dirList);
             }
         }},R("showAllProjects")]);
         prj1dirList.append(showAll);
-        //$("#prjItemList").append(UI("div",["h2",{"class":"prjDirHeader"},"----"]));
-    }
-    var zipchecked;
-    function dols(curDir,prj1dirList) {
-        var zi=new ZipImporter(curDir,prj1dirList,{
-            onComplete: refresh
-        });
-        if (!zipchecked) {
-            zipchecked=true;
-            zi.checkFromPrjB();
-        }
         function refresh(e) {
             if (e.from==="prjB") {
                 location.href=location.href.replace(/\?.*/,"");
             } else {
-                prj1dirList.find(".existentproject").remove();
-                dols2(curDir,prj1dirList);
+                prj1dirList.find(".existentproject").remove();   
+                dols(curDir,prj1dirList);
             }
         }
-        return dols2(curDir,prj1dirList);
+        //$("#prjItemList").append(UI("div",["h2",{"class":"prjDirHeader"},"----"]));
     }
-    function dols2(curDir,prj1dirList) {
+    var zipchecked;
+    function dols(curDir,prj1dirList) {
         var d=[];
         curDir.each(function (f) {
             if (!f.isDir()) return;

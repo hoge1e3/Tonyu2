@@ -13,6 +13,14 @@ function (Klass,FS,Util,DD,DU,UI,R) {
             t.onComplete=options.onComplete;
             if (t.elem) t.prepareDragDrop();
         },
+        fileButton() {
+            const t=this;
+            const finput=$("<input>").attr({name:"file",type:"file",multi:true});
+            finput.on("input",()=>{
+                
+            });
+            return $("<form>").append(finput);
+        },
         prepareDragDrop: function () {
             var t=this;
             DD.accept(t.elem, t.tmpDir, {

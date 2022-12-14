@@ -3175,6 +3175,7 @@ function initClassDecls(klass, env) {
     // The main task of initClassDecls is resolve 'dependency', it calls before orderByInheritance
     var s = getSourceFile(klass); //file object
     klass.hasSemanticError = true;
+    const srcFile = klass.src.tonyu; //file object  //S
     if (klass.src && klass.src.js) {
         // falsify on generateJS. if some class hasSemanticError, it remains true
         klass.jsNotUpToDate = true;
@@ -3290,6 +3291,8 @@ function initClassDecls(klass, env) {
                     //console.log("head.ftype:",stmt);
                 }
                 var name = head.name.text;
+                if (methods.hasOwnProperty(name))
+                    throw TError_1.default(R_1.default("MethodAlreadyDeclared", name), srcFile, stmt.pos);
                 var propHead = (head.params ? "" : head.setter ? "__setter__" : "__getter__");
                 name = propHead + name;
                 methods[name] = {
@@ -13541,6 +13544,7 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
 },{"fs":1}],28:[function(require,module,exports){
 "use strict";
 const ja = {
+    "MethodAlreadyDeclared": "メソッド{1}はすでに定義されています",
     typeNotFound: "型{1}が見つかりません",
     cannotCallNonFunctionType: "関数・メソッドでないので呼び出すことはできません",
     memberNotFoundInClass: "クラス{1}にフィールドまたはメソッド{2}が定義されていません",
@@ -13576,6 +13580,7 @@ const ja = {
         "   [参考]https://edit.tonyu.jp/doc/options.html\n",
 };
 const en = {
+    "MethodAlreadyDeclared": "Method {1} is already defined",
     typeNotFound: "Type {1} is not found",
     cannotCallNonFunctionType: "Cannot call what is neither function or method.",
     memberNotFoundInClass: "No such field or method: {1}.{2}",
