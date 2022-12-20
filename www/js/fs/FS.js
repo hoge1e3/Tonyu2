@@ -3276,6 +3276,9 @@ function (SFile,/*JSZip,*/fsv,Util,DU) {
                     }
                 }).then(function () {
                     console.log("Inflating",zipEntry.name);
+                    /*if (zipEntry.name.match(/mzo/)) {
+                        console.trace();
+                    }*/
                     if (dest.isDir()) return;
                     var s={
                         file:dest,
@@ -3292,6 +3295,9 @@ function (SFile,/*JSZip,*/fsv,Util,DU) {
                         if (dest.path()!==res.path()) s.redirectedTo=res;
                         dest=res;
                     }
+                    /*if (zipEntry.name.match(/mzo/)) {
+                        console.log("before dest");
+                    }*/
                     if (dest) return dest.setContent(c);
                 });
             });

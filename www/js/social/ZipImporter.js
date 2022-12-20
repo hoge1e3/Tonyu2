@@ -99,10 +99,16 @@ function (Klass,FS,Util,DD,DU,UI,R) {
             var t=this;
             t.showDialog(R("unzipping",file.name()));
             var zipexdir=t.getTmpDir().rel(file.truncExt()+"/");
+            const shouldSkip=(file)=>file.path().match(/\.git\b/);
             var opt={
                 progress: function (file) {
+                    //if (shouldSkip(file)) return;
                     t.showDialog(R("unzipping",file.name()));
                     return DU.timeout(0);
+                },
+                onCheckFile(file, content) {
+                    if (shouldSkip(file)) return false;
+                    return file; 
                 }
             };
             return FS.zip.unzip(file, zipexdir,opt ).then(function () {
