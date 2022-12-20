@@ -5,6 +5,10 @@ $(".dropdown-toggle");
 */
     const root=require("root");
     const ja={
+        "CreateNewProject":"新規作成",
+        "DoesNotContainTonyuProjects":"Tonyuプロジェクトが見つかりません",
+        "ImportFromZip":"Zipファイルをインポート",
+        "Refresh": "最新の情報に更新",
         "runInSeparateWindow": "別ウィンドウで実行",
         "runInsideEditor": "エディタと同じ画面で実行",
         "configurationChanged": "設定変更",

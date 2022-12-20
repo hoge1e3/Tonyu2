@@ -67,8 +67,13 @@ $(function () {
         });
         function newDiag() {
             NPD.show(curDir, function (prjDir) {
-                prjDir.mkdir();
-                location.href=WebSite.projectEditorURL+"?dir="+prjDir.path();
+                console.log("Oncomp", prjDir);
+                if(prjDir.from==="fileInput") {
+                    refresh(prjDir);
+                } else {
+                    prjDir.mkdir();
+                    location.href=WebSite.projectEditorURL+"?dir="+prjDir.path();
+                }
             });
         }
         var showAll;

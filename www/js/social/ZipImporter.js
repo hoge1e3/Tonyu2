@@ -5,25 +5,48 @@ function (Klass,FS,Util,DD,DU,UI,R) {
     var tmpDir=FS.get("/ram/");
     var ZipImporter=Klass.define({
         $: function (dir, elem, options) {
+            options=options||{};
             var t=this;
             t.elem=elem;
-            t.dir=dir;
-            t.tmpDir=tmpDir.rel(dir.name());
-            options=options||{};
+            if (typeof dir==="function") {
+                t.getDir=dir;
+            } else {
+                t.getDir=function (){return dir;};
+            }
+            t.onFileSelect=options.onFileSelect;
             t.onComplete=options.onComplete;
-            if (t.elem) t.prepareDragDrop();
+            if (t.elem) t.prepareDragDrop();    
+        },
+        getTmpDir() {
+            return tmpDir.rel(this.getDir().name());
         },
         fileButton() {
             const t=this;
-            const finput=$("<input>").attr({name:"file",type:"file",multi:true});
-            finput.on("input",()=>{
-                
+            const finput=$("<input>").attr({name:"file",type:"file",multi:false});
+            finput.on("input",(e)=>{
+                //console.log(e);
+                //console.log();
+                const f=finput[0].files[0];
+                const rd=new FileReader();
+                rd.addEventListener("load",(r)=>{
+                    let name=FS.PathUtil.name(finput.val());
+                    //console.log(name, rd.result);
+                    let zipf=tmpDir.rel(name);
+                    zipf.dataURL(rd.result);
+                    if (t.onFileSelect) t.onFileSelect({file:zipf});
+                    t.unzip(zipf,{from:"fileInput"}).then(ctx=>{
+                        t.closeDialog();
+                        t.onComplete(ctx);
+                    });
+                });
+                rd.readAsDataURL(f);
+
             });
             return $("<form>").append(finput);
         },
         prepareDragDrop: function () {
             var t=this;
-            DD.accept(t.elem, t.tmpDir, {
+            DD.accept(t.elem, t.getTmpDir(), {
                 onComplete: function (status) {
                     t.showDialog();
                     var ctx={imported:0, from:"dragDrop"};
@@ -75,7 +98,7 @@ function (Klass,FS,Util,DD,DU,UI,R) {
             // ctx.dstDir is set when fromPrjB, /Tonyu/Project/prjfile_0.00/
             var t=this;
             t.showDialog(R("unzipping",file.name()));
-            var zipexdir=t.tmpDir.rel(file.truncExt()+"/");
+            var zipexdir=t.getTmpDir().rel(file.truncExt()+"/");
             var opt={
                 progress: function (file) {
                     t.showDialog(R("unzipping",file.name()));
@@ -94,6 +117,7 @@ function (Klass,FS,Util,DD,DU,UI,R) {
                 if (ctx.from==="prjB" && ctx.imported===0) throw new Error(
                     R("doesNotContainTonyu2Project",file.name())
                 );
+                return ctx;
             });
         },
         traverse: function (zipexdir,ctx) {
@@ -119,7 +143,7 @@ function (Klass,FS,Util,DD,DU,UI,R) {
             if (ctx.dstDir) {
                 dst=ctx.dstDir;
             } else {
-                var dstParent=t.dir;
+                const dstParent=t.getDir();
                 var nameT=FS.PathUtil.truncSEP(src.name());
                 if (nameT==="src") {
                     nameT=FS.PathUtil.truncSEP(src.up().name());
@@ -154,7 +178,7 @@ function (Klass,FS,Util,DD,DU,UI,R) {
             t.prjID=prjID;
             console.log("checkFromPrjB",file);
             if (file) {
-                var dstDir=t.dir.rel(file.replace(/\.zip$/i,"/"));
+                const dstDir=t.getDir().rel(file.replace(/\.zip$/i,"/"));
                 if (dstDir.exists() ){
                     console.log(dstDir+" already exists ");
                     return 0;
