@@ -3243,7 +3243,7 @@ function (SFile,/*JSZip,*/fsv,Util,DU) {
             }
         });
     };
-    zip.unzip=function (arrayBuf,destDir,options) {
+    zip.unzip=async function (arrayBuf,destDir,options) {
         var c;
         var status={};
         options=options||{};
@@ -3264,6 +3264,36 @@ function (SFile,/*JSZip,*/fsv,Util,DU) {
             };
         }
         var jszip=new zip.JSZip();
+        await jszip.loadAsync(arrayBuf);
+        for (let key of Object.keys(jszip.files)) {
+            const zipEntry=jszip.files[key];
+            const buf=await zipEntry.async("arraybuffer");
+            let dest=destDir.rel(zipEntry.name);
+            if (options.progress) {
+                await options.progress(dest);
+            }
+            console.log("Inflating",zipEntry.name);
+            if (dest.isDir()) continue;
+            const s={
+                file:dest,
+                status:"uploaded"
+            };
+            status[dest.path()]=s;
+            const c=FS.Content.bin( buf, dest.contentType() );
+            const res=options.onCheckFile(dest,c);
+            if (res===false) {
+                s.status="cancelled";
+                dest=null;
+            }
+            if (SFile.is(res)) {
+                if (dest.path()!==res.path()) s.redirectedTo=res;
+                dest=res;
+            }
+            if (dest) dest.setContent(c);
+        }
+        console.log("unzip done",status);
+        return status;
+
         return DU.resolve(jszip.loadAsync(arrayBuf)).then(function () {
             return DU.each(jszip.files,function (key,zipEntry) {
                 //var zipEntry=jszip.files[i];
@@ -3276,9 +3306,6 @@ function (SFile,/*JSZip,*/fsv,Util,DU) {
                     }
                 }).then(function () {
                     console.log("Inflating",zipEntry.name);
-                    /*if (zipEntry.name.match(/mzo/)) {
-                        console.trace();
-                    }*/
                     if (dest.isDir()) return;
                     var s={
                         file:dest,
@@ -3295,9 +3322,6 @@ function (SFile,/*JSZip,*/fsv,Util,DU) {
                         if (dest.path()!==res.path()) s.redirectedTo=res;
                         dest=res;
                     }
-                    /*if (zipEntry.name.match(/mzo/)) {
-                        console.log("before dest");
-                    }*/
                     if (dest) return dest.setContent(c);
                 });
             });

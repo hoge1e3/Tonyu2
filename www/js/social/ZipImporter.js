@@ -104,7 +104,7 @@ function (Klass,FS,Util,DD,DU,UI,R) {
                 progress: function (file) {
                     //if (shouldSkip(file)) return;
                     t.showDialog(R("unzipping",file.name()));
-                    return DU.timeout(0);
+                    return new Promise( s=> setTimeout(s,0));//DU.timeout(0);
                 },
                 onCheckFile(file, content) {
                     if (shouldSkip(file)) return false;
