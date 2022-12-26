@@ -7,7 +7,10 @@ body {
     -moz-box-sizing:content-box!important;
     box-sizing: content-box!important;
 }
-
+.mobileButton {
+    padding-top:10px;
+    padding-bottom:10px;
+}
 .dragging {
     background-color: #af8;
 }

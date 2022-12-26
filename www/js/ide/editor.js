@@ -126,7 +126,7 @@ $(function () {
     const dialogs=Dialogs(ide);
     function collapseMenu() {
         let b=$("button.navbar-toggle");
-        //console.log("Collape",b, b.hasClass("collapsed"));
+        console.log("Collape",b, b.is(":visible"), b.hasClass("collapsed"));
         if (!b.is(":visible")) return;
         if (b.hasClass("collapsed")) return;
         b.click();
@@ -390,6 +390,7 @@ $(function () {
         MapEditor2.prepare(ide);
     }));
     $("#search").click(FC(dialogs.search));
+    $("#mobileFind").click(FC(dialogs.search));
     KeyEventChecker.down(document,"ctrl+t",F(dialogs.search));
     function fixEditorIndent(prog) {
         var cur=prog.getCursorPosition();
