@@ -11,8 +11,9 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 		FS.mount(ramHome.path(), FS.LSFS.ramDisk() );
 		var cv=com.initCanvas();
 
-
-		var locs=location.href.replace(/[\?#].*/,"").split(/\//);
+		var href=location.href;
+		href=href.replace(/^https?:\/\/run.tonyu.jp\/\?/,"");		
+		var locs=href.replace(/[\?#].*/,"").split(/\//);
 		var prjPath=locs.pop() || "runscript";
 		var user=locs.pop() || "nobody";
 		//if (prjloc.length<0) locs="runscript";
