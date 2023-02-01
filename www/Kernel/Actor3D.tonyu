@@ -30,6 +30,11 @@ native Tonyu;
     direction.rotate(mode,angle,unit);
     return this;
 }
+/*\rotate(axis,angle) {
+    direction.rotate(axis,angle);
+    return this;
+}*/
+
 
 \defaultLayer{
     return $mainLayer3D;
@@ -72,10 +77,6 @@ nowait \dist(dx,dy,dz) {
 \moveBy(by) {
     if (typeof by==="number") return moveBy{forward:by};
     position.set(localToWorld(by));
-    return this;
-}
-\rotate(axis,angle) {
-    direction.rotate(axis,angle);
     return this;
 }
 // moveBy(1);

@@ -93,6 +93,18 @@ function set() {
     z=p.z;
     return this;
 }
+/*\set(x,y,z) {
+    if (typeof x==="object") {
+        y=x.y;
+        z=x.z;
+        x=x.x;
+    }
+    if (typeof x==="number") this.x=x;
+    if (typeof y==="number") this.y=y;
+    if (typeof z==="number") this.z=z;
+    return this;
+}*/
+
 \setTo(t) {
     t.x=x;
     t.y=y;
@@ -175,17 +187,6 @@ function set() {
 }
 \rotateX(angle,axis) {
     return set(rotate(angle,axis));
-}
-\set(x,y,z) {
-    if (typeof x==="object") {
-        y=x.y;
-        z=x.z;
-        x=x.x;
-    }
-    if (typeof x==="number") this.x=x;
-    if (typeof y==="number") this.y=y;
-    if (typeof z==="number") this.z=z;
-    return this;
 }
 \toString() {
     return "("+[x,y,z].join(",")+")";

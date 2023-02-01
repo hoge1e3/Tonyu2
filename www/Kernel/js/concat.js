@@ -1639,6 +1639,10 @@ Tonyu.klass.define({
         
         n = a.shift();
         
+        if (n&&n.methodInfo) {
+          n=n.methodInfo.name;
+          
+        }
         f = t["fiber$"+n];
         
         if (! f) {
@@ -1687,6 +1691,10 @@ Tonyu.klass.define({
         
         n = a.shift();
         
+        if (n&&n.methodInfo) {
+          n=n.methodInfo.name;
+          
+        }
         f = t["fiber$"+n];
         
         if (! f) {
@@ -6738,44 +6746,27 @@ Tonyu.klass.define({
         return new Tonyu.classes.kernel.Vec3(_this.x,_this.y,_this.z);
         
       },
-      set :function _trc_Vec3_set(x,y,z) {
+      set :function _trc_Vec3_set() {
         var _this=this;
+        var p;
         
-        if (typeof  x==="object") {
-          y=x.y;
-          z=x.z;
-          x=x.x;
-          
-        }
-        if (typeof  x==="number") {
-          _this.x=x;
-        }
-        if (typeof  y==="number") {
-          _this.y=y;
-        }
-        if (typeof  z==="number") {
-          _this.z=z;
-        }
+        p = _this.parsePointArgs(arguments);
+        
+        _this.x=p.x;
+        _this.y=p.y;
+        _this.z=p.z;
         return _this;
       },
-      fiber$set :function* _trc_Vec3_f_set(_thread,x,y,z) {
+      fiber$set :function* _trc_Vec3_f_set(_thread) {
         var _this=this;
+        var _arguments=Tonyu.A(arguments);
+        var p;
         
-        if (typeof  x==="object") {
-          y=x.y;
-          z=x.z;
-          x=x.x;
-          
-        }
-        if (typeof  x==="number") {
-          _this.x=x;
-        }
-        if (typeof  y==="number") {
-          _this.y=y;
-        }
-        if (typeof  z==="number") {
-          _this.z=z;
-        }
+        p=yield* _this.fiber$parsePointArgs(_thread, _arguments);
+        
+        _this.x=p.x;
+        _this.y=p.y;
+        _this.z=p.z;
         return _this;
         
       },
@@ -7050,7 +7041,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"checkNum":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"parsePointArgs":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addX":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"addX_v":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Vec3"],"returnValue":null}},"subX":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"subX_v":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mulX":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"divX":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"sub":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"mul":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"div":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setTo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addTo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"dist":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__length":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__length":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"lerp":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"slerp":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"normalizeX":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"normalize":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"productX":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"product":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"innerProduct":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__angleXY":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__angleXY":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rotate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"rotateX":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"toString":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{},"z":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"checkNum":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"parsePointArgs":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addX":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"addX_v":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Vec3"],"returnValue":null}},"subX":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"subX_v":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mulX":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"divX":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"sub":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"mul":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"div":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setTo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addTo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"dist":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__length":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__length":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"lerp":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"slerp":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"normalizeX":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"normalize":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"productX":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"product":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"innerProduct":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__angleXY":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__angleXY":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rotate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"rotateX":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"toString":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{},"z":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Vec3View',
@@ -19649,16 +19640,16 @@ Tonyu.klass.define({
         _this.addToLayer();
         _this.initAnimMod();
       },
-      rotate :function _trc_Actor3D_rotate(axis,angle) {
+      rotate :function _trc_Actor3D_rotate(mode,angle,unit) {
         var _this=this;
         
-        _this.direction.rotate(axis,angle);
+        _this.direction.rotate(mode,angle,unit);
         return _this;
       },
-      fiber$rotate :function* _trc_Actor3D_f_rotate(_thread,axis,angle) {
+      fiber$rotate :function* _trc_Actor3D_f_rotate(_thread,mode,angle,unit) {
         var _this=this;
         
-        _this.direction.rotate(axis,angle);
+        _this.direction.rotate(mode,angle,unit);
         return _this;
         
       },
@@ -19763,7 +19754,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rotate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"__getter__defaultLayer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"dist":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"addSubsprite":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"localToWorld":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveBy":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"z":{},"direction":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rotate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"__getter__defaultLayer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"dist":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"addSubsprite":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"localToWorld":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveBy":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"z":{},"direction":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Camera3D',

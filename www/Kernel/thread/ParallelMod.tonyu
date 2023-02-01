@@ -19,6 +19,9 @@ nowait \parallel() {
     var a=new ArgParser(arguments);
     var t=a.shift();
     var n=a.shift();
+    if (n && n.methodInfo) {
+        n=n.methodInfo.name;
+    }
     var f=t["fiber$"+n];
     if (!f) {
         throw new Error("メソッド"+n+"が見つかりません");
