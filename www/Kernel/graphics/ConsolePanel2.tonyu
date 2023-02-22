@@ -18,10 +18,13 @@ var size,row,col,cx,cy,mat,font;
     super(p);
     cx=0;cy=0;
     fillStyle="white";
+    newMat();
+}
+\newMat() {
     mat=new Matrix;
     mat.on("newCell") \(e) {e.set({});};
+    
 }
-
 
 \locate(x,y) {
     cx=x;cy=y;
@@ -81,6 +84,10 @@ var size,row,col,cx,cy,mat,font;
             cy=row-1;
         }
     }   
+}
+\cls() {
+    newMat();
+    clearRect(0,0,width,height);
 }
 \poke(cx,cy,ch,fg,bg) {
     if (typeof ch==="object") {

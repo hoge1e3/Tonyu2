@@ -37193,11 +37193,26 @@ Tonyu.klass.define({
         _this.cx=0;
         _this.cy=0;
         _this.fillStyle="white";
+        _this.newMat();
+      },
+      newMat :function _trc_ConsolePanel2_newMat() {
+        var _this=this;
+        
         _this.mat=new Tonyu.classes.kernel.Matrix;
-        _this.mat.on("newCell",(function anonymous_568(e) {
+        _this.mat.on("newCell",(function anonymous_596(e) {
           
           e.set({});
         }));
+      },
+      fiber$newMat :function* _trc_ConsolePanel2_f_newMat(_thread) {
+        var _this=this;
+        
+        _this.mat=new Tonyu.classes.kernel.Matrix;
+        _this.mat.on("newCell",(function anonymous_596(e) {
+          
+          e.set({});
+        }));
+        
       },
       locate :function _trc_ConsolePanel2_locate(x,y) {
         var _this=this;
@@ -37383,6 +37398,19 @@ Tonyu.klass.define({
         }
         
       },
+      cls :function _trc_ConsolePanel2_cls() {
+        var _this=this;
+        
+        _this.newMat();
+        _this.clearRect(0,0,_this.width,_this.height);
+      },
+      fiber$cls :function* _trc_ConsolePanel2_f_cls(_thread) {
+        var _this=this;
+        
+        (yield* _this.fiber$newMat(_thread));
+        (yield* _this.fiber$clearRect(_thread, 0, 0, _this.width, _this.height));
+        
+      },
       poke :function _trc_ConsolePanel2_poke(cx,cy,ch,fg,bg) {
         var _this=this;
         var ctx;
@@ -37514,7 +37542,7 @@ Tonyu.klass.define({
         
         nm = new Tonyu.classes.kernel.Matrix;
         
-        nm.on("newCell",(function anonymous_2966(e) {
+        nm.on("newCell",(function anonymous_3056(e) {
           
           e.set({});
         }));
@@ -37574,7 +37602,7 @@ Tonyu.klass.define({
         
         nm = new Tonyu.classes.kernel.Matrix;
         
-        nm.on("newCell",(function anonymous_2966(e) {
+        nm.on("newCell",(function anonymous_3056(e) {
           
           e.set({});
         }));
@@ -37616,7 +37644,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"locate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"color":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"cprint":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"print":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"puts":{"nowait":false,"isMain":false,"vtype":{"params":["String"],"returnValue":null}},"putchar":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"poke":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"peek":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"peekAttr":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scroll":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"size":{},"row":{},"col":{},"cx":{},"cy":{},"mat":{},"font":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"newMat":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"locate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"color":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"cprint":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"print":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"puts":{"nowait":false,"isMain":false,"vtype":{"params":["String"],"returnValue":null}},"putchar":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cls":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"poke":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"peek":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"peekAttr":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scroll":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"size":{},"row":{},"col":{},"cx":{},"cy":{},"mat":{},"font":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.FadeEffect',
