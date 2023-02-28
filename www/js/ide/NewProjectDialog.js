@@ -3,6 +3,7 @@ define(["UI","R","ZipImporter"], function (UI,R,ZipImporter) {
 	res.show=function (prjDir, onOK,options) {
     	var d=res.embed(prjDir,onOK,options);
     	d.dialog({width:600});
+		res.d.$vars.name.focus();
 	};
 	res.embed=function (prjDir, onOK, options) {
         res.onOK=onOK;
@@ -41,7 +42,7 @@ define(["UI","R","ZipImporter"], function (UI,R,ZipImporter) {
 				R("ImportFromZip")]],
         			["div",{$var:"prjName"},
         			 ["span",R("newProjectName")],
-        			 ["input",{$edit:"name",value:options.defName||"",
+        			 ["input",{$var:"name",$edit:"name",value:options.defName||"",
         			     on:{enterkey:function () {
                 		     res.d.done();
 				 }}}]],
