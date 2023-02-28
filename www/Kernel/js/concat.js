@@ -17586,27 +17586,49 @@ Tonyu.klass.define({
         return _this.getCrashRect();
         
       },
-      screenOut :function _trc_QueryMod2D_screenOut(a) {
+      screenOut :function _trc_QueryMod2D_screenOut(...args) {
         var _this=this;
-        var cp;
         
-        if (! a) {
-          a=0;
+        let a = 0;
+        let sc = Tonyu.globals.$Screen;
+        
+        for (let [e] of Tonyu.iterator2(args,1)) {
+          if (typeof  e==="number") {
+            a=e;
+            
+          } else {
+            if (Tonyu.is(e,Tonyu.classes.kernel.Screen)) {
+              sc=e;
+              
+            }
+          }
+          
         }
-        cp = Tonyu.globals.$Screen.convert(_this,Tonyu.globals.$Screen);
+        let cp = sc.convert(_this,sc);
         
-        return _this.abs(_this.clamped(cp.x,- a,Tonyu.globals.$screenWidth+a))+_this.abs(_this.clamped(cp.y,- a,Tonyu.globals.$screenHeight+a));
+        return _this.abs(_this.clamped(cp.x,- a,sc.width+a))+_this.abs(_this.clamped(cp.y,- a,sc.height+a));
       },
-      fiber$screenOut :function* _trc_QueryMod2D_f_screenOut(_thread,a) {
+      fiber$screenOut :function* _trc_QueryMod2D_f_screenOut(_thread,...args) {
         var _this=this;
-        var cp;
         
-        if (! a) {
-          a=0;
+        let a = 0;
+        let sc = Tonyu.globals.$Screen;
+        
+        for (let [e] of Tonyu.iterator2(args,1)) {
+          if (typeof  e==="number") {
+            a=e;
+            
+          } else {
+            if (Tonyu.is(e,Tonyu.classes.kernel.Screen)) {
+              sc=e;
+              
+            }
+          }
+          
         }
-        cp = Tonyu.globals.$Screen.convert(_this,Tonyu.globals.$Screen);
+        let cp = sc.convert(_this,sc);
         
-        return _this.abs(_this.clamped(cp.x,- a,Tonyu.globals.$screenWidth+a))+_this.abs(_this.clamped(cp.y,- a,Tonyu.globals.$screenHeight+a));
+        return _this.abs(_this.clamped(cp.x,- a,sc.width+a))+_this.abs(_this.clamped(cp.y,- a,sc.height+a));
         
       },
       __dummy: false
@@ -37174,12 +37196,13 @@ Tonyu.klass.define({
         var _this=this;
         
         p=p||{};
-        p.size=p.size||16;
+        p.size=p.size||p.hsize*2||16;
+        p.hsize=_this.floor(p.size/2);
         p.width=p.width||Tonyu.globals.$screenWidth;
         p.height=p.height||Tonyu.globals.$screenHeight;
         p.row=p.row||_this.floor(p.height/p.size);
-        p.col=p.col||_this.floor(p.width/(p.size/2));
-        p.width=p.col*(p.size/2);
+        p.col=p.col||_this.floor(p.width/p.hsize);
+        p.width=p.col*p.hsize;
         p.height=p.row*p.size;
         p.fg=p.fg||"white";
         p.bg=p.bg||"rgba(0,0,0,0)";
@@ -37199,7 +37222,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.mat=new Tonyu.classes.kernel.Matrix;
-        _this.mat.on("newCell",(function anonymous_596(e) {
+        _this.mat.on("newCell",(function anonymous_636(e) {
           
           e.set({});
         }));
@@ -37208,7 +37231,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.mat=new Tonyu.classes.kernel.Matrix;
-        _this.mat.on("newCell",(function anonymous_596(e) {
+        _this.mat.on("newCell",(function anonymous_636(e) {
           
           e.set({});
         }));
@@ -37414,7 +37437,6 @@ Tonyu.klass.define({
       poke :function _trc_ConsolePanel2_poke(cx,cy,ch,fg,bg) {
         var _this=this;
         var ctx;
-        var hp;
         var w;
         var d;
         
@@ -37432,18 +37454,16 @@ Tonyu.klass.define({
         bg=bg||_this.bg;
         ctx = _this.context;
         
-        hp = _this.size/2;
-        
-        w = (ch>=256?_this.size:_this.size/2);
+        w = (ch>=256?_this.size:_this.hsize);
         
         ctx.save();
         ctx.textBaseline="top";
         ctx.font=_this.size+"px Monospace";
-        ctx.clearRect(cx*hp,cy*_this.size,w,_this.size);
+        ctx.clearRect(cx*_this.hsize,cy*_this.size,w,_this.size);
         ctx.fillStyle=bg;
-        ctx.fillRect(cx*hp,cy*_this.size,w,_this.size);
+        ctx.fillRect(cx*_this.hsize,cy*_this.size,w,_this.size);
         ctx.fillStyle=fg;
-        ctx.fillText(String.fromCharCode(ch),cx*hp,cy*_this.size);
+        ctx.fillText(String.fromCharCode(ch),cx*_this.hsize,cy*_this.size);
         d = _this.mat.get(cx,cy);
         
         d.text=ch;
@@ -37457,7 +37477,6 @@ Tonyu.klass.define({
       fiber$poke :function* _trc_ConsolePanel2_f_poke(_thread,cx,cy,ch,fg,bg) {
         var _this=this;
         var ctx;
-        var hp;
         var w;
         var d;
         
@@ -37475,18 +37494,16 @@ Tonyu.klass.define({
         bg=bg||_this.bg;
         ctx = _this.context;
         
-        hp = _this.size/2;
-        
-        w = (ch>=256?_this.size:_this.size/2);
+        w = (ch>=256?_this.size:_this.hsize);
         
         ctx.save();
         ctx.textBaseline="top";
         ctx.font=_this.size+"px Monospace";
-        ctx.clearRect(cx*hp,cy*_this.size,w,_this.size);
+        ctx.clearRect(cx*_this.hsize,cy*_this.size,w,_this.size);
         ctx.fillStyle=bg;
-        ctx.fillRect(cx*hp,cy*_this.size,w,_this.size);
+        ctx.fillRect(cx*_this.hsize,cy*_this.size,w,_this.size);
         ctx.fillStyle=fg;
-        ctx.fillText(String.fromCharCode(ch),cx*hp,cy*_this.size);
+        ctx.fillText(String.fromCharCode(ch),cx*_this.hsize,cy*_this.size);
         d = _this.mat.get(cx,cy);
         
         d.text=ch;
@@ -37520,6 +37537,43 @@ Tonyu.klass.define({
         return _this.mat.get(cx,cy);
         
       },
+      localToGrid :function _trc_ConsolePanel2_localToGrid(x,y) {
+        var _this=this;
+        
+        if (typeof  x==="object") {
+          y=x.y;
+          x=x.x;
+          
+        }
+        if (typeof  x!=="number") {
+          throw new Error(['x is ',x].join(''));
+          
+        }
+        if (typeof  y!=="number") {
+          throw new Error(['y is ',y].join(''));
+          
+        }
+        return {x: _this.floor(x/_this.hsize),y: _this.floor(y/_this.size)};
+      },
+      fiber$localToGrid :function* _trc_ConsolePanel2_f_localToGrid(_thread,x,y) {
+        var _this=this;
+        
+        if (typeof  x==="object") {
+          y=x.y;
+          x=x.x;
+          
+        }
+        if (typeof  x!=="number") {
+          throw new Error(['x is ',x].join(''));
+          
+        }
+        if (typeof  y!=="number") {
+          throw new Error(['y is ',y].join(''));
+          
+        }
+        return {x: _this.floor(x/_this.hsize),y: _this.floor(y/_this.size)};
+        
+      },
       scroll :function _trc_ConsolePanel2_scroll(dx,dy) {
         var _this=this;
         var range;
@@ -37529,7 +37583,6 @@ Tonyu.klass.define({
         var c;
         var dsx;
         var dsy;
-        var hs;
         var cp;
         
         if (dx==null) {
@@ -37542,7 +37595,7 @@ Tonyu.klass.define({
         
         nm = new Tonyu.classes.kernel.Matrix;
         
-        nm.on("newCell",(function anonymous_3056(e) {
+        nm.on("newCell",(function anonymous_3386(e) {
           
           e.set({});
         }));
@@ -37556,12 +37609,10 @@ Tonyu.klass.define({
           }
           
         }
-        hs = _this.size/2;
-        
         _this.mat=nm;
         _this.context.save();
         _this.context.globalCompositeOperation="copy";
-        cp = {src: {x: range.left*hs,y: range.top*_this.size},dst: {x: range.left*hs,y: range.top*_this.size},sz: {w: range.col*hs,h: range.row*_this.size}};
+        cp = {src: {x: range.left*_this.hsize,y: range.top*_this.size},dst: {x: range.left*_this.hsize,y: range.top*_this.size},sz: {w: range.col*_this.hsize,h: range.row*_this.size}};
         
         if (dy<0) {
           cp.src.y-=dy*_this.size;
@@ -37570,12 +37621,12 @@ Tonyu.klass.define({
           cp.dst.y+=dy*_this.size;
         }
         if (dx<0) {
-          cp.src.x-=dx*hs;
+          cp.src.x-=dx*_this.hsize;
         }
         if (dx>0) {
-          cp.dst.x+=dx*hs;
+          cp.dst.x+=dx*_this.hsize;
         }
-        cp.sz.w-=_this.abs(dx*hs);
+        cp.sz.w-=_this.abs(dx*_this.hsize);
         cp.sz.h-=_this.abs(dy*_this.size);
         _this.context.drawImage(_this.image,cp.src.x,cp.src.y,cp.sz.w,cp.sz.h,cp.dst.x,cp.dst.y,cp.sz.w,cp.sz.h);
         _this.context.restore();
@@ -37589,7 +37640,6 @@ Tonyu.klass.define({
         var c;
         var dsx;
         var dsy;
-        var hs;
         var cp;
         
         if (dx==null) {
@@ -37602,7 +37652,7 @@ Tonyu.klass.define({
         
         nm = new Tonyu.classes.kernel.Matrix;
         
-        nm.on("newCell",(function anonymous_3056(e) {
+        nm.on("newCell",(function anonymous_3386(e) {
           
           e.set({});
         }));
@@ -37616,12 +37666,10 @@ Tonyu.klass.define({
           }
           
         }
-        hs = _this.size/2;
-        
         _this.mat=nm;
         _this.context.save();
         _this.context.globalCompositeOperation="copy";
-        cp = {src: {x: range.left*hs,y: range.top*_this.size},dst: {x: range.left*hs,y: range.top*_this.size},sz: {w: range.col*hs,h: range.row*_this.size}};
+        cp = {src: {x: range.left*_this.hsize,y: range.top*_this.size},dst: {x: range.left*_this.hsize,y: range.top*_this.size},sz: {w: range.col*_this.hsize,h: range.row*_this.size}};
         
         if (dy<0) {
           cp.src.y-=dy*_this.size;
@@ -37630,12 +37678,12 @@ Tonyu.klass.define({
           cp.dst.y+=dy*_this.size;
         }
         if (dx<0) {
-          cp.src.x-=dx*hs;
+          cp.src.x-=dx*_this.hsize;
         }
         if (dx>0) {
-          cp.dst.x+=dx*hs;
+          cp.dst.x+=dx*_this.hsize;
         }
-        cp.sz.w-=_this.abs(dx*hs);
+        cp.sz.w-=_this.abs(dx*_this.hsize);
         cp.sz.h-=_this.abs(dy*_this.size);
         _this.context.drawImage(_this.image,cp.src.x,cp.src.y,cp.sz.w,cp.sz.h,cp.dst.x,cp.dst.y,cp.sz.w,cp.sz.h);
         _this.context.restore();
@@ -37644,7 +37692,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"newMat":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"locate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"color":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"cprint":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"print":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"puts":{"nowait":false,"isMain":false,"vtype":{"params":["String"],"returnValue":null}},"putchar":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cls":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"poke":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"peek":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"peekAttr":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scroll":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"size":{},"row":{},"col":{},"cx":{},"cy":{},"mat":{},"font":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"newMat":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"locate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"color":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"cprint":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"print":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"puts":{"nowait":false,"isMain":false,"vtype":{"params":["String"],"returnValue":null}},"putchar":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cls":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"poke":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"peek":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"peekAttr":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"localToGrid":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scroll":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"size":{},"hsize":{},"row":{},"col":{},"cx":{},"cy":{},"mat":{},"font":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.FadeEffect',

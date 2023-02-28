@@ -48,9 +48,16 @@ nowait \getCrashRect() {//2D
 \getTouchRect(scale){
     return getCrashRect();
 }
-\screenOut(a) {//2D
-    if (!a) a=0;
-    var cp=$Screen.convert(this,$Screen);
-    return abs(clamped(cp.x,-a,$screenWidth+a))+
-    abs(clamped(cp.y,-a,$screenHeight+a));
+\screenOut(...args) {//2D
+    let a=0,sc=$Screen;
+    for (let e of args) {
+        if (typeof e==="number") {
+            a=e;
+        } else if (e is Screen) {
+            sc=e;
+        }
+    }
+    let cp=sc.convert(this,sc);
+    return abs(clamped(cp.x,-a,sc.width+a))+
+    abs(clamped(cp.y,-a, sc.height+a));
 }
