@@ -1,15 +1,16 @@
 extends Panel;
 native console;
 "field strict";
-var size,row,col,cx,cy,mat,font;
+let size,hsize,row,col,cx,cy,mat,font;
 \new(p) {
     p=p||{};
-    p.size=p.size||16;
+    p.size=p.size||p.hsize*2||16;
+    p.hsize=floor(p.size/2);
     p.width=p.width||$screenWidth;
     p.height=p.height||$screenHeight;
     p.row=p.row||floor(p.height/p.size);
-    p.col=p.col||floor(p.width/(p.size/2));
-    p.width=p.col*(p.size/2);
+    p.col=p.col||floor(p.width/p.hsize);
+    p.width=p.col*p.hsize;
     p.height=p.row*p.size;
     p.fg=p.fg||"white";
     p.bg=p.bg||"rgba(0,0,0,0)";
@@ -103,17 +104,17 @@ var size,row,col,cx,cy,mat,font;
     //if (peek(cx,cy)===ch) return;
     var ctx=context;
     //var size=p.size;
-    var hp=size/2;
-    var w=(ch>=256 ? size : size/2); 
+    //var hp=size/2;
+    var w=(ch>=256 ? size : hsize); 
     ctx.save();
     ctx.textBaseline="top";
     ctx.font=size+"px Monospace";
-    ctx.clearRect(cx*hp,cy*size,w,size);
+    ctx.clearRect(cx*hsize,cy*size,w,size);
     ctx.fillStyle=bg;
-    ctx.fillRect(cx*hp,cy*size,w,size);
+    ctx.fillRect(cx*hsize,cy*size,w,size);
     //var pImg=$imageList[ch+font];
     ctx.fillStyle=fg;
-    ctx.fillText(String.fromCharCode(ch),cx*hp,cy*size);
+    ctx.fillText(String.fromCharCode(ch),cx*hsize,cy*size);
     var d=mat.get(cx,cy);
     d.text=ch;
     d.fg=fg;
@@ -132,6 +133,18 @@ var size,row,col,cx,cy,mat,font;
 \peekAttr(cx,cy) {
     return mat.get(cx,cy);
 }
+\localToGrid(x,y) {
+    if (typeof x==="object") {
+        y=x.y;
+        x=x.x;
+    }
+    if (typeof x!=="number") throw new Error(`x is ${x}`); 
+    if (typeof y!=="number") throw new Error(`y is ${y}`); 
+    return {
+        x=floor(x/hsize),
+        y=floor(y/size),
+    };
+}
 \scroll(dx,dy) {
     if (dx==null) dx=0;
     if (dy==null) dy=-1;
@@ -143,21 +156,21 @@ var size,row,col,cx,cy,mat,font;
         var dsy=y+dy;
         if (dsy>=0 && dsy<row && dsx>=0 && dsx<col) nm.set(dsx,dsy,c);
     }
-    var hs=size/2;
+    //var hs=size/2;
     mat=nm;
     context.save();
     context.globalCompositeOperation="copy";
     var cp={
         //src:{x:-dx*hs, y:-dy*size}, 
-        src:{x:range.left*hs,y:range.top*size}, 
-        dst:{x:range.left*hs,y:range.top*size}, 
-        sz:{w:range.col*hs, h:range.row*size}
+        src:{x:range.left*hsize,y:range.top*size}, 
+        dst:{x:range.left*hsize,y:range.top*size}, 
+        sz:{w:range.col*hsize, h:range.row*size}
     };
     if (dy<0) cp.src.y-=dy*size;
     if (dy>0) cp.dst.y+=dy*size;
-    if (dx<0) cp.src.x-=dx*hs;
-    if (dx>0) cp.dst.x+=dx*hs;
-    cp.sz.w-=abs(dx*hs);
+    if (dx<0) cp.src.x-=dx*hsize;
+    if (dx>0) cp.dst.x+=dx*hsize;
+    cp.sz.w-=abs(dx*hsize);
     cp.sz.h-=abs(dy*size);
     
     context.drawImage(image,
