@@ -90,6 +90,10 @@ extends Panel;
     if (typeof scl=="number") layers[index].scale=scl;
     if (typeof rot=="number") layers[index].rotation=rot;
 }
+\scrollBy(dx,dy){
+    layers[index].wpx+=dx;
+    layers[index].wpy+=dy;
+}
 \canvas2buf(p) {
     p.layer=layer;
     return convert(p, this);

@@ -1,5 +1,5 @@
 if(!Tonyu.load)Tonyu.load=(_,f)=>f();
-Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
+Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true,"dependingProjects":[]},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
 Tonyu.klass.define({
   fullName: 'kernel.EventHandlerCaller',
   shortName: 'EventHandlerCaller',
@@ -23944,6 +23944,19 @@ Tonyu.klass.define({
         }
         
       },
+      scrollBy :function _trc_Screen_scrollBy(dx,dy) {
+        var _this=this;
+        
+        _this.layers[_this.index].wpx+=dx;
+        _this.layers[_this.index].wpy+=dy;
+      },
+      fiber$scrollBy :function* _trc_Screen_f_scrollBy(_thread,dx,dy) {
+        var _this=this;
+        
+        _this.layers[_this.index].wpx+=dx;
+        _this.layers[_this.index].wpy+=dy;
+        
+      },
       canvas2buf :function _trc_Screen_canvas2buf(p) {
         var _this=this;
         
@@ -24225,7 +24238,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"drawLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"removeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"selectLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayerIndex":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"canvas2buf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"setBGColor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"all":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":["Array"],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"touchedFingers":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.TQuery",null],"returnValue":null}}},"fields":{"layers":{},"_color":{},"camera":{},"_drawing":{},"clearBG":{},"index":{},"multiLayerTouches":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"drawLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"removeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"selectLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayerIndex":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"scrollBy":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"canvas2buf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"setBGColor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"all":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":["Array"],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"touchedFingers":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.TQuery",null],"returnValue":null}}},"fields":{"layers":{},"_color":{},"camera":{},"_drawing":{},"clearBG":{},"index":{},"multiLayerTouches":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.TD_Z',
