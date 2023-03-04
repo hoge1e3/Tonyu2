@@ -16,7 +16,7 @@ native Tonyu;
 }
 \text {
     if (typeof template!=="string") return _text;
-    return template.replace(/[\$\@][A-Za-z0-9\.]* ?/g) \(v) {
+    return template.replace(/[\$\@][A-Za-z0-9_\.]* ?/g) \(v) {
         v=v.replace(/ $/,"");
         if (v=="") return "$";
         if (v.match(/^@/)) {
