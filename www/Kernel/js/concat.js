@@ -1,5 +1,5 @@
 if(!Tonyu.load)Tonyu.load=(_,f)=>f();
-Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true,"dependingProjects":[]},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
+Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
 Tonyu.klass.define({
   fullName: 'kernel.EventHandlerCaller',
   shortName: 'EventHandlerCaller',
@@ -29237,7 +29237,7 @@ Tonyu.klass.define({
         if (typeof  _this.template!=="string") {
           return _this._text;
         }
-        return _this.template.replace(/[\$\@][A-Za-z0-9\.]* ?/g,(function anonymous_439(v) {
+        return _this.template.replace(/[\$\@][A-Za-z0-9_\.]* ?/g,(function anonymous_440(v) {
           
           v=v.replace(/ $/,"");
           if (v=="") {
