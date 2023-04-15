@@ -3,12 +3,13 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<h1 id="-">ランキング</h1>
-<p><a href="file">file</a>メソッドを使うと，ファイル読み書きができます．これを用いて<br>ゲームのスコアランキングを作成することができます．</p>
+<h1 id="ランキング">ランキング</h1>
+<p><a href="file">file</a>メソッドを使うと，ファイル読み書きができます．これを用いて
+ゲームのスコアランキングを作成することができます．</p>
 <p>Main</p>
-<pre><code class="lang-JS">//ランキングファイルのオブジェクトを作成
-rankFile=file(&quot;rank.txt&quot;);
-//rank.txtが存在していれば
+<pre><code class="language-JS">//ランキングファイルのオブジェクトを作成
+rankFile=file(&quot;rank.json&quot;);
+//rank.jsonが存在していれば
 if (rankFile.exists()) {
     $ranking=rankFile.obj();//$rankingに読み込む
 } else {
@@ -27,12 +28,12 @@ while(true) {
     }
     update();
 }
-lb.text=&quot;Game Over. R:Replay&quot;;
+lb.text=&quot;Game Over. R:Replay  C:Clear Ranking&quot;;
 //----最下位のスコアより高い点数ならランクイン
 if ($score&gt;$ranking[$ranking.length-1]) {
     $ranking[$ranking.length-1]=$score;//最下位を今のスコアで上書き．
     $ranking=$ranking.sort(\(a,b) {return b-a;});//降順並び替え
-    rankFile.obj($ranking);//rank.txtに保存
+    rankFile.obj($ranking);//rank.txtに$rankingの内容をjsonで保存
 }
 //----ランキング表示
 print (&quot;Ranking:&quot;);
@@ -41,6 +42,10 @@ for (r of $ranking) {
 }
 while(true) {
     if (getkey(&quot;r&quot;)==1) {
+        loadPage(Main);
+    }
+    if (getkey(&quot;c&quot;)==1) {
+        rankFile.rm();//ランキングファイルの消去
         loadPage(Main);
     }
     update();

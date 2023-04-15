@@ -14,13 +14,27 @@ FSオブジェクトは，<a href="fs">ファイルシステム</a>へのアク�
 </code></pre>
 <ul>
 <li><em>path</em>に，次のディレクトリからの相対パスを指定します．<ul>
-<li>現在のプロジェクトディレクトリ/files</li>
+<li><code>現在のプロジェクトディレクトリ/files/</code></li>
 </ul>
 </li>
 <li>ディレクトリを指定する場合，pathの末尾に必ず / をつけて下さい</li>
 <li>fileメソッドによって取得されたFSオブジェクトがアクセス可能な範囲は，このプロジェクトディレクトリとそのサブディレクトリ内のファイル・ディレクトリのみです．</li>
 <li>pathがすでにfileオブジェクトの場合，pathをそのまま返します．</li>
 </ul>
+<h2 id="ランタイムにファイルを含める方法">ランタイムにファイルを含める方法</h2>
+<ul>
+<li><code>files/</code>フォルダの内容はランタイム配布時には含まれません（<code>files/</code>フォルダはユーザごとのセーブデータという位置づけなので）</li>
+<li>ファイルをランタイムとして配布したい場合，<code>static/</code>というフォルダにファイルを含めてください．<ul>
+<li>ダウンロード版では，メニューの「ウィンドウ」→「フォルダを開く」で，プロジェクトのフォルダに<code>static/</code>フォルダを作成することができます．プログラムからは<code>file(&quot;../static/data.txt&quot;)</code>のようにアクセスします。</li>
+<li>上記の操作をしなくても，<code>file(&quot;../static/data.txt&quot;).text(&quot;test&quot;)</code>のように保存操作を行えば，<code>static/</code>フォルダは自動作成されます．</li>
+<li>ブラウザ版では，フォルダは直接作成できないので、上記のように<code>static/</code>フォルダを作成してください．</li>
+<li>ブラウザ版ですでに<code>files/</code>フォルダに作ってしまったファイルを移動させたい場合は，次のような命令を一度だけ実行する必要があります<pre><code>file(&quot;data.txt&quot;).moveTo(file(&quot;../static/&quot;));
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="メソッド">メソッド</h2>
 <p>FSオブジェクトには，次のメソッドが提供されます</p>
 <ul>
 <li><a href="FS.text">text</a></li>

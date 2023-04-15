@@ -4,33 +4,33 @@
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
 <p><a href="api">api</a></p>
-<h1 id="color-">Colorクラス</h1>
+<h1 id="colorクラス">Colorクラス</h1>
 <p>色情報を扱うクラスです．RGB値（赤・緑・青の輝度）←→HSL値(色相・彩度・明度）への変換をサポートします．</p>
 <p><a href="https://github.com/hoge1e3/Tonyu2/blob/master/www/Kernel/graphics/Color.tonyu">ソースコード</a></p>
-<h2 id="-">コンストラクタ</h2>
-<pre><code class="lang-JS">new Color(r,g,b,a)
-</code></pre>
+<h2 id="コンストラクタ">コンストラクタ</h2>
 <ul>
-<li>RGB値と a(透明度) を渡して初期化します．</li>
-</ul>
-<pre><code class="lang-JS">new Color(name)
+<li><p>RGB値と a(透明度) を渡して初期化します:</p>
+<pre><code class="language-JS">new Color(r,g,b,a)
 </code></pre>
-<ul>
-<li>HTMLの色名を表す文字列を渡して初期化します．</li>
-</ul>
-<pre><code class="lang-JS">new Color(param)
+</li>
+<li><p>HTMLの色名を表す文字列を渡して初期化します:</p>
+<pre><code class="language-JS">new Color(name)
 </code></pre>
-<ul>
-<li>h, s, l を属性としてもつオブジェクト<em>param</em>を渡して，初期化します．</li>
-<li>a を渡すことも可能です．</li>
-</ul>
-<pre><code class="lang-JS">new Color(imageData, x, y);
+</li>
+<li><p>h(色相), s(彩度), l(明度), a(透明度) を属性としてもつオブジェクト<em>param</em>を渡して，初期化します(aは省略可能):</p>
+<pre><code class="language-JS">new Color(param)
 </code></pre>
+</li>
+<li><p><a href="Panel">panel.getImageData</a> で得られたイメージデータの点 (x,y)における色情報を用いて初期化します:</p>
 <ul>
-<li><a href="Panel">panel.getImageData</a> で得られたイメージデータの点 (x,y)における色情報を用いて初期化します</li>
-<li>このオブジェクトに対して変更を行うと，<em>imageData</em> に反映されます(<a href="Panel">panel.putImageData</a> を行うまではパネル自身へは反映されません）</li>
+<li>このオブジェクトに対して変更を行うと，<em>imageData</em> に反映されます</li>
+<li>imageDataをパネルに反映させるには，<a href="Panel">panel.putImageData</a> を行ってください．<pre><code class="language-JS">new Color(imageData, x, y);
+</code></pre>
+</li>
 </ul>
-<h2 id="-">値の範囲</h2>
+</li>
+</ul>
+<h2 id="値の範囲">値の範囲</h2>
 <ul>
 <li><code>r</code>,<code>g</code>,<code>b</code> それぞれ0から255まで</li>
 <li><code>a</code> 0から255まで</li>
@@ -42,7 +42,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="-">プロパティ</h2>
+<h2 id="プロパティ">プロパティ</h2>
 <ul>
 <li><code>r</code>, <code>g</code>, <code>b</code><ul>
 <li>読み出し：それぞれRGBの値を読み出します<ul>
@@ -70,7 +70,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="-">メソッド</h2>
+<h2 id="メソッド">メソッド</h2>
 <ul>
 <li>setRGBA(r,g,b,a)<ul>
 <li>RGB値と透明度を書き込みます</li>
@@ -101,5 +101,6 @@
 <li><a href="setFillStyle">setFillStyleメソッド</a></li>
 <li><a href="BaseActor">BaseActor</a></li>
 <li><a href="Button">Buttonクラス</a></li>
+<li><a href="color_method">colorメソッド</a></li>
 </ul>
 </body></html>

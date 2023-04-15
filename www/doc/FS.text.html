@@ -3,24 +3,30 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="file">file</a></p>
-<h1 id="fs-text-">FS.text メソッド</h1>
+<h1 id="fstext-メソッド">FS.text メソッド</h1>
 <p>ファイルに対して，文字列データを読み書きします．</p>
-<h2 id="-">読み出し</h2>
-<pre><code class="lang-JS">fs.text()
+<h2 id="読み出し">読み出し</h2>
+<pre><code class="language-JS">fs.text()
 </code></pre>
 <p><em>fs</em> があらわすファイルの内容を文字列で返します．</p>
 <ul>
 <li>ファイルが存在しない場合，<a href="exception">例外</a>が発生します．</li>
 </ul>
-<h2 id="-">書き込み</h2>
-<pre><code class="lang-JS">fs.text(t)
+<h2 id="書き込み">書き込み</h2>
+<pre><code class="language-JS">fs.text(t)
 </code></pre>
 <p><em>fs</em> があらわすファイルに文字列<em>t</em> を書き込みます．</p>
 <ul>
 <li>ファイルが存在しない場合，ファイルが自動的に新規作成されます．</li>
 <li>ファイルが存在する場合，これまでのファイルの内容は削除され，新しく文字列が上書きされます．</li>
 </ul>
+<h2 id="例">例</h2>
+<pre><code>fs=file(&quot;test.txt&quot;);
+fs.text(&quot;Hello!!&quot;);//test.txtに保存
+content=fs.text();//test.txtから読み出し
+print(content);
+</code></pre>
 </body></html>
