@@ -1,0 +1,52 @@
+extends TObject;
+native console;
+native Set;
+let parent:LayerPath;
+let target;// Screen | ScreenLayer | Panel
+// if target is a Panel, no children allowed
+
+\convert(obj, to:LayerPath) {
+    let a=commonAncestor(to);
+    let up=pathTo(a);// [this....a]
+    let down=to.pathTo(a).reverse();//[a...to]
+    let res=obj;
+    for (let i=0; i<up.length-1;i++) {
+        res=up[i].convert(res, up[i], up[i+1]);
+    }
+    for (let i=0; i<down.length-1;i++) {
+        res=down[i].convert(res, down[i], down[i+1]);
+    }
+    return res;
+}
+\pathTo(a) {//Target
+    let res=[];
+    for (let p=this; p ;p=p.parent) {
+        res.push(p.target);
+        if (p.target===a) return res;
+    }
+    return res;
+}
+\commonAncestor(to:LayerPath)/*Target*/ {
+    let s=new Set;
+    for (let p=this; p;p=p.parent) {
+        s.add(p.target);
+    }
+    for (let p=to; p;p=p.parent) {
+        if (s.has(p.target)) return p.target;   
+    }
+    throw new Error("No common Ancestor");
+}
+\add(target):LayerPath {
+    if (target is Sprites) {
+        if (this.target is Screen) {
+            target=this.target.findLayer(target);
+        }
+    }
+    if (target is Screen || 
+    target is ScreenLayer ||
+    target is Panel) {
+        return new LayerPath{parent:this, target};
+    }
+    console.log("Invalid target ", target);
+    throw new Error("Invalid target "+target);
+}

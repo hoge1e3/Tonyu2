@@ -44,6 +44,9 @@ extends Panel;
             group,screen:this,index:layers.length
         };
     }
+    if (!group.defaultLayerPath && defaultLayerPath) {
+        group.defaultLayerPath=defaultLayerPath.add(layer);
+    }
     if (at==null) layers.push(layer);
     else {
         if (at<0) at=layers.length-at;
@@ -105,28 +108,32 @@ extends Panel;
     }
 }*/
 
-\convert(obj, toLayer) {// toLayer: Sprites
+\convert(obj, fromLayer:Sprites, toLayer:Sprites) {
+    if (toLayer==null) {
+        toLayer=fromLayer;
+        fromLayer=obj.layer;
+    }
     if (toLayer==null) toLayer=this;
-    if (!obj.layer) obj.layer=this; //throw new Error("layer not set");
-    if (obj.layer===toLayer) return obj;
-    if (obj.layer!==this && toLayer!==this) {
-        var p=convert(obj,this);
-        return convert(p,toLayer);
-    } else if (obj.layer!==this && toLayer===this) {
-        var l=findLayer(obj.layer);
+    if (fromLayer==null) fromLayer=this; //throw new Error("layer not set");
+    if (fromLayer===toLayer) return obj;
+    if (fromLayer!==this && toLayer!==this) {
+        var p=convert(obj, fromLayer, this);
+        return convert(p, this, toLayer);
+    } else if (fromLayer!==this && toLayer===this) {
+        var l=findLayer(fromLayer);
         if (l!=null) {
             return l.world2screen(obj);
         } else {
-            // fail unless obj.layer===layer(parent of this)
-            return super.convert(obj,this);
+            // fail unless fromLayer===layer(parent of this)
+            return super.convert(obj, fromLayer, this);
         }
-    } else if (obj.layer===this && toLayer!==this) {
+    } else if (fromLayer===this && toLayer!==this) {
         var l=findLayer(toLayer);
         if (l!=null) {
             return l.screen2world(obj);
         } else {
-            // fail unless toLayer===layer(parent of this)
-            return super.convert(obj,toLayer);
+            // fail unless toLayer===layer   r(parent of this)
+            return super.convert(obj, fromLayer, toLayer);
         }
     } else return obj;
 }

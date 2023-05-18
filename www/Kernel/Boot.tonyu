@@ -189,17 +189,24 @@ mainLoop();
 \initLayers() {
     $screenWidth=465;
     $screenHeight=465;
+    cvj=$mainCanvas||$("canvas");
+    $rootLayer=new Sprites();
     $mainLayer=$Sprites=new Sprites();
     $frontLayer=$FrontSprites=new Sprites();
     $backLayer=new Sprites();
     $uiLayer=new Sprites();
+
+    $uiScreen=new Screen{canvas:cvj[0],layer:$rootLayer};
+    $uiScreen.defaultLayerPath=new LayerPath{target:$uiScreen};
+    $uiScreen.setBGColor("#888");
+    $uiScreen.addLayer($uiLayer);
+
     $sprites3D=new Sprites3D;
     $camera3D=new Camera3D{layer:$sprites3D,x:0,y:0,z:-100};
     $mainLayer3D=new Layer3D{
         group:$sprites3D,
         camera:$camera3D,
     };
-    cvj=$mainCanvas||$("canvas");
     $Screen=new Screen{width:$screenWidth, height:$screenHeight, layer:$uiLayer};
     $Screen.on("resize") \{
         $screenWidth=$Screen.width;
@@ -222,10 +229,6 @@ mainLoop();
     $Screen.addLayer($backLayer);
     $Screen.setBGColor("rgb(20,80,180)");
     $Screen.selectLayer($mainLayer);
-    $rootLayer=new Sprites();
-    $uiScreen=new Screen{canvas:cvj[0],layer:$rootLayer};
-    $uiScreen.setBGColor("#888");
-    $uiScreen.addLayer($uiLayer);
     $layoutManager=new UILayout{layer:$uiLayer};
     //drawFrame();
 }

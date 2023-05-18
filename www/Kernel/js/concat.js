@@ -8794,6 +8794,198 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"start":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"addFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"finish":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"download":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"save":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"target":{},"fps":{},"interval":{},"duration":{},"manual":{},"delay":{},"e":{},"frames":{},"encoded":{},"evt":{},"length":{},"after":{},"filename":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.LayerPath',
+  shortName: 'LayerPath',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.TObject,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_LayerPath_main() {
+        var _this=this;
+        
+        
+        
+      },
+      fiber$main :function* _trc_LayerPath_f_main(_thread) {
+        var _this=this;
+        
+        
+        
+        
+      },
+      convert :function _trc_LayerPath_convert(obj,to) {
+        var _this=this;
+        
+        let a = _this.commonAncestor(to);
+        
+        let up = _this.pathTo(a);
+        
+        let down = to.pathTo(a).reverse();
+        
+        let res = obj;
+        
+        for (let i = 0;
+         i<up.length-1 ; i++) {
+          {
+            res=up[i].convert(res,up[i],up[i+1]);
+          }
+        }
+        for (let i = 0;
+         i<down.length-1 ; i++) {
+          {
+            res=down[i].convert(res,down[i],down[i+1]);
+          }
+        }
+        return res;
+      },
+      fiber$convert :function* _trc_LayerPath_f_convert(_thread,obj,to) {
+        var _this=this;
+        
+        let a=yield* _this.fiber$commonAncestor(_thread, to);
+        
+        let up=yield* _this.fiber$pathTo(_thread, a);
+        
+        let down = to.pathTo(a).reverse();
+        
+        let res = obj;
+        
+        for (let i = 0;
+         i<up.length-1 ; i++) {
+          {
+            res=up[i].convert(res,up[i],up[i+1]);
+          }
+        }
+        for (let i = 0;
+         i<down.length-1 ; i++) {
+          {
+            res=down[i].convert(res,down[i],down[i+1]);
+          }
+        }
+        return res;
+        
+      },
+      pathTo :function _trc_LayerPath_pathTo(a) {
+        var _this=this;
+        
+        let res = [];
+        
+        for (let p = _this;
+         p ; p=p.parent) {
+          {
+            res.push(p.target);
+            if (p.target===a) {
+              return res;
+            }
+          }
+        }
+        return res;
+      },
+      fiber$pathTo :function* _trc_LayerPath_f_pathTo(_thread,a) {
+        var _this=this;
+        
+        let res = [];
+        
+        for (let p = _this;
+         p ; p=p.parent) {
+          {
+            res.push(p.target);
+            if (p.target===a) {
+              return res;
+            }
+          }
+        }
+        return res;
+        
+      },
+      commonAncestor :function _trc_LayerPath_commonAncestor(to) {
+        var _this=this;
+        
+        let s = new Set;
+        
+        for (let p = _this;
+         p ; p=p.parent) {
+          {
+            s.add(p.target);
+          }
+        }
+        for (let p = to;
+         p ; p=p.parent) {
+          {
+            if (s.has(p.target)) {
+              return p.target;
+            }
+          }
+        }
+        throw new Error("No common Ancestor");
+        
+      },
+      fiber$commonAncestor :function* _trc_LayerPath_f_commonAncestor(_thread,to) {
+        var _this=this;
+        
+        let s = new Set;
+        
+        for (let p = _this;
+         p ; p=p.parent) {
+          {
+            s.add(p.target);
+          }
+        }
+        for (let p = to;
+         p ; p=p.parent) {
+          {
+            if (s.has(p.target)) {
+              return p.target;
+            }
+          }
+        }
+        throw new Error("No common Ancestor");
+        
+        
+      },
+      add :function _trc_LayerPath_add(target) {
+        var _this=this;
+        
+        if (Tonyu.is(target,Tonyu.classes.kernel.Sprites)) {
+          if (Tonyu.is(_this.target,Tonyu.classes.kernel.Screen)) {
+            target=_this.target.findLayer(target);
+            
+          }
+          
+        }
+        if (Tonyu.is(target,Tonyu.classes.kernel.Screen)||Tonyu.is(target,Tonyu.classes.kernel.ScreenLayer)||Tonyu.is(target,Tonyu.classes.kernel.Panel)) {
+          return new Tonyu.classes.kernel.LayerPath({parent: _this,target: target});
+          
+        }
+        console.log("Invalid target ",target);
+        throw new Error("Invalid target "+target);
+        
+      },
+      fiber$add :function* _trc_LayerPath_f_add(_thread,target) {
+        var _this=this;
+        
+        if (Tonyu.is(target,Tonyu.classes.kernel.Sprites)) {
+          if (Tonyu.is(_this.target,Tonyu.classes.kernel.Screen)) {
+            target=_this.target.findLayer(target);
+            
+          }
+          
+        }
+        if (Tonyu.is(target,Tonyu.classes.kernel.Screen)||Tonyu.is(target,Tonyu.classes.kernel.ScreenLayer)||Tonyu.is(target,Tonyu.classes.kernel.Panel)) {
+          return new Tonyu.classes.kernel.LayerPath({parent: _this,target: target});
+          
+        }
+        console.log("Invalid target ",target);
+        throw new Error("Invalid target "+target);
+        
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,"kernel.LayerPath"],"returnValue":null}},"pathTo":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"commonAncestor":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.LayerPath"],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":"kernel.LayerPath"}}},"fields":{"parent":{"vtype":"kernel.LayerPath"},"target":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.MapChip',
   shortName: 'MapChip',
   namespace: 'kernel',
@@ -18112,10 +18304,48 @@ Tonyu.klass.define({
         return {x: x,y: y,rotation: rt,scale: 1/_this.scale,layer: _this.group};
         
       },
+      convert :function _trc_Layer2D_convert(obj,fromLayer,toLayer) {
+        var _this=this;
+        
+        if (toLayer==null) {
+          toLayer=fromLayer;
+          fromLayer=obj.layer;
+          
+        }
+        if (Tonyu.is(toLayer,Tonyu.classes.kernel.Panel)) {
+          return toLayer.convert(obj,fromLayer,toLayer);
+          
+        }
+        _this.print("Layer2D::conv not support",fromLayer,toLayer);
+        throw new Error("Layer2D::conv not support");
+        
+      },
+      fiber$convert :function* _trc_Layer2D_f_convert(_thread,obj,fromLayer,toLayer) {
+        var _this=this;
+        
+        if (toLayer==null) {
+          toLayer=fromLayer;
+          fromLayer=obj.layer;
+          
+        }
+        if (Tonyu.is(toLayer,Tonyu.classes.kernel.Panel)) {
+          return toLayer.convert(obj,fromLayer,toLayer);
+          
+        }
+        _this.print("Layer2D::conv not support",fromLayer,toLayer);
+        throw new Error("Layer2D::conv not support");
+        
+        
+      },
+      __getter__defaultLayerPath :function _trc_Layer2D___getter__defaultLayerPath() {
+        var _this=this;
+        
+        return _this.screen.defaultLayerPath?_this.screen.defaultLayerPath.add(_this):null;
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"world2screen":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"screen2world":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"spx":{},"spy":{},"wpx":{},"wpy":{},"rotation":{},"scale":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"world2screen":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"screen2world":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"__getter__defaultLayerPath":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"spx":{},"spy":{},"wpx":{},"wpy":{},"rotation":{},"scale":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Layer3D',
@@ -22287,6 +22517,10 @@ Tonyu.klass.define({
         if (_this._drawn==null) {
           _this._drawn=false;
         }
+        if (_this.layer&&_this.layer.defaultLayerPath) {
+          _this.defaultLayerPath=_this.layer.defaultLayerPath.add(_this);
+          
+        }
         _this.registerEventHandler("touchstart",new Tonyu.classes.kernel.PanelTouchStart({target: _this}));
       },
       watchResize :function _trc_Panel_watchResize() {
@@ -22731,9 +22965,8 @@ Tonyu.klass.define({
           
         }
       },
-      convert :function _trc_Panel_convert(obj,toLayer) {
+      convert :function _trc_Panel_convert(obj,fromLayer,toLayer) {
         var _this=this;
-        var fromLayer;
         var scaleY;
         var r;
         var dx;
@@ -22742,8 +22975,17 @@ Tonyu.klass.define({
         var x;
         var y;
         
-        fromLayer = obj.layer;
-        
+        if (toLayer==null) {
+          toLayer=fromLayer;
+          fromLayer=obj.layer;
+          
+        }
+        if (Tonyu.is(fromLayer,Tonyu.classes.kernel.ScreenLayer)) {
+          fromLayer=fromLayer.group;
+        }
+        if (Tonyu.is(toLayer,Tonyu.classes.kernel.ScreenLayer)) {
+          toLayer=toLayer.group;
+        }
         if (fromLayer==null&&toLayer==null) {
           fromLayer=_this;
           toLayer=_this.layer;
@@ -22810,16 +23052,15 @@ Tonyu.klass.define({
             return {x: x,y: y,rotation: rt,scale: 1/_this.scaleX,layer: toLayer};
             
           } else {
-            _this.print("no support",obj.layer,toLayer);
+            _this.print("no support",fromLayer,toLayer);
             throw new Error("not support");
             
             
           }
         }
       },
-      fiber$convert :function* _trc_Panel_f_convert(_thread,obj,toLayer) {
+      fiber$convert :function* _trc_Panel_f_convert(_thread,obj,fromLayer,toLayer) {
         var _this=this;
-        var fromLayer;
         var scaleY;
         var r;
         var dx;
@@ -22828,8 +23069,17 @@ Tonyu.klass.define({
         var x;
         var y;
         
-        fromLayer = obj.layer;
-        
+        if (toLayer==null) {
+          toLayer=fromLayer;
+          fromLayer=obj.layer;
+          
+        }
+        if (Tonyu.is(fromLayer,Tonyu.classes.kernel.ScreenLayer)) {
+          fromLayer=fromLayer.group;
+        }
+        if (Tonyu.is(toLayer,Tonyu.classes.kernel.ScreenLayer)) {
+          toLayer=toLayer.group;
+        }
         if (fromLayer==null&&toLayer==null) {
           fromLayer=_this;
           toLayer=_this.layer;
@@ -22896,7 +23146,7 @@ Tonyu.klass.define({
             return {x: x,y: y,rotation: rt,scale: 1/_this.scaleX,layer: toLayer};
             
           } else {
-            _this.print("no support",obj.layer,toLayer);
+            _this.print("no support",fromLayer,toLayer);
             throw new Error("not support");
             
             
@@ -23024,7 +23274,7 @@ Tonyu.klass.define({
         rect = _this.drawTextRect(_this.context,text,padding.left,padding.top,size,a,"test");
         
         _this.resize(padding.left+rect.w+padding.right,padding.top+rect.h+padding.bottom);
-        bg = options.background||options.bg||(function anonymous_10888() {
+        bg = options.background||options.bg||(function anonymous_11276() {
           
         });
         
@@ -23085,7 +23335,7 @@ Tonyu.klass.define({
         rect = _this.drawTextRect(_this.context,text,padding.left,padding.top,size,a,"test");
         
         (yield* _this.fiber$resize(_thread, padding.left+rect.w+padding.right, padding.top+rect.h+padding.bottom));
-        bg = options.background||options.bg||(function anonymous_10888() {
+        bg = options.background||options.bg||(function anonymous_11276() {
           
         });
         
@@ -23159,7 +23409,7 @@ Tonyu.klass.define({
         if (typeof  fn==="string") {
           fn=_this.file(fn);
         }
-        return new Promise((function anonymous_11529(resolve) {
+        return new Promise((function anonymous_11917(resolve) {
           var url;
           var element;
           
@@ -23167,7 +23417,7 @@ Tonyu.klass.define({
           
           element = $("<img>").css({display: "none"}).appendTo("body");
           
-          element.on("load",(function anonymous_11668() {
+          element.on("load",(function anonymous_12056() {
             var img;
             var width;
             var height;
@@ -23192,7 +23442,7 @@ Tonyu.klass.define({
         if (typeof  fn==="string") {
           fn=(yield* _this.fiber$file(_thread, fn));
         }
-        return new Promise((function anonymous_11529(resolve) {
+        return new Promise((function anonymous_11917(resolve) {
           var url;
           var element;
           
@@ -23200,7 +23450,7 @@ Tonyu.klass.define({
           
           element = $("<img>").css({display: "none"}).appendTo("body");
           
-          element.on("load",(function anonymous_11668() {
+          element.on("load",(function anonymous_12056() {
             var img;
             var width;
             var height;
@@ -23389,7 +23639,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"watchResize":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setPanel":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"resize":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getContext":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__context":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__image":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setFillStyle":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__fillStyle":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__fillStyle":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__setter__strokeStyle":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__setter__lineWidth":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"fillCircle":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"fillRect":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"fillText":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"clearRect":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"getPixelColor":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getPixel":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scroll":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"drawSprite":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"copy":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"drawLine":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"slicePattern":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"addPattern":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"getImageData":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"putImageData":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setAsText":{"nowait":false,"isMain":false,"vtype":{"params":["String",null],"returnValue":null}},"replace":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"save":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"download":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"load":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__setter__imageSmoothingEnabled":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__imageSmoothingEnabled":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"replaceColor":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"canvas":{},"_fillStyle":{},"_drawn":{},"buf":{},"imagedata":{},"colordata":{},"px":{},"py":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"watchResize":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setPanel":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"resize":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getContext":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__context":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__image":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setFillStyle":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__fillStyle":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__fillStyle":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__setter__strokeStyle":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__setter__lineWidth":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"fillCircle":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"fillRect":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"fillText":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"clearRect":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"getPixelColor":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getPixel":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scroll":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"drawSprite":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"copy":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"drawLine":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"slicePattern":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"addPattern":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"getImageData":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"putImageData":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setAsText":{"nowait":false,"isMain":false,"vtype":{"params":["String",null],"returnValue":null}},"replace":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"save":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"download":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"load":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__setter__imageSmoothingEnabled":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__imageSmoothingEnabled":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"replaceColor":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"canvas":{},"_fillStyle":{},"_drawn":{},"defaultLayerPath":{},"buf":{},"imagedata":{},"colordata":{},"px":{},"py":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.ScaledCanvas',
@@ -23748,6 +23998,10 @@ Tonyu.klass.define({
           layer=new Tonyu.classes.kernel.Layer2D({spx: 0,spy: 0,wpx: 0,wpy: 0,rotation: 0,scale: 1,group: group,screen: _this,index: _this.layers.length});
           
         }
+        if (! group.defaultLayerPath&&_this.defaultLayerPath) {
+          group.defaultLayerPath=_this.defaultLayerPath.add(layer);
+          
+        }
         if (at==null) {
           _this.layers.push(layer);
         } else {
@@ -23774,6 +24028,10 @@ Tonyu.klass.define({
         } else {
           group=group||new Tonyu.classes.kernel.Sprites;
           layer=new Tonyu.classes.kernel.Layer2D({spx: 0,spy: 0,wpx: 0,wpy: 0,rotation: 0,scale: 1,group: group,screen: _this,index: _this.layers.length});
+          
+        }
+        if (! group.defaultLayerPath&&_this.defaultLayerPath) {
+          group.defaultLayerPath=_this.defaultLayerPath.add(layer);
           
         }
         if (at==null) {
@@ -23971,46 +24229,51 @@ Tonyu.klass.define({
         
         
       },
-      convert :function _trc_Screen_convert(obj,toLayer) {
+      convert :function _trc_Screen_convert(obj,fromLayer,toLayer) {
         var _this=this;
         var p;
         var l;
         
         if (toLayer==null) {
+          toLayer=fromLayer;
+          fromLayer=obj.layer;
+          
+        }
+        if (toLayer==null) {
           toLayer=_this;
         }
-        if (! obj.layer) {
-          obj.layer=_this;
+        if (fromLayer==null) {
+          fromLayer=_this;
         }
-        if (obj.layer===toLayer) {
+        if (fromLayer===toLayer) {
           return obj;
         }
-        if (obj.layer!==_this&&toLayer!==_this) {
-          p = _this.convert(obj,_this);
+        if (fromLayer!==_this&&toLayer!==_this) {
+          p = _this.convert(obj,fromLayer,_this);
           
-          return _this.convert(p,toLayer);
+          return _this.convert(p,_this,toLayer);
           
         } else {
-          if (obj.layer!==_this&&toLayer===_this) {
-            l = _this.findLayer(obj.layer);
+          if (fromLayer!==_this&&toLayer===_this) {
+            l = _this.findLayer(fromLayer);
             
             if (l!=null) {
               return l.world2screen(obj);
               
             } else {
-              return __superClass.prototype.convert.apply( _this, [obj,_this]);
+              return __superClass.prototype.convert.apply( _this, [obj,fromLayer,_this]);
               
             }
             
           } else {
-            if (obj.layer===_this&&toLayer!==_this) {
+            if (fromLayer===_this&&toLayer!==_this) {
               l = _this.findLayer(toLayer);
               
               if (l!=null) {
                 return l.screen2world(obj);
                 
               } else {
-                return __superClass.prototype.convert.apply( _this, [obj,toLayer]);
+                return __superClass.prototype.convert.apply( _this, [obj,fromLayer,toLayer]);
                 
               }
               
@@ -24020,47 +24283,52 @@ Tonyu.klass.define({
           }
         }
       },
-      fiber$convert :function* _trc_Screen_f_convert(_thread,obj,toLayer) {
+      fiber$convert :function* _trc_Screen_f_convert(_thread,obj,fromLayer,toLayer) {
         var _this=this;
         var p;
         var l;
         
         if (toLayer==null) {
+          toLayer=fromLayer;
+          fromLayer=obj.layer;
+          
+        }
+        if (toLayer==null) {
           toLayer=_this;
         }
-        if (! obj.layer) {
-          obj.layer=_this;
+        if (fromLayer==null) {
+          fromLayer=_this;
         }
-        if (obj.layer===toLayer) {
+        if (fromLayer===toLayer) {
           return obj;
         }
-        if (obj.layer!==_this&&toLayer!==_this) {
-          p=yield* _this.fiber$convert(_thread, obj, _this);
+        if (fromLayer!==_this&&toLayer!==_this) {
+          p=yield* _this.fiber$convert(_thread, obj, fromLayer, _this);
           
-          return yield* _this.fiber$convert(_thread, p, toLayer);
+          return yield* _this.fiber$convert(_thread, p, _this, toLayer);
           
           
         } else {
-          if (obj.layer!==_this&&toLayer===_this) {
-            l=yield* _this.fiber$findLayer(_thread, obj.layer);
+          if (fromLayer!==_this&&toLayer===_this) {
+            l=yield* _this.fiber$findLayer(_thread, fromLayer);
             
             if (l!=null) {
               return l.world2screen(obj);
               
             } else {
-              return __superClass.prototype.convert.apply( _this, [obj,_this]);
+              return __superClass.prototype.convert.apply( _this, [obj,fromLayer,_this]);
               
             }
             
           } else {
-            if (obj.layer===_this&&toLayer!==_this) {
+            if (fromLayer===_this&&toLayer!==_this) {
               l=yield* _this.fiber$findLayer(_thread, toLayer);
               
               if (l!=null) {
                 return l.screen2world(obj);
                 
               } else {
-                return __superClass.prototype.convert.apply( _this, [obj,toLayer]);
+                return __superClass.prototype.convert.apply( _this, [obj,fromLayer,toLayer]);
                 
               }
               
@@ -24238,7 +24506,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"drawLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"removeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"selectLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayerIndex":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"scrollBy":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"canvas2buf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"setBGColor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"all":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":["Array"],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"touchedFingers":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.TQuery",null],"returnValue":null}}},"fields":{"layers":{},"_color":{},"camera":{},"_drawing":{},"clearBG":{},"index":{},"multiLayerTouches":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"drawLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"removeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"selectLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayerIndex":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"scrollBy":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"canvas2buf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,"kernel.Sprites","kernel.Sprites"],"returnValue":null}},"setBGColor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"all":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":["Array"],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"touchedFingers":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.TQuery",null],"returnValue":null}}},"fields":{"layers":{},"_color":{},"camera":{},"_drawing":{},"clearBG":{},"index":{},"multiLayerTouches":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.TD_Z',
@@ -35966,16 +36234,21 @@ Tonyu.klass.define({
         
         Tonyu.globals.$screenWidth=465;
         Tonyu.globals.$screenHeight=465;
+        _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
+        Tonyu.globals.$rootLayer=new Tonyu.classes.kernel.Sprites();
         Tonyu.globals.$mainLayer=Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites();
         Tonyu.globals.$frontLayer=Tonyu.globals.$FrontSprites=new Tonyu.classes.kernel.Sprites();
         Tonyu.globals.$backLayer=new Tonyu.classes.kernel.Sprites();
         Tonyu.globals.$uiLayer=new Tonyu.classes.kernel.Sprites();
+        Tonyu.globals.$uiScreen=new Tonyu.classes.kernel.Screen({canvas: _this.cvj[0],layer: Tonyu.globals.$rootLayer});
+        Tonyu.globals.$uiScreen.defaultLayerPath=new Tonyu.classes.kernel.LayerPath({target: Tonyu.globals.$uiScreen});
+        Tonyu.globals.$uiScreen.setBGColor("#888");
+        Tonyu.globals.$uiScreen.addLayer(Tonyu.globals.$uiLayer);
         Tonyu.globals.$sprites3D=new Tonyu.classes.kernel.Sprites3D;
         Tonyu.globals.$camera3D=new Tonyu.classes.kernel.Camera3D({layer: Tonyu.globals.$sprites3D,x: 0,y: 0,z: - 100});
         Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Layer3D({group: Tonyu.globals.$sprites3D,camera: Tonyu.globals.$camera3D});
-        _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-        Tonyu.globals.$Screen.on("resize",(function anonymous_5359() {
+        Tonyu.globals.$Screen.on("resize",(function anonymous_5588() {
           
           Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
           Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
@@ -35999,10 +36272,6 @@ Tonyu.klass.define({
         Tonyu.globals.$Screen.addLayer(Tonyu.globals.$backLayer);
         Tonyu.globals.$Screen.setBGColor("rgb(20,80,180)");
         Tonyu.globals.$Screen.selectLayer(Tonyu.globals.$mainLayer);
-        Tonyu.globals.$rootLayer=new Tonyu.classes.kernel.Sprites();
-        Tonyu.globals.$uiScreen=new Tonyu.classes.kernel.Screen({canvas: _this.cvj[0],layer: Tonyu.globals.$rootLayer});
-        Tonyu.globals.$uiScreen.setBGColor("#888");
-        Tonyu.globals.$uiScreen.addLayer(Tonyu.globals.$uiLayer);
         Tonyu.globals.$layoutManager=new Tonyu.classes.kernel.UILayout({layer: Tonyu.globals.$uiLayer});
       },
       fiber$initLayers :function* _trc_Boot_f_initLayers(_thread) {
@@ -36010,16 +36279,21 @@ Tonyu.klass.define({
         
         Tonyu.globals.$screenWidth=465;
         Tonyu.globals.$screenHeight=465;
+        _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
+        Tonyu.globals.$rootLayer=new Tonyu.classes.kernel.Sprites();
         Tonyu.globals.$mainLayer=Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites();
         Tonyu.globals.$frontLayer=Tonyu.globals.$FrontSprites=new Tonyu.classes.kernel.Sprites();
         Tonyu.globals.$backLayer=new Tonyu.classes.kernel.Sprites();
         Tonyu.globals.$uiLayer=new Tonyu.classes.kernel.Sprites();
+        Tonyu.globals.$uiScreen=new Tonyu.classes.kernel.Screen({canvas: _this.cvj[0],layer: Tonyu.globals.$rootLayer});
+        Tonyu.globals.$uiScreen.defaultLayerPath=new Tonyu.classes.kernel.LayerPath({target: Tonyu.globals.$uiScreen});
+        Tonyu.globals.$uiScreen.setBGColor("#888");
+        Tonyu.globals.$uiScreen.addLayer(Tonyu.globals.$uiLayer);
         Tonyu.globals.$sprites3D=new Tonyu.classes.kernel.Sprites3D;
         Tonyu.globals.$camera3D=new Tonyu.classes.kernel.Camera3D({layer: Tonyu.globals.$sprites3D,x: 0,y: 0,z: - 100});
         Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Layer3D({group: Tonyu.globals.$sprites3D,camera: Tonyu.globals.$camera3D});
-        _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-        Tonyu.globals.$Screen.on("resize",(function anonymous_5359() {
+        Tonyu.globals.$Screen.on("resize",(function anonymous_5588() {
           
           Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
           Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
@@ -36043,10 +36317,6 @@ Tonyu.klass.define({
         Tonyu.globals.$Screen.addLayer(Tonyu.globals.$backLayer);
         Tonyu.globals.$Screen.setBGColor("rgb(20,80,180)");
         Tonyu.globals.$Screen.selectLayer(Tonyu.globals.$mainLayer);
-        Tonyu.globals.$rootLayer=new Tonyu.classes.kernel.Sprites();
-        Tonyu.globals.$uiScreen=new Tonyu.classes.kernel.Screen({canvas: _this.cvj[0],layer: Tonyu.globals.$rootLayer});
-        Tonyu.globals.$uiScreen.setBGColor("#888");
-        Tonyu.globals.$uiScreen.addLayer(Tonyu.globals.$uiLayer);
         Tonyu.globals.$layoutManager=new Tonyu.classes.kernel.UILayout({layer: Tonyu.globals.$uiLayer});
         
       },
@@ -36084,7 +36354,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.progress("Loading plugins..");
-        _this.runPromise((function anonymous_6584(r) {
+        _this.runPromise((function anonymous_6653(r) {
           
           Tonyu.globals.$currentProject.loadPlugins(r);
         }));
@@ -36094,7 +36364,7 @@ Tonyu.klass.define({
         var _this=this;
         
         (yield* _this.fiber$progress(_thread, "Loading plugins.."));
-        (yield* _this.fiber$runPromise(_thread, (function anonymous_6584(r) {
+        (yield* _this.fiber$runPromise(_thread, (function anonymous_6653(r) {
           
           Tonyu.globals.$currentProject.loadPlugins(r);
         })));
@@ -36112,7 +36382,7 @@ Tonyu.klass.define({
         rs = Tonyu.globals.$currentProject.getResource();
         
         
-        r=_this.runPromise((function anonymous_6805(succ) {
+        r=_this.runPromise((function anonymous_6874(succ) {
           
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         }));
@@ -36134,7 +36404,7 @@ Tonyu.klass.define({
         rs = Tonyu.globals.$currentProject.getResource();
         
         
-        r=(yield* _this.fiber$runPromise(_thread, (function anonymous_6805(succ) {
+        r=(yield* _this.fiber$runPromise(_thread, (function anonymous_6874(succ) {
           
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         })));
@@ -36153,7 +36423,7 @@ Tonyu.klass.define({
         _this.initT2MediaPlayer();
         _this.loadFromProject(Tonyu.globals.$currentProject);
         _this.progress("Loading sounds done.");
-        _this.on("stop",(function anonymous_7271() {
+        _this.on("stop",(function anonymous_7340() {
           
           _this.allResetBGM();
         }));
@@ -36166,7 +36436,7 @@ Tonyu.klass.define({
         (yield* _this.fiber$initT2MediaPlayer(_thread));
         (yield* _this.fiber$loadFromProject(_thread, Tonyu.globals.$currentProject));
         (yield* _this.fiber$progress(_thread, "Loading sounds done."));
-        _this.on("stop",(function anonymous_7271() {
+        _this.on("stop",(function anonymous_7340() {
           
           _this.allResetBGM();
         }));
@@ -36344,7 +36614,7 @@ Tonyu.klass.define({
           } else {
             a = Tonyu.globals.$Screen.all();
             
-            a=a.find((function anonymous_9411(e) {
+            a=a.find((function anonymous_9480(e) {
               
               return pass.indexOf(e)<0;
             }));
@@ -36428,7 +36698,7 @@ Tonyu.klass.define({
           } else {
             a = Tonyu.globals.$Screen.all();
             
-            a=a.find((function anonymous_9411(e) {
+            a=a.find((function anonymous_9480(e) {
               
               return pass.indexOf(e)<0;
             }));
@@ -36445,16 +36715,16 @@ Tonyu.klass.define({
       stop :function _trc_Boot_stop() {
         var _this=this;
         
-        return new Promise((function anonymous_9609(resolve) {
+        return new Promise((function anonymous_9678(resolve) {
           var evt;
           var e;
           var r;
           
-          evt = {die: (function anonymous_9696() {
+          evt = {die: (function anonymous_9765() {
             
             _this.die();
             resolve();
-          }),preventDefault: (function anonymous_9837() {
+          }),preventDefault: (function anonymous_9906() {
             
             evt.defaultPrevented=true;
           })};
@@ -36478,16 +36748,16 @@ Tonyu.klass.define({
       fiber$stop :function* _trc_Boot_f_stop(_thread) {
         var _this=this;
         
-        return new Promise((function anonymous_9609(resolve) {
+        return new Promise((function anonymous_9678(resolve) {
           var evt;
           var e;
           var r;
           
-          evt = {die: (function anonymous_9696() {
+          evt = {die: (function anonymous_9765() {
             
             _this.die();
             resolve();
-          }),preventDefault: (function anonymous_9837() {
+          }),preventDefault: (function anonymous_9906() {
             
             evt.defaultPrevented=true;
           })};
@@ -37015,7 +37285,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16560() {
+        requestAnimationFrame((function anonymous_16629() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -37031,7 +37301,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16560() {
+        requestAnimationFrame((function anonymous_16629() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;

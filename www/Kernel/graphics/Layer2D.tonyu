@@ -49,3 +49,18 @@ var spx,spy,wpx,wpy,rotation,scale;
         layer:group
     };
 }
+
+\convert(obj, fromLayer, toLayer) {
+    if (toLayer==null) {
+        toLayer=fromLayer;
+        fromLayer=obj.layer;
+    }
+    if (toLayer is Panel) {
+        return toLayer.convert(obj, fromLayer, toLayer);
+    }
+    print("Layer2D::conv not support",fromLayer, toLayer);
+    throw new Error("Layer2D::conv not support");
+}
+\defaultLayerPath {
+    return screen.defaultLayerPath ? screen.defaultLayerPath.add(this) : null;
+}

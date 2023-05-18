@@ -5,7 +5,7 @@ includes PanelMod;
 \new(opt)
 \watchResize()
 // DO NOT move to PanelMod! (layer is field)
-\convert(obj, toLayer)
+\convert(obj, fromLayer, toLayer)
 */
 
 extends Actor;
@@ -34,7 +34,9 @@ native requestAnimationFrame;
     //if(align==null) align="center";
     if(alpha==null) alpha=255;
     if(_drawn==null) _drawn=false;
-
+    if (layer && layer.defaultLayerPath) {
+        defaultLayerPath=layer.defaultLayerPath.add(this);
+    }
     registerEventHandler("touchstart", new PanelTouchStart{target:this});
 }
 \watchResize() {
@@ -229,15 +231,21 @@ nowait \copy() {
     }
 }
 // DO NOT move to PanelMod! (layer is field)
-\convert(obj, toLayer) {
-    // Only supports this <-> this.layer
+\convert(obj, fromLayer, toLayer) {
+    if (toLayer==null) {// args<=2
+        toLayer=fromLayer;
+        fromLayer=obj.layer;
+    }
+    // Only supports this <-> layer (=this.layer)
     // Why?  other layers (i.e. $mainLayer) are depends on screen(When Multi screen)
     // ({x,y})   -> from==this to==layer
     // ({x,y},layer) -> from==this to==layer
-    // ({x,y,this})  -> from==this to==layer
+    // ({x,y,layer:this})   ->  from==this to==layer
     // ({x,y},this)  -> from==layer to==this
     // ({x,y,layer}) -> from==layer to==this
-    var fromLayer=obj.layer;
+    // ({x,y}, _from, _to) -> from==_from  to=_to
+    if (fromLayer is ScreenLayer) fromLayer=fromLayer.group;
+    if (toLayer is ScreenLayer) toLayer=toLayer.group;
     if (fromLayer==null && toLayer==null) {
         fromLayer=this;toLayer=layer;
     } else if (fromLayer==null && toLayer===layer) {
@@ -287,7 +295,7 @@ nowait \copy() {
             layer:toLayer
         };
     } else {
-        print("no support",obj.layer, toLayer);
+        print("no support",fromLayer, toLayer);
         throw new Error("not support");
     }
 }
