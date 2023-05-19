@@ -8,6 +8,6 @@ extends EventHandler;
     };
 }
 \new(param) {
-   super(param);
-   id=($idseq=($idseq||0)+1);
+    super(param);
+    id=($idseq=($idseq||0)+1);
 }
