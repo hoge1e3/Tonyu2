@@ -4,6 +4,7 @@ native Tonyu;
 native console;
 var imageList, hitWatchers,objId,t1Sprites,drawing;
 var sx,sy;
+let defaultLayerPath;
 \new() {
     sprites=[];
     imageList=[];

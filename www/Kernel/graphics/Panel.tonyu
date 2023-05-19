@@ -295,8 +295,8 @@ nowait \copy() {
             layer:toLayer
         };
     } else {
-        print("no support",fromLayer, toLayer);
-        throw new Error("not support");
+        print("Panel::conv not support",this, fromLayer, toLayer);
+        throw new Error("Panel::conv not support");
     }
 }
 \drawLine(x,y,dx,dy) {

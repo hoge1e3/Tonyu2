@@ -11,9 +11,11 @@ let target;// Screen | ScreenLayer | Panel
     let down=to.pathTo(a).reverse();//[a...to]
     let res=obj;
     for (let i=0; i<up.length-1;i++) {
+        //console.log("DEBUG conv", up[i], up[i+1]);
         res=up[i].convert(res, up[i], up[i+1]);
     }
     for (let i=0; i<down.length-1;i++) {
+        //console.log("DEBUG conv", down[i], down[i+1]);
         res=down[i].convert(res, down[i], down[i+1]);
     }
     return res;

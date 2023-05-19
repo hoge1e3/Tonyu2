@@ -108,34 +108,46 @@ extends Panel;
     }
 }*/
 
-\convert(obj, fromLayer:Sprites, toLayer:Sprites) {
+\convert(obj, fromLayer, toLayer) {
     if (toLayer==null) {
         toLayer=fromLayer;
         fromLayer=obj.layer;
     }
     if (toLayer==null) toLayer=this;
     if (fromLayer==null) fromLayer=this; //throw new Error("layer not set");
+    if (fromLayer is ScreenLayer) fromLayer=fromLayer.group;
+    if (toLayer is ScreenLayer) toLayer=toLayer.group;
     if (fromLayer===toLayer) return obj;
-    if (fromLayer!==this && toLayer!==this) {
-        var p=convert(obj, fromLayer, this);
-        return convert(p, this, toLayer);
-    } else if (fromLayer!==this && toLayer===this) {
-        var l=findLayer(fromLayer);
-        if (l!=null) {
-            return l.world2screen(obj);
-        } else {
-            // fail unless fromLayer===layer(parent of this)
-            return super.convert(obj, fromLayer, this);
+    let scr;
+    if (fromLayer===this) {
+        scr=obj;
+    } else if (fromLayer===layer) {
+        scr=super.convert(obj, layer, this);
+    } else {
+        let myfl=findLayer(fromLayer);
+        if (myfl) scr=myfl.world2screen(obj);
+        else {
+            print("Screen::conv invalid from",this, fromLayer,toLayer);
+            throw new Error("Screen::conv invalid from");
         }
-    } else if (fromLayer===this && toLayer!==this) {
-        var l=findLayer(toLayer);
-        if (l!=null) {
-            return l.screen2world(obj);
-        } else {
-            // fail unless toLayer===layer   r(parent of this)
-            return super.convert(obj, fromLayer, toLayer);
+    }
+    if (toLayer===this) {
+        return scr;
+    } else if (toLayer===layer) {
+        return super.convert(scr, this, layer);
+    } else {
+        let mytl=findLayer(toLayer);
+        if (mytl) return mytl.screen2world(scr);
+        else {
+            print("Screen::conv invalid to",this, fromLayer,toLayer);
+            throw new Error("Screen::conv invalid to");
         }
-    } else return obj;
+    }
+    /*let flp=(fromLayer is LayerPath? fromLayer : fromLayer.defaultLayerPath);
+    let tlp=(toLayer is LayerPath? toLayer : toLayer.defaultLayerPath);
+    if (flp && tlp) {
+        return flp.convert(obj, tlp);
+    }*/
 }
 \setBGColor(color){
     this._color=color;
