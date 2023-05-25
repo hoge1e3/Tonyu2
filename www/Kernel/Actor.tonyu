@@ -12,3 +12,13 @@ includes InputMod2D,SpriteMod2D,QueryMod2D,OneframeSpriteMod;
     if (type==="keyDown") return KeyDownHandler;
     return super.findEventHandlerClass(type);
 }
+\toString() {
+    let axis="";
+    if (typeof x==="number" && typeof y==="number") {
+        axis=` (${floor(x)}, ${floor(y)}),`;
+    }
+    let image=detectSpriteType();
+    if (image=="Image") image=typeof p=="number" ? p : "";
+    if (image.length>0) image=" "+image;
+    return `[${this.getClassInfo().fullName}${axis}${image}]`;
+}

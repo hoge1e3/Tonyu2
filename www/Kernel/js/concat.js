@@ -2910,7 +2910,7 @@ Tonyu.klass.define({
         } else {
           label="";
         }
-        throw _this.newError(Tonyu.globals.$Boot.R("notA",obj,label,klass));
+        throw _this.newError("notA",obj,label,klass);
         
       },
       fiber$assertIs :function* _trc_AssertionMod_f_assertIs(_thread,obj,klass,label) {
@@ -2924,7 +2924,7 @@ Tonyu.klass.define({
         } else {
           label="";
         }
-        throw _this.newError(Tonyu.globals.$Boot.R("notA",obj,label,klass));
+        throw _this.newError("notA",obj,label,klass);
         
         
       },
@@ -3303,9 +3303,9 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.R=Tonyu.messages;
-        let ja = {"notA": "{1}{3}は{2}ではありません．","noPushedPages": "loadPageで戻る先のページがありません．引数にページ名を忘れているかもしれません．"};
+        let ja = {"notA": "{1}{2}は{3}ではありません．","noPushedPages": "loadPageで戻る先のページがありません．引数にページ名を忘れているかもしれません．"};
         
-        let en = {"notA": "{1}{3} is not a {2}.","noPushedPages": "loadPage(Pop page) failed. You should push page (or you forgot Page argument?)"};
+        let en = {"notA": "{1}{2} is not a {3}.","noPushedPages": "loadPage(Pop page) failed. You should push page (or you forgot Page argument?)"};
         
         Object.assign(_this.R.dicts.ja,ja);
         Object.assign(_this.R.dicts.en,en);
@@ -3668,10 +3668,21 @@ Tonyu.klass.define({
         
         return Tonyu.extend(_this,obj);
       },
+      toString :function _trc_TObject_toString() {
+        var _this=this;
+        
+        return ['[',_this.getClassInfo().fullName,']'].join('');
+      },
+      fiber$toString :function* _trc_TObject_f_toString(_thread) {
+        var _this=this;
+        
+        return ['[',_this.getClassInfo().fullName,']'].join('');
+        
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"extend":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"extend":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"toString":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"getClassInfo":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.TQuery',
@@ -20009,10 +20020,49 @@ Tonyu.klass.define({
         }
         return __superClass.prototype.findEventHandlerClass.apply( _this, [type]);
       },
+      toString :function _trc_Actor_toString() {
+        var _this=this;
+        
+        let axis = "";
+        
+        if (typeof  _this.x==="number"&&typeof  _this.y==="number") {
+          axis=[' (',_this.floor(_this.x),', ',_this.floor(_this.y),'),'].join('');
+          
+        }
+        let image = _this.detectSpriteType();
+        
+        if (image=="Image") {
+          image=typeof  _this.p=="number"?_this.p:"";
+        }
+        if (image.length>0) {
+          image=" "+image;
+        }
+        return ['[',_this.getClassInfo().fullName,axis,image,']'].join('');
+      },
+      fiber$toString :function* _trc_Actor_f_toString(_thread) {
+        var _this=this;
+        
+        let axis = "";
+        
+        if (typeof  _this.x==="number"&&typeof  _this.y==="number") {
+          axis=[' (',_this.floor(_this.x),', ',_this.floor(_this.y),'),'].join('');
+          
+        }
+        let image=yield* _this.fiber$detectSpriteType(_thread);
+        
+        if (image=="Image") {
+          image=typeof  _this.p=="number"?_this.p:"";
+        }
+        if (image.length>0) {
+          image=" "+image;
+        }
+        return ['[',_this.getClassInfo().fullName,axis,image,']'].join('');
+        
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"addSubsprite":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findEventHandlerClass":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"addSubsprite":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findEventHandlerClass":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"toString":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Actor3D',
@@ -20163,10 +20213,21 @@ Tonyu.klass.define({
         return _this;
         
       },
+      toString :function _trc_Actor3D_toString() {
+        var _this=this;
+        
+        return ['[',_this.getClassInfo().fullName,' (',_this.floor(_this.x),', ',_this.floor(_this.y),', ',_this.floor(_this.z),'), ',_this.floor(_this.p),']'].join('');
+      },
+      fiber$toString :function* _trc_Actor3D_f_toString(_thread) {
+        var _this=this;
+        
+        return ['[',_this.getClassInfo().fullName,' (',_this.floor(_this.x),', ',_this.floor(_this.y),', ',_this.floor(_this.z),'), ',_this.floor(_this.p),']'].join('');
+        
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rotate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"__getter__defaultLayer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"dist":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"addSubsprite":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"localToWorld":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveBy":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"z":{},"direction":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rotate":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"__getter__defaultLayer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"dist":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"addSubsprite":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"localToWorld":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveBy":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"toString":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"z":{},"direction":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Camera3D',

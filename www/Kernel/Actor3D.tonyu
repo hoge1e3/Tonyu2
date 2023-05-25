@@ -83,3 +83,6 @@ nowait \dist(dx,dy,dz) {
 // moveBy{forward:1,left:1};
 // rotate("roll",1);
 // $camra3D.chase(this) {backward:100, smoothing:0.1};
+\toString() {
+    return `[${this.getClassInfo().fullName} (${floor(x)}, ${floor(y)}, ${floor(z)}), ${floor(p)}]`;
+}

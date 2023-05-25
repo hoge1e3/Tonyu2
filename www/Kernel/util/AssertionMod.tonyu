@@ -2,7 +2,7 @@ native console;
 \assertIs(obj, klass, label) {
     if (obj is klass) return obj;
     if (label) label=`(${label})`; else label="";
-    throw newError($Boot.R("notA",obj,label,klass));
+    throw newError("notA",obj,label,klass);
 }
 \newError(mesg, ...args) {
     console.error(mesg, ...args);

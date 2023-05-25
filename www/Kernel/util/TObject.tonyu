@@ -8,3 +8,6 @@ native Tonyu;
 nowait \extend(obj) {
     return Tonyu.extend(this,obj);
 }
+\toString() {
+    return `[${getClassInfo().fullName}]`;
+}

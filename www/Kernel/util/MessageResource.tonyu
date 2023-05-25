@@ -3,11 +3,11 @@ native Tonyu;
 \new() {
     R=Tonyu.messages;
     let ja={
-        "notA":"{1}{3}は{2}ではありません．",
+        "notA":"{1}{2}は{3}ではありません．",
         "noPushedPages":"loadPageで戻る先のページがありません．引数にページ名を忘れているかもしれません．",
     };
     let en={
-        "notA":"{1}{3} is not a {2}.",
+        "notA":"{1}{2} is not a {3}.",
         "noPushedPages":"loadPage(Pop page) failed. You should push page (or you forgot Page argument?)",
     };
     Object.assign(R.dicts.ja,ja);
