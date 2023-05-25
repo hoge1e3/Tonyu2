@@ -2884,6 +2884,69 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"push":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"trimUndefs":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"peek":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"shift":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"toArray":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"parseOptions":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"length":{},"a":{},"_undef":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.AssertionMod',
+  shortName: 'AssertionMod',
+  namespace: 'kernel',
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_AssertionMod_main() {
+        var _this=this;
+        
+      },
+      fiber$main :function* _trc_AssertionMod_f_main(_thread) {
+        var _this=this;
+        
+        
+      },
+      assertIs :function _trc_AssertionMod_assertIs(obj,klass,label) {
+        var _this=this;
+        
+        if (Tonyu.is(obj,klass)) {
+          return obj;
+        }
+        if (label) {
+          label=['(',label,')'].join('');
+        } else {
+          label="";
+        }
+        throw _this.newError(Tonyu.globals.$Boot.R("notA",obj,label,klass));
+        
+      },
+      fiber$assertIs :function* _trc_AssertionMod_f_assertIs(_thread,obj,klass,label) {
+        var _this=this;
+        
+        if (Tonyu.is(obj,klass)) {
+          return obj;
+        }
+        if (label) {
+          label=['(',label,')'].join('');
+        } else {
+          label="";
+        }
+        throw _this.newError(Tonyu.globals.$Boot.R("notA",obj,label,klass));
+        
+        
+      },
+      newError :function _trc_AssertionMod_newError(mesg,...args) {
+        var _this=this;
+        
+        console.error(mesg,...args);
+        return new Error(Tonyu.globals.$Boot.R(mesg,...args));
+      },
+      fiber$newError :function* _trc_AssertionMod_f_newError(_thread,mesg,...args) {
+        var _this=this;
+        
+        console.error(mesg,...args);
+        return new Error(Tonyu.globals.$Boot.R(mesg,...args));
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"assertIs":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"newError":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.FileMod',
   shortName: 'FileMod',
   namespace: 'kernel',
@@ -3221,6 +3284,101 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"sin":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cos":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rad":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"deg":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"abs":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"sgn":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"atan2":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"atanxy":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"floor":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"angleDiff":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"sqrt":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"dist":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"trunc":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"ceil":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rndFloat":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"rnd":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"randomize":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"parseFloat":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"clamp":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"clamped":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"min":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"max":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"amod":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"log":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.MessageResource',
+  shortName: 'MessageResource',
+  namespace: 'kernel',
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_MessageResource_main() {
+        var _this=this;
+        
+      },
+      fiber$main :function* _trc_MessageResource_f_main(_thread) {
+        var _this=this;
+        
+        
+      },
+      initialize :function _trc_MessageResource_initialize() {
+        var _this=this;
+        
+        _this.R=Tonyu.messages;
+        let ja = {"notA": "{1}{3}は{2}ではありません．","noPushedPages": "loadPageで戻る先のページがありません．引数にページ名を忘れているかもしれません．"};
+        
+        let en = {"notA": "{1}{3} is not a {2}.","noPushedPages": "loadPage(Pop page) failed. You should push page (or you forgot Page argument?)"};
+        
+        Object.assign(_this.R.dicts.ja,ja);
+        Object.assign(_this.R.dicts.en,en);
+      },
+      r :function _trc_MessageResource_r(name,...args) {
+        var _this=this;
+        
+        return _this.R(name,...args);
+      },
+      fiber$r :function* _trc_MessageResource_f_r(_thread,name,...args) {
+        var _this=this;
+        
+        return _this.R(name,...args);
+        
+      },
+      register :function _trc_MessageResource_register(name,mesgs) {
+        var _this=this;
+        
+        if (mesgs.ja) {
+          _this.R.dicts.ja[name]=mesgs.ja;
+        }
+        if (mesgs.en) {
+          _this.R.dicts.en[name]=mesgs.en;
+        }
+      },
+      fiber$register :function* _trc_MessageResource_f_register(_thread,name,mesgs) {
+        var _this=this;
+        
+        if (mesgs.ja) {
+          _this.R.dicts.ja[name]=mesgs.ja;
+        }
+        if (mesgs.en) {
+          _this.R.dicts.en[name]=mesgs.en;
+        }
+        
+      },
+      functionShortcut :function _trc_MessageResource_functionShortcut() {
+        var _this=this;
+        
+        let R = (function anonymous_611(...args) {
+          
+          return _this.r(...args);
+        });
+        
+        R.register=(function anonymous_659(...args) {
+          
+          return _this.register(...args);
+        });
+        R.self=_this;
+        return R;
+      },
+      fiber$functionShortcut :function* _trc_MessageResource_f_functionShortcut(_thread) {
+        var _this=this;
+        
+        let R = (function anonymous_611(...args) {
+          
+          return _this.r(...args);
+        });
+        
+        R.register=(function anonymous_659(...args) {
+          
+          return _this.register(...args);
+        });
+        R.self=_this;
+        return R;
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"r":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"register":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"functionShortcut":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"R":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.Navigator',
   shortName: 'Navigator',
   namespace: 'kernel',
@@ -3485,7 +3643,7 @@ Tonyu.klass.define({
   fullName: 'kernel.TObject',
   shortName: 'TObject',
   namespace: 'kernel',
-  includes: [Tonyu.classes.kernel.MathMod,Tonyu.classes.kernel.PrintMod],
+  includes: [Tonyu.classes.kernel.MathMod,Tonyu.classes.kernel.PrintMod,Tonyu.classes.kernel.AssertionMod],
   methods: function (__superClass) {
     return {
       main :function _trc_TObject_main() {
@@ -10524,11 +10682,13 @@ Tonyu.klass.define({
         "field strict";
         
         
+        
       },
       fiber$main :function* _trc_Sprites_f_main(_thread) {
         var _this=this;
         
         "field strict";
+        
         
         
         
@@ -10752,14 +10912,14 @@ Tonyu.klass.define({
         orderArray = [];
         
         if (_this.t1Sprites) {
-          _this.sprites.forEach((function anonymous_2241(s) {
+          _this.sprites.forEach((function anonymous_2264(s) {
             
             if (s instanceof Tonyu.classes.kernel.PlainChar) {
               s.draw();
               
             }
           }));
-          _this.sprites.forEach((function anonymous_2370(s) {
+          _this.sprites.forEach((function anonymous_2393(s) {
             
             if (s instanceof Tonyu.classes.kernel.PlainChar) {
               
@@ -10776,7 +10936,7 @@ Tonyu.klass.define({
         orderArray.sort(Tonyu.bindFunc(_this,_this.compOrder));
         ctx.translate(- _this.sx,- _this.sy);
         _this.drawing=ctx;
-        orderArray.forEach((function anonymous_2634(s) {
+        orderArray.forEach((function anonymous_2657(s) {
           
           s.draw(ctx,camera);
         }));
@@ -10791,14 +10951,14 @@ Tonyu.klass.define({
         orderArray = [];
         
         if (_this.t1Sprites) {
-          _this.sprites.forEach((function anonymous_2241(s) {
+          _this.sprites.forEach((function anonymous_2264(s) {
             
             if (s instanceof Tonyu.classes.kernel.PlainChar) {
               s.draw();
               
             }
           }));
-          _this.sprites.forEach((function anonymous_2370(s) {
+          _this.sprites.forEach((function anonymous_2393(s) {
             
             if (s instanceof Tonyu.classes.kernel.PlainChar) {
               
@@ -10815,7 +10975,7 @@ Tonyu.klass.define({
         orderArray.sort(Tonyu.bindFunc(_this,_this.compOrder));
         ctx.translate(- _this.sx,- _this.sy);
         _this.drawing=ctx;
-        orderArray.forEach((function anonymous_2634(s) {
+        orderArray.forEach((function anonymous_2657(s) {
           
           s.draw(ctx,camera);
         }));
@@ -10826,9 +10986,9 @@ Tonyu.klass.define({
       checkHit :function _trc_Sprites_checkHit() {
         var _this=this;
         
-        _this.hitWatchers.forEach((function anonymous_2800(w) {
+        _this.hitWatchers.forEach((function anonymous_2823(w) {
           
-          _this.sprites.forEach((function anonymous_2840(a) {
+          _this.sprites.forEach((function anonymous_2863(a) {
             var a_owner;
             
             a_owner = a;
@@ -10836,7 +10996,7 @@ Tonyu.klass.define({
             if (! (a_owner instanceof w.A)) {
               return _this;
             }
-            _this.sprites.forEach((function anonymous_3023(b) {
+            _this.sprites.forEach((function anonymous_3046(b) {
               var b_owner;
               
               b_owner = b;
@@ -10858,9 +11018,9 @@ Tonyu.klass.define({
       fiber$checkHit :function* _trc_Sprites_f_checkHit(_thread) {
         var _this=this;
         
-        _this.hitWatchers.forEach((function anonymous_2800(w) {
+        _this.hitWatchers.forEach((function anonymous_2823(w) {
           
-          _this.sprites.forEach((function anonymous_2840(a) {
+          _this.sprites.forEach((function anonymous_2863(a) {
             var a_owner;
             
             a_owner = a;
@@ -10868,7 +11028,7 @@ Tonyu.klass.define({
             if (! (a_owner instanceof w.A)) {
               return _this;
             }
-            _this.sprites.forEach((function anonymous_3023(b) {
+            _this.sprites.forEach((function anonymous_3046(b) {
               var b_owner;
               
               b_owner = b;
@@ -11025,7 +11185,7 @@ Tonyu.klass.define({
           return res;
           
         }
-        _this.sprites.forEach((function anonymous_4636(s) {
+        _this.sprites.forEach((function anonymous_4659(s) {
           
           if (s===_this) {
             return _this;
@@ -11040,7 +11200,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"remove":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"removeOneframes":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"clear":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"compOrder":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"draw":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"checkHit":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"watchHit":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"drawGrid":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"all":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"imageList":{},"hitWatchers":{},"objId":{},"t1Sprites":{},"drawing":{},"sx":{},"sy":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"remove":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"removeOneframes":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"clear":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"compOrder":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"draw":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"checkHit":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"watchHit":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"drawGrid":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"all":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"imageList":{},"hitWatchers":{},"objId":{},"t1Sprites":{},"drawing":{},"sx":{},"sy":{},"defaultLayerPath":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Sprites3D',
@@ -19582,7 +19742,7 @@ Tonyu.klass.define({
   fullName: 'kernel.BaseActor',
   shortName: 'BaseActor',
   namespace: 'kernel',
-  includes: [Tonyu.classes.kernel.MathMod,Tonyu.classes.kernel.EventMod,Tonyu.classes.kernel.ThreadGroupMod,Tonyu.classes.kernel.EventHandlerCaller,Tonyu.classes.kernel.DialogMod,Tonyu.classes.kernel.FileMod,Tonyu.classes.kernel.AnimMod,Tonyu.classes.kernel.SchedulerMod,Tonyu.classes.kernel.QueryMod,Tonyu.classes.kernel.InputMod,Tonyu.classes.kernel.LifeCycleMod,Tonyu.classes.kernel.SpriteMod,Tonyu.classes.kernel.ParallelMod,Tonyu.classes.kernel.PlayMod,Tonyu.classes.kernel.ParallelMod,Tonyu.classes.kernel.PrintMod],
+  includes: [Tonyu.classes.kernel.MathMod,Tonyu.classes.kernel.EventMod,Tonyu.classes.kernel.ThreadGroupMod,Tonyu.classes.kernel.EventHandlerCaller,Tonyu.classes.kernel.DialogMod,Tonyu.classes.kernel.FileMod,Tonyu.classes.kernel.AnimMod,Tonyu.classes.kernel.SchedulerMod,Tonyu.classes.kernel.QueryMod,Tonyu.classes.kernel.InputMod,Tonyu.classes.kernel.LifeCycleMod,Tonyu.classes.kernel.SpriteMod,Tonyu.classes.kernel.ParallelMod,Tonyu.classes.kernel.PlayMod,Tonyu.classes.kernel.ParallelMod,Tonyu.classes.kernel.PrintMod,Tonyu.classes.kernel.AssertionMod],
   methods: function (__superClass) {
     return {
       main :function _trc_BaseActor_main() {
@@ -21902,12 +22062,12 @@ Tonyu.klass.define({
       isWall :function _trc_Map2_isWall(cx,cy) {
         var _this=this;
         
-        return _this._wallFilter(cx,cy,_this);
+        return _this._wallFilter(_this.chip(cx,cy));
       },
       fiber$isWall :function* _trc_Map2_f_isWall(_thread,cx,cy) {
         var _this=this;
         
-        return _this._wallFilter(cx,cy,_this);
+        return _this._wallFilter(_this.chip(cx,cy));
         
       },
       chipFilter :function _trc_Map2_chipFilter(options) {
@@ -21951,13 +22111,13 @@ Tonyu.klass.define({
           layers=[layers];
         }
         if (not) {
-          func=(function anonymous_8066(chip) {
+          func=(function anonymous_8067(chip) {
             
             return chip.withLayers(layers).hasExcept(p);
           });
           
         } else {
-          func=(function anonymous_8174(chip) {
+          func=(function anonymous_8175(chip) {
             
             return chip.withLayers(layers).has(p);
           });
@@ -22006,13 +22166,13 @@ Tonyu.klass.define({
           layers=[layers];
         }
         if (not) {
-          func=(function anonymous_8066(chip) {
+          func=(function anonymous_8067(chip) {
             
             return chip.withLayers(layers).hasExcept(p);
           });
           
         } else {
-          func=(function anonymous_8174(chip) {
+          func=(function anonymous_8175(chip) {
             
             return chip.withLayers(layers).has(p);
           });
@@ -22072,11 +22232,24 @@ Tonyu.klass.define({
         (yield* _this.fiber$setWithLayerName(_thread, "on", setCol, setRow, onP));
         
       },
-      worldToChip :function _trc_Map2_worldToChip(o) {
+      worldToChip :function _trc_Map2_worldToChip(x,y) {
         var _this=this;
         var l;
         var r;
         
+        let o;
+        if (typeof  x==="object") {
+          o=x;
+        }
+        if (typeof  x==="number"&&typeof  y==="number") {
+          o={x: x,y: y};
+          
+        }
+        if (! o||typeof  o!=="object") {
+          throw _this.newError("Map2::worldToChip: invalid args ({1},{2})",x,y);
+          
+          
+        }
         l = _this.transform.worldToLocal(o);
         
         r = _this.getDrawRect();
@@ -22084,11 +22257,24 @@ Tonyu.klass.define({
         _this.initBuf();
         return {x: Math.floor((l.x-r.left)/_this.chipWidth),y: Math.floor((l.y-r.top)/_this.chipHeight)};
       },
-      fiber$worldToChip :function* _trc_Map2_f_worldToChip(_thread,o) {
+      fiber$worldToChip :function* _trc_Map2_f_worldToChip(_thread,x,y) {
         var _this=this;
         var l;
         var r;
         
+        let o;
+        if (typeof  x==="object") {
+          o=x;
+        }
+        if (typeof  x==="number"&&typeof  y==="number") {
+          o={x: x,y: y};
+          
+        }
+        if (! o||typeof  o!=="object") {
+          throw _this.newError("Map2::worldToChip: invalid args ({1},{2})",x,y);
+          
+          
+        }
         l = _this.transform.worldToLocal(o);
         
         r=yield* _this.fiber$getDrawRect(_thread);
@@ -22270,7 +22456,7 @@ Tonyu.klass.define({
       __getter__allLayerNames :function _trc_Map2___getter__allLayerNames() {
         var _this=this;
         
-        return _this.chipLayers.map((function anonymous_10344(l) {
+        return _this.chipLayers.map((function anonymous_10597(l) {
           
           return l.name;
         }));
@@ -22474,7 +22660,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"getChipLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addChipLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__setter__expand":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__expand":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"initBuf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"parseBufferSize":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBuf":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"pack":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"redraw":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resolve":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"load":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"save":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"redrawChip":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"setWithLayerName":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"range":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"crashTo":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isWallAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isWall":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"chipFilter":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setWallFilter":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setOn":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"worldToChip":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"chipToWorld":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"setOnAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"getWithLayerName":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"get":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getOn":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getOnAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"__getter__allLayerNames":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"chip":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"chipAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"has":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"hasAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getDrawRect":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"chipToActor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"chipWidth":{},"chipHeight":{},"bufferSize":{},"bufMat":{},"row":{},"col":{},"chipLayers":{},"mapObj":{},"_expand":{},"_wallFilter":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"getChipLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addChipLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__setter__expand":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__expand":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"initBuf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"parseBufferSize":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getBuf":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"pack":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"redraw":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resolve":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"load":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"save":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"redrawChip":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"setWithLayerName":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"range":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"crashTo":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isWallAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"isWall":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"chipFilter":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setWallFilter":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"set":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setOn":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"worldToChip":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"chipToWorld":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"setOnAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"getWithLayerName":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"get":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getOn":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getOnAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"__getter__allLayerNames":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"chip":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"chipAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"has":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"hasAt":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"getDrawRect":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"chipToActor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"chipWidth":{},"chipHeight":{},"bufferSize":{},"bufMat":{},"row":{},"col":{},"chipLayers":{},"mapObj":{},"_expand":{},"_wallFilter":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Panel',
@@ -23052,8 +23238,8 @@ Tonyu.klass.define({
             return {x: x,y: y,rotation: rt,scale: 1/_this.scaleX,layer: toLayer};
             
           } else {
-            _this.print("no support",fromLayer,toLayer);
-            throw new Error("not support");
+            _this.print("Panel::conv not support",_this,fromLayer,toLayer);
+            throw new Error("Panel::conv not support");
             
             
           }
@@ -23146,8 +23332,8 @@ Tonyu.klass.define({
             return {x: x,y: y,rotation: rt,scale: 1/_this.scaleX,layer: toLayer};
             
           } else {
-            _this.print("no support",fromLayer,toLayer);
-            throw new Error("not support");
+            _this.print("Panel::conv not support",_this,fromLayer,toLayer);
+            throw new Error("Panel::conv not support");
             
             
           }
@@ -23274,7 +23460,7 @@ Tonyu.klass.define({
         rect = _this.drawTextRect(_this.context,text,padding.left,padding.top,size,a,"test");
         
         _this.resize(padding.left+rect.w+padding.right,padding.top+rect.h+padding.bottom);
-        bg = options.background||options.bg||(function anonymous_11276() {
+        bg = options.background||options.bg||(function anonymous_11307() {
           
         });
         
@@ -23335,7 +23521,7 @@ Tonyu.klass.define({
         rect = _this.drawTextRect(_this.context,text,padding.left,padding.top,size,a,"test");
         
         (yield* _this.fiber$resize(_thread, padding.left+rect.w+padding.right, padding.top+rect.h+padding.bottom));
-        bg = options.background||options.bg||(function anonymous_11276() {
+        bg = options.background||options.bg||(function anonymous_11307() {
           
         });
         
@@ -23409,7 +23595,7 @@ Tonyu.klass.define({
         if (typeof  fn==="string") {
           fn=_this.file(fn);
         }
-        return new Promise((function anonymous_11917(resolve) {
+        return new Promise((function anonymous_11948(resolve) {
           var url;
           var element;
           
@@ -23417,7 +23603,7 @@ Tonyu.klass.define({
           
           element = $("<img>").css({display: "none"}).appendTo("body");
           
-          element.on("load",(function anonymous_12056() {
+          element.on("load",(function anonymous_12087() {
             var img;
             var width;
             var height;
@@ -23442,7 +23628,7 @@ Tonyu.klass.define({
         if (typeof  fn==="string") {
           fn=(yield* _this.fiber$file(_thread, fn));
         }
-        return new Promise((function anonymous_11917(resolve) {
+        return new Promise((function anonymous_11948(resolve) {
           var url;
           var element;
           
@@ -23450,7 +23636,7 @@ Tonyu.klass.define({
           
           element = $("<img>").css({display: "none"}).appendTo("body");
           
-          element.on("load",(function anonymous_12056() {
+          element.on("load",(function anonymous_12087() {
             var img;
             var width;
             var height;
@@ -24231,8 +24417,6 @@ Tonyu.klass.define({
       },
       convert :function _trc_Screen_convert(obj,fromLayer,toLayer) {
         var _this=this;
-        var p;
-        var l;
         
         if (toLayer==null) {
           toLayer=fromLayer;
@@ -24245,48 +24429,61 @@ Tonyu.klass.define({
         if (fromLayer==null) {
           fromLayer=_this;
         }
+        if (Tonyu.is(fromLayer,Tonyu.classes.kernel.ScreenLayer)) {
+          fromLayer=fromLayer.group;
+        }
+        if (Tonyu.is(toLayer,Tonyu.classes.kernel.ScreenLayer)) {
+          toLayer=toLayer.group;
+        }
         if (fromLayer===toLayer) {
           return obj;
         }
-        if (fromLayer!==_this&&toLayer!==_this) {
-          p = _this.convert(obj,fromLayer,_this);
-          
-          return _this.convert(p,_this,toLayer);
+        let scr;
+        if (fromLayer===_this) {
+          scr=obj;
           
         } else {
-          if (fromLayer!==_this&&toLayer===_this) {
-            l = _this.findLayer(fromLayer);
-            
-            if (l!=null) {
-              return l.world2screen(obj);
-              
-            } else {
-              return __superClass.prototype.convert.apply( _this, [obj,fromLayer,_this]);
-              
-            }
+          if (fromLayer===_this.layer) {
+            scr=__superClass.prototype.convert.apply( _this, [obj,_this.layer,_this]);
             
           } else {
-            if (fromLayer===_this&&toLayer!==_this) {
-              l = _this.findLayer(toLayer);
-              
-              if (l!=null) {
-                return l.screen2world(obj);
-                
-              } else {
-                return __superClass.prototype.convert.apply( _this, [obj,fromLayer,toLayer]);
-                
-              }
-              
+            let myfl = _this.findLayer(fromLayer);
+            
+            if (myfl) {
+              scr=myfl.world2screen(obj);
             } else {
-              return obj;
+              _this.print("Screen::conv invalid from",_this,fromLayer,toLayer);
+              throw new Error("Screen::conv invalid from");
+              
+              
             }
+            
+          }
+        }
+        if (toLayer===_this) {
+          return scr;
+          
+        } else {
+          if (toLayer===_this.layer) {
+            return __superClass.prototype.convert.apply( _this, [scr,_this,_this.layer]);
+            
+          } else {
+            let mytl = _this.findLayer(toLayer);
+            
+            if (mytl) {
+              return mytl.screen2world(scr);
+            } else {
+              _this.print("Screen::conv invalid to",_this,fromLayer,toLayer);
+              throw new Error("Screen::conv invalid to");
+              
+              
+            }
+            
           }
         }
       },
       fiber$convert :function* _trc_Screen_f_convert(_thread,obj,fromLayer,toLayer) {
         var _this=this;
-        var p;
-        var l;
         
         if (toLayer==null) {
           toLayer=fromLayer;
@@ -24299,42 +24496,56 @@ Tonyu.klass.define({
         if (fromLayer==null) {
           fromLayer=_this;
         }
+        if (Tonyu.is(fromLayer,Tonyu.classes.kernel.ScreenLayer)) {
+          fromLayer=fromLayer.group;
+        }
+        if (Tonyu.is(toLayer,Tonyu.classes.kernel.ScreenLayer)) {
+          toLayer=toLayer.group;
+        }
         if (fromLayer===toLayer) {
           return obj;
         }
-        if (fromLayer!==_this&&toLayer!==_this) {
-          p=yield* _this.fiber$convert(_thread, obj, fromLayer, _this);
-          
-          return yield* _this.fiber$convert(_thread, p, _this, toLayer);
-          
+        let scr;
+        if (fromLayer===_this) {
+          scr=obj;
           
         } else {
-          if (fromLayer!==_this&&toLayer===_this) {
-            l=yield* _this.fiber$findLayer(_thread, fromLayer);
-            
-            if (l!=null) {
-              return l.world2screen(obj);
-              
-            } else {
-              return __superClass.prototype.convert.apply( _this, [obj,fromLayer,_this]);
-              
-            }
+          if (fromLayer===_this.layer) {
+            scr=(yield* __superClass.prototype.fiber$convert.apply( _this, [_thread, obj, _this.layer, _this]));
             
           } else {
-            if (fromLayer===_this&&toLayer!==_this) {
-              l=yield* _this.fiber$findLayer(_thread, toLayer);
-              
-              if (l!=null) {
-                return l.screen2world(obj);
-                
-              } else {
-                return __superClass.prototype.convert.apply( _this, [obj,fromLayer,toLayer]);
-                
-              }
-              
+            let myfl=yield* _this.fiber$findLayer(_thread, fromLayer);
+            
+            if (myfl) {
+              scr=myfl.world2screen(obj);
             } else {
-              return obj;
+              _this.print("Screen::conv invalid from",_this,fromLayer,toLayer);
+              throw new Error("Screen::conv invalid from");
+              
+              
             }
+            
+          }
+        }
+        if (toLayer===_this) {
+          return scr;
+          
+        } else {
+          if (toLayer===_this.layer) {
+            return __superClass.prototype.convert.apply( _this, [scr,_this,_this.layer]);
+            
+          } else {
+            let mytl=yield* _this.fiber$findLayer(_thread, toLayer);
+            
+            if (mytl) {
+              return mytl.screen2world(scr);
+            } else {
+              _this.print("Screen::conv invalid to",_this,fromLayer,toLayer);
+              throw new Error("Screen::conv invalid to");
+              
+              
+            }
+            
           }
         }
         
@@ -24506,7 +24717,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"drawLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"removeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"selectLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayerIndex":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"scrollBy":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"canvas2buf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,"kernel.Sprites","kernel.Sprites"],"returnValue":null}},"setBGColor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"all":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":["Array"],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"touchedFingers":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.TQuery",null],"returnValue":null}}},"fields":{"layers":{},"_color":{},"camera":{},"_drawing":{},"clearBG":{},"index":{},"multiLayerTouches":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"drawLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"removeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"selectLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayerIndex":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"scrollBy":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"canvas2buf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setBGColor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"all":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":["Array"],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"touchedFingers":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.TQuery",null],"returnValue":null}}},"fields":{"layers":{},"_color":{},"camera":{},"_drawing":{},"clearBG":{},"index":{},"multiLayerTouches":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.TD_Z',
@@ -35874,7 +36085,7 @@ Tonyu.klass.define({
         _this._th=Tonyu.thread();
         _this._th.apply(_this,"main");
         _this._th.stepsLoop();
-        _this.on("die",(function anonymous_1060() {
+        _this.on("die",(function anonymous_1062() {
           
           if (_this._th) {
             _this._th.kill();
@@ -35907,7 +36118,7 @@ Tonyu.klass.define({
         var _this=this;
         
         a._scheduler=newS;
-        oldS.findByThreadGroup(a).forEach((function anonymous_1359(th) {
+        oldS.findByThreadGroup(a).forEach((function anonymous_1361(th) {
           
           if (th.scheduled===newS) {
             return _this;
@@ -35921,7 +36132,7 @@ Tonyu.klass.define({
         var _this=this;
         
         a._scheduler=newS;
-        oldS.findByThreadGroup(a).forEach((function anonymous_1359(th) {
+        oldS.findByThreadGroup(a).forEach((function anonymous_1361(th) {
           
           if (th.scheduled===newS) {
             return _this;
@@ -35944,14 +36155,14 @@ Tonyu.klass.define({
         newS = _this._scheduler;
         
         oldS.doTimeStop();
-        res = {release: (function anonymous_1705(a) {
+        res = {release: (function anonymous_1707(a) {
           
           if (! a) {
             return res.releaseAll();
           }
           a._scheduler=newS;
           _this.moveToScheduler(a,oldS,newS);
-        }),releaseAll: (function anonymous_2106() {
+        }),releaseAll: (function anonymous_2108() {
           var a;
           var e;
           
@@ -35980,14 +36191,14 @@ Tonyu.klass.define({
         newS = _this._scheduler;
         
         oldS.doTimeStop();
-        res = {release: (function anonymous_1705(a) {
+        res = {release: (function anonymous_1707(a) {
           
           if (! a) {
             return res.releaseAll();
           }
           a._scheduler=newS;
           _this.moveToScheduler(a,oldS,newS);
-        }),releaseAll: (function anonymous_2106() {
+        }),releaseAll: (function anonymous_2108() {
           var a;
           var e;
           
@@ -36058,9 +36269,10 @@ Tonyu.klass.define({
       initPeripherals :function _trc_Boot_initPeripherals() {
         var _this=this;
         
+        _this.R=new Tonyu.classes.kernel.MessageResource().functionShortcut();
         Tonyu.globals.$InputDevice=new Tonyu.classes.kernel.InputDevice;
         Tonyu.globals.$Screen.multiLayerTouches=new Tonyu.classes.kernel.MultiLayerTouches({screen: Tonyu.globals.$Screen});
-        Tonyu.globals.$InputDevice.on("touchstart",(function anonymous_2838(e) {
+        Tonyu.globals.$InputDevice.on("touchstart",(function anonymous_2889(e) {
           var shape;
           var f;
           var a;
@@ -36120,7 +36332,7 @@ Tonyu.klass.define({
         Tonyu.globals.$printLimit=500;
         if (Tonyu.globals.$debugger) {
           _this.autoReload=Tonyu.globals.$debugger.startWithAutoReload;
-          Tonyu.globals.$debugger.on("classChanged",(function anonymous_4460() {
+          Tonyu.globals.$debugger.on("classChanged",(function anonymous_4511() {
             
             _this.getMainClass();
             _this.doAutoReload();
@@ -36132,9 +36344,10 @@ Tonyu.klass.define({
       fiber$initPeripherals :function* _trc_Boot_f_initPeripherals(_thread) {
         var _this=this;
         
+        _this.R=new Tonyu.classes.kernel.MessageResource().functionShortcut();
         Tonyu.globals.$InputDevice=new Tonyu.classes.kernel.InputDevice;
         Tonyu.globals.$Screen.multiLayerTouches=new Tonyu.classes.kernel.MultiLayerTouches({screen: Tonyu.globals.$Screen});
-        Tonyu.globals.$InputDevice.on("touchstart",(function anonymous_2838(e) {
+        Tonyu.globals.$InputDevice.on("touchstart",(function anonymous_2889(e) {
           var shape;
           var f;
           var a;
@@ -36194,7 +36407,7 @@ Tonyu.klass.define({
         Tonyu.globals.$printLimit=500;
         if (Tonyu.globals.$debugger) {
           _this.autoReload=Tonyu.globals.$debugger.startWithAutoReload;
-          Tonyu.globals.$debugger.on("classChanged",(function anonymous_4460() {
+          Tonyu.globals.$debugger.on("classChanged",(function anonymous_4511() {
             
             _this.getMainClass();
             _this.doAutoReload();
@@ -36248,7 +36461,7 @@ Tonyu.klass.define({
         Tonyu.globals.$camera3D=new Tonyu.classes.kernel.Camera3D({layer: Tonyu.globals.$sprites3D,x: 0,y: 0,z: - 100});
         Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Layer3D({group: Tonyu.globals.$sprites3D,camera: Tonyu.globals.$camera3D});
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-        Tonyu.globals.$Screen.on("resize",(function anonymous_5588() {
+        Tonyu.globals.$Screen.on("resize",(function anonymous_5639() {
           
           Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
           Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
@@ -36293,7 +36506,7 @@ Tonyu.klass.define({
         Tonyu.globals.$camera3D=new Tonyu.classes.kernel.Camera3D({layer: Tonyu.globals.$sprites3D,x: 0,y: 0,z: - 100});
         Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Layer3D({group: Tonyu.globals.$sprites3D,camera: Tonyu.globals.$camera3D});
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-        Tonyu.globals.$Screen.on("resize",(function anonymous_5588() {
+        Tonyu.globals.$Screen.on("resize",(function anonymous_5639() {
           
           Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
           Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
@@ -36354,7 +36567,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.progress("Loading plugins..");
-        _this.runPromise((function anonymous_6653(r) {
+        _this.runPromise((function anonymous_6704(r) {
           
           Tonyu.globals.$currentProject.loadPlugins(r);
         }));
@@ -36364,7 +36577,7 @@ Tonyu.klass.define({
         var _this=this;
         
         (yield* _this.fiber$progress(_thread, "Loading plugins.."));
-        (yield* _this.fiber$runPromise(_thread, (function anonymous_6653(r) {
+        (yield* _this.fiber$runPromise(_thread, (function anonymous_6704(r) {
           
           Tonyu.globals.$currentProject.loadPlugins(r);
         })));
@@ -36382,7 +36595,7 @@ Tonyu.klass.define({
         rs = Tonyu.globals.$currentProject.getResource();
         
         
-        r=_this.runPromise((function anonymous_6874(succ) {
+        r=_this.runPromise((function anonymous_6925(succ) {
           
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         }));
@@ -36404,7 +36617,7 @@ Tonyu.klass.define({
         rs = Tonyu.globals.$currentProject.getResource();
         
         
-        r=(yield* _this.fiber$runPromise(_thread, (function anonymous_6874(succ) {
+        r=(yield* _this.fiber$runPromise(_thread, (function anonymous_6925(succ) {
           
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         })));
@@ -36423,7 +36636,7 @@ Tonyu.klass.define({
         _this.initT2MediaPlayer();
         _this.loadFromProject(Tonyu.globals.$currentProject);
         _this.progress("Loading sounds done.");
-        _this.on("stop",(function anonymous_7340() {
+        _this.on("stop",(function anonymous_7391() {
           
           _this.allResetBGM();
         }));
@@ -36436,7 +36649,7 @@ Tonyu.klass.define({
         (yield* _this.fiber$initT2MediaPlayer(_thread));
         (yield* _this.fiber$loadFromProject(_thread, Tonyu.globals.$currentProject));
         (yield* _this.fiber$progress(_thread, "Loading sounds done."));
-        _this.on("stop",(function anonymous_7340() {
+        _this.on("stop",(function anonymous_7391() {
           
           _this.allResetBGM();
         }));
@@ -36584,7 +36797,7 @@ Tonyu.klass.define({
           saved = _this.pageStack.pop();
           
           if (! saved) {
-            throw new Error(R("noPushedPages"));
+            throw new Error(_this.R("noPushedPages"));
             
             
           }
@@ -36614,7 +36827,7 @@ Tonyu.klass.define({
           } else {
             a = Tonyu.globals.$Screen.all();
             
-            a=a.find((function anonymous_9480(e) {
+            a=a.find((function anonymous_9531(e) {
               
               return pass.indexOf(e)<0;
             }));
@@ -36668,7 +36881,7 @@ Tonyu.klass.define({
           saved = _this.pageStack.pop();
           
           if (! saved) {
-            throw new Error(R("noPushedPages"));
+            throw new Error(_this.R("noPushedPages"));
             
             
           }
@@ -36698,7 +36911,7 @@ Tonyu.klass.define({
           } else {
             a = Tonyu.globals.$Screen.all();
             
-            a=a.find((function anonymous_9480(e) {
+            a=a.find((function anonymous_9531(e) {
               
               return pass.indexOf(e)<0;
             }));
@@ -36715,16 +36928,16 @@ Tonyu.klass.define({
       stop :function _trc_Boot_stop() {
         var _this=this;
         
-        return new Promise((function anonymous_9678(resolve) {
+        return new Promise((function anonymous_9729(resolve) {
           var evt;
           var e;
           var r;
           
-          evt = {die: (function anonymous_9765() {
+          evt = {die: (function anonymous_9816() {
             
             _this.die();
             resolve();
-          }),preventDefault: (function anonymous_9906() {
+          }),preventDefault: (function anonymous_9957() {
             
             evt.defaultPrevented=true;
           })};
@@ -36748,16 +36961,16 @@ Tonyu.klass.define({
       fiber$stop :function* _trc_Boot_f_stop(_thread) {
         var _this=this;
         
-        return new Promise((function anonymous_9678(resolve) {
+        return new Promise((function anonymous_9729(resolve) {
           var evt;
           var e;
           var r;
           
-          evt = {die: (function anonymous_9765() {
+          evt = {die: (function anonymous_9816() {
             
             _this.die();
             resolve();
-          }),preventDefault: (function anonymous_9906() {
+          }),preventDefault: (function anonymous_9957() {
             
             evt.defaultPrevented=true;
           })};
@@ -37285,7 +37498,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16629() {
+        requestAnimationFrame((function anonymous_16680() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -37301,7 +37514,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16629() {
+        requestAnimationFrame((function anonymous_16680() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -37322,7 +37535,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initSymbol":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setScheduler":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveToScheduler":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Actor","kernel.Scheduler","kernel.Scheduler"],"returnValue":null}},"timeStop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initGlobals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initPeripherals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"doAutoReload":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"debug":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPlugins":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadImages":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadSounds":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadAssets":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getIDE":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMainClass":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"createMainObject":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPage":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"stop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"hide":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"schedule":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"progress":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"progressNoLog":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mainLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopRAF":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"handlePause":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"moveFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"afterDraw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initFPSParams":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"now":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resetDeadLine":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"waitFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"__getter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getMeasuredFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMeasuredRps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"measureFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"requestDrawFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setEconomyMode":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"tt":{},"window":{},"cvj":{},"debugCnt":{},"newLimit":{},"autoReload":{},"pageStack":{},"mainClass":{},"loadedAll":{},"_useRAF":{},"_fps":{},"subTime":{},"rafProcNowTime":{},"procCnt":{},"maxFrameSkip":{},"doDraw":{},"deadLine":{},"frameSkipped":{},"economyMode":{},"isIdle":{},"paused":{},"drawTime":{},"fps_fpsCnt":{},"newLimitCount":{},"moveTime":{},"fps_rpsCnt":{},"minFrameSkip":{},"frameCnt":{},"lastMeasured":{},"fps_fps":{},"fps_rps":{},"_drawFrameRequested":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initSymbol":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setScheduler":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveToScheduler":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Actor","kernel.Scheduler","kernel.Scheduler"],"returnValue":null}},"timeStop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initGlobals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initPeripherals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"doAutoReload":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"debug":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPlugins":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadImages":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadSounds":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadAssets":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getIDE":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMainClass":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"createMainObject":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPage":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"stop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"hide":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"schedule":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"progress":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"progressNoLog":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mainLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopRAF":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"handlePause":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"moveFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"afterDraw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initFPSParams":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"now":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resetDeadLine":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"waitFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"__getter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getMeasuredFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMeasuredRps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"measureFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"requestDrawFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setEconomyMode":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"tt":{},"window":{},"R":{},"cvj":{},"debugCnt":{},"newLimit":{},"autoReload":{},"pageStack":{},"mainClass":{},"loadedAll":{},"_useRAF":{},"_fps":{},"subTime":{},"rafProcNowTime":{},"procCnt":{},"maxFrameSkip":{},"doDraw":{},"deadLine":{},"frameSkipped":{},"economyMode":{},"isIdle":{},"paused":{},"drawTime":{},"fps_fpsCnt":{},"newLimitCount":{},"moveTime":{},"fps_rpsCnt":{},"minFrameSkip":{},"frameCnt":{},"lastMeasured":{},"fps_fps":{},"fps_rps":{},"_drawFrameRequested":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.ConsolePanel',

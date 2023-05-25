@@ -269,7 +269,7 @@ var _expand, _wallFilter;
     return isWall(o.x, o.y);
 }
 \isWall(cx,cy) {
-    return _wallFilter(cx,cy,this);
+    return _wallFilter(chip(cx,cy));
 }
 \chipFilter(options) {
     // {layer:"on"};   set anything other than -1 in "on" as wall
@@ -329,7 +329,15 @@ var _expand, _wallFilter;
 \setOn(setCol,setRow,onP){
     setWithLayerName("on",setCol,setRow,onP);
 }
-\worldToChip(o) {
+\worldToChip(x, y) {
+    let o;
+    if (typeof x==="object") o=x;
+    if (typeof x==="number" && typeof y==="number") {
+        o={x,y};
+    } 
+    if (!o || typeof o!=="object") {
+        throw newError("Map2::worldToChip: invalid args ({1},{2})", x, y);
+    }
     var l=transform.worldToLocal(o);
     //print(l.x, l.y);
     var r=getDrawRect();
