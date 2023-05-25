@@ -1,0 +1,29 @@
+native Tonyu;
+
+\new() {
+    R=Tonyu.messages;
+    let ja={
+        "notA":"{1}{3}は{2}ではありません．",
+        "noPushedPages":"loadPageで戻る先のページがありません．引数にページ名を忘れているかもしれません．",
+    };
+    let en={
+        "notA":"{1}{3} is not a {2}.",
+        "noPushedPages":"loadPage(Pop page) failed. You should push page (or you forgot Page argument?)",
+    };
+    Object.assign(R.dicts.ja,ja);
+    Object.assign(R.dicts.en,en);
+}
+\r(name, ...args) {
+    return R(name, ...args);
+}
+\register(name, mesgs) {
+    if (mesgs.ja) R.dicts.ja[name]=mesgs.ja;
+    if (mesgs.en) R.dicts.en[name]=mesgs.en;
+
+}
+\functionShortcut() {
+    let R=\(...args) {return r(...args);};
+    R.register=\(...args) {return register(...args);};
+    R.self=this;
+    return R;
+}

@@ -16,7 +16,7 @@ native UIDiag;
 native performance;
 native Mezonet;
 native FS;
-native R;
+//native R;
 native RPGAtsumaru;
 native parent;
 native opener;
@@ -119,6 +119,7 @@ mainLoop();
     $fixProductOrder=true;
 }
 \initPeripherals() {
+    R=new MessageResource().functionShortcut();
     $InputDevice=new InputDevice;
     $Screen.multiLayerTouches=new MultiLayerTouches{screen:$Screen};
     // TODO: $Screen.on("touchstart")  -> move to MultiLayerTouches

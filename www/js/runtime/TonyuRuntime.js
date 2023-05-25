@@ -106,6 +106,12 @@ R.setLocale = locale => {
     if (locale === "en")
         dict = en;
 };
+R.getLocale = () => {
+    if (dict === en)
+        return "en";
+    return "ja";
+};
+R.dicts = { ja, en };
 module.exports = R;
 //module.exports=R;
 
@@ -797,8 +803,9 @@ var klass = {
             init: true,
             //initFullName:fullName,
             includesRec: (parent ? extend({}, parent.meta.includesRec) : {}),
-            nonShimParent: parent
+            nonShimParent: parent,
         });
+        res.toString = () => { return `[class ${fullName}]`; };
         addKlassAndNameToDecls(res.meta);
         res.extendFrom = extender;
         //addMeta(fullName, res.meta);
@@ -965,6 +972,9 @@ function resetLoopCheck(disableTime) {
     lastLoopCheck = root_1.default.performance.now() + (disableTime || 0);
 }
 function is(obj, klass) {
+    if (typeof klass === "string") {
+        return typeof obj === klass;
+    }
     if (!obj)
         return false;
     if (!klass)

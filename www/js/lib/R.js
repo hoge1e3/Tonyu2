@@ -4,6 +4,8 @@ $(".dropdown-menu a");
 $(".dropdown-toggle");
 */
     const root=require("root");
+    const Tonyu=require("Tonyu");
+
     const ja={
         "CreateNewProject":"新規作成",
         "DoesNotContainTonyuProjects":"Tonyuプロジェクトが見つかりません",
@@ -428,9 +430,14 @@ $(".dropdown-toggle");
     }
     let localeStr=loadLocale();
     localeStr=localeStr.substring(0,2);
-    let dict=localeStr=="en"? en: ja;
+    const R=Tonyu.messages;
+    Object.assign(R.dicts.en, en);
+    Object.assign(R.dicts.ja, ja);
+    R.super_setLocale=R.setLocale;
+    R.setLocale(localeStr=="en"? "en": "ja");
+    //let dict=localeStr=="en"? en: ja;
     //const test=x=>`【${x}】`;
-    function R(name,...params) {
+    /*function R(name,...params) {
         let mesg=dict[name];
         if (!mesg) {
             return englishify(name)+(params.length?": "+params.join(","):"");
@@ -452,7 +459,7 @@ $(".dropdown-toggle");
             return a[parseInt(n)-1]+"";
         });
         return format;
-    }
+    }*/
     R.renderMenu=()=>{
         $("[data-r]").each(function () {
             const e=$(this);
@@ -462,13 +469,10 @@ $(".dropdown-toggle");
     if (typeof $==="function") {
         $(R.renderMenu);
     }
-    R.getLocale=()=>{
-        if (dict===en)return "en";
-        return "ja";
-    };
     R.setLocale=locale=>{
+        R.super_setLocale(locale);
         localStorage.locale=locale;
-        dict=localStorage.locale=="en"? en: ja;
+        //dict=localStorage.locale=="en"? en: ja;
         R.renderMenu();
     };
     root.R=R;
