@@ -1,5 +1,5 @@
 extends null;
-includes MathMod,PrintMod;
+includes MathMod,PrintMod,AssertionMod;
 native Tonyu;
 \new (options) {
     if (typeof options=="object") extend(options);
