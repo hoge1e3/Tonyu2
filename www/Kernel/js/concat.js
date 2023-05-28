@@ -1974,550 +1974,6 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"isDeadThreadGroup":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setThreadGroup":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"killThreadGroup":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"_isDeadThreadGroup":{},"_threadGroup":{},"tGrpObjectPoolAge":{}}}
 });
 Tonyu.klass.define({
-  fullName: 'kernel.InputDevice',
-  shortName: 'InputDevice',
-  namespace: 'kernel',
-  includes: [Tonyu.classes.kernel.EventMod],
-  methods: function (__superClass) {
-    return {
-      main :function _trc_InputDevice_main() {
-        var _this=this;
-        
-      },
-      fiber$main :function* _trc_InputDevice_f_main(_thread) {
-        var _this=this;
-        
-        
-      },
-      initialize :function _trc_InputDevice_initialize() {
-        var _this=this;
-        
-        _this.listeners=[];
-        _this.touchEmu=true;
-        _this.wheelVy=0;
-        _this.defaultLayer=Tonyu.globals.$Screen;
-      },
-      handleListeners :function _trc_InputDevice_handleListeners(type,evt) {
-        var _this=this;
-        var l;
-        
-        l = _this.listeners;
-        
-        _this.listeners=[];
-        while (l.length>0) {
-          (l.shift())();
-          
-        }
-        if (type&&evt) {
-          evt.type=type;
-          _this.fireEvent(type,evt);
-          
-        }
-        if (Tonyu.globals.$Boot.economyMode&&! Tonyu.globals.$Boot.economyMode.manualDraw) {
-          Tonyu.globals.$Boot.requestDrawFrame();
-          
-        }
-      },
-      fiber$handleListeners :function* _trc_InputDevice_f_handleListeners(_thread,type,evt) {
-        var _this=this;
-        var l;
-        
-        l = _this.listeners;
-        
-        _this.listeners=[];
-        while (l.length>0) {
-          (l.shift())();
-          
-        }
-        if (type&&evt) {
-          evt.type=type;
-          _this.fireEvent(type,evt);
-          
-        }
-        if (Tonyu.globals.$Boot.economyMode&&! Tonyu.globals.$Boot.economyMode.manualDraw) {
-          Tonyu.globals.$Boot.requestDrawFrame();
-          
-        }
-        
-      },
-      addOnetimeListener :function _trc_InputDevice_addOnetimeListener(l) {
-        var _this=this;
-        
-        _this.listeners.push(l);
-      },
-      fiber$addOnetimeListener :function* _trc_InputDevice_f_addOnetimeListener(_thread,l) {
-        var _this=this;
-        
-        _this.listeners.push(l);
-        
-      },
-      newTouch :function _trc_InputDevice_newTouch(i) {
-        var _this=this;
-        
-        return {index: i,px: 0,py: 0,x: 0,y: 0,vx: 0,vy: 0,touched: 0,identifier: - 1,ended: false,layer: _this.defaultLayer};
-      },
-      fiber$newTouch :function* _trc_InputDevice_f_newTouch(_thread,i) {
-        var _this=this;
-        
-        return {index: i,px: 0,py: 0,x: 0,y: 0,vx: 0,vy: 0,touched: 0,identifier: - 1,ended: false,layer: _this.defaultLayer};
-        
-      },
-      changeTouchLayer :function _trc_InputDevice_changeTouchLayer(t,toLayer) {
-        var _this=this;
-        
-        return t.layer=toLayer;
-      },
-      fiber$changeTouchLayer :function* _trc_InputDevice_f_changeTouchLayer(_thread,t,toLayer) {
-        var _this=this;
-        
-        return t.layer=toLayer;
-        
-      },
-      initCanvasEvents :function _trc_InputDevice_initCanvasEvents(cvj) {
-        var _this=this;
-        var cv;
-        var ID_MOUSE;
-        var bmap;
-        var handleMouseDown;
-        var handleMouseMove;
-        var handleMouseUp;
-        var handleTouchStart;
-        var handleTouchMove;
-        var handleTouchEnd;
-        var handleWheel;
-        var d;
-        
-        _this.rootCanvas=cvj;
-        cv = cvj[0];
-        
-        ID_MOUSE = 31238612;
-        
-        bmap = [1,4,2];
-        
-        Tonyu.globals.$handleMouseDown=(function anonymous_932(e) {
-          var p;
-          var mp;
-          
-          _this.debug("mouseDown",Tonyu.globals.$InputDevice.touchEmu,e);
-          _this.mouseDownAtCV=true;
-          Tonyu.resetLoopCheck();
-          if (Tonyu.globals.$t2MediaLib) {
-            Tonyu.globals.$t2MediaLib.activate();
-          }
-          e.preventDefault();
-          window.focus();
-          p = cvj.offset();
-          
-          mp = {x: e.clientX-p.left,y: e.clientY-p.top,layer: Tonyu.globals.$Screen.layer};
-          
-          mp=Tonyu.globals.$Screen.convert(mp,_this.defaultLayer);
-          Tonyu.globals.$mouseX=mp.x;
-          Tonyu.globals.$mouseY=mp.y;
-          _this.mouseButton=_this.mouseButton|(1<<e.button);
-          _this.isMouseDown=true;
-          if (Tonyu.globals.$InputDevice.touchEmu) {
-            Tonyu.globals.$handleTouchStart({preventDefault: (function anonymous_1762() {
-              
-            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
-            
-          }
-          _this.handleListeners();
-        });
-        Tonyu.globals.$handleMouseMove=(function anonymous_2108(e) {
-          var p;
-          var mp;
-          var changedTouches;
-          var btn;
-          var bid;
-          
-          _this.debug("mouseMove",Tonyu.globals.$InputDevice.touchEmu,e);
-          Tonyu.resetLoopCheck();
-          if (_this.mouseDownAtCV) {
-            e.preventDefault();
-          }
-          p = cvj.offset();
-          
-          mp = {x: e.clientX-p.left,y: e.clientY-p.top,layer: Tonyu.globals.$Screen.layer};
-          
-          mp=Tonyu.globals.$Screen.convert(mp,_this.defaultLayer);
-          _this.fireEvent("mouseMove",{x: mp.x,y: mp.y,vx: Tonyu.globals.$mouseX==null?0:mp.x-Tonyu.globals.$mouseX,vy: Tonyu.globals.$mouseY==null?0:mp.y-Tonyu.globals.$mouseY});
-          Tonyu.globals.$mouseX=mp.x;
-          Tonyu.globals.$mouseY=mp.y;
-          if (_this.isMouseDown&&Tonyu.globals.$InputDevice.touchEmu) {
-            changedTouches = [];
-            
-            btn = _this.mouseButton;
-            bid = 0;
-            
-            while (btn) {
-              if (btn&1) {
-                changedTouches.push({identifier: ID_MOUSE+bid,pageX: e.clientX,pageY: e.clientY});
-                
-              }
-              btn=btn>>1;
-              bid++;
-              
-            }
-            Tonyu.globals.$handleTouchMove({preventDefault: (function anonymous_3208() {
-              
-            }),originalEvent: {changedTouches: changedTouches},byMouse: bmap[e.button]||1});
-            
-          }
-          _this.handleListeners();
-        });
-        Tonyu.globals.$handleMouseUp=(function anonymous_3441(e) {
-          
-          _this.debug("mouseUp",Tonyu.globals.$InputDevice.touchEmu);
-          Tonyu.resetLoopCheck();
-          if (Tonyu.globals.$t2MediaLib) {
-            Tonyu.globals.$t2MediaLib.activate();
-          }
-          if (_this.mouseDownAtCV) {
-            e.preventDefault();
-          }
-          _this.mouseDownAtCV=false;
-          _this.isMouseDown=false;
-          _this.mouseButton=_this.mouseButton&~ (1<<e.button);
-          if (Tonyu.globals.$InputDevice.touchEmu) {
-            Tonyu.globals.$handleTouchEnd({preventDefault: (function anonymous_3882() {
-              
-            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
-            
-          }
-        });
-        _this.touch=new Tonyu.classes.kernel.TouchFingers(_this);
-        Tonyu.globals.$touches=_this.touch.fingerArray;
-        Tonyu.globals.$handleTouchStart=(function anonymous_4280(e) {
-          
-          return _this.touch.handleStart(e);
-        });
-        Tonyu.globals.$handleTouchMove=(function anonymous_4364(e) {
-          
-          return _this.touch.handleMove(e);
-        });
-        Tonyu.globals.$handleTouchEnd=(function anonymous_4446(e) {
-          
-          return _this.touch.handleEnd(e);
-        });
-        Tonyu.globals.$handleWheel=(function anonymous_4524(e) {
-          
-          e=e.originalEvent;
-          _this.wheelVy+=e.deltaY;
-          _this.fireEvent("wheel",e);
-          return false;
-        });
-        Tonyu.globals.$unsetTouchEmu=(function anonymous_4669() {
-          
-          Tonyu.resetLoopCheck();
-          Tonyu.globals.$InputDevice.touchEmu=false;
-          return _this.touch.unsetEmu();
-        });
-        handleMouseDown = (function anonymous_4822(e) {
-          
-          Tonyu.globals.$handleMouseDown(e);
-        });
-        
-        handleMouseMove = (function anonymous_4875(e) {
-          
-          Tonyu.globals.$handleMouseMove(e);
-        });
-        
-        handleMouseUp = (function anonymous_4926(e) {
-          
-          Tonyu.globals.$handleMouseUp(e);
-        });
-        
-        handleTouchStart = (function anonymous_4978(e) {
-          
-          Tonyu.globals.$unsetTouchEmu();
-          Tonyu.globals.$handleTouchStart(e);
-        });
-        
-        handleTouchMove = (function anonymous_5049(e) {
-          
-          Tonyu.globals.$unsetTouchEmu();
-          Tonyu.globals.$handleTouchMove(e);
-        });
-        
-        handleTouchEnd = (function anonymous_5118(e) {
-          
-          Tonyu.globals.$unsetTouchEmu();
-          Tonyu.globals.$handleTouchEnd(e);
-        });
-        
-        handleWheel = (function anonymous_5183(e) {
-          
-          Tonyu.globals.$handleWheel(e);
-        });
-        
-        d = $.data(cv,"events");
-        
-        if (! d) {
-          $.data(cv,"events","true");
-          cvj.mousedown(handleMouseDown);
-          $(document).mousemove(handleMouseMove);
-          $(document).mouseup(handleMouseUp);
-          $(document).on("mouseleave",handleMouseUp);
-          cvj.on("contextmenu",(function anonymous_5538(e) {
-            
-            e.stopPropagation();
-            e.preventDefault();
-          }));
-          cvj.on("touchstart",handleTouchStart);
-          cvj.on("touchmove",handleTouchMove);
-          cvj.on("touchend",handleTouchEnd);
-          cvj.on("touchcancel",handleTouchEnd);
-          cvj.on("wheel",handleWheel);
-          
-        }
-      },
-      fiber$initCanvasEvents :function* _trc_InputDevice_f_initCanvasEvents(_thread,cvj) {
-        var _this=this;
-        var cv;
-        var ID_MOUSE;
-        var bmap;
-        var handleMouseDown;
-        var handleMouseMove;
-        var handleMouseUp;
-        var handleTouchStart;
-        var handleTouchMove;
-        var handleTouchEnd;
-        var handleWheel;
-        var d;
-        
-        _this.rootCanvas=cvj;
-        cv = cvj[0];
-        
-        ID_MOUSE = 31238612;
-        
-        bmap = [1,4,2];
-        
-        Tonyu.globals.$handleMouseDown=(function anonymous_932(e) {
-          var p;
-          var mp;
-          
-          _this.debug("mouseDown",Tonyu.globals.$InputDevice.touchEmu,e);
-          _this.mouseDownAtCV=true;
-          Tonyu.resetLoopCheck();
-          if (Tonyu.globals.$t2MediaLib) {
-            Tonyu.globals.$t2MediaLib.activate();
-          }
-          e.preventDefault();
-          window.focus();
-          p = cvj.offset();
-          
-          mp = {x: e.clientX-p.left,y: e.clientY-p.top,layer: Tonyu.globals.$Screen.layer};
-          
-          mp=Tonyu.globals.$Screen.convert(mp,_this.defaultLayer);
-          Tonyu.globals.$mouseX=mp.x;
-          Tonyu.globals.$mouseY=mp.y;
-          _this.mouseButton=_this.mouseButton|(1<<e.button);
-          _this.isMouseDown=true;
-          if (Tonyu.globals.$InputDevice.touchEmu) {
-            Tonyu.globals.$handleTouchStart({preventDefault: (function anonymous_1762() {
-              
-            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
-            
-          }
-          _this.handleListeners();
-        });
-        Tonyu.globals.$handleMouseMove=(function anonymous_2108(e) {
-          var p;
-          var mp;
-          var changedTouches;
-          var btn;
-          var bid;
-          
-          _this.debug("mouseMove",Tonyu.globals.$InputDevice.touchEmu,e);
-          Tonyu.resetLoopCheck();
-          if (_this.mouseDownAtCV) {
-            e.preventDefault();
-          }
-          p = cvj.offset();
-          
-          mp = {x: e.clientX-p.left,y: e.clientY-p.top,layer: Tonyu.globals.$Screen.layer};
-          
-          mp=Tonyu.globals.$Screen.convert(mp,_this.defaultLayer);
-          _this.fireEvent("mouseMove",{x: mp.x,y: mp.y,vx: Tonyu.globals.$mouseX==null?0:mp.x-Tonyu.globals.$mouseX,vy: Tonyu.globals.$mouseY==null?0:mp.y-Tonyu.globals.$mouseY});
-          Tonyu.globals.$mouseX=mp.x;
-          Tonyu.globals.$mouseY=mp.y;
-          if (_this.isMouseDown&&Tonyu.globals.$InputDevice.touchEmu) {
-            changedTouches = [];
-            
-            btn = _this.mouseButton;
-            bid = 0;
-            
-            while (btn) {
-              if (btn&1) {
-                changedTouches.push({identifier: ID_MOUSE+bid,pageX: e.clientX,pageY: e.clientY});
-                
-              }
-              btn=btn>>1;
-              bid++;
-              
-            }
-            Tonyu.globals.$handleTouchMove({preventDefault: (function anonymous_3208() {
-              
-            }),originalEvent: {changedTouches: changedTouches},byMouse: bmap[e.button]||1});
-            
-          }
-          _this.handleListeners();
-        });
-        Tonyu.globals.$handleMouseUp=(function anonymous_3441(e) {
-          
-          _this.debug("mouseUp",Tonyu.globals.$InputDevice.touchEmu);
-          Tonyu.resetLoopCheck();
-          if (Tonyu.globals.$t2MediaLib) {
-            Tonyu.globals.$t2MediaLib.activate();
-          }
-          if (_this.mouseDownAtCV) {
-            e.preventDefault();
-          }
-          _this.mouseDownAtCV=false;
-          _this.isMouseDown=false;
-          _this.mouseButton=_this.mouseButton&~ (1<<e.button);
-          if (Tonyu.globals.$InputDevice.touchEmu) {
-            Tonyu.globals.$handleTouchEnd({preventDefault: (function anonymous_3882() {
-              
-            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
-            
-          }
-        });
-        _this.touch=new Tonyu.classes.kernel.TouchFingers(_this);
-        Tonyu.globals.$touches=_this.touch.fingerArray;
-        Tonyu.globals.$handleTouchStart=(function anonymous_4280(e) {
-          
-          return _this.touch.handleStart(e);
-        });
-        Tonyu.globals.$handleTouchMove=(function anonymous_4364(e) {
-          
-          return _this.touch.handleMove(e);
-        });
-        Tonyu.globals.$handleTouchEnd=(function anonymous_4446(e) {
-          
-          return _this.touch.handleEnd(e);
-        });
-        Tonyu.globals.$handleWheel=(function anonymous_4524(e) {
-          
-          e=e.originalEvent;
-          _this.wheelVy+=e.deltaY;
-          _this.fireEvent("wheel",e);
-          return false;
-        });
-        Tonyu.globals.$unsetTouchEmu=(function anonymous_4669() {
-          
-          Tonyu.resetLoopCheck();
-          Tonyu.globals.$InputDevice.touchEmu=false;
-          return _this.touch.unsetEmu();
-        });
-        handleMouseDown = (function anonymous_4822(e) {
-          
-          Tonyu.globals.$handleMouseDown(e);
-        });
-        
-        handleMouseMove = (function anonymous_4875(e) {
-          
-          Tonyu.globals.$handleMouseMove(e);
-        });
-        
-        handleMouseUp = (function anonymous_4926(e) {
-          
-          Tonyu.globals.$handleMouseUp(e);
-        });
-        
-        handleTouchStart = (function anonymous_4978(e) {
-          
-          Tonyu.globals.$unsetTouchEmu();
-          Tonyu.globals.$handleTouchStart(e);
-        });
-        
-        handleTouchMove = (function anonymous_5049(e) {
-          
-          Tonyu.globals.$unsetTouchEmu();
-          Tonyu.globals.$handleTouchMove(e);
-        });
-        
-        handleTouchEnd = (function anonymous_5118(e) {
-          
-          Tonyu.globals.$unsetTouchEmu();
-          Tonyu.globals.$handleTouchEnd(e);
-        });
-        
-        handleWheel = (function anonymous_5183(e) {
-          
-          Tonyu.globals.$handleWheel(e);
-        });
-        
-        d = $.data(cv,"events");
-        
-        if (! d) {
-          $.data(cv,"events","true");
-          cvj.mousedown(handleMouseDown);
-          $(document).mousemove(handleMouseMove);
-          $(document).mouseup(handleMouseUp);
-          $(document).on("mouseleave",handleMouseUp);
-          cvj.on("contextmenu",(function anonymous_5538(e) {
-            
-            e.stopPropagation();
-            e.preventDefault();
-          }));
-          cvj.on("touchstart",handleTouchStart);
-          cvj.on("touchmove",handleTouchMove);
-          cvj.on("touchend",handleTouchEnd);
-          cvj.on("touchcancel",handleTouchEnd);
-          cvj.on("wheel",handleWheel);
-          
-        }
-        
-      },
-      update :function _trc_InputDevice_update() {
-        var _this=this;
-        
-        _this.wheelVy=0;
-        return _this.touch.updateFingers();
-      },
-      fiber$update :function* _trc_InputDevice_f_update(_thread) {
-        var _this=this;
-        
-        _this.wheelVy=0;
-        return _this.touch.updateFingers();
-        
-      },
-      debug :function _trc_InputDevice_debug() {
-        var _this=this;
-        
-        if (_this.debugFlag) {
-          console.log.apply(console,arguments);
-          
-        }
-      },
-      fiber$debug :function* _trc_InputDevice_f_debug(_thread) {
-        var _this=this;
-        var _arguments=Tonyu.A(arguments);
-        
-        if (_this.debugFlag) {
-          console.log.apply(console,_arguments);
-          
-        }
-        
-      },
-      reset :function _trc_InputDevice_reset() {
-        var _this=this;
-        
-        _this.touch.reset();
-      },
-      fiber$reset :function* _trc_InputDevice_f_reset(_thread) {
-        var _this=this;
-        
-        _this.touch.reset();
-        
-      },
-      __dummy: false
-    };
-  },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"handleListeners":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"addOnetimeListener":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"newTouch":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"changeTouchLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"initCanvasEvents":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"debug":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"reset":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"listeners":{},"touchEmu":{},"wheelVy":{},"defaultLayer":{},"rootCanvas":{},"mouseDownAtCV":{},"mouseButton":{},"isMouseDown":{},"touch":{},"debugFlag":{}}}
-});
-Tonyu.klass.define({
   fullName: 'kernel.API',
   shortName: 'API',
   namespace: 'kernel',
@@ -15166,6 +14622,585 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"isArray":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"isPlainObj":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"genid":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"isPrimitive":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"extLink":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"add2":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"name2id":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.InputDevice',
+  shortName: 'InputDevice',
+  namespace: 'kernel',
+  includes: [Tonyu.classes.kernel.EventMod,Tonyu.classes.kernel.AssertionMod],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_InputDevice_main() {
+        var _this=this;
+        
+        "field strict";
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      },
+      fiber$main :function* _trc_InputDevice_f_main(_thread) {
+        var _this=this;
+        
+        "field strict";
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      },
+      initialize :function _trc_InputDevice_initialize() {
+        var _this=this;
+        
+        _this.listeners=[];
+        _this.touchEmu=true;
+        _this.wheelVy=0;
+        _this.defaultLayerPath=_this.assertIs(Tonyu.globals.$Screen.defaultLayerPath,Tonyu.classes.kernel.LayerPath,"$Screen.defaultLayerPath");
+      },
+      __getter__defaultLayer :function _trc_InputDevice___getter__defaultLayer() {
+        var _this=this;
+        
+        if (Tonyu.is(_this.defaultLayerPath.target,Tonyu.classes.kernel.ScreenLayer)) {
+          return _this.defaultLayerPath.target.group;
+        }
+        return _this.defaultLayerPath.target;
+      },
+      __setter__defaultLayer :function _trc_InputDevice___setter__defaultLayer(l) {
+        var _this=this;
+        
+        _this.defaultLayerPath=_this.assertIs(l.defaultLayerPath,Tonyu.classes.kernel.LayerPath,"l.def");
+      },
+      handleListeners :function _trc_InputDevice_handleListeners(type,evt) {
+        var _this=this;
+        var l;
+        
+        l = _this.listeners;
+        
+        _this.listeners=[];
+        while (l.length>0) {
+          (l.shift())();
+          
+        }
+        if (type&&evt) {
+          evt.type=type;
+          _this.fireEvent(type,evt);
+          
+        }
+        if (Tonyu.globals.$Boot.economyMode&&! Tonyu.globals.$Boot.economyMode.manualDraw) {
+          Tonyu.globals.$Boot.requestDrawFrame();
+          
+        }
+      },
+      fiber$handleListeners :function* _trc_InputDevice_f_handleListeners(_thread,type,evt) {
+        var _this=this;
+        var l;
+        
+        l = _this.listeners;
+        
+        _this.listeners=[];
+        while (l.length>0) {
+          (l.shift())();
+          
+        }
+        if (type&&evt) {
+          evt.type=type;
+          _this.fireEvent(type,evt);
+          
+        }
+        if (Tonyu.globals.$Boot.economyMode&&! Tonyu.globals.$Boot.economyMode.manualDraw) {
+          Tonyu.globals.$Boot.requestDrawFrame();
+          
+        }
+        
+      },
+      addOnetimeListener :function _trc_InputDevice_addOnetimeListener(l) {
+        var _this=this;
+        
+        _this.listeners.push(l);
+      },
+      fiber$addOnetimeListener :function* _trc_InputDevice_f_addOnetimeListener(_thread,l) {
+        var _this=this;
+        
+        _this.listeners.push(l);
+        
+      },
+      newTouch :function _trc_InputDevice_newTouch(i) {
+        var _this=this;
+        
+        return {index: i,px: 0,py: 0,x: 0,y: 0,vx: 0,vy: 0,touched: 0,identifier: - 1,ended: false,layer: _this.defaultLayer};
+      },
+      fiber$newTouch :function* _trc_InputDevice_f_newTouch(_thread,i) {
+        var _this=this;
+        
+        return {index: i,px: 0,py: 0,x: 0,y: 0,vx: 0,vy: 0,touched: 0,identifier: - 1,ended: false,layer: _this.defaultLayer};
+        
+      },
+      changeTouchLayer :function _trc_InputDevice_changeTouchLayer(t,toLayer) {
+        var _this=this;
+        
+        return t.layer=toLayer;
+      },
+      fiber$changeTouchLayer :function* _trc_InputDevice_f_changeTouchLayer(_thread,t,toLayer) {
+        var _this=this;
+        
+        return t.layer=toLayer;
+        
+      },
+      initCanvasEvents :function _trc_InputDevice_initCanvasEvents(cvj) {
+        var _this=this;
+        var cv;
+        var ID_MOUSE;
+        var bmap;
+        var handleMouseDown;
+        var handleMouseMove;
+        var handleMouseUp;
+        var handleTouchStart;
+        var handleTouchMove;
+        var handleTouchEnd;
+        var handleWheel;
+        var d;
+        
+        _this.rootCanvas=cvj;
+        cv = cvj[0];
+        
+        ID_MOUSE = 31238612;
+        
+        bmap = [1,4,2];
+        
+        Tonyu.globals.$handleMouseDown=(function anonymous_1511(e) {
+          var p;
+          var mp;
+          
+          _this.debug("mouseDown",Tonyu.globals.$InputDevice.touchEmu,e);
+          _this.mouseDownAtCV=true;
+          Tonyu.resetLoopCheck();
+          if (Tonyu.globals.$t2MediaLib) {
+            Tonyu.globals.$t2MediaLib.activate();
+          }
+          e.preventDefault();
+          window.focus();
+          p = cvj.offset();
+          
+          mp = {x: e.clientX-p.left,y: e.clientY-p.top,layer: Tonyu.globals.$Screen.layer};
+          
+          mp=Tonyu.globals.$Screen.convert(mp,_this.defaultLayer);
+          Tonyu.globals.$mouseX=mp.x;
+          Tonyu.globals.$mouseY=mp.y;
+          _this.mouseButton=_this.mouseButton|(1<<e.button);
+          _this.isMouseDown=true;
+          if (Tonyu.globals.$InputDevice.touchEmu) {
+            Tonyu.globals.$handleTouchStart({preventDefault: (function anonymous_2341() {
+              
+            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
+            
+          }
+          _this.handleListeners();
+        });
+        Tonyu.globals.$handleMouseMove=(function anonymous_2687(e) {
+          var p;
+          var mp;
+          var changedTouches;
+          var btn;
+          var bid;
+          
+          _this.debug("mouseMove",Tonyu.globals.$InputDevice.touchEmu,e);
+          Tonyu.resetLoopCheck();
+          if (_this.mouseDownAtCV) {
+            e.preventDefault();
+          }
+          p = cvj.offset();
+          
+          mp = {x: e.clientX-p.left,y: e.clientY-p.top,layer: Tonyu.globals.$Screen.layer};
+          
+          mp=Tonyu.globals.$Screen.convert(mp,_this.defaultLayer);
+          _this.fireEvent("mouseMove",{x: mp.x,y: mp.y,vx: Tonyu.globals.$mouseX==null?0:mp.x-Tonyu.globals.$mouseX,vy: Tonyu.globals.$mouseY==null?0:mp.y-Tonyu.globals.$mouseY});
+          Tonyu.globals.$mouseX=mp.x;
+          Tonyu.globals.$mouseY=mp.y;
+          if (_this.isMouseDown&&Tonyu.globals.$InputDevice.touchEmu) {
+            changedTouches = [];
+            
+            btn = _this.mouseButton;
+            bid = 0;
+            
+            while (btn) {
+              if (btn&1) {
+                changedTouches.push({identifier: ID_MOUSE+bid,pageX: e.clientX,pageY: e.clientY});
+                
+              }
+              btn=btn>>1;
+              bid++;
+              
+            }
+            Tonyu.globals.$handleTouchMove({preventDefault: (function anonymous_3787() {
+              
+            }),originalEvent: {changedTouches: changedTouches},byMouse: bmap[e.button]||1});
+            
+          }
+          _this.handleListeners();
+        });
+        Tonyu.globals.$handleMouseUp=(function anonymous_4020(e) {
+          
+          _this.debug("mouseUp",Tonyu.globals.$InputDevice.touchEmu);
+          Tonyu.resetLoopCheck();
+          if (Tonyu.globals.$t2MediaLib) {
+            Tonyu.globals.$t2MediaLib.activate();
+          }
+          if (_this.mouseDownAtCV) {
+            e.preventDefault();
+          }
+          _this.mouseDownAtCV=false;
+          _this.isMouseDown=false;
+          _this.mouseButton=_this.mouseButton&~ (1<<e.button);
+          if (Tonyu.globals.$InputDevice.touchEmu) {
+            Tonyu.globals.$handleTouchEnd({preventDefault: (function anonymous_4461() {
+              
+            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
+            
+          }
+        });
+        _this.touch=new Tonyu.classes.kernel.TouchFingers(_this);
+        Tonyu.globals.$touches=_this.touch.fingerArray;
+        Tonyu.globals.$handleTouchStart=(function anonymous_4859(e) {
+          
+          return _this.touch.handleStart(e);
+        });
+        Tonyu.globals.$handleTouchMove=(function anonymous_4943(e) {
+          
+          return _this.touch.handleMove(e);
+        });
+        Tonyu.globals.$handleTouchEnd=(function anonymous_5025(e) {
+          
+          return _this.touch.handleEnd(e);
+        });
+        Tonyu.globals.$handleWheel=(function anonymous_5103(e) {
+          
+          e=e.originalEvent;
+          _this.wheelVy+=e.deltaY;
+          _this.fireEvent("wheel",e);
+          return false;
+        });
+        Tonyu.globals.$unsetTouchEmu=(function anonymous_5248() {
+          
+          Tonyu.resetLoopCheck();
+          Tonyu.globals.$InputDevice.touchEmu=false;
+          return _this.touch.unsetEmu();
+        });
+        handleMouseDown = (function anonymous_5401(e) {
+          
+          Tonyu.globals.$handleMouseDown(e);
+        });
+        
+        handleMouseMove = (function anonymous_5454(e) {
+          
+          Tonyu.globals.$handleMouseMove(e);
+        });
+        
+        handleMouseUp = (function anonymous_5505(e) {
+          
+          Tonyu.globals.$handleMouseUp(e);
+        });
+        
+        handleTouchStart = (function anonymous_5557(e) {
+          
+          Tonyu.globals.$unsetTouchEmu();
+          Tonyu.globals.$handleTouchStart(e);
+        });
+        
+        handleTouchMove = (function anonymous_5628(e) {
+          
+          Tonyu.globals.$unsetTouchEmu();
+          Tonyu.globals.$handleTouchMove(e);
+        });
+        
+        handleTouchEnd = (function anonymous_5697(e) {
+          
+          Tonyu.globals.$unsetTouchEmu();
+          Tonyu.globals.$handleTouchEnd(e);
+        });
+        
+        handleWheel = (function anonymous_5762(e) {
+          
+          Tonyu.globals.$handleWheel(e);
+        });
+        
+        d = $.data(cv,"events");
+        
+        if (! d) {
+          $.data(cv,"events","true");
+          cvj.mousedown(handleMouseDown);
+          $(document).mousemove(handleMouseMove);
+          $(document).mouseup(handleMouseUp);
+          $(document).on("mouseleave",handleMouseUp);
+          cvj.on("contextmenu",(function anonymous_6117(e) {
+            
+            e.stopPropagation();
+            e.preventDefault();
+          }));
+          cvj.on("touchstart",handleTouchStart);
+          cvj.on("touchmove",handleTouchMove);
+          cvj.on("touchend",handleTouchEnd);
+          cvj.on("touchcancel",handleTouchEnd);
+          cvj.on("wheel",handleWheel);
+          
+        }
+      },
+      fiber$initCanvasEvents :function* _trc_InputDevice_f_initCanvasEvents(_thread,cvj) {
+        var _this=this;
+        var cv;
+        var ID_MOUSE;
+        var bmap;
+        var handleMouseDown;
+        var handleMouseMove;
+        var handleMouseUp;
+        var handleTouchStart;
+        var handleTouchMove;
+        var handleTouchEnd;
+        var handleWheel;
+        var d;
+        
+        _this.rootCanvas=cvj;
+        cv = cvj[0];
+        
+        ID_MOUSE = 31238612;
+        
+        bmap = [1,4,2];
+        
+        Tonyu.globals.$handleMouseDown=(function anonymous_1511(e) {
+          var p;
+          var mp;
+          
+          _this.debug("mouseDown",Tonyu.globals.$InputDevice.touchEmu,e);
+          _this.mouseDownAtCV=true;
+          Tonyu.resetLoopCheck();
+          if (Tonyu.globals.$t2MediaLib) {
+            Tonyu.globals.$t2MediaLib.activate();
+          }
+          e.preventDefault();
+          window.focus();
+          p = cvj.offset();
+          
+          mp = {x: e.clientX-p.left,y: e.clientY-p.top,layer: Tonyu.globals.$Screen.layer};
+          
+          mp=Tonyu.globals.$Screen.convert(mp,_this.defaultLayer);
+          Tonyu.globals.$mouseX=mp.x;
+          Tonyu.globals.$mouseY=mp.y;
+          _this.mouseButton=_this.mouseButton|(1<<e.button);
+          _this.isMouseDown=true;
+          if (Tonyu.globals.$InputDevice.touchEmu) {
+            Tonyu.globals.$handleTouchStart({preventDefault: (function anonymous_2341() {
+              
+            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
+            
+          }
+          _this.handleListeners();
+        });
+        Tonyu.globals.$handleMouseMove=(function anonymous_2687(e) {
+          var p;
+          var mp;
+          var changedTouches;
+          var btn;
+          var bid;
+          
+          _this.debug("mouseMove",Tonyu.globals.$InputDevice.touchEmu,e);
+          Tonyu.resetLoopCheck();
+          if (_this.mouseDownAtCV) {
+            e.preventDefault();
+          }
+          p = cvj.offset();
+          
+          mp = {x: e.clientX-p.left,y: e.clientY-p.top,layer: Tonyu.globals.$Screen.layer};
+          
+          mp=Tonyu.globals.$Screen.convert(mp,_this.defaultLayer);
+          _this.fireEvent("mouseMove",{x: mp.x,y: mp.y,vx: Tonyu.globals.$mouseX==null?0:mp.x-Tonyu.globals.$mouseX,vy: Tonyu.globals.$mouseY==null?0:mp.y-Tonyu.globals.$mouseY});
+          Tonyu.globals.$mouseX=mp.x;
+          Tonyu.globals.$mouseY=mp.y;
+          if (_this.isMouseDown&&Tonyu.globals.$InputDevice.touchEmu) {
+            changedTouches = [];
+            
+            btn = _this.mouseButton;
+            bid = 0;
+            
+            while (btn) {
+              if (btn&1) {
+                changedTouches.push({identifier: ID_MOUSE+bid,pageX: e.clientX,pageY: e.clientY});
+                
+              }
+              btn=btn>>1;
+              bid++;
+              
+            }
+            Tonyu.globals.$handleTouchMove({preventDefault: (function anonymous_3787() {
+              
+            }),originalEvent: {changedTouches: changedTouches},byMouse: bmap[e.button]||1});
+            
+          }
+          _this.handleListeners();
+        });
+        Tonyu.globals.$handleMouseUp=(function anonymous_4020(e) {
+          
+          _this.debug("mouseUp",Tonyu.globals.$InputDevice.touchEmu);
+          Tonyu.resetLoopCheck();
+          if (Tonyu.globals.$t2MediaLib) {
+            Tonyu.globals.$t2MediaLib.activate();
+          }
+          if (_this.mouseDownAtCV) {
+            e.preventDefault();
+          }
+          _this.mouseDownAtCV=false;
+          _this.isMouseDown=false;
+          _this.mouseButton=_this.mouseButton&~ (1<<e.button);
+          if (Tonyu.globals.$InputDevice.touchEmu) {
+            Tonyu.globals.$handleTouchEnd({preventDefault: (function anonymous_4461() {
+              
+            }),originalEvent: {changedTouches: [{identifier: ID_MOUSE+e.button,pageX: e.clientX,pageY: e.clientY}]},byMouse: bmap[e.button]||1});
+            
+          }
+        });
+        _this.touch=new Tonyu.classes.kernel.TouchFingers(_this);
+        Tonyu.globals.$touches=_this.touch.fingerArray;
+        Tonyu.globals.$handleTouchStart=(function anonymous_4859(e) {
+          
+          return _this.touch.handleStart(e);
+        });
+        Tonyu.globals.$handleTouchMove=(function anonymous_4943(e) {
+          
+          return _this.touch.handleMove(e);
+        });
+        Tonyu.globals.$handleTouchEnd=(function anonymous_5025(e) {
+          
+          return _this.touch.handleEnd(e);
+        });
+        Tonyu.globals.$handleWheel=(function anonymous_5103(e) {
+          
+          e=e.originalEvent;
+          _this.wheelVy+=e.deltaY;
+          _this.fireEvent("wheel",e);
+          return false;
+        });
+        Tonyu.globals.$unsetTouchEmu=(function anonymous_5248() {
+          
+          Tonyu.resetLoopCheck();
+          Tonyu.globals.$InputDevice.touchEmu=false;
+          return _this.touch.unsetEmu();
+        });
+        handleMouseDown = (function anonymous_5401(e) {
+          
+          Tonyu.globals.$handleMouseDown(e);
+        });
+        
+        handleMouseMove = (function anonymous_5454(e) {
+          
+          Tonyu.globals.$handleMouseMove(e);
+        });
+        
+        handleMouseUp = (function anonymous_5505(e) {
+          
+          Tonyu.globals.$handleMouseUp(e);
+        });
+        
+        handleTouchStart = (function anonymous_5557(e) {
+          
+          Tonyu.globals.$unsetTouchEmu();
+          Tonyu.globals.$handleTouchStart(e);
+        });
+        
+        handleTouchMove = (function anonymous_5628(e) {
+          
+          Tonyu.globals.$unsetTouchEmu();
+          Tonyu.globals.$handleTouchMove(e);
+        });
+        
+        handleTouchEnd = (function anonymous_5697(e) {
+          
+          Tonyu.globals.$unsetTouchEmu();
+          Tonyu.globals.$handleTouchEnd(e);
+        });
+        
+        handleWheel = (function anonymous_5762(e) {
+          
+          Tonyu.globals.$handleWheel(e);
+        });
+        
+        d = $.data(cv,"events");
+        
+        if (! d) {
+          $.data(cv,"events","true");
+          cvj.mousedown(handleMouseDown);
+          $(document).mousemove(handleMouseMove);
+          $(document).mouseup(handleMouseUp);
+          $(document).on("mouseleave",handleMouseUp);
+          cvj.on("contextmenu",(function anonymous_6117(e) {
+            
+            e.stopPropagation();
+            e.preventDefault();
+          }));
+          cvj.on("touchstart",handleTouchStart);
+          cvj.on("touchmove",handleTouchMove);
+          cvj.on("touchend",handleTouchEnd);
+          cvj.on("touchcancel",handleTouchEnd);
+          cvj.on("wheel",handleWheel);
+          
+        }
+        
+      },
+      update :function _trc_InputDevice_update() {
+        var _this=this;
+        
+        _this.wheelVy=0;
+        return _this.touch.updateFingers();
+      },
+      fiber$update :function* _trc_InputDevice_f_update(_thread) {
+        var _this=this;
+        
+        _this.wheelVy=0;
+        return _this.touch.updateFingers();
+        
+      },
+      debug :function _trc_InputDevice_debug() {
+        var _this=this;
+        
+        if (_this.debugFlag) {
+          console.log.apply(console,arguments);
+          
+        }
+      },
+      fiber$debug :function* _trc_InputDevice_f_debug(_thread) {
+        var _this=this;
+        var _arguments=Tonyu.A(arguments);
+        
+        if (_this.debugFlag) {
+          console.log.apply(console,_arguments);
+          
+        }
+        
+      },
+      reset :function _trc_InputDevice_reset() {
+        var _this=this;
+        
+        _this.touch.reset();
+      },
+      fiber$reset :function* _trc_InputDevice_f_reset(_thread) {
+        var _this=this;
+        
+        _this.touch.reset();
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__defaultLayer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__defaultLayer":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"handleListeners":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"addOnetimeListener":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"newTouch":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"changeTouchLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"initCanvasEvents":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"debug":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"reset":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"defaultLayerPath":{"vtype":"kernel.LayerPath"},"listeners":{},"touchEmu":{"vtype":"Boolean"},"wheelVy":{"vtype":"Number"},"rootCanvas":{},"mouseDownAtCV":{"vtype":"Boolean"},"isMouseDown":{"vtype":"Boolean"},"mouseButton":{"vtype":"Number"},"touch":{"vtype":"kernel.TouchFingers"},"debugFlag":{"vtype":"Boolean"}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.KeyDownHandler',
   shortName: 'KeyDownHandler',
   namespace: 'kernel',
@@ -25488,36 +25523,83 @@ Tonyu.klass.define({
       main :function _trc_KernelDemo_main() {
         var _this=this;
         
-        new Tonyu.classes.kernel.Label({x: Tonyu.globals.$screenWidth/2,y: 0,text: "Tonyu System",size: 20});
-        new Tonyu.classes.kernel.Actor({x: 0,y: 0,align: "left top",fillStyle: "red",width: 50,height: 50});
-        Tonyu.globals.$Screen.on("touch",(function anonymous_175(e) {
+        new Tonyu.classes.kernel.Label({x: Tonyu.globals.$screenWidth/2,y: 50,template: "$mouseX, $mouseY",size: 20});
+        new Tonyu.classes.kernel.Actor({x: 0,y: 100,align: "left top",fillStyle: "red",width: 50,height: 50});
+        Tonyu.globals.$Screen.on("touch",(function anonymous_186(e) {
           
           let f = e.finger;
           
           _this.print(f.x,f.y);
         }));
-        new Tonyu.classes.kernel.Button({top: 100,text: "test"});
-        new Tonyu.classes.kernel.Button({top: 200,text: "test",width: 50});
+        new Tonyu.classes.kernel.Button({left: 50,top: 200,text: "main",width: 50,onClick: _this.setLayer(Tonyu.globals.$mainLayer)});
+        new Tonyu.classes.kernel.Button({left: 100,top: 200,text: "front",width: 50,onClick: _this.setLayer(Tonyu.globals.$frontLayer)});
+        new Tonyu.classes.kernel.Button({left: 150,top: 200,text: "screen",width: 50,onClick: _this.setLayer(Tonyu.globals.$Screen)});
+        new Tonyu.classes.kernel.Button({left: 200,top: 200,text: "ui",width: 50,onClick: _this.setLayer(Tonyu.globals.$uiLayer)});
+        while (true) {
+          Tonyu.globals.$Screen.scrollTo(0,_this.i);
+          _this.i=_this.sin(Tonyu.globals.$frameCount*10)*100;
+          if (_this.getkey(1)==1) {
+            if (Tonyu.is(Tonyu.globals.$InputDevice.defaultLayer,Tonyu.classes.kernel.Sprites)) {
+              new Tonyu.classes.kernel.Actor({x: Tonyu.globals.$mouseX,y: Tonyu.globals.$mouseY,layer: Tonyu.globals.$InputDevice.defaultLayer,radius: 10,fillStyle: "white"});
+              
+            }
+            
+          }
+          _this.update();
+          
+        }
       },
       fiber$main :function* _trc_KernelDemo_f_main(_thread) {
         var _this=this;
         
-        new Tonyu.classes.kernel.Label({x: Tonyu.globals.$screenWidth/2,y: 0,text: "Tonyu System",size: 20});
-        new Tonyu.classes.kernel.Actor({x: 0,y: 0,align: "left top",fillStyle: "red",width: 50,height: 50});
-        Tonyu.globals.$Screen.on("touch",(function anonymous_175(e) {
+        new Tonyu.classes.kernel.Label({x: Tonyu.globals.$screenWidth/2,y: 50,template: "$mouseX, $mouseY",size: 20});
+        new Tonyu.classes.kernel.Actor({x: 0,y: 100,align: "left top",fillStyle: "red",width: 50,height: 50});
+        Tonyu.globals.$Screen.on("touch",(function anonymous_186(e) {
           
           let f = e.finger;
           
           _this.print(f.x,f.y);
         }));
-        new Tonyu.classes.kernel.Button({top: 100,text: "test"});
-        new Tonyu.classes.kernel.Button({top: 200,text: "test",width: 50});
+        new Tonyu.classes.kernel.Button({left: 50,top: 200,text: "main",width: 50,onClick: _this.setLayer(Tonyu.globals.$mainLayer)});
+        new Tonyu.classes.kernel.Button({left: 100,top: 200,text: "front",width: 50,onClick: _this.setLayer(Tonyu.globals.$frontLayer)});
+        new Tonyu.classes.kernel.Button({left: 150,top: 200,text: "screen",width: 50,onClick: _this.setLayer(Tonyu.globals.$Screen)});
+        new Tonyu.classes.kernel.Button({left: 200,top: 200,text: "ui",width: 50,onClick: _this.setLayer(Tonyu.globals.$uiLayer)});
+        while (true) {
+          Tonyu.globals.$Screen.scrollTo(0,_this.i);
+          _this.i=_this.sin(Tonyu.globals.$frameCount*10)*100;
+          if (_this.getkey(1)==1) {
+            if (Tonyu.is(Tonyu.globals.$InputDevice.defaultLayer,Tonyu.classes.kernel.Sprites)) {
+              new Tonyu.classes.kernel.Actor({x: Tonyu.globals.$mouseX,y: Tonyu.globals.$mouseY,layer: Tonyu.globals.$InputDevice.defaultLayer,radius: 10,fillStyle: "white"});
+              
+            }
+            
+          }
+          (yield* _this.fiber$update(_thread));
+          
+        }
+        
+      },
+      setLayer :function _trc_KernelDemo_setLayer(l) {
+        var _this=this;
+        
+        return (function anonymous_936() {
+          
+          Tonyu.globals.$InputDevice.defaultLayer=l;
+        });
+      },
+      fiber$setLayer :function* _trc_KernelDemo_f_setLayer(_thread,l) {
+        var _this=this;
+        
+        return (function anonymous_936() {
+          
+          Tonyu.globals.$InputDevice.defaultLayer=l;
+        });
         
       },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"setLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"i":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.BodyActor',

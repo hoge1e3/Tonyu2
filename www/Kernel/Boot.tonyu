@@ -198,7 +198,7 @@ mainLoop();
     $uiLayer=new Sprites();
 
     $uiScreen=new Screen{canvas:cvj[0],layer:$rootLayer};
-    $uiScreen.defaultLayerPath=new LayerPath{target:$uiScreen};
+    $uiScreen.defaultLayerPath=$rootLayerPath=new LayerPath{target:$uiScreen};
     $uiScreen.setBGColor("#888");
     $uiScreen.addLayer($uiLayer);
 

@@ -1,9 +1,28 @@
 extends Actor;
-new Label{x:$screenWidth/2, y:0, text:"Tonyu System",size:20};
-new Actor{x:0,y:0, align:"left top", fillStyle:"red",width:50,height:50};
+new Label{x:$screenWidth/2, y:50, template:"$mouseX, $mouseY",size:20};
+new Actor{x:0,y:100, align:"left top", fillStyle:"red",width:50,height:50};
 $Screen.on("touch") \(e){
     let f=e.finger;
     print(f.x, f.y);
 };
-new Button{top:100, text:"test"};
-new Button{top:200, text:"test", width:50};
+new Button{left:50, top:200, text:"main", width:50, onClick: setLayer($mainLayer)};
+new Button{left:100, top:200, text:"front", width:50, onClick: setLayer($frontLayer)};
+new Button{left:150, top:200, text:"screen", width:50, onClick: setLayer($Screen)};
+new Button{left:200, top:200, text:"ui", width:50, onClick: setLayer($uiLayer)};
+while(true) {
+    $Screen.scrollTo(0,i);
+    i=sin($frameCount*10)*100;
+    if (getkey(1)==1) {
+        if ($InputDevice.defaultLayer is Sprites) {
+            new Actor{x:$mouseX, y:$mouseY, layer:$InputDevice.defaultLayer,
+                radius:10, fillStyle:"white"
+            };
+        }
+    }
+    update();
+}
+\setLayer(l) {
+    return \{
+        $InputDevice.defaultLayer=l;
+    };
+}

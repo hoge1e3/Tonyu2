@@ -1,16 +1,28 @@
 extends null;
-includes EventMod;
+includes EventMod, AssertionMod;
 native $;
 native console;
 native document;
 native window;
 native Tonyu;
 native T2MediaLib;
+"field strict";
+let defaultLayerPath: LayerPath;
+let listeners;
+let touchEmu:Boolean;
+let wheelVy:Number;
 \new() {
     listeners=[];
     touchEmu=true;
     wheelVy=0;
-    defaultLayer=$Screen;
+    defaultLayerPath=assertIs( $Screen.defaultLayerPath, LayerPath, "$Screen.defaultLayerPath");
+}
+\defaultLayer {
+    if (defaultLayerPath.target is ScreenLayer) return defaultLayerPath.target.group;
+    return defaultLayerPath.target;
+}
+\defaultLayer=l {
+    defaultLayerPath=assertIs(l.defaultLayerPath, LayerPath, "l.def");
 }
 \handleListeners(type,evt) {
     var l=listeners;
@@ -27,12 +39,18 @@ native T2MediaLib;
 \addOnetimeListener(l){
     listeners.push(l);
 }
-\newTouch(i) {
+/*\newTouch(i) {
     return {index:i,px:0,py:0,x:0,y:0,vx:0,vy:0,touched:0,identifier:-1,ended:false,layer:defaultLayer};
-}
+}*/
 \changeTouchLayer(t,toLayer) {//Retain...?
     return t.layer=toLayer;//---T
 }
+let rootCanvas;
+let mouseDownAtCV:Boolean;
+let isMouseDown:Boolean;
+let mouseButton:Number;
+let touch:TouchFingers;
+let debugFlag:Boolean;
 \initCanvasEvents(cvj) {
     rootCanvas=cvj;
     var cv=cvj[0];
