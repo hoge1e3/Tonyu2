@@ -1,4 +1,10 @@
 extends Actor;
+native Tonyu;
+for (let k,v of Tonyu.globals) {
+    if (v && typeof v==="object" && !v.name) {
+        v.name=k;
+    }
+}
 new Label{x:$screenWidth/2, y:50, template:"$mouseX, $mouseY",size:20};
 new Actor{x:0,y:100, align:"left top", fillStyle:"red",width:50,height:50};
 $Screen.on("touch") \(e){
@@ -14,6 +20,7 @@ while(true) {
     i=sin($frameCount*10)*100;
     if (getkey(1)==1) {
         if ($InputDevice.defaultLayer is Sprites) {
+            print("PUT");
             new Actor{x:$mouseX, y:$mouseY, layer:$InputDevice.defaultLayer,
                 radius:10, fillStyle:"white"
             };
@@ -24,5 +31,6 @@ while(true) {
 \setLayer(l) {
     return \{
         $InputDevice.defaultLayer=l;
+        print("SET");
     };
 }

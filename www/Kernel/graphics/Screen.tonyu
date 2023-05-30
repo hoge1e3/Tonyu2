@@ -127,8 +127,7 @@ extends Panel;
         let myfl=findLayer(fromLayer);
         if (myfl) scr=myfl.world2screen(obj);
         else {
-            print("Screen::conv invalid from",this, fromLayer,toLayer);
-            throw new Error("Screen::conv invalid from");
+            throw newError("Screen{1}::conv invalid from {2} to {3}",this, fromLayer,toLayer);
         }
     }
     if (toLayer===this) {
@@ -139,8 +138,7 @@ extends Panel;
         let mytl=findLayer(toLayer);
         if (mytl) return mytl.screen2world(scr);
         else {
-            print("Screen::conv invalid to",this, fromLayer,toLayer);
-            throw new Error("Screen::conv invalid to");
+            throw newError("Screen{1}::conv invalid from {2} to {3}",this, fromLayer,toLayer);
         }
     }
     /*let flp=(fromLayer is LayerPath? fromLayer : fromLayer.defaultLayerPath);

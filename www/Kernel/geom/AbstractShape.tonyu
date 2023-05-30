@@ -1,46 +1,58 @@
 extends TObject;
 "field strict";
-var _layer; // should be REAL layer(not group)
+let _layerPath:LayerPath; 
+
 \clone(value) {
     throw new Error("clone::abstract");
 }
 \changeLayer(value) {
-    throw new Error("changeLayer::abstract");
+    layer=value;
+}
+\changeLayerPath(value) {
+    throw new Error("changeLayerPath::abstract");
 }
 \intersects(s:AbstractShape) {
     if (!s) return false;
-    if (s.layer===layer || !s.layer || !layer) {
+    if (s.layerPath===layerPath || !s.layerPath || !layerPath) {
         return intersectsRaw(s);
     }
-    return intersectsRaw(s.layerChanged(layer));
+    return intersectsRaw(s.layerPathChanged(layerPath));
 }
 \intersectsRaw(s:AbstractShape) {
     throw new Error("intersectsRaw::abstract");
 }
-\contains(s:AbstractShape/*x,y,layer*/) {
+\contains(s:AbstractShape/*x,y,layerPath*/) {
     if (!s) return false;
-    if (s.layer===layer || !s.layer || !layer) {
+    if (s.layerPath===layerPath || !s.layerPath || !layerPath) {
         return containsRaw(s);
     }
-    var cv=screen.convert(s,layer);
-    return intersectsRaw(cv);
+    return containsRaw(s.layerPathChanged(layerPath));
 }
-\containsRaw(s:Object/*x,y,layer*/) {
+\containsRaw(s:Object/*x,y,layerPath*/) {
     throw new Error("containsRaw::abstract");
 }
-\layerChanged(layer) {
+\layerPathChanged(layerPath) {
     var res=clone();
-    res.layer=layer;
+    res.layerPath=layerPath;
     return res;
 }
-\layer {return _layer;}
+\layerChanged(layer) {
+    return layerPathChanged(assertIs(layer.defaultLayerPath, LayerPath));
+}
+\layer {return _layerPath && _layerPath.target;}
 \layer=value {
-    if (!_layer || _layer===value) _layer=value;
-    else changeLayer(value);
+    layerPath=assertIs(value.defaultLayerPath, LayerPath);
 }
-\screen {
+\layerPath=value {
+    if (!_layerPath || _layerPath===value) _layerPath=value;
+    else changeLayerPath(value);
+}
+\layerPath {
+    return _layerPath;
+}
+/*\screen {
     return (layer && layer.screen) || $Screen;
-}
+}*/
 /*override them
 \xmin {return x-width/2;}
 \xmax {return x+width/2;}

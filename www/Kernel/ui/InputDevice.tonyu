@@ -67,8 +67,8 @@ let debugFlag:Boolean;
         window.focus();//[1] So, Added this
         //----
         var p=cvj.offset();
-        var mp={x:e.clientX-p.left, y:e.clientY-p.top,layer:$Screen.layer};
-        mp=$Screen.convert(mp,defaultLayer);// $Screen.canvas2buf(mp);
+        var mp={x:e.clientX-p.left, y:e.clientY-p.top};//,layer:$Screen.layer};
+        mp=$rootLayerPath.convert(mp, defaultLayerPath);// $Screen.canvas2buf(mp);
         $mouseX=mp.x;
         $mouseY=mp.y;
         mouseButton=mouseButton|(1<<e.button);
@@ -91,8 +91,8 @@ let debugFlag:Boolean;
         Tonyu.resetLoopCheck();
         if (mouseDownAtCV) e.preventDefault();
         var p=cvj.offset();
-        var mp={x:e.clientX-p.left, y:e.clientY-p.top,layer:$Screen.layer};
-        mp=$Screen.convert(mp,defaultLayer);// $Screen.canvas2buf(mp);
+        var mp={x:e.clientX-p.left, y:e.clientY-p.top};//,layer:$Screen.layer};
+        mp=$rootLayerPath.convert(mp,defaultLayerPath);// $Screen.canvas2buf(mp);
         fireEvent("mouseMove",{
             x: mp.x, y:mp.y,
             vx:$mouseX==null?0:mp.x-$mouseX,

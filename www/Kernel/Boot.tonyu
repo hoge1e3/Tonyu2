@@ -126,10 +126,11 @@ mainLoop();
     $InputDevice.on("touchstart") \(e) {
         var shape;
         var f=e.finger;
+        assertIs(f.layerPath, LayerPath);
         if (e.byMouse) {
-            shape=new PointShape{x:f.x, y:f.y, layer:f.layer};
+            shape=new PointShape{x:f.x, y:f.y, layerPath:f.layerPath};
         } else {
-            shape=new RectShape{x:f.x, y:f.y, width:32, height:32, layer:f.layer};
+            shape=new RectShape{x:f.x, y:f.y, width:32, height:32, layerPath:f.layerPath};
         }
         e.shape=shape;
         var a=$Screen.multiLayerTouches.findActor(shape);

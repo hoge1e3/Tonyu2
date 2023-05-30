@@ -45,6 +45,12 @@ function remove(s) {
     sprites.splice(idx,1);
     delete s.__addedToSprites;
 }
+\has(s:Actor) {
+    if (s.__addedToSprites===this) {
+        return s;
+    }
+    return false;
+}
 \removeOneframes(drawn) {
 // drawn==true when after REAL draw, false when frame skip
     var s;

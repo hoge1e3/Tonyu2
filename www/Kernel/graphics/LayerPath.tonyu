@@ -7,8 +7,9 @@ let target;// Screen | ScreenLayer | Panel
 
 \convert(obj, to:LayerPath) {
     let a=commonAncestor(to);
-    let up=pathTo(a);// [this....a]
-    let down=to.pathTo(a).reverse();//[a...to]
+    let tg=\(p:LayerPath){return p.target;};
+    let up=pathTo(a).map(tg);// [this....a]
+    let down=to.pathTo(a).map(tg).reverse();//[a...to]
     let res=obj;
     for (let i=0; i<up.length-1;i++) {
         //console.log("DEBUG conv", up[i], up[i+1]);
@@ -18,23 +19,25 @@ let target;// Screen | ScreenLayer | Panel
         //console.log("DEBUG conv", down[i], down[i+1]);
         res=down[i].convert(res, down[i], down[i+1]);
     }
+    if (res===obj && res.layerPath!==to) res={x:res.x, y:res.y};
+    res.layerPath=to;
     return res;
 }
-\pathTo(a) {//Target
+\pathTo(a:LayerPath):LayerPath[] {
     let res=[];
     for (let p=this; p ;p=p.parent) {
-        res.push(p.target);
-        if (p.target===a) return res;
+        res.push(p);
+        if (p===a) return res;
     }
     return res;
 }
-\commonAncestor(to:LayerPath)/*Target*/ {
+\commonAncestor(to:LayerPath):LayerPath? {
     let s=new Set;
     for (let p=this; p;p=p.parent) {
-        s.add(p.target);
+        s.add(p);
     }
     for (let p=to; p;p=p.parent) {
-        if (s.has(p.target)) return p.target;   
+        if (s.has(p)) return p;   
     }
     throw new Error("No common Ancestor");
 }
@@ -51,4 +54,23 @@ let target;// Screen | ScreenLayer | Panel
     }
     console.log("Invalid target ", target);
     throw new Error("Invalid target "+target);
+}
+\withNeighborTarget(t) {//Screen | ScreenLayer | Panel
+    if (target is Screen) {
+        let l=target.findLayer(t);
+        if (l) {
+            return add(l);
+        }
+    } else if (target is ScreenLayer && t is Panel) {
+        let s:Sprites=target.group;
+        if (s.has(t)) {
+            return add(t);
+        }
+    }
+    for (let p=this; p;p=p.parent) {
+        if (p.target===t) {
+            return p;   
+        }
+    }
+    return null;
 }

@@ -4,17 +4,17 @@ native Math;
 var x,y,width,height;// (x,y): center
 
 \clone() {
-    return new RectShape{x,y,width,height,_layer};
+    return new RectShape{x,y,width,height,_layerPath};
 }
 
-\changeLayer(newLayer) {
-    var c=screen.convert({x,y,layer:_layer}, newLayer);
-    var rb=screen.convert({x:x+width,y:y+height,layer:_layer}, newLayer);
+\changeLayerPath(newLayerPath) {
+    var c=layerPath.convert({x,y}, newLayerPath);
+    var rb=layerPath.convert({x:x+width,y:y+height}, newLayerPath);
     x=c.x;
     y=c.y;
     width=(rb.x-c.x);
     height=(rb.y-c.y);
-    _layer=newLayer;
+    _layerPath=newLayerPath;
 }
 \intersectsRaw(s:RectShape) {
     if (s is RectShape) {

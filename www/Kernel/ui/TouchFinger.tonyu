@@ -4,14 +4,14 @@ includes MathMod,EventMod;
 native console;
 var identifier,index,oid,bound;
 var px,py,x,y,vx,vy,touched,ended;
-var screen,_layer;
-
-\new(layer, screen,index) {
+//var screen,_layer;
+let _layerPath: LayerPath;
+\new(layerPath,index) {
     reset();
-    _layer=layer;
+    _layerPath=layerPath;
     TouchFinger.seq=TouchFinger.seq||0;
     oid=TouchFinger.seq++;
-    this.screen=screen||$Screen;
+    //this.screen=screen||$Screen;
     this.index=index;
 }
 \reset() {
@@ -21,20 +21,30 @@ var screen,_layer;
     ended=false;
 }
 \layer {
-    return _layer;
+    return layerPath.target;
 }
 \layer=toLayer {
-    if (_layer===toLayer) return;
-    var p=screen.convert(this,toLayer);
+    let l=layerPath.withNeighborTarget(toLayer);
+    if (l) {
+        layerPath=l;
+    } else if (toLayer.defaultLayerPath) {
+        layerPath=toLayer.defaultLayerPath;
+    } else throw newError("cannot set layer: {1}",toLayer);
+}
+\layerPath {
+    return _layerPath;
+}
+\layerPath=toLayerPath {
+    if (_layerPath===toLayerPath) return;
+    var p=_layerPath.convert(this,toLayerPath);
     if (!p) {
-        console.log("Screen convert failed",screen,this,toLayer,p);
-        throw new Error("Screen convert failed. See console for details.");
+        throw newError("Screen convert failed: this {1} to {2}",this,toLayerPath);
     }
     x=p.x;
     y=p.y;
     px=x;
     py=y;
-    _layer=p.layer;
+    _layerPath=toLayerPath;
     vx=vy=0;
 }
 /*
@@ -78,11 +88,11 @@ var screen,_layer;
     floor(x*100)/100+","+floor(px*100)/100+
     "]";
 }
-\doStart(id,point) {//point: x,y,layer
+\doStart(id,point) {//point: x,y,layerPath
     identifier=id;
     px=x=point.x;
     py=y=point.y;
-    _layer=point.layer;
+    _layerPath=point.layerPath;
     vx=vy=0;
     touched=1;
     ended=false;
@@ -91,7 +101,7 @@ var screen,_layer;
     }
 }
 \doMove(point) {
-    var p=screen.convert(point,layer);
+    var p=point.layerPath.convert(point,_layerPath);
     var px=x,py=y;
     x=p.x;
     y=p.y;

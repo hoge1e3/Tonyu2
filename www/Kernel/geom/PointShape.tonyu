@@ -4,14 +4,14 @@ native Math;
 var x,y;
 
 \clone() {
-    return new PointShape{x,y,_layer};
+    return new PointShape{x,y,_layerPath};
 }
 
-\changeLayer(newLayer) {
-    var c=screen.convert({x,y,layer:_layer}, newLayer);
+\changeLayerPath(newLayerPath) {
+    var c=_layerPath.convert({x,y}, newLayerPath);
     x=c.x;
     y=c.y;
-    _layer=newLayer;
+    _layerPath=newLayerPath;
 }
 \intersectsRaw(s:AbstractShape) {
     return s.containsRaw(this);

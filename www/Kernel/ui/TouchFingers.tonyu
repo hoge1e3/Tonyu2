@@ -22,7 +22,7 @@ native console;
             }
         }
     };
-    for (var i=0;i<5;i++) fingerArray.push(new TouchFinger(inputDevice.defaultLayer, $Screen,i) );
+    for (var i=0;i<5;i++) fingerArray.push(new TouchFinger(inputDevice.defaultLayerPath, i) );
 }
 \handleStart(e) {
     Tonyu.resetLoopCheck();
@@ -33,7 +33,7 @@ native console;
     var dst;
     for (var i =0 ; i<ts.length ; i++) {
         var src=ts[i];
-        dst=new TouchFinger(inputDevice.defaultLayer, $Screen);
+        dst=new TouchFinger(inputDevice.defaultLayerPath);
         fingerSet[src.identifier]=dst;
 
         for (var j=0 ; j<fingerArray.length ; j++) {
@@ -42,8 +42,8 @@ native console;
                 break;
             }
         }
-        var mp={x:src.pageX-p.left, y:src.pageY-p.top,layer:$Screen.layer};
-        mp=$Screen.convert(mp,inputDevice.defaultLayer);
+        var mp={x:src.pageX-p.left, y:src.pageY-p.top};//,layer:$Screen.layer};
+        mp=$rootLayerPath.convert(mp,inputDevice.defaultLayerPath);
         dst.doStart(src.identifier,mp);
     }
     $mouseX=fingerArray[0].x;
@@ -64,7 +64,7 @@ native console;
         var src=ts[i];
         var dst=fingerSet[src.identifier];
         if (dst) {
-            mp={x:src.pageX-p.left, y:src.pageY-p.top,layer:$Screen.layer};
+            mp={x:src.pageX-p.left, y:src.pageY-p.top, layerPath:$rootLayerPath};
             //mp=$Screen.convert(mp,dst.layer||inputDevice.defaultLayer);
             dst.doMove(mp);
             //console.log(dst.show(),dst.bound.show());
