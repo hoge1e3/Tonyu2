@@ -2,8 +2,15 @@ extends TObject;
 includes MathMod;
 native WeakMap;
 "field strict";
-var screen;
-var layers=new WeakMap;
+let layerPath:LayerPath;
+let screen:Screen;
+let layers=new WeakMap;
+\new(param) {
+    super(param);
+    if (!screen) screen=assertIs(layerPath.target, Screen);
+    if (!layerPath) layerPath=assertIs(screen.defaultLayerPath, LayerPath);
+    assertEq(layerPath.target, screen);
+}
 \add(a:Actor) {
     var layer=screen.findLayer( a.getSpriteGroup() );
     if (!layer) return;//ex. screen itself
@@ -31,18 +38,18 @@ var layers=new WeakMap;
 \getTouchables(layer) {
     return layers.get(layer);
 }
-\findActor(shape) {
+\findActor(shape: AbstractShape) {
     var cands=[],i=0;
     for (var i=0; i<screen.layers.length;i++) {// front -> back
-        var layer=screen.layers[i];
+        let layer=screen.layers[i];
+        let slp=layerPath.add(screen.layers[i]);
         var ts=getTouchables(layer);
         if (!ts) continue;
-        var localShape=shape.layerChanged(layer);
-        //ts=ts.sort\(a,b) {return a.zOrder-b.zOrder;};
+        var localShape=shape.layerPathChanged(slp);
         for (var t of ts) {
             var c=t.getTouchShape();
             if (c.intersects(localShape)) {
-                var ch=c.layerChanged(shape.layer);
+                var ch=c.layerPathChanged(shape.layerPath);
                 cands.push{
                     actor: t,
                     shape: ch,

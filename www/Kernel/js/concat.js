@@ -2384,6 +2384,25 @@ Tonyu.klass.define({
         
         
       },
+      assertEq :function _trc_AssertionMod_assertEq(a,b,al,bl) {
+        var _this=this;
+        
+        if (a===b) {
+          return a;
+        }
+        throw _this.newErrr("notEq",al||a,bl||b);
+        
+      },
+      fiber$assertEq :function* _trc_AssertionMod_f_assertEq(_thread,a,b,al,bl) {
+        var _this=this;
+        
+        if (a===b) {
+          return a;
+        }
+        throw _this.newErrr("notEq",al||a,bl||b);
+        
+        
+      },
       newError :function _trc_AssertionMod_newError(mesg,...args) {
         var _this=this;
         
@@ -2400,7 +2419,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"assertIs":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"newError":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"assertIs":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"assertEq":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"newError":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"newErrr":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.FileMod',
@@ -2759,9 +2778,9 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.R=Tonyu.messages;
-        let ja = {"notA": "{1}{2}は{3}ではありません．","noPushedPages": "loadPageで戻る先のページがありません．引数にページ名を忘れているかもしれません．"};
+        let ja = {"notA": "{1}{2}は{3}ではありません．","netEQ": "{1}!=={2}","noPushedPages": "loadPageで戻る先のページがありません．引数にページ名を忘れているかもしれません．"};
         
-        let en = {"notA": "{1}{2} is not a {3}.","noPushedPages": "loadPage(Pop page) failed. You should push page (or you forgot Page argument?)"};
+        let en = {"notA": "{1}{2} is not a {3}.","netEQ": "{1}!=={2}","noPushedPages": "loadPage(Pop page) failed. You should push page (or you forgot Page argument?)"};
         
         Object.assign(_this.R.dicts.ja,ja);
         Object.assign(_this.R.dicts.en,en);
@@ -2801,12 +2820,12 @@ Tonyu.klass.define({
       functionShortcut :function _trc_MessageResource_functionShortcut() {
         var _this=this;
         
-        let R = (function anonymous_611(...args) {
+        let R = (function anonymous_671(...args) {
           
           return _this.r(...args);
         });
         
-        R.register=(function anonymous_659(...args) {
+        R.register=(function anonymous_719(...args) {
           
           return _this.register(...args);
         });
@@ -2816,12 +2835,12 @@ Tonyu.klass.define({
       fiber$functionShortcut :function* _trc_MessageResource_f_functionShortcut(_thread) {
         var _this=this;
         
-        let R = (function anonymous_611(...args) {
+        let R = (function anonymous_671(...args) {
           
           return _this.r(...args);
         });
         
-        R.register=(function anonymous_659(...args) {
+        R.register=(function anonymous_719(...args) {
           
           return _this.register(...args);
         });
@@ -9352,6 +9371,7 @@ Tonyu.klass.define({
         
         "field strict";
         
+        
         _this.layers = new WeakMap;
         
       },
@@ -9360,9 +9380,22 @@ Tonyu.klass.define({
         
         "field strict";
         
+        
         _this.layers = new WeakMap;
         
         
+      },
+      initialize :function _trc_MultiLayerTouches_initialize(param) {
+        var _this=this;
+        
+        __superClass.apply( _this, [param]);
+        if (! _this.screen) {
+          _this.screen=_this.assertIs(_this.layerPath.target,Tonyu.classes.kernel.Screen);
+        }
+        if (! _this.layerPath) {
+          _this.layerPath=_this.assertIs(_this.screen.defaultLayerPath,Tonyu.classes.kernel.LayerPath);
+        }
+        _this.assertEq(_this.layerPath.target,_this.screen);
       },
       add :function _trc_MultiLayerTouches_add(a) {
         var _this=this;
@@ -9486,7 +9519,6 @@ Tonyu.klass.define({
         var _this=this;
         var cands;
         var i;
-        var layer;
         var ts;
         var localShape;
         var t;
@@ -9511,7 +9543,9 @@ Tonyu.klass.define({
         for (i = 0;
          i<_this.screen.layers.length ; i++) {
           {
-            layer = _this.screen.layers[i];
+            let layer = _this.screen.layers[i];
+            
+            let slp = _this.layerPath.add(_this.screen.layers[i]);
             
             ts = _this.getTouchables(layer);
             
@@ -9519,13 +9553,13 @@ Tonyu.klass.define({
               continue;
               
             }
-            localShape = shape.layerChanged(layer);
+            localShape = shape.layerPathChanged(slp);
             
             for ([t] of Tonyu.iterator2(ts,1)) {
               c = t.getTouchShape();
               
               if (c.intersects(localShape)) {
-                ch = c.layerChanged(shape.layer);
+                ch = c.layerPathChanged(shape.layerPath);
                 
                 cands.push({actor: t,shape: ch,zOrder: t.zOrder,zOrderLayer: i,dist: _this.dist(shape.x-ch.x,shape.y-ch.y)});
                 
@@ -9560,11 +9594,11 @@ Tonyu.klass.define({
           }
         }
         
-        cands=cands.filter((function anonymous_2316(e) {
+        cands=cands.filter((function anonymous_2583(e) {
           
           return ! e.dead;
         }));
-        cands.sort((function anonymous_2354(a,b) {
+        cands.sort((function anonymous_2621(a,b) {
           
           return a.dist-b.dist;
         }));
@@ -9574,7 +9608,6 @@ Tonyu.klass.define({
         var _this=this;
         var cands;
         var i;
-        var layer;
         var ts;
         var localShape;
         var t;
@@ -9599,7 +9632,9 @@ Tonyu.klass.define({
         for (i = 0;
          i<_this.screen.layers.length ; i++) {
           {
-            layer = _this.screen.layers[i];
+            let layer = _this.screen.layers[i];
+            
+            let slp = _this.layerPath.add(_this.screen.layers[i]);
             
             ts=yield* _this.fiber$getTouchables(_thread, layer);
             
@@ -9607,13 +9642,13 @@ Tonyu.klass.define({
               continue;
               
             }
-            localShape = shape.layerChanged(layer);
+            localShape = shape.layerPathChanged(slp);
             
             for ([t] of Tonyu.iterator2(ts,1)) {
               c = t.getTouchShape();
               
               if (c.intersects(localShape)) {
-                ch = c.layerChanged(shape.layer);
+                ch = c.layerPathChanged(shape.layerPath);
                 
                 cands.push({actor: t,shape: ch,zOrder: t.zOrder,zOrderLayer: i,dist: _this.dist(shape.x-ch.x,shape.y-ch.y)});
                 
@@ -9648,11 +9683,11 @@ Tonyu.klass.define({
           }
         }
         
-        cands=cands.filter((function anonymous_2316(e) {
+        cands=cands.filter((function anonymous_2583(e) {
           
           return ! e.dead;
         }));
-        cands.sort((function anonymous_2354(a,b) {
+        cands.sort((function anonymous_2621(a,b) {
           
           return a.dist-b.dist;
         }));
@@ -9692,7 +9727,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Actor"],"returnValue":null}},"remove":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Actor"],"returnValue":null}},"getOrNewTouchables":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getTouchables":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findActor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"screen":{},"layers":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"add":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Actor"],"returnValue":null}},"remove":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Actor"],"returnValue":null}},"getOrNewTouchables":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getTouchables":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findActor":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"layerPath":{"vtype":"kernel.LayerPath"},"screen":{"vtype":"kernel.Screen"},"layers":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.OneframeSprite',
@@ -25665,8 +25700,15 @@ Tonyu.klass.define({
           
         }
         new Tonyu.classes.kernel.Label({x: Tonyu.globals.$screenWidth/2,y: 50,template: "$mouseX, $mouseY",size: 20});
-        new Tonyu.classes.kernel.Actor({x: 0,y: 100,align: "left top",fillStyle: "red",width: 50,height: 50});
-        Tonyu.globals.$Screen.on("touch",(function anonymous_312(e) {
+        _this.a = new Tonyu.classes.kernel.Actor({x: 0,y: 100,align: "left top",fillStyle: "red",width: 50,height: 50});
+        
+        _this.a.on("touch",(function anonymous_312(e) {
+          
+          let f = e.finger;
+          
+          _this.print("A",f.x,f.y);
+        }));
+        Tonyu.globals.$Screen.on("touch",(function anonymous_394(e) {
           
           let f = e.finger;
           
@@ -25702,8 +25744,15 @@ Tonyu.klass.define({
           
         }
         new Tonyu.classes.kernel.Label({x: Tonyu.globals.$screenWidth/2,y: 50,template: "$mouseX, $mouseY",size: 20});
-        new Tonyu.classes.kernel.Actor({x: 0,y: 100,align: "left top",fillStyle: "red",width: 50,height: 50});
-        Tonyu.globals.$Screen.on("touch",(function anonymous_312(e) {
+        _this.a = new Tonyu.classes.kernel.Actor({x: 0,y: 100,align: "left top",fillStyle: "red",width: 50,height: 50});
+        
+        _this.a.on("touch",(function anonymous_312(e) {
+          
+          let f = e.finger;
+          
+          _this.print("A",f.x,f.y);
+        }));
+        Tonyu.globals.$Screen.on("touch",(function anonymous_394(e) {
           
           let f = e.finger;
           
@@ -25732,7 +25781,7 @@ Tonyu.klass.define({
       setLayer :function _trc_KernelDemo_setLayer(l) {
         var _this=this;
         
-        return (function anonymous_1089() {
+        return (function anonymous_1171() {
           
           Tonyu.globals.$InputDevice.defaultLayer=l;
           _this.print("SET");
@@ -25741,7 +25790,7 @@ Tonyu.klass.define({
       fiber$setLayer :function* _trc_KernelDemo_f_setLayer(_thread,l) {
         var _this=this;
         
-        return (function anonymous_1089() {
+        return (function anonymous_1171() {
           
           Tonyu.globals.$InputDevice.defaultLayer=l;
           _this.print("SET");
@@ -25751,7 +25800,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"setLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"i":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"setLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"a":{"vtype":"kernel.Actor"},"i":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.BodyActor',

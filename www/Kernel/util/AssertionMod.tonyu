@@ -4,6 +4,10 @@ native console;
     if (label) label=`(${label})`; else label="";
     throw newError("notA",obj,label,klass);
 }
+\assertEq(a,b, al, bl) {
+    if (a===b) return a;
+    throw newErrr("notEq",al||a,bl||b);
+}
 \newError(mesg, ...args) {
     console.error(mesg, ...args);
     return new Error($Boot.R(mesg, ...args));

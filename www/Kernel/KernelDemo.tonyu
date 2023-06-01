@@ -6,7 +6,11 @@ for (let k,v of Tonyu.globals) {
     }
 }
 new Label{x:$screenWidth/2, y:50, template:"$mouseX, $mouseY",size:20};
-new Actor{x:0,y:100, align:"left top", fillStyle:"red",width:50,height:50};
+let a=new Actor{x:0,y:100, align:"left top", fillStyle:"red",width:50,height:50};
+a.on("touch") \(e) {
+    let f=e.finger;
+    print("A", f.x, f.y);  
+};
 $Screen.on("touch") \(e){
     let f=e.finger;
     print(f.x, f.y);
