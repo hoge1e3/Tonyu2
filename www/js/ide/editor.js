@@ -56,8 +56,9 @@ $(function () {
     const optionFile=curPrjDir.rel("options.json");
     optionFixer.fixFile(optionFile);
     const editors={};
+    const layouts={};
     const ide={restart,stop,save,displayMode,dispName,jump,refreshRunMenu,
-        editors,getCurrentEditorInfo,saveDesktopEnv,run};
+        editors,getCurrentEditorInfo,saveDesktopEnv,run, layouts};
     const curPrj=IDEProject.create({dir:curPrjDir,ide});//, kernelDir);
     const api=new API(curPrj);
     curPrj.api=api;
@@ -97,10 +98,14 @@ $(function () {
     };
     function onResize() {
         var h=$(window).height()-$("#navBar").height();
-        h-=20;
+        layouts.mainArea={height:h};
+        h-=10;
         runDialogParam.screenH=h;
-        $("#progs pre").css("height",h+"px");
-        $("#fileItemList").height(h-10);
+        let th=$("#fileTabs").height();
+        layouts.editor={height: h-th};
+        layouts.fileItemList={height: h-10};
+        $("#progs pre").css("height",layouts.editor.height+"px");
+        $("#fileItemList").height(layouts.fileItemList.height);
     }
     onResize();
     const em=RealtimeErrorMarker(ide);

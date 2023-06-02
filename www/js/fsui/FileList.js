@@ -153,7 +153,8 @@ module.exports=function FileList(elem, options) {
         if (curDOM) curDOM.hide();
         var inf=editors[f.path()];
         if (!inf) {
-            var progDOM=$("<pre>").css("height", runDialogParam.screenH+"px").text(f.text()).appendTo("#progs");
+            let h=ide.layouts.editor.height;
+            var progDOM=$("<pre>").css("margin","0px").css("height", h+"px").text(f.text()).appendTo("#progs");
             var prog=root.ace.edit(progDOM[0]);
             window.lastEditor=prog;
             if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
@@ -183,9 +184,53 @@ module.exports=function FileList(elem, options) {
             inf.editor.focus();
             curDOM=inf.dom;
         }
+        tabs.select(f);
         window.curEditor=inf.editor;
         inf.lastTimeStamp=inf.file.lastUpdate();
     }
+    const tabs={
+        list: {},// {path: {last: dom:} }
+        get(f) {
+            const list=this.list;
+            if (!list[f.path()]) {
+                list[f.path()]={
+                    dom:$("<span>").addClass("tab").text(f.truncExt()).click(
+                        ()=>open(f)
+                    ).appendTo("#fileTabs")
+                };
+                $("#dummytab").hide();
+            }
+            list[f.path()].last=new Date().getTime();
+            if (Object.keys(list).length>10) this.closeLRU();
+            return list[f.path()];
+        },
+        select(f) {
+            if (this.cur) this.cur.dom.removeClass("selected");
+            const t=this.get(f);
+            this.cur=t;
+            t.dom.addClass("selected");
+        },
+        closeLRU() {
+            const list=this.list;
+            let min=new Date().getTime();
+            let cand;
+            for (let u of Object.keys(list)) {
+                let v=list[u];
+                if (v.last<min) {min=v.last; cand=u;}
+            }
+            if (cand) this.close(cand);
+        },
+        close(f) {
+            if (typeof f.path==="function") f=f.path();
+            const list=this.list;
+            if (list[f]) {
+                list[f].dom.remove();
+                delete list[f];
+            }
+        },
+        cur: null,
+    };
+    FL.tabs=tabs;
 
     return FL;
 };

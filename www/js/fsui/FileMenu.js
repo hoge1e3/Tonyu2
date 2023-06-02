@@ -192,6 +192,7 @@ module.exports=function (ide) {
         if (i) {
             i.editor.destroy();
             i.dom.remove();
+            ide.fileList.tabs.close(rm);
             delete editors[rm.path()];
             let remains;
             for (remains in editors);
