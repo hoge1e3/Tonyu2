@@ -7,6 +7,27 @@ body {
     -moz-box-sizing:content-box!important;
     box-sizing: content-box!important;
 }
+/*#fileTabs {
+    height:32px;
+}*/
+.tab {
+    cursor: pointer;
+    border: solid #000;
+    border-width: 1px 1px 0px 1px ;
+    padding: 5px 10px 1px 10px;
+    font-size:15px; 
+    color: #888;
+    background-color: #ddd;
+    position: relative;
+    top: 2px;
+}
+.tab.selected {
+    cursor: default;
+    color: #000;
+    padding: 2px 10px 2px 10px;
+    background-color: #fff;
+    top: 1px;
+}
 .mobileButton {
     padding-top:10px;
     padding-bottom:10px;
@@ -174,7 +195,7 @@ iframe.wikiDialog {
   .container {
     max-width: 992px;
   }
-
+}
 
 @media (min-width: 992px) {
   .container {

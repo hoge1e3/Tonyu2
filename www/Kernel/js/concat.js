@@ -1,5 +1,5 @@
 if(!Tonyu.load)Tonyu.load=(_,f)=>f();
-Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
+Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true,"dependingProjects":[]},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
 Tonyu.klass.define({
   fullName: 'kernel.EventHandlerCaller',
   shortName: 'EventHandlerCaller',
@@ -3345,12 +3345,12 @@ Tonyu.klass.define({
       functionShortcut :function _trc_MessageResource_functionShortcut() {
         var _this=this;
         
-        let R = (function anonymous_611(...args) {
+        let R = (function anonymous_635(...args) {
           
           return _this.r(...args);
         });
         
-        R.register=(function anonymous_659(...args) {
+        R.register=(function anonymous_684(...args) {
           
           return _this.register(...args);
         });
@@ -3360,12 +3360,12 @@ Tonyu.klass.define({
       fiber$functionShortcut :function* _trc_MessageResource_f_functionShortcut(_thread) {
         var _this=this;
         
-        let R = (function anonymous_611(...args) {
+        let R = (function anonymous_635(...args) {
           
           return _this.r(...args);
         });
         
-        R.register=(function anonymous_659(...args) {
+        R.register=(function anonymous_684(...args) {
           
           return _this.register(...args);
         });
@@ -8757,7 +8757,7 @@ Tonyu.klass.define({
               if (_this.length<=0) {
                 switch (_this.after) {
                 case "save":
-                  return _this.save()["catch"]((function anonymous_1583(e) {
+                  return _this.save()["catch"]((function anonymous_1587(e) {
                     
                     console.error(e);
                   }));
@@ -8801,7 +8801,7 @@ Tonyu.klass.define({
               if (_this.length<=0) {
                 switch (_this.after) {
                 case "save":
-                  return _this.save()["catch"]((function anonymous_1583(e) {
+                  return _this.save()["catch"]((function anonymous_1587(e) {
                     
                     console.error(e);
                   }));
@@ -8838,7 +8838,7 @@ Tonyu.klass.define({
         var _this=this;
         var r;
         
-        r = _this.runPromise((function anonymous_2016(onFinish,fail) {
+        r = _this.runPromise((function anonymous_2024(onFinish,fail) {
           
           if (_this.evt) {
             _this.evt.remove();
@@ -8855,7 +8855,7 @@ Tonyu.klass.define({
         var _this=this;
         var r;
         
-        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2016(onFinish,fail) {
+        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2024(onFinish,fail) {
           
           if (_this.evt) {
             _this.evt.remove();
@@ -8875,13 +8875,13 @@ Tonyu.klass.define({
         
         f=f||_this.filename||"download.gif";
         console.log("DL",f);
-        r = _this.runPromise((function anonymous_2300(succ,err) {
+        r = _this.runPromise((function anonymous_2308(succ,err) {
           
-          _this.finish().then((function anonymous_2337(blob) {
+          _this.finish().then((function anonymous_2345(blob) {
             
             FS.Content.download(blob,f);
             _this.e=null;
-          })).then((function anonymous_2427() {
+          })).then((function anonymous_2435() {
             
             console.log("DL OK");
           }),err);
@@ -8895,13 +8895,13 @@ Tonyu.klass.define({
         
         f=f||_this.filename||"download.gif";
         console.log("DL",f);
-        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2300(succ,err) {
+        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2308(succ,err) {
           
-          _this.finish().then((function anonymous_2337(blob) {
+          _this.finish().then((function anonymous_2345(blob) {
             
             FS.Content.download(blob,f);
             _this.e=null;
-          })).then((function anonymous_2427() {
+          })).then((function anonymous_2435() {
             
             console.log("DL OK");
           }),err);
@@ -8915,17 +8915,17 @@ Tonyu.klass.define({
         var r;
         
         console.log("Save",f);
-        r = _this.runPromise((function anonymous_2547(succ,err) {
+        r = _this.runPromise((function anonymous_2555(succ,err) {
           
-          _this.finish().then((function anonymous_2584(blob) {
+          _this.finish().then((function anonymous_2592(blob) {
             
             f=_this.file(f||_this.filename);
             return f.setBlob(blob);
-          })).then((function anonymous_2681() {
+          })).then((function anonymous_2689() {
             
             _this.e=null;
             succ();
-          })).then((function anonymous_2743() {
+          })).then((function anonymous_2751() {
             
             console.log("Save OK");
           }),err);
@@ -8938,17 +8938,17 @@ Tonyu.klass.define({
         var r;
         
         console.log("Save",f);
-        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2547(succ,err) {
+        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2555(succ,err) {
           
-          _this.finish().then((function anonymous_2584(blob) {
+          _this.finish().then((function anonymous_2592(blob) {
             
             f=_this.file(f||_this.filename);
             return f.setBlob(blob);
-          })).then((function anonymous_2681() {
+          })).then((function anonymous_2689() {
             
             _this.e=null;
             succ();
-          })).then((function anonymous_2743() {
+          })).then((function anonymous_2751() {
             
             console.log("Save OK");
           }),err);
