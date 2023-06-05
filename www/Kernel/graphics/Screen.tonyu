@@ -1,5 +1,12 @@
 extends Panel;
-
+"field strict";
+let layers:Layer2D[];
+let _color;
+let camera;
+let _drawing:Boolean;
+let clearBG:Boolean;
+let index:Number;
+let multiLayerTouches: MultiLayerTouches;
 \new(opt){
     layers=[];
     _color="black";
@@ -198,4 +205,21 @@ extends Panel;
         }
     }
     return res;
+}
+\getMultiLayerTouches() {
+    if (multiLayerTouches) return multiLayerTouches;
+    multiLayerTouches=new MultiLayerTouches{screen:this};
+    on("touch") \(e) {
+        let a=multiLayerTouches.findActor(e.shape);
+        let f:TouchFinger=e.finger;
+        if (a) {
+            e.actor=a;
+            f.layerPath=assertIs( f.layerPath.withNeighborTarget(a.layer), LayerPath);
+            a.fireEvent("touch",e);
+        } else {
+            //f.layer=this;
+            fireEvent("touch",e);
+        }  
+    };
+    return multiLayerTouches;
 }

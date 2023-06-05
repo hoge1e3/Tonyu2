@@ -31,7 +31,7 @@ let _layerPath: LayerPath;
         layerPath=toLayer.defaultLayerPath;
     } else throw newError("cannot set layer: {1}",toLayer);
 }
-\layerPath {
+\layerPath:LayerPath {
     return _layerPath;
 }
 \layerPath=toLayerPath {

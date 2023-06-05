@@ -2820,12 +2820,12 @@ Tonyu.klass.define({
       functionShortcut :function _trc_MessageResource_functionShortcut() {
         var _this=this;
         
-        let R = (function anonymous_671(...args) {
+        let R = (function anonymous_697(...args) {
           
           return _this.r(...args);
         });
         
-        R.register=(function anonymous_719(...args) {
+        R.register=(function anonymous_746(...args) {
           
           return _this.register(...args);
         });
@@ -2835,12 +2835,12 @@ Tonyu.klass.define({
       fiber$functionShortcut :function* _trc_MessageResource_f_functionShortcut(_thread) {
         var _this=this;
         
-        let R = (function anonymous_671(...args) {
+        let R = (function anonymous_697(...args) {
           
           return _this.r(...args);
         });
         
-        R.register=(function anonymous_719(...args) {
+        R.register=(function anonymous_746(...args) {
           
           return _this.register(...args);
         });
@@ -6779,29 +6779,68 @@ Tonyu.klass.define({
         var _this=this;
         
         "field strict";
+        
       },
       fiber$main :function* _trc_ActorTouch_f_main(_thread) {
         var _this=this;
         
         "field strict";
         
+        
       },
-      newListener :function _trc_ActorTouch_newListener(f) {
+      newListener :function _trc_ActorTouch_newListener(...args) {
         var _this=this;
         var ts;
         
-        ts = Tonyu.globals.$Screen.multiLayerTouches;
+        let screen;
+        if (Tonyu.is(args[0],Tonyu.classes.kernel.Screen)) {
+          screen=args[0];
+        } else {
+          screen=_this.defaultScreen()||Tonyu.globals.$Screen;
+        }
+        ts = screen.getMultiLayerTouches();
         
         ts.add(_this.target);
-        return {dispose: (function anonymous_183() {
+        return {dispose: (function anonymous_286() {
           
           ts.remove(_this.target);
         })};
       },
+      defaultScreen :function _trc_ActorTouch_defaultScreen() {
+        var _this=this;
+        
+        let dp = _this.target.layer.defaultLayerPath;
+        
+        if (! dp) {
+          return null;
+        }
+        let p = dp.closest(Tonyu.classes.kernel.Screen);
+        
+        if (! p) {
+          return null;
+        }
+        return p.target;
+      },
+      fiber$defaultScreen :function* _trc_ActorTouch_f_defaultScreen(_thread) {
+        var _this=this;
+        
+        let dp = _this.target.layer.defaultLayerPath;
+        
+        if (! dp) {
+          return null;
+        }
+        let p = dp.closest(Tonyu.classes.kernel.Screen);
+        
+        if (! p) {
+          return null;
+        }
+        return p.target;
+        
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"newListener":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"newListener":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"defaultScreen":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"target":{"vtype":"kernel.Actor"}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Align2D',
@@ -8485,7 +8524,7 @@ Tonyu.klass.define({
         
         let a = _this.commonAncestor(to);
         
-        let tg = (function anonymous_227(p) {
+        let tg = (function anonymous_236(p) {
           
           return p.target;
         });
@@ -8519,7 +8558,7 @@ Tonyu.klass.define({
         
         let a=yield* _this.fiber$commonAncestor(_thread, to);
         
-        let tg = (function anonymous_227(p) {
+        let tg = (function anonymous_236(p) {
           
           return p.target;
         });
@@ -8733,10 +8772,37 @@ Tonyu.klass.define({
         return null;
         
       },
+      closest :function _trc_LayerPath_closest(klass) {
+        var _this=this;
+        
+        for (let p = _this;
+         p ; p=p.parent) {
+          {
+            if (Tonyu.is(p.target,klass)) {
+              return p;
+            }
+          }
+        }
+        return null;
+      },
+      fiber$closest :function* _trc_LayerPath_f_closest(_thread,klass) {
+        var _this=this;
+        
+        for (let p = _this;
+         p ; p=p.parent) {
+          {
+            if (Tonyu.is(p.target,klass)) {
+              return p;
+            }
+          }
+        }
+        return null;
+        
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,"kernel.LayerPath"],"returnValue":null}},"pathTo":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.LayerPath"],"returnValue":{"element":"kernel.LayerPath"}}},"commonAncestor":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.LayerPath"],"returnValue":"kernel.LayerPath"}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":"kernel.LayerPath"}},"withNeighborTarget":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"parent":{"vtype":"kernel.LayerPath"},"target":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,"kernel.LayerPath"],"returnValue":null}},"pathTo":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.LayerPath"],"returnValue":{"element":"kernel.LayerPath"}}},"commonAncestor":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.LayerPath"],"returnValue":"kernel.LayerPath"}},"add":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":"kernel.LayerPath"}},"withNeighborTarget":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"closest":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":"kernel.LayerPath"}}},"fields":{"parent":{"vtype":"kernel.LayerPath"},"target":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.MapChip',
@@ -14622,7 +14688,7 @@ Tonyu.klass.define({
             
             if (m) {
               if (typeof  v==="function") {
-                elem.on(m[1],(function anonymous_1351(...args) {
+                elem.on(m[1],(function anonymous_1400(...args) {
                   
                   return _this.callEventHandler(v,args);
                 }));
@@ -14649,12 +14715,12 @@ Tonyu.klass.define({
           
         }
         
-        elem.on("focus",(function anonymous_1744() {
+        elem.on("focus",(function anonymous_1806() {
           
           svp=Tonyu.globals.$Keys.preventDefaults;
           Tonyu.globals.$Keys.preventDefaults={};
         }));
-        elem.on("blur",(function anonymous_1843() {
+        elem.on("blur",(function anonymous_1909() {
           
           if (svp) {
             Tonyu.globals.$Keys.preventDefaults=svp;
@@ -14724,7 +14790,7 @@ Tonyu.klass.define({
             
             if (m) {
               if (typeof  v==="function") {
-                elem.on(m[1],(function anonymous_1351(...args) {
+                elem.on(m[1],(function anonymous_1400(...args) {
                   
                   return _this.callEventHandler(v,args);
                 }));
@@ -14751,12 +14817,12 @@ Tonyu.klass.define({
           
         }
         
-        elem.on("focus",(function anonymous_1744() {
+        elem.on("focus",(function anonymous_1806() {
           
           svp=Tonyu.globals.$Keys.preventDefaults;
           Tonyu.globals.$Keys.preventDefaults={};
         }));
-        elem.on("blur",(function anonymous_1843() {
+        elem.on("blur",(function anonymous_1909() {
           
           if (svp) {
             Tonyu.globals.$Keys.preventDefaults=svp;
@@ -16053,7 +16119,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"reset":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__layerPath":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__layerPath":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"show":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"doStart":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"doMove":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"doEnd":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"identifier":{},"index":{},"oid":{},"bound":{},"px":{},"py":{},"x":{},"y":{},"vx":{},"vy":{},"touched":{},"ended":{},"_layerPath":{"vtype":"kernel.LayerPath"}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"reset":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__layerPath":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":"kernel.LayerPath"}},"__setter__layerPath":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"show":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"doStart":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"doMove":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"doEnd":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"identifier":{},"index":{},"oid":{},"bound":{},"px":{},"py":{},"x":{},"y":{},"vx":{},"vy":{},"touched":{},"ended":{},"_layerPath":{"vtype":"kernel.LayerPath"}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.TouchFingers',
@@ -24353,9 +24419,25 @@ Tonyu.klass.define({
       main :function _trc_Screen_main() {
         var _this=this;
         
+        "field strict";
+        
+        
+        
+        
+        
+        
+        
       },
       fiber$main :function* _trc_Screen_f_main(_thread) {
         var _this=this;
+        
+        "field strict";
+        
+        
+        
+        
+        
+        
         
         
       },
@@ -24979,10 +25061,61 @@ Tonyu.klass.define({
         return res;
         
       },
+      getMultiLayerTouches :function _trc_Screen_getMultiLayerTouches() {
+        var _this=this;
+        
+        if (_this.multiLayerTouches) {
+          return _this.multiLayerTouches;
+        }
+        _this.multiLayerTouches=new Tonyu.classes.kernel.MultiLayerTouches({screen: _this});
+        _this.on("touch",(function anonymous_5602(e) {
+          
+          let a = _this.multiLayerTouches.findActor(e.shape);
+          
+          let f = e.finger;
+          
+          if (a) {
+            e.actor=a;
+            f.layerPath=_this.assertIs(f.layerPath.withNeighborTarget(a.layer),Tonyu.classes.kernel.LayerPath);
+            a.fireEvent("touch",e);
+            
+          } else {
+            _this.fireEvent("touch",e);
+            
+          }
+        }));
+        return _this.multiLayerTouches;
+      },
+      fiber$getMultiLayerTouches :function* _trc_Screen_f_getMultiLayerTouches(_thread) {
+        var _this=this;
+        
+        if (_this.multiLayerTouches) {
+          return _this.multiLayerTouches;
+        }
+        _this.multiLayerTouches=new Tonyu.classes.kernel.MultiLayerTouches({screen: _this});
+        _this.on("touch",(function anonymous_5602(e) {
+          
+          let a = _this.multiLayerTouches.findActor(e.shape);
+          
+          let f = e.finger;
+          
+          if (a) {
+            e.actor=a;
+            f.layerPath=_this.assertIs(f.layerPath.withNeighborTarget(a.layer),Tonyu.classes.kernel.LayerPath);
+            a.fireEvent("touch",e);
+            
+          } else {
+            _this.fireEvent("touch",e);
+            
+          }
+        }));
+        return _this.multiLayerTouches;
+        
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"drawLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"removeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"selectLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayerIndex":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"scrollBy":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"canvas2buf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setBGColor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"all":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":["Array"],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"touchedFingers":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.TQuery",null],"returnValue":null}}},"fields":{"layers":{},"_color":{},"camera":{},"_drawing":{},"clearBG":{},"index":{},"multiLayerTouches":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"drawLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"removeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"selectLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayerIndex":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"findLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setPivot":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"scrollTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"scrollBy":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"canvas2buf":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"convert":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"setBGColor":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"all":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"saveAndClear":{"nowait":false,"isMain":false,"vtype":{"params":["Array"],"returnValue":null}},"restore":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"touchedFingers":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.TQuery",null],"returnValue":null}},"getMultiLayerTouches":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"layers":{"vtype":{"element":"kernel.Layer2D"}},"_color":{},"camera":{},"_drawing":{"vtype":"Boolean"},"clearBG":{"vtype":"Boolean"},"index":{"vtype":"Number"},"multiLayerTouches":{"vtype":"kernel.MultiLayerTouches"}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.TD_Z',
@@ -29738,7 +29871,7 @@ Tonyu.klass.define({
         }
         document.body.appendChild($("#"+_this.id)[0]);
         _this.fit();
-        Tonyu.globals.$uiScreen.on("resize",(function anonymous_877() {
+        Tonyu.globals.$uiScreen.on("resize",(function anonymous_908() {
           
           _this.fit();
         }));
@@ -29921,7 +30054,7 @@ Tonyu.klass.define({
         if (! _this.name2id) {
           return "";
         }
-        return new Promise((function anonymous_2255(s) {
+        return new Promise((function anonymous_2338(s) {
           
           let files = _this.checkExists(name)[0].files;
           
@@ -29935,7 +30068,7 @@ Tonyu.klass.define({
           }
           let rd = new FileReader;
           
-          rd.onload=(function anonymous_2428(e) {
+          rd.onload=(function anonymous_2517(e) {
             
             s({name: f.name,dataURL: e.target.result});
           });
@@ -29948,7 +30081,7 @@ Tonyu.klass.define({
         if (! _this.name2id) {
           return "";
         }
-        return new Promise((function anonymous_2255(s) {
+        return new Promise((function anonymous_2338(s) {
           
           let files = _this.checkExists(name)[0].files;
           
@@ -29962,7 +30095,7 @@ Tonyu.klass.define({
           }
           let rd = new FileReader;
           
-          rd.onload=(function anonymous_2428(e) {
+          rd.onload=(function anonymous_2517(e) {
             
             s({name: f.name,dataURL: e.target.result});
           });
@@ -38064,7 +38197,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.mat=new Tonyu.classes.kernel.Matrix;
-        _this.mat.on("newCell",(function anonymous_636(e) {
+        _this.mat.on("newCell",(function anonymous_661(e) {
           
           e.set({});
         }));
@@ -38073,7 +38206,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.mat=new Tonyu.classes.kernel.Matrix;
-        _this.mat.on("newCell",(function anonymous_636(e) {
+        _this.mat.on("newCell",(function anonymous_661(e) {
           
           e.set({});
         }));
@@ -38437,7 +38570,7 @@ Tonyu.klass.define({
         
         nm = new Tonyu.classes.kernel.Matrix;
         
-        nm.on("newCell",(function anonymous_3386(e) {
+        nm.on("newCell",(function anonymous_3538(e) {
           
           e.set({});
         }));
@@ -38494,7 +38627,7 @@ Tonyu.klass.define({
         
         nm = new Tonyu.classes.kernel.Matrix;
         
-        nm.on("newCell",(function anonymous_3386(e) {
+        nm.on("newCell",(function anonymous_3538(e) {
           
           e.set({});
         }));

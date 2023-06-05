@@ -1,13 +1,23 @@
 extends EventHandler;
 
 "field strict";
-// target: Actor
-\newListener(f/*:Function*/) {
-    var ts=$Screen.multiLayerTouches;
+let target: Actor;
+\newListener(...args) {
+    let screen;
+    if (args[0] is Screen) screen=args[0];
+    else screen=defaultScreen()||$Screen;
+    var ts=screen.getMultiLayerTouches();
     ts.add(target);
     return {
         dispose: \{
             ts.remove(target);
         }
     };
+}
+\defaultScreen() {
+    let dp=target.layer.defaultLayerPath;
+    if (!dp) return null;
+    let p=dp.closest(Screen);
+    if (!p) return null;
+    return p.target;
 }
