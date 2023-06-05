@@ -195,7 +195,7 @@ module.exports=function FileList(elem, options) {
             if (!list[f.path()]) {
                 list[f.path()]={
                     dom:$("<span>").addClass("tab").text(f.truncExt()).click(
-                        ()=>open(f)
+                        ()=>select(f)
                     ).appendTo("#fileTabs")
                 };
                 $("#dummytab").hide();
