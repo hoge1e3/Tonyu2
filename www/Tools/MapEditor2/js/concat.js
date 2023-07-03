@@ -1217,6 +1217,16 @@ Tonyu.klass.define({
         Tonyu.globals.$Screen.resize(600,800);
         Tonyu.globals.$Screen.setPivot(0,0);
         Tonyu.globals.$Screen.scrollTo(0,0);
+        Tonyu.globals.$Screen.selectLayer(Tonyu.globals.$frontLayer);
+        Tonyu.globals.$Screen.on("touch",(function anonymous_322(e) {
+          
+          let f = e.finger;
+          
+          f.on("move",(function anonymous_368() {
+            
+            Tonyu.globals.$Screen.scrollBy(0,- f.vy);
+          }));
+        }));
         Tonyu.globals.$sound.stopBGM();
         _this.y=20;
         _this.pitch = 50;
@@ -1250,6 +1260,16 @@ Tonyu.klass.define({
         Tonyu.globals.$Screen.resize(600,800);
         Tonyu.globals.$Screen.setPivot(0,0);
         Tonyu.globals.$Screen.scrollTo(0,0);
+        Tonyu.globals.$Screen.selectLayer(Tonyu.globals.$frontLayer);
+        Tonyu.globals.$Screen.on("touch",(function anonymous_322(e) {
+          
+          let f = e.finger;
+          
+          f.on("move",(function anonymous_368() {
+            
+            Tonyu.globals.$Screen.scrollBy(0,- f.vy);
+          }));
+        }));
         Tonyu.globals.$sound.stopBGM();
         _this.y=20;
         _this.pitch = 50;
@@ -1274,7 +1294,7 @@ Tonyu.klass.define({
         
         b = new Tonyu.classes.kernel.Button({left: 10,top: y,width: 100,padding: 2,height: _this.pitch*0.7,text: "New.."});
         
-        b.on("touch",(function anonymous_555() {
+        b.on("touch",(function anonymous_737() {
           var name;
           
           name = _this.uniqFile(_this.mapDir,"map",_this.mapEXT).truncExt();
@@ -1294,7 +1314,7 @@ Tonyu.klass.define({
         
         b = new Tonyu.classes.kernel.Button({left: 10,top: y,width: 100,padding: 2,height: _this.pitch*0.7,text: "New.."});
         
-        b.on("touch",(function anonymous_555() {
+        b.on("touch",(function anonymous_737() {
           var name;
           
           name = _this.uniqFile(_this.mapDir,"map",_this.mapEXT).truncExt();
@@ -1318,7 +1338,7 @@ Tonyu.klass.define({
         }
         b = new Tonyu.classes.kernel.Button({left: 10,top: y,width: 100,padding: 2,height: _this.pitch*0.7,text: "Title"});
         
-        b.on("touch",(function anonymous_1040() {
+        b.on("touch",(function anonymous_1236() {
           
           _this.loadPage(_this.config.titlePage);
         }));
@@ -1332,7 +1352,7 @@ Tonyu.klass.define({
         }
         b = new Tonyu.classes.kernel.Button({left: 10,top: y,width: 100,padding: 2,height: _this.pitch*0.7,text: "Title"});
         
-        b.on("touch",(function anonymous_1040() {
+        b.on("touch",(function anonymous_1236() {
           
           _this.loadPage(_this.config.titlePage);
         }));
@@ -1346,19 +1366,19 @@ Tonyu.klass.define({
         
         name = file.truncExt();
         
-        new Tonyu.classes.kernel.Actor({text: name,align: "left",x: 10,y: y,size: 30});
+        new Tonyu.classes.kernel.Actor({text: name,align: "left",x: 10,y: y,size: 30,layer: Tonyu.globals.$frontLayer});
         
         xx = 400;
         
         b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Edit"});
-        b.on("touch",(function anonymous_1334() {
+        b.on("touch",(function anonymous_1560() {
           
           _this.loadPage(Tonyu.classes.mapEditor2.Edit,{config: _this.config,mapFile: file});
         }));
         xx-=100;
         if (_this.config.mainPage) {
           b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Play"});
-          b.on("touch",(function anonymous_1556() {
+          b.on("touch",(function anonymous_1788() {
             
             _this.loadPage(_this.config.mainPage,{mapFile: file});
           }));
@@ -1366,7 +1386,7 @@ Tonyu.klass.define({
         }
         xx-=100;
         b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Copy"});
-        b.on("touch",(function anonymous_1760() {
+        b.on("touch",(function anonymous_1998() {
           var nname;
           
           name=_this.uniqFile(file.up(),file.truncExt(),_this.mapEXT).truncExt();
@@ -1380,7 +1400,7 @@ Tonyu.klass.define({
         }));
         xx-=100;
         b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Del",fillStyle: "#f88"});
-        b.on("touch",(function anonymous_2229() {
+        b.on("touch",(function anonymous_2480() {
           var r;
           
           r = Tonyu.globals.$InputBox.confirm("Delete "+name+"?");
@@ -1400,19 +1420,19 @@ Tonyu.klass.define({
         
         name = file.truncExt();
         
-        new Tonyu.classes.kernel.Actor({text: name,align: "left",x: 10,y: y,size: 30});
+        new Tonyu.classes.kernel.Actor({text: name,align: "left",x: 10,y: y,size: 30,layer: Tonyu.globals.$frontLayer});
         
         xx = 400;
         
         b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Edit"});
-        b.on("touch",(function anonymous_1334() {
+        b.on("touch",(function anonymous_1560() {
           
           _this.loadPage(Tonyu.classes.mapEditor2.Edit,{config: _this.config,mapFile: file});
         }));
         xx-=100;
         if (_this.config.mainPage) {
           b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Play"});
-          b.on("touch",(function anonymous_1556() {
+          b.on("touch",(function anonymous_1788() {
             
             _this.loadPage(_this.config.mainPage,{mapFile: file});
           }));
@@ -1420,7 +1440,7 @@ Tonyu.klass.define({
         }
         xx-=100;
         b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Copy"});
-        b.on("touch",(function anonymous_1760() {
+        b.on("touch",(function anonymous_1998() {
           var nname;
           
           name=_this.uniqFile(file.up(),file.truncExt(),_this.mapEXT).truncExt();
@@ -1434,7 +1454,7 @@ Tonyu.klass.define({
         }));
         xx-=100;
         b=new Tonyu.classes.kernel.Button({left: Tonyu.globals.$screenWidth-xx,top: y,width: 100,padding: 2,height: _this.pitch*0.8,text: "Del",fillStyle: "#f88"});
-        b.on("touch",(function anonymous_2229() {
+        b.on("touch",(function anonymous_2480() {
           var r;
           
           r = Tonyu.globals.$InputBox.confirm("Delete "+name+"?");

@@ -6,6 +6,14 @@ $InputBox.useNative=true;
 $Screen.resize(600,800);
 $Screen.setPivot(0,0);
 $Screen.scrollTo(0,0);
+$Screen.selectLayer($frontLayer);
+
+$Screen.on("touch") \(e) {
+    let f=e.finger;
+    f.on("move") \{
+        $Screen.scrollBy(0,-f.vy);      
+    };
+};
 $sound.stopBGM();
 y=20;
 var pitch=50;
@@ -41,7 +49,7 @@ backItem(y);
 
 \item(file, y) {
     var name=file.truncExt();
-    new Actor{text:name,align:"left", x:10,y,size:30};
+    new Actor{text:name,align:"left", x:10,y,size:30,layer:$frontLayer};
     var b;
     var xx=400;
     b=new Button{left:$screenWidth-xx,top:y, width:100, padding:2,height:pitch*0.8,text:"Edit"};
