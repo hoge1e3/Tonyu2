@@ -24,7 +24,7 @@ let _layerPath: LayerPath;
     return layerPath.target;
 }
 \layer=toLayer {
-    let l=layerPath.withNeighborTarget(toLayer);
+    let l=toLayer is LayerPath ? toLayer : layerPath.withNeighborTarget(toLayer);
     if (l) {
         layerPath=l;
     } else if (toLayer.defaultLayerPath) {

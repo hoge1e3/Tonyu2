@@ -213,12 +213,17 @@ let multiLayerTouches: MultiLayerTouches;
         let a=multiLayerTouches.findActor(e.shape);
         let f:TouchFinger=e.finger;
         if (a) {
+            f.layer=this;
             e.actor=a;
-            f.layerPath=assertIs( f.layerPath.withNeighborTarget(a.layer), LayerPath);
+            let nlp=f.layerPath.withNeighborTarget(a.layer);
+            if (!(nlp is LayerPath)) {
+                throw newError("Cannot get neighbot target {1} {2}",f, a.layer);
+            }
+            f.layerPath=nlp;
             a.fireEvent("touch",e);
         } else {
             //f.layer=this;
-            fireEvent("touch",e);
+            fireEvent("touchBG",e);
         }  
     };
     return multiLayerTouches;

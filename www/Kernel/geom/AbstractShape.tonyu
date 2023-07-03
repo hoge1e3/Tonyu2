@@ -36,12 +36,18 @@ let _layerPath:LayerPath;
     res.layerPath=layerPath;
     return res;
 }
+\layerPathFromLayer(layer) {
+    if (layer is LayerPath) return layer;
+    let nl=(_layerPath && _layerPath.withNeighborTarget(layer)) || layer.defaultLayerPath;
+    return assertIs(nl, LayerPath);
+}
 \layerChanged(layer) {
-    return layerPathChanged(assertIs(layer.defaultLayerPath, LayerPath));
+    let nl=layerPathFromLayer(layer);
+    return layerPathChanged(nl);
 }
 \layer {return _layerPath && _layerPath.target;}
 \layer=value {
-    layerPath=assertIs(value.defaultLayerPath, LayerPath);
+    layerPath=layerPathFromLayer(value);
 }
 \layerPath=value {
     if (!_layerPath || _layerPath===value) _layerPath=value;

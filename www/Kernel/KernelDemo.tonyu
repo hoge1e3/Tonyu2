@@ -1,10 +1,48 @@
 extends Actor;
 native Tonyu;
+//native Error;
+Error.stackTraceLimit=50;
 for (let k,v of Tonyu.globals) {
     if (v && typeof v==="object" && !v.name) {
         v.name=k;
     }
 }
+s=new Screen{x:200,y:200, width:200,height:200};
+s.setBGColor("#0aa");
+l=s.addLayer();
+print(l);
+for (let i=0;i<5; i++) {
+    let a=new Actor{x:5+i*30,y:50,layer:l,radius:10+i*3,fillStyle:"white"};
+    a.on("touch") \(e) {
+        let f=e.finger;
+        //f.layer=s;
+        //print(f.x,f.y);
+        let lp=s.convert({x:a.x, y:a.y, layer:l},$mainLayer);
+        f.layer=$mainLayer;
+        let dup=new Actor{x:lp.x, y:lp.y,radius:a.radius,
+        fillStyle:"white",alpha:200};
+        let sx=f.x-dup.x, sy=f.y-dup.y;
+        f.on("move") \{
+            dup.x=f.x-sx;
+            dup.y=f.y-sy;
+        //f.update();
+        };
+        f.on("end") \{
+            if (dup.crashTo(s)) dup.die();
+            else dup.alpha=255;  
+        };
+    };
+}
+s.on("touchBG") \(e){
+    let f=e.finger;
+    let sx=f.x, sy=f.y;
+    f.on("move") \{
+        f.update();
+        //f.update();
+        s.scrollBy(-f.vx, -f.vy);
+    };    
+};
+/*
 new Label{x:$screenWidth/2, y:50, template:"$mouseX, $mouseY",size:20};
 let a=new Actor{x:0,y:100, align:"left top", fillStyle:"red",width:50,height:50};
 a.on("touch") \(e) {
@@ -37,4 +75,4 @@ while(true) {
         $InputDevice.defaultLayer=l;
         print("SET");
     };
-}
+}*/
