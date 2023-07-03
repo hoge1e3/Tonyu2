@@ -63,10 +63,13 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                 items=rsrc[mediaInfo.key];
                 tempFiles = items.slice();
                 itemUIs=[];
+                let fileButton=UI("input",{type:"file",multiple:true, style:"display:inline;",on:{input:(e)=>{
+                    procFiles(fileButton[0].files);
+                 }}});
                 if (action!="close") { // ウィンドウ閉じるとき（画面更新は要らない）
                     var dragMsg=R("dragFileHere",mediaInfo.name, mediaInfo.exts.join("/"));
                     var dragPoint=UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
-                        on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg
+                        on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg,fileButton,
                     ).appendTo(d);
                     var itemTbl=UI("div").appendTo(d);
                     items.forEach(function (item){
@@ -133,6 +136,9 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                 e.preventDefault();
                 var eo=e.originalEvent;
                 var files = eo.dataTransfer.files;
+                procFiles(files);
+            }
+            function procFiles(files) {
                 var readFiles = new Array(files.length);
                 var readFileSum = files.length;
                 var notReadFiles = [];
