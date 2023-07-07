@@ -91,8 +91,8 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             var rel=f.relPath(dir);
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
             if (chkDup(rel,"binary")) return;
-            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"' data-wrap='80'"+lu+">";
-            buf+=wrap(f.text(),80);
+            buf+="<script language='text/tonyu' type='text/tonyu' data-dataurl='true' data-filename='"+rel+"' data-wrap='80'"+lu+">";
+            buf+=wrap(f.dataURL(),80);
             buf+="</script>\n\n";
         });
         buf+="</head><body>"+(options.splashElement||splashElement)+"</body></html>";
