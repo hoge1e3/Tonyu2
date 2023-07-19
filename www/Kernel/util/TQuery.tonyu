@@ -217,6 +217,9 @@ var length, context;
 \find1(f) {
     return find(f)[0];
 }
+\filter(f) {
+    return find(f);
+}
 \random() {
     if (length===0) return null;
     return this[rnd(length)];

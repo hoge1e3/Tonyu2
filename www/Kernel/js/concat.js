@@ -4492,6 +4492,18 @@ Tonyu.klass.define({
         return _this.find(f)[0];
         
       },
+      filter :function _trc_TQuery_filter(f) {
+        var _this=this;
+        
+        return _this.find(f);
+      },
+      fiber$filter :function* _trc_TQuery_f_filter(_thread,f) {
+        var _this=this;
+        
+        return yield* _this.fiber$find(_thread, f);
+        
+        
+      },
       random :function _trc_TQuery_random() {
         var _this=this;
         
@@ -4555,7 +4567,7 @@ Tonyu.klass.define({
       alive :function _trc_TQuery_alive() {
         var _this=this;
         
-        return _this.find((function anonymous_5141(o) {
+        return _this.find((function anonymous_5179(o) {
           
           return ! o.isDead();
         }));
@@ -4563,7 +4575,7 @@ Tonyu.klass.define({
       fiber$alive :function* _trc_TQuery_f_alive(_thread) {
         var _this=this;
         
-        return yield* _this.fiber$find(_thread, (function anonymous_5141(o) {
+        return yield* _this.fiber$find(_thread, (function anonymous_5179(o) {
           
           return ! o.isDead();
         }));
@@ -4598,7 +4610,7 @@ Tonyu.klass.define({
       klass :function _trc_TQuery_klass(k) {
         var _this=this;
         
-        return _this.find((function anonymous_5328(o) {
+        return _this.find((function anonymous_5366(o) {
           
           return o instanceof k;
         }));
@@ -4606,7 +4618,7 @@ Tonyu.klass.define({
       fiber$klass :function* _trc_TQuery_f_klass(_thread,k) {
         var _this=this;
         
-        return yield* _this.fiber$find(_thread, (function anonymous_5328(o) {
+        return yield* _this.fiber$find(_thread, (function anonymous_5366(o) {
           
           return o instanceof k;
         }));
@@ -4628,7 +4640,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__parent":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"create":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"contains":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"tonyuIterator":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"attr":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"genKeyfunc":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"applyArrayMethod":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"toArray":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"sort":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"slice":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"maxs":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mins":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"minObj":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"maxObj":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"nearests":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"nearest":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"withins":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"within":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"max":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"min":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"push":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"size":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"find":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"find1":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"random":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"apply":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"alive":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"die":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"klass":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"sendEvent":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"length":{},"context":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__parent":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"create":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"contains":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"tonyuIterator":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"attr":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"genKeyfunc":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"applyArrayMethod":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"toArray":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"sort":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"slice":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"maxs":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mins":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"minObj":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"maxObj":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"nearests":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"nearest":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"withins":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"within":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"max":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"min":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"push":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"size":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"find":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"find1":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"filter":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"random":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"apply":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"alive":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"die":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"klass":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"sendEvent":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"length":{},"context":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Zip',
@@ -8757,7 +8769,7 @@ Tonyu.klass.define({
               if (_this.length<=0) {
                 switch (_this.after) {
                 case "save":
-                  return _this.save()["catch"]((function anonymous_1587(e) {
+                  return _this.save()["catch"]((function anonymous_1583(e) {
                     
                     console.error(e);
                   }));
@@ -8801,7 +8813,7 @@ Tonyu.klass.define({
               if (_this.length<=0) {
                 switch (_this.after) {
                 case "save":
-                  return _this.save()["catch"]((function anonymous_1587(e) {
+                  return _this.save()["catch"]((function anonymous_1583(e) {
                     
                     console.error(e);
                   }));
@@ -8838,7 +8850,7 @@ Tonyu.klass.define({
         var _this=this;
         var r;
         
-        r = _this.runPromise((function anonymous_2024(onFinish,fail) {
+        r = _this.runPromise((function anonymous_2016(onFinish,fail) {
           
           if (_this.evt) {
             _this.evt.remove();
@@ -8855,7 +8867,7 @@ Tonyu.klass.define({
         var _this=this;
         var r;
         
-        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2024(onFinish,fail) {
+        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2016(onFinish,fail) {
           
           if (_this.evt) {
             _this.evt.remove();
@@ -8875,13 +8887,13 @@ Tonyu.klass.define({
         
         f=f||_this.filename||"download.gif";
         console.log("DL",f);
-        r = _this.runPromise((function anonymous_2308(succ,err) {
+        r = _this.runPromise((function anonymous_2300(succ,err) {
           
-          _this.finish().then((function anonymous_2345(blob) {
+          _this.finish().then((function anonymous_2337(blob) {
             
             FS.Content.download(blob,f);
             _this.e=null;
-          })).then((function anonymous_2435() {
+          })).then((function anonymous_2427() {
             
             console.log("DL OK");
           }),err);
@@ -8895,13 +8907,13 @@ Tonyu.klass.define({
         
         f=f||_this.filename||"download.gif";
         console.log("DL",f);
-        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2308(succ,err) {
+        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2300(succ,err) {
           
-          _this.finish().then((function anonymous_2345(blob) {
+          _this.finish().then((function anonymous_2337(blob) {
             
             FS.Content.download(blob,f);
             _this.e=null;
-          })).then((function anonymous_2435() {
+          })).then((function anonymous_2427() {
             
             console.log("DL OK");
           }),err);
@@ -8915,17 +8927,17 @@ Tonyu.klass.define({
         var r;
         
         console.log("Save",f);
-        r = _this.runPromise((function anonymous_2555(succ,err) {
+        r = _this.runPromise((function anonymous_2547(succ,err) {
           
-          _this.finish().then((function anonymous_2592(blob) {
+          _this.finish().then((function anonymous_2584(blob) {
             
             f=_this.file(f||_this.filename);
             return f.setBlob(blob);
-          })).then((function anonymous_2689() {
+          })).then((function anonymous_2681() {
             
             _this.e=null;
             succ();
-          })).then((function anonymous_2751() {
+          })).then((function anonymous_2743() {
             
             console.log("Save OK");
           }),err);
@@ -8938,17 +8950,17 @@ Tonyu.klass.define({
         var r;
         
         console.log("Save",f);
-        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2555(succ,err) {
+        r=yield* _this.fiber$runPromise(_thread, (function anonymous_2547(succ,err) {
           
-          _this.finish().then((function anonymous_2592(blob) {
+          _this.finish().then((function anonymous_2584(blob) {
             
             f=_this.file(f||_this.filename);
             return f.setBlob(blob);
-          })).then((function anonymous_2689() {
+          })).then((function anonymous_2681() {
             
             _this.e=null;
             succ();
-          })).then((function anonymous_2751() {
+          })).then((function anonymous_2743() {
             
             console.log("Save OK");
           }),err);
@@ -15003,7 +15015,7 @@ Tonyu.klass.define({
             
             if (m) {
               if (typeof  v==="function") {
-                elem.on(m[1],(function anonymous_1351(...args) {
+                elem.on(m[1],(function anonymous_1400(...args) {
                   
                   return _this.callEventHandler(v,args);
                 }));
@@ -15030,12 +15042,12 @@ Tonyu.klass.define({
           
         }
         
-        elem.on("focus",(function anonymous_1744() {
+        elem.on("focus",(function anonymous_1806() {
           
           svp=Tonyu.globals.$Keys.preventDefaults;
           Tonyu.globals.$Keys.preventDefaults={};
         }));
-        elem.on("blur",(function anonymous_1843() {
+        elem.on("blur",(function anonymous_1909() {
           
           if (svp) {
             Tonyu.globals.$Keys.preventDefaults=svp;
@@ -15105,7 +15117,7 @@ Tonyu.klass.define({
             
             if (m) {
               if (typeof  v==="function") {
-                elem.on(m[1],(function anonymous_1351(...args) {
+                elem.on(m[1],(function anonymous_1400(...args) {
                   
                   return _this.callEventHandler(v,args);
                 }));
@@ -15132,12 +15144,12 @@ Tonyu.klass.define({
           
         }
         
-        elem.on("focus",(function anonymous_1744() {
+        elem.on("focus",(function anonymous_1806() {
           
           svp=Tonyu.globals.$Keys.preventDefaults;
           Tonyu.globals.$Keys.preventDefaults={};
         }));
-        elem.on("blur",(function anonymous_1843() {
+        elem.on("blur",(function anonymous_1909() {
           
           if (svp) {
             Tonyu.globals.$Keys.preventDefaults=svp;
@@ -29455,7 +29467,7 @@ Tonyu.klass.define({
         }
         document.body.appendChild($("#"+_this.id)[0]);
         _this.fit();
-        Tonyu.globals.$uiScreen.on("resize",(function anonymous_877() {
+        Tonyu.globals.$uiScreen.on("resize",(function anonymous_908() {
           
           _this.fit();
         }));
@@ -29638,7 +29650,7 @@ Tonyu.klass.define({
         if (! _this.name2id) {
           return "";
         }
-        return new Promise((function anonymous_2255(s) {
+        return new Promise((function anonymous_2338(s) {
           
           let files = _this.checkExists(name)[0].files;
           
@@ -29652,7 +29664,7 @@ Tonyu.klass.define({
           }
           let rd = new FileReader;
           
-          rd.onload=(function anonymous_2428(e) {
+          rd.onload=(function anonymous_2517(e) {
             
             s({name: f.name,dataURL: e.target.result});
           });
@@ -29665,7 +29677,7 @@ Tonyu.klass.define({
         if (! _this.name2id) {
           return "";
         }
-        return new Promise((function anonymous_2255(s) {
+        return new Promise((function anonymous_2338(s) {
           
           let files = _this.checkExists(name)[0].files;
           
@@ -29679,7 +29691,7 @@ Tonyu.klass.define({
           }
           let rd = new FileReader;
           
-          rd.onload=(function anonymous_2428(e) {
+          rd.onload=(function anonymous_2517(e) {
             
             s({name: f.name,dataURL: e.target.result});
           });
@@ -37779,7 +37791,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.mat=new Tonyu.classes.kernel.Matrix;
-        _this.mat.on("newCell",(function anonymous_636(e) {
+        _this.mat.on("newCell",(function anonymous_661(e) {
           
           e.set({});
         }));
@@ -37788,7 +37800,7 @@ Tonyu.klass.define({
         var _this=this;
         
         _this.mat=new Tonyu.classes.kernel.Matrix;
-        _this.mat.on("newCell",(function anonymous_636(e) {
+        _this.mat.on("newCell",(function anonymous_661(e) {
           
           e.set({});
         }));
@@ -38152,7 +38164,7 @@ Tonyu.klass.define({
         
         nm = new Tonyu.classes.kernel.Matrix;
         
-        nm.on("newCell",(function anonymous_3386(e) {
+        nm.on("newCell",(function anonymous_3538(e) {
           
           e.set({});
         }));
@@ -38209,7 +38221,7 @@ Tonyu.klass.define({
         
         nm = new Tonyu.classes.kernel.Matrix;
         
-        nm.on("newCell",(function anonymous_3386(e) {
+        nm.on("newCell",(function anonymous_3538(e) {
           
           e.set({});
         }));
