@@ -106,11 +106,12 @@ function (east,UI,Klass,NPD,STF,R) {
         complete: function run(t) {
             var dir=t.dst;
             t.mode("complete");
-            var o=STF.toObj();
+            STF.copyTo(dir);
+            /*var o=STF.toObj();
             for (var fn in o) {
                 var f=dir.rel(fn);
                 f.text(o[fn].text);
-            }
+            }*/
             t.vars.complete.empty();
             t.vars.complete.append(UI("h1",R("importComplete")));
             t.dom.dialog("close");

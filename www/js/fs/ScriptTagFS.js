@@ -17,6 +17,9 @@ define(["Content"],function (Content) {
 	                } else {
 	                    res[fn]={lastUpdate:l, text:src};
 	                }
+					if ($(s).data("dataurl")) {
+						res[fn].dataurl=true;
+					}
 	            }
 	        }
 	    });
@@ -38,10 +41,10 @@ define(["Content"],function (Content) {
 	    var o=STF.toObj();
 	    for (var fn in o) {
             var f=dir.rel(fn);
-            if (f.isText()) {
+            if (f.isText() &&  !o[fn].dataurl) {
                 f.text(o[fn].text);
             } else {
-                f.setBytes(Content.url(o[fn].text).toByteArray() );
+                f.setContent(Content.url(o[fn].text));
             }
         }
 	};

@@ -190,7 +190,7 @@ $(".dropdown-toggle");
         "cannotUseKernelFiles": "{1}はシステムで利用されているフォルダなので使用できません",
         "upCased": "先頭を大文字({1}) にして作成します．",
         "resouceList": "{1}リスト",
-        "dragFileHere": "ここに{1}ファイル({2})をドラッグ＆ドロップして追加",
+        "dragFileHere": "ここに{1}ファイル({2})をドラッグ＆ドロップ，または",
         "storageUsage": "{1}KB中{2}KB使用中．",
         "unzipping": "{1}を展開中...",
         "doesNotContainTonyu2Project": "{1}にはTonyu2の編集可能なプロジェクトが含まれていません.",
@@ -395,7 +395,7 @@ $(".dropdown-toggle");
         "upCased" : "The class name is automatically capitalized: {1}", //先頭を大文字({1}) にして作成します．
         "ThisFolderWillBeCreated": "This folder will be created.",
         "resouceList" : "{1} List", //{1}リスト
-        "dragFileHere" : "Drag {1} File({2}) Here", //ここに{1}ファイル({2})をドラッグ＆ドロップして追加
+        "dragFileHere" : "Drag {1} files({2}) here or,", //ここに{1}ファイル({2})をドラッグ＆ドロップして追加
         "storageUsage" : "Storage Usage: {2}/{1}KB", //{1}KB中{2}KB使用中．
         "unzipping" : "Unzipping {1}", //{1}を展開中...
         "doesNotContainTonyu2Project" : "{1} Does Not Contain Tonyu2 Project", //{1}にはTonyu2の編集可能なプロジェクトが含まれていません.

@@ -3967,6 +3967,18 @@ Tonyu.klass.define({
         return _this.find(f)[0];
         
       },
+      filter :function _trc_TQuery_filter(f) {
+        var _this=this;
+        
+        return _this.find(f);
+      },
+      fiber$filter :function* _trc_TQuery_f_filter(_thread,f) {
+        var _this=this;
+        
+        return yield* _this.fiber$find(_thread, f);
+        
+        
+      },
       random :function _trc_TQuery_random() {
         var _this=this;
         
@@ -4030,7 +4042,7 @@ Tonyu.klass.define({
       alive :function _trc_TQuery_alive() {
         var _this=this;
         
-        return _this.find((function anonymous_5141(o) {
+        return _this.find((function anonymous_5179(o) {
           
           return ! o.isDead();
         }));
@@ -4038,7 +4050,7 @@ Tonyu.klass.define({
       fiber$alive :function* _trc_TQuery_f_alive(_thread) {
         var _this=this;
         
-        return yield* _this.fiber$find(_thread, (function anonymous_5141(o) {
+        return yield* _this.fiber$find(_thread, (function anonymous_5179(o) {
           
           return ! o.isDead();
         }));
@@ -4073,7 +4085,7 @@ Tonyu.klass.define({
       klass :function _trc_TQuery_klass(k) {
         var _this=this;
         
-        return _this.find((function anonymous_5328(o) {
+        return _this.find((function anonymous_5366(o) {
           
           return o instanceof k;
         }));
@@ -4081,7 +4093,7 @@ Tonyu.klass.define({
       fiber$klass :function* _trc_TQuery_f_klass(_thread,k) {
         var _this=this;
         
-        return yield* _this.fiber$find(_thread, (function anonymous_5328(o) {
+        return yield* _this.fiber$find(_thread, (function anonymous_5366(o) {
           
           return o instanceof k;
         }));
@@ -4103,7 +4115,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__parent":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"create":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"contains":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"tonyuIterator":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"attr":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"genKeyfunc":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"applyArrayMethod":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"toArray":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"sort":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"slice":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"maxs":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mins":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"minObj":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"maxObj":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"nearests":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"nearest":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"withins":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"within":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"max":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"min":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"push":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"size":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"find":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"find1":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"random":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"apply":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"alive":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"die":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"klass":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"sendEvent":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"length":{},"context":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__parent":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"create":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"contains":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"tonyuIterator":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"attr":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"genKeyfunc":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"applyArrayMethod":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"toArray":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"sort":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"slice":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"maxs":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mins":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"minObj":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"maxObj":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"nearests":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"nearest":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"withins":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"within":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"max":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"min":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"push":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"size":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"find":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"find1":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"filter":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"random":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"apply":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"alive":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"die":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"klass":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"sendEvent":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"length":{},"context":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Zip',
