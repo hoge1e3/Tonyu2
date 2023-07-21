@@ -20,7 +20,7 @@ entire::{
     header: {
         layerNames: [string],
         size: {row:number, col:number, nrow: number, ncol:number, w:number, h:number},
-        expend:: Map._expand
+        expand:: Map._expand
         e2c: { expr: cNumber } 
     },
     chip: [mat of cNumber]// for each layer
