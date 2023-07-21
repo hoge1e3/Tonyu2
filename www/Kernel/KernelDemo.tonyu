@@ -29,7 +29,48 @@ for (let i=0;i<5; i++) {
         };
         f.on("end") \{
             if (dup.crashTo(s)) dup.die();
-            else dup.alpha=255;  
+            else {
+                dup.alpha=255;  
+                draggable(dup) {
+                    move: \(e){
+                        if (dup.crashTo(s)) {
+                            e.cancel();
+                        }
+                    }
+                };
+            }
+        };
+    };
+}
+\draggable(a, options) {
+    options=options||{};
+    a.on("touch") \(e){
+        let f=e.finger;    
+        let sx=f.x-a.x, sy=f.y-a.y;
+        f.on("move") \{
+            let e={
+                x=f.x-sx, y=f.y-sy,
+                cancel=\{e.cancelled=true;}
+            };
+            e.px=a.x;
+            e.py=a.y;
+            e.vx=e.x-e.px;
+            e.vy=e.y-e.py;
+            a.x=e.x;
+            a.y=e.y;
+            if (typeof options.move==="function") {
+                options.move(e);
+                if (e.cancelled) {
+                    a.x=e.px;
+                    a.y=e.py;
+                }
+            }
+        };
+        f.on("end") \{
+            let e={};
+            if (typeof options.end==="function") {
+                options.end(e);
+            }
         };
     };
 }

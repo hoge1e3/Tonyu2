@@ -25919,19 +25919,27 @@ Tonyu.klass.define({
                   dup.die();
                 } else {
                   dup.alpha=255;
+                  _this.draggable(dup,{move: (function anonymous_1017(e) {
+                    
+                    if (dup.crashTo(_this.s)) {
+                      e.cancel();
+                      
+                    }
+                  })});
+                  
                 }
               }));
             }));
           }
         }
-        _this.s.on("touchBG",(function anonymous_977(e) {
+        _this.s.on("touchBG",(function anonymous_2070(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1047() {
+          f.on("move",(function anonymous_2140() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
@@ -25981,19 +25989,27 @@ Tonyu.klass.define({
                   dup.die();
                 } else {
                   dup.alpha=255;
+                  _this.draggable(dup,{move: (function anonymous_1017(e) {
+                    
+                    if (dup.crashTo(_this.s)) {
+                      e.cancel();
+                      
+                    }
+                  })});
+                  
                 }
               }));
             }));
           }
         }
-        _this.s.on("touchBG",(function anonymous_977(e) {
+        _this.s.on("touchBG",(function anonymous_2070(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1047() {
+          f.on("move",(function anonymous_2140() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
@@ -26001,10 +26017,101 @@ Tonyu.klass.define({
         }));
         
       },
+      draggable :function _trc_KernelDemo_draggable(a,options) {
+        var _this=this;
+        
+        options=options||{};
+        a.on("touch",(function anonymous_1290(e) {
+          
+          let f = e.finger;
+          
+          let sx = f.x-a.x;
+          let sy = f.y-a.y;
+          
+          f.on("move",(function anonymous_1384() {
+            
+            let e = {x: f.x-sx,y: f.y-sy,cancel: (function anonymous_1469() {
+              
+              e.cancelled=true;
+            })};
+            
+            e.px=a.x;
+            e.py=a.y;
+            e.vx=e.x-e.px;
+            e.vy=e.y-e.py;
+            a.x=e.x;
+            a.y=e.y;
+            if (typeof  options.move==="function") {
+              options.move(e);
+              if (e.cancelled) {
+                a.x=e.px;
+                a.y=e.py;
+                
+              }
+              
+            }
+          }));
+          f.on("end",(function anonymous_1904() {
+            
+            let e = {};
+            
+            if (typeof  options.end==="function") {
+              options.end(e);
+              
+            }
+          }));
+        }));
+      },
+      fiber$draggable :function* _trc_KernelDemo_f_draggable(_thread,a,options) {
+        var _this=this;
+        
+        options=options||{};
+        a.on("touch",(function anonymous_1290(e) {
+          
+          let f = e.finger;
+          
+          let sx = f.x-a.x;
+          let sy = f.y-a.y;
+          
+          f.on("move",(function anonymous_1384() {
+            
+            let e = {x: f.x-sx,y: f.y-sy,cancel: (function anonymous_1469() {
+              
+              e.cancelled=true;
+            })};
+            
+            e.px=a.x;
+            e.py=a.y;
+            e.vx=e.x-e.px;
+            e.vy=e.y-e.py;
+            a.x=e.x;
+            a.y=e.y;
+            if (typeof  options.move==="function") {
+              options.move(e);
+              if (e.cancelled) {
+                a.x=e.px;
+                a.y=e.py;
+                
+              }
+              
+            }
+          }));
+          f.on("end",(function anonymous_1904() {
+            
+            let e = {};
+            
+            if (typeof  options.end==="function") {
+              options.end(e);
+              
+            }
+          }));
+        }));
+        
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}}},"fields":{"s":{},"l":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"draggable":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"s":{},"l":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.BodyActor',
