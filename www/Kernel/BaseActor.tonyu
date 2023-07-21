@@ -1,7 +1,7 @@
 extends null;
 includes MathMod,EventMod,
 ThreadGroupMod,EventHandlerCaller,DialogMod,FileMod,AnimMod,SchedulerMod,
-QueryMod,InputMod,LifeCycleMod,SpriteMod,ParallelMod,
+QueryMod,InputMod,LifeCycleMod,SpriteMod,ParallelMod, DraggableMod,
 PlayMod, ParallelMod, PrintMod, AssertionMod;
 
 "field strict";

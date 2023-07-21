@@ -31,17 +31,26 @@ for (let i=0;i<5; i++) {
             if (dup.crashTo(s)) dup.die();
             else {
                 dup.alpha=255;  
-                draggable(dup) {
-                    move: \(e){
-                        if (dup.crashTo(s)) {
-                            e.cancel();
-                        }
+                dup.enableDrag {
+                    valid: \(e){
+                        return !dup.screenOut() && !dup.crashTo(s);
                     }
                 };
             }
         };
     };
 }
+
+s.on("touchBG") \(e){
+    let f=e.finger;
+    let sx=f.x, sy=f.y;
+    f.on("move") \{
+        f.update();
+        //f.update();
+        s.scrollBy(-f.vx, -f.vy);
+    };    
+};
+/*
 \draggable(a, options) {
     options=options||{};
     a.on("touch") \(e){
@@ -73,16 +82,7 @@ for (let i=0;i<5; i++) {
             }
         };
     };
-}
-s.on("touchBG") \(e){
-    let f=e.finger;
-    let sx=f.x, sy=f.y;
-    f.on("move") \{
-        f.update();
-        //f.update();
-        s.scrollBy(-f.vx, -f.vy);
-    };    
-};
+}*/
 /*
 new Label{x:$screenWidth/2, y:50, template:"$mouseX, $mouseY",size:20};
 let a=new Actor{x:0,y:100, align:"left top", fillStyle:"red",width:50,height:50};

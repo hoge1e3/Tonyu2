@@ -1974,6 +1974,162 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"isDeadThreadGroup":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setThreadGroup":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"killThreadGroup":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"_isDeadThreadGroup":{},"_threadGroup":{},"tGrpObjectPoolAge":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.DraggableMod',
+  shortName: 'DraggableMod',
+  namespace: 'kernel',
+  includes: [Tonyu.classes.kernel.SpriteMod,Tonyu.classes.kernel.EventMod],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_DraggableMod_main() {
+        var _this=this;
+        
+        "field strict";
+        
+      },
+      fiber$main :function* _trc_DraggableMod_f_main(_thread) {
+        var _this=this;
+        
+        "field strict";
+        
+        
+      },
+      enableDrag :function _trc_DraggableMod_enableDrag(options) {
+        var _this=this;
+        
+        let a = _this;
+        
+        options=options||{};
+        _this.on("touch",(function anonymous_140(e) {
+          
+          let f = e.finger;
+          
+          let sx = f.x-_this.x;
+          let sy = f.y-_this.y;
+          
+          f.on("move",(function anonymous_230() {
+            
+            let e = {x: f.x-sx,y: f.y-sy,cancel: (function anonymous_315() {
+              
+              e.cancelled=true;
+            })};
+            
+            e.px=_this.x;
+            e.py=_this.y;
+            e.vx=e.x-e.px;
+            e.vy=e.y-e.py;
+            a.x=e.x;
+            a.y=e.y;
+            if (typeof  options.valid==="function") {
+              if (! options.valid()) {
+                _this.y=e.y;
+                _this.x=e.px;
+                if (! options.valid()) {
+                  _this.y=e.py;
+                  _this.x=e.x;
+                  if (! options.valid()) {
+                    _this.y=e.py;
+                    _this.x=e.px;
+                    
+                  }
+                  
+                }
+                
+              }
+              
+            }
+            if (typeof  options.move==="function") {
+              options.move(e);
+              if (e.cancelled) {
+                a.x=e.px;
+                a.y=e.py;
+                
+              }
+              
+            }
+          }));
+          f.on("end",(function anonymous_1227() {
+            
+            let e = {};
+            
+            if (typeof  options.end==="function") {
+              options.end(e);
+              
+            }
+          }));
+        }));
+      },
+      fiber$enableDrag :function* _trc_DraggableMod_f_enableDrag(_thread,options) {
+        var _this=this;
+        
+        let a = _this;
+        
+        options=options||{};
+        _this.on("touch",(function anonymous_140(e) {
+          
+          let f = e.finger;
+          
+          let sx = f.x-_this.x;
+          let sy = f.y-_this.y;
+          
+          f.on("move",(function anonymous_230() {
+            
+            let e = {x: f.x-sx,y: f.y-sy,cancel: (function anonymous_315() {
+              
+              e.cancelled=true;
+            })};
+            
+            e.px=_this.x;
+            e.py=_this.y;
+            e.vx=e.x-e.px;
+            e.vy=e.y-e.py;
+            a.x=e.x;
+            a.y=e.y;
+            if (typeof  options.valid==="function") {
+              if (! options.valid()) {
+                _this.y=e.y;
+                _this.x=e.px;
+                if (! options.valid()) {
+                  _this.y=e.py;
+                  _this.x=e.x;
+                  if (! options.valid()) {
+                    _this.y=e.py;
+                    _this.x=e.px;
+                    
+                  }
+                  
+                }
+                
+              }
+              
+            }
+            if (typeof  options.move==="function") {
+              options.move(e);
+              if (e.cancelled) {
+                a.x=e.px;
+                a.y=e.py;
+                
+              }
+              
+            }
+          }));
+          f.on("end",(function anonymous_1227() {
+            
+            let e = {};
+            
+            if (typeof  options.end==="function") {
+              options.end(e);
+              
+            }
+          }));
+        }));
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"enableDrag":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"x":{},"y":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.API',
   shortName: 'API',
   namespace: 'kernel',
@@ -20065,7 +20221,7 @@ Tonyu.klass.define({
   fullName: 'kernel.BaseActor',
   shortName: 'BaseActor',
   namespace: 'kernel',
-  includes: [Tonyu.classes.kernel.MathMod,Tonyu.classes.kernel.EventMod,Tonyu.classes.kernel.ThreadGroupMod,Tonyu.classes.kernel.EventHandlerCaller,Tonyu.classes.kernel.DialogMod,Tonyu.classes.kernel.FileMod,Tonyu.classes.kernel.AnimMod,Tonyu.classes.kernel.SchedulerMod,Tonyu.classes.kernel.QueryMod,Tonyu.classes.kernel.InputMod,Tonyu.classes.kernel.LifeCycleMod,Tonyu.classes.kernel.SpriteMod,Tonyu.classes.kernel.ParallelMod,Tonyu.classes.kernel.PlayMod,Tonyu.classes.kernel.ParallelMod,Tonyu.classes.kernel.PrintMod,Tonyu.classes.kernel.AssertionMod],
+  includes: [Tonyu.classes.kernel.MathMod,Tonyu.classes.kernel.EventMod,Tonyu.classes.kernel.ThreadGroupMod,Tonyu.classes.kernel.EventHandlerCaller,Tonyu.classes.kernel.DialogMod,Tonyu.classes.kernel.FileMod,Tonyu.classes.kernel.AnimMod,Tonyu.classes.kernel.SchedulerMod,Tonyu.classes.kernel.QueryMod,Tonyu.classes.kernel.InputMod,Tonyu.classes.kernel.LifeCycleMod,Tonyu.classes.kernel.SpriteMod,Tonyu.classes.kernel.ParallelMod,Tonyu.classes.kernel.DraggableMod,Tonyu.classes.kernel.PlayMod,Tonyu.classes.kernel.ParallelMod,Tonyu.classes.kernel.PrintMod,Tonyu.classes.kernel.AssertionMod],
   methods: function (__superClass) {
     return {
       main :function _trc_BaseActor_main() {
@@ -25919,12 +26075,9 @@ Tonyu.klass.define({
                   dup.die();
                 } else {
                   dup.alpha=255;
-                  _this.draggable(dup,{move: (function anonymous_1017(e) {
+                  dup.enableDrag({valid: (function anonymous_1018(e) {
                     
-                    if (dup.crashTo(_this.s)) {
-                      e.cancel();
-                      
-                    }
+                    return ! dup.screenOut()&&! dup.crashTo(_this.s);
                   })});
                   
                 }
@@ -25932,14 +26085,14 @@ Tonyu.klass.define({
             }));
           }
         }
-        _this.s.on("touchBG",(function anonymous_2070(e) {
+        _this.s.on("touchBG",(function anonymous_1193(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_2140() {
+          f.on("move",(function anonymous_1263() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
@@ -25989,12 +26142,9 @@ Tonyu.klass.define({
                   dup.die();
                 } else {
                   dup.alpha=255;
-                  _this.draggable(dup,{move: (function anonymous_1017(e) {
+                  dup.enableDrag({valid: (function anonymous_1018(e) {
                     
-                    if (dup.crashTo(_this.s)) {
-                      e.cancel();
-                      
-                    }
+                    return ! dup.screenOut()&&! dup.crashTo(_this.s);
                   })});
                   
                 }
@@ -26002,14 +26152,14 @@ Tonyu.klass.define({
             }));
           }
         }
-        _this.s.on("touchBG",(function anonymous_2070(e) {
+        _this.s.on("touchBG",(function anonymous_1193(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_2140() {
+          f.on("move",(function anonymous_1263() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
@@ -26017,101 +26167,10 @@ Tonyu.klass.define({
         }));
         
       },
-      draggable :function _trc_KernelDemo_draggable(a,options) {
-        var _this=this;
-        
-        options=options||{};
-        a.on("touch",(function anonymous_1290(e) {
-          
-          let f = e.finger;
-          
-          let sx = f.x-a.x;
-          let sy = f.y-a.y;
-          
-          f.on("move",(function anonymous_1384() {
-            
-            let e = {x: f.x-sx,y: f.y-sy,cancel: (function anonymous_1469() {
-              
-              e.cancelled=true;
-            })};
-            
-            e.px=a.x;
-            e.py=a.y;
-            e.vx=e.x-e.px;
-            e.vy=e.y-e.py;
-            a.x=e.x;
-            a.y=e.y;
-            if (typeof  options.move==="function") {
-              options.move(e);
-              if (e.cancelled) {
-                a.x=e.px;
-                a.y=e.py;
-                
-              }
-              
-            }
-          }));
-          f.on("end",(function anonymous_1904() {
-            
-            let e = {};
-            
-            if (typeof  options.end==="function") {
-              options.end(e);
-              
-            }
-          }));
-        }));
-      },
-      fiber$draggable :function* _trc_KernelDemo_f_draggable(_thread,a,options) {
-        var _this=this;
-        
-        options=options||{};
-        a.on("touch",(function anonymous_1290(e) {
-          
-          let f = e.finger;
-          
-          let sx = f.x-a.x;
-          let sy = f.y-a.y;
-          
-          f.on("move",(function anonymous_1384() {
-            
-            let e = {x: f.x-sx,y: f.y-sy,cancel: (function anonymous_1469() {
-              
-              e.cancelled=true;
-            })};
-            
-            e.px=a.x;
-            e.py=a.y;
-            e.vx=e.x-e.px;
-            e.vy=e.y-e.py;
-            a.x=e.x;
-            a.y=e.y;
-            if (typeof  options.move==="function") {
-              options.move(e);
-              if (e.cancelled) {
-                a.x=e.px;
-                a.y=e.py;
-                
-              }
-              
-            }
-          }));
-          f.on("end",(function anonymous_1904() {
-            
-            let e = {};
-            
-            if (typeof  options.end==="function") {
-              options.end(e);
-              
-            }
-          }));
-        }));
-        
-      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"draggable":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"s":{},"l":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}}},"fields":{"s":{},"l":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.BodyActor',
