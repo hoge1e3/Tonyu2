@@ -25915,19 +25915,23 @@ Tonyu.klass.define({
               }));
               f.on("end",(function anonymous_855() {
                 
-                dup.alpha=255;
+                if (dup.crashTo(_this.s)) {
+                  dup.die();
+                } else {
+                  dup.alpha=255;
+                }
               }));
             }));
           }
         }
-        _this.s.on("touchBG",(function anonymous_928(e) {
+        _this.s.on("touchBG",(function anonymous_977(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_998() {
+          f.on("move",(function anonymous_1047() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
@@ -25973,19 +25977,23 @@ Tonyu.klass.define({
               }));
               f.on("end",(function anonymous_855() {
                 
-                dup.alpha=255;
+                if (dup.crashTo(_this.s)) {
+                  dup.die();
+                } else {
+                  dup.alpha=255;
+                }
               }));
             }));
           }
         }
-        _this.s.on("touchBG",(function anonymous_928(e) {
+        _this.s.on("touchBG",(function anonymous_977(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_998() {
+          f.on("move",(function anonymous_1047() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
