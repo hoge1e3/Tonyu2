@@ -213,26 +213,26 @@ native console;
     var sum=0;
     ctx.save();
     // if (lr==0) { // layer rotation == 0
-        for(var j=0;j<hs;j++){
-            var ws=bufAry[j].length;
-            for(var i=0;i<ws;i++){
-                var pCv=bufAry[j][i];
-                if (!pCv) return;
-                var pCtx=pCv[0];
-                if (!pCtx) return;
-                var dx=sx+i*bufSplit; // Split Map x
-                var dy=sy+j*bufSplit; // Split Map y
-                var dw=pCtx.width;    // Split Map width
-                var dh=pCtx.height;   // Split Map height
-                var mx1=lsx+(dx-lwx)*ls;    // Map draw x1 (left)
-                var my1=lsy+(dy-lwy)*ls;    // Map draw y1 (top)
-                var mx2=lsx+(dx-lwx+dw)*ls; // Map draw x2 (right)
-                var my2=lsy+(dy-lwy+dh)*ls; // Map draw y2 (buttom)
-                if(lr!=0 || (0<=mx2 && mx1<$screenWidth && 0<=my2 && my1<$screenHeight)){
-                    ctx.globalAlpha=alpha/255;
-                    ctx.drawImage(
-                    pCtx, 0, 0, dw, dh,
-                    dx, dy, dw, dh);
+    for(var j=0;j<hs;j++){
+        var ws=bufAry[j].length;
+        for(var i=0;i<ws;i++){
+            var pCv=bufAry[j][i];
+            if (!pCv) return;
+            var pCtx=pCv[0];
+            if (!pCtx) return;
+            var dx=sx+i*bufSplit; // Split Map x
+            var dy=sy+j*bufSplit; // Split Map y
+            var dw=pCtx.width;    // Split Map width
+            var dh=pCtx.height;   // Split Map height
+            var mx1=lsx+(dx-lwx)*ls;    // Map draw x1 (left)
+            var my1=lsy+(dy-lwy)*ls;    // Map draw y1 (top)
+            var mx2=lsx+(dx-lwx+dw)*ls; // Map draw x2 (right)
+            var my2=lsy+(dy-lwy+dh)*ls; // Map draw y2 (buttom)
+            if(lr!=0 || (0<=mx2 && mx1<$screenWidth && 0<=my2 && my1<$screenHeight)){
+                ctx.globalAlpha=alpha/255;
+                ctx.drawImage(
+                pCtx, 0, 0, dw, dh,
+                dx, dy, dw, dh);
                     // if ((i+j)%2==1) {
                     //     var ga = ctx.globalAlpha;
                     //     var fi = ctx.fillStyle;
@@ -242,10 +242,10 @@ native console;
                     //     ctx.globalAlpha = ga;
                     //     ctx.fillStyle = fi;
                     // }
-                    sum++;
-                }
+                sum++;
             }
         }
+    }
     // } else { // layer rotation != 0
     //     // var lxyAry = [
     //     //     -lsx, -lsy, $screenWidth

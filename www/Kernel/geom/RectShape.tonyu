@@ -3,6 +3,9 @@ extends AbstractShape;
 native Math;
 var x,y,width,height;// (x,y): center
 
+\order {
+    return 2;
+}
 \clone() {
     return new RectShape{x,y,width,height,_layerPath};
 }
@@ -21,7 +24,7 @@ var x,y,width,height;// (x,y): center
         return Math.abs(x-s.x)*2<width+s.width &&
         Math.abs(y-s.y)*2<height+s.height;
     }
-    return containsRaw(s);
+    return super.intersectsRaw(s);
 }
 \containsRaw(p/*:Object{x,y}*/) {
     return p.x>=xmin && p.x<=xmax && p.y>=ymin && p.y<=ymax;

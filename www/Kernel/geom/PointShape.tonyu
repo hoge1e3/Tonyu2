@@ -3,6 +3,9 @@ extends AbstractShape;
 native Math;
 var x,y;
 
+\order {
+    return 1;
+}
 \clone() {
     return new PointShape{x,y,_layerPath};
 }

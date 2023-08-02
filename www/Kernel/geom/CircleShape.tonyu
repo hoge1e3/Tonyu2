@@ -1,0 +1,53 @@
+extends AbstractShape;
+"field strict";
+let radius;
+let x,y;
+\order {
+    return 3;
+}
+\containsRaw(shape:PointShape) {
+    return dist(shape.x-x,shape.y-y)<=radius;
+}
+\intersectsRaw(shape:AbstractShape) {
+    if (shape is RectShape) {
+        return isRectangleCircleCollision(shape, this);
+    }
+    if (shape is CircleShape) {
+        let c:CircleShape=shape;
+        return dist(c.x-x,c.y-y)<=c.radius+radius;
+    }
+    return super.intersectsRaw(shape);
+}
+// 長方形と円の衝突判定関数
+function isRectangleCircleCollision(rect:RectShape, circle:CircleShape) {
+  // 長方形の中心座標
+    //let rectCenterX = rectX + rectWidth / 2;
+    //let rectCenterY = rectY + rectHeight / 2;
+    let rectCenterX=rect.x;
+    let rectCenterY=rect.y;
+
+  // 円の中心座標
+    let circleCenterX = circle.x;
+    let circleCenterY = circle.y;
+
+  // 長方形と円の中心点間の距離のX成分とY成分を計算
+    let deltaX = abs(circleCenterX - rectCenterX);
+    let deltaY = abs(circleCenterY - rectCenterY);
+
+  // 長方形と円の中心点間の距離が長方形の幅と高さの半分より大きい場合、衝突していない
+    if (deltaX > rect.width / 2 + circle.radius || deltaY > rect.height / 2 + circle.radius) {
+        return false;
+    }
+
+  // 長方形と円の中心点間の距離が長方形の幅と高さの半分以下の場合、衝突している
+    if (deltaX <= rect.width / 2 || deltaY <= rect.height / 2) {
+        return true;
+    }
+
+  // 長方形の角と円の中心点との距離の2乗を計算
+    let cornerDistanceSquared = $Math.pow(deltaX - rect.width / 2, 2) + 
+    $Math.pow ( (deltaY - rect.height / 2) , 2);
+
+  // 長方形の角と円の中心点との距離の2乗が円の半径の2乗以下の場合、衝突している
+    return cornerDistanceSquared <= $Math.pow( circle.radius ,2);
+}

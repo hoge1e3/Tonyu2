@@ -4,6 +4,9 @@ native Math;
 "field strict";
 \getCrashShape() {// 2D
     //return new CubeShape(...);// if 3D
+    if (typeof radius=="number" && radius) {
+        return new CircleShape{x,y,radius:radius*crashScale};
+    }
     return new RectShape(getCrashRect());
 }
 nowait \dist(dx,dy,dz) {

@@ -2,6 +2,7 @@ extends Actor;
 native Tonyu;
 //native Error;
 Error.stackTraceLimit=50;
+print ($Boot.R("{1} is {2}","this","tonyu"));
 for (let k,v of Tonyu.globals) {
     if (v && typeof v==="object" && !v.name) {
         v.name=k;
@@ -13,7 +14,21 @@ l=s.addLayer();
 print(l);
 for (let i=0;i<5; i++) {
     let a=new Actor{x:5+i*30,y:50,layer:l,radius:10+i*3,fillStyle:"white"};
-    a.on("touch") \(e) {
+    a.enableDrag {
+        clone: {
+            alpha=128
+        },
+        end: \(e) {
+            let dup=e.actor;
+            dup.alpha=255;  
+            dup.enableDrag {
+                valid: \(e){
+                    return !dup.screenOut() && !dup.crashTo(s);
+                }
+            };
+        }
+    };
+    /*a.on("touch") \(e) {
         let f=e.finger;
         //f.layer=s;
         //print(f.x,f.y);
@@ -38,7 +53,7 @@ for (let i=0;i<5; i++) {
                 };
             }
         };
-    };
+    };*/
 }
 
 s.on("touchBG") \(e){

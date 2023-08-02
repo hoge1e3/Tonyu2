@@ -217,7 +217,7 @@ let multiLayerTouches: MultiLayerTouches;
             e.actor=a;
             let nlp=f.layerPath.withNeighborTarget(a.layer);
             if (!(nlp is LayerPath)) {
-                throw newError("Cannot get neighbot target {1} {2}",f, a.layer);
+                throw newError("Cannot get neighbor target {1} {2}",f, a.layer);
             }
             f.layerPath=nlp;
             a.fireEvent("touch",e);

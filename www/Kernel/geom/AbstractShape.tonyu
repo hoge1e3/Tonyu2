@@ -2,6 +2,9 @@ extends TObject;
 "field strict";
 let _layerPath:LayerPath; 
 
+\order {
+    return 0;
+}
 \clone(value) {
     throw new Error("clone::abstract");
 }
@@ -19,6 +22,12 @@ let _layerPath:LayerPath;
     return intersectsRaw(s.layerPathChanged(layerPath));
 }
 \intersectsRaw(s:AbstractShape) {
+    if (s is PointShape) {
+        return containsRaw(s);
+    }
+    if (s.order>order) {
+        return s.intersectsRaw(this);
+    }
     throw new Error("intersectsRaw::abstract");
 }
 \contains(s:AbstractShape/*x,y,layerPath*/) {

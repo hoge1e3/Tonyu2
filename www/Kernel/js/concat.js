@@ -1996,138 +1996,209 @@ Tonyu.klass.define({
       enableDrag :function _trc_DraggableMod_enableDrag(options) {
         var _this=this;
         
-        let a = _this;
-        
         options=options||{};
-        _this.on("touch",(function anonymous_140(e) {
+        options=Object.assign({},options);
+        _this.on("touch",(function anonymous_169(e) {
           
           let f = e.finger;
           
-          let sx = f.x-_this.x;
-          let sy = f.y-_this.y;
-          
-          f.on("move",(function anonymous_230() {
+          if (typeof  options.start==="funtion") {
+            options.start(e);
             
-            let e = {x: f.x-sx,y: f.y-sy,cancel: (function anonymous_315() {
+          }
+          if (typeof  options.clone==="object") {
+            let clo = Object.assign({},options.clone);
+            
+            let cl = clo.class||Tonyu.classes.kernel.Actor;
+            
+            if (clo.layer) {
+              let lp = f.layerPath.convert({x: _this.x,y: _this.y,layer: _this.layer},clo.layer);
               
-              e.cancelled=true;
-            })};
-            
-            e.px=_this.x;
-            e.py=_this.y;
-            e.vx=e.x-e.px;
-            e.vy=e.y-e.py;
-            a.x=e.x;
-            a.y=e.y;
-            if (typeof  options.valid==="function") {
-              if (! options.valid()) {
-                _this.y=e.y;
-                _this.x=e.px;
-                if (! options.valid()) {
-                  _this.y=e.py;
-                  _this.x=e.x;
-                  if (! options.valid()) {
-                    _this.y=e.py;
-                    _this.x=e.px;
-                    
-                  }
-                  
-                }
-                
-              }
+              clo.x=lp.x;
+              clo.y=lp.y;
+              f.layer=clo.layer;
               
             }
-            if (typeof  options.move==="function") {
-              options.move(e);
-              if (e.cancelled) {
-                a.x=e.px;
-                a.y=e.py;
-                
-              }
+            delete clo.class;
+            for (let [k] of Tonyu.iterator2(Object.keys(_this),1)) {
+              clo[k]=clo[k]||_this[k];
               
             }
-          }));
-          f.on("end",(function anonymous_1227() {
+            let cloned = new cl(clo);
             
-            let e = {};
+            cloned.startDrag(e,options);
             
-            if (typeof  options.end==="function") {
-              options.end(e);
-              
-            }
-          }));
+          } else {
+            _this.startDrag(e,options);
+            
+          }
         }));
       },
       fiber$enableDrag :function* _trc_DraggableMod_f_enableDrag(_thread,options) {
         var _this=this;
         
-        let a = _this;
-        
         options=options||{};
-        _this.on("touch",(function anonymous_140(e) {
+        options=Object.assign({},options);
+        _this.on("touch",(function anonymous_169(e) {
           
           let f = e.finger;
           
-          let sx = f.x-_this.x;
-          let sy = f.y-_this.y;
-          
-          f.on("move",(function anonymous_230() {
+          if (typeof  options.start==="funtion") {
+            options.start(e);
             
-            let e = {x: f.x-sx,y: f.y-sy,cancel: (function anonymous_315() {
+          }
+          if (typeof  options.clone==="object") {
+            let clo = Object.assign({},options.clone);
+            
+            let cl = clo.class||Tonyu.classes.kernel.Actor;
+            
+            if (clo.layer) {
+              let lp = f.layerPath.convert({x: _this.x,y: _this.y,layer: _this.layer},clo.layer);
               
-              e.cancelled=true;
-            })};
+              clo.x=lp.x;
+              clo.y=lp.y;
+              f.layer=clo.layer;
+              
+            }
+            delete clo.class;
+            for (let [k] of Tonyu.iterator2(Object.keys(_this),1)) {
+              clo[k]=clo[k]||_this[k];
+              
+            }
+            let cloned = new cl(clo);
             
-            e.px=_this.x;
-            e.py=_this.y;
-            e.vx=e.x-e.px;
-            e.vy=e.y-e.py;
-            a.x=e.x;
-            a.y=e.y;
-            if (typeof  options.valid==="function") {
+            cloned.startDrag(e,options);
+            
+          } else {
+            _this.startDrag(e,options);
+            
+          }
+        }));
+        
+      },
+      startDrag :function _trc_DraggableMod_startDrag(e,options) {
+        var _this=this;
+        
+        options=options||{};
+        let a = _this;
+        
+        let f = e.finger;
+        
+        f.on("move",(function anonymous_1075(eo) {
+          
+          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1188() {
+            
+            e.cancelled=true;
+          })};
+          
+          e.x=_this.x+e.vx;
+          e.y=_this.y+e.vy;
+          e.px=_this.x;
+          e.py=_this.y;
+          e.actor=_this;
+          _this.x=e.x;
+          _this.y=e.y;
+          if (typeof  options.valid==="function") {
+            if (! options.valid()) {
+              _this.y=e.y;
+              _this.x=e.px;
               if (! options.valid()) {
-                _this.y=e.y;
-                _this.x=e.px;
+                _this.y=e.py;
+                _this.x=e.x;
                 if (! options.valid()) {
                   _this.y=e.py;
-                  _this.x=e.x;
-                  if (! options.valid()) {
-                    _this.y=e.py;
-                    _this.x=e.px;
-                    
-                  }
+                  _this.x=e.px;
                   
                 }
                 
               }
               
             }
-            if (typeof  options.move==="function") {
-              options.move(e);
-              if (e.cancelled) {
-                a.x=e.px;
-                a.y=e.py;
+            
+          }
+          if (typeof  options.move==="function") {
+            options.move(e);
+            if (e.cancelled) {
+              a.x=e.px;
+              a.y=e.py;
+              
+            }
+            
+          }
+        }));
+        f.on("end",(function anonymous_2045(e) {
+          
+          e.actor=_this;
+          if (typeof  options.end==="function") {
+            options.end(e);
+            
+          }
+        }));
+      },
+      fiber$startDrag :function* _trc_DraggableMod_f_startDrag(_thread,e,options) {
+        var _this=this;
+        
+        options=options||{};
+        let a = _this;
+        
+        let f = e.finger;
+        
+        f.on("move",(function anonymous_1075(eo) {
+          
+          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1188() {
+            
+            e.cancelled=true;
+          })};
+          
+          e.x=_this.x+e.vx;
+          e.y=_this.y+e.vy;
+          e.px=_this.x;
+          e.py=_this.y;
+          e.actor=_this;
+          _this.x=e.x;
+          _this.y=e.y;
+          if (typeof  options.valid==="function") {
+            if (! options.valid()) {
+              _this.y=e.y;
+              _this.x=e.px;
+              if (! options.valid()) {
+                _this.y=e.py;
+                _this.x=e.x;
+                if (! options.valid()) {
+                  _this.y=e.py;
+                  _this.x=e.px;
+                  
+                }
                 
               }
               
             }
-          }));
-          f.on("end",(function anonymous_1227() {
             
-            let e = {};
-            
-            if (typeof  options.end==="function") {
-              options.end(e);
+          }
+          if (typeof  options.move==="function") {
+            options.move(e);
+            if (e.cancelled) {
+              a.x=e.px;
+              a.y=e.py;
               
             }
-          }));
+            
+          }
+        }));
+        f.on("end",(function anonymous_2045(e) {
+          
+          e.actor=_this;
+          if (typeof  options.end==="function") {
+            options.end(e);
+            
+          }
         }));
         
       },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"enableDrag":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"x":{},"y":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"enableDrag":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"startDrag":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"x":{},"y":{},"layer":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.API',
@@ -2909,10 +2980,29 @@ Tonyu.klass.define({
         return Math.log(n);
         
       },
+      round :function _trc_MathMod_round(x,q,r) {
+        var _this=this;
+        
+        q=q||1;
+        r=r||0;
+        let k = Math.round((x-r)/q);
+        
+        return k*q+r;
+      },
+      fiber$round :function* _trc_MathMod_f_round(_thread,x,q,r) {
+        var _this=this;
+        
+        q=q||1;
+        r=r||0;
+        let k = Math.round((x-r)/q);
+        
+        return k*q+r;
+        
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"sin":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cos":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rad":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"deg":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"abs":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"sgn":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"atan2":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"atanxy":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"floor":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"angleDiff":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"sqrt":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"dist":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"trunc":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"ceil":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rndFloat":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"rnd":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"randomize":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"parseFloat":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"clamp":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"clamped":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"min":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"max":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"amod":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"log":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"sin":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"cos":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rad":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"deg":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"abs":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"sgn":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"atan2":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"atanxy":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"floor":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"angleDiff":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"sqrt":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"dist":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"trunc":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"ceil":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"rndFloat":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"rnd":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"randomize":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"parseFloat":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"clamp":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"clamped":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"min":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"max":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"amod":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"log":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"round":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}}},"fields":{}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.MessageResource',
@@ -4562,6 +4652,11 @@ Tonyu.klass.define({
         
         
       },
+      __getter__order :function _trc_AbstractShape___getter__order() {
+        var _this=this;
+        
+        return 0;
+      },
       clone :function _trc_AbstractShape_clone(value) {
         var _this=this;
         
@@ -4629,12 +4724,29 @@ Tonyu.klass.define({
       intersectsRaw :function _trc_AbstractShape_intersectsRaw(s) {
         var _this=this;
         
+        if (Tonyu.is(s,Tonyu.classes.kernel.PointShape)) {
+          return _this.containsRaw(s);
+          
+        }
+        if (s.order>_this.order) {
+          return s.intersectsRaw(_this);
+          
+        }
         throw new Error("intersectsRaw::abstract");
         
       },
       fiber$intersectsRaw :function* _trc_AbstractShape_f_intersectsRaw(_thread,s) {
         var _this=this;
         
+        if (Tonyu.is(s,Tonyu.classes.kernel.PointShape)) {
+          return yield* _this.fiber$containsRaw(_thread, s);
+          
+          
+        }
+        if (s.order>_this.order) {
+          return s.intersectsRaw(_this);
+          
+        }
         throw new Error("intersectsRaw::abstract");
         
         
@@ -4763,7 +4875,138 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"changeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"changeLayerPath":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersects":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"contains":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["Object"],"returnValue":null}},"layerPathChanged":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"layerPathFromLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"layerChanged":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__setter__layerPath":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__layerPath":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"_layerPath":{"vtype":"kernel.LayerPath"}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"__getter__order":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"changeLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"changeLayerPath":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersects":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"contains":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["Object"],"returnValue":null}},"layerPathChanged":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"layerPathFromLayer":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"layerChanged":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__layer":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__setter__layerPath":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__layerPath":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"_layerPath":{"vtype":"kernel.LayerPath"}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.CircleShape',
+  shortName: 'CircleShape',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.AbstractShape,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_CircleShape_main() {
+        var _this=this;
+        
+        "field strict";
+        
+        
+      },
+      fiber$main :function* _trc_CircleShape_f_main(_thread) {
+        var _this=this;
+        
+        "field strict";
+        
+        
+        
+      },
+      __getter__order :function _trc_CircleShape___getter__order() {
+        var _this=this;
+        
+        return 3;
+      },
+      containsRaw :function _trc_CircleShape_containsRaw(shape) {
+        var _this=this;
+        
+        return _this.dist(shape.x-_this.x,shape.y-_this.y)<=_this.radius;
+      },
+      fiber$containsRaw :function* _trc_CircleShape_f_containsRaw(_thread,shape) {
+        var _this=this;
+        
+        return _this.dist(shape.x-_this.x,shape.y-_this.y)<=_this.radius;
+        
+      },
+      intersectsRaw :function _trc_CircleShape_intersectsRaw(shape) {
+        var _this=this;
+        
+        if (Tonyu.is(shape,Tonyu.classes.kernel.RectShape)) {
+          return _this.isRectangleCircleCollision(shape,_this);
+          
+        }
+        if (Tonyu.is(shape,Tonyu.classes.kernel.CircleShape)) {
+          let c = shape;
+          
+          return _this.dist(c.x-_this.x,c.y-_this.y)<=c.radius+_this.radius;
+          
+        }
+        return __superClass.prototype.intersectsRaw.apply( _this, [shape]);
+      },
+      fiber$intersectsRaw :function* _trc_CircleShape_f_intersectsRaw(_thread,shape) {
+        var _this=this;
+        
+        if (Tonyu.is(shape,Tonyu.classes.kernel.RectShape)) {
+          return yield* _this.fiber$isRectangleCircleCollision(_thread, shape, _this);
+          
+          
+        }
+        if (Tonyu.is(shape,Tonyu.classes.kernel.CircleShape)) {
+          let c = shape;
+          
+          return _this.dist(c.x-_this.x,c.y-_this.y)<=c.radius+_this.radius;
+          
+        }
+        return __superClass.prototype.intersectsRaw.apply( _this, [shape]);
+        
+      },
+      isRectangleCircleCollision :function _trc_CircleShape_isRectangleCircleCollision(rect,circle) {
+        var _this=this;
+        
+        let rectCenterX = rect.x;
+        
+        let rectCenterY = rect.y;
+        
+        let circleCenterX = circle.x;
+        
+        let circleCenterY = circle.y;
+        
+        let deltaX = _this.abs(circleCenterX-rectCenterX);
+        
+        let deltaY = _this.abs(circleCenterY-rectCenterY);
+        
+        if (deltaX>rect.width/2+circle.radius||deltaY>rect.height/2+circle.radius) {
+          return false;
+          
+        }
+        if (deltaX<=rect.width/2||deltaY<=rect.height/2) {
+          return true;
+          
+        }
+        let cornerDistanceSquared = Tonyu.globals.$Math.pow(deltaX-rect.width/2,2)+Tonyu.globals.$Math.pow((deltaY-rect.height/2),2);
+        
+        return cornerDistanceSquared<=Tonyu.globals.$Math.pow(circle.radius,2);
+      },
+      fiber$isRectangleCircleCollision :function* _trc_CircleShape_f_isRectangleCircleCollision(_thread,rect,circle) {
+        var _this=this;
+        
+        let rectCenterX = rect.x;
+        
+        let rectCenterY = rect.y;
+        
+        let circleCenterX = circle.x;
+        
+        let circleCenterY = circle.y;
+        
+        let deltaX = _this.abs(circleCenterX-rectCenterX);
+        
+        let deltaY = _this.abs(circleCenterY-rectCenterY);
+        
+        if (deltaX>rect.width/2+circle.radius||deltaY>rect.height/2+circle.radius) {
+          return false;
+          
+        }
+        if (deltaX<=rect.width/2||deltaY<=rect.height/2) {
+          return true;
+          
+        }
+        let cornerDistanceSquared = Tonyu.globals.$Math.pow(deltaX-rect.width/2,2)+Tonyu.globals.$Math.pow((deltaY-rect.height/2),2);
+        
+        return cornerDistanceSquared<=Tonyu.globals.$Math.pow(circle.radius,2);
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"__getter__order":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.PointShape"],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"isRectangleCircleCollision":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.RectShape","kernel.CircleShape"],"returnValue":null}}},"fields":{"radius":{},"x":{},"y":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.CubeShape',
@@ -5277,6 +5520,11 @@ Tonyu.klass.define({
         
         
       },
+      __getter__order :function _trc_PointShape___getter__order() {
+        var _this=this;
+        
+        return 1;
+      },
       clone :function _trc_PointShape_clone() {
         var _this=this;
         
@@ -5354,7 +5602,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"changeLayerPath":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__xmin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__xmax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"__getter__order":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"changeLayerPath":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.AbstractShape"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__xmin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__xmax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Quaternion',
@@ -5738,6 +5986,11 @@ Tonyu.klass.define({
         
         
       },
+      __getter__order :function _trc_RectShape___getter__order() {
+        var _this=this;
+        
+        return 2;
+      },
       clone :function _trc_RectShape_clone() {
         var _this=this;
         
@@ -5787,7 +6040,7 @@ Tonyu.klass.define({
           return Math.abs(_this.x-s.x)*2<_this.width+s.width&&Math.abs(_this.y-s.y)*2<_this.height+s.height;
           
         }
-        return _this.containsRaw(s);
+        return __superClass.prototype.intersectsRaw.apply( _this, [s]);
       },
       fiber$intersectsRaw :function* _trc_RectShape_f_intersectsRaw(_thread,s) {
         var _this=this;
@@ -5796,8 +6049,7 @@ Tonyu.klass.define({
           return Math.abs(_this.x-s.x)*2<_this.width+s.width&&Math.abs(_this.y-s.y)*2<_this.height+s.height;
           
         }
-        return yield* _this.fiber$containsRaw(_thread, s);
-        
+        return __superClass.prototype.intersectsRaw.apply( _this, [s]);
         
       },
       containsRaw :function _trc_RectShape_containsRaw(p) {
@@ -5834,7 +6086,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"changeLayerPath":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.RectShape"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__xmin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__xmax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{},"width":{},"height":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"__getter__order":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"clone":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"changeLayerPath":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"intersectsRaw":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.RectShape"],"returnValue":null}},"containsRaw":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__xmin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__xmax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymin":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__ymax":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"x":{},"y":{},"width":{},"height":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Transform',
@@ -18340,11 +18592,19 @@ Tonyu.klass.define({
       getCrashShape :function _trc_QueryMod2D_getCrashShape() {
         var _this=this;
         
+        if (typeof  _this.radius=="number"&&_this.radius) {
+          return new Tonyu.classes.kernel.CircleShape({x: _this.x,y: _this.y,radius: _this.radius*_this.crashScale});
+          
+        }
         return new Tonyu.classes.kernel.RectShape(_this.getCrashRect());
       },
       fiber$getCrashShape :function* _trc_QueryMod2D_f_getCrashShape(_thread) {
         var _this=this;
         
+        if (typeof  _this.radius=="number"&&_this.radius) {
+          return new Tonyu.classes.kernel.CircleShape({x: _this.x,y: _this.y,radius: _this.radius*_this.crashScale});
+          
+        }
         return new Tonyu.classes.kernel.RectShape(_this.getCrashRect());
         
       },
@@ -25274,7 +25534,7 @@ Tonyu.klass.define({
             let nlp = f.layerPath.withNeighborTarget(a.layer);
             
             if (! (Tonyu.is(nlp,Tonyu.classes.kernel.LayerPath))) {
-              throw _this.newError("Cannot get neighbot target {1} {2}",f,a.layer);
+              throw _this.newError("Cannot get neighbor target {1} {2}",f,a.layer);
               
               
             }
@@ -25307,7 +25567,7 @@ Tonyu.klass.define({
             let nlp = f.layerPath.withNeighborTarget(a.layer);
             
             if (! (Tonyu.is(nlp,Tonyu.classes.kernel.LayerPath))) {
-              throw _this.newError("Cannot get neighbot target {1} {2}",f,a.layer);
+              throw _this.newError("Cannot get neighbor target {1} {2}",f,a.layer);
               
               
             }
@@ -26036,6 +26296,7 @@ Tonyu.klass.define({
         var _this=this;
         
         Error.stackTraceLimit=50;
+        _this.print(Tonyu.globals.$Boot.R("{1} is {2}","this","tonyu"));
         for (let [k, v] of Tonyu.iterator2(Tonyu.globals,2)) {
           if (v&&typeof  v==="object"&&! v.name) {
             v.name=k;
@@ -26052,47 +26313,26 @@ Tonyu.klass.define({
           {
             let a = new Tonyu.classes.kernel.Actor({x: 5+i*30,y: 50,layer: _this.l,radius: 10+i*3,fillStyle: "white"});
             
-            a.on("touch",(function anonymous_408(e) {
+            a.enableDrag({clone: {alpha: 128},end: (function anonymous_523(e) {
               
-              let f = e.finger;
+              let dup = e.actor;
               
-              let lp = _this.s.convert({x: a.x,y: a.y,layer: _this.l},Tonyu.globals.$mainLayer);
-              
-              f.layer=Tonyu.globals.$mainLayer;
-              let dup = new Tonyu.classes.kernel.Actor({x: lp.x,y: lp.y,radius: a.radius,fillStyle: "white",alpha: 200});
-              
-              let sx = f.x-dup.x;
-              let sy = f.y-dup.y;
-              
-              f.on("move",(function anonymous_742() {
+              dup.alpha=255;
+              dup.enableDrag({valid: (function anonymous_644(e) {
                 
-                dup.x=f.x-sx;
-                dup.y=f.y-sy;
-              }));
-              f.on("end",(function anonymous_855() {
-                
-                if (dup.crashTo(_this.s)) {
-                  dup.die();
-                } else {
-                  dup.alpha=255;
-                  dup.enableDrag({valid: (function anonymous_1018(e) {
-                    
-                    return ! dup.screenOut()&&! dup.crashTo(_this.s);
-                  })});
-                  
-                }
-              }));
-            }));
+                return ! dup.screenOut()&&! dup.crashTo(_this.s);
+              })});
+            })});
           }
         }
-        _this.s.on("touchBG",(function anonymous_1193(e) {
+        _this.s.on("touchBG",(function anonymous_1577(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1263() {
+          f.on("move",(function anonymous_1647() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
@@ -26103,6 +26343,7 @@ Tonyu.klass.define({
         var _this=this;
         
         Error.stackTraceLimit=50;
+        _this.print(Tonyu.globals.$Boot.R("{1} is {2}","this","tonyu"));
         for (let [k, v] of Tonyu.iterator2(Tonyu.globals,2)) {
           if (v&&typeof  v==="object"&&! v.name) {
             v.name=k;
@@ -26119,47 +26360,26 @@ Tonyu.klass.define({
           {
             let a = new Tonyu.classes.kernel.Actor({x: 5+i*30,y: 50,layer: _this.l,radius: 10+i*3,fillStyle: "white"});
             
-            a.on("touch",(function anonymous_408(e) {
+            a.enableDrag({clone: {alpha: 128},end: (function anonymous_523(e) {
               
-              let f = e.finger;
+              let dup = e.actor;
               
-              let lp = _this.s.convert({x: a.x,y: a.y,layer: _this.l},Tonyu.globals.$mainLayer);
-              
-              f.layer=Tonyu.globals.$mainLayer;
-              let dup = new Tonyu.classes.kernel.Actor({x: lp.x,y: lp.y,radius: a.radius,fillStyle: "white",alpha: 200});
-              
-              let sx = f.x-dup.x;
-              let sy = f.y-dup.y;
-              
-              f.on("move",(function anonymous_742() {
+              dup.alpha=255;
+              dup.enableDrag({valid: (function anonymous_644(e) {
                 
-                dup.x=f.x-sx;
-                dup.y=f.y-sy;
-              }));
-              f.on("end",(function anonymous_855() {
-                
-                if (dup.crashTo(_this.s)) {
-                  dup.die();
-                } else {
-                  dup.alpha=255;
-                  dup.enableDrag({valid: (function anonymous_1018(e) {
-                    
-                    return ! dup.screenOut()&&! dup.crashTo(_this.s);
-                  })});
-                  
-                }
-              }));
-            }));
+                return ! dup.screenOut()&&! dup.crashTo(_this.s);
+              })});
+            })});
           }
         }
-        _this.s.on("touchBG",(function anonymous_1193(e) {
+        _this.s.on("touchBG",(function anonymous_1577(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1263() {
+          f.on("move",(function anonymous_1647() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);

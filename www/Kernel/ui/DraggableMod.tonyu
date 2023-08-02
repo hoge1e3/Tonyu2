@@ -1,50 +1,80 @@
 includes SpriteMod,EventMod;
 "field strict";
-let x,y;
+let x,y,layer;
 \enableDrag(options) {
-    let a=this;
     options=options||{};
-    on("touch") \(e){
-        let f=e.finger;    
-        let sx=f.x-x, sy=f.y-y;
-        f.on("move") \{
-            let e={
-                x=f.x-sx, y=f.y-sy,
-                cancel=\{e.cancelled=true;}
-            };
-            e.px=x;
-            e.py=y;
-            e.vx=e.x-e.px;
-            e.vy=e.y-e.py;
-            a.x=e.x;
-            a.y=e.y;
-            if (typeof options.valid==="function") {
+    options=Object.assign({},options);
+    on("touch") \(e) {
+        let f=e.finger;
+        if (typeof options.start==="funtion") {
+            options.start(e);
+        }
+        if (typeof options.clone==="object") {
+            let clo=Object.assign({}, options.clone);
+            let cl=clo.class || Actor;
+            if (clo.layer) {
+                let lp=f.layerPath.convert({x,y,layer},clo.layer);
+                clo.x=lp.x;
+                clo.y=lp.y;
+                f.layer=clo.layer;
+            }
+            delete clo.class;
+            for (let k of Object.keys(this)) {
+                clo[k]=clo[k]||this[k];
+            }
+            let cloned=new cl(clo);
+            cloned.startDrag(e, options);
+        } else {
+            startDrag(e,options);
+        }
+    };
+}
+\startDrag(e, options) {
+    options=options||{};
+    let a=this;
+    let f=e.finger;    
+    //let sx=f.x-x, sy=f.y-y;
+    f.on("move") \(eo) {
+        let e={
+            vx=eo.vx, vy=eo.vy,
+            //x=f.x-sx, y=f.y-sy,
+            cancel=\{e.cancelled=true;}
+        };
+        e.x=x+e.vx;
+        e.y=y+e.vy;
+        e.px=x;
+        e.py=y;
+        //e.vx=e.x-e.px;
+        //e.vy=e.y-e.py;
+        e.actor=this;
+        x=e.x;
+        y=e.y;
+        if (typeof options.valid==="function") {
+            if (!options.valid()) {
+                y=e.y;
+                x=e.px;
                 if (!options.valid()) {
-                    y=e.y;
-                    x=e.px;
+                    y=e.py;
+                    x=e.x;
                     if (!options.valid()) {
                         y=e.py;
-                        x=e.x;
-                        if (!options.valid()) {
-                            y=e.py;
-                            x=e.px;
-                        }
+                        x=e.px;
                     }
                 }
-            }            
-            if (typeof options.move==="function") {
-                options.move(e);
-                if (e.cancelled) {
-                    a.x=e.px;
-                    a.y=e.py;
-                }
             }
-        };
-        f.on("end") \{
-            let e={};
-            if (typeof options.end==="function") {
-                options.end(e);
+        }            
+        if (typeof options.move==="function") {
+            options.move(e);
+            if (e.cancelled) {
+                a.x=e.px;
+                a.y=e.py;
             }
-        };
+        }
+    };
+    f.on("end") \(e) {
+        e.actor=this;
+        if (typeof options.end==="function") {
+            options.end(e);
+        }
     };
 }

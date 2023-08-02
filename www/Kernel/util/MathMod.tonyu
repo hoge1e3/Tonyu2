@@ -123,3 +123,24 @@ nowait \amod(v,d) {
 \log(n) {
     return Math.log(n);
 }
+\round(x, q, r) {
+    /*
+    x-(q/2) <=  kq+r < x+(q/2)
+    x       <=  kq+r+q/2 < x+q
+    x/q     <=  k+r/q+1/2 < x/q+1
+    x/q-r/q-1/2 <=  k < x/q-r/q+1/2
+    (x-r)/q-1/2 <=  k < (x-r)/q+1/2
+    k=floor((x-r)/q+1/2)
+    k=round((x-r)/q)
+    */
+    q=q||1;
+    r=r||0;
+    let k=Math.round((x-r)/q);
+    return k*q+r;
+    /*
+       q=4 r=1
+     x  -4 -3 -2  -1  0  1  2   3 4 5 6 7 8
+     k  -1 -1 -1   *  0  0  0   * 1 1 1 * 2
+        -3 -3 -3   *  1  1  1     5 5 5 * 9
+    */
+}
