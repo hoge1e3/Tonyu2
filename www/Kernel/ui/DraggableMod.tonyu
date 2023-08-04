@@ -47,6 +47,7 @@ let x,y,layer;
             options.end(e);
         }
     };
+    e.end=forceEnd;
     
     let evm,eve;
     evm=f.on("move") \(eo) {

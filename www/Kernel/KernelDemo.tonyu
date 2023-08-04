@@ -21,6 +21,7 @@ for (let i=0;i<5; i++) {
         end: \(e) {
             let dup=e.actor;
             dup.alpha=255;  
+            if (dup.crashTo(s)) dup.die();
             dup.enableDrag {
                 valid: \(e){
                     return !dup.screenOut() && !dup.crashTo(s);

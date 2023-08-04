@@ -2101,10 +2101,11 @@ Tonyu.klass.define({
         
         ;
         
+        e.end=forceEnd;
         let evm;let eve;
-        evm=f.on("move",(function anonymous_1506(eo) {
+        evm=f.on("move",(function anonymous_1527(eo) {
           
-          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1619() {
+          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1640() {
             
             e.cancelled=true;
           }),end: forceEnd};
@@ -2144,7 +2145,7 @@ Tonyu.klass.define({
             
           }
         }));
-        eve=f.on("end",(function anonymous_2508(e) {
+        eve=f.on("end",(function anonymous_2529(e) {
           
           e.actor=_this;
           if (typeof  options.end==="function") {
@@ -2174,10 +2175,11 @@ Tonyu.klass.define({
         
         ;
         
+        e.end=forceEnd;
         let evm;let eve;
-        evm=f.on("move",(function anonymous_1506(eo) {
+        evm=f.on("move",(function anonymous_1527(eo) {
           
-          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1619() {
+          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1640() {
             
             e.cancelled=true;
           }),end: forceEnd};
@@ -2217,7 +2219,7 @@ Tonyu.klass.define({
             
           }
         }));
-        eve=f.on("end",(function anonymous_2508(e) {
+        eve=f.on("end",(function anonymous_2529(e) {
           
           e.actor=_this;
           if (typeof  options.end==="function") {
@@ -26356,10 +26358,13 @@ Tonyu.klass.define({
               let dup = e.actor;
               
               dup.alpha=255;
-              dup.enableDrag({valid: (function anonymous_666(e) {
+              if (dup.crashTo(_this.s)) {
+                dup.die();
+              }
+              dup.enableDrag({valid: (function anonymous_710(e) {
                 
                 return ! dup.screenOut()&&! dup.crashTo(_this.s);
-              }),move: (function anonymous_780(e) {
+              }),move: (function anonymous_824(e) {
                 
                 if (dup.y<50) {
                   e.end();
@@ -26368,14 +26373,14 @@ Tonyu.klass.define({
             })});
           }
         }
-        _this.s.on("touchBG",(function anonymous_1696(e) {
+        _this.s.on("touchBG",(function anonymous_1740(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1766() {
+          f.on("move",(function anonymous_1810() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
@@ -26407,10 +26412,13 @@ Tonyu.klass.define({
               let dup = e.actor;
               
               dup.alpha=255;
-              dup.enableDrag({valid: (function anonymous_666(e) {
+              if (dup.crashTo(_this.s)) {
+                dup.die();
+              }
+              dup.enableDrag({valid: (function anonymous_710(e) {
                 
                 return ! dup.screenOut()&&! dup.crashTo(_this.s);
-              }),move: (function anonymous_780(e) {
+              }),move: (function anonymous_824(e) {
                 
                 if (dup.y<50) {
                   e.end();
@@ -26419,14 +26427,14 @@ Tonyu.klass.define({
             })});
           }
         }
-        _this.s.on("touchBG",(function anonymous_1696(e) {
+        _this.s.on("touchBG",(function anonymous_1740(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1766() {
+          f.on("move",(function anonymous_1810() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
