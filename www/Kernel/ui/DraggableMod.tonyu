@@ -38,11 +38,23 @@ let x,y,layer;
     let a=this;
     let f=e.finger;    
     //let sx=f.x-x, sy=f.y-y;
-    f.on("move") \(eo) {
+    \forceEnd() {
+        evm.remove();
+        eve.remove();
+        e.actor=this;
+        e.forceEnded=true;
+        if (typeof options.end==="function") {
+            options.end(e);
+        }
+    };
+    
+    let evm,eve;
+    evm=f.on("move") \(eo) {
         let e={
             vx=eo.vx, vy=eo.vy,
             //x=f.x-sx, y=f.y-sy,
-            cancel=\{e.cancelled=true;}
+            cancel=\{e.cancelled=true;},
+            end=forceEnd,
         };
         e.x=x+e.vx;
         e.y=y+e.vy;
@@ -75,7 +87,7 @@ let x,y,layer;
             }
         }
     };
-    f.on("end") \(e) {
+    eve=f.on("end") \(e) {
         e.actor=this;
         if (typeof options.end==="function") {
             options.end(e);

@@ -2026,7 +2026,6 @@ Tonyu.klass.define({
               clo[k]=clo[k]||_this[k];
               
             }
-            console.log("CLO",clo);
             let cloned = new cl(clo);
             
             cloned.startDrag(e,options);
@@ -2070,7 +2069,6 @@ Tonyu.klass.define({
               clo[k]=clo[k]||_this[k];
               
             }
-            console.log("CLO",clo);
             let cloned = new cl(clo);
             
             cloned.startDrag(e,options);
@@ -2084,18 +2082,32 @@ Tonyu.klass.define({
       },
       startDrag :function _trc_DraggableMod_startDrag(e,options) {
         var _this=this;
-        
+        function forceEnd() {
+          
+          evm.remove();
+          eve.remove();
+          e.actor=_this;
+          e.forceEnded=true;
+          if (typeof  options.end==="function") {
+            options.end(e);
+            
+          }
+        }
         options=options||{};
         let a = _this;
         
         let f = e.finger;
         
-        f.on("move",(function anonymous_1264(eo) {
+        
+        ;
+        
+        let evm;let eve;
+        evm=f.on("move",(function anonymous_1506(eo) {
           
-          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1377() {
+          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1619() {
             
             e.cancelled=true;
-          })};
+          }),end: forceEnd};
           
           e.x=_this.x+e.vx;
           e.y=_this.y+e.vy;
@@ -2132,7 +2144,7 @@ Tonyu.klass.define({
             
           }
         }));
-        f.on("end",(function anonymous_2234(e) {
+        eve=f.on("end",(function anonymous_2508(e) {
           
           e.actor=_this;
           if (typeof  options.end==="function") {
@@ -2143,18 +2155,32 @@ Tonyu.klass.define({
       },
       fiber$startDrag :function* _trc_DraggableMod_f_startDrag(_thread,e,options) {
         var _this=this;
-        
+        function forceEnd() {
+          
+          evm.remove();
+          eve.remove();
+          e.actor=_this;
+          e.forceEnded=true;
+          if (typeof  options.end==="function") {
+            options.end(e);
+            
+          }
+        }
         options=options||{};
         let a = _this;
         
         let f = e.finger;
         
-        f.on("move",(function anonymous_1264(eo) {
+        
+        ;
+        
+        let evm;let eve;
+        evm=f.on("move",(function anonymous_1506(eo) {
           
-          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1377() {
+          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1619() {
             
             e.cancelled=true;
-          })};
+          }),end: forceEnd};
           
           e.x=_this.x+e.vx;
           e.y=_this.y+e.vy;
@@ -2191,7 +2217,7 @@ Tonyu.klass.define({
             
           }
         }));
-        f.on("end",(function anonymous_2234(e) {
+        eve=f.on("end",(function anonymous_2508(e) {
           
           e.actor=_this;
           if (typeof  options.end==="function") {
@@ -26333,18 +26359,23 @@ Tonyu.klass.define({
               dup.enableDrag({valid: (function anonymous_666(e) {
                 
                 return ! dup.screenOut()&&! dup.crashTo(_this.s);
+              }),move: (function anonymous_780(e) {
+                
+                if (dup.y<50) {
+                  e.end();
+                }
               })});
             })});
           }
         }
-        _this.s.on("touchBG",(function anonymous_1599(e) {
+        _this.s.on("touchBG",(function anonymous_1696(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1669() {
+          f.on("move",(function anonymous_1766() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
@@ -26379,18 +26410,23 @@ Tonyu.klass.define({
               dup.enableDrag({valid: (function anonymous_666(e) {
                 
                 return ! dup.screenOut()&&! dup.crashTo(_this.s);
+              }),move: (function anonymous_780(e) {
+                
+                if (dup.y<50) {
+                  e.end();
+                }
               })});
             })});
           }
         }
-        _this.s.on("touchBG",(function anonymous_1599(e) {
+        _this.s.on("touchBG",(function anonymous_1696(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1669() {
+          f.on("move",(function anonymous_1766() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
