@@ -6,6 +6,7 @@ let target;// Screen | ScreenLayer | Panel
 // if target is a Panel, no children allowed
 
 \convert(obj, to:LayerPath) {
+    assertIs(to, LayerPath);
     let a=commonAncestor(to);
     let tg=\(p:LayerPath){return p.target;};
     let up=pathTo(a).map(tg);// [this....a]

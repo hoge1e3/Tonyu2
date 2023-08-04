@@ -1998,7 +1998,7 @@ Tonyu.klass.define({
         
         options=options||{};
         options=Object.assign({},options);
-        _this.on("touch",(function anonymous_169(e) {
+        _this.on("touch",(function anonymous_186(e) {
           
           let f = e.finger;
           
@@ -2012,18 +2012,21 @@ Tonyu.klass.define({
             let cl = clo.class||Tonyu.classes.kernel.Actor;
             
             if (clo.layer) {
-              let lp = f.layerPath.convert({x: _this.x,y: _this.y,layer: _this.layer},clo.layer);
+              let tolp = clo.layer.defaultLayerPath;
+              
+              let lp = f.layerPath.convert({x: _this.x,y: _this.y},tolp);
               
               clo.x=lp.x;
               clo.y=lp.y;
-              f.layer=clo.layer;
+              f.layerPath=tolp;
               
             }
             delete clo.class;
-            for (let [k] of Tonyu.iterator2(Object.keys(_this),1)) {
+            for (let [k] of Tonyu.iterator2(["x","y","p","layer","fillStyle","alpha","rotation","scaleX","scaleY","radius","width","height"],1)) {
               clo[k]=clo[k]||_this[k];
               
             }
+            console.log("CLO",clo);
             let cloned = new cl(clo);
             
             cloned.startDrag(e,options);
@@ -2039,7 +2042,7 @@ Tonyu.klass.define({
         
         options=options||{};
         options=Object.assign({},options);
-        _this.on("touch",(function anonymous_169(e) {
+        _this.on("touch",(function anonymous_186(e) {
           
           let f = e.finger;
           
@@ -2053,18 +2056,21 @@ Tonyu.klass.define({
             let cl = clo.class||Tonyu.classes.kernel.Actor;
             
             if (clo.layer) {
-              let lp = f.layerPath.convert({x: _this.x,y: _this.y,layer: _this.layer},clo.layer);
+              let tolp = clo.layer.defaultLayerPath;
+              
+              let lp = f.layerPath.convert({x: _this.x,y: _this.y},tolp);
               
               clo.x=lp.x;
               clo.y=lp.y;
-              f.layer=clo.layer;
+              f.layerPath=tolp;
               
             }
             delete clo.class;
-            for (let [k] of Tonyu.iterator2(Object.keys(_this),1)) {
+            for (let [k] of Tonyu.iterator2(["x","y","p","layer","fillStyle","alpha","rotation","scaleX","scaleY","radius","width","height"],1)) {
               clo[k]=clo[k]||_this[k];
               
             }
+            console.log("CLO",clo);
             let cloned = new cl(clo);
             
             cloned.startDrag(e,options);
@@ -2084,9 +2090,9 @@ Tonyu.klass.define({
         
         let f = e.finger;
         
-        f.on("move",(function anonymous_1075(eo) {
+        f.on("move",(function anonymous_1264(eo) {
           
-          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1188() {
+          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1377() {
             
             e.cancelled=true;
           })};
@@ -2126,7 +2132,7 @@ Tonyu.klass.define({
             
           }
         }));
-        f.on("end",(function anonymous_2045(e) {
+        f.on("end",(function anonymous_2234(e) {
           
           e.actor=_this;
           if (typeof  options.end==="function") {
@@ -2143,9 +2149,9 @@ Tonyu.klass.define({
         
         let f = e.finger;
         
-        f.on("move",(function anonymous_1075(eo) {
+        f.on("move",(function anonymous_1264(eo) {
           
-          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1188() {
+          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1377() {
             
             e.cancelled=true;
           })};
@@ -2185,7 +2191,7 @@ Tonyu.klass.define({
             
           }
         }));
-        f.on("end",(function anonymous_2045(e) {
+        f.on("end",(function anonymous_2234(e) {
           
           e.actor=_this;
           if (typeof  options.end==="function") {
@@ -2633,14 +2639,14 @@ Tonyu.klass.define({
       newError :function _trc_AssertionMod_newError(mesg,...args) {
         var _this=this;
         
-        console.error(mesg,...args);
-        return new Error(Tonyu.globals.$Boot.R(mesg,...args));
+        console.error(mesg,_this,...args);
+        return new Error(_this+": "+Tonyu.globals.$Boot.R(mesg,...args));
       },
       fiber$newError :function* _trc_AssertionMod_f_newError(_thread,mesg,...args) {
         var _this=this;
         
-        console.error(mesg,...args);
-        return new Error(Tonyu.globals.$Boot.R(mesg,...args));
+        console.error(mesg,_this,...args);
+        return new Error(_this+": "+Tonyu.globals.$Boot.R(mesg,...args));
         
       },
       __dummy: false
@@ -3026,8 +3032,13 @@ Tonyu.klass.define({
         _this.R=Tonyu.messages;
         let ja = {"notA": "{1}{2}は{3}ではありません．","netEQ": "{1}!=={2}","noPushedPages": "loadPageで戻る先のページがありません．引数にページ名を忘れているかもしれません．"};
         
-        let en = {"notA": "{1}{2} is not a {3}.","netEQ": "{1}!=={2}","noPushedPages": "loadPage(Pop page) failed. You should push page (or you forgot Page argument?)"};
+        let en = {"notA": "{1}{2} is not a {3}.","netEQ": "{1}!=={2}","noPushedPages": "loadPage(Pop page) failed. You should push page (or you forgot Page argument?)",screenConvertFailed: "Screen::conv invalid from {2} to {3}",cannotGetNeighborTarget: "Cannot get neighbor target {1} {2}",worldToChipInvalidArgs: "Map2::worldToChip: invalid args ({1},{2})",touchFingerSetLayerFailed: "Cannot set layer: toLayer={1}",touchFingerSetLayerPathFailed: "layerPath convert failed: to= {1}"};
         
+        for (let [k, v] of Tonyu.iterator2(en,2)) {
+          if (! ja[k]) {
+            ja[k]=v;
+          }
+        }
         Object.assign(_this.R.dicts.ja,ja);
         Object.assign(_this.R.dicts.en,en);
       },
@@ -3066,12 +3077,12 @@ Tonyu.klass.define({
       functionShortcut :function _trc_MessageResource_functionShortcut() {
         var _this=this;
         
-        let R = (function anonymous_697(...args) {
+        let R = (function anonymous_1107(...args) {
           
           return _this.r(...args);
         });
         
-        R.register=(function anonymous_746(...args) {
+        R.register=(function anonymous_1156(...args) {
           
           return _this.register(...args);
         });
@@ -3081,12 +3092,12 @@ Tonyu.klass.define({
       fiber$functionShortcut :function* _trc_MessageResource_f_functionShortcut(_thread) {
         var _this=this;
         
-        let R = (function anonymous_697(...args) {
+        let R = (function anonymous_1107(...args) {
           
           return _this.r(...args);
         });
         
-        R.register=(function anonymous_746(...args) {
+        R.register=(function anonymous_1156(...args) {
           
           return _this.register(...args);
         });
@@ -8968,9 +8979,10 @@ Tonyu.klass.define({
       convert :function _trc_LayerPath_convert(obj,to) {
         var _this=this;
         
+        _this.assertIs(to,Tonyu.classes.kernel.LayerPath);
         let a = _this.commonAncestor(to);
         
-        let tg = (function anonymous_236(p) {
+        let tg = (function anonymous_266(p) {
           
           return p.target;
         });
@@ -9002,9 +9014,10 @@ Tonyu.klass.define({
       fiber$convert :function* _trc_LayerPath_f_convert(_thread,obj,to) {
         var _this=this;
         
+        (yield* _this.fiber$assertIs(_thread, to, Tonyu.classes.kernel.LayerPath));
         let a=yield* _this.fiber$commonAncestor(_thread, to);
         
-        let tg = (function anonymous_236(p) {
+        let tg = (function anonymous_266(p) {
           
           return p.target;
         });
@@ -16368,7 +16381,7 @@ Tonyu.klass.define({
             _this.layerPath=toLayer.defaultLayerPath;
             
           } else {
-            throw _this.newError("cannot set layer: {1}",toLayer);
+            throw _this.newError("touchFingerSetLayerFailed",toLayer);
             
           }
         }
@@ -16388,7 +16401,7 @@ Tonyu.klass.define({
         p = _this._layerPath.convert(_this,toLayerPath);
         
         if (! p) {
-          throw _this.newError("Screen convert failed: this {1} to {2}",_this,toLayerPath);
+          throw _this.newError("touchFingerSetLayerPathFailed",toLayerPath);
           
           
         }
@@ -23035,7 +23048,7 @@ Tonyu.klass.define({
           
         }
         if (! o||typeof  o!=="object") {
-          throw _this.newError("Map2::worldToChip: invalid args ({1},{2})",x,y);
+          throw _this.newError("worldToChipInvalidArgs",x,y);
           
           
         }
@@ -23060,7 +23073,7 @@ Tonyu.klass.define({
           
         }
         if (! o||typeof  o!=="object") {
-          throw _this.newError("Map2::worldToChip: invalid args ({1},{2})",x,y);
+          throw _this.newError("worldToChipInvalidArgs",x,y);
           
           
         }
@@ -23245,7 +23258,7 @@ Tonyu.klass.define({
       __getter__allLayerNames :function _trc_Map2___getter__allLayerNames() {
         var _this=this;
         
-        return _this.chipLayers.map((function anonymous_10597(l) {
+        return _this.chipLayers.map((function anonymous_10578(l) {
           
           return l.name;
         }));
@@ -25257,7 +25270,7 @@ Tonyu.klass.define({
             if (myfl) {
               scr=myfl.world2screen(obj);
             } else {
-              throw _this.newError("Screen{1}::conv invalid from {2} to {3}",_this,fromLayer,toLayer);
+              throw _this.newError("screenConvertFailed",fromLayer,toLayer);
               
               
             }
@@ -25277,7 +25290,7 @@ Tonyu.klass.define({
             if (mytl) {
               return mytl.screen2world(scr);
             } else {
-              throw _this.newError("Screen{1}::conv invalid from {2} to {3}",_this,fromLayer,toLayer);
+              throw _this.newError("screenConvertFailed",fromLayer,toLayer);
               
               
             }
@@ -25322,7 +25335,7 @@ Tonyu.klass.define({
             if (myfl) {
               scr=myfl.world2screen(obj);
             } else {
-              throw _this.newError("Screen{1}::conv invalid from {2} to {3}",_this,fromLayer,toLayer);
+              throw _this.newError("screenConvertFailed",fromLayer,toLayer);
               
               
             }
@@ -25342,7 +25355,7 @@ Tonyu.klass.define({
             if (mytl) {
               return mytl.screen2world(scr);
             } else {
-              throw _this.newError("Screen{1}::conv invalid from {2} to {3}",_this,fromLayer,toLayer);
+              throw _this.newError("screenConvertFailed",fromLayer,toLayer);
               
               
             }
@@ -25522,7 +25535,7 @@ Tonyu.klass.define({
           return _this.multiLayerTouches;
         }
         _this.multiLayerTouches=new Tonyu.classes.kernel.MultiLayerTouches({screen: _this});
-        _this.on("touch",(function anonymous_5602(e) {
+        _this.on("touch",(function anonymous_5339(e) {
           
           let a = _this.multiLayerTouches.findActor(e.shape);
           
@@ -25534,7 +25547,7 @@ Tonyu.klass.define({
             let nlp = f.layerPath.withNeighborTarget(a.layer);
             
             if (! (Tonyu.is(nlp,Tonyu.classes.kernel.LayerPath))) {
-              throw _this.newError("Cannot get neighbor target {1} {2}",f,a.layer);
+              throw _this.newError("cannotGetNeighborTarget",f,a.layer);
               
               
             }
@@ -25555,7 +25568,7 @@ Tonyu.klass.define({
           return _this.multiLayerTouches;
         }
         _this.multiLayerTouches=new Tonyu.classes.kernel.MultiLayerTouches({screen: _this});
-        _this.on("touch",(function anonymous_5602(e) {
+        _this.on("touch",(function anonymous_5339(e) {
           
           let a = _this.multiLayerTouches.findActor(e.shape);
           
@@ -25567,7 +25580,7 @@ Tonyu.klass.define({
             let nlp = f.layerPath.withNeighborTarget(a.layer);
             
             if (! (Tonyu.is(nlp,Tonyu.classes.kernel.LayerPath))) {
-              throw _this.newError("Cannot get neighbor target {1} {2}",f,a.layer);
+              throw _this.newError("cannotGetNeighborTarget",f,a.layer);
               
               
             }
@@ -26296,7 +26309,6 @@ Tonyu.klass.define({
         var _this=this;
         
         Error.stackTraceLimit=50;
-        _this.print(Tonyu.globals.$Boot.R("{1} is {2}","this","tonyu"));
         for (let [k, v] of Tonyu.iterator2(Tonyu.globals,2)) {
           if (v&&typeof  v==="object"&&! v.name) {
             v.name=k;
@@ -26313,26 +26325,26 @@ Tonyu.klass.define({
           {
             let a = new Tonyu.classes.kernel.Actor({x: 5+i*30,y: 50,layer: _this.l,radius: 10+i*3,fillStyle: "white"});
             
-            a.enableDrag({clone: {alpha: 128},end: (function anonymous_523(e) {
+            a.enableDrag({clone: {alpha: 128,layer: Tonyu.globals.$mainLayer},end: (function anonymous_545(e) {
               
               let dup = e.actor;
               
               dup.alpha=255;
-              dup.enableDrag({valid: (function anonymous_644(e) {
+              dup.enableDrag({valid: (function anonymous_666(e) {
                 
                 return ! dup.screenOut()&&! dup.crashTo(_this.s);
               })});
             })});
           }
         }
-        _this.s.on("touchBG",(function anonymous_1577(e) {
+        _this.s.on("touchBG",(function anonymous_1599(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1647() {
+          f.on("move",(function anonymous_1669() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
@@ -26343,7 +26355,6 @@ Tonyu.klass.define({
         var _this=this;
         
         Error.stackTraceLimit=50;
-        _this.print(Tonyu.globals.$Boot.R("{1} is {2}","this","tonyu"));
         for (let [k, v] of Tonyu.iterator2(Tonyu.globals,2)) {
           if (v&&typeof  v==="object"&&! v.name) {
             v.name=k;
@@ -26360,26 +26371,26 @@ Tonyu.klass.define({
           {
             let a = new Tonyu.classes.kernel.Actor({x: 5+i*30,y: 50,layer: _this.l,radius: 10+i*3,fillStyle: "white"});
             
-            a.enableDrag({clone: {alpha: 128},end: (function anonymous_523(e) {
+            a.enableDrag({clone: {alpha: 128,layer: Tonyu.globals.$mainLayer},end: (function anonymous_545(e) {
               
               let dup = e.actor;
               
               dup.alpha=255;
-              dup.enableDrag({valid: (function anonymous_644(e) {
+              dup.enableDrag({valid: (function anonymous_666(e) {
                 
                 return ! dup.screenOut()&&! dup.crashTo(_this.s);
               })});
             })});
           }
         }
-        _this.s.on("touchBG",(function anonymous_1577(e) {
+        _this.s.on("touchBG",(function anonymous_1599(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1647() {
+          f.on("move",(function anonymous_1669() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);

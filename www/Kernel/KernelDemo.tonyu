@@ -2,7 +2,7 @@ extends Actor;
 native Tonyu;
 //native Error;
 Error.stackTraceLimit=50;
-print ($Boot.R("{1} is {2}","this","tonyu"));
+//print ($Boot.R("{1} is {2}","this","tonyu"));
 for (let k,v of Tonyu.globals) {
     if (v && typeof v==="object" && !v.name) {
         v.name=k;
@@ -16,7 +16,7 @@ for (let i=0;i<5; i++) {
     let a=new Actor{x:5+i*30,y:50,layer:l,radius:10+i*3,fillStyle:"white"};
     a.enableDrag {
         clone: {
-            alpha=128
+            alpha=128, layer: $mainLayer,
         },
         end: \(e) {
             let dup=e.actor;

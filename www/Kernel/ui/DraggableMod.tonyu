@@ -1,4 +1,5 @@
 includes SpriteMod,EventMod;
+native console;
 "field strict";
 let x,y,layer;
 \enableDrag(options) {
@@ -13,15 +14,18 @@ let x,y,layer;
             let clo=Object.assign({}, options.clone);
             let cl=clo.class || Actor;
             if (clo.layer) {
-                let lp=f.layerPath.convert({x,y,layer},clo.layer);
+                let tolp=clo.layer.defaultLayerPath;
+                let lp=f.layerPath.convert({x,y},tolp);
                 clo.x=lp.x;
                 clo.y=lp.y;
-                f.layer=clo.layer;
+                f.layerPath=tolp;
             }
             delete clo.class;
-            for (let k of Object.keys(this)) {
+            for (let k of ["x","y","p","layer",
+            "fillStyle","alpha","rotation","scaleX","scaleY","radius","width","height"]) {
                 clo[k]=clo[k]||this[k];
             }
+            //console.log("CLO",clo);
             let cloned=new cl(clo);
             cloned.startDrag(e, options);
         } else {
