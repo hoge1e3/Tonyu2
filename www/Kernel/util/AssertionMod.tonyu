@@ -9,6 +9,6 @@ native console;
     throw newErrr("notEq",al||a,bl||b);
 }
 \newError(mesg, ...args) {
-    console.error(mesg, ...args);
-    return new Error($Boot.R(mesg, ...args));
+    console.error(mesg, this, ...args);
+    return new Error(this+": "+$Boot.R(mesg, ...args));
 }

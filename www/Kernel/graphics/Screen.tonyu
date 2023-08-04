@@ -134,7 +134,7 @@ let multiLayerTouches: MultiLayerTouches;
         let myfl=findLayer(fromLayer);
         if (myfl) scr=myfl.world2screen(obj);
         else {
-            throw newError("Screen{1}::conv invalid from {2} to {3}",this, fromLayer,toLayer);
+            throw newError("screenConvertFailed",fromLayer,toLayer);
         }
     }
     if (toLayer===this) {
@@ -145,7 +145,7 @@ let multiLayerTouches: MultiLayerTouches;
         let mytl=findLayer(toLayer);
         if (mytl) return mytl.screen2world(scr);
         else {
-            throw newError("Screen{1}::conv invalid from {2} to {3}",this, fromLayer,toLayer);
+            throw newError("screenConvertFailed",fromLayer,toLayer);
         }
     }
     /*let flp=(fromLayer is LayerPath? fromLayer : fromLayer.defaultLayerPath);
@@ -217,7 +217,7 @@ let multiLayerTouches: MultiLayerTouches;
             e.actor=a;
             let nlp=f.layerPath.withNeighborTarget(a.layer);
             if (!(nlp is LayerPath)) {
-                throw newError("Cannot get neighbot target {1} {2}",f, a.layer);
+                throw newError("cannotGetNeighborTarget",f , a.layer);
             }
             f.layerPath=nlp;
             a.fireEvent("touch",e);

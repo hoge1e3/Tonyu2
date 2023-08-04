@@ -29,7 +29,7 @@ let _layerPath: LayerPath;
         layerPath=l;
     } else if (toLayer.defaultLayerPath) {
         layerPath=toLayer.defaultLayerPath;
-    } else throw newError("cannot set layer: {1}",toLayer);
+    } else throw newError("touchFingerSetLayerFailed",toLayer);
 }
 \layerPath:LayerPath {
     return _layerPath;
@@ -38,7 +38,7 @@ let _layerPath: LayerPath;
     if (_layerPath===toLayerPath) return;
     var p=_layerPath.convert(this,toLayerPath);
     if (!p) {
-        throw newError("Screen convert failed: this {1} to {2}",this,toLayerPath);
+        throw newError("touchFingerSetLayerPathFailed", toLayerPath);
     }
     x=p.x;
     y=p.y;

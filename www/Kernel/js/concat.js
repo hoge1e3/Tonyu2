@@ -2562,14 +2562,14 @@ Tonyu.klass.define({
       newError :function _trc_AssertionMod_newError(mesg,...args) {
         var _this=this;
         
-        console.error(mesg,...args);
-        return new Error(Tonyu.globals.$Boot.R(mesg,...args));
+        console.error(mesg,_this,...args);
+        return new Error(_this+": "+Tonyu.globals.$Boot.R(mesg,...args));
       },
       fiber$newError :function* _trc_AssertionMod_f_newError(_thread,mesg,...args) {
         var _this=this;
         
-        console.error(mesg,...args);
-        return new Error(Tonyu.globals.$Boot.R(mesg,...args));
+        console.error(mesg,_this,...args);
+        return new Error(_this+": "+Tonyu.globals.$Boot.R(mesg,...args));
         
       },
       __dummy: false
@@ -2936,8 +2936,13 @@ Tonyu.klass.define({
         _this.R=Tonyu.messages;
         let ja = {"notA": "{1}{2}は{3}ではありません．","netEQ": "{1}!=={2}","noPushedPages": "loadPageで戻る先のページがありません．引数にページ名を忘れているかもしれません．"};
         
-        let en = {"notA": "{1}{2} is not a {3}.","netEQ": "{1}!=={2}","noPushedPages": "loadPage(Pop page) failed. You should push page (or you forgot Page argument?)"};
+        let en = {"notA": "{1}{2} is not a {3}.","netEQ": "{1}!=={2}","noPushedPages": "loadPage(Pop page) failed. You should push page (or you forgot Page argument?)",screenConvertFailed: "Screen::conv invalid from {2} to {3}",cannotGetNeighborTarget: "Cannot get neighbor target {1} {2}",worldToChipInvalidArgs: "Map2::worldToChip: invalid args ({1},{2})",touchFingerSetLayerFailed: "Cannot set layer: toLayer={1}",touchFingerSetLayerPathFailed: "layerPath convert failed: to= {1}"};
         
+        for (let [k, v] of Tonyu.iterator2(en,2)) {
+          if (! ja[k]) {
+            ja[k]=v;
+          }
+        }
         Object.assign(_this.R.dicts.ja,ja);
         Object.assign(_this.R.dicts.en,en);
       },
@@ -2976,12 +2981,12 @@ Tonyu.klass.define({
       functionShortcut :function _trc_MessageResource_functionShortcut() {
         var _this=this;
         
-        let R = (function anonymous_697(...args) {
+        let R = (function anonymous_1107(...args) {
           
           return _this.r(...args);
         });
         
-        R.register=(function anonymous_746(...args) {
+        R.register=(function anonymous_1156(...args) {
           
           return _this.register(...args);
         });
@@ -2991,12 +2996,12 @@ Tonyu.klass.define({
       fiber$functionShortcut :function* _trc_MessageResource_f_functionShortcut(_thread) {
         var _this=this;
         
-        let R = (function anonymous_697(...args) {
+        let R = (function anonymous_1107(...args) {
           
           return _this.r(...args);
         });
         
-        R.register=(function anonymous_746(...args) {
+        R.register=(function anonymous_1156(...args) {
           
           return _this.register(...args);
         });
@@ -16116,7 +16121,7 @@ Tonyu.klass.define({
             _this.layerPath=toLayer.defaultLayerPath;
             
           } else {
-            throw _this.newError("cannot set layer: {1}",toLayer);
+            throw _this.newError("touchFingerSetLayerFailed",toLayer);
             
           }
         }
@@ -16136,7 +16141,7 @@ Tonyu.klass.define({
         p = _this._layerPath.convert(_this,toLayerPath);
         
         if (! p) {
-          throw _this.newError("Screen convert failed: this {1} to {2}",_this,toLayerPath);
+          throw _this.newError("touchFingerSetLayerPathFailed",toLayerPath);
           
           
         }
@@ -22775,7 +22780,7 @@ Tonyu.klass.define({
           
         }
         if (! o||typeof  o!=="object") {
-          throw _this.newError("Map2::worldToChip: invalid args ({1},{2})",x,y);
+          throw _this.newError("worldToChipInvalidArgs",x,y);
           
           
         }
@@ -22800,7 +22805,7 @@ Tonyu.klass.define({
           
         }
         if (! o||typeof  o!=="object") {
-          throw _this.newError("Map2::worldToChip: invalid args ({1},{2})",x,y);
+          throw _this.newError("worldToChipInvalidArgs",x,y);
           
           
         }
@@ -22985,7 +22990,7 @@ Tonyu.klass.define({
       __getter__allLayerNames :function _trc_Map2___getter__allLayerNames() {
         var _this=this;
         
-        return _this.chipLayers.map((function anonymous_10597(l) {
+        return _this.chipLayers.map((function anonymous_10578(l) {
           
           return l.name;
         }));
@@ -24997,7 +25002,7 @@ Tonyu.klass.define({
             if (myfl) {
               scr=myfl.world2screen(obj);
             } else {
-              throw _this.newError("Screen{1}::conv invalid from {2} to {3}",_this,fromLayer,toLayer);
+              throw _this.newError("screenConvertFailed",fromLayer,toLayer);
               
               
             }
@@ -25017,7 +25022,7 @@ Tonyu.klass.define({
             if (mytl) {
               return mytl.screen2world(scr);
             } else {
-              throw _this.newError("Screen{1}::conv invalid from {2} to {3}",_this,fromLayer,toLayer);
+              throw _this.newError("screenConvertFailed",fromLayer,toLayer);
               
               
             }
@@ -25062,7 +25067,7 @@ Tonyu.klass.define({
             if (myfl) {
               scr=myfl.world2screen(obj);
             } else {
-              throw _this.newError("Screen{1}::conv invalid from {2} to {3}",_this,fromLayer,toLayer);
+              throw _this.newError("screenConvertFailed",fromLayer,toLayer);
               
               
             }
@@ -25082,7 +25087,7 @@ Tonyu.klass.define({
             if (mytl) {
               return mytl.screen2world(scr);
             } else {
-              throw _this.newError("Screen{1}::conv invalid from {2} to {3}",_this,fromLayer,toLayer);
+              throw _this.newError("screenConvertFailed",fromLayer,toLayer);
               
               
             }
@@ -25262,7 +25267,7 @@ Tonyu.klass.define({
           return _this.multiLayerTouches;
         }
         _this.multiLayerTouches=new Tonyu.classes.kernel.MultiLayerTouches({screen: _this});
-        _this.on("touch",(function anonymous_5602(e) {
+        _this.on("touch",(function anonymous_5550(e) {
           
           let a = _this.multiLayerTouches.findActor(e.shape);
           
@@ -25274,7 +25279,7 @@ Tonyu.klass.define({
             let nlp = f.layerPath.withNeighborTarget(a.layer);
             
             if (! (Tonyu.is(nlp,Tonyu.classes.kernel.LayerPath))) {
-              throw _this.newError("Cannot get neighbot target {1} {2}",f,a.layer);
+              throw _this.newError("cannotGetNeighborTarget",f,a.layer);
               
               
             }
@@ -25295,7 +25300,7 @@ Tonyu.klass.define({
           return _this.multiLayerTouches;
         }
         _this.multiLayerTouches=new Tonyu.classes.kernel.MultiLayerTouches({screen: _this});
-        _this.on("touch",(function anonymous_5602(e) {
+        _this.on("touch",(function anonymous_5550(e) {
           
           let a = _this.multiLayerTouches.findActor(e.shape);
           
@@ -25307,7 +25312,7 @@ Tonyu.klass.define({
             let nlp = f.layerPath.withNeighborTarget(a.layer);
             
             if (! (Tonyu.is(nlp,Tonyu.classes.kernel.LayerPath))) {
-              throw _this.newError("Cannot get neighbot target {1} {2}",f,a.layer);
+              throw _this.newError("cannotGetNeighborTarget",f,a.layer);
               
               
             }

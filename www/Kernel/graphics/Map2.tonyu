@@ -336,7 +336,7 @@ var _expand, _wallFilter;
         o={x,y};
     } 
     if (!o || typeof o!=="object") {
-        throw newError("Map2::worldToChip: invalid args ({1},{2})", x, y);
+        throw newError("worldToChipInvalidArgs", x, y);
     }
     var l=transform.worldToLocal(o);
     //print(l.x, l.y);
