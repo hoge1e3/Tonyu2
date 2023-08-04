@@ -1764,7 +1764,12 @@ Tonyu.klass.define({
       update :function _trc_SchedulerMod_update() {
         var _this=this;
         
-        _this.onUpdate();
+        if (! _this._updating) {
+          _this._updating=true;
+          _this.onUpdate();
+          _this._updating=false;
+          
+        }
         if (null) {
           if (_this._scheduler) {
             _this._scheduler.addToNext(null);
@@ -1773,14 +1778,21 @@ Tonyu.klass.define({
           null;
           
         } else {
-          _this._scheduler.checkTimeout();
+          if (_this._scheduler) {
+            _this._scheduler.checkTimeout();
+          }
           
         }
       },
       fiber$update :function* _trc_SchedulerMod_f_update(_thread) {
         var _this=this;
         
-        _this.onUpdate();
+        if (! _this._updating) {
+          _this._updating=true;
+          (yield* _this.fiber$onUpdate(_thread));
+          _this._updating=false;
+          
+        }
         if (_thread) {
           if (_this._scheduler) {
             _this._scheduler.addToNext(_thread);
@@ -1789,7 +1801,9 @@ Tonyu.klass.define({
           (yield* _thread.await(null));
           
         } else {
-          _this._scheduler.checkTimeout();
+          if (_this._scheduler) {
+            _this._scheduler.checkTimeout();
+          }
           
         }
         
@@ -1798,12 +1812,18 @@ Tonyu.klass.define({
         var _this=this;
         
       },
+      fiber$onUpdate :function* _trc_SchedulerMod_f_onUpdate(_thread) {
+        var _this=this;
+        
+        
+      },
       updateEx :function _trc_SchedulerMod_updateEx(updateT) {
         var _this=this;
-        var updateCount;
         
-        for (updateCount = 0;
-         updateCount<updateT ; updateCount++) {
+        if (updateT<0) {
+          updateT=0;
+        }
+        for (_this._updateExc=(_this._updateExc||0)+updateT; _this._updateExc>=1 ; _this._updateExc--) {
           {
             _this.update();
           }
@@ -1811,10 +1831,11 @@ Tonyu.klass.define({
       },
       fiber$updateEx :function* _trc_SchedulerMod_f_updateEx(_thread,updateT) {
         var _this=this;
-        var updateCount;
         
-        for (updateCount = 0;
-         updateCount<updateT ; updateCount++) {
+        if (updateT<0) {
+          updateT=0;
+        }
+        for (_this._updateExc=(_this._updateExc||0)+updateT; _this._updateExc>=1 ; _this._updateExc--) {
           {
             (yield* _this.fiber$update(_thread));
           }
@@ -1915,7 +1936,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"initSchedulerMod":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onUpdate":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"updateEx":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"currentThreadGroup":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"wait":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"notify":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"timeStop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"_scheduler":{},"_th":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"initSchedulerMod":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onUpdate":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"updateEx":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"currentThreadGroup":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"wait":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"notify":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"timeStop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"_scheduler":{},"_th":{},"_updating":{},"_updateExc":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.ThreadGroupMod',
@@ -29325,12 +29346,17 @@ Tonyu.klass.define({
       fiber$update :function* _trc_PlainChar_f_update(_thread) {
         var _this=this;
         
-        _this.onUpdate();
+        (yield* _this.fiber$onUpdate(_thread));
         (yield* __superClass.prototype.fiber$update.apply( _this, [_thread]));
         
       },
       onUpdate :function _trc_PlainChar_onUpdate() {
         var _this=this;
+        
+      },
+      fiber$onUpdate :function* _trc_PlainChar_f_onUpdate(_thread) {
+        var _this=this;
+        
         
       },
       tMain :function _trc_PlainChar_tMain() {
@@ -29349,7 +29375,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setVisible":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"onDraw":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onUpdate":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"tMain":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"setVisible":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"onDraw":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onUpdate":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"tMain":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.SecretChar',

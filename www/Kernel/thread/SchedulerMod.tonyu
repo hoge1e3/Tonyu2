@@ -1,6 +1,6 @@
 extends null;
 "field strict";
-var _scheduler,_th;
+let _scheduler,_th,_updating,_updateExc;
 
 native Tonyu;
 native Key;
@@ -15,20 +15,25 @@ native Array;
 }
 
 \update() {
-    onUpdate();
+    if (!_updating) {
+        _updating=true;
+        onUpdate();
+        _updating=false;
+    }   
     if(_thread) {
         if (_scheduler) _scheduler.addToNext(_thread);
         _thread.suspend();
         __await null;
     } else {
-        _scheduler.checkTimeout();
+        if (_scheduler) _scheduler.checkTimeout();
     }
 }
-nowait \onUpdate() {
+\onUpdate() {
 
 }
 \updateEx(updateT){
-    for(var updateCount=0;updateCount<updateT;updateCount++){
+    if (updateT<0) updateT=0;
+    for(_updateExc=(_updateExc||0)+updateT;_updateExc>=1;_updateExc--) {
         update();
     }
 }
