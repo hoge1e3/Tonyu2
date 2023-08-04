@@ -2098,22 +2098,38 @@ Tonyu.klass.define({
         
         let f = e.finger;
         
+        let sx = f.x-_this.x;
+        let sy = f.y-_this.y;
+        
+        let relative = options.relative;
+        
         
         ;
         
         e.end=forceEnd;
         let evm;let eve;
-        evm=f.on("move",(function anonymous_1527(eo) {
+        evm=f.on("move",(function anonymous_1561(eo) {
           
-          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1640() {
+          let e = {cancel: (function anonymous_1676() {
             
             e.cancelled=true;
           }),end: forceEnd};
           
-          e.x=_this.x+e.vx;
-          e.y=_this.y+e.vy;
           e.px=_this.x;
           e.py=_this.y;
+          if (relative) {
+            e.vx=eo.vx;
+            e.vy=eo.vy;
+            e.x=e.px+e.vx;
+            e.y=e.py+e.vy;
+            
+          } else {
+            e.x=f.x-sx;
+            e.y=f.y-sy;
+            e.vx=e.x-e.px;
+            e.vy=e.y-e.py;
+            
+          }
           e.actor=_this;
           _this.x=e.x;
           _this.y=e.y;
@@ -2145,7 +2161,7 @@ Tonyu.klass.define({
             
           }
         }));
-        eve=f.on("end",(function anonymous_2529(e) {
+        eve=f.on("end",(function anonymous_2737(e) {
           
           e.actor=_this;
           if (typeof  options.end==="function") {
@@ -2172,22 +2188,38 @@ Tonyu.klass.define({
         
         let f = e.finger;
         
+        let sx = f.x-_this.x;
+        let sy = f.y-_this.y;
+        
+        let relative = options.relative;
+        
         
         ;
         
         e.end=forceEnd;
         let evm;let eve;
-        evm=f.on("move",(function anonymous_1527(eo) {
+        evm=f.on("move",(function anonymous_1561(eo) {
           
-          let e = {vx: eo.vx,vy: eo.vy,cancel: (function anonymous_1640() {
+          let e = {cancel: (function anonymous_1676() {
             
             e.cancelled=true;
           }),end: forceEnd};
           
-          e.x=_this.x+e.vx;
-          e.y=_this.y+e.vy;
           e.px=_this.x;
           e.py=_this.y;
+          if (relative) {
+            e.vx=eo.vx;
+            e.vy=eo.vy;
+            e.x=e.px+e.vx;
+            e.y=e.py+e.vy;
+            
+          } else {
+            e.x=f.x-sx;
+            e.y=f.y-sy;
+            e.vx=e.x-e.px;
+            e.vy=e.y-e.py;
+            
+          }
           e.actor=_this;
           _this.x=e.x;
           _this.y=e.y;
@@ -2219,7 +2251,7 @@ Tonyu.klass.define({
             
           }
         }));
-        eve=f.on("end",(function anonymous_2529(e) {
+        eve=f.on("end",(function anonymous_2737(e) {
           
           e.actor=_this;
           if (typeof  options.end==="function") {
@@ -26351,9 +26383,9 @@ Tonyu.klass.define({
         for (let i = 0;
          i<5 ; i++) {
           {
-            let a = new Tonyu.classes.kernel.Actor({x: 5+i*30,y: 50,layer: _this.l,radius: 10+i*3,fillStyle: "white"});
+            let a = new Tonyu.classes.kernel.Actor({x: 2+i*30,y: 50,layer: _this.l,radius: 4+i*3,fillStyle: "white"});
             
-            a.enableDrag({clone: {alpha: 128,layer: Tonyu.globals.$mainLayer},end: (function anonymous_545(e) {
+            a.enableDrag({clone: {alpha: 128,layer: Tonyu.globals.$mainLayer},end: (function anonymous_544(e) {
               
               let dup = e.actor;
               
@@ -26361,26 +26393,29 @@ Tonyu.klass.define({
               if (dup.crashTo(_this.s)) {
                 dup.die();
               }
-              dup.enableDrag({valid: (function anonymous_710(e) {
+              dup.enableDrag({valid: (function anonymous_709(e) {
                 
                 return ! dup.screenOut()&&! dup.crashTo(_this.s);
-              }),move: (function anonymous_824(e) {
+              }),move: (function anonymous_823(e) {
                 
-                if (dup.y<50) {
-                  e.end();
+                dup.x=_this.round(dup.x,32,16);
+                dup.y=_this.round(dup.y,32,16);
+                if (dup.crashTo(_this.s)) {
+                  e.cancel();
+                  
                 }
-              })});
+              }),relative: 0});
             })});
           }
         }
-        _this.s.on("touchBG",(function anonymous_1740(e) {
+        _this.s.on("touchBG",(function anonymous_1967(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1810() {
+          f.on("move",(function anonymous_2037() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);
@@ -26405,9 +26440,9 @@ Tonyu.klass.define({
         for (let i = 0;
          i<5 ; i++) {
           {
-            let a = new Tonyu.classes.kernel.Actor({x: 5+i*30,y: 50,layer: _this.l,radius: 10+i*3,fillStyle: "white"});
+            let a = new Tonyu.classes.kernel.Actor({x: 2+i*30,y: 50,layer: _this.l,radius: 4+i*3,fillStyle: "white"});
             
-            a.enableDrag({clone: {alpha: 128,layer: Tonyu.globals.$mainLayer},end: (function anonymous_545(e) {
+            a.enableDrag({clone: {alpha: 128,layer: Tonyu.globals.$mainLayer},end: (function anonymous_544(e) {
               
               let dup = e.actor;
               
@@ -26415,26 +26450,29 @@ Tonyu.klass.define({
               if (dup.crashTo(_this.s)) {
                 dup.die();
               }
-              dup.enableDrag({valid: (function anonymous_710(e) {
+              dup.enableDrag({valid: (function anonymous_709(e) {
                 
                 return ! dup.screenOut()&&! dup.crashTo(_this.s);
-              }),move: (function anonymous_824(e) {
+              }),move: (function anonymous_823(e) {
                 
-                if (dup.y<50) {
-                  e.end();
+                dup.x=_this.round(dup.x,32,16);
+                dup.y=_this.round(dup.y,32,16);
+                if (dup.crashTo(_this.s)) {
+                  e.cancel();
+                  
                 }
-              })});
+              }),relative: 0});
             })});
           }
         }
-        _this.s.on("touchBG",(function anonymous_1740(e) {
+        _this.s.on("touchBG",(function anonymous_1967(e) {
           
           let f = e.finger;
           
           let sx = f.x;
           let sy = f.y;
           
-          f.on("move",(function anonymous_1810() {
+          f.on("move",(function anonymous_2037() {
             
             f.update();
             _this.s.scrollBy(- f.vx,- f.vy);

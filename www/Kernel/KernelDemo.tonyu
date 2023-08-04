@@ -13,7 +13,7 @@ s.setBGColor("#0aa");
 l=s.addLayer();
 print(l);
 for (let i=0;i<5; i++) {
-    let a=new Actor{x:5+i*30,y:50,layer:l,radius:10+i*3,fillStyle:"white"};
+    let a=new Actor{x:2+i*30,y:50,layer:l,radius:4+i*3,fillStyle:"white"};
     a.enableDrag {
         clone: {
             alpha=128, layer: $mainLayer,
@@ -27,8 +27,14 @@ for (let i=0;i<5; i++) {
                     return !dup.screenOut() && !dup.crashTo(s);
                 },
                 move: \(e) {
-                    if (dup.y<50) e.end();  
+                    //if (dup.y<50) e.end();  
+                    dup.x=round(dup.x,32,16);
+                    dup.y=round(dup.y,32,16);
+                    if (dup.crashTo(s)) {
+                        e.cancel();
+                    }
                 },
+                relative:0,
             };
         }
     };

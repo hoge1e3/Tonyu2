@@ -37,7 +37,8 @@ let x,y,layer;
     options=options||{};
     let a=this;
     let f=e.finger;    
-    //let sx=f.x-x, sy=f.y-y;
+    let sx=f.x-x, sy=f.y-y;
+    let relative=options.relative;
     \forceEnd() {
         evm.remove();
         eve.remove();
@@ -52,17 +53,24 @@ let x,y,layer;
     let evm,eve;
     evm=f.on("move") \(eo) {
         let e={
-            vx=eo.vx, vy=eo.vy,
+            //vx=eo.vx, vy=eo.vy,
             //x=f.x-sx, y=f.y-sy,
             cancel=\{e.cancelled=true;},
             end=forceEnd,
         };
-        e.x=x+e.vx;
-        e.y=y+e.vy;
         e.px=x;
         e.py=y;
-        //e.vx=e.x-e.px;
-        //e.vy=e.y-e.py;
+        if (relative) {
+            e.vx=eo.vx;
+            e.vy=eo.vy;
+            e.x=e.px+e.vx;
+            e.y=e.py+e.vy;
+        } else {
+            e.x=f.x-sx;
+            e.y=f.y-sy;
+            e.vx=e.x-e.px;
+            e.vy=e.y-e.py;
+        }
         e.actor=this;
         x=e.x;
         y=e.y;
