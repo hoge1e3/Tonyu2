@@ -2023,7 +2023,7 @@ Tonyu.klass.define({
           
           let f = e.finger;
           
-          if (typeof  options.start==="funtion") {
+          if (typeof  options.start==="function") {
             options.start(e);
             
           }
@@ -2066,7 +2066,7 @@ Tonyu.klass.define({
           
           let f = e.finger;
           
-          if (typeof  options.start==="funtion") {
+          if (typeof  options.start==="function") {
             options.start(e);
             
           }
@@ -2129,9 +2129,9 @@ Tonyu.klass.define({
         
         e.end=forceEnd;
         let evm;let eve;
-        evm=f.on("move",(function anonymous_1561(eo) {
+        evm=f.on("move",(function anonymous_1562(eo) {
           
-          let e = {cancel: (function anonymous_1676() {
+          let e = {cancel: (function anonymous_1677() {
             
             e.cancelled=true;
           }),end: forceEnd};
@@ -2182,7 +2182,7 @@ Tonyu.klass.define({
             
           }
         }));
-        eve=f.on("end",(function anonymous_2737(e) {
+        eve=f.on("end",(function anonymous_2738(e) {
           
           e.actor=_this;
           if (typeof  options.end==="function") {
@@ -2219,9 +2219,9 @@ Tonyu.klass.define({
         
         e.end=forceEnd;
         let evm;let eve;
-        evm=f.on("move",(function anonymous_1561(eo) {
+        evm=f.on("move",(function anonymous_1562(eo) {
           
-          let e = {cancel: (function anonymous_1676() {
+          let e = {cancel: (function anonymous_1677() {
             
             e.cancelled=true;
           }),end: forceEnd};
@@ -2272,7 +2272,7 @@ Tonyu.klass.define({
             
           }
         }));
-        eve=f.on("end",(function anonymous_2737(e) {
+        eve=f.on("end",(function anonymous_2738(e) {
           
           e.actor=_this;
           if (typeof  options.end==="function") {

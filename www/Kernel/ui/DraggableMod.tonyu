@@ -7,7 +7,7 @@ let x,y,layer;
     options=Object.assign({},options);
     on("touch") \(e) {
         let f=e.finger;
-        if (typeof options.start==="funtion") {
+        if (typeof options.start==="function") {
             options.start(e);
         }
         if (typeof options.clone==="object") {
