@@ -11,7 +11,13 @@ native Tonyu;
         "notA":"{1}{2} is not a {3}.",
         "netEQ": "{1}!=={2}",
         "noPushedPages":"loadPage(Pop page) failed. You should push page (or you forgot Page argument?)",
+        screenConvertFailed:"Screen::conv invalid from {2} to {3}",
+        cannotGetNeighborTarget:"Cannot get neighbor target {1} {2}",
+        worldToChipInvalidArgs: "Map2::worldToChip: invalid args ({1},{2})",
+        touchFingerSetLayerFailed: "Cannot set layer: toLayer={1}",
+        touchFingerSetLayerPathFailed: "layerPath convert failed: to= {1}",
     };
+    for (let k,v in en) if (!ja[k]) ja[k]=v;
     Object.assign(R.dicts.ja,ja);
     Object.assign(R.dicts.en,en);
 }
