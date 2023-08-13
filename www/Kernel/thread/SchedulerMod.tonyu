@@ -9,6 +9,13 @@ native Math;
 native FS;
 native Array;
 
+\resolvedScheduler {
+    if (!_scheduler) return _scheduler;
+    if (_scheduler.newScheduler) {
+        _scheduler=_scheduler.newScheduler;
+    }
+    return _scheduler;
+}
 \initSchedulerMod() {
     _scheduler=_scheduler||$Scheduler;
     _th=$Boot.schedule(this,"main",[]);
@@ -20,12 +27,13 @@ native Array;
         onUpdate();
         _updating=false;
     }   
+    let sched=resolvedScheduler;
     if(_thread) {
-        if (_scheduler) _scheduler.addToNext(_thread);
+        if (sched) sched.addToNext(_thread);
         _thread.suspend();
         __await null;
     } else {
-        if (_scheduler) _scheduler.checkTimeout();
+        if (sched) sched.checkTimeout();
     }
 }
 \onUpdate() {
@@ -37,15 +45,17 @@ native Array;
         update();
     }
 }
+/*
 nowait \currentThreadGroup() {//@deprecated
     return _scheduler; //$currentThreadGroup;
-}
+}*/
 \wait(t) {
     if(_thread) {
+        let sched=resolvedScheduler;
         _thread.suspend();
         if (t) {
             _thread.waitCount=t;
-            if (_scheduler) _scheduler.addToNext(_thread);
+            if (sched) sched.addToNext(_thread);
         }
         __await null;
     } else if (_th) {
@@ -61,7 +71,8 @@ nowait \notify() {
         if (_th.scheduled) {
             _th.waitCount=0;
         } else {
-            if (_scheduler) _scheduler.addToCur(_th);
+            let sched=resolvedScheduler;
+            if (sched) sched.addToCur(_th);
         }
     }
 }

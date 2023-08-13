@@ -1,8 +1,10 @@
 extends TObject;
 native Tonyu;
 native console;
+native window;
 native performance;
-
+"field strict";
+let newScheduler; // when `timeStop`ed, the old Scheduler refers new Scheduler 
 // old browser support
 if (typeof performance==="undefined") {
     window.performance = {};
@@ -13,8 +15,9 @@ if (!performance.now) {
     };
 }
 
-cur=[];
-next=[];
+let cur=[];
+let next=[];
+let lastSteps;
 \addObj(obj,name,args) {
     return newThread(obj, name, args);
 }
@@ -79,10 +82,31 @@ next=[];
         dupc[t.id]="next";
     }
 }
-\doTimeStop() {
+\doTimeStop(newS) {
+    newScheduler=newS;
     next=allThreads;
     cur=[];
     return next;
+}
+\moveToNew(th_ac) {
+    if (!newScheduler) return;
+    if (!th_ac) {
+        for (let th of allThreads) {
+            moveToNew(th);
+        }
+        return;
+    }
+    if (th_ac is BaseActor) {
+        for (let th of findByThreadGroup(th_ac)) {
+            moveToNew(th);
+        }
+        return;    
+    }
+    let th=th_ac;
+    if (th.scheduled===newScheduler) return;
+    unschedule(th);
+    newScheduler.addToNext(th);
+    newScheduler.checkDuplicate();
 }
 \resetLastSteps() {
     lastSteps=performance.now();

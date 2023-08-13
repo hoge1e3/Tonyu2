@@ -68,7 +68,7 @@ mainLoop();
 \setScheduler(s) {
     _scheduler=$Scheduler=s;
 }
-\moveToScheduler(a: Actor, oldS: Scheduler, newS: Scheduler) {
+/*\moveToScheduler(a: Actor, oldS: Scheduler, newS: Scheduler) {
     a._scheduler=newS;
     oldS.findByThreadGroup(a).forEach \(th) {
         if (th.scheduled===newS) return;
@@ -77,17 +77,18 @@ mainLoop();
         newS.addToNext(th);
         newS.checkDuplicate();
     };
-}
+}*/
 \timeStop(except) {
     var oldS=_scheduler;
     setScheduler(new Scheduler);
     var newS=_scheduler;
-    oldS.doTimeStop();
+    oldS.doTimeStop(newS);
     var res={
         release: \(a) {
             if (!a) return res.releaseAll();
-            a._scheduler=newS;
-            moveToScheduler(a, oldS, newS);
+            //a._scheduler=newS;
+            oldS.moveToNew(a);
+            //moveToScheduler(a, oldS, newS);
             /*oldS.findByThreadGroup(a).forEach \(th) {
                 if (th.scheduled===newS) return;
                 th.scheduled=null;
@@ -96,10 +97,11 @@ mainLoop();
             };*/
         },
         releaseAll: \{
-            var a=$Screen.all();
+            oldS.moveToNew();
+            /*var a=$Screen.all();
             for (var e in a) {
                 res.release(e);
-            }
+            }*/
         },
     };
     if (except) res.release(except);
