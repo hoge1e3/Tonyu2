@@ -8,7 +8,7 @@ Language and IDE for action game development using html5+js.
 ## Tested browsers:
 
 Windows 7/8/10
-  - Chrome 81
+  - Chrome 115
   - Firefox 72
   - Edge 44
 
