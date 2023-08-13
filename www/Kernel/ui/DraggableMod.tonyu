@@ -7,10 +7,14 @@ let x,y,layer;
     options=Object.assign({},options);
     on("touch") \(e) {
         let f=e.finger;
+        let startCancelled;
+        e.end=\() {startCancelled=true;};
         if (typeof options.start==="function") {
             options.start(e);
         }
-        if (typeof options.clone==="object") {
+        if (startCancelled) return;
+        let cloned=parseCloneDescriptor(options.clone, f);
+        /*if (typeof options.clone==="object") {
             let clo=Object.assign({}, options.clone);
             let cl=clo.class || Actor;
             if (clo.layer) {
@@ -30,8 +34,34 @@ let x,y,layer;
             cloned.startDrag(e, options);
         } else {
             startDrag(e,options);
-        }
+        }*/
+        options.sourceActor=this;
+        cloned.startDrag(e, options);
     };
+    return options;
+}
+
+\parseCloneDescriptor(desc, finger) {
+    if (typeof desc==="function") {
+        return desc{actor:this, finger};
+    }
+    if (!desc || typeof desc!=="object") return this;
+    let clo=Object.assign({}, desc);
+    let cl=clo.class || Actor;
+    if (clo.layer) {
+        let tolp=clo.layer.defaultLayerPath;
+        let lp=finger.layerPath.convert({x,y},tolp);
+        clo.x=lp.x;
+        clo.y=lp.y;
+        finger.layerPath=tolp;
+    }
+    delete clo.class;
+    for (let k of ["x","y","p","layer",
+    "fillStyle","alpha","rotation","scaleX","scaleY","radius","width","height"]) {
+        clo[k]=clo[k]||this[k];
+    }
+    let cloned=new cl(clo);
+    return cloned;
 }
 \startDrag(e, options) {
     options=options||{};
@@ -42,13 +72,19 @@ let x,y,layer;
     \forceEnd() {
         evm.remove();
         eve.remove();
-        e.actor=this;
         e.forceEnded=true;
-        if (typeof options.end==="function") {
-            options.end(e);
+        handleEnd(e);
+    }
+    \handleEnd(e) {
+        //e.actor=this;
+        let dropped=parseCloneDescriptor(options.end, f);
+        if (options.sourceActor!=this && dropped is Actor && dropped!=this) {
+            this.die();
         }
-    };
-    e.end=forceEnd;
+        /*if (typeof options.end==="function") {
+            options.end(e);
+        }*/
+    }
     
     let evm,eve;
     evm=f.on("move") \(eo) {
@@ -96,10 +132,5 @@ let x,y,layer;
             }
         }
     };
-    eve=f.on("end") \(e) {
-        e.actor=this;
-        if (typeof options.end==="function") {
-            options.end(e);
-        }
-    };
+    eve=f.on("end",handleEnd);
 }
