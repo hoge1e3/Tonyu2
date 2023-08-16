@@ -1754,7 +1754,7 @@ Tonyu.klass.define({
         if (! _this._scheduler) {
           return _this._scheduler;
         }
-        if (_this._scheduler.newScheduler) {
+        while (_this._scheduler.newScheduler) {
           _this._scheduler=_this._scheduler.newScheduler;
           
         }
@@ -13786,6 +13786,10 @@ Tonyu.klass.define({
         if (th.scheduled) {
           return _this;
         }
+        if (_this.newScheduler) {
+          return _this.newScheduler.addToNext(th);
+          
+        }
         _this.next.push(th);
         th.scheduled=_this;
       },
@@ -13794,6 +13798,10 @@ Tonyu.klass.define({
         
         if (th.scheduled) {
           return _this;
+        }
+        if (_this.newScheduler) {
+          return _this.newScheduler.addToNext(th);
+          
         }
         _this.next.push(th);
         th.scheduled=_this;
@@ -13945,7 +13953,7 @@ Tonyu.klass.define({
           return _this;
           
         }
-        if (Tonyu.is(th_ac,Tonyu.classes.kernel.BaseActor)) {
+        if (Tonyu.is(th_ac,Tonyu.classes.kernel.SchedulerMod)) {
           for (let [th] of Tonyu.iterator2(_this.findByThreadGroup(th_ac),1)) {
             _this.moveToNew(th);
             
@@ -13976,7 +13984,7 @@ Tonyu.klass.define({
           return _this;
           
         }
-        if (Tonyu.is(th_ac,Tonyu.classes.kernel.BaseActor)) {
+        if (Tonyu.is(th_ac,Tonyu.classes.kernel.SchedulerMod)) {
           for (let [th] of Tonyu.iterator2(_this.findByThreadGroup(th_ac),1)) {
             (yield* _this.fiber$moveToNew(_thread, th));
             
@@ -14090,7 +14098,7 @@ Tonyu.klass.define({
       findByThreadGroup :function _trc_Scheduler_findByThreadGroup(o) {
         var _this=this;
         
-        return _this.allThreads.filter((function anonymous_3845(t) {
+        return _this.allThreads.filter((function anonymous_3956(t) {
           
           return t._threadGroup===o;
         }));
@@ -14098,7 +14106,7 @@ Tonyu.klass.define({
       fiber$findByThreadGroup :function* _trc_Scheduler_f_findByThreadGroup(_thread,o) {
         var _this=this;
         
-        return _this.allThreads.filter((function anonymous_3845(t) {
+        return _this.allThreads.filter((function anonymous_3956(t) {
           
           return t._threadGroup===o;
         }));

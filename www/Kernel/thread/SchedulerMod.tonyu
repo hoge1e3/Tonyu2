@@ -11,7 +11,7 @@ native Array;
 
 \resolvedScheduler {
     if (!_scheduler) return _scheduler;
-    if (_scheduler.newScheduler) {
+    while (_scheduler.newScheduler) {
         _scheduler=_scheduler.newScheduler;
     }
     return _scheduler;

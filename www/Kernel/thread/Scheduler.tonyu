@@ -45,6 +45,9 @@ let lastSteps;
 }
 \addToNext(th) {
     if (th.scheduled) return;
+    if (newScheduler) {
+        return newScheduler.addToNext(th);
+    }
     next.push(th);
     th.scheduled=this;
 }
@@ -96,8 +99,9 @@ let lastSteps;
         }
         return;
     }
-    if (th_ac is BaseActor) {
+    if (th_ac is SchedulerMod) {
         for (let th of findByThreadGroup(th_ac)) {
+            //print("th", th);
             moveToNew(th);
         }
         return;    
