@@ -334,7 +334,7 @@ mainLoop();
         newS=saved.scheduler;
         setScheduler(newS);
         for (var pa of saved.pass) {
-            moveToScheduler(pa, oldS, newS);
+            oldS.moveTo(pa, newS);
         }
     } else if (push) {
         var saved={
@@ -346,7 +346,7 @@ mainLoop();
         newS=new Scheduler;
         setScheduler(newS);
         for (var pa of pass) {
-            moveToScheduler(pa, oldS, newS);
+            oldS.moveTo(pa, newS);
         }
         $t2World=null;
         pageStack.push(saved);

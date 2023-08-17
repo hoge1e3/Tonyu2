@@ -93,24 +93,29 @@ let lastSteps;
 }
 \moveToNew(th_ac) {
     if (!newScheduler) return;
+    return moveTo(th_ac, newScheduler);
+}
+\moveTo(th_ac, newS) {
+    if (!newS) return;
     if (!th_ac) {
         for (let th of allThreads) {
-            moveToNew(th);
+            moveTo(th, newS);
         }
         return;
     }
     if (th_ac is SchedulerMod) {
+        th_ac._scheduler=newS;
         for (let th of findByThreadGroup(th_ac)) {
             //print("th", th);
-            moveToNew(th);
+            moveTo(th, newS);
         }
         return;    
     }
     let th=th_ac;
-    if (th.scheduled===newScheduler) return;
+    if (th.scheduled===newS) return;
     unschedule(th);
-    newScheduler.addToNext(th);
-    newScheduler.checkDuplicate();
+    newS.addToNext(th);
+    newS.checkDuplicate();
 }
 \resetLastSteps() {
     lastSteps=performance.now();

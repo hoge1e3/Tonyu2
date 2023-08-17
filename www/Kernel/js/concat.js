@@ -13945,30 +13945,7 @@ Tonyu.klass.define({
         if (! _this.newScheduler) {
           return _this;
         }
-        if (! th_ac) {
-          for (let [th] of Tonyu.iterator2(_this.allThreads,1)) {
-            _this.moveToNew(th);
-            
-          }
-          return _this;
-          
-        }
-        if (Tonyu.is(th_ac,Tonyu.classes.kernel.SchedulerMod)) {
-          for (let [th] of Tonyu.iterator2(_this.findByThreadGroup(th_ac),1)) {
-            _this.moveToNew(th);
-            
-          }
-          return _this;
-          
-        }
-        let th = th_ac;
-        
-        if (th.scheduled===_this.newScheduler) {
-          return _this;
-        }
-        _this.unschedule(th);
-        _this.newScheduler.addToNext(th);
-        _this.newScheduler.checkDuplicate();
+        return _this.moveTo(th_ac,_this.newScheduler);
       },
       fiber$moveToNew :function* _trc_Scheduler_f_moveToNew(_thread,th_ac) {
         var _this=this;
@@ -13976,17 +13953,28 @@ Tonyu.klass.define({
         if (! _this.newScheduler) {
           return _this;
         }
+        return yield* _this.fiber$moveTo(_thread, th_ac, _this.newScheduler);
+        
+        
+      },
+      moveTo :function _trc_Scheduler_moveTo(th_ac,newS) {
+        var _this=this;
+        
+        if (! newS) {
+          return _this;
+        }
         if (! th_ac) {
           for (let [th] of Tonyu.iterator2(_this.allThreads,1)) {
-            (yield* _this.fiber$moveToNew(_thread, th));
+            _this.moveTo(th,newS);
             
           }
           return _this;
           
         }
         if (Tonyu.is(th_ac,Tonyu.classes.kernel.SchedulerMod)) {
+          th_ac._scheduler=newS;
           for (let [th] of Tonyu.iterator2(_this.findByThreadGroup(th_ac),1)) {
-            (yield* _this.fiber$moveToNew(_thread, th));
+            _this.moveTo(th,newS);
             
           }
           return _this;
@@ -13994,12 +13982,44 @@ Tonyu.klass.define({
         }
         let th = th_ac;
         
-        if (th.scheduled===_this.newScheduler) {
+        if (th.scheduled===newS) {
+          return _this;
+        }
+        _this.unschedule(th);
+        newS.addToNext(th);
+        newS.checkDuplicate();
+      },
+      fiber$moveTo :function* _trc_Scheduler_f_moveTo(_thread,th_ac,newS) {
+        var _this=this;
+        
+        if (! newS) {
+          return _this;
+        }
+        if (! th_ac) {
+          for (let [th] of Tonyu.iterator2(_this.allThreads,1)) {
+            (yield* _this.fiber$moveTo(_thread, th, newS));
+            
+          }
+          return _this;
+          
+        }
+        if (Tonyu.is(th_ac,Tonyu.classes.kernel.SchedulerMod)) {
+          th_ac._scheduler=newS;
+          for (let [th] of Tonyu.iterator2(_this.findByThreadGroup(th_ac),1)) {
+            (yield* _this.fiber$moveTo(_thread, th, newS));
+            
+          }
+          return _this;
+          
+        }
+        let th = th_ac;
+        
+        if (th.scheduled===newS) {
           return _this;
         }
         (yield* _this.fiber$unschedule(_thread, th));
-        _this.newScheduler.addToNext(th);
-        _this.newScheduler.checkDuplicate();
+        newS.addToNext(th);
+        newS.checkDuplicate();
         
       },
       resetLastSteps :function _trc_Scheduler_resetLastSteps() {
@@ -14098,7 +14118,7 @@ Tonyu.klass.define({
       findByThreadGroup :function _trc_Scheduler_findByThreadGroup(o) {
         var _this=this;
         
-        return _this.allThreads.filter((function anonymous_3956(t) {
+        return _this.allThreads.filter((function anonymous_4062(t) {
           
           return t._threadGroup===o;
         }));
@@ -14106,7 +14126,7 @@ Tonyu.klass.define({
       fiber$findByThreadGroup :function* _trc_Scheduler_f_findByThreadGroup(_thread,o) {
         var _this=this;
         
-        return _this.allThreads.filter((function anonymous_3956(t) {
+        return _this.allThreads.filter((function anonymous_4062(t) {
           
           return t._threadGroup===o;
         }));
@@ -14120,7 +14140,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"addObj":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"newThread":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"addToCur":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addToNext":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"unschedule":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"checkTimeout":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"checkDuplicate":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"doTimeStop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveToNew":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"resetLastSteps":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"stepsAll":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__allThreads":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"findByThreadGroup":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__isEmpty":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"newScheduler":{},"cur":{},"next":{},"lastSteps":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"addObj":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"newThread":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null],"returnValue":null}},"addToCur":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"addToNext":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"unschedule":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"checkTimeout":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"checkDuplicate":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"doTimeStop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveToNew":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"moveTo":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"resetLastSteps":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"stepsAll":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__getter__allThreads":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"findByThreadGroup":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter__isEmpty":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"newScheduler":{},"cur":{},"next":{},"lastSteps":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.DialogMod',
@@ -37943,7 +37963,7 @@ Tonyu.klass.define({
           newS=saved.scheduler;
           _this.setScheduler(newS);
           for ([pa] of Tonyu.iterator2(saved.pass,1)) {
-            _this.moveToScheduler(pa,oldS,newS);
+            oldS.moveTo(pa,newS);
             
           }
           
@@ -37954,7 +37974,7 @@ Tonyu.klass.define({
             newS=new Tonyu.classes.kernel.Scheduler;
             _this.setScheduler(newS);
             for ([pa] of Tonyu.iterator2(pass,1)) {
-              _this.moveToScheduler(pa,oldS,newS);
+              oldS.moveTo(pa,newS);
               
             }
             Tonyu.globals.$t2World=null;
@@ -37964,7 +37984,7 @@ Tonyu.klass.define({
           } else {
             a = Tonyu.globals.$Screen.all();
             
-            a=a.find((function anonymous_9684(e) {
+            a=a.find((function anonymous_9664(e) {
               
               return pass.indexOf(e)<0;
             }));
@@ -38027,7 +38047,7 @@ Tonyu.klass.define({
           newS=saved.scheduler;
           (yield* _this.fiber$setScheduler(_thread, newS));
           for ([pa] of Tonyu.iterator2(saved.pass,1)) {
-            _this.moveToScheduler(pa,oldS,newS);
+            oldS.moveTo(pa,newS);
             
           }
           
@@ -38038,7 +38058,7 @@ Tonyu.klass.define({
             newS=new Tonyu.classes.kernel.Scheduler;
             (yield* _this.fiber$setScheduler(_thread, newS));
             for ([pa] of Tonyu.iterator2(pass,1)) {
-              _this.moveToScheduler(pa,oldS,newS);
+              oldS.moveTo(pa,newS);
               
             }
             Tonyu.globals.$t2World=null;
@@ -38048,7 +38068,7 @@ Tonyu.klass.define({
           } else {
             a = Tonyu.globals.$Screen.all();
             
-            a=a.find((function anonymous_9684(e) {
+            a=a.find((function anonymous_9664(e) {
               
               return pass.indexOf(e)<0;
             }));
@@ -38065,16 +38085,16 @@ Tonyu.klass.define({
       stop :function _trc_Boot_stop() {
         var _this=this;
         
-        return new Promise((function anonymous_9882(resolve) {
+        return new Promise((function anonymous_9862(resolve) {
           var evt;
           var e;
           var r;
           
-          evt = {die: (function anonymous_9969() {
+          evt = {die: (function anonymous_9949() {
             
             _this.die();
             resolve();
-          }),preventDefault: (function anonymous_10110() {
+          }),preventDefault: (function anonymous_10090() {
             
             evt.defaultPrevented=true;
           })};
@@ -38098,16 +38118,16 @@ Tonyu.klass.define({
       fiber$stop :function* _trc_Boot_f_stop(_thread) {
         var _this=this;
         
-        return new Promise((function anonymous_9882(resolve) {
+        return new Promise((function anonymous_9862(resolve) {
           var evt;
           var e;
           var r;
           
-          evt = {die: (function anonymous_9969() {
+          evt = {die: (function anonymous_9949() {
             
             _this.die();
             resolve();
-          }),preventDefault: (function anonymous_10110() {
+          }),preventDefault: (function anonymous_10090() {
             
             evt.defaultPrevented=true;
           })};
@@ -38635,7 +38655,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16833() {
+        requestAnimationFrame((function anonymous_16813() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -38651,7 +38671,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_16833() {
+        requestAnimationFrame((function anonymous_16813() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -38672,7 +38692,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initSymbol":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setScheduler":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"timeStop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initGlobals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initPeripherals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"doAutoReload":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"debug":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPlugins":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadImages":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadSounds":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadAssets":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getIDE":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMainClass":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"createMainObject":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPage":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"stop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"hide":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"schedule":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"progress":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"progressNoLog":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mainLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopRAF":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"handlePause":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"moveFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"afterDraw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initFPSParams":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"now":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resetDeadLine":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"waitFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"__getter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getMeasuredFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMeasuredRps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"measureFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"requestDrawFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setEconomyMode":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"tt":{},"window":{},"R":{},"cvj":{},"debugCnt":{},"newLimit":{},"autoReload":{},"pageStack":{},"mainClass":{},"loadedAll":{},"moveToScheduler":{},"_useRAF":{},"_fps":{},"subTime":{},"rafProcNowTime":{},"procCnt":{},"maxFrameSkip":{},"doDraw":{},"deadLine":{},"frameSkipped":{},"economyMode":{},"isIdle":{},"paused":{},"drawTime":{},"fps_fpsCnt":{},"newLimitCount":{},"moveTime":{},"fps_rpsCnt":{},"minFrameSkip":{},"frameCnt":{},"lastMeasured":{},"fps_fps":{},"fps_rps":{},"_drawFrameRequested":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initSymbol":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setScheduler":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"timeStop":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"update":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initGlobals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initPeripherals":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"doAutoReload":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initLayers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"debug":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPlugins":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadImages":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadSounds":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadAssets":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getIDE":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMainClass":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"createMainObject":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loadPage":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"stop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"hide":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"schedule":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"progress":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"progressNoLog":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"mainLoop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopRAF":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loopTimer":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"handlePause":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"drawFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"moveFrame":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"afterDraw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"initFPSParams":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"now":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"resetDeadLine":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"waitFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setFrameRate":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"__getter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter__useRAF":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"getMeasuredFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"getMeasuredRps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"measureFps":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"requestDrawFrame":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setEconomyMode":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"tt":{},"window":{},"R":{},"cvj":{},"debugCnt":{},"newLimit":{},"autoReload":{},"pageStack":{},"mainClass":{},"loadedAll":{},"_useRAF":{},"_fps":{},"subTime":{},"rafProcNowTime":{},"procCnt":{},"maxFrameSkip":{},"doDraw":{},"deadLine":{},"frameSkipped":{},"economyMode":{},"isIdle":{},"paused":{},"drawTime":{},"fps_fpsCnt":{},"newLimitCount":{},"moveTime":{},"fps_rpsCnt":{},"minFrameSkip":{},"frameCnt":{},"lastMeasured":{},"fps_fps":{},"fps_rps":{},"_drawFrameRequested":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.ConsolePanel',
