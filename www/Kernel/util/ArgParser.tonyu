@@ -38,6 +38,21 @@
     delete a[length]; // 2
     return res;
 }
+\isPlainObject(o) {
+    return o && o["constructor"] === Object;
+}
+\shiftOptions(...names) {
+    let res={};
+    for (let name of names) {
+        if (length==1 && isPlainObject(peek()) ) {
+            Object.assign(res,shift());
+            break;
+        } else {
+            res[name]=shift();
+        }
+    }
+    return res;
+}
 \toArray() {
     var res=[];
     for (var i=0 ;i<a.length; i++) res.push(a[i]);

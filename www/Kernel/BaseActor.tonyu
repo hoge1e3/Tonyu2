@@ -36,5 +36,5 @@ nowait \extend(obj) {
     update();// I want this!
 }
 \defaultLayer {
-    return $mainLayer;
+    return $defaultLayer;
 }

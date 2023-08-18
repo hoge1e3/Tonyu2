@@ -37,12 +37,28 @@ let multiLayerTouches: MultiLayerTouches;
     drawLayers();
     super.draw(ctx);
 }
-\addLayer(group,at) {
+\addLayer() {
+    let a=new ArgParser(arguments);
+    let params=a.shiftOptions("layer","at","name");
+    let group=params.layer;
+    let at=params.at;
+    let name=params.name;
     var layer;
     if (group is ScreenLayer) {
-        layer=group;
-    } else {
-        group=group||new Sprites;
+        if (!group.screen) {layer=group; layer.screen=this;}
+        else if (group.screen!==this) group=group.group;
+        else throw newError("alreadyAdded",group);
+    } 
+    if (!layer) {
+        if (typeof group==="string" && !name) {
+            name=group;
+            group=null;
+        }
+        if (!group) {
+            group=new Sprites;
+            group.name=name;
+        }
+        assertIs(group,SpriteGroup);
         // spx,spy  Screen pivot x,y
         // wpx,wpy  World pivot x,y
         layer=new Layer2D{
@@ -51,6 +67,10 @@ let multiLayerTouches: MultiLayerTouches;
             group,screen:this,index:layers.length
         };
     }
+    if (findLayerIndex(layer)>=0) {
+        throw newError("alreadyAdded",group);
+    }
+    
     if (!group.defaultLayerPath && defaultLayerPath) {
         group.defaultLayerPath=defaultLayerPath.add(layer);
     }
@@ -64,6 +84,19 @@ let multiLayerTouches: MultiLayerTouches;
     }
     return layer;
 }
+\setDefaultLayer(l) {
+    let layer=findLayer(l);
+    if (layer is ScreenLayer) layer=layer.group;
+    if (!layer) {
+        if (l is ScreenLayer) layer=l.group;
+        else if (l is Sprites) layer=l;
+    }
+    if (!layer) {
+        throw newError("invalidLayer",l);
+    }
+    assertIs(layer, SpriteGroup);
+    $defaultLayer=layer;
+}
 \removeLayer(i) {
     var r=findLayerIndex(i);
     if (r<0) return;
@@ -71,14 +104,17 @@ let multiLayerTouches: MultiLayerTouches;
 }
 \selectLayer(i) {
     var r=findLayerIndex(i);
-    if (r!=null) index=r;
+    if (r>=0) index=r;
 }
 \findLayerIndex(i) {
     if (typeof i=="number") {
         if (layers[i]) return i;
     } else {
+        if (i is ScreenLayer) {
+            i=i.group;
+        }
         for (var j=0; j<layers.length;j++) {
-            if (layers[j]==i || layers[j].group==i) {
+            if (layers[j].group===i) {
                 return j;
             }
         }
@@ -91,6 +127,7 @@ let multiLayerTouches: MultiLayerTouches;
     return null;
 }
 \setPivot(x,y) {
+    if (!layers[index]) throw newError("layerIsNotSet",index);
     layers[index].spx=x;
     layers[index].spy=y;
 }

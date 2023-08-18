@@ -3,7 +3,7 @@ extends Actor;
 native Tonyu;
 native Math;
 \new(x,y,p) {
-    layer=layer||$mainLayer;
+    layer=layer||$defaultLayer||$mainLayer;
     _th=$Boot.schedule(this,"tMain",[]);
     addToLayer();
     _scheduler=_scheduler||$Scheduler;

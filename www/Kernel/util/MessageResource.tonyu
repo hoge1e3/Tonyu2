@@ -16,6 +16,8 @@ native Tonyu;
         worldToChipInvalidArgs: "Map2::worldToChip: invalid args ({1},{2})",
         touchFingerSetLayerFailed: "Cannot set layer: toLayer={1}",
         touchFingerSetLayerPathFailed: "layerPath convert failed: to= {1}",
+        invalidLayer: "Invalid layer: {1}",
+        alreadyAdded: "Layer {1} is already added",
     };
     for (let k,v in en) if (!ja[k]) ja[k]=v;
     Object.assign(R.dicts.ja,ja);

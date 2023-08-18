@@ -33,6 +33,7 @@ if (!performance.now) {
 
 Tonyu.resetLoopCheck(10000);
 $Boot=this;
+R=new MessageResource().functionShortcut();
 setScheduler(new Scheduler);
 initGlobals();
 //initEvents();
@@ -121,7 +122,6 @@ mainLoop();
     $fixProductOrder=true;
 }
 \initPeripherals() {
-    R=new MessageResource().functionShortcut();
     $InputDevice=new InputDevice;
     $Screen.multiLayerTouches=new MultiLayerTouches{screen:$Screen};
     // TODO: $Screen.on("touchstart")  -> move to MultiLayerTouches
@@ -195,7 +195,7 @@ mainLoop();
     $screenHeight=465;
     cvj=$mainCanvas||$("canvas");
     $rootLayer=new Sprites();
-    $mainLayer=$Sprites=new Sprites();
+    $defaultLayer=$mainLayer=$Sprites=new Sprites();
     $frontLayer=$FrontSprites=new Sprites();
     $backLayer=new Sprites();
     $uiLayer=new Sprites();
