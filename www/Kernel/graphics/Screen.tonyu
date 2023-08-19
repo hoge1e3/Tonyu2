@@ -49,6 +49,7 @@ let multiLayerTouches: MultiLayerTouches;
         else if (group.screen!==this) group=group.group;
         else throw newError("alreadyAdded",group);
     } 
+    if (group) name=name||group.name;
     if (!layer) {
         if (typeof group==="string" && !name) {
             name=group;
@@ -64,8 +65,14 @@ let multiLayerTouches: MultiLayerTouches;
         layer=new Layer2D{
             spx:0,spy:0,
             wpx:0,wpy:0,rotation:0,scale:1,
-            group,screen:this,index:layers.length
+            group,screen:this,index:layers.length,
+            name,
         };
+    } else {
+        name=name||layer.name;
+    }
+    if (name && findLayerIndex(name)>=0) {
+        throw newError("alreadyAdded",name);
     }
     if (findLayerIndex(layer)>=0) {
         throw newError("alreadyAdded",group);
@@ -114,7 +121,7 @@ let multiLayerTouches: MultiLayerTouches;
             i=i.group;
         }
         for (var j=0; j<layers.length;j++) {
-            if (layers[j].group===i) {
+            if (layers[j].group===i || layers[j].name===i) {
                 return j;
             }
         }

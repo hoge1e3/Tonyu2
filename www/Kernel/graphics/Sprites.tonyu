@@ -5,7 +5,8 @@ native console;
 var imageList, hitWatchers,objId,t1Sprites,drawing;
 var sx,sy;
 let defaultLayerPath;
-\new() {
+\new(params) {
+    super(params);
     sprites=[];
     imageList=[];
     hitWatchers=[];

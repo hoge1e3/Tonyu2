@@ -2,6 +2,7 @@ extends TObject;
 
 var sprites:Array;//of Actor/Actor3D
 var transform:Transform;
+let name:String;
 //var layer;//optional: when layer.p===this
 \get(i) {
     return sprites[i];

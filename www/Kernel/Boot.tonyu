@@ -195,10 +195,10 @@ mainLoop();
     $screenHeight=465;
     cvj=$mainCanvas||$("canvas");
     $rootLayer=new Sprites();
-    $defaultLayer=$mainLayer=$Sprites=new Sprites();
-    $frontLayer=$FrontSprites=new Sprites();
-    $backLayer=new Sprites();
-    $uiLayer=new Sprites();
+    $defaultLayer=$mainLayer=$Sprites=new Sprites{name:"main"};
+    $frontLayer=$FrontSprites=new Sprites{name:"front"};
+    $backLayer=new Sprites{name:"back"};
+    $uiLayer=new Sprites{name:"ui"};
 
     $uiScreen=new Screen{canvas:cvj[0],layer:$rootLayer};
     $uiScreen.defaultLayerPath=$rootLayerPath=new LayerPath{target:$uiScreen};
@@ -350,14 +350,23 @@ mainLoop();
         }
         $t2World=null;
         pageStack.push(saved);
+        restoreDefaultLayer();
         res=new page(arg);
     } else {
         var a=$Screen.all();
         a=a.find \(e) { return pass.indexOf(e)<0; };
         a.die();
+        restoreDefaultLayer();
         res=new page(arg);
     }
     if (typeof options.onLoad==="function") options.onLoad{page:res};
+}
+\restoreDefaultLayer() {
+    let l=$Screen.findLayer($defaultLayer) ||
+    $Screen.findLayer($mainLayer) ||
+    $Screen.findLayer("main") ||
+    $Screen.findLayer(0);
+    $defaultLayer=l;
 }
 \stop() {
     return new Promise \(resolve) {
