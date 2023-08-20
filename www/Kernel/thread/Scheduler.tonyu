@@ -1,4 +1,5 @@
 extends TObject;
+includes EventMod;
 native Tonyu;
 native console;
 native window;
@@ -112,6 +113,11 @@ let lastSteps;
         return;    
     }
     let th=th_ac;
+    if (
+    th._threadGroup is SchedulerMod &&
+    th._threadGroup._scheduler!=newS) {
+        th._threadGroup._scheduler=newS;
+    }
     if (th.scheduled===newS) return;
     unschedule(th);
     newS.addToNext(th);
@@ -123,6 +129,7 @@ let lastSteps;
 \stepsAll() {
     resetLastSteps();
     var dupc={};
+    fireEvent("beforeSteps");
     while(cur.length) {
         var t=cur.shift();
         if (dupc[t.id]) {
@@ -146,6 +153,7 @@ let lastSteps;
         }
         //$Boot.checkTimer();
     }
+    fireEvent("afterSteps");
     cur=next;
     next=[];
     return cur.length;

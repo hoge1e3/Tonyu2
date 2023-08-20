@@ -13713,7 +13713,7 @@ Tonyu.klass.define({
   shortName: 'Scheduler',
   namespace: 'kernel',
   superclass: Tonyu.classes.kernel.TObject,
-  includes: [],
+  includes: [Tonyu.classes.kernel.EventMod],
   methods: function (__superClass) {
     return {
       main :function _trc_Scheduler_main() {
@@ -14037,6 +14037,10 @@ Tonyu.klass.define({
         }
         let th = th_ac;
         
+        if (Tonyu.is(th._threadGroup,Tonyu.classes.kernel.SchedulerMod)&&th._threadGroup._scheduler!=newS) {
+          th._threadGroup._scheduler=newS;
+          
+        }
         if (th.scheduled===newS) {
           return _this;
         }
@@ -14069,6 +14073,10 @@ Tonyu.klass.define({
         }
         let th = th_ac;
         
+        if (Tonyu.is(th._threadGroup,Tonyu.classes.kernel.SchedulerMod)&&th._threadGroup._scheduler!=newS) {
+          th._threadGroup._scheduler=newS;
+          
+        }
         if (th.scheduled===newS) {
           return _this;
         }
@@ -14096,6 +14104,7 @@ Tonyu.klass.define({
         _this.resetLastSteps();
         dupc = {};
         
+        _this.fireEvent("beforeSteps");
         while (_this.cur.length) {
           t = _this.cur.shift();
           
@@ -14122,6 +14131,7 @@ Tonyu.klass.define({
           }
           
         }
+        _this.fireEvent("afterSteps");
         _this.cur=_this.next;
         _this.next=[];
         return _this.cur.length;
@@ -14134,6 +14144,7 @@ Tonyu.klass.define({
         (yield* _this.fiber$resetLastSteps(_thread));
         dupc = {};
         
+        _this.fireEvent("beforeSteps");
         while (_this.cur.length) {
           t = _this.cur.shift();
           
@@ -14160,6 +14171,7 @@ Tonyu.klass.define({
           }
           
         }
+        _this.fireEvent("afterSteps");
         _this.cur=_this.next;
         _this.next=[];
         return _this.cur.length;
@@ -14173,7 +14185,7 @@ Tonyu.klass.define({
       findByThreadGroup :function _trc_Scheduler_findByThreadGroup(o) {
         var _this=this;
         
-        return _this.allThreads.filter((function anonymous_4062(t) {
+        return _this.allThreads.filter((function anonymous_4283(t) {
           
           return t._threadGroup===o;
         }));
@@ -14181,7 +14193,7 @@ Tonyu.klass.define({
       fiber$findByThreadGroup :function* _trc_Scheduler_f_findByThreadGroup(_thread,o) {
         var _this=this;
         
-        return _this.allThreads.filter((function anonymous_4062(t) {
+        return _this.allThreads.filter((function anonymous_4283(t) {
           
           return t._threadGroup===o;
         }));
@@ -30057,6 +30069,141 @@ Tonyu.klass.define({
     };
   },
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}},"draw":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}}},"fields":{"col":{}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.FrameManager',
+  shortName: 'FrameManager',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.Actor,
+  includes: [Tonyu.classes.kernel.SchedulerMod,Tonyu.classes.kernel.ParallelMod],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_FrameManager_main() {
+        var _this=this;
+        
+        "field strict";
+        
+        
+      },
+      fiber$main :function* _trc_FrameManager_f_main(_thread) {
+        var _this=this;
+        
+        "field strict";
+        
+        
+        
+      },
+      initialize :function _trc_FrameManager_initialize(params) {
+        var _this=this;
+        
+        __superClass.apply( _this, [params]);
+        _this.initSchedulerMod();
+        _this.onStart();
+        _this.parallel("loop_sched");
+      },
+      loop_sched :function _trc_FrameManager_loop_sched() {
+        var _this=this;
+        
+        while (true) {
+          _this.update();
+        }
+      },
+      fiber$loop_sched :function* _trc_FrameManager_f_loop_sched(_thread) {
+        var _this=this;
+        
+        while (true) {
+          (yield* _this.fiber$update(_thread));
+        }
+        
+      },
+      setHandlers :function _trc_FrameManager_setHandlers() {
+        var _this=this;
+        
+        if (_this.hBefore) {
+          _this.hBefore.remove();
+        }
+        if (_this.hAfter) {
+          _this.hAfter.remove();
+        }
+        _this.hBefore=_this._scheduler.on("beforeSteps",Tonyu.bindFunc(_this,_this.onBeforeMove));
+        _this.hAfter=_this._scheduler.on("afterSteps",Tonyu.bindFunc(_this,_this.onAfterMove));
+      },
+      fiber$setHandlers :function* _trc_FrameManager_f_setHandlers(_thread) {
+        var _this=this;
+        
+        if (_this.hBefore) {
+          _this.hBefore.remove();
+        }
+        if (_this.hAfter) {
+          _this.hAfter.remove();
+        }
+        _this.hBefore=_this._scheduler.on("beforeSteps",Tonyu.bindFunc(_this,_this.onBeforeMove));
+        _this.hAfter=_this._scheduler.on("afterSteps",Tonyu.bindFunc(_this,_this.onAfterMove));
+        
+      },
+      __setter___scheduler :function _trc_FrameManager___setter___scheduler(v) {
+        var _this=this;
+        
+        if (_this.__scheduler===v) {
+          return _this;
+        }
+        _this.__scheduler=v;
+        _this.setHandlers();
+      },
+      __getter___scheduler :function _trc_FrameManager___getter___scheduler() {
+        var _this=this;
+        
+        return _this.__scheduler;
+      },
+      onStart :function _trc_FrameManager_onStart() {
+        var _this=this;
+        
+        if (typeof  _this.start==="function") {
+          _this.start();
+        }
+      },
+      fiber$onStart :function* _trc_FrameManager_f_onStart(_thread) {
+        var _this=this;
+        
+        if (typeof  _this.start==="function") {
+          _this.start();
+        }
+        
+      },
+      onBeforeMove :function _trc_FrameManager_onBeforeMove() {
+        var _this=this;
+        
+        if (typeof  _this.beforeMove==="function") {
+          _this.beforeMove();
+        }
+      },
+      fiber$onBeforeMove :function* _trc_FrameManager_f_onBeforeMove(_thread) {
+        var _this=this;
+        
+        if (typeof  _this.beforeMove==="function") {
+          _this.beforeMove();
+        }
+        
+      },
+      onAfterMove :function _trc_FrameManager_onAfterMove() {
+        var _this=this;
+        
+        if (typeof  _this.afterMove==="function") {
+          _this.afterMove();
+        }
+      },
+      fiber$onAfterMove :function* _trc_FrameManager_f_onAfterMove(_thread) {
+        var _this=this;
+        
+        if (typeof  _this.afterMove==="function") {
+          _this.afterMove();
+        }
+        
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"loop_sched":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"setHandlers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"__setter___scheduler":{"nowait":true,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"__getter___scheduler":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onStart":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onBeforeMove":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onAfterMove":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"__scheduler":{},"beforeMove":{},"afterMove":{},"start":{},"hBefore":{},"hAfter":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.APad',

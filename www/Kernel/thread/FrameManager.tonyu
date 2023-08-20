@@ -1,0 +1,37 @@
+extends Actor;
+includes SchedulerMod,ParallelMod;
+"field strict";
+let __scheduler, beforeMove, afterMove, start;
+let hBefore, hAfter;
+\new(params) {
+    super(params);
+    initSchedulerMod();
+    onStart();
+    parallel("loop_sched");
+}
+\loop_sched() {
+    while(true) update();
+}
+\setHandlers() {
+    if (hBefore) hBefore.remove();
+    if (hAfter )  hAfter.remove();
+    hBefore=_scheduler.on("beforeSteps", onBeforeMove);
+    hAfter =_scheduler.on("afterSteps", onAfterMove);
+}
+\_scheduler=v {
+    if (__scheduler===v) return;
+    __scheduler=v;
+    setHandlers();
+}
+\_scheduler {
+    return __scheduler    ;
+}
+\onStart() {
+    if (typeof start==="function") start();
+}
+\onBeforeMove() {
+    if (typeof beforeMove==="function") beforeMove();
+}
+\onAfterMove() {
+    if (typeof afterMove==="function") afterMove();
+}
