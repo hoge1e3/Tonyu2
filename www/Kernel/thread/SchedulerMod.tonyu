@@ -40,8 +40,11 @@ native Array;
 
 }
 \updateEx(updateT){
+    if (!_thread) { return update(); }
     if (updateT<0) updateT=0;
-    for(_updateExc=(_updateExc||0)+updateT;_updateExc>=1;_updateExc--) {
+    for(_thread._updateExc=(_thread._updateExc||0)+updateT;
+    _thread._updateExc>=1;
+    _thread._updateExc--) {
         update();
     }
 }
