@@ -1836,10 +1836,14 @@ Tonyu.klass.define({
       updateEx :function _trc_SchedulerMod_updateEx(updateT) {
         var _this=this;
         
+        if (! null) {
+          return _this.update();
+          
+        }
         if (updateT<0) {
           updateT=0;
         }
-        for (_this._updateExc=(_this._updateExc||0)+updateT; _this._updateExc>=1 ; _this._updateExc--) {
+        for (null._updateExc=(null._updateExc||0)+updateT; null._updateExc>=1 ; null._updateExc--) {
           {
             _this.update();
           }
@@ -1848,10 +1852,15 @@ Tonyu.klass.define({
       fiber$updateEx :function* _trc_SchedulerMod_f_updateEx(_thread,updateT) {
         var _this=this;
         
+        if (! _thread) {
+          return yield* _this.fiber$update(_thread);
+          
+          
+        }
         if (updateT<0) {
           updateT=0;
         }
-        for (_this._updateExc=(_this._updateExc||0)+updateT; _this._updateExc>=1 ; _this._updateExc--) {
+        for (_thread._updateExc=(_thread._updateExc||0)+updateT; _thread._updateExc>=1 ; _thread._updateExc--) {
           {
             (yield* _this.fiber$update(_thread));
           }
@@ -27856,14 +27865,14 @@ Tonyu.klass.define({
         
         Tonyu.globals.$currentProject.requestPlugin("box2d");
         _this.initWorld();
-        _this.parallel(Tonyu.bindFunc(_this,_this.loop));
+        _this.fm=new Tonyu.classes.kernel.FrameManager({_scheduler: _this._scheduler,afterMove: Tonyu.bindFunc(_this,_this.afterMove)});
       },
       fiber$onAppear :function* _trc_T2World_f_onAppear(_thread) {
         var _this=this;
         
         Tonyu.globals.$currentProject.requestPlugin("box2d");
         (yield* _this.fiber$initWorld(_thread));
-        _this.parallel(Tonyu.bindFunc(_this,_this.loop));
+        _this.fm=new Tonyu.classes.kernel.FrameManager({_scheduler: _this._scheduler,afterMove: Tonyu.bindFunc(_this,_this.afterMove)});
         
       },
       initWorld :function _trc_T2World_initWorld() {
@@ -27926,6 +27935,21 @@ Tonyu.klass.define({
         }
         
       },
+      afterMove :function _trc_T2World_afterMove() {
+        var _this=this;
+        
+        _this.fps=Tonyu.globals.$Boot.getFrameRate();
+        _this.world.Step(1/_this.fps,10,10);
+        _this.world.ClearForces();
+      },
+      fiber$afterMove :function* _trc_T2World_f_afterMove(_thread) {
+        var _this=this;
+        
+        _this.fps=Tonyu.globals.$Boot.getFrameRate();
+        _this.world.Step(1/_this.fps,10,10);
+        _this.world.ClearForces();
+        
+      },
       loop :function _trc_T2World_loop() {
         var _this=this;
         
@@ -27985,7 +28009,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"onAppear":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initWorld":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"releaseWorld":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"updatePos":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"gravity":{},"gravityX":{},"fps":{},"scale":{},"world":{},"name":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"onAppear":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"initWorld":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"releaseWorld":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"afterMove":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"loop":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"updatePos":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"fm":{},"gravity":{},"gravityX":{},"fps":{},"scale":{},"world":{},"name":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.T2MediaPlayer',

@@ -7,7 +7,8 @@ native Tonyu;
 \onAppear() {
     $currentProject.requestPlugin("box2d");
     initWorld();
-    parallel(loop);
+    fm=new FrameManager{_scheduler, afterMove};
+    //parallel(loop);
 }
 //loop();
 
@@ -34,6 +35,15 @@ native Tonyu;
     if ($t2World===this) $t2World=null;
 }
 
+\afterMove() {
+    fps=$Boot.getFrameRate();
+    world.Step(
+    1 / fps  //frame-rate
+    ,  10       //velocity iterations
+    ,  10       //position iterations
+    );
+    world.ClearForces();
+}
 \loop() {
     while(true) {
         fps=$Boot.getFrameRate();
