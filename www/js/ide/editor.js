@@ -117,6 +117,7 @@ $(function () {
     $("body")[0].spellcheck=false;
     sh.cd(curPrjDir);
     var fl=FileList($(mobile?"#fileSel":"#fileItemList"),{
+        mobile,
         topDir: curPrjDir,
         ide,
         runDialogParam,

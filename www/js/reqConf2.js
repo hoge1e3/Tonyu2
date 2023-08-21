@@ -263,7 +263,8 @@ var reqConf={
                 "T2MediaLib": 1,
                 "TextUtil": 1,
                 "ace-noconflict": {
-                    "ace": 1
+                    "ace": 1,
+                    "ext-language_tools": 1,
                 },
                 "base64.min": "Base64",
                 "difflib": 1,

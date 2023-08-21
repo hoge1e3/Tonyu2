@@ -170,7 +170,7 @@ module.exports=function FileList(elem, options) {
             prog.focus();
             try {
                 prog.commands.removeCommand("toggleFoldWidget");
-                prog.setOptions({fixedWidthGutter:true});
+                prog.setOptions({fixedWidthGutter:true, enableLiveAutocompletion:options.mobile});
             }catch(e){}// F2
 
             curDOM=progDOM;
