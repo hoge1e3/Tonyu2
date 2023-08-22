@@ -170,7 +170,9 @@ module.exports=function FileList(elem, options) {
             prog.focus();
             try {
                 prog.commands.removeCommand("toggleFoldWidget");
-                prog.setOptions({fixedWidthGutter:true, enableLiveAutocompletion:options.mobile});
+                let completers;
+                if (root.ace_language_tools) completers=[root.ace_language_tools.textCompleter];
+                prog.setOptions({fixedWidthGutter:true, enableLiveAutocompletion:completers});
             }catch(e){}// F2
 
             curDOM=progDOM;
