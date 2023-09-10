@@ -101,11 +101,11 @@ $(function () {
         layouts.mainArea={height:h};
         h-=10;
         runDialogParam.screenH=h;
-        let th=$("#fileTabs").height();
+        /*let th=$("#fileTabs").height();
         layouts.editor={height: h-th};
         layouts.fileItemList={height: h-10};
         $("#progs pre").css("height",layouts.editor.height+"px");
-        $("#fileItemList").height(layouts.fileItemList.height);
+        $("#fileItemList").height(layouts.fileItemList.height);*/
     }
     onResize();
     const em=RealtimeErrorMarker(ide);

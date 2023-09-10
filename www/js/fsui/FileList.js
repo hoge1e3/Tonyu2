@@ -153,8 +153,8 @@ module.exports=function FileList(elem, options) {
         if (curDOM) curDOM.hide();
         var inf=editors[f.path()];
         if (!inf) {
-            let h=ide.layouts.editor.height;
-            var progDOM=$("<pre>").css("margin","0px").css("height", h+"px").text(f.text()).appendTo("#progs");
+            //let h=ide.layouts.editor.height;
+            var progDOM=$("<pre>").css("margin","0px")/*.css("height", h+"px")*/.text(f.text()).appendTo("#progs");
             var prog=root.ace.edit(progDOM[0]);
             window.lastEditor=prog;
             if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
