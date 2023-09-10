@@ -46,7 +46,7 @@ $(function () {
     if (mobile) {
         $("#fileViewer").hide();
         $("#runAreaParent").hide();
-        $("#mainArea").attr("class","col-xs-12");
+        $("#mainArea").addClass("mobile");//attr("class","col-xs-12");
         $("#mobileBar").show();
         $("#homeLink").text("🔙");
     }

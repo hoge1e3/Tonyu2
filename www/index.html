@@ -34,6 +34,11 @@
 $(function () { SplashScreen.show(); });
 requirejs.config(reqConf);
 var isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+if (location.href.match(/noconcat/)) {
+	localStorage.noconcat=true;
+} else if (location.href.match(/concat/)) {
+	delete localStorage.noconcat;
+}
 if (isNW || localStorage.noconcat) {
 	requirejs(
 		["selProject"],

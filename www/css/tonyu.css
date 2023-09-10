@@ -32,6 +32,10 @@ body {
     width: calc(100% - 150px);
     height: 100%;
 }
+#mainArea.mobile {
+    width: calc(100% - 0px);
+    height: 100%;
+}
 #fileTabs {
     height:32px;
 }
