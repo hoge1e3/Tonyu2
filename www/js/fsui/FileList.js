@@ -188,7 +188,7 @@ module.exports=function FileList(elem, options) {
         }
         tabs.select(f);
         window.editor=window.curEditor=inf.editor;
-        if (initEditor) initEditor();
+        if (initEditor && options.mobile) initEditor();
         inf.lastTimeStamp=inf.file.lastUpdate();
     }
     const tabs={
