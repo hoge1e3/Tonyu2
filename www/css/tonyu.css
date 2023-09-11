@@ -1,16 +1,21 @@
 body {
     font-family: "MS UI Gothic",sans-serif;
 	padding-top: 50px;
-    min-height: 100vh;
+    /*min-height: 100vh;*/
+    height: calc(var(--vh, 1vh) * 100 - 50px);
 }
 .ui-dialog,.ui-dialog-content {
     -webkit-box-sizing: content-box!important;
     -moz-box-sizing:content-box!important;
     box-sizing: content-box!important;
 }
+#navBar .container {
+    margin-left: 0px;
+}
 .container.body {
     position: absolute;
     width: calc(100vw - 10px);
+    max-width: calc(100vw - 10px);
     left: 0;
     top: 50px;
     height: calc(100vh - 60px);
