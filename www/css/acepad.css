@@ -1,0 +1,66 @@
+body {
+    touch-action: manipulation;
+}
+#editor { 
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 40%;
+    left: 0;
+}
+#keypad{
+    z-index: 300000;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height:40%;
+    margin: 0px;
+}
+#keypad button {
+    white-space: nowrap; 
+    /*width: 10%;*/
+    height: calc(100% / 1);
+    margin: 0px 0px 0px 0px;
+    padding: 0px;
+    /*border: 1px;*/
+    font-size: 20px;
+}
+.justify {
+    height: 100%;
+}
+#keypad .row{
+    width: 100%;
+    height: calc(100% / 6);
+}
+.keycontext {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+#keypad.ctrl button.ctrl {
+    background: cyan;
+}
+#keypad.shift button.shift {
+    background: lime;
+}
+#keypad.shift .mask.no-shift{
+    display: none;
+}
+#keypad:not(.shift) .mask.shift{
+    display: none;
+}
+#keypad.sym .mask.no-sym{
+    display: none;
+}
+#keypad:not(.sym) .mask.sym{
+    display: none;
+}
+#keypad.edit .mask.no-edit{
+    display: none;
+}
+#keypad:not(.edit) .mask.edit{
+    display: none;
+}

@@ -15,6 +15,7 @@
 
 <!-- Custom styles for this template -->
 <link href="css/tonyu.css" rel="stylesheet">
+<link href="css/acepad.css" rel="stylesheet">
 
 <!-- Custom styles for this template -->
 <link href="css/jquery-ui.css" rel="stylesheet">
@@ -68,7 +69,7 @@ if (isNW || localStorage.noconcat) {
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<span id="mobileBar" style="display:none;">
+				<span id="mobileBar">
 					<select id="fileSel"></select>
 					<button id="mobileRun" class="mobileButton">Run</button>
 					<button id="mobileFind" class="mobileButton">Find</button>
@@ -139,26 +140,98 @@ if (isNW || localStorage.noconcat) {
 			<div id=mainArea class="col-xs-10">
 				<div id=errorPos >
 				</div>
-				<!-- 
-				<span id="mobileBar" style="display:none;">
-					<select id="fileSel"></select>
-					<button id="mobileRun">Run</button>
-				</span>
-				-->
 				<div id="fileTabs"><span class="tab" id="dummytab">.</span></div>
 				<div id=progs>
 					<div id="welcome">
 					</div>
 				</div>
 			</div>
-			<!--div id=runAreaParent class="col-xs-5">
-				<div id="runArea" style="text-align : center ;overflow:hidden;" class="runArea">
-					<canvas id="cv" width=465 height=465 style=" margin-left : auto ; margin-right : auto ;"></canvas>
+		</div>
+		<div id="keypad">
+			<div class="row justify">
+        
+				<button data-keycode="9">Tab</button>
+		
+				<button class="autorepeat" data-keycode="37">&lt;</button>
+				<button class="autorepeat" data-keycode="40">v</button>
+				<button class="autorepeat" data-keycode="38">^</button>
+				<button class="autorepeat" data-keycode="39">&gt;</button>
+				<button data-lock="single" data-modifier="sym">SYM</button>
+			</div>
+			<div class="row row1">
+				<div class="justify mask no-edit">
+					<button class="chr"
+					data-ctrl="custom:sessions">1!</button>
+					<button class="chr">2@</button>
+					<button class="chr">3#</button>
+					<button class="chr">4$</button>
+					<button class="chr">5%</button>
+					<button class="chr">6^</button>
+					<button class="chr">7&</button>
+					<button class="chr">8*</button>
+					<button class="chr">9(</button>
+					<button class="chr">0)</button>
 				</div>
-			</div-->
+				<div class="justify mask edit">
+					<button data-command="cut">Cut</button>
+					<button data-command="copy">Copy</button>
+					<button data-command="paste">Paste</button>
+				</div>
+			</div>
+			<div class="row justify">
+				<button class="chr" 
+				data-ctrl="custom:fullscr">q\</button>
+				<button class="chr"
+				data-ctrl="custom:foldall">w|</button>
+				<button class="chr">e/</button>
+				<button class="chr"
+				data-ctrl="custom:reload">r[</button>
+				<button class="chr">t]</button>
+				<button class="chr">y{</button>
+				<button class="chr">u}</button>
+				<button class="chr">i&lt;</button>
+				<button class="chr">o&gt;</button>
+				<button class="chr">p=</button>
+			</div>
+			<div class="row justify">
+				<button class="chr">a~</button>
+				<button class="chr">s`</button>
+				<button class="chr">d'</button>
+				<button class="chr"
+				data-ctrl="custom:find">f?</button>
+				<button class="chr">g+</button>
+				<button class="chr">h-</button>
+				<button class="chr">j"</button>
+				<button class="chr">k;</button>
+				<button class="chr">l:</button>
+			</div>
+			<div class="row justify">
+				<button class="shift" data-modifier="shift">Shift</button>
+				<button class="chr"
+				data-ctrl="undo">z</button>
+				<button class="chr"
+				data-ctrl="cut">x</button>
+				<button class="chr"
+				data-ctrl="copy">c</button>
+				<button class="chr"
+				data-ctrl="paste">v</button>
+				<button class="chr">b_</button>
+				<button class="chr">n,</button>
+				<button class="chr">m.</button>
+				<button class="autorepeat" 
+				data-keycode="8">BS</button>
+			</div>
+			<div class="row justify">
+				<button class="ctrl" 
+				data-modifier="ctrl"
+				data-lock="none">Ctrl</button>
+				<!--button data-special="sym">SYM</button-->
+				<button data-text=" ">SPC</button>
+				<button data-keycode="13">Ent</button>
+			</div>
 		</div>
 	</div>
-
+	<script src="js/ide/acepad.js"></script>
 	<!-- /.container -->
     <script src="js/lib/bootstrap.min.js"></script>
     <!-- div id="imageList" style="overflow :scroll; width:0px; height:0px;">

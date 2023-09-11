@@ -24,15 +24,34 @@ body {
     margin-right: 0px;
     margin-left: 0px;
 }
+.mobile .row {
+    height: 50%;
+}
+#keypad {
+    display: none;
+}
+.mobile #keypad {
+    display: block;
+    height: 50%;
+}
+#mobileBar {
+    display: none;
+}
+.mobile #mobileBar {
+    display: inline;
+}
 #fileViewer {
     width: 150px;
     height: calc(100% - 10px);
+}
+.mobile #fileViewer {
+    display: none;
 }
 #mainArea {
     width: calc(100% - 150px);
     height: 100%;
 }
-#mainArea.mobile {
+.mobile #mainArea {
     width: calc(100% - 0px);
     height: 100%;
 }

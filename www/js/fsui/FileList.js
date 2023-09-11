@@ -187,7 +187,8 @@ module.exports=function FileList(elem, options) {
             curDOM=inf.dom;
         }
         tabs.select(f);
-        window.curEditor=inf.editor;
+        window.editor=window.curEditor=inf.editor;
+        if (initEditor) initEditor();
         inf.lastTimeStamp=inf.file.lastUpdate();
     }
     const tabs={

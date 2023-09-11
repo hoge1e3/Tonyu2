@@ -44,10 +44,11 @@ $(function () {
     root.$LASTPOS=0;
     var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists() || localStorage.mobile;
     if (mobile) {
-        $("#fileViewer").hide();
-        $("#runAreaParent").hide();
-        $("#mainArea").addClass("mobile");//attr("class","col-xs-12");
-        $("#mobileBar").show();
+        $("body").addClass("mobile");
+        //$("#fileViewer").hide();
+        //$("#runAreaParent").hide();
+        //$("#mainArea").addClass("mobile");//attr("class","col-xs-12");
+        //$("#mobileBar").show();
         $("#homeLink").text("🔙");
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
