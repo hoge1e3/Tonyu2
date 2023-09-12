@@ -26,7 +26,11 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			var f=prjDir.rel(fn);
 			if (!f.isDir()) {
 				var m=fo[fn];
-				f.text(m.text);
+				if (m.dataurl) {
+					f.dataURL(m.text);
+				} else {
+					f.text(m.text);
+				}
 				delete m.text;
 				if (m.lastUpdate) f.metaInfo(m);
 			}
