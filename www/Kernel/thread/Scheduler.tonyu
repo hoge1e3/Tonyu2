@@ -146,9 +146,13 @@ let lastSteps;
             t.steps();
             //$Boot.debug("StepsAllEnd",t.name);
             if (t.preempted) {
+                t.hadPreemption=true;
                 $Boot.fireEvent("preempted") {thread:t, scheduler:this};
                 //$Boot.debug("Preempted: ",t);
                 addToNext(t);
+            } else {
+                if (t.hadPreemption) t.preemptionTime++;
+                t.hadPreemption=false;
             }
         }
         //$Boot.checkTimer();

@@ -1,5 +1,5 @@
 if(!Tonyu.load)Tonyu.load=(_,f)=>f();
-Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
+Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true,"dependingProjects":[]},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
 Tonyu.klass.define({
   fullName: 'kernel.EventHandlerCaller',
   shortName: 'EventHandlerCaller',
@@ -14132,8 +14132,15 @@ Tonyu.klass.define({
           } else {
             t.steps();
             if (t.preempted) {
+              t.hadPreemption=true;
               Tonyu.globals.$Boot.fireEvent("preempted",{thread: t,scheduler: _this});
               _this.addToNext(t);
+              
+            } else {
+              if (t.hadPreemption) {
+                t.preemptionTime++;
+              }
+              t.hadPreemption=false;
               
             }
             
@@ -14172,8 +14179,15 @@ Tonyu.klass.define({
           } else {
             t.steps();
             if (t.preempted) {
+              t.hadPreemption=true;
               Tonyu.globals.$Boot.fireEvent("preempted",{thread: t,scheduler: _this});
               (yield* _this.fiber$addToNext(_thread, t));
+              
+            } else {
+              if (t.hadPreemption) {
+                t.preemptionTime++;
+              }
+              t.hadPreemption=false;
               
             }
             
@@ -14194,7 +14208,7 @@ Tonyu.klass.define({
       findByThreadGroup :function _trc_Scheduler_findByThreadGroup(o) {
         var _this=this;
         
-        return _this.allThreads.filter((function anonymous_4283(t) {
+        return _this.allThreads.filter((function anonymous_4442(t) {
           
           return t._threadGroup===o;
         }));
@@ -14202,7 +14216,7 @@ Tonyu.klass.define({
       fiber$findByThreadGroup :function* _trc_Scheduler_f_findByThreadGroup(_thread,o) {
         var _this=this;
         
-        return _this.allThreads.filter((function anonymous_4283(t) {
+        return _this.allThreads.filter((function anonymous_4442(t) {
           
           return t._threadGroup===o;
         }));
