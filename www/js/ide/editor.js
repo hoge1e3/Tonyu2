@@ -365,6 +365,8 @@ $(function () {
     };
     function jump(file,row=null,col=null) {
         //alert(file+":"+row+":"+col);
+        // cleanse policy
+        file=FS.get(file.path());
         fl.select(file);
         var inf=getCurrentEditorInfo();
         if (inf) {
