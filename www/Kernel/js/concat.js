@@ -1,5 +1,5 @@
 if(!Tonyu.load)Tonyu.load=(_,f)=>f();
-Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true,"dependingProjects":[]},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
+Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
 Tonyu.klass.define({
   fullName: 'kernel.EventHandlerCaller',
   shortName: 'EventHandlerCaller',
@@ -12081,6 +12081,8 @@ Tonyu.klass.define({
       },
       enterRoom :function _trc_ScaledroneImpl_enterRoom(name) {
         var _this=this;
+        var observable;
+        var res;
         
         return new Promise((function anonymous_553(s,e) {
           var observable;
@@ -12104,6 +12106,8 @@ Tonyu.klass.define({
       },
       fiber$enterRoom :function* _trc_ScaledroneImpl_f_enterRoom(_thread,name) {
         var _this=this;
+        var observable;
+        var res;
         
         return new Promise((function anonymous_553(s,e) {
           var observable;
@@ -12502,6 +12506,7 @@ Tonyu.klass.define({
       },
       getConnectionInfo :function _trc_WebSocket_getConnectionInfo() {
         var _this=this;
+        var re;
         
         return Tonyu.globals.$API.info().then((function anonymous_110(r) {
           var re;
@@ -12518,6 +12523,7 @@ Tonyu.klass.define({
       },
       fiber$getConnectionInfo :function* _trc_WebSocket_f_getConnectionInfo(_thread) {
         var _this=this;
+        var re;
         
         return Tonyu.globals.$API.info().then((function anonymous_110(r) {
           var re;
@@ -12536,6 +12542,7 @@ Tonyu.klass.define({
       connect :function _trc_WebSocket_connect() {
         var _this=this;
         var services;
+        var S;
         
         if (_this.impl) {
           return Promise.resolve(_this.impl);
@@ -12558,6 +12565,7 @@ Tonyu.klass.define({
       fiber$connect :function* _trc_WebSocket_f_connect(_thread) {
         var _this=this;
         var services;
+        var S;
         
         if (_this.impl) {
           return Promise.resolve(_this.impl);
@@ -16324,6 +16332,7 @@ Tonyu.klass.define({
         var _this=this;
         var keyCode;
         var a;
+        var i;
         
         keyCode = typeof  keyName==="number"?keyName:Tonyu.globals.$Keys.codes[keyName];
         
@@ -20335,6 +20344,8 @@ Tonyu.klass.define({
       },
       load :function _trc_PanelMod_load(fn) {
         var _this=this;
+        var url;
+        var element;
         
         if (typeof  fn==="string") {
           fn=_this.file(fn);
@@ -20368,6 +20379,8 @@ Tonyu.klass.define({
       },
       fiber$load :function* _trc_PanelMod_f_load(_thread,fn) {
         var _this=this;
+        var url;
+        var element;
         
         if (typeof  fn==="string") {
           fn=(yield* _this.fiber$file(_thread, fn));
@@ -24711,6 +24724,8 @@ Tonyu.klass.define({
       },
       load :function _trc_Panel_load(fn) {
         var _this=this;
+        var url;
+        var element;
         
         if (typeof  fn==="string") {
           fn=_this.file(fn);
@@ -24744,6 +24759,8 @@ Tonyu.klass.define({
       },
       fiber$load :function* _trc_Panel_f_load(_thread,fn) {
         var _this=this;
+        var url;
+        var element;
         
         if (typeof  fn==="string") {
           fn=(yield* _this.fiber$file(_thread, fn));
@@ -38509,6 +38526,9 @@ Tonyu.klass.define({
       },
       stop :function _trc_Boot_stop() {
         var _this=this;
+        var evt;
+        var e;
+        var r;
         
         return new Promise((function anonymous_10176(resolve) {
           var evt;
@@ -38542,6 +38562,9 @@ Tonyu.klass.define({
       },
       fiber$stop :function* _trc_Boot_f_stop(_thread) {
         var _this=this;
+        var evt;
+        var e;
+        var r;
         
         return new Promise((function anonymous_10176(resolve) {
           var evt;
