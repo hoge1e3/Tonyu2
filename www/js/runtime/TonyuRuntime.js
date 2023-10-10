@@ -611,7 +611,7 @@ function addMeta(fn, m) {
     return extend(klass.getMeta(fn), m);
 }
 function getMeta(klass) {
-    if (RuntimeTypes_1.isTonyuClass(klass))
+    if ((0, RuntimeTypes_1.isTonyuClass)(klass))
         return klass.meta;
     return klass;
 }
@@ -802,7 +802,7 @@ var klass = {
             prot.getClassInfo = function () {
                 return res.meta;
             };
-            if (RuntimeTypes_1.isTonyuClass(res))
+            if ((0, RuntimeTypes_1.isTonyuClass)(res))
                 chkclass(res);
             return res; //chkclass(res,{isShim, init:false, includesRec:{}});
         }
@@ -892,7 +892,7 @@ function getClass(n) {
                     found = nn + "." + n;
                 }
                 else
-                    throw new Error(R_1.default("ambiguousClassName", nn, n, found));
+                    throw new Error((0, R_1.default)("ambiguousClassName", nn, n, found));
             }
         }
     }
@@ -917,20 +917,20 @@ function bindFunc(t, meth) {
 }
 function invokeMethod(t, name, args, objName) {
     if (!t)
-        throw new Error(R_1.default("cannotInvokeMethod", objName, t, name));
+        throw new Error((0, R_1.default)("cannotInvokeMethod", objName, t, name));
     var f = t[name];
     if (typeof f != "function")
-        throw new Error(R_1.default("notAMethod", (objName == "this" ? "" : objName + "."), name, f));
+        throw new Error((0, R_1.default)("notAMethod", (objName == "this" ? "" : objName + "."), name, f));
     return f.apply(t, args);
 }
 function callFunc(f, args, fName) {
     if (typeof f != "function")
-        throw new Error(R_1.default("notAFunction", fName));
+        throw new Error((0, R_1.default)("notAFunction", fName));
     return f.apply({}, args);
 }
 function checkNonNull(v, name) {
     if (v != v || v == null)
-        throw new Error(R_1.default("uninitialized", name, v));
+        throw new Error((0, R_1.default)("uninitialized", name, v));
     return v;
 }
 function A(args) {
@@ -941,7 +941,7 @@ function A(args) {
     return res;
 }
 function useNew(c) {
-    throw new Error(R_1.default("newIsRequiredOnInstanciate", c));
+    throw new Error((0, R_1.default)("newIsRequiredOnInstanciate", c));
 }
 function not_a_tonyu_object(o) {
     console.log("Not a tonyu object: ", o);
@@ -952,8 +952,8 @@ function hasKey(k, obj) {
 }
 function run(bootClassName) {
     var bootClass = getClass(bootClassName);
-    if (!RuntimeTypes_1.isTonyuClass(bootClass))
-        throw new Error(R_1.default("bootClassIsNotFound", bootClassName));
+    if (!(0, RuntimeTypes_1.isTonyuClass)(bootClass))
+        throw new Error((0, R_1.default)("bootClassIsNotFound", bootClassName));
     Tonyu.runMode = true;
     var boot = new bootClass();
     //var th=thread();
@@ -972,7 +972,7 @@ function checkLoop() {
     var now = root_1.default.performance.now();
     if (now - lastLoopCheck > 1000) {
         resetLoopCheck(10000);
-        throw new Error(R_1.default("infiniteLoopDetected"));
+        throw new Error((0, R_1.default)("infiniteLoopDetected"));
     }
     prevCheckLoopCalled = now;
 }
@@ -989,7 +989,7 @@ function is(obj, klass) {
         return false;
     if (obj instanceof klass)
         return true;
-    if (typeof obj.getClassInfo === "function" && RuntimeTypes_1.isTonyuClass(klass)) {
+    if (typeof obj.getClassInfo === "function" && (0, RuntimeTypes_1.isTonyuClass)(klass)) {
         return obj.getClassInfo().includesRec[klass.meta.fullName];
     }
     return false;
@@ -1119,7 +1119,7 @@ class TonyuThread {
         if (typeof methodName == "string") {
             method = obj["fiber$" + methodName];
             if (!method) {
-                throw new Error(R_1.default("undefinedMethod", methodName));
+                throw new Error((0, R_1.default)("undefinedMethod", methodName));
             }
         }
         if (typeof methodName == "function") {
@@ -1127,7 +1127,7 @@ class TonyuThread {
             method = fmethod.fiber;
             if (!method) {
                 var n = fmethod.methodInfo ? fmethod.methodInfo.name : fmethod.name;
-                throw new Error(R_1.default("notAWaitableMethod", n));
+                throw new Error((0, R_1.default)("notAWaitableMethod", n));
             }
         }
         args = [this].concat(args);

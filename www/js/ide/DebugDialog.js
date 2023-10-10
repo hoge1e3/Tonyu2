@@ -110,7 +110,7 @@ define(function(require, exports, module) {
                 });
                 if (!t.shownOnce) {
                     t.titleArea = d.closest(".ui-widget").find(".ui-dialog-title");
-                    t.autoReloadCheck = UI("input", { type: "checkbox", on: { change } });
+                    t.autoReloadCheck = UI("input", { type: "checkbox", on: { change: ()=>{t.setAutoReload(t.autoReloadCheck.prop("checked"))} } });
                     if (!t.param.isCloned) t.cloneButton = UI("button", { on: { click: t.clone.bind(t) } }, "+");
                     else t.cloneButton="(clone)";
                     t.titleArea.append(UI("span", t.autoReloadCheck, R("autoReload"), t.cloneButton));
@@ -126,7 +126,7 @@ define(function(require, exports, module) {
             t.focusToIframe();
             t.resizeCanvas(d.width(), d.height());
             console.log("Diag", size);
-            function change() {
+            /*function change() {
                 try {
                     const ch = t.autoReloadCheck.prop("checked");
                     //console.log(ch);
@@ -135,7 +135,7 @@ define(function(require, exports, module) {
                 } catch (e) {
                     console.log(e);
                 }
-            }
+            }*/
             /*setInterval(()=>{
                 try {
                     const ar=t.iframeGlobals().$Boot.autoReload;
@@ -146,6 +146,22 @@ define(function(require, exports, module) {
                 }
             },1000);*/
             if (this.cloned) this.cloned.show();
+        }
+        setAutoReload(ch) {
+            const t=this;
+            try {
+                if (ch!=null) {
+                    t.autoReloadCheck.prop("checked", ch); 
+                }else {
+                    ch = !t.autoReloadCheck.prop("checked");
+                    t.autoReloadCheck.prop("checked", ch);
+                }
+                //console.log(ch);
+                t.iframeGlobals().$Boot.autoReload = ch;
+                t.project.startWithAutoReload = ch;
+            } catch (e) {
+                console.log(e);
+            }
         }
         clone() {
             const p = Object.assign({}, this.param);

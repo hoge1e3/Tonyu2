@@ -69,7 +69,7 @@ class ParserContext {
                 }
                 if (tbl[exports.ALL])
                     return tbl[exports.ALL].parse(s);
-                return s.withError(R_1.default("expected", Object.keys(tbl).join("")));
+                return s.withError((0, R_1.default)("expected", Object.keys(tbl).join("")));
             });
             res._first = tbl; //{space:space,tbl:tbl};
             //res.checkTbl();
@@ -89,7 +89,7 @@ class ParserContext {
             }
             if (tbl[exports.ALL])
                 return tbl[exports.ALL].parse(s);
-            return s.withError(R_1.default("expected", Object.keys(tbl).join(", ")));
+            return s.withError((0, R_1.default)("expected", Object.keys(tbl).join(", ")));
         });
         res._first = tbl; //{space:"TOKEN",tbl:tbl};
         //res.checkTbl();
@@ -802,7 +802,7 @@ exports.TokensParser = {
                 s.result = [t];
             }
             else {
-                s = s.withError(R_1.default("expected", type));
+                s = s.withError((0, R_1.default)("expected", type));
             }
             return s;
         }).setName("'" + type + "'", { type: "primitive", name: type }).firstTokens(type);
@@ -1220,6 +1220,7 @@ function tokenizerFactory({ reserved, caseInsensitive }) {
     dtk(REG | DIV, SAMENAME, "<<", REG);
     dtk(REG | DIV, SAMENAME, "&&", REG);
     dtk(REG | DIV, SAMENAME, "||", REG);
+    dtk(REG | DIV, SAMENAME, "=>", REG);
     dtk(REG | DIV, SAMENAME, "(", REG);
     dtk(REG | DIV, SAMENAME, ")", DIV);
     dtk(REG | DIV, SAMENAME, "[", REG);
@@ -1287,7 +1288,7 @@ exports.tokenizerFactory = tokenizerFactory;
 },{"./parser":2}],4:[function(require,module,exports){
 "use strict";
 const tokenizerFactory_1 = require("./tokenizerFactory");
-module.exports = tokenizerFactory_1.tokenizerFactory({
+module.exports = (0, tokenizerFactory_1.tokenizerFactory)({
     caseInsensitive: false,
     reserved: {
         "function": true, "var": true, "return": true, "typeof": true, "if": true,
