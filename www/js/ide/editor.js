@@ -45,6 +45,9 @@ $(function () {
     var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists() || localStorage.mobile;
     if (mobile) {
         $("body").addClass("mobile");
+        if (localStorage.useAcepad) {
+            $("body").addClass("useAcepad");
+        }
         //$("#fileViewer").hide();
         //$("#runAreaParent").hide();
         //$("#mainArea").addClass("mobile");//attr("class","col-xs-12");

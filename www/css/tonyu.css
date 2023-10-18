@@ -30,13 +30,13 @@ body {
     margin-right: 0px;
     margin-left: 0px;
 }
-.mobile .row {
+.mobile.useAcepad .row {
     height: 50%;
 }
 #keypad {
     display: none;
 }
-.mobile #keypad {
+.mobile.useAcepad #keypad {
     display: block;
     height: 50%;
 }
