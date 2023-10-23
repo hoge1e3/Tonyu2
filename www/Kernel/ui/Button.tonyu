@@ -134,7 +134,7 @@ on("touch") \(touchEvent) {
     c.strokeRect(eleft, etop, e.width, e.height);
     for (let i=0;i<2;i++) {
         var size=e.height-e.padding*2;
-        var f=c.font.replace(/^[0-9]+px /,"");
+        var f=c.font.replace(/^[0-9\.]+px /,"");
         c.font=size+"px "+f;//monospace";
         c.textBaseline="top";
         c.fillStyle=e.strokeStyle;
