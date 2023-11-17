@@ -346,6 +346,7 @@ $(function () {
             curPrj.setOptions(o);
         }
         curPrjDir.touch();
+        let sendURL=findSendUrl();
         try {
             Log.sendLog({result:"Tonyu Build", filename: fullName});
             await curPrj.waitReady();
@@ -354,12 +355,19 @@ $(function () {
             // does in fullCompile
             //await SourceFiles.add(r).saveAs(curPrj.getOutputFile());
             Log.sendLog({result:"Tonyu Run", filename: fullName});
-            runDialog.show();
+            if (sendURL) sendURL("debug.html?prj="+curPrjDir.path());
+            else runDialog.show();
         } catch(e) {
-            showError(e);
+            if (sendURL) sendURL(e);
+            else showError(e);
         } finally {
             if (root.SplashScreen) root.SplashScreen.hide();
         }
+    }
+    function findSendUrl(){
+        try {
+            return parent.sendURL;
+        } catch(e) {}
     }
     var alertOnce;
     alertOnce=function (e) {
