@@ -221,6 +221,7 @@ iframe.wikiDialog {
     -moz-box-sizing: border-box;
 }
 .dropdown-content {
+    z-index: 10000;
     display: none;
     min-width: 160px;
     position: absolute;
