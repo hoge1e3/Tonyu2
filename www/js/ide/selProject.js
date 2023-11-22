@@ -14,7 +14,9 @@ $(function () {
     //copySample();
     //var home=FS.get(WebSite.tonyuHome);
     //var projects=FS.get(WebSite.projects[0]);//home.rel("Projects/");
-    if (!FS.NativeFS.available) {
+    var isSafari = /constructor/i.test(window.HTMLElement) || window.safari;
+    if (!FS.NativeFS.available && !isSafari) {
+        // Safari crashes localStorage while call this.
         var capacity=FS.LSFS.getCapacity();
         $("#ls").text(R("storageUsage",Math.floor(capacity.max/1024), Math.floor(capacity.using/1024)));
     }
