@@ -8,7 +8,7 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 	var prot=location.protocol;
 	var k;
 
-	var VER=1700559945770;
+	var VER=1700630568744;
 	if (!prot.match(/^http/)) prot="https:";
 	switch(WebSite.runType) {
 	case "IDE":
@@ -80,7 +80,19 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 			mapEditor2: "Tools/MapEditor2/js/concat.js",
 		};
 		setNS2DepSpec();
-		if (loc.match(/localhost\/tonyu2/)) {
+		if (loc.match(/localhost\/t2ba/)) {
+			WebSite.serverType="BA";
+			WebSite.controller="../a.php";
+			WebSite.wwwDir=prot+"//"+location.host+"/t2ba/";
+			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
+			WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
+			/*
+			WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
+			WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
+			WebSite.quickUploadURL=prot+"//localhost/tsite/tonyu/project/quickDone.cgi";
+			*/
+			WebSite.scriptServer="https://localhost/t2ba/";
+		} else if (loc.match(/localhost\/tonyu2/)) {
 			WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
 			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
 			WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";

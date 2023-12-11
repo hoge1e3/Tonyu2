@@ -2,7 +2,7 @@ define(["WebSite"],function (WebSite) {
     var auth={};
     auth.currentUser=function (onend) {
         //TODO: urlchange!
-        $.ajax({type:"get",url:WebSite.serverTop+"/currentUser",data:{withCsrfToken:true},
+        $.ajax({type:"get",url:WebSite.controller+"?Login/curStatus",data:{withCsrfToken:true},
             success:function (res) {
                 console.log("auth.currentUser",res);
                 res=JSON.parse(res);

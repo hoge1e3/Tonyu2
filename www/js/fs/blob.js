@@ -2,33 +2,18 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
     var Blob={};
     var BLOB_PATH_EXPR="${blobPath}";
     Blob.BLOB_PATH_EXPR=BLOB_PATH_EXPR;
-    Blob.upload=function(user, project, file, options) {
-        var fd = new FormData(document.getElementById("fileinfo"));
-        if (options.error) {
-            options.error=function (r) {alert(r);};
-        }
+    Blob.upload=function(project, path, file) {
+        var fd = new FormData();
         fd.append("theFile", file);
-        fd.append("user",user);
-        fd.append("project",project);
-        fd.append("fileName",file.name);
-      //TODO: urlchange!
-        $.ajax({
-            type : "get",
-            url : WebSite.serverTop+"/blobURL",
-            success : function(url) {
-                $.ajax({
-                    url : url,
-                    type : "POST",
-                    data : fd,
-                    processData : false, // jQuery がデータを処理しないよう指定
-                    contentType : false, // jQuery が contentType を設定しないよう指定
-                    success : function(res) {
-                        console.log("Res = " + res);
-                        options.success.apply({},arguments);// $("#drag").append(res);
-                    },
-                    error: options.error
-                });
-            }
+        // user/class is based on auth info
+		fd.append("project",project);
+        fd.append("path",path);
+        return $.ajax({
+            url : WebSite.controller+"?Blob/upload",
+            type : "POST",
+            data : fd,
+            processData : false, // jQuery がデータを処理しないよう指定
+            contentType : false, // jQuery が contentType を設定しないよう指定
         });
     };
     Blob.isBlobURL=function (url) {
@@ -54,7 +39,7 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
             for (var i in bi) data[i]=bi[i];
             $.ajax({
                 type:"get",
-                url: WebSite.serverTop+"/uploadBlobToExe",   //TODO: urlchange!
+                url: WebSite.controller+"?Blob/upload",   //TODO: urlchange!
                 data:data,
                 success: function () {
                      cnt--;

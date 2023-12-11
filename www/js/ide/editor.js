@@ -36,6 +36,7 @@ $(function () {
     if (WebSite.serverType==="projectBoard") {
         //$.ajax("../../../a.php?Test/test").then(function (r){console.log("Session",r);});
     }
+
     $.get("https://edit.tonyu.jp/doc/welcome_edit.html?a").then(function (t) {
         $("#welcome").append(t);
     });
@@ -55,8 +56,17 @@ $(function () {
         $("#homeLink").text("🔙");
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
+
     const autoRun=Util.getQueryString("autoRun");
     var curPrjDir=FS.get(dir);
+    if (WebSite.serverType==="BA") {
+        (async function () {
+            let info=await $.get(WebSite.controller+"?BAURL/show");
+            let pdir=await $.get(WebSite.controller+"?Login/getPublishedDir", {project: curPrjDir.name() });
+            WebSite.pubURLOfPrj=            info.BA_PUB_URL+"/"+pdir;
+            console.log( WebSite.pubURLOfPrj, info, pdir);
+        })();
+    }
     const optionFile=curPrjDir.rel("options.json");
     optionFixer.fixFile(optionFile);
     const editors={};

@@ -203,6 +203,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
         }
         function cleanImgFiles() {
             var ims=rsrc.images;
+                /*
             Auth.currentUser(function (u,ct) {
                 if (!u) return;
                 var rtf=[];
@@ -221,7 +222,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                         retainFileNames:JSON.stringify(rtf)
                     }
                 });
-            })
+            })*/
             var cleanImg={};
             imgDir.each(function (f) {
                 cleanImg["ls:"+f.relPath(prj.getDir())]=f;
