@@ -1,10 +1,4 @@
-(function(req, factory){
-	if (this.define && this.define.amd) {
-		return this.define(req,factory);
-	} else {
-		this.FS=factory();
-	}
-})([],function () {
+define([],function () {
     var define,requirejs;
 	var R={};
 	var REQJS="REQJS_";
