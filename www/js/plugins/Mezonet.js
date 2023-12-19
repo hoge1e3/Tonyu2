@@ -952,12 +952,18 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             WriteMaxLen: Integer,
             //soundMode: Array // [0..chs-1] of Boolean,
         },
+        configureByVersion: function (t,ver) {
+            if (ver>1200) {
+                t.SPS=SPS;
+                t.useMLen=true;
+            } else {
+                t.SPS=22160 * 2; // use old value
+            }
+            console.log("Version ", ver, t.SPS);
+        },
         load:function (t,d) {
             var ver=readLong(d);
-            if (ver>1200) {
-                t.useMLen=true;
-            }
-            console.log("Version ", ver);
+            t.configureByVersion(ver);
             var chs=readByte(d);
             //var chdatas;
             //t.MPoint=chdatas=[];
@@ -1089,6 +1095,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
 
         $: function(t,context,options) {
             var i, j; //:Integer;
+            t.SPS=SPS;
             options=options||{};
             t.useScriptProcessor=options.useScriptProcessor;
             t.useFast=options.useFast;
@@ -1135,10 +1142,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                     t.channels[i].MPoint=options.source.chdata[i];
                 }
                 t.version=options.source.version;
-                console.log("Version", t.version);
-                if (t.version>1200) {
-                    t.useMLen=true;
-                }
+                t.configureByVersion(t.version);
             }
             if (options.WaveDat) t.WaveDat=options.WaveDat;
             if (options.EnvDat) t.EnvDat=options.EnvDat;
@@ -1171,7 +1175,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                 chn.LfoD = 0;
                 chn.LfoDC = 0;
                 chn.Oct = 4;
-                chn.DefLen = SPS/2;
+                chn.DefLen = t.SPS/2;
                 chn.soundMode = False;
             }
             t.Tempo = 120;// changed by MML t***
@@ -1263,6 +1267,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             delete t.waveBuffers[n];
         },
         Play1Sound: function(t, c, n, iss, noteOnInCtx,noteOffInCtx,por) {
+            var SPS=t.SPS;
             // ESpeed == psX
             // ESpeed / 65536*SPS
             if (t.wavoutContext) return;
@@ -1538,6 +1543,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         },
         wavOut: function (t,options) {
             var l=t.measureLength();
+            var SPS=t.SPS;
             console.log(l);
             var onLine=t.context;
             t.context=new OfflineAudioContext(1,Math.floor(SPS*l.endTime),SPS);
@@ -1569,6 +1575,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             //dTrack  = dSeq*(120/Tempo)/SPS
             //dCtx    = dTrack/rate = dSeq*(120/Tempo)/SPS/rate
             if (inputUnit===outputUnit) return delta;
+            var SPS=t.SPS;
             switch(inputUnit+2+outputUnit) {
                 case DU_SEQ+2+DU_TRK:
                 return delta*(120/t.Tempo)/SPS;
