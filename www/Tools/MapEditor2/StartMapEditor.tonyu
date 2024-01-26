@@ -14,7 +14,9 @@ $editorConfig={
     // 編集対象のマップファイルのあるフォルダ
     mapDir: file("../maps/"),
     
-    // オプション：「Play」ボタンで読み込まれるページ
+    // オプション：「Play」ボタンで読み込まれるページクラスを指定．
+    // フィールドmapFileにマップのファイル名．次のように読み込む:
+    //   $map=new Map2;$map.load(mapFile);
     //mainPage: Stage,
     
     // オプション：「Title」ボタンで読み込まれるページ

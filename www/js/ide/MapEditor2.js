@@ -9,15 +9,15 @@ define(function (require, exports) {
 `//「実行」→「StartMapEditorを実行」で起動
 
 $editorConfig={
-    //レイヤー名，レイヤーで使えるパターン
+    /* レイヤー名，レイヤーで使えるパターン */
     layers:[
-    //奥のレイヤー
+    /* 奥のレイヤー */
     {name:"base", pats:[-1,
         $pat_mapchip+88, $pat_mapchip+89, $pat_mapchip+90,
         $pat_mapchip+91, $pat_mapchip+124, $pat_mapchip+62,
         $pat_mapchip+78,
     ]},
-    //手前のレイヤー
+    /* 手前のレイヤー */
     {name:"on", pats:[-1,
         $pat_mapchip+1, $pat_mapchip+2, $pat_mapchip+3,
         $pat_mapchip+4, $pat_neko, $pat_neko+50,
@@ -25,16 +25,20 @@ $editorConfig={
     ]},
     ],
 
-    // 編集対象のマップファイルのあるフォルダ
+    /* 編集対象のマップファイルのあるフォルダ */
     mapDir: file("../maps/"),
 
-    // オプション：「Play」ボタンで読み込まれるページ
+    /* 
+    オプション：「Play」ボタンで読み込まれるページ
+       フィールドmapFileにマップのファイル名．
+       次のように読み込む:
+         $map=new Map2;$map.load(mapFile); */
     //mainPage: Stage,
 
-    // オプション：「Title」ボタンで読み込まれるページ
+    /* オプション：「Title」ボタンで読み込まれるページ */
     //titlePage: Title,
 
-    showHelp: true,//ヘルプの表示
+    showHelp: true,/* ヘルプの表示 */
 };
 loadPage(MapFiles);
 `};

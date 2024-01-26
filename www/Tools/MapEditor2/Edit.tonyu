@@ -1,4 +1,5 @@
 
+$Screen.selectLayer($mainLayer);
 
 var mapFile;
 var config=config||$editorConfig;// Config

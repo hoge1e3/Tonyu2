@@ -421,6 +421,7 @@ Tonyu.klass.define({
       main :function _trc_Edit_main() {
         var _this=this;
         
+        Tonyu.globals.$Screen.selectLayer(Tonyu.globals.$mainLayer);
         
         _this.config = _this.config||Tonyu.globals.$editorConfig;
         
@@ -453,7 +454,7 @@ Tonyu.klass.define({
           
         }
         new Tonyu.classes.kernel.Button({top: _this.h-_this.bw*1,left: _this.bw*4,width: 100,text: "Exit",key: "e",onClick: Tonyu.bindFunc(_this,_this.back)});
-        new Tonyu.classes.kernel.Button({top: _this.h-_this.bw*1,left: _this.w-100,width: 100,text: "Undo",key: "u",onClick: (function anonymous_1124() {
+        new Tonyu.classes.kernel.Button({top: _this.h-_this.bw*1,left: _this.w-100,width: 100,text: "Undo",key: "u",onClick: (function anonymous_1157() {
           
           _this.c.undo();
         })});
@@ -469,7 +470,7 @@ Tonyu.klass.define({
         
         Tonyu.globals.$Screen.setPivot(_this.sx,_this.sy);
         Tonyu.globals.$Screen.scrollTo(_this.sx,_this.sy);
-        _this.plw = Tonyu.globals.$Math.max.apply(Tonyu.globals.$Math,_this.config.layers.map((function anonymous_1602(l) {
+        _this.plw = Tonyu.globals.$Math.max.apply(Tonyu.globals.$Math,_this.config.layers.map((function anonymous_1635(l) {
           
           return l.pats.length;
         })));
@@ -478,37 +479,37 @@ Tonyu.klass.define({
         
         _this.c = new Tonyu.classes.mapEditor2.Cursor({x: 0,y: 0,curP: _this.curP});
         
-        _this.on("keyDown","c",(function anonymous_1747() {
+        _this.on("keyDown","c",(function anonymous_1780() {
           
           _this.curP.shift(1);
         }));
-        _this.on("keyDown","x",(function anonymous_1796() {
+        _this.on("keyDown","x",(function anonymous_1829() {
           
           _this.curP.shift(- 1);
         }));
-        _this.on("keyDown","q",(function anonymous_1846() {
+        _this.on("keyDown","q",(function anonymous_1879() {
           
           _this.curP.changeLayer();
         }));
-        _this.on("keyDown","d",(function anonymous_1894() {
+        _this.on("keyDown","d",(function anonymous_1927() {
           
           _this.scrollTo(_this.sx+32,_this.sy,_this.zoom);
         }));
-        _this.on("keyDown","a",(function anonymous_1947() {
+        _this.on("keyDown","a",(function anonymous_1980() {
           
           _this.scrollTo(_this.sx-32,_this.sy,_this.zoom);
         }));
-        _this.on("keyDown","s",(function anonymous_2000() {
+        _this.on("keyDown","s",(function anonymous_2033() {
           
           _this.scrollTo(_this.sx,_this.sy+32,_this.zoom);
         }));
-        _this.on("keyDown","w",(function anonymous_2053() {
+        _this.on("keyDown","w",(function anonymous_2086() {
           
           _this.scrollTo(_this.sx,_this.sy-32,_this.zoom);
         }));
         
         
-        _this.mmove = Tonyu.globals.$InputDevice.on("mouseMove",(function anonymous_2600(e) {
+        _this.mmove = Tonyu.globals.$InputDevice.on("mouseMove",(function anonymous_2633(e) {
           var cv;
           var csz;
           
@@ -528,7 +529,7 @@ Tonyu.klass.define({
           _this.lastMousePos={x: cv.x,y: cv.y};
         }));
         
-        _this.on("die",(function anonymous_2907() {
+        _this.on("die",(function anonymous_2940() {
           
           _this.mmove.remove();
         }));
@@ -539,7 +540,7 @@ Tonyu.klass.define({
         _this.mapToucher = new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$screenWidth,height: _this.h-_this.menuPanel.height,layer: Tonyu.globals.$frontLayer});
         
         
-        _this.mapToucher.on("touch",(function anonymous_3348(e) {
+        _this.mapToucher.on("touch",(function anonymous_3381(e) {
           var f;
           var csz;
           var s;
@@ -563,14 +564,14 @@ Tonyu.klass.define({
             return _this;
             
           } else {
-            s = {rollbacker: _this.c.rollbacker(),finger: f,rollback: (function anonymous_3921() {
+            s = {rollbacker: _this.c.rollbacker(),finger: f,rollback: (function anonymous_3954() {
               
               s.rollbacker.rollback();
               s.endEvent.remove();
               if (s.moveEvent) {
                 s.moveEvent.remove();
               }
-            }),endEvent: f.on("end",(function anonymous_4110() {
+            }),endEvent: f.on("end",(function anonymous_4143() {
               
               _this.singleTouchState=null;
             }))};
@@ -586,7 +587,7 @@ Tonyu.klass.define({
               
             }
             _this.pick();
-            f.on("move",(function anonymous_4479(e) {
+            f.on("move",(function anonymous_4512(e) {
               var moved;
               
               moved = _this.c.sel(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
@@ -612,7 +613,7 @@ Tonyu.klass.define({
               moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
               
               _this.put();
-              _this.singleTouchState.moveEvent=f.on("move",(function anonymous_5088(e) {
+              _this.singleTouchState.moveEvent=f.on("move",(function anonymous_5121(e) {
                 var moved;
                 
                 moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
@@ -630,6 +631,7 @@ Tonyu.klass.define({
       fiber$main :function* _trc_Edit_f_main(_thread) {
         var _this=this;
         
+        Tonyu.globals.$Screen.selectLayer(Tonyu.globals.$mainLayer);
         
         _this.config = _this.config||Tonyu.globals.$editorConfig;
         
@@ -662,7 +664,7 @@ Tonyu.klass.define({
           
         }
         new Tonyu.classes.kernel.Button({top: _this.h-_this.bw*1,left: _this.bw*4,width: 100,text: "Exit",key: "e",onClick: Tonyu.bindFunc(_this,_this.back)});
-        new Tonyu.classes.kernel.Button({top: _this.h-_this.bw*1,left: _this.w-100,width: 100,text: "Undo",key: "u",onClick: (function anonymous_1124() {
+        new Tonyu.classes.kernel.Button({top: _this.h-_this.bw*1,left: _this.w-100,width: 100,text: "Undo",key: "u",onClick: (function anonymous_1157() {
           
           _this.c.undo();
         })});
@@ -678,7 +680,7 @@ Tonyu.klass.define({
         
         Tonyu.globals.$Screen.setPivot(_this.sx,_this.sy);
         Tonyu.globals.$Screen.scrollTo(_this.sx,_this.sy);
-        _this.plw = Tonyu.globals.$Math.max.apply(Tonyu.globals.$Math,_this.config.layers.map((function anonymous_1602(l) {
+        _this.plw = Tonyu.globals.$Math.max.apply(Tonyu.globals.$Math,_this.config.layers.map((function anonymous_1635(l) {
           
           return l.pats.length;
         })));
@@ -687,37 +689,37 @@ Tonyu.klass.define({
         
         _this.c = new Tonyu.classes.mapEditor2.Cursor({x: 0,y: 0,curP: _this.curP});
         
-        _this.on("keyDown","c",(function anonymous_1747() {
+        _this.on("keyDown","c",(function anonymous_1780() {
           
           _this.curP.shift(1);
         }));
-        _this.on("keyDown","x",(function anonymous_1796() {
+        _this.on("keyDown","x",(function anonymous_1829() {
           
           _this.curP.shift(- 1);
         }));
-        _this.on("keyDown","q",(function anonymous_1846() {
+        _this.on("keyDown","q",(function anonymous_1879() {
           
           _this.curP.changeLayer();
         }));
-        _this.on("keyDown","d",(function anonymous_1894() {
+        _this.on("keyDown","d",(function anonymous_1927() {
           
           _this.scrollTo(_this.sx+32,_this.sy,_this.zoom);
         }));
-        _this.on("keyDown","a",(function anonymous_1947() {
+        _this.on("keyDown","a",(function anonymous_1980() {
           
           _this.scrollTo(_this.sx-32,_this.sy,_this.zoom);
         }));
-        _this.on("keyDown","s",(function anonymous_2000() {
+        _this.on("keyDown","s",(function anonymous_2033() {
           
           _this.scrollTo(_this.sx,_this.sy+32,_this.zoom);
         }));
-        _this.on("keyDown","w",(function anonymous_2053() {
+        _this.on("keyDown","w",(function anonymous_2086() {
           
           _this.scrollTo(_this.sx,_this.sy-32,_this.zoom);
         }));
         
         
-        _this.mmove = Tonyu.globals.$InputDevice.on("mouseMove",(function anonymous_2600(e) {
+        _this.mmove = Tonyu.globals.$InputDevice.on("mouseMove",(function anonymous_2633(e) {
           var cv;
           var csz;
           
@@ -737,7 +739,7 @@ Tonyu.klass.define({
           _this.lastMousePos={x: cv.x,y: cv.y};
         }));
         
-        _this.on("die",(function anonymous_2907() {
+        _this.on("die",(function anonymous_2940() {
           
           _this.mmove.remove();
         }));
@@ -748,7 +750,7 @@ Tonyu.klass.define({
         _this.mapToucher = new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$screenWidth,height: _this.h-_this.menuPanel.height,layer: Tonyu.globals.$frontLayer});
         
         
-        _this.mapToucher.on("touch",(function anonymous_3348(e) {
+        _this.mapToucher.on("touch",(function anonymous_3381(e) {
           var f;
           var csz;
           var s;
@@ -772,14 +774,14 @@ Tonyu.klass.define({
             return _this;
             
           } else {
-            s = {rollbacker: _this.c.rollbacker(),finger: f,rollback: (function anonymous_3921() {
+            s = {rollbacker: _this.c.rollbacker(),finger: f,rollback: (function anonymous_3954() {
               
               s.rollbacker.rollback();
               s.endEvent.remove();
               if (s.moveEvent) {
                 s.moveEvent.remove();
               }
-            }),endEvent: f.on("end",(function anonymous_4110() {
+            }),endEvent: f.on("end",(function anonymous_4143() {
               
               _this.singleTouchState=null;
             }))};
@@ -795,7 +797,7 @@ Tonyu.klass.define({
               
             }
             _this.pick();
-            f.on("move",(function anonymous_4479(e) {
+            f.on("move",(function anonymous_4512(e) {
               var moved;
               
               moved = _this.c.sel(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
@@ -821,7 +823,7 @@ Tonyu.klass.define({
               moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
               
               _this.put();
-              _this.singleTouchState.moveEvent=f.on("move",(function anonymous_5088(e) {
+              _this.singleTouchState.moveEvent=f.on("move",(function anonymous_5121(e) {
                 var moved;
                 
                 moved = _this.c.moveTo(_this.floor(e.finger.x/csz.w),_this.floor(e.finger.y/csz.h));
