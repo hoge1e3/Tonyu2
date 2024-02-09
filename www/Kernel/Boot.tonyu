@@ -399,7 +399,7 @@ mainLoop();
     args=args||[];
     var s=obj._scheduler||_scheduler;
     var th=s.newThread(obj, method, args);
-    obj.setThreadGroup(this);
+    if (obj!==this) obj.setThreadGroup(this);
     th.setThreadGroup(obj);
     return th;
 }

@@ -1,5 +1,5 @@
 if(!Tonyu.load)Tonyu.load=(_,f)=>f();
-Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
+Tonyu.load({"dontFix":true,"compiler":{"noLoopCheck":true,"namespace":"kernel","commentLastPos":true,"outputFile":"js/concat.js","requireFieldDecl":false,"field_strict":false,"defaultSuperClass":"","typeCheck":true,"dependingProjects":[]},"run":{"bootClass":"kernel.Boot","mainClass":"kernel.KernelDemo"},"social":{"prjName":"Kernel","title":"Kernel","whenPrjDirExists":"selectPolicy"}}, ()=>{
 Tonyu.klass.define({
   fullName: 'kernel.EventHandlerCaller',
   shortName: 'EventHandlerCaller',
@@ -38615,7 +38615,9 @@ Tonyu.klass.define({
         
         th = s.newThread(obj,method,args);
         
-        obj.setThreadGroup(_this);
+        if (obj!==_this) {
+          obj.setThreadGroup(_this);
+        }
         th.setThreadGroup(obj);
         return th;
       },
@@ -38633,7 +38635,9 @@ Tonyu.klass.define({
         
         th = s.newThread(obj,method,args);
         
-        obj.setThreadGroup(_this);
+        if (obj!==_this) {
+          obj.setThreadGroup(_this);
+        }
         th.setThreadGroup(obj);
         return th;
         
@@ -39103,7 +39107,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_17127() {
+        requestAnimationFrame((function anonymous_17143() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -39119,7 +39123,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_17127() {
+        requestAnimationFrame((function anonymous_17143() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
