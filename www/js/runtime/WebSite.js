@@ -86,6 +86,7 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 			WebSite.wwwDir=prot+"//"+location.host+"/t2ba/";
 			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
 			WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
+			WebSite.runtime="../runtime/";
 			/*
 			WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
 			WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";

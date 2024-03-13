@@ -26,6 +26,7 @@ const RealtimeErrorMarker=require("RealtimeErrorMarker");
 const Dialogs=require("Dialogs");
 const jshint=require("jshint");
 const MapEditor2=require("MapEditor2");
+const Auth=require("Auth");
 const API=require("API");
 $(function () {
     jshint.use(sh2);
@@ -59,14 +60,15 @@ $(function () {
 
     const autoRun=Util.getQueryString("autoRun");
     var curPrjDir=FS.get(dir);
-    if (WebSite.serverType==="BA") {
+    Auth.getBAInfo(curPrjDir);
+    /*if (WebSite.serverType==="BA") {
         (async function () {
             let info=await $.get(WebSite.controller+"?BAURL/show");
             let pdir=await $.get(WebSite.controller+"?Login/getPublishedDir", {project: curPrjDir.name() });
-            WebSite.pubURLOfPrj=            info.BA_PUB_URL+"/"+pdir;
+            WebSite.pubURLOfPrj=(info.BA_PUB_URL_IN_TOP||info.BA_PUB_URL)+"/"+pdir;
             console.log( WebSite.pubURLOfPrj, info, pdir);
         })();
-    }
+    }*/
     const optionFile=curPrjDir.rel("options.json");
     optionFixer.fixFile(optionFile);
     const editors={};

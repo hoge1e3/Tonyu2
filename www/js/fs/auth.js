@@ -14,14 +14,6 @@ define(["WebSite"],function (WebSite) {
         });
     };
     auth.assertLogin=function (options) {
-        /*if (typeof options=="function") options={complete:options};
-        if (!options.confirm) options.confirm="この操作を行なうためにはログインが必要です．ログインしますか？";
-        if (typeof options.confirm=="string") {
-            var mesg=options.confirm;
-            options.confirm=function () {
-                return confirm(mesg);
-            };
-        }*/
         auth.currentUser(function (user,csrfToken) {
             if (user) {
                 return options.success(user,csrfToken);
@@ -30,6 +22,14 @@ define(["WebSite"],function (WebSite) {
             //TODO: urlchange!
             options.showLoginLink(WebSite.serverTop+"/login");
         });
+    };
+    auth.getBAInfo=async function (prjDir) {
+        if (WebSite.serverType==="BA") {
+            let info=await $.get(WebSite.controller+"?BAURL/show");
+            let pdir=await $.get(WebSite.controller+"?Login/getPublishedDir", {project: prjDir.name() });
+            WebSite.pubURLOfPrj=(info.BA_PUB_URL_IN_TOP||info.BA_PUB_URL)+"/"+pdir;
+            console.log( WebSite.pubURLOfPrj, info, pdir);
+        }
     };
     window.Auth=auth;
     return auth;

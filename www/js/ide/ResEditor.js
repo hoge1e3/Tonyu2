@@ -123,7 +123,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                     root.onImageSelected=n=> {
                         const pn=n.replace(/\.(gif|png|jpg)$/,"");
                         add({
-                            name:`$pat_${pn}`,type:"single",url:"${runtime}images/"+n
+                            name:`$pat_${pn}`,type:"single",url:"${runtime/}images/"+n
                         });
                         IframeDialog.close();
                     };
@@ -191,13 +191,9 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                                 dragPoint.text("アップロード中...");
                                 var prjN=prj.getName()+"/";
                                 console.log("uploading", prjN, v.url,u);
-                                const r=await Blob.upload(prjN, v.url ,file);/*,{success:function (){
-                                    dragPoint.text(dragMsg);
-                                    v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
-                                    add(v);
-                                }});*/
+                                const r=await Blob.upload(prjN, v.url ,file);
                                 console.log(r);
-                                v.url="${pubURLOfPrj}"+v.url;
+                                v.url="${pubURLOfPrj/}"+v.url;
                                 add(v);
                             }
                         });

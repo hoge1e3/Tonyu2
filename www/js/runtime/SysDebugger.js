@@ -13,6 +13,7 @@ define(function (require/*,exports,module*/) {
     const thumbnail=require("thumbnail");
     const jshint=require("jshint");
     const Profiler=require("profiler2");
+    const Auth=require("Auth");
     const ns2depspec=WebSite.ns2depspec;
     Debugger.Profiler=Profiler;
     jshint.use(runtime);// UIDiag etc... needed
@@ -43,6 +44,7 @@ define(function (require/*,exports,module*/) {
     }
     async function start() {
         const prjDir=FS.get(getQueryString("prj")||root.Tonyu_StartProject);
+        await Auth.getBAInfo(prjDir);
         const prj=CompiledProject.create({dir:prjDir});
         prj.include(sysMod);
         await Debugger.init(prj);// sets $currentProject=prj
