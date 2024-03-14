@@ -218,6 +218,7 @@ $(".dropdown-toggle");
         "noSuchPat": "キャラクタパターン用変数{1}は定義されていません。",
         "invalidPatExpr": "キャラクタパターン{1}は存在しません。",
         "openProjectInNewWindow": "別ウィンドウで開く",
+        "openURLInNewWindow": "別ページで開く",
     };
     /*let buf="";
     for (let k of Object.keys(ja)) {
@@ -419,6 +420,7 @@ $(".dropdown-toggle");
         "noPushedPages": "Invalid page class passed to loadPage()",
         "noSuchPat": "No such variable: {1}",
         "invalidPatExpr": "No such glyph(image) number: {1}",
+        "openURLInNewWindow": "Open in new window",
     };
     function loadLocale() {
         try {

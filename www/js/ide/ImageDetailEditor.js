@@ -66,8 +66,8 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets","R"],
         item=_item;
         curItemName=itemName;
         d.dialog({width:600,height:520});
-        v.url.text(item.url);
         var url=Assets.resolve(item.url, prj);
+        v.url.text(url);
         if (WebSite.serverType==="BA") {
             v.openImg.show().attr("href",url);
         } else {

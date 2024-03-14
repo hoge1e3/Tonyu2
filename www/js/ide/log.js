@@ -1,4 +1,4 @@
-define(["FS","WebSite","Shell"], function (FS,WebSite,sh) {
+define(["FS","WebSite","Shell","logToServer2"], function (FS,WebSite,sh,logToServer2) {
     var Log={};
     var logHome=WebSite.logdir ? FS.resolve("${logdir}") : null;
     var doLog=logHome && logHome.exists();
@@ -59,6 +59,9 @@ define(["FS","WebSite","Shell"], function (FS,WebSite,sh) {
     Log.sendLog=function (log) {
         if (typeof window.sendLog==="function") {
             window.sendLog(log);
+        } else if (WebSite.serverType==="BA") {
+            const {result, detail, code, filename}=log;
+            logToServer2(filename,code?code.tonyu:"","HTML",result,detail,"tonyu");   
         }
     };
     return Log;

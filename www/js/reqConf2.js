@@ -117,7 +117,8 @@ var reqConf={
                 "copyToKernel": 1,
                 "FS": 1,
                 "requestFragment": 1,
-                "sync": "Sync",
+                //"sync": "Sync",
+                "sync2": "Sync",
                 "syncWithKernel": 1,
                 "DragDrop": 1
             },
@@ -218,6 +219,8 @@ var reqConf={
                 sysMod:1,
                 optionFixer:1,
                 DebugDialog: 1,
+                logToServer2: 1,
+                stringifyError: 1,
             },
             "lang": {
                 "ExpressionParser2": "ExpressionParser",
@@ -325,6 +328,7 @@ var reqConf={
                 "exportAsScriptTags": 1,
                 "exportToExe": 1,
                 "exportToJsdoit": 1,
+                "exportToBA": 1,
                 "forkBlobs": 1,
                 "ZipImporter": 1,
                 "importFromJsdoit": 1

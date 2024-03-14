@@ -1,10 +1,10 @@
 /*global requirejs*/
 requirejs(["FS","Wiki","Shell","Shell2",
-           /*"copySample",*/"NewProjectDialog","UI","Sync","Auth",
+           /*"copySample",*/"NewProjectDialog","UI","Auth",
            "zip","requestFragment","WebSite","extLink","DeferredUtil","Mesg",
        "ZipImporter","ProjectItem","ImportHTMLDialog","Util","root","R"],
   function (FS, Wiki,   sh,sh2,
-            /*copySample,  */NPD,           UI, Sync, Auth,
+            /*copySample,  */NPD,           UI,  Auth,
             zip,requestFragment,WebSite,extLink,DU,Mesg,
         ZipImporter,ProjectItem,ImportHTMLDialog,Util,root,R) {
     const lang=Util.getQueryString("lang");

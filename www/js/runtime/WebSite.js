@@ -82,17 +82,23 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 		setNS2DepSpec();
 		if (loc.match(/localhost\/t2ba/)) {
 			WebSite.serverType="BA";
-			WebSite.controller="../a.php";
+			WebSite.serverTop="../";
+			WebSite.controller=WebSite.serverTop+"a.php";
 			WebSite.wwwDir=prot+"//"+location.host+"/t2ba/";
 			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
 			WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
 			WebSite.runtime="../runtime/";
+			WebSite.url={
+				getDirInfo:WebSite.serverTop+"?getDirInfo",
+				getFiles:WebSite.serverTop+"?getFiles",
+				putFiles:WebSite.serverTop+"?putFiles"
+			};
 			/*
 			WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
 			WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
 			WebSite.quickUploadURL=prot+"//localhost/tsite/tonyu/project/quickDone.cgi";
 			*/
-			WebSite.scriptServer="https://localhost/t2ba/";
+			WebSite.scriptServer="http://localhost/t2ba/";
 		} else if (loc.match(/localhost\/tonyu2/)) {
 			WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
 			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";

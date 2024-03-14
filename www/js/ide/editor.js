@@ -28,6 +28,7 @@ const jshint=require("jshint");
 const MapEditor2=require("MapEditor2");
 const Auth=require("Auth");
 const API=require("API");
+const exportBA=require("exportToBA");
 $(function () {
     jshint.use(sh2);
     //https://codepen.io/oatssss/pen/oYxJQV?editors=0010
@@ -247,7 +248,7 @@ $(function () {
         }
         saveDesktopEnv();
     }
-    $("#exportToJsdoit").attr("href", jshint.scriptURL(";")).click(dialogs.exportHTML);
+    
     function dispName(f) {
         var name=f.name();
         if (f.isDir()) return name;
@@ -370,6 +371,7 @@ $(function () {
             if (sendURL) sendURL("debug.html?prj="+curPrjDir.path());
             else runDialog.show();
         } catch(e) {
+            e.isCompileError=true;
             if (sendURL) sendURL(e);
             else showError(e);
         } finally {
@@ -489,7 +491,13 @@ $(function () {
         var d=curPrjDir.rel(".desktop");
         d.obj(desktopEnv);
     }
-    $("#mkrun").click(FC(dialogs.mkrun));
+    if (WebSite.serverType==="BA") {
+        $("#publishMenu").remove();
+        $("#publish").click(()=>exportBA.run(curPrj));
+    } else {
+        $("#mkrun").click(FC(dialogs.mkrun));
+        $("#exportToJsdoit").attr("href", jshint.scriptURL(";")).click(dialogs.exportHTML);    
+    }
     $("#imgResEditor").click(FC(function () {
         resEditors.open("image");
     }));

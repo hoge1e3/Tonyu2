@@ -387,6 +387,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
             i.src=img;
             return i;
         }
+        if (!img) return;
         var cw=canvas.width;
         var ch=canvas.height;
         var cctx=canvas.getContext("2d");

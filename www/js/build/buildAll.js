@@ -1,5 +1,5 @@
-define(["genROM","Util","FS","Sync","Shell","WebSite"],
-        function (genROM,Util,FS,Sync,sh,WebSite) {
+define(["genROM","Util","FS","Shell","WebSite"],
+        function (genROM,Util,FS,sh,WebSite) {
     var build=Util.getQueryString("build",0);
     if (build) {
         $(doBuild);

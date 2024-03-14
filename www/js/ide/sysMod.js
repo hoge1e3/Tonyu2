@@ -21,7 +21,7 @@ return {
             //TPR.compile();
             this.detectPlugins();
             this.fixBootRunClasses();
-            if (!this.runScriptMode) thumbnail.set(this, 2000);
+            if (!this.runScriptMode && WebSite.serverType!=="BA") thumbnail.set(this, 2000);
             this.rawBoot(bootClassName);
         });
     },

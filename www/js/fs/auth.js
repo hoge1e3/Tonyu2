@@ -24,10 +24,14 @@ define(["WebSite"],function (WebSite) {
         });
     };
     auth.getBAInfo=async function (prjDir) {
+        const unSlash=(s)=>s.replace(/\/$/,"");
         if (WebSite.serverType==="BA") {
             let info=await $.get(WebSite.controller+"?BAURL/show");
             let pdir=await $.get(WebSite.controller+"?Login/getPublishedDir", {project: prjDir.name() });
-            WebSite.pubURLOfPrj=(info.BA_PUB_URL_IN_TOP||info.BA_PUB_URL)+"/"+pdir;
+            WebSite.pubURLOfPrj=unSlash(info.BA_PUB_URL_IN_TOP||info.BA_PUB_URL)+"/"+pdir;
+            WebSite.pubDirOfPrj="/pub/"+pdir;
+            WebSite.pubURLOfPrj_service=unSlash(info.BA_PUB_URL)+"/"+pdir;
+            WebSite.baRuntime_service=unSlash(info.BA_SERVICE_URL)+"/runtime/";
             console.log( WebSite.pubURLOfPrj, info, pdir);
         }
     };

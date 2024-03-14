@@ -134,6 +134,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
                 htmlcont=htmlcont.replace(/<!--UNSUP-->/,
                     `<script src="${scriptServer}js/runtime/detectUnsupported.js"></script>`);
                 htmlcont=htmlcont.replace(/TONYU_APP_VERSION/g,Math.floor(Math.random()*100000));
+                htmlcont=htmlcont.replace(/<!--WEBSITE_INJECTION-->/,`<script>window.WebSite=${JSON.stringify(options.WebSite||{})};</script>`);
                 return dest.rel(htmlfile.name()).text(htmlcont);
             });
         }

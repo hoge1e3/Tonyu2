@@ -35,7 +35,11 @@ class ErrorDialog {
             //src={name:function (){return R("unknown");},text:()=>null};
             pos=0;
         }
-        if (!src || typeof src.name!=="function") src={name:function (){return R("unknown");},text:()=>null};
+        if (!src || typeof src.name!=="function") src={
+            name:()=>R("unknown"),
+            text:()=>null,
+            path:()=>R("unknown"),
+        };
         if (err.stack && err.stack.length>0 && err.stack[0].fileName) {
             const compiler=ide.project.compiler;
             for (let {columnNumber, lineNumber, fileName} of err.stack) {
@@ -83,7 +87,8 @@ class ErrorDialog {
             srcd.append($("<span>").text(str.substring(pos)));
             elem.append(srcd);
         }
-        Log.sendLog({result:"Tonyu Error", detail:{message:mesgFull, pos}, code:{tonyu:str}});
+        Log.sendLog({result:"Tonyu "+(err.isCompileError?"Compile":"Runtime")+" Error", detail:{message:mesgFull, pos}, code:{tonyu:str},
+        filename:src.path()});
         elem.attr("title",R("error"));
         elem.dialog({width:600,height:400});
         $.data(elem,"opened",true);
