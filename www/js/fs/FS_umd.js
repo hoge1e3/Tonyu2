@@ -3070,7 +3070,7 @@ SFile.prototype={
         if (typeof _2==="function") handler=_2;
         var rfs=this.getFS().getRootFS();
         //var t=this;
-        rfs.addObserver(this.path(),function (path, meta) {
+        return rfs.addObserver(this.path(),function (path, meta) {
             handler(meta.eventType, rfs.get(path),meta );
         });
     },
