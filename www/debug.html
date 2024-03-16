@@ -9,7 +9,7 @@
 <script src="js/reqConf2.js"></script>
 <script>
     requirejs.config(reqConf);
-    const nw=localStorage.noconcat || (process!=="undefined" && process.cwd());
+    const nw=localStorage.noconcat || (typeof process!=="undefined" && process.cwd());
     console.log(nw);
     if (nw) {
         requirejs(["SysDebugger"],function () {
