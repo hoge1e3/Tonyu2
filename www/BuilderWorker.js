@@ -2010,6 +2010,9 @@ function genJS(klass, env, genOptions) {
         },
         backquoteText(node) {
             let s = node.text;
+            s = s.replace(/\\u([0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])/g, (_, r) => {
+                return String.fromCharCode(parseInt(`0x${r}`));
+            });
             s = s.replace(/\\(.)/g, (_, r) => {
                 switch (r) {
                     case "b": return "\b";
@@ -9750,7 +9753,10 @@ function tokenizerFactory({ reserved, caseInsensitive }) {
                     return [s.substring(0, i + 1)];
                 }
                 else if (c === "\\") {
-                    i++;
+                    if (s[i] === 'u')
+                        i += 4;
+                    else
+                        i++;
                 }
             }
             return false;
@@ -14683,6 +14689,19 @@ const root_1 = __importDefault(require("../lib/root"));
 const assert_1 = __importDefault(require("../lib/assert"));
 const RuntimeTypes_1 = require("./RuntimeTypes");
 const TError_1 = __importDefault(require("./TError"));
+const reservedWords = [
+    "abstract", "arguments", "await", "boolean", "break", "byte",
+    "case", "catch", "char", "class", "const", "continue",
+    "debugger", "default", "delete", "do", "double",
+    "else", "enum", "eval", "export", "extends", "false",
+    "final", "finally", "float", "for", "function", "goto",
+    "if", "implements", "import", "in", "instanceof", "int",
+    "interface", "let", "long", "native", "new", "null",
+    "package", "private", "protected", "public", "return",
+    "short", "static", "super", "switch", "synchronized",
+    "this", "throw", "throws", "transient", "true", "try", "typeof",
+    "var", "void", "volatile", "while", "with", "yield"
+];
 // old browser support
 if (!root_1.default.performance) {
     root_1.default.performance = {};
@@ -14843,6 +14862,8 @@ var klass = {
             delete methods.initialize;
             function exprWithName(name, expr, bindings) {
                 const bnames = Object.keys(bindings);
+                if (reservedWords.includes(name))
+                    name = "_" + name;
                 const f = new Function(...bnames, `const ${name}=${expr}; return ${name};`);
                 return f(...bnames.map((k) => bindings[k]));
             }
@@ -15216,18 +15237,10 @@ class TonyuThread {
         this.tGrpObjectPoolAge = g.objectPoolAge;
         //if (g) g.add(fb);
     }
-    isWaiting() {
-        return this._isWaiting;
-    }
     suspend() {
         this.fSuspended = true;
         //this.cnt=0;
     }
-    /*enter(frameFunc: Function) {
-        //var n=frameFunc.name;
-        //cnts.enterC[n]=(cnts.enterC[n]||0)+1;
-        this.frame={prev:this.frame, func:frameFunc};
-    }*/
     apply(obj, methodName, args) {
         if (!args)
             args = [];
@@ -15248,19 +15261,6 @@ class TonyuThread {
         }
         args = [this].concat(args);
         this.generator = method.apply(obj, args);
-        /*var pc=0;
-        return this.enter(function (th) {
-            switch (pc){
-            case 0:
-                method.apply(obj,args);
-                pc=1;break;
-            case 1:
-                th.termStatus="success";
-                th.notifyEnd(th.retVal);
-                args[0].exit();
-                pc=2;break;
-            }
-        });*/
     }
     notifyEnd(r) {
         this.onEndHandlers.forEach(function (e) {
@@ -15313,47 +15313,9 @@ class TonyuThread {
     fail(err) {
         return this.promise().then(e => e, err);
     }
-    /*gotoCatch(e) {
-        var fb=this;
-        if (fb.tryStack.length==0) {
-            fb.termStatus="exception";
-            fb.kill();
-            if (fb.handleEx) fb.handleEx(e);
-            else fb.notifyTermination({status:"exception",exception:e});
-            return;
-        }
-        fb.lastEx=e;
-        var s=fb.tryStack.pop();
-        while (fb.frame) {
-            if (s.frame===fb.frame) {
-                fb.catchPC=s.catchPC;
-                break;
-            } else {
-                fb.frame=fb.frame.prev;
-            }
-        }
-    }
-    startCatch() {
-        var fb=this;
-        var e=fb.lastEx;
-        fb.lastEx=null;
-        return e;
-    }
-    exit(res) {
-        //cnts.exitC++;
-        this.frame=(this.frame ? this.frame.prev:null);
-        this.retVal=res;
-    }
-    enterTry(catchPC) {
-        var fb=this;
-        fb.tryStack.push({frame:fb.frame,catchPC:catchPC});
-    }
-    exitTry() {
-        var fb=this;
-        fb.tryStack.pop();
-    }*/
     waitEvent(obj, eventSpec) {
         const fb = this;
+        fb._isWaiting = true;
         fb.suspend();
         if (typeof obj.on !== "function")
             return;
@@ -15361,31 +15323,13 @@ class TonyuThread {
             fb.lastEvent = args;
             fb.retVal = args[0];
             h.remove();
+            fb._isWaiting = false;
             fb.stepsLoop();
         });
     }
-    /*runAsync(f:Function) {
-        var fb=this;
-        var succ=function () {
-            fb.retVal=arguments;
-            fb.steps();
-        };
-        var err=function () {
-            var msg="";
-            for (var i=0; i<arguments.length; i++) {
-                msg+=arguments[i]+",";
-            }
-            if (msg.length==0) msg="Async fail";
-            var e:any=new Error(msg);
-            e.args=arguments;
-            fb.gotoCatch(e);
-            fb.steps();
-        };
-        fb.suspend();
-        setTimeout(function () {
-            f(succ,err);
-        },0);
-    }*/
+    isWaiting() {
+        return this._isWaiting;
+    }
     waitFor(j) {
         var fb = this;
         fb._isWaiting = true;
@@ -15396,10 +15340,12 @@ class TonyuThread {
         return Promise.resolve(p).then(function (r) {
             fb.retVal = r;
             fb.lastEx = null;
+            fb._isWaiting = false;
             fb.stepsLoop();
         }).then(e => e, function (e) {
             e = fb.wrapError(e);
             fb.lastEx = e;
+            fb._isWaiting = false;
             fb.stepsLoop();
         });
     }
@@ -15416,6 +15362,9 @@ class TonyuThread {
     }
     steps() {
         const fb = this;
+        if (fb.isWaiting()) {
+            throw new Error("Illegal state: Cannot step while awaiting.");
+        }
         if (fb.isDead())
             return;
         const sv = this.Tonyu.currentThread;
@@ -15450,18 +15399,6 @@ class TonyuThread {
                 return this.waitFor(awaited);
             }
         }
-        /*
-        while (fb.cnt>0 && fb.frame) {
-            try {
-                //while (new Date().getTime()<lim) {
-                while (fb.cnt-->0 && fb.frame) {
-                    fb.frame.func(fb);
-                }
-                fb.preempted= (!fb.fSuspended) && fb.isAlive();
-            } catch(e) {
-                fb.gotoCatch(e);
-            }
-        }*/
     }
     exception(e) {
         this.termStatus = "exception";
@@ -15483,18 +15420,12 @@ class TonyuThread {
     }
     kill() {
         var fb = this;
-        //fb._isAlive=false;
         fb._isDead = true;
-        //fb.frame=null;
         if (!fb.termStatus) {
             fb.termStatus = "killed";
             fb.notifyTermination({ status: "killed" });
         }
     }
-    /*clearFrame() {
-        this.frame=null;
-        this.tryStack=[];
-    }*/
     *await(p) {
         this.lastEx = null;
         yield p;

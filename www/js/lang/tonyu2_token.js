@@ -1173,7 +1173,10 @@ function tokenizerFactory({ reserved, caseInsensitive }) {
                     return [s.substring(0, i + 1)];
                 }
                 else if (c === "\\") {
-                    i++;
+                    if (s[i] === 'u')
+                        i += 4;
+                    else
+                        i++;
                 }
             }
             return false;
