@@ -18,12 +18,15 @@ function (root, plugins,sysMod,JS) {
 			getDependingProjects: ()=>[],
 			async loadClasses() {
                 const opt=this.getOptions();
-                // TODO Bitarrow kernel
                 for (let dep of [...opt.compiler.dependingProjects, {namespace:this.getNamespace()}]) {
                     const ns=dep.namespace;
-                    await JS.load(`js/${ns}.js`);
+                    // TODO Bitarrow kernel bad knowhow
+                    if (ns==="kernel" && window.WebSite && window.WebSite.compiledKernel) {
+				        await JS.load(window.WebSite.compiledKernel);
+                    } else {
+                        await JS.load(`js/${ns}.js`);
+                    }
                 }
-				//await JS.load(WebSite.compiledKernel);
 			},
 			getNamespace() {
 				var opt=this.getOptions();
