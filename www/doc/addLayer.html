@@ -1,0 +1,24 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="Screen">Screen</a></p>
+<h1 id="screenaddlayerメソッド">Screen.addLayerメソッド</h1>
+<p>スクリーンに<a href="%E5%BA%A7%E6%A8%99%E7%B3%BB%E3%81%A8%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC">レイヤー</a>を追加します．</p>
+<h2 id="書式">書式</h2>
+<pre><code>addLayer(layer, at, name)
+</code></pre>
+<p>引数は<code>addLayer{layer: ?? , at: ?? , name: ??}</code>のようにオブジェクトで渡すこともできます．</p>
+<ul>
+<li><code>layer</code> <ul>
+<li>省略すると新しいレイヤーを作成します．</li>
+<li>他のスクリーンに対してaddLayerメソッドを呼び出した戻り値を指定すると，そのスクリーンと同じレイヤーを表示させることができます．スクロール位置はそのスクリーンとは独立に指定できます．</li>
+</ul>
+</li>
+<li><code>at</code> レイヤーの挿入位置を，0から（現在のレイヤー数-1）での数値で指定します．0を指定すると一番手前になります．省略すると一番奥になります．</li>
+<li><code>name</code> レイヤーの名前を指定します．同じ名前のレイヤーは追加できません．省略可能．</li>
+</ul>
+<h2 id="戻り値">戻り値</h2>
+<p>追加されたレイヤーオブジェクト．newで<a href="Actor">Actor</a>を作成するときにlayerに設定可能．</p>
+</body></html>

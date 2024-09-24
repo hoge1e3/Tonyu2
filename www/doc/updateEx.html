@@ -3,21 +3,22 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="BaseActor">BaseActor</a></p>
-<h1 id="updateex-">updateExメソッド</h1>
+<h1 id="updateexメソッド">updateExメソッド</h1>
 <p>現在の処理を中断し，描画などの処理を行うupdateメソッドを複数フレームにわたり行います．</p>
-<h1 id="-">書式</h1>
-<pre><code class="lang-JS">updateEx(n);
+<h1 id="書式">書式</h1>
+<pre><code class="language-JS">updateEx(n);
 </code></pre>
 <p><em>n</em>フレーム待機します．</p>
-<h1 id="-">その他</h1>
+<p><em>n</em>が整数でない場合，<em>n</em>=<em>a/b</em>であるとして，updateExを<em>b</em>回呼び出すと，合計で<em>a</em>フレーム待機します（例：<em>n</em>=1/2の場合，updateExを2回呼び出すと1フレーム待機する）</p>
+<h1 id="その他">その他</h1>
 <p>このメソッドは待機系メソッドです．待機不能モードでは何も動作を行いません．（詳細は<a href="waitmode">動作モード</a>を参照してください）</p>
-<p><a href="UpdateEx-実例">実例</a></p>
+<p><a href="UpdateEx-%E5%AE%9F%E4%BE%8B">実例</a></p>
 <h1 id="backlink">Backlink</h1>
 <ul>
-<li><a href="onUpdate-実例">onUpdate - 例</a></li>
+<li><a href="onUpdate-%E5%AE%9F%E4%BE%8B">onUpdate - 例</a></li>
 <li><a href="onUpdate">onUpdateメソッド</a></li>
 <li><a href="setEconomyMode">Boot.setEconomyMode メソッド</a></li>
 </ul>

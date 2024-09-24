@@ -5,21 +5,23 @@
 <script src="js/doc.js"></script>
 <h1 id="tonyu2におけるpromiseオブジェクトの扱いについて">Tonyu2におけるPromiseオブジェクトの扱いについて</h1>
 <p>Tonyu2 の命令の中には，JavaScriptのPromiseオブジェクトを返すものがいくつかあります．（例：<a href="Panel.load">Panel.load</a>，<a href="HTMLUI">HTMLUI.getFile</a>，<a href="WebSocket">WebSocket.enterRoom</a>など）</p>
-<p>※Promiseオブジェクトは，非同期処理（時間のかかる処理や，通信を必要とする処理など）の結果を受け取るための仕組みです．詳しくは「JavaScript Promise」などで調べててみてください．</p>
+<p>※Promiseオブジェクトは，非同期処理（時間のかかる処理や，通信を必要とする処理など）の結果を受け取るための仕組みです．詳しくは「Javascript Promise」などで調べてみてください．</p>
 <p>Promiseオブジェクトの結果を受け取るには，次の2つの方法があります．</p>
 <h2 id="waitforを使う"><a href="waitFor">waitFor</a>を使う</h2>
 <ul>
-<li>この方法は，<a href="waitmode">待機可能モード</a>でのみ使えます．<pre><code>let e=waitFor($panel.load(&quot;test.png&quot;));
+<li>この方法は，<a href="waitmode">待機可能モード</a>でのみ使えます．</li>
+</ul>
+<pre><code>let e=waitFor($panel.load(&quot;test.png&quot;));
 print(&quot;test.png が読み込まれました&quot;);
 </code></pre>
-</li>
+<ul>
 <li>JavaScriptのawaitに近いですが，次のような違いがあります．<ul>
 <li>awaitは直後の(  )が省略できますが，waitFor(  ) は省略できません．</li>
 <li>式の途中では使用できません．</li>
 </ul>
 </li>
 </ul>
-<h2 id="thenメソッドを使う（javascriptと同じ方法）">thenメソッドを使う（JavaScriptと同じ方法）</h2>
+<h2 id="thenメソッドを使う">thenメソッドを使う</h2>
 <ul>
 <li>この方法は，<a href="waitmode">待機可能モード</a>でも<a href="waitmode">待機不能モード</a>でも使えます．</li>
 </ul>

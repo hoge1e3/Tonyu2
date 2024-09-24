@@ -3,20 +3,20 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
-<p><a href="ScaledCanvas">Screen</a></p>
-<h1 id="scrollto-">scrollToメソッド</h1>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
+<p><a href="Screen">Screen</a></p>
+<h1 id="scrolltoメソッド">scrollToメソッド</h1>
 <p>画面のスクロール（平行移動・回転・伸縮）を行います。</p>
-<pre><code class="lang-JS">$Screen.scrollTo(worldX,worldY, scale, rotation)
+<pre><code class="language-JS">$Screen.scrollTo(worldX,worldY, scale, rotation)
 </code></pre>
 <ul>
 <li>選択されているレイヤー(※1)における座標<code>(worldX, worldY)</code>が、スクロール基準点(※2) に一致するようにスクロールさせます。</li>
 <li><code>scale</code>、<code>rotataion</code>が指定された場合は、スクロール基準点を中心に画面全体を拡大(scale&gt;1)、縮小(scale&lt;1)、回転(右にrotation度)させます。</li>
 </ul>
-<p>※1 選択されている<a href="座標系とレイヤー">レイヤー</a>はデフォルトでは$mainLayerです。<a href="selectLayer">selectLayer</a>メソッドで変更可能です。</p>
+<p>※1 選択されている<a href="%E5%BA%A7%E6%A8%99%E7%B3%BB%E3%81%A8%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC">レイヤー</a>はデフォルトでは$mainLayerです。<a href="selectLayer">selectLayer</a>メソッドで変更可能です。</p>
 <p>※2 スクロール基準点はデフォルトでは画面の左上です。<a href="setPivot">setPivot</a>メソッドで変更可能です。</p>
-<p><a href="ScreenscrollTo-実例">実例</a></p>
+<p><a href="ScreenscrollTo-%E5%AE%9F%E4%BE%8B">実例</a></p>
 <p>.</p>
 <h1 id="backlink">Backlink</h1>
 <ul>

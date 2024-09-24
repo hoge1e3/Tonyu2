@@ -20,15 +20,17 @@
 <li>属性名が1個もない場合は{属性名1:属性値1, 属性名2:属性値2, ...}は省略可能です．</li>
 </ul>
 <h2 id="例">例</h2>
+<p>このように書いたHTML式は，</p>
 <pre><code class="language-JS">[&quot;div&quot;, {style:&quot;background:white;&quot;},
   [&quot;h1&quot;, &quot;Welcome&quot;],
   [&quot;button&quot;, {onclick: function () { print (&quot;World&quot;);  }}, &quot;Hello&quot;]
 ]
 </code></pre>
+<p>このようなHTMLに解釈されます．
+※buttonにはclick時のイベントが割り当てられています</p>
 <pre><code class="language-HTML">&lt;div style=&quot;background:white;&quot;&gt;
   &lt;h1&gt;Welcome&lt;/h1&gt;
   &lt;button&gt;Hello&lt;/button&gt;
 &lt;/div&gt;
 </code></pre>
-<p>※buttonにはclick時のイベントが割り当てられています</p>
 </body></html>

@@ -3,7 +3,34 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><a href="selectLayer">selectLayer</a> / <a href="api">api</a></p>
-<h1 id="screen">Screen</h1>
-<p>この項目はまだ作成されていません．</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
+<p><a href="api">api</a></p>
+<h1 id="screenクラス">Screenクラス</h1>
+<p>ゲーム画面をあらわすオブジェクトです．<a href="Boot">Boot</a>クラスで<code>$Screen</code> というオブジェクトで初期化されます．</p>
+<p><code>$Screen</code>は、画面の手前から順に $frontLayer、 $mainLayer、 $backLayerという3つの<a href="%E5%BA%A7%E6%A8%99%E7%B3%BB%E3%81%A8%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC">レイヤー</a>
+からなります。これらの3つのレイヤーは独立して <a href="Screen.scrollTo">スクロール</a>
+（平行移動・回転・伸縮）が可能です</p>
+<h2 id="フィールド">フィールド</h2>
+<ul>
+<li>clearBG  背景を透過色で消去したい場合は<code>true</code>を指定します．<a href="setBGColor">setBGColor</a>も参照してください．</li>
+</ul>
+<h2 id="メソッド">メソッド</h2>
+<ul>
+<li><a href="resize">resize</a></li>
+<li><a href="setBGColor">setBGColor</a></li>
+<li><a href="Screen.scrollTo">scrollTo</a></li>
+<li><a href="setPivot">setPivot</a></li>
+<li><a href="selectLayer">selectLayer</a></li>
+<li><a href="convert">convert</a></li>
+<li><a href="addLayer">addLayer</a></li>
+<li><a href="setDefaultLayer">setDefaultLayer</a></li>
+</ul>
+<p>.</p>
+<h1 id="backlink">Backlink</h1>
+<ul>
+<li><a href="$touches">$touches</a></li>
+<li><a href="$mouseX,$mouseY">$mouseX/$mouseY</a></li>
+<li><a href="print">printメソッド</a></li>
+</ul>
 </body></html>

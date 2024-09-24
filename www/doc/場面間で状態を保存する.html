@@ -3,32 +3,53 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><a href="用途別リファレンス">用途別リファレンス</a></p>
-<h1 id="-">場面間で状態を保存する</h1>
-<p><a href="loadPage-実例">場面の切り替え</a>で，別のページに移動して，また元のページに戻ってきたときに，プレイヤーの位置などの状態がゲームスタート時の状態にリセットされてしまうことがあります．</p>
-<p>ページを切り替える前に状態をグローバル変数に保存しておき，元のページに戻ったときに状態を復元させることでこの問題を解決できます．</p>
+<p><a href="%E7%94%A8%E9%80%94%E5%88%A5%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9">用途別リファレンス</a></p>
+<h1 id="場面間で状態を保存する">場面間で状態を保存する</h1>
+<p><a href="loadPage-%E5%AE%9F%E4%BE%8B">場面の切り替え</a>で，別のページに移動して，また元のページに戻ってきたときに，プレイヤーの位置などの状態がゲームスタート時の状態にリセットされてしまうことがあります．</p>
+<p>ページを切り替える時に<a href="loadPage">loagPage</a>の第2引数にtrueを指定すると，移動先のページで<code>loadPage()</code>を実行すると状態を復元させることができます．</p>
 <p>例：</p>
 <p>Main</p>
-<pre><code>$player_x=100;
-loadPage(Field);
-</code></pre><p>Field</p>
-<pre><code>new Player;
-</code></pre><p>Player</p>
-<pre><code>// $player_xからxを復元
-x=$player_x;
-y=200;
-while(true) {
+<pre><code>new Label{text:&quot;メインフィールド&quot;,x:100,y:100};
+$player=new Player{x:200,y:200,p:$pat_neko,hp:10};
+new Enemy{x:300,y:200,p:$pat_neko+45, hp:5};
+new Enemy{x:350,y:200,p:$pat_neko+46, hp:20};
+</code></pre>
+<p>Player</p>
+<pre><code>while(true) {
     if(getkey(&quot;left&quot;)) x--;
     if(getkey(&quot;right&quot;)) x++;
-    if (getkey(&quot;space&quot;)==1) {
-        // $player_xに値を保存
-        $player_x=x;
-        loadPage(Battle);
+    e=crashTo(Enemy);
+    if (e) {//敵に触れたら
+        $enemy=e;
+        //戦闘画面に移動するが，trueを指定すると後で戻ってくることができる．
+        loadPage(Battle,true);
+        //戦闘画面から戻ってくるとここから再開
+        if($win){
+            e.die();
+        } else {
+            x-=10;  
+        }
     }
     update();
 }
-</code></pre><p>Battle</p>
-<pre><code>new Label{text:&quot;Battle&quot;, x:100, y:100};
+</code></pre>
+<p>Battle</p>
+<pre><code>new Label{text:&quot;戦闘画面&quot;,x:100,y:100};
+print(&quot;戦闘！&quot;);
+updateEx(30);
+print(&quot;相手HP: &quot;+$enemy.hp);
+updateEx(30);
+if ($player.hp&gt;$enemy.hp){
+    print(&quot;勝った!&quot;);
+    $win=true;
+} else {
+    print(&quot;負けた!&quot;);
+    $win=false;
+}
 updateEx(60);
-loadPage(Field);
-</code></pre></body></html>
+loadPage();//前のページに戻る．
+</code></pre>
+<p>Enemy</p>
+<pre><code>//中身は空でよいが，ファイルは作成する
+</code></pre>
+</body></html>

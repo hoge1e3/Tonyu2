@@ -3,10 +3,10 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="lang">lang</a></p>
-<h1 id="-">クラス定義</h1>
+<h1 id="クラス定義">クラス定義</h1>
 <p>Tonyu2では，1つの<a href="fs">ファイル</a>に1つのクラスを定義します．</p>
 <ul>
 <li>ファイル名は <code>クラス名</code>.tonyu という形式になります．<ul>
@@ -18,24 +18,24 @@
 <li>継承宣言</li>
 <li>組み込み宣言</li>
 <li>native宣言</li>
-<li>mainメソッドの処理内容</li>
-<li>非mainメソッドの定義</li>
+<li>メインメソッドの処理内容</li>
+<li>非メインメソッドの定義</li>
 </ul>
 </li>
 <li>定義された(Tonyu2の)クラスは，Javascriptのいわゆる「クラス」(function+prototypeによるメソッド定義）として機能します．</li>
 </ul>
-<h2 id="-">継承宣言</h2>
+<h2 id="継承宣言">継承宣言</h2>
 <p>このクラスの親クラスを設定します．ファイルの先頭に次のように宣言します</p>
-<pre><code class="lang-JS">extends 親クラス名;
+<pre><code class="language-JS">extends 親クラス名;
 </code></pre>
 <ul>
 <li>継承宣言を省略すると，<a href="options">プロジェクト設定</a>によって設定されている親クラスを自動的に継承します．</li>
 <li>親クラス名 に <code>null</code>を設定すると，親クラスがないクラスになります．</li>
 <li>継承は，JavaScriptの一般的な継承の方法（このクラスを表す関数オブジェクトのprototypeが，親クラスのオブジェクトになる）で行われます．</li>
 </ul>
-<h2 id="-">組み込み宣言</h2>
+<h2 id="組み込み宣言">組み込み宣言</h2>
 <p>このクラスに組み込むクラス（モジュールクラス）を設定します．ファイルの先頭，または継承宣言に続いて次のように宣言します．</p>
-<pre><code class="lang-JS">includes モジュールクラス名[, モジュールクラス名...];
+<pre><code class="language-JS">includes モジュールクラス名[, モジュールクラス名...];
 </code></pre>
 <ul>
 <li>このクラスでは，組み込んだモジュールクラスがもつメソッドを利用できます．</li>
@@ -62,27 +62,28 @@
 <li>B includes FMod</li>
 </ul>
 <p>プロトタイプチェーンは，A→DMod→CMod→EMod→B→FModになります</p>
-<h2 id="native-">native宣言</h2>
+<h2 id="native宣言">native宣言</h2>
 <p>native宣言は，Tonyu2のプログラムからJavascriptのネイティブオブジェクトにアクセスするために用います．ファイル中で次のように宣言します．</p>
-<pre><code class="lang-JS">native 変数名;
+<pre><code class="language-JS">native 変数名;
 </code></pre>
 <ul>
 <li>指定された変数名を，このファイル中ではJavascriptのトップレベルスコープ（一般的にはwindowオブジェクト）に定義されている変数の値として扱います．</li>
 <li>親クラスに書いてあるnative宣言は子クラスには適用されません．必要に応じて子クラスにも同じnative宣言を書く必要があります．</li>
 </ul>
-<h2 id="main-">mainメソッドの定義</h2>
-<p>ファイルのトップレベル（メソッド定義に囲まれていない部分）に書かれた文はmainメソッドの内容として定義されます．<br>mainメソッドは，mainという名前を暗黙的にもちます．引数を受け取ることはできません．</p>
+<h2 id="メインメソッドの定義">メインメソッドの定義</h2>
+<p>ファイルのトップレベル（メソッド定義に囲まれていない部分）に書かれた文はメインメソッドの内容として定義されます．
+メインメソッドは，mainという名前を暗黙的にもちます．引数を受け取ることはできません．</p>
 <p><a href="Actor">Actor</a>クラスなどでは，オブジェクトが出現してから停止するまでの動作を記述するのに用いられます．</p>
-<h2 id="-main-">非mainメソッドの定義</h2>
-<p>非mainメソッドは，ファイルのトップレベルにおいて次の形式で定義します．</p>
-<pre><code class="lang-JS">function メソッド名(引数リスト) {
+<h2 id="非メインメソッドの定義">非メインメソッドの定義</h2>
+<p>非メインメソッドは，ファイルのトップレベルにおいて次の形式で定義します．</p>
+<pre><code class="language-JS">function メソッド名(引数リスト) {
    処理内容
 }
 </code></pre>
 <p>※function の代わりに \ が使用可能です（<a href="sugar">拡張構文</a>参照)</p>
-<h2 id="-">プロパティの定義</h2>
+<h2 id="プロパティの定義">プロパティの定義</h2>
 <p>プロパティ（getter/setter）は次の書式で定義します</p>
-<pre><code class="lang-JS">//getter
+<pre><code class="language-JS">//getter
 \プロパティ名 {
   処理内容
 }
@@ -92,7 +93,7 @@
 }
 </code></pre>
 <p>例</p>
-<pre><code class="lang-JS">\myProp {
+<pre><code class="language-JS">\myProp {
    print(&quot;Get myProp=&quot;+_myp);
    return _myp;
 }
@@ -103,14 +104,14 @@
 myProp=10; //  Set myProp to 10
 x=myProp;  //  Get myProp=10
 </code></pre>
-<h1 id="-">変数の種類</h1>
+<h1 id="変数の種類">変数の種類</h1>
 <ul>
 <li>引数<ul>
 <li>１つのメソッドに渡される値です．メソッド宣言の引数リストに記述されます．１回のメソッド呼び出しが終わると破棄されます．</li>
 </ul>
 </li>
 <li>ローカル変数<ul>
-<li>非mainのメソッド宣言の処理中でvar で宣言されます．１回のメソッド呼び出しが終わると破棄されます．</li>
+<li>非メインのメソッド宣言の処理中でvar またはlet で宣言されます．１回のメソッド呼び出しが終わると破棄されます．</li>
 </ul>
 </li>
 <li>グローバル変数<ul>
@@ -125,6 +126,7 @@ x=myProp;  //  Get myProp=10
 </li>
 <li>native変数<ul>
 <li>native宣言によって宣言された名前の変数です．Javascriptのトップレベルスコープにおける同名の変数を参照します．</li>
+<li>次の変数はnative宣言をしていなくてもJavascriptのトップレベルスコープにおける同名の変数を参照します：<code>Array</code> <code>String</code> <code>Number</code> <code>Boolean</code> <code>Object</code> <code>RegExp</code> <code>Error</code> <code>Date</code> <code>Promise</code></li>
 </ul>
 </li>
 <li>束縛されたメソッド<ul>
@@ -135,7 +137,7 @@ x=myProp;  //  Get myProp=10
 <li>フィールド<ul>
 <li>そのクラスのオブジェクトがもつ値です．<ul>
 <li>上のどれにもあてはまらない変数はフィールドとして解釈されます．</li>
-<li><a href="options">プロジェクトオプション</a>で，「フィールド宣言を明示的に行う」を有効にしている場合や，ソースコード中に<code>&quot;field strict&quot;;</code> という文がある場合，mainメソッド中で <code>var myField;</code>のように宣言したものがフィールドとして解釈されます．宣言がない場合はコンパイルエラーになります．<ul>
+<li><a href="options">プロジェクトオプション</a>で，「フィールド宣言を明示的に行う」を有効にしている場合や，ソースコード中に<code>&quot;field strict&quot;;</code> という文がある場合，mainメソッド中で <code>var myField; </code> <code>let myField; </code>のように宣言したものがフィールドとして解釈されます．宣言がない場合はコンパイルエラーになります．<ul>
 <li>このオプションが有効の場合でも， ドット演算子による任意のフィールドへのアクセスは可能です．例えば<code>foo</code>を宣言せずに使用するとエラーになりますが，<code>this.foo</code> と書いた場合はエラーになりません．</li>
 </ul>
 </li>
@@ -145,16 +147,16 @@ x=myProp;  //  Get myProp=10
 </ul>
 </li>
 </ul>
-<h1 id="-">例</h1>
+<h1 id="例">例</h1>
 <p>MyClass</p>
-<pre><code class="lang-JS">extends Actor;
+<pre><code class="language-JS">extends Actor;
 native alert;
-// main関数
+// メインメソッド
 x=3;
 rate=5;
 y=mult(x);
 alert(y); // 15
-// main関数終わり
+// メインメソッド終わり
 \mult(a) {
   var res=a*rate;
   return res;

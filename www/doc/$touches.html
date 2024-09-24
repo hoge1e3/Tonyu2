@@ -3,47 +3,38 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<html><body class="markdown-body">
-<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" href="css/style.css"/>
-<script src="js/jquery-1.10.1.js"></script>
-<script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="api">api</a></p>
-<h1 id="-touches">$touches</h1>
+<h1 id="touches">$touches</h1>
 <p>タッチパネルのタッチされた座標を返します．</p>
-<p><code>$touches[i]</code>は，i番目（0が最初の指）の指がタッチした場所についての情報を格納する<a href="TouchFinger">TouchFinger</a>オブジェクトです．</p>
+<p><code>$touches[i] </code>は，i番目（0が最初の指）の指がタッチした場所についての情報を格納する<a href="TouchFinger">TouchFinger</a>オブジェクトです．</p>
 <ul>
 <li><code>$touches[i].x</code>と<code>$touches[i].y</code>は，タッチされた場所のx,y座標（※）です．</li>
 <li><code>$touches[i].vx</code>と<code>$touches[i].vy</code>は，タッチ後，スワイプした量（１フレームあたりの移動量）です</li>
 <li><code>$touches[i].touched</code>は，今その場所がタッチされたばかりなら<code>1</code>，タッチされ続けていればそのフレーム数，タッチされていなければ<code>0</code>を返します</li>
 <li><code>$touches.findWithin(obj,dist)</code>メソッドは，オブジェクト<code>obj</code>から距離<code>dist</code>以内にタッチしている指があれば，それをオブジェクトで返します．<ul>
-<li>返されたオブジェクトは，指が離れたときに<code>ended</code>がtrueにセットされます．例：<a href="特定の位置をクリックした時に動作をする">特定の位置をクリックした時に動作をする</a>，<a href="オブジェクトをドラッグする">オブジェクトをドラッグする</a></li>
+<li>返されたオブジェクトは，指が離れたときに<code>ended</code>がtrueにセットされます．例：<a href="%E7%89%B9%E5%AE%9A%E3%81%AE%E4%BD%8D%E7%BD%AE%E3%82%92%E3%82%AF%E3%83%AA%E3%83%83%E3%82%AF%E3%81%97%E3%81%9F%E6%99%82%E3%81%AB%E5%8B%95%E4%BD%9C%E3%82%92%E3%81%99%E3%82%8B">特定の位置をクリックした時に動作をする</a>，<a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E3%83%89%E3%83%A9%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B">オブジェクトをドラッグする</a></li>
 </ul>
 </li>
 </ul>
-<p>※<a href="座標系とレイヤー">座標系</a>は<a href="$InputDevice.defaultLayer">$InputDevice.defaultLayer</a>で指定します。デフォルトでは<a href="ScaledCanvas">$Screen</a>の左上を(0,0)としています</p>
-<h2 id="-">マウス操作によるタッチエミュレーション</h2>
+<p>※<a href="%E5%BA%A7%E6%A8%99%E7%B3%BB%E3%81%A8%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC">座標系</a>は<a href="$InputDevice.defaultLayer">$InputDevice.defaultLayer</a>で指定します。デフォルトでは<a href="Screen">$Screen</a>の左上を(0,0)としています</p>
+<h2 id="マウス操作によるタッチエミュレーション">マウス操作によるタッチエミュレーション</h2>
 <ul>
 <li>タッチパネル非対応のデバイスでは，マウスのクリックをタッチ操作に見立てて，<code>$touches[0]</code> の値を変化させることができます．（タッチエミュレーション）</li>
 <li>タッチパネルとマウス両対応のデバイスでは，実行中に一度でもタッチパネルに触れると，タッチエミュレーションが無効になります．</li>
 <li>マウスカーソルの位置だけを判定する場合は， <code>$mouseX</code>，<code>$mouseY</code> を使用します．</li>
 <li>マウスのクリック判定だけを行う場合は <a href="getkey">getkey</a>(&quot;leftbutton&quot;) などを用います．</li>
 </ul>
-<h1 id="-">使用例</h1>
+<h1 id="使用例">使用例</h1>
 <ul>
-<li><a href="タッチした位置にオブジェクトを表示する">タッチした位置にオブジェクトを移動させる</a></li>
-<li><a href="クリックした時に動作をする">クリック/タッチした時に動作をする</a></li>
-<li><a href="オブジェクトを動かす">オブジェクトを動かす</a></li>
-<li><a href="ドラッグやスワイプした量に応じてオブジェクトを動かす">ドラッグやスワイプした量に応じてオブジェクトを動かす</a></li>
+<li><a href="%E3%82%BF%E3%83%83%E3%83%81%E3%81%97%E3%81%9F%E4%BD%8D%E7%BD%AE%E3%81%AB%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B">タッチした位置にオブジェクトを移動させる</a></li>
+<li><a href="%E3%82%AF%E3%83%AA%E3%83%83%E3%82%AF%E3%81%97%E3%81%9F%E6%99%82%E3%81%AB%E5%8B%95%E4%BD%9C%E3%82%92%E3%81%99%E3%82%8B">クリック/タッチした時に動作をする</a></li>
+<li><a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8B%95%E3%81%8B%E3%81%99">オブジェクトを動かす</a></li>
+<li><a href="%E3%83%89%E3%83%A9%E3%83%83%E3%82%B0%E3%82%84%E3%82%B9%E3%83%AF%E3%82%A4%E3%83%97%E3%81%97%E3%81%9F%E9%87%8F%E3%81%AB%E5%BF%9C%E3%81%98%E3%81%A6%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8B%95%E3%81%8B%E3%81%99">ドラッグやスワイプした量に応じてオブジェクトを動かす</a></li>
 <li><a href="input_defaultLayer">スクロールしたときのマウスやタッチの座標について</a></li>
+<li><a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E3%83%89%E3%83%A9%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B2">オブジェクトをドラッグする2</a></li>
 </ul>
-<h1 id="-">その他</h1>
+<h1 id="その他">その他</h1>
 <p>この機能は <a href="diffTonyu1">Tonyu2で新たに追加された機能</a>です</p>
-<h1 id="backlink">Backlink</h1>
-<ul>
-<li><a href="オブジェクトをドラッグする2">オブジェクトをドラッグする2</a></li>
-</ul>
-</body></html>
 </body></html>

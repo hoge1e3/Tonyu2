@@ -1,0 +1,39 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="enabledragメソッド">enableDragメソッド</h1>
+<p>このオブジェクトをマウスまたはタッチでドラッグ可能にします．</p>
+<h2 id="書式">書式</h2>
+<p>各パラメータは省略可能です．すべて省略するときは<code>enableDrag();</code>としてください．</p>
+<pre><code>enableDrag {
+   start: \(e) { /*処理*/  },
+   clone: { /*パラメータ */ },
+   move: \(e) { /*処理*/  },
+   end: \(e) { /*処理*/  },
+};
+</code></pre>
+<ul>
+<li><code>start</code> ドラッグが開始されたときに行う処理を記述します．</li>
+<li><code>clone</code> ドラッグ開始時に，このオブジェクトではなく別のオブジェクトを生成してドラッグさせる場合に指定します．パラメータには次のものを指定します．<ul>
+<li><code>class</code> 生成するオブジェクトのクラス．省略すると<a href="Actor">Actor</a>クラス</li>
+<li>その他のパラメータは生成時にコンストラクタに渡されます．</li>
+<li>省略したパラメータのうち <code>&quot;x&quot;,&quot;y&quot;,&quot;p&quot;,&quot;layer&quot;,&quot;fillStyle&quot;,&quot;alpha&quot;,&quot;rotation&quot;,&quot;scaleX&quot;,&quot;scaleY&quot;,&quot;radius&quot;,&quot;width&quot;,&quot;height&quot;</code>についてはこのオブジェクトの値を引き継ぎます．</li>
+</ul>
+</li>
+<li><code>move</code> ドラッグによる移動が発生したときに行う処理を記述します．<ul>
+<li>この処理はマウスや指を動かすたびに何度も発生します．</li>
+<li><code>e.cancel()</code>を呼び出すと，移動前の位置に戻ります．</li>
+<li><code>e.actor</code>には<code>clone</code>を指定した場合，生成したオブジェクト，指定しなかった場合はこのオブジェクトが入ります．</li>
+</ul>
+</li>
+<li><code>end</code> ドラッグが終了したときに行う処理を記述します．<ul>
+<li><code>e.actor</code>には<code>clone</code>を指定した場合，生成したオブジェクト，指定しなかった場合はこのオブジェクトが入ります．</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用例">使用例</h2>
+<p><a href="https://run.tonyu.jp/?hoge1e3/e874d76c">https://run.tonyu.jp/?hoge1e3/e874d76c</a></p>
+</body></html>

@@ -15,7 +15,7 @@
 <p><code>promise</code>には，<a href="thread">スレッド</a>またはJavaScript/jQueryの<a href="Promise">Promiseオブジェクト</a>を指定します．例えば，<a href="Panel.load">Panel.load</a>，<a href="HTMLUI">HTMLUI.getFile</a>，<a href="WebSocket">WebSocket.enterRoom</a>などの戻り値はPromiseオブジェクトです．</p>
 <p><code>promise</code>が結果を返す（スレッドが正常終了する，または<code>promise</code> がresolvedになる）と，waitForメソッドは終了し，スレッドの戻り値またはresolveされた値が戻り値として返されます．</p>
 <p><code>promise</code>が失敗する（スレッドが例外を投げるか，killメソッドで停止させられる，promise がrejectedになる）と，waitForメソッドは例外を投げます．例外オブジェクト<code>e</code>の<code>e.original</code>に，rejectされた値が格納されます</p>
-<p>例</p>
+<h2 id="promiseに対してwaitforを使った例">Promiseに対してwaitForを使った例</h2>
 <pre><code class="language-JS">native $;
 try {
     // $.getの結果がrに入る
@@ -26,7 +26,7 @@ try {
     print(e.original.statusText);
 }
 </code></pre>
-<p>Main</p>
+<h2 id="スレッドに対してwaitforを使った例">スレッドに対してwaitForを使った例</h2>
 <pre><code class="language-JS">try {
     // okを実行し，その結果がrに入る
     r=waitFor(parallel(&quot;ok&quot;));

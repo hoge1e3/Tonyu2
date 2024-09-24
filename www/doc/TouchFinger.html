@@ -5,7 +5,11 @@
 <script src="js/doc.js"></script>
 <p><a href="api">api</a></p>
 <h1 id="touchfingerオブジェクト">TouchFingerオブジェクト</h1>
-<p>タッチパネル上でタッチされた指の状態をあらわすオブジェクトです。<a href="$touches">$touches</a>オブジェクトはTouchFingerオブジェクトの配列です．</p>
+<p>タッチパネル上でタッチされた指の状態をあらわすオブジェクトです。</p>
+<ul>
+<li><a href="$touches">$touches</a>オブジェクトはTouchFingerオブジェクトの配列です．</li>
+<li>タッチイベントを受け取ったときにイベントオブジェクトの<code>finger</code>フィールドで取得可能です．</li>
+</ul>
 <h2 id="フィールド">フィールド</h2>
 <ul>
 <li><code>x</code>,<code>y</code><ul>
@@ -34,8 +38,24 @@
 <li><a href="$InputDevice.on">$InputDevice.on</a> を用いた<code>touchmove</code>イベントの処理において<code>vx</code>,<code>vy</code>の値を参照する場合、参照する前に明示的に呼び出さないと値が正確ではなくなります。</li>
 </ul>
 </li>
+<li><code>on</code><ul>
+<li>イベントに対して処理を行います（次項参照）</li>
 </ul>
-<h1 id="backlink">Backlink</h1>
+</li>
+</ul>
+<h2 id="イベント">イベント</h2>
+<ul>
+<li><code>move</code><ul>
+<li>タッチパネル上で指が動いたときに発生します．</li>
+<li>イベントオブジェクトの<code>vx</code>と<code>vy</code>に移動量が格納されます．</li>
+</ul>
+</li>
+<li><code>end</code><ul>
+<li>タッチパネル上から指が離れたときに発生します．</li>
+</ul>
+</li>
+</ul>
+<h1 id="実例">実例</h1>
 <ul>
 <li><a href="%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E3%83%89%E3%83%A9%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B2">オブジェクトをドラッグする2</a></li>
 </ul>

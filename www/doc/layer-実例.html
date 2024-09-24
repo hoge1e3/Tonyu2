@@ -3,16 +3,17 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
-<p><a href="用途別リファレンス">用途別リファレンス</a></p>
-<h1 id="-">特定のオブジェクトだけスクロールの影響を受けないようにする</h1>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
+<p><a href="%E7%94%A8%E9%80%94%E5%88%A5%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9">用途別リファレンス</a></p>
+<h1 id="特定のオブジェクトだけスクロールの影響を受けないようにする">特定のオブジェクトだけスクロールの影響を受けないようにする</h1>
 <ul>
 <li>作成するオブジェクトのパラメータに<code>layer=$frontLayer</code>を設定することで、表示されるオブジェクトだけスクロールの影響を受けないようになります．</li>
 <li>他のオブジェクトより後ろに表示する場合は<code>layer=$backLayer</code>を指定してください．</li>
+<li>ButtonとLabelはデフォルトで<code>$frontLayer</code>に置かれるので，指定の必要はありません．逆にButtonとLabelをスクロールさせたい場合は，<code>layer=$mainLayer</code>を指定してください．</li>
 </ul>
 <p>Main</p>
-<pre><code class="lang-JS">//このキャラクタ単独ではスクロールしていることがわかりにくいので、背景代わりのオブジェクトをいくつか置いておく
+<pre><code class="language-JS">//このキャラクタ単独ではスクロールしていることがわかりにくいので、背景代わりのオブジェクトをいくつか置いておく
 for (i=0;i&lt;10;i++) {
     new Actor{x=rnd(400),y=rnd(400)};
 }
@@ -28,6 +29,6 @@ while(true){
 <p>★ActorクラスはTonyu2 で標準で用意されているクラスです．オブジェクトに動きを追加する場合はクラス（ファイル）を作成し，Actorの代わりにその名前を使ってください．</p>
 <p>参考：</p>
 <ul>
-<li><a href="ScreenscrollTo-実例">スクリーン全体をスクロールさせる</a></li>
+<li><a href="ScreenscrollTo-%E5%AE%9F%E4%BE%8B">スクリーン全体をスクロールさせる</a></li>
 </ul>
 </body></html>

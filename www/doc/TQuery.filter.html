@@ -6,21 +6,17 @@
 <!-- Konbaatiddo from Tonyu2 non-md document -->
 
 <p><a href="TQuery">TQuery</a></p>
-<h1 id="tqueryfind">TQuery.find</h1>
+<h1 id="tqueryfilter">TQuery.filter</h1>
 <p>このTQueryオブジェクトが格納しているActorのうち，指定された条件に合うものだけを格納した新しいTQueryオブジェクトを返します．</p>
-<ul>
-<li>配列のfindと違い，戻り値は要素ではありません．要素を戻り値とするメソッドは[[TQuery.find1]]です．</li>
-<li><strong>配列と挙動が異なるため，このメソッドは非推奨になりました</strong>．今後は[[TQuery.filter]]を使ってください．</li>
-</ul>
 <h2 id="書式1">書式1</h2>
-<pre><code class="language-JS">t.find(f)
+<pre><code class="language-JS">t.filter(f)
 </code></pre>
 <p>このTQueryオブジェクトが格納しているActorそれぞれについて，
 第1引数にそのActorを渡して関数<em>f</em> を呼び出し，
 <code>true</code>相当の値が返されたActorだけを格納した新しいTQueryオブジェクト
 を返します．</p>
 <h2 id="書式2">書式2</h2>
-<pre><code class="language-JS">t.find{key1:value1, key2:value2...}
+<pre><code class="language-JS">t.filter{key1:value1, key2:value2...}
 </code></pre>
 <p>このTQueryオブジェクトが格納しているActorそれぞれについて，
 key<em>n</em>がvalue<em>n</em>に等しいようなActorだけを格納した新しいTQueryオブジェクト

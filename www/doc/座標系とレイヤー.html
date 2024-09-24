@@ -3,14 +3,14 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="api">api</a></p>
-<h1 id="-">座標系とレイヤー</h1>
+<h1 id="座標系とレイヤー">座標系とレイヤー</h1>
 <p>Tonyu2の画面はいくつかの層（レイヤー）から成り立っています。</p>
 <p>※ここでの「レイヤー」は<a href="Map">マップ</a>における「手前のレイヤー」などとは別の概念です．</p>
 <ul>
-<li>まず、ゲームが動作しているデバイスの画面全体のレイヤーを<code>$uiLayer</code>、その中に配置されたゲーム画面を<a href="ScaledCanvas">$Screen</a>と呼びます。</li>
+<li>まず、ゲームが動作しているデバイスの画面全体のレイヤーを<code>$uiLayer</code>、その中に配置されたゲーム画面を<a href="Screen">$Screen</a>と呼びます。</li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/hoge1e3/Tonyu2/master/fs/Tonyu/doc/images/img%20layers.png" alt="layers.png"></p>
 <ul>
@@ -18,14 +18,14 @@
 <li>これらの3つのレイヤーは独立してスクロール（平行移動・回転・伸縮）が可能です</li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/hoge1e3/Tonyu2/master/fs/Tonyu/doc/images/img%20layers2.png" alt="layers2.png"></p>
-<h1 id="-">オブジェクトを配置するレイヤーの指定</h1>
-<p>オブジェクト(<a href="Actor">Actor</a>)を生成すると、通常は$mainLayerに配置されますが、生成時に<a href="BaseActor#すべてのモードで共通のフィールド">layer</a>フィールドを設定すると、他のレイヤーに配置できます。</p>
+<h1 id="オブジェクトを配置するレイヤーの指定">オブジェクトを配置するレイヤーの指定</h1>
+<p> オブジェクト(<a href="Actor">Actor</a>)を生成すると、通常は$mainLayerに配置されます(※)が、生成時に<a href="BaseActor#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%83%A2%E3%83%BC%E3%83%89%E3%81%A7%E5%85%B1%E9%80%9A%E3%81%AE%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB%E3%83%89">layer</a>フィールドを設定すると、他のレイヤーに配置できます。</p>
 <p>例：</p>
-<pre><code class="lang-JS">new ScoreLabel{x=100, y=400, text=&quot;Score: 0&quot;, layer=$frontLayer};
+<pre><code class="language-JS">new ScoreLabel{x=100, y=400, text=&quot;Score: 0&quot;, layer=$frontLayer};
 </code></pre>
-<h1 id="-">デフォルトのレイヤー</h1>
+<h1 id="デフォルトのレイヤー">デフォルトのレイヤー</h1>
 <p>あるクラスにおいて，layerフィールドを省略した場合に配置されるレイヤーは defaultLayer プロパティを定義すると変更できます．</p>
-<pre><code class="lang-JS">\defaultLayer {
+<pre><code class="language-JS">\defaultLayer {
     return $frontLayer;
 }
 </code></pre>
@@ -34,20 +34,24 @@
 <li><a href="Label">Label</a> クラスのオブジェクト</li>
 <li><a href="Button">Button</a> クラスのオブジェクト</li>
 <li><a href="APad">APad</a>クラスのオブジェクト</li>
-<li>$panel オブジェクト(ただし，new Panelで新たに生成される<a href="Panel">Panel</a>クラスのオブジェクトは，$mainLayerに配置される)</li>
+<li>$panel オブジェクト(ただし，new Panelで新たに生成される<a href="Panel">Panel</a>クラスのオブジェクトは，$mainLayer(※)に配置される)</li>
 </ul>
-<h1 id="-">レイヤーのスクロール</h1>
+<h1 id="setdefaultlayerメソッド">※setDefaultLayerメソッド</h1>
+<p><a href="setDefaultLayer">Screen.setDefaultLayer</a>メソッドを呼び出すと，layerフィールドを省略したときに配置されるレイヤーを変更できます．
+ただし，上記のdefaultLayerプロパティを定義したクラスのオブジェクトおよび「デフォルトで$frontLayerに配置される」オブジェクトは，setDefaultLayerの影響を受けません．</p>
+<h1 id="レイヤーのスクロール">レイヤーのスクロール</h1>
 <p>$Screen.<a href="Screen.scrollTo">scrollTo</a>メソッド を用います。デフォルトでは$mainLayerをスクロールの対象としていますが、$Screen.<a href="selectLayer">selectLayer</a>で別のレイヤーもスクロール可能です。</p>
-<h1 id="-">レイヤー間の座標変換</h1>
-<p>$Screen.<a href="convert">convert</a>メソッドを用いると、<br>あるレイヤーに置かれているオブジェクトの座標を、見た目の位置を変えずに別のレイヤーの座標に変換することができます。</p>
-<h1 id="-">マウスおよびタッチの座標系</h1>
+<h1 id="レイヤー間の座標変換">レイヤー間の座標変換</h1>
+<p>$Screen.<a href="convert">convert</a>メソッドを用いると、
+あるレイヤーに置かれているオブジェクトの座標を、見た目の位置を変えずに別のレイヤーの座標に変換することができます。</p>
+<h1 id="マウスおよびタッチの座標系">マウスおよびタッチの座標系</h1>
 <p><a href="$touches">$touches</a>および、<a href="$mouseX,$mouseY">$mouseX, $mouseY</a>の座標系はデフォルトでは$Screenの左上を(0,0)、右下を($screenWidth, $screenHeight)としたものになっています。</p>
 <p><a href="$InputDevice.defaultLayer">$InputDevice.defaultLayer</a>で座標系を変更できます。</p>
 <p>.</p>
 <h1 id="backlink">Backlink</h1>
 <ul>
 <li><a href="input_defaultLayer">スクロールしたときのマウスやタッチの座標について</a></li>
-<li><a href="文字に動きをつける">文字に動きをつける</a></li>
+<li><a href="%E6%96%87%E5%AD%97%E3%81%AB%E5%8B%95%E3%81%8D%E3%82%92%E3%81%A4%E3%81%91%E3%82%8B">文字に動きをつける</a></li>
 <li><a href="BaseActor">BaseActor</a></li>
 <li><a href="TouchFinger">TouchFingerオブジェクト</a></li>
 </ul>

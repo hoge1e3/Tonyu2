@@ -3,12 +3,12 @@
 <link rel="stylesheet" href="css/style.css"/>
 <script src="js/jquery-1.10.1.js"></script>
 <script src="js/doc.js"></script>
-<p><!-- Konbaatiddo from Tonyu2 non-md document -->
-</p>
+<!-- Konbaatiddo from Tonyu2 non-md document -->
+
 <p><a href="api">api</a></p>
-<h1 id="button-">Buttonクラス</h1>
+<h1 id="buttonクラス">Buttonクラス</h1>
 <p>ボタンを作成します。</p>
-<h2 id="-">フィールド</h2>
+<h2 id="フィールド">フィールド</h2>
 <ul>
 <li>top<ul>
 <li>上位置</li>
@@ -55,17 +55,29 @@
 <li>クリックされた瞬間は1、押し続けられている間は2以上、それ以外は0</li>
 </ul>
 </li>
+<li>clickedEffect<ul>
+<li>クリックされているときの色（fillStyle, strokeStyleなど）をオブジェクトで指定します．</li>
+</ul>
+</li>
 <li>key<ul>
 <li>省略可．<a href="getkey">getkey</a>と同じ方式でキーの名前を指定すると，指定されたキーが押されたときにもクリックされたと見なします．</li>
 </ul>
 </li>
+<li>disabled<ul>
+<li>true相当の値にするとボタンが押せなくなります．</li>
 </ul>
-<p>※ボタンが作成される<a href="座標系とレイヤー">レイヤー</a>はデフォルトでは$frontLayerです．それ以外のレイヤーに配置するときは<code>layer</code>を指定してください．</p>
+</li>
+<li>disabledEffect<ul>
+<li>disabledがtrue相当の値のときの色（fillStyle, strokeStyleなど）をオブジェクトで指定します．</li>
+</ul>
+</li>
+</ul>
+<p>※ボタンが作成される<a href="%E5%BA%A7%E6%A8%99%E7%B3%BB%E3%81%A8%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC">レイヤー</a>はデフォルトでは$frontLayerです．それ以外のレイヤーに配置するときは<code>layer</code>を指定してください．</p>
 <p>※色には文字列または<a href="Color">Color</a>オブジェクトを指定します．</p>
-<h2 id="-">メソッド</h2>
+<h2 id="メソッド">メソッド</h2>
 <ul>
 <li><a href="Actor">Actor</a>で使えるメソッドが利用できます(<a href="die">die</a>など)</li>
 </ul>
-<p>実例 - <a href="ボタンを使う">ボタンを使う</a></p>
+<p>実例 - <a href="%E3%83%9C%E3%82%BF%E3%83%B3%E3%82%92%E4%BD%BF%E3%81%86">ボタンを使う</a></p>
 <p>.</p>
 </body></html>
