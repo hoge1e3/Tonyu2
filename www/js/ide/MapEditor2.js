@@ -27,7 +27,6 @@ $editorConfig={
 
     /* 編集対象のマップファイルのあるフォルダ */
     mapDir: file("../maps/"),
-
     /* 
     オプション：「Play」ボタンで読み込まれるページ
        フィールドmapFileにマップのファイル名．
@@ -39,6 +38,7 @@ $editorConfig={
     //titlePage: Title,
 
     showHelp: true,/* ヘルプの表示 */
+    size: {width:600, height:800},//画面の大きさ
 };
 loadPage(MapFiles);
 `};

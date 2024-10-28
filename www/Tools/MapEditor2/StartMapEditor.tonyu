@@ -23,6 +23,7 @@ $editorConfig={
     //titlePage: Title,
     
     showHelp: true,//ヘルプの表示
+    size: {width:800, height:800},//画面の大きさ
 };
 loadPage(MapFiles);
 
