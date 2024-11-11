@@ -19,7 +19,7 @@ $sound.stopBGM();
 y=20;
 var pitch=50;
 for (var mf of mapDir.listFiles()) {
-    if (mf.ext()!==".json") break;
+    if (mf.ext()!==".json") continue;
     item(mf,y);
     y+=pitch;
 }
