@@ -863,11 +863,67 @@ Tonyu.klass.define({
       },
       setFontSize :function _trc_TextRectMod_setFontSize(ctx,sz) {
         var _this=this;
-        var post;
         
-        post = ctx.font.replace(/^[0-9\.]+/,"");
+        ctx.font=_this.fontSizeChanged(ctx.font,sz);
+      },
+      fontSizeChanged :function _trc_TextRectMod_fontSizeChanged(fontString,newSize) {
+        var _this=this;
         
-        ctx.font=sz+post;
+        if ((newSize+"").match(/^\d+$/)) {
+          newSize=[newSize,'px'].join('');
+          
+        }
+        let regex = /^((?:[a-zA-Z0-9-]+\s+)*)?([0-9.-]+[a-z%]+(?:\s*\/\s*[0-9.-]+[a-z%]*)?)(\s+.+)?$/;
+        
+        let match = fontString.match(regex);
+        
+        if (! match) {
+          return newSize+" "+fontString;
+          
+        }
+        let beforeSize = match[1]||"";
+        
+        let currentSizeAndLineHeight = match[2];
+        
+        let afterSize = match[3]||"";
+        
+        let lineHeights = currentSizeAndLineHeight.split('/');
+        
+        let lineHeight = lineHeights[1];
+        
+        let newSizeWithLineHeight = lineHeight?[newSize,'/',lineHeight.trim()].join(''):newSize;
+        
+        return [beforeSize,newSizeWithLineHeight,afterSize].join('').trim();
+      },
+      fiber$fontSizeChanged :function* _trc_TextRectMod_f_fontSizeChanged(_thread,fontString,newSize) {
+        var _this=this;
+        
+        if ((newSize+"").match(/^\d+$/)) {
+          newSize=[newSize,'px'].join('');
+          
+        }
+        let regex = /^((?:[a-zA-Z0-9-]+\s+)*)?([0-9.-]+[a-z%]+(?:\s*\/\s*[0-9.-]+[a-z%]*)?)(\s+.+)?$/;
+        
+        let match = fontString.match(regex);
+        
+        if (! match) {
+          return newSize+" "+fontString;
+          
+        }
+        let beforeSize = match[1]||"";
+        
+        let currentSizeAndLineHeight = match[2];
+        
+        let afterSize = match[3]||"";
+        
+        let lineHeights = currentSizeAndLineHeight.split('/');
+        
+        let lineHeight = lineHeights[1];
+        
+        let newSizeWithLineHeight = lineHeight?[newSize,'/',lineHeight.trim()].join(''):newSize;
+        
+        return [beforeSize,newSizeWithLineHeight,afterSize].join('').trim();
+        
       },
       fukidashi :function _trc_TextRectMod_fukidashi(ctx,text,x,y,sz) {
         var _this=this;
@@ -905,7 +961,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"drawTextRect":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null,null,"kernel.Align2D",null],"returnValue":null}},"setFontSize":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"fukidashi":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"drawTextRect":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null,null,"kernel.Align2D",null],"returnValue":null}},"setFontSize":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"fontSizeChanged":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"fukidashi":{"nowait":true,"isMain":false,"vtype":{"params":[null,null,null,null,null],"returnValue":null}}},"fields":{}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.TD_P',
@@ -10824,7 +10880,7 @@ Tonyu.klass.define({
           _this.fillStyle="white";
         }
         if (_this.font) {
-          ctx.font=_this.size+"px "+_this.font;
+          ctx.font=_this.fontSizeChanged(_this.font,_this.size);
         }
         ctx.fillStyle=_this.fillStyle+"";
         ctx.globalAlpha=_this.alpha/255;

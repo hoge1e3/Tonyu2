@@ -52,7 +52,7 @@ nowait \drawAsText(ctx) {
     if (!size) size=15;
     //if (!align) align="center";
     if (!fillStyle) fillStyle="white";
-    if (font) ctx.font=size+"px "+font;
+    if (font) ctx.font=fontSizeChanged(font, size);
     ctx.fillStyle=fillStyle+"";
     ctx.globalAlpha=this.alpha/255;
     height=0;width=0;

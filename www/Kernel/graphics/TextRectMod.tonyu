@@ -14,9 +14,33 @@ nowait function drawTextRect(ctx, text, x, topY, h, align:Align2D , type) {
     return res;
 }
 nowait function setFontSize(ctx,sz) {
-    var post=ctx.font.replace(/^[0-9\.]+/,"");
-    ctx.font=sz+post;
+    //var post=ctx.font.replace(/^[0-9\.]+/,"");
+    ctx.font=fontSizeChanged(ctx.font, sz);//sz+post;
 }
+function fontSizeChanged(fontString, newSize) {
+    if ((newSize+"").match(/^\d+$/)) {
+        newSize = `${newSize}px`;
+    }
+    let regex = /^((?:[a-zA-Z0-9-]+\s+)*)?([0-9.-]+[a-z%]+(?:\s*\/\s*[0-9.-]+[a-z%]*)?)(\s+.+)?$/;
+    let match = fontString.match(regex);
+    if (!match) {
+        //throw new Error('Invalid font string format');
+        return newSize+" "+fontString;
+    }
+    //const [, beforeSize = '', currentSizeAndLineHeight, afterSize = ''] = match;
+    let beforeSize=match[1]||"";
+    let currentSizeAndLineHeight=match[2];
+    let afterSize=match[3]||"";
+
+    //const [, lineHeight] = currentSizeAndLineHeight.split('/');
+    let lineHeights = currentSizeAndLineHeight.split('/');
+    let lineHeight = lineHeights[1];
+    
+    let newSizeWithLineHeight = lineHeight ? `${newSize}/${lineHeight.trim()}` : newSize;
+    
+    return `${beforeSize}${newSizeWithLineHeight}${afterSize}`.trim();
+}
+
 
 nowait function fukidashi(ctx, text, x, y, sz) {
     var align="c";
