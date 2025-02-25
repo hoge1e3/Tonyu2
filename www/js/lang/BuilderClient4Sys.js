@@ -363,7 +363,10 @@ return root.Debugger;
 },{"../lang/SourceFiles":5,"../lang/StackDecoder":6,"../lang/langMod":7,"../lib/root":12,"../project/CompiledProject":13}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.match = exports.isVar = exports.Z = exports.Y = exports.X = exports.W = exports.V = exports.U = exports.T = exports.S = exports.R = exports.Q = exports.P = exports.O = exports.N = exports.M = exports.L = exports.K = exports.J = exports.I = exports.H = exports.G = exports.F = exports.E = exports.D = exports.C = exports.B = exports.A = exports.v = void 0;
+exports.Z = exports.Y = exports.X = exports.W = exports.V = exports.U = exports.T = exports.S = exports.R = exports.Q = exports.P = exports.O = exports.N = exports.M = exports.L = exports.K = exports.J = exports.I = exports.H = exports.G = exports.F = exports.E = exports.D = exports.C = exports.B = exports.A = void 0;
+exports.v = v;
+exports.isVar = isVar;
+exports.match = match;
 //var OM:any={};
 const VAR = Symbol("$var"); //,THIZ="$this";
 function v(name, cond = {}) {
@@ -378,7 +381,6 @@ function v(name, cond = {}) {
     //if (cond) res[THIZ]=cond;
     return res;
 }
-exports.v = v;
 function isVariable(a) {
     return a[VAR];
 }
@@ -417,14 +419,12 @@ for (var i =0 ; i<names.length ; i++) {
 function isVar(o) {
     return o && o[VAR];
 }
-exports.isVar = isVar;
 function match(obj, tmpl) {
     var res = {};
     if (m(obj, tmpl, res))
         return res;
     return null;
 }
-exports.match = match;
 ;
 function m(obj, tmpl, res) {
     if (obj === tmpl)

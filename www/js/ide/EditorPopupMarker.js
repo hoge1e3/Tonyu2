@@ -5,7 +5,7 @@ define(function(require, exports) {
         position: "absolute",
         left: "0px",
         top: "0px",
-    }).appendTo("body").hide();
+    }).appendTo("body").click(()=>popup.hide()).hide();
     //const Range = ace.require('ace/range').Range;
     exports.mark = (editor, range, markerClass, mesg) => {
         const session=editor.getSession();
@@ -14,9 +14,13 @@ define(function(require, exports) {
         range.end = doc.createAnchor(range.end);
         const highlight1 = {};
         highlight1.update = (html, markerLayer, session, config) => {
-            const markerElement = getMarkerHTML(html, markerLayer, session, config, range, markerClass);
+            getMarkerHTML(html, markerLayer, session, config, range, markerClass);
+            const markerElement = $(`.${markerClass}`)[0];
+            if (!markerElement) return;
+            console.log("markerElement", markerElement);
             $(markerElement).css('pointer-events', 'auto');
             $(markerElement).mouseenter(() => {
+                //console.log("Enter",markerElement);
                 const o = $(markerElement).offset();
                 popup.show();
                 popup.$showing=highlight1;
@@ -41,14 +45,14 @@ define(function(require, exports) {
 
     function getMarkerHTML(html, markerLayer, session, config, range, markerClass) {
         const stringBuilder = [];
-        let marked;
+        //let marked;
         if (range.isMultiLine()) {
-            marked=markerLayer.drawTextMarker(stringBuilder, range, markerClass, config);
+            markerLayer.drawTextMarker(stringBuilder, range, markerClass, config);
         } else {
-            marked=markerLayer.drawSingleLineMarker(stringBuilder, range, `${markerClass} ace_start ace_br15`, config);
+            markerLayer.drawSingleLineMarker(stringBuilder, range, `${markerClass} ace_start ace_br15`, config);
         }
         //console.log("ML",marked);
-        return marked;
+        //return marked;
         //return stringBuilder;
     }
 });

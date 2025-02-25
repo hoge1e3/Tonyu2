@@ -121,7 +121,11 @@ WS.ready();
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -131,13 +135,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -652,49 +666,48 @@ module.exports = class Builder {
 },{"../lib/R":28,"../runtime/TError":37,"../runtime/TonyuRuntime":39,"./CompilerTypes":4,"./IndentBuffer":7,"./JSGenerator":8,"./Semantics":11,"./SourceFiles":12,"./TypeChecker":13,"./tonyu1":24}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isUnionType = exports.isMethodType = exports.isMeta = exports.isNativeClass = exports.isArrayType = exports.isArrowFuncInfo = exports.isNonArrowFuncInfo = exports.isMemoryDest = exports.isFileDest = void 0;
+exports.isFileDest = isFileDest;
+exports.isMemoryDest = isMemoryDest;
+exports.isNonArrowFuncInfo = isNonArrowFuncInfo;
+exports.isArrowFuncInfo = isArrowFuncInfo;
+exports.isArrayType = isArrayType;
+exports.isNativeClass = isNativeClass;
+exports.isMeta = isMeta;
+exports.isMethodType = isMethodType;
+exports.isUnionType = isUnionType;
 function isFileDest(d) {
     return d.file;
 }
-exports.isFileDest = isFileDest;
 function isMemoryDest(d) {
     return d.memory;
 }
-exports.isMemoryDest = isMemoryDest;
 function isNonArrowFuncInfo(f) {
     return f.stmts;
 }
-exports.isNonArrowFuncInfo = isNonArrowFuncInfo;
 function isArrowFuncInfo(f) {
     return f.retVal;
 }
-exports.isArrowFuncInfo = isArrowFuncInfo;
 function isArrayType(klass) {
     return klass.element;
 }
-exports.isArrayType = isArrayType;
 function isNativeClass(klass) {
     return klass.class;
 }
-exports.isNativeClass = isNativeClass;
 function isMeta(klass) {
     return klass.decls;
 }
-exports.isMeta = isMeta;
 function isMethodType(klass) {
     return klass.method;
 }
-exports.isMethodType = isMethodType;
 function isUnionType(klass) {
     return klass.candidates;
 }
-exports.isUnionType = isUnionType;
 
 },{}],5:[function(require,module,exports){
 "use strict";
 // parser.js の補助ライブラリ．式の解析を担当する
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExpressionParser = void 0;
+exports.ExpressionParser = ExpressionParser;
 const parser_1 = require("./parser");
 //import Parser from "./parser";
 const OPTYPE = Symbol("OPTYPE");
@@ -991,7 +1004,6 @@ function ExpressionParser(context, name = "Expression") {
     }
     return $;
 }
-exports.ExpressionParser = ExpressionParser;
 ;
 
 },{"./parser":20}],6:[function(require,module,exports){
@@ -1840,7 +1852,11 @@ export= function IndentBuffer(options) {
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -1850,15 +1866,25 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.genJS = void 0;
+exports.genJS = genJS;
 const Visitor_1 = require("./Visitor");
 const IndentBuffer_1 = require("./IndentBuffer");
 const tonyu1_1 = require("./tonyu1");
@@ -2788,261 +2814,261 @@ function genJS(klass, env, genOptions) {
     klass.src.map = buf.mapStr;
     return buf; //res;
 } //B
-exports.genJS = genJS;
 //return {genJS:genJS};
 //})();
 
 },{"./CompilerTypes":4,"./IndentBuffer":7,"./ObjectMatcher":10,"./Visitor":14,"./compiler":15,"./context":16,"./tonyu1":24}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isNonArrowFuncExpr = exports.isFuncExprOrDecl = exports.isFuncExprHead = exports.isEmpty = exports.isIfWait = exports.isNativeDecl = exports.isFuncDecl = exports.isFuncDeclHead = exports.isSetterDecl = exports.isParamDecls = exports.isParamDecl = exports.isVarsDecl = exports.isVarDecl = exports.isTypeDecl = exports.isUnionTypeExpr = exports.isNamedTypeExpr = exports.isArrayTypeExpr = exports.isThrow = exports.isTry = exports.isCatch = exports.isFinally = exports.isContinue = exports.isBreak = exports.isSwitch = exports.isDefault = exports.isCase = exports.isDo = exports.isWhile = exports.isFor = exports.isNormalFor = exports.isForin = exports.isIf = exports.isReturn = exports.isCompound = exports.isExprstmt = exports.isSuperExpr = exports.isNewExpr = exports.isScall = exports.isCall = exports.isObjlitArg = exports.isFuncExprArg = exports.isVarAccess = exports.isParenExpr = exports.isMember = exports.isArgList = exports.isArrayElem = exports.isTrifix = exports.isInfix = exports.isPostfix = exports.isPrefix = void 0;
-exports.isBackquoteLiteral = exports.isBackquoteText = exports.isProgram = exports.isIncludes = exports.isExtends = exports.isArylit = exports.isObjlit = exports.isJsonElem = exports.isFuncExpr = exports.isArrowFuncExpr = void 0;
+exports.isPrefix = isPrefix;
+exports.isPostfix = isPostfix;
+exports.isInfix = isInfix;
+exports.isTrifix = isTrifix;
+exports.isArrayElem = isArrayElem;
+exports.isArgList = isArgList;
+exports.isMember = isMember;
+exports.isParenExpr = isParenExpr;
+exports.isVarAccess = isVarAccess;
+exports.isFuncExprArg = isFuncExprArg;
+exports.isObjlitArg = isObjlitArg;
+exports.isCall = isCall;
+exports.isScall = isScall;
+exports.isNewExpr = isNewExpr;
+exports.isSuperExpr = isSuperExpr;
+exports.isExprstmt = isExprstmt;
+exports.isCompound = isCompound;
+exports.isReturn = isReturn;
+exports.isIf = isIf;
+exports.isForin = isForin;
+exports.isNormalFor = isNormalFor;
+exports.isFor = isFor;
+exports.isWhile = isWhile;
+exports.isDo = isDo;
+exports.isCase = isCase;
+exports.isDefault = isDefault;
+exports.isSwitch = isSwitch;
+exports.isBreak = isBreak;
+exports.isContinue = isContinue;
+exports.isFinally = isFinally;
+exports.isCatch = isCatch;
+exports.isTry = isTry;
+exports.isThrow = isThrow;
+exports.isArrayTypeExpr = isArrayTypeExpr;
+exports.isNamedTypeExpr = isNamedTypeExpr;
+exports.isUnionTypeExpr = isUnionTypeExpr;
+exports.isTypeDecl = isTypeDecl;
+exports.isVarDecl = isVarDecl;
+exports.isVarsDecl = isVarsDecl;
+exports.isParamDecl = isParamDecl;
+exports.isParamDecls = isParamDecls;
+exports.isSetterDecl = isSetterDecl;
+exports.isFuncDeclHead = isFuncDeclHead;
+exports.isFuncDecl = isFuncDecl;
+exports.isNativeDecl = isNativeDecl;
+exports.isIfWait = isIfWait;
+exports.isEmpty = isEmpty;
+exports.isFuncExprHead = isFuncExprHead;
+exports.isFuncExprOrDecl = isFuncExprOrDecl;
+exports.isNonArrowFuncExpr = isNonArrowFuncExpr;
+exports.isArrowFuncExpr = isArrowFuncExpr;
+exports.isFuncExpr = isFuncExpr;
+exports.isJsonElem = isJsonElem;
+exports.isObjlit = isObjlit;
+exports.isArylit = isArylit;
+exports.isExtends = isExtends;
+exports.isIncludes = isIncludes;
+exports.isProgram = isProgram;
+exports.isBackquoteText = isBackquoteText;
+exports.isBackquoteLiteral = isBackquoteLiteral;
 function isPrefix(n) {
     return n.type == "prefix";
 }
-exports.isPrefix = isPrefix;
 function isPostfix(n) {
     return n.type == "postfix";
 }
-exports.isPostfix = isPostfix;
 function isInfix(n) {
     return n.type == "infix";
 }
-exports.isInfix = isInfix;
 function isTrifix(n) {
     return n.type == "trifix";
 }
-exports.isTrifix = isTrifix;
 function isArrayElem(n) {
     return n && n.type === "arrayElem";
 }
-exports.isArrayElem = isArrayElem;
 function isArgList(n) {
     return n && n.type === "argList";
 }
-exports.isArgList = isArgList;
 function isMember(n) {
     return n && n.type === "member";
 }
-exports.isMember = isMember;
 function isParenExpr(n) {
     return n && n.type === "parenExpr";
 }
-exports.isParenExpr = isParenExpr;
 function isVarAccess(n) {
     return n && n.type === "varAccess";
 }
-exports.isVarAccess = isVarAccess;
 function isFuncExprArg(n) {
     return n && n.type === "funcExprArg";
 }
-exports.isFuncExprArg = isFuncExprArg;
 function isObjlitArg(n) {
     return n && n.type === "objlitArg";
 }
-exports.isObjlitArg = isObjlitArg;
 function isCall(n) {
     return n && n.type === "call";
 }
-exports.isCall = isCall;
 function isScall(n) {
     return n && n.type === "scall";
 }
-exports.isScall = isScall;
 function isNewExpr(n) {
     return n && n.type === "newExpr";
 }
-exports.isNewExpr = isNewExpr;
 function isSuperExpr(n) {
     return n && n.type === "superExpr";
 }
-exports.isSuperExpr = isSuperExpr;
 function isExprstmt(n) {
     return n && n.type === "exprstmt";
 }
-exports.isExprstmt = isExprstmt;
 function isCompound(n) {
     return n && n.type === "compound";
 }
-exports.isCompound = isCompound;
 function isReturn(n) {
     return n && n.type === "return";
 }
-exports.isReturn = isReturn;
 function isIf(n) {
     return n && n.type === "if";
 }
-exports.isIf = isIf;
 function isForin(n) {
     return n && n.type === "forin";
 }
-exports.isForin = isForin;
 function isNormalFor(n) {
     return n && n.type === "normalFor";
 }
-exports.isNormalFor = isNormalFor;
 function isFor(n) {
     return n && n.type === "for";
 }
-exports.isFor = isFor;
 function isWhile(n) {
     return n && n.type === "while";
 }
-exports.isWhile = isWhile;
 function isDo(n) {
     return n && n.type === "do";
 }
-exports.isDo = isDo;
 function isCase(n) {
     return n && n.type === "case";
 }
-exports.isCase = isCase;
 function isDefault(n) {
     return n && n.type === "default";
 }
-exports.isDefault = isDefault;
 function isSwitch(n) {
     return n && n.type === "switch";
 }
-exports.isSwitch = isSwitch;
 function isBreak(n) {
     return n && n.type === "break";
 }
-exports.isBreak = isBreak;
 function isContinue(n) {
     return n && n.type === "continue";
 }
-exports.isContinue = isContinue;
 function isFinally(n) {
     return n && n.type === "finally";
 }
-exports.isFinally = isFinally;
 function isCatch(n) {
     return n && n.type === "catch";
 }
-exports.isCatch = isCatch;
 function isTry(n) {
     return n && n.type === "try";
 }
-exports.isTry = isTry;
 function isThrow(n) {
     return n && n.type === "throw";
 }
-exports.isThrow = isThrow;
 function isArrayTypeExpr(n) {
     return n && n.type === "arrayTypeExpr";
 }
-exports.isArrayTypeExpr = isArrayTypeExpr;
 function isNamedTypeExpr(n) {
     return n && n.type === "namedTypeExpr";
 }
-exports.isNamedTypeExpr = isNamedTypeExpr;
 function isUnionTypeExpr(n) {
     return n && n.type === "unionTypeExpr";
 }
-exports.isUnionTypeExpr = isUnionTypeExpr;
 function isTypeDecl(n) {
     return n && n.type === "typeDecl";
 }
-exports.isTypeDecl = isTypeDecl;
 function isVarDecl(n) {
     return n && n.type === "varDecl";
 }
-exports.isVarDecl = isVarDecl;
 function isVarsDecl(n) {
     return n && n.type === "varsDecl";
 }
-exports.isVarsDecl = isVarsDecl;
 function isParamDecl(n) {
     return n && n.type === "paramDecl";
 }
-exports.isParamDecl = isParamDecl;
 function isParamDecls(n) {
     return n && n.type === "paramDecls";
 }
-exports.isParamDecls = isParamDecls;
 function isSetterDecl(n) {
     return n && n.type === "setterDecl";
 }
-exports.isSetterDecl = isSetterDecl;
 function isFuncDeclHead(n) {
     return n && n.type === "funcDeclHead";
 }
-exports.isFuncDeclHead = isFuncDeclHead;
 function isFuncDecl(n) {
     return n && n.type === "funcDecl";
 }
-exports.isFuncDecl = isFuncDecl;
 function isNativeDecl(n) {
     return n && n.type === "nativeDecl";
 }
-exports.isNativeDecl = isNativeDecl;
 function isIfWait(n) {
     return n && n.type === "ifWait";
 }
-exports.isIfWait = isIfWait;
 function isEmpty(n) {
     return n && n.type === "empty";
 }
-exports.isEmpty = isEmpty;
 function isFuncExprHead(n) {
     return n && n.type === "funcExprHead";
 }
-exports.isFuncExprHead = isFuncExprHead;
 function isFuncExprOrDecl(n) {
     return isFuncExpr(n) || isFuncDecl(n);
 }
-exports.isFuncExprOrDecl = isFuncExprOrDecl;
 function isNonArrowFuncExpr(n) {
     return n && (n.type === "nonArrowFuncExpr");
 }
-exports.isNonArrowFuncExpr = isNonArrowFuncExpr;
 function isArrowFuncExpr(n) {
     return n && (n.type === "arrowFuncExpr");
 }
-exports.isArrowFuncExpr = isArrowFuncExpr;
 function isFuncExpr(n) {
     return isNonArrowFuncExpr(n) || isArrowFuncExpr(n);
 }
-exports.isFuncExpr = isFuncExpr;
 function isJsonElem(n) {
     return n && n.type === "jsonElem";
 }
-exports.isJsonElem = isJsonElem;
 function isObjlit(n) {
     return n && n.type === "objlit";
 }
-exports.isObjlit = isObjlit;
 function isArylit(n) {
     return n && n.type === "arylit";
 }
-exports.isArylit = isArylit;
 function isExtends(n) {
     return n && n.type === "extends";
 }
-exports.isExtends = isExtends;
 function isIncludes(n) {
     return n && n.type === "includes";
 }
-exports.isIncludes = isIncludes;
 function isProgram(n) {
     return n && n.type === "program";
 }
-exports.isProgram = isProgram;
 function isBackquoteText(n) {
     return n && n.type === "backquoteText";
 }
-exports.isBackquoteText = isBackquoteText;
 ;
 function isBackquoteLiteral(n) {
     return n && n.type === "backquoteLiteral";
 }
-exports.isBackquoteLiteral = isBackquoteLiteral;
 
 },{}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.match = exports.isVar = exports.Z = exports.Y = exports.X = exports.W = exports.V = exports.U = exports.T = exports.S = exports.R = exports.Q = exports.P = exports.O = exports.N = exports.M = exports.L = exports.K = exports.J = exports.I = exports.H = exports.G = exports.F = exports.E = exports.D = exports.C = exports.B = exports.A = exports.v = void 0;
+exports.Z = exports.Y = exports.X = exports.W = exports.V = exports.U = exports.T = exports.S = exports.R = exports.Q = exports.P = exports.O = exports.N = exports.M = exports.L = exports.K = exports.J = exports.I = exports.H = exports.G = exports.F = exports.E = exports.D = exports.C = exports.B = exports.A = void 0;
+exports.v = v;
+exports.isVar = isVar;
+exports.match = match;
 //var OM:any={};
 const VAR = Symbol("$var"); //,THIZ="$this";
 function v(name, cond = {}) {
@@ -3057,7 +3083,6 @@ function v(name, cond = {}) {
     //if (cond) res[THIZ]=cond;
     return res;
 }
-exports.v = v;
 function isVariable(a) {
     return a[VAR];
 }
@@ -3096,14 +3121,12 @@ for (var i =0 ; i<names.length ; i++) {
 function isVar(o) {
     return o && o[VAR];
 }
-exports.isVar = isVar;
 function match(obj, tmpl) {
     var res = {};
     if (m(obj, tmpl, res))
         return res;
     return null;
 }
-exports.match = match;
 ;
 function m(obj, tmpl, res) {
     if (obj === tmpl)
@@ -3144,7 +3167,11 @@ function m(obj, tmpl, res) {
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -3154,18 +3181,30 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.annotate = exports.initClassDecls = exports.parse = void 0;
+exports.annotate = void 0;
+exports.parse = parse;
+exports.initClassDecls = initClassDecls;
 const TonyuRuntime_1 = __importDefault(require("../runtime/TonyuRuntime"));
 const R_1 = __importDefault(require("../lib/R"));
 const TError_1 = __importDefault(require("../runtime/TError"));
@@ -3233,7 +3272,6 @@ function parse(klass, options = {}) {
     }
     return node;
 }
-exports.parse = parse;
 //-----------
 function initClassDecls(klass, env) {
     // The main task of initClassDecls is resolve 'dependency', it calls before orderByInheritance
@@ -3385,7 +3423,6 @@ function initClassDecls(klass, env) {
     //delete klass.hasSemanticError;
     // Why delete deleted? because decls.methods.params is still undef
 } // of initClassDecls
-exports.initClassDecls = initClassDecls;
 function annotateSource2(klass, env) {
     // annotateSource2 is call after orderByInheritance
     klass.hasSemanticError = true;
@@ -3797,6 +3834,7 @@ function annotateSource2(klass, env) {
                 else {
                     if ((0, compiler_1.isBlockScopeDeclprefix)(node.inFor.isVar)) {
                         for (let v of node.inFor.vars) {
+                            //prohibitNonBlockScopeDeclConflict(ctx.finfo, v)
                             prohibitGlobalNameOnBlockScopeDecl(v);
                             ns[v.text] = new SI.LOCAL(ctx.finfo, true);
                         }
@@ -4096,7 +4134,24 @@ function annotateSource2(klass, env) {
         f.paramTypes = resolveTypesOfParams(f.params);
         //console.log("F_PARAMTYPES", f.name, f.paramTypes);
     }
+    function declaredAsNonBlockScope(finfo, name) {
+        var _a;
+        if ((_a = finfo.params) === null || _a === void 0 ? void 0 : _a.some(p => p.name.text === name.text))
+            return true;
+        if ((0, CompilerTypes_1.isNonArrowFuncInfo)(finfo)) {
+            if (finfo.locals && finfo.locals.varDecls[name.text])
+                return true;
+        }
+        return false;
+    }
+    function prohibitNonBlockScopeDeclConflict(finfo, name) {
+        const ism = ctx.finfo.isMain;
+        if (!ism && declaredAsNonBlockScope(ctx.finfo, name)) {
+            throw (0, TError_1.default)((0, R_1.default)("blockScopedVarDeclConflict", name.text), srcFile, name.pos);
+        }
+    }
     function collectBlockScopedVardecl(stmts, scope) {
+        const dupcheck = new Set();
         for (let stmt of stmts) {
             if (stmt.type === "varsDecl" && (0, compiler_1.isBlockScopeDeclprefix)(stmt.declPrefix)) {
                 const ism = ctx.finfo.isMain;
@@ -4104,6 +4159,7 @@ function annotateSource2(klass, env) {
                 if (ism && !ctx.inBlockScope)
                     annotation(stmt, { varInMain: true });
                 for (const d of stmt.decls) {
+                    prohibitNonBlockScopeDeclConflict(ctx.finfo, d.name);
                     prohibitGlobalNameOnBlockScopeDecl(d.name);
                     if (ism && !ctx.inBlockScope) {
                         annotation(d, { varInMain: true });
@@ -4111,6 +4167,10 @@ function annotateSource2(klass, env) {
                     }
                     else {
                         const si = new SI.LOCAL(ctx.finfo, true);
+                        if (dupcheck.has(d.name.text)) {
+                            throw (0, TError_1.default)((0, R_1.default)("duplicateVarDecl", d.name.text), srcFile, d.pos);
+                        }
+                        dupcheck.add(d.name.text);
                         scope[d.name.text] = si;
                         annotation(d, { declaringFunc: ctx.finfo, scopeInfo: si });
                     }
@@ -4356,7 +4416,11 @@ exports.sourceFiles = new SourceFiles();
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -4366,18 +4430,29 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkExpr = exports.checkTypeDecl = void 0;
+exports.checkTypeDecl = checkTypeDecl;
+exports.checkExpr = checkExpr;
 const cu = __importStar(require("./compiler"));
 const R_1 = __importDefault(require("../lib/R"));
 const context_1 = require("./context");
@@ -4503,7 +4578,6 @@ function checkTypeDecl(klass, env) {
     typeDeclVisitor.def = visitSub; //S
     typeDeclVisitor.visit(klass.node);
 }
-exports.checkTypeDecl = checkTypeDecl;
 function checkExpr(klass, env) {
     const srcFile = klass.src.tonyu; //file object  //S
     function annotation(node, aobj) {
@@ -4660,7 +4734,6 @@ function checkExpr(klass, env) {
         return va.resolvedType;
     }
 }
-exports.checkExpr = checkExpr;
 ;
 
 },{"../lib/R":28,"../runtime/TError":37,"./CompilerTypes":4,"./NodeTypes":9,"./Visitor":14,"./compiler":15,"./context":16,"./parser":20}],14:[function(require,module,exports){
@@ -4746,7 +4819,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getParams = exports.getDependingClasses = exports.getProperty = exports.getMethod = exports.getField = exports.typeDigest2ResolvedType = exports.digestDecls = exports.resolvedType2Digest = exports.getSource = exports.packAnnotation = exports.annotation = exports.genSym = exports.nullCheck = exports.newScope = exports.getScopeType = exports.ScopeInfos = exports.ScopeTypes = exports.isNonBlockScopeDeclprefix = exports.isBlockScopeDeclprefix = void 0;
+exports.ScopeInfos = exports.ScopeTypes = void 0;
+exports.isBlockScopeDeclprefix = isBlockScopeDeclprefix;
+exports.isNonBlockScopeDeclprefix = isNonBlockScopeDeclprefix;
+exports.getScopeType = getScopeType;
+exports.newScope = newScope;
+exports.nullCheck = nullCheck;
+exports.genSym = genSym;
+exports.annotation = annotation;
+exports.packAnnotation = packAnnotation;
+exports.getSource = getSource;
+exports.resolvedType2Digest = resolvedType2Digest;
+exports.digestDecls = digestDecls;
+exports.typeDigest2ResolvedType = typeDigest2ResolvedType;
+exports.getField = getField;
+exports.getMethod = getMethod;
+exports.getProperty = getProperty;
+exports.getDependingClasses = getDependingClasses;
+exports.getParams = getParams;
 const TonyuRuntime_1 = __importDefault(require("../runtime/TonyuRuntime"));
 const root_1 = __importDefault(require("../lib/root"));
 const CompilerTypes_1 = require("./CompilerTypes");
@@ -4755,13 +4845,11 @@ const NONBLOCKSCOPE_DECLPREFIX = "var";
 function isBlockScopeDeclprefix(t) {
     return t && t.text !== NONBLOCKSCOPE_DECLPREFIX;
 }
-exports.isBlockScopeDeclprefix = isBlockScopeDeclprefix;
 function isNonBlockScopeDeclprefix(t) {
     return t && t.text === NONBLOCKSCOPE_DECLPREFIX;
 }
-exports.isNonBlockScopeDeclprefix = isNonBlockScopeDeclprefix;
 exports.ScopeTypes = {
-    FIELD: "field", METHOD: "method", NATIVE: "native",
+    FIELD: "field", METHOD: "method", NATIVE: "native", //B
     LOCAL: "local", THVAR: "threadvar", PROP: "property",
     PARAM: "param", GLOBAL: "global",
     CLASS: "class", MODULE: "module"
@@ -4846,7 +4934,7 @@ var ScopeInfos;
         }
     }
     ScopeInfos.MODULE = MODULE;
-})(ScopeInfos = exports.ScopeInfos || (exports.ScopeInfos = {}));
+})(ScopeInfos || (exports.ScopeInfos = ScopeInfos = {}));
 ;
 let nodeIdSeq = 1;
 let symSeq = 1; //B
@@ -4854,26 +4942,22 @@ let symSeq = 1; //B
 function getScopeType(st) {
     return st ? st.type : null;
 }
-exports.getScopeType = getScopeType;
 //cu.getScopeType=stype;
 function newScope(s) {
     const f = function () { };
     f.prototype = s;
     return new f();
 }
-exports.newScope = newScope;
 //cu.newScope=newScope;
 function nullCheck(o, mesg) {
     if (!o)
         throw mesg + " is null";
     return o;
 }
-exports.nullCheck = nullCheck;
 //cu.nullCheck=nc;
 function genSym(prefix) {
     return prefix + ((symSeq++) + "").replace(/\./g, "");
 }
-exports.genSym = genSym;
 //cu.genSym=genSym;
 function annotation(aobjs, node, aobj = undefined) {
     if (!node._id) {
@@ -4893,7 +4977,6 @@ function annotation(aobjs, node, aobj = undefined) {
     }
     return res;
 }
-exports.annotation = annotation;
 function packAnnotation(aobjs) {
     if (!aobjs)
         return;
@@ -4905,7 +4988,6 @@ function packAnnotation(aobjs) {
             delete aobjs[k];
     }
 }
-exports.packAnnotation = packAnnotation;
 //cu.extend=extend;
 /*function extend(res,aobj) {
     for (let i in aobj) res[i]=aobj[i];
@@ -4915,7 +4997,6 @@ exports.packAnnotation = packAnnotation;
 function getSource(srcCont, node) {
     return srcCont.substring(node.pos, node.pos + node.len);
 }
-exports.getSource = getSource;
 //cu.getSource=getSource;
 //cu.getField=getField;
 /*export function klass2name(t: AnnotatedType) {
@@ -4946,7 +5027,6 @@ function resolvedType2Digest(t) {
         return { element: resolvedType2Digest(t.element) };
     }
 }
-exports.resolvedType2Digest = resolvedType2Digest;
 function digestDecls(klass) {
     //console.log("DIGEST", klass.decls.methods);
     var res = { methods: {}, fields: {} };
@@ -4972,7 +5052,6 @@ function digestDecls(klass) {
     }
     return res;
 }
-exports.digestDecls = digestDecls;
 function typeDigest2ResolvedType(d) {
     if (typeof d === "string") {
         if (TonyuRuntime_1.default.classMetas[d]) {
@@ -4989,7 +5068,6 @@ function typeDigest2ResolvedType(d) {
         return { candidates: d.candidates.map(typeDigest2ResolvedType) };
     }
 }
-exports.typeDigest2ResolvedType = typeDigest2ResolvedType;
 function getField(klass, name) {
     if (klass instanceof Function)
         return null;
@@ -5005,7 +5083,6 @@ function getField(klass, name) {
     }
     return res;
 }
-exports.getField = getField;
 function getMethod(klass, name) {
     let res = null;
     for (let k of getDependingClasses(klass)) {
@@ -5015,7 +5092,6 @@ function getMethod(klass, name) {
     }
     return res;
 }
-exports.getMethod = getMethod;
 function getProperty(klass, name) {
     const getter = getMethod(klass, TonyuRuntime_1.default.klass.property.methodFor("get", name));
     const setter = getMethod(klass, TonyuRuntime_1.default.klass.property.methodFor("set", name));
@@ -5023,7 +5099,6 @@ function getProperty(klass, name) {
         return null;
     return { getter, setter };
 }
-exports.getProperty = getProperty;
 //cu.getMethod=getMethod2;
 // includes klass itself
 function getDependingClasses(klass) {
@@ -5046,7 +5121,6 @@ function getDependingClasses(klass) {
     loop(klass);
     return res;
 }
-exports.getDependingClasses = getDependingClasses;
 //cu.getDependingClasses=getDependingClasses;
 function getParams(method) {
     let res = [];
@@ -5061,14 +5135,14 @@ function getParams(method) {
         res = res.concat(ps);
     return res;
 }
-exports.getParams = getParams;
 //cu.getParams=getParams;
 //export= cu;
 
 },{"../lib/root":32,"../runtime/RuntimeTypes":36,"../runtime/TonyuRuntime":39,"./CompilerTypes":4}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.context = exports.RawContext = void 0;
+exports.RawContext = void 0;
+exports.context = context;
 /*export= function context() {
     var c:any={};
     c.ovrFunc=function (from , to) {
@@ -5113,7 +5187,6 @@ function context() {
     res.value = res;
     return res;
 }
-exports.context = context;
 
 },{}],17:[function(require,module,exports){
 "use strict";
@@ -5162,7 +5235,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRange = exports.setRange = exports.addRange = exports.lazy = exports.TokensParser = exports.tokensParserContext = exports.StringParser = exports.State = exports.Parser = exports.ParserContext = exports.SUBELEMENTS = exports.ALL = void 0;
+exports.TokensParser = exports.tokensParserContext = exports.StringParser = exports.State = exports.Parser = exports.ParserContext = exports.SUBELEMENTS = exports.ALL = void 0;
+exports.lazy = lazy;
+exports.addRange = addRange;
+exports.setRange = setRange;
+exports.getRange = getRange;
 const R_1 = __importDefault(require("../lib/R"));
 exports.ALL = Symbol("ALL");
 exports.SUBELEMENTS = Symbol("SUBELEMENTS");
@@ -5260,6 +5337,23 @@ class ParserContext {
 }
 exports.ParserContext = ParserContext;
 class Parser {
+    get isEmpty() {
+        if (!this.struct)
+            return false;
+        if (this.struct.type === "empty")
+            return true;
+        if (this.struct.type === "and" || this.struct.type === "or") {
+            for (let p of this.struct.elems) {
+                if (!p.isEmpty)
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
+    // Parser.parse:: State->State
+    //static create(parserFunc:ParseFunc) { return create(parserFunc);}
+    create(parserFunc) { return this.context.create(parserFunc); }
     constructor(context, parseFunc) {
         this.context = context;
         if (!options.traceTap) {
@@ -5293,23 +5387,6 @@ class Parser {
             };
         }
     }
-    get isEmpty() {
-        if (!this.struct)
-            return false;
-        if (this.struct.type === "empty")
-            return true;
-        if (this.struct.type === "and" || this.struct.type === "or") {
-            for (let p of this.struct.elems) {
-                if (!p.isEmpty)
-                    return false;
-            }
-            return true;
-        }
-        return false;
-    }
-    // Parser.parse:: State->State
-    //static create(parserFunc:ParseFunc) { return create(parserFunc);}
-    create(parserFunc) { return this.context.create(parserFunc); }
     dispTbl() {
         if (!this._first) {
             console.log("No table for " + this.name);
@@ -5774,6 +5851,7 @@ exports.Parser = Parser;
 function isStrStateSrc(src) { return typeof src.str === "string"; }
 function isTokenStateSrc(src) { return src.tokens; }
 class State {
+    get success() { return !this._error; }
     constructor(strOrTokens, global) {
         /*updateMaxPos(npos:number) {
             if (npos > this.src.maxPos) {
@@ -5794,7 +5872,6 @@ class State {
             //this.success=true;
         }
     }
-    get success() { return !this._error; }
     clone() {
         var s = new State();
         s.src = this.src;
@@ -6001,7 +6078,6 @@ function lazy(context, pf) {
     self._lazy = lz;
     return self;
 }
-exports.lazy = lazy;
 function addRange(res, newr) {
     if (newr == null)
         return res;
@@ -6018,7 +6094,6 @@ function addRange(res, newr) {
         res.len = newEnd - res.pos;
     return res;
 }
-exports.addRange = addRange;
 function setRange(res) {
     if (res == null || typeof res == "string" || typeof res == "number" || typeof res == "boolean")
         return;
@@ -6033,7 +6108,6 @@ function setRange(res) {
     }
     return res;
 }
-exports.setRange = setRange;
 function getRange(e) {
     if (e == null)
         return null;
@@ -6043,7 +6117,6 @@ function getRange(e) {
         return e;
     return null;
 }
-exports.getRange = getRange;
 //	return $;
 //})();
 //export= Parser;
@@ -9477,7 +9550,8 @@ return /******/ (function(modules) { // webpackBootstrap
 },{}],23:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.tokenizerFactory = exports.BQX = exports.BQT = exports.BQH = void 0;
+exports.BQX = exports.BQT = exports.BQH = void 0;
+exports.tokenizerFactory = tokenizerFactory;
 const parser_1 = require("./parser");
 exports.BQH = "backquoteHead", exports.BQT = "backquoteTail", exports.BQX = "backquoteText";
 function tokenizerFactory({ reserved, caseInsensitive }) {
@@ -9865,15 +9939,13 @@ function tokenizerFactory({ reserved, caseInsensitive }) {
     }
     return { parse: parse, extension: "js", reserved: reserved };
 }
-exports.tokenizerFactory = tokenizerFactory;
 ;
 
 },{"./parser":20}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isTonyu1 = void 0;
-function isTonyu1(options) { return options && options.tonyu1; }
 exports.isTonyu1 = isTonyu1;
+function isTonyu1(options) { return options && options.tonyu1; }
 
 },{}],25:[function(require,module,exports){
 "use strict";
@@ -13731,6 +13803,8 @@ const ja = {
     infiniteLoopDetected: "無限ループをストップしました。\n" +
         "   プロジェクト オプションで無限ループチェックの有無を設定できます。\n" +
         "   [参考]https://edit.tonyu.jp/doc/options.html\n",
+    "blockScopedVarDeclConflict": "'{1}' は引数または'var'ですでに定義されています.",
+    "duplicateVarDecl": "'{1}'が２回定義されています。",
 };
 const en = {
     "MethodAlreadyDeclared": "Method {1} is already defined",
@@ -13738,33 +13812,35 @@ const en = {
     cannotCallNonFunctionType: "Cannot call what is neither function or method.",
     memberNotFoundInClass: "No such field or method: {1}.{2}",
     "expected": "Expected: {1}",
-    "superClassIsUndefined": "Super Class '{1}' is not defined",
-    "classIsUndefined": "Class {1} is Undefined",
-    "invalidLeftValue": "{1} is not a valid Left Value",
-    "fieldDeclarationRequired": "'{1}' is not declared, If you have meant it is a Field, Declare Explicitly.",
-    "duplicateKeyInObjectLiteral": "Duplicate Key In Object Literal: {1}",
-    "cannotUseStringLiteralAsAShorthandOfObjectValue": "Cannot Use String Literal as a Shorthand of Object Value",
-    "breakShouldBeUsedInIterationOrSwitchStatement": "break; Should be Used In Iteration or switch Statement",
-    "continueShouldBeUsedInIterationStatement": "continue; Should be Used In Iteration Statement",
-    "cannotUseObjectLiteralAsTheExpressionOfStatement": "Cannot Use Object Literal As The Expression Of Statement",
-    "undefinedMethod": "Undefined Method: '{1}'",
+    "superClassIsUndefined": "Super Class '{1}' is not defined", //親クラス {1}は定義されていません
+    "classIsUndefined": "Class {1} is Undefined", //クラス {1}は定義されていません
+    "invalidLeftValue": "{1} is not a valid Left Value", //'{1}'は左辺には書けません．
+    "fieldDeclarationRequired": "'{1}' is not declared, If you have meant it is a Field, Declare Explicitly.", //{1}は宣言されていません（フィールドの場合，明示的に宣言してください）．
+    "duplicateKeyInObjectLiteral": "Duplicate Key In Object Literal: {1}", //オブジェクトリテラルのキー名'{1}'が重複しています
+    "cannotUseStringLiteralAsAShorthandOfObjectValue": "Cannot Use String Literal as a Shorthand of Object Value", //オブジェクトリテラルのパラメタに単独の文字列は使えません
+    "breakShouldBeUsedInIterationOrSwitchStatement": "break; Should be Used In Iteration or switch Statement", //break； は 繰り返しまたはswitch文の中で使います.
+    "continueShouldBeUsedInIterationStatement": "continue; Should be Used In Iteration Statement", //continue； は繰り返しの中で使います.
+    "cannotUseObjectLiteralAsTheExpressionOfStatement": "Cannot Use Object Literal As The Expression Of Statement", //オブ ジェクトリテラル単独の式文は書けません．
+    "undefinedMethod": "Undefined Method: '{1}'", //メソッド{1}はありません．
     undefinedSuperMethod: "Method '{1}' is defined in neigher superclass or including modules.",
-    "notAWaitableMethod": "Not A Waitable Method: '{1}'",
-    "circularDependencyDetected": "Circular Dependency Detected: {1}",
-    "cannotWriteReturnInTryStatement": "Cannot Write Return In Try Statement",
-    "cannotWriteBreakInTryStatement": "Cannot Write Break In Try Statement",
-    "cannotWriteContinueInTryStatement": "Cannot Write Continue In Try Statement",
-    "cannotWriteTwoOrMoreCatch": "Cannot Write Two Or More Catch",
-    "lexicalError": "Lexical Error",
-    "parseError": "Parse Error",
-    "ambiguousClassName": "Ambiguous Class Name: {1}.{2} vs {3}",
-    "cannotInvokeMethod": "Cannot Invoke Method {1}(={2}).{3}",
-    "notAMethod": "Not A Method: {1}{2}(={3})",
-    "notAFunction": "Not A Function: {1}",
-    "uninitialized": "Uninitialized: {1}(={2})",
-    "newIsRequiredOnInstanciate": "new is required to Instanciate {1}",
-    "bootClassIsNotFound": "Boot Class {1} Is Not Found",
+    "notAWaitableMethod": "Not A Waitable Method: '{1}'", //メソッド{1}は待機可能メソッドではありません
+    "circularDependencyDetected": "Circular Dependency Detected: {1}", //次のクラス間に循環参照があります: {1}
+    "cannotWriteReturnInTryStatement": "Cannot Write Return In Try Statement", //現実装では、tryの中にreturnは書けません
+    "cannotWriteBreakInTryStatement": "Cannot Write Break In Try Statement", //現実装では、tryの中にbreakは書けません
+    "cannotWriteContinueInTryStatement": "Cannot Write Continue In Try Statement", //現実装では、tryの中にcontinueは書けま せん
+    "cannotWriteTwoOrMoreCatch": "Cannot Write Two Or More Catch", //現実装では、catch節1個のみをサポートしています
+    "lexicalError": "Lexical Error", //文法エラー(Token)
+    "parseError": "Parse Error", //文法エラー
+    "ambiguousClassName": "Ambiguous Class Name: {1}.{2} vs {3}", //曖昧なクラス名： {1}.{2}, {3}
+    "cannotInvokeMethod": "Cannot Invoke Method {1}(={2}).{3}", //{1}(={2})のメソッド {3}を呼び出せません
+    "notAMethod": "Not A Method: {1}{2}(={3})", //{1}{2}(={3})はメソッドではありません
+    "notAFunction": "Not A Function: {1}", //{1}は関数ではありません
+    "uninitialized": "Uninitialized: {1}(={2})", //{1}(={2})は初期化されていなません
+    "newIsRequiredOnInstanciate": "new is required to Instanciate {1}", //クラス名{1}はnewをつけて呼び出して下さい。
+    "bootClassIsNotFound": "Boot Class {1} Is Not Found", //{1}というクラスはありません．
     "infiniteLoopDetected": "Infinite Loop Detected",
+    "blockScopedVarDeclConflict": "'{1}' is already declared as a parmeter or 'var' declaration.",
+    "duplicateVarDecl": "'{1}' is declared twice.",
 };
 /*let buf="";
     for (let k of Object.keys(ja)) {
@@ -14459,19 +14535,18 @@ module.exports=NS2DepSpec;
 },{}],36:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isUnionTypeDigest = exports.isArrayTypeDigest = exports.isTonyuClass = void 0;
+exports.isTonyuClass = isTonyuClass;
+exports.isArrayTypeDigest = isArrayTypeDigest;
+exports.isUnionTypeDigest = isUnionTypeDigest;
 function isTonyuClass(v) {
     return typeof v === "function" && v.meta && !v.meta.isShim;
 }
-exports.isTonyuClass = isTonyuClass;
 function isArrayTypeDigest(d) {
     return d.element;
 }
-exports.isArrayTypeDigest = isArrayTypeDigest;
 function isUnionTypeDigest(d) {
     return d.union;
 }
-exports.isUnionTypeDigest = isUnionTypeDigest;
 
 },{}],37:[function(require,module,exports){
 "use strict";
@@ -14543,7 +14618,8 @@ module.exports = TError;
 },{}],38:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IT2 = exports.IT = void 0;
+exports.IT = IT;
+exports.IT2 = IT2;
 //define(["Klass"], function (Klass) {
 //var Klass=require("../lib/Klass");
 const SYMIT = typeof Symbol !== "undefined" && Symbol.iterator;
@@ -14658,7 +14734,6 @@ function IT(set, arity) {
         throw new Error(set + " is not iterable");
     }
 }
-exports.IT = IT;
 function IT2(set, arity) {
     const it = IT(set, arity);
     return function* () {
@@ -14671,7 +14746,6 @@ function IT2(set, arity) {
         }
     }();
 }
-exports.IT2 = IT2;
 //	module.exports=IT;
 //   Tonyu.iterator=IT;
 //	return IT;
@@ -15170,7 +15244,7 @@ const Tonyu = {
         console.log(e.stack);
         throw e;
     }, TError: TError_1.default,
-    VERSION: 1560828115159,
+    VERSION: 1560828115159, //EMBED_VERSION
     A, ID: Math.random()
 };
 //const TT=TonyuThreadF(Tonyu);
