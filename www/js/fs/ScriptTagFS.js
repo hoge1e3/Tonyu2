@@ -21,7 +21,9 @@ define(["Content"],function (Content) {
 						res[fn].dataurl=true;
 					}
 	            }
-	        }
+	        } else if (s.type==="text/json") {
+				res=JSON.parse(s.innerText);
+			}
 	    });
 	    return res;
 	    function unwrap(str, cols) {

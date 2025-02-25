@@ -167,3 +167,68 @@ eventWindowOpen = \(e) {
 \param(name, def) {
     return Util.getQueryString(name, def);
 }
+\openSharePost(){
+    let a=new ArgParser(arguments);
+    let options=a.shiftOptions("text","url","tag",
+    "left","top","width","height","fontsize");
+    options=options||{};
+    // l=sw/2-w/2
+    // w=sw-l*2
+    //  =sw-(sw/2-w/2)*2
+    //  =sw-sw+w=w
+    let left=(
+    options.left!=null ? options.left :
+    options.width!=null ? $screenWidth/2-options.width/2 :
+    50);
+    let width=(
+    options.width!=null ? options.width :
+    options.left!=null ? $screenWidth-options.left*2:
+    $screenWidth-100);
+    let top=(
+    options.top!=null ? options.top :
+    options.height!=null ? $screenHeight/2-options.height/2 
+    : 50);
+    let height=(
+    options.height!=null ? options.height :
+    options.top!=null ? $screenHeight-options.top*2:
+    $screenHeight-100);
+    //let rows=options.rows||5;
+    let fontsize=options.fontsize||"12px";
+    if (typeof fontsize==="number") fontsize=fontsize+"px";
+    let tag=options.tag;
+    if(typeof tag==="string")tag=tag.split(",");
+    let m=options.text;
+    if (options.url) m+=" "+options.url;
+    if (tag){
+        let hashify=(s)=>s.replace(/^#?/,"#");
+        m+=" "+tag.map(hashify).join(" ");
+    }
+    let h=new HTMLUI{
+        content:["div",{
+            style:"background: white;"
+            //style:"position:relative; width: 500px; height: 300px"
+        },
+        ["textarea",{
+            style: `
+            position:absolute;
+            top:5%;
+            width:90%;height:80%;left:5%;
+            font-size:${fontsize};
+            `,
+            rows, name:"mesg",
+        },m],
+        ["div",
+        ["button",{style: "width:50%;top:90%;left:0%;height:10%;position:absolute;",onclick:copy},"Copy"],
+        ["button",{style: "width:50%;top:90%;left:50%;height:10%;position:absolute;",onclick:close},"Close"],
+        ]
+        ],
+        left,top,width,height,
+    };  
+    function copy() {
+        h.copyToClipboard("mesg");
+    }
+    function close(){
+        h.die();
+    }
+    return h;
+};

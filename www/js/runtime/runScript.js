@@ -59,7 +59,12 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 		optionFixer.fixFile(optionFile);
 		var idePrj=IDEProject.create({dir:prjDir,ide});//, kernelDir);
 		Tonyu.animationFrame=()=>new Promise(requestAnimationFrame);// abolish
-		addImageScript().then(start).then(NOP,e=>console.error(e));
+		addImageScript().then(start).then(()=>{
+			if (typeof WebSite.onStart==="function") WebSite.onStart({Tonyu});
+		},(e)=>{
+			console.error(e);
+			if (typeof WebSite.onCompileError==="function") WebSite.onCompileError(e);
+		});
 		async function start() {
 			//console.log("STA-TO");
 			await idePrj.fullCompile();// fullCompile exec compiled source when debugger is connected, but fails because kernel is not loaded yet

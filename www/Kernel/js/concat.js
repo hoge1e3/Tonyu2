@@ -37353,6 +37353,8 @@ Tonyu.klass.define({
             }
           }
         });
+        ;
+        
       },
       fiber$main :function* _trc_WebPage_f_main(_thread) {
         var _this=this;
@@ -37381,6 +37383,8 @@ Tonyu.klass.define({
             }
           }
         });
+        ;
+        
         
       },
       openNewWindow :function _trc_WebPage_openNewWindow(url,options) {
@@ -37672,10 +37676,110 @@ Tonyu.klass.define({
         return Util.getQueryString(name,def);
         
       },
+      openSharePost :function _trc_WebPage_openSharePost() {
+        var _this=this;
+        function copy() {
+          
+          h.copyToClipboard("mesg");
+        }function close() {
+          
+          h.die();
+        }
+        let a = new Tonyu.classes.kernel.ArgParser(arguments);
+        
+        let options = a.shiftOptions("text","url","tag","left","top","width","height","fontsize");
+        
+        options=options||{};
+        let left = (options.left!=null?options.left:options.width!=null?Tonyu.globals.$screenWidth/2-options.width/2:50);
+        
+        let width = (options.width!=null?options.width:options.left!=null?Tonyu.globals.$screenWidth-options.left*2:Tonyu.globals.$screenWidth-100);
+        
+        let top = (options.top!=null?options.top:options.height!=null?Tonyu.globals.$screenHeight/2-options.height/2:50);
+        
+        let height = (options.height!=null?options.height:options.top!=null?Tonyu.globals.$screenHeight-options.top*2:Tonyu.globals.$screenHeight-100);
+        
+        let fontsize = options.fontsize||"12px";
+        
+        if (typeof  fontsize==="number") {
+          fontsize=fontsize+"px";
+        }
+        let tag = options.tag;
+        
+        if (typeof  tag==="string") {
+          tag=tag.split(",");
+        }
+        let m = options.text;
+        
+        if (options.url) {
+          m+=" "+options.url;
+        }
+        if (tag) {
+          let hashify = ((s)=>(s.replace(/^#?/,"#")));
+          
+          m+=" "+tag.map(hashify).join(" ");
+          
+        }
+        let h = new Tonyu.classes.kernel.HTMLUI({content: ["div",{style: "background: white;"},["textarea",{style: ['\r\n            position:absolute;\r\n            top:5%;\r\n            width:90%;height:80%;left:5%;\r\n            font-size:',fontsize,';\r\n            '].join(''),rows: _this.rows,name: "mesg"},m],["div",["button",{style: "width:50%;top:90%;left:0%;height:10%;position:absolute;",onclick: copy},"Copy"],["button",{style: "width:50%;top:90%;left:50%;height:10%;position:absolute;",onclick: close},"Close"]]],left: left,top: top,width: width,height: height});
+        
+        
+        
+        return h;
+      },
+      fiber$openSharePost :function* _trc_WebPage_f_openSharePost(_thread) {
+        var _this=this;
+        var _arguments=Tonyu.A(arguments);
+        function copy() {
+          
+          h.copyToClipboard("mesg");
+        }function close() {
+          
+          h.die();
+        }
+        let a = new Tonyu.classes.kernel.ArgParser(_arguments);
+        
+        let options = a.shiftOptions("text","url","tag","left","top","width","height","fontsize");
+        
+        options=options||{};
+        let left = (options.left!=null?options.left:options.width!=null?Tonyu.globals.$screenWidth/2-options.width/2:50);
+        
+        let width = (options.width!=null?options.width:options.left!=null?Tonyu.globals.$screenWidth-options.left*2:Tonyu.globals.$screenWidth-100);
+        
+        let top = (options.top!=null?options.top:options.height!=null?Tonyu.globals.$screenHeight/2-options.height/2:50);
+        
+        let height = (options.height!=null?options.height:options.top!=null?Tonyu.globals.$screenHeight-options.top*2:Tonyu.globals.$screenHeight-100);
+        
+        let fontsize = options.fontsize||"12px";
+        
+        if (typeof  fontsize==="number") {
+          fontsize=fontsize+"px";
+        }
+        let tag = options.tag;
+        
+        if (typeof  tag==="string") {
+          tag=tag.split(",");
+        }
+        let m = options.text;
+        
+        if (options.url) {
+          m+=" "+options.url;
+        }
+        if (tag) {
+          let hashify = ((s)=>(s.replace(/^#?/,"#")));
+          
+          m+=" "+tag.map(hashify).join(" ");
+          
+        }
+        let h = new Tonyu.classes.kernel.HTMLUI({content: ["div",{style: "background: white;"},["textarea",{style: ['\r\n            position:absolute;\r\n            top:5%;\r\n            width:90%;height:80%;left:5%;\r\n            font-size:',fontsize,';\r\n            '].join(''),rows: _this.rows,name: "mesg"},m],["div",["button",{style: "width:50%;top:90%;left:0%;height:10%;position:absolute;",onclick: copy},"Copy"],["button",{style: "width:50%;top:90%;left:50%;height:10%;position:absolute;",onclick: close},"Close"]]],left: left,top: top,width: width,height: height});
+        
+        
+        
+        return h;
+        
+      },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"openNewWindow":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"openPage":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"openTweet":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"openShareTweet":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"showLink":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"param":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"eventWindowOpen":{},"postOptions":{},"postUrl":{},"canvas":{},"listenerExists":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"openNewWindow":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"openPage":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"openTweet":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"openShareTweet":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null,null,null,null],"returnValue":null}},"showLink":{"nowait":false,"isMain":false,"vtype":{"params":[null,null,null],"returnValue":null}},"param":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}},"openSharePost":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"eventWindowOpen":{},"postOptions":{},"postUrl":{},"canvas":{},"listenerExists":{},"rows":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Boot',
