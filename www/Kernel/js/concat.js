@@ -21626,6 +21626,23 @@ Tonyu.klass.define({
         return {x: x,y: y,z: z,scale: _this.z1/z};
         
       },
+      relative :function _trc_Camera3D_relative(obj) {
+        var _this=this;
+        var r;
+        
+        r = _this.transform.inverse.childToSibling(obj);
+        
+        return r;
+      },
+      fiber$relative :function* _trc_Camera3D_f_relative(_thread,obj) {
+        var _this=this;
+        var r;
+        
+        r = _this.transform.inverse.childToSibling(obj);
+        
+        return r;
+        
+      },
       draw3D :function _trc_Camera3D_draw3D(ctx3d) {
         var _this=this;
         
@@ -21665,7 +21682,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"to2D":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Vec3"],"returnValue":null}},"draw3D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"goBehind":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"z1":{"vtype":"Number"}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"to2D":{"nowait":false,"isMain":false,"vtype":{"params":["kernel.Vec3"],"returnValue":null}},"relative":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"draw3D":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"goBehind":{"nowait":false,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"z1":{"vtype":"Number"}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.GameScreen',

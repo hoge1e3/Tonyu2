@@ -32,6 +32,11 @@ r.x= p.x*z1/p.z
     y=y*z1/z;//+spy;
     return {x,y,z,scale:z1/z};
 }
+\relative(obj) {
+    var r=transform.inverse.childToSibling(obj);
+    return r;
+}
+
 \draw3D(ctx3d) {
     if (ctx3d.camera===this) return;
     //console.log("diffcam",ctx3d.camera, this);
