@@ -1,11 +1,14 @@
 /*global requirejs*/
 requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			"runtime","WebSite","root","runScript_common","EditButton",
-			"Debugger","SourceFiles","sysMod","ProjectFactory","CompiledProject","optionFixer"],
+			"Debugger","SourceFiles","sysMod","ProjectFactory","CompiledProject","optionFixer",
+			"rpc_umd"],
 		function (FS,  Tonyu, IDEProject, sh, ScriptTagFS,
 				rt,WebSite,root,com,EditButton,
-				Debugger,SourceFiles,sysMod,F,CompiledProject,optionFixer) {
-	$(function () {
+				Debugger,SourceFiles,sysMod,F,CompiledProject,optionFixer,
+			rpc) {
+	$(()=>main());
+	async function main() {
 		var home=FS.get(WebSite.tonyuHome);
 		var ramHome=FS.get("/ram/");
 		FS.mount(ramHome.path(), FS.LSFS.ramDisk() );
@@ -22,6 +25,8 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 		ramHome.rel("files/").link(actualFilesDir);
 		//if (prjDir.exists()) sh.rm(prjDir,{r:1});
 		var fo=ScriptTagFS.toObj();
+		const empty=(Object.keys(fo).length==0);
+		if (empty) fo=await loadByRPC();
 		for (var fn in fo) {
 			var f=prjDir.rel(fn);
 			if (!f.isDir()) {
@@ -59,12 +64,14 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 		optionFixer.fixFile(optionFile);
 		var idePrj=IDEProject.create({dir:prjDir,ide});//, kernelDir);
 		Tonyu.animationFrame=()=>new Promise(requestAnimationFrame);// abolish
-		addImageScript().then(start).then(()=>{
+		try {
+			await addImageScript();
+			await start();
 			if (typeof WebSite.onStart==="function") WebSite.onStart({Tonyu});
-		},(e)=>{
+		}catch (e){
 			console.error(e);
 			if (typeof WebSite.onCompileError==="function") WebSite.onCompileError(e);
-		});
+		}
 		async function start() {
 			//console.log("STA-TO");
 			await idePrj.fullCompile();// fullCompile exec compiled source when debugger is connected, but fails because kernel is not loaded yet
@@ -127,5 +134,25 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 	            document.body.appendChild(s);
 			});
 		}
-	});
+	}
+	function loadByRPC() {
+		return new Promise((s)=>{
+			console.log("Waiting for load from rpc...");
+			const serv=rpc.proxy.server(
+				"tonyu-runScript", [
+					"http://localhost", 
+					"https://edit.tonyu.jp",
+					"https://bitarrow3.eplang.jp",
+					"https://hoge1e3.github.io"
+				],{
+				load(content) {
+					s(content);
+					console.log("Loaded from rpc!");
+					serv.dispose();
+				}
+			});
+
+		});
+
+	}
 });

@@ -251,6 +251,7 @@ var reqConf={
                 "StackDecoder":1,
             },
             "lib": {
+                rpc_umd: 1,
                 R:1,
                 jshint:1,
                 EventHandler:1,

@@ -1,0 +1,21 @@
+<iframe src="http://127.0.0.1/tonyu2/html/run1_rpc.html" width="300" height="400"></iframe>
+<script src="../js/lib/rpc_umd.js"></script>
+<script>
+console.log("rpc",rpc);
+const cl=rpc.proxy.client(
+    document.querySelector("iframe").contentWindow,
+    "tonyu-runScript",
+    "http://127.0.0.1",
+);
+cl.load({
+    "options.json": {
+        text:"{\"compiler\":{\"namespace\":\"user\",\"defaultSuperClass\":\"kernel.Actor\",\"dependingProjects\":[{\"namespace\":\"kernel\"}]},\"run\":{\"mainClass\":\"user.Main\",\"bootClass\":\"kernel.Boot\",\"globals\":{\"$defaultFPS\":60,\"$imageSmoothingDisabled\":true,\"$soundLoadAndDecode\":false}},\"plugins\":{},\"kernelEditable\":false,\"language\":\"tonyu\",\"version\":1723023812576}",
+    },
+    "res.json": {
+        text: "{\"images\":[{\"name\":\"$pat_base\",\"url\":\"images/base.png\",\"pwidth\":32,\"pheight\":32},{\"name\":\"$pat_sample\",\"url\":\"images/Sample.png\"},{\"name\":\"$pat_neko\",\"url\":\"images/neko.png\",\"pwidth\":32,\"pheight\":32},{\"name\":\"$pat_mapchip\",\"url\":\"images/mapchip.png\",\"pwidth\":32,\"pheight\":32}],\"sounds\":[]}",
+    },
+    "Main.tonyu": {
+        text: "x=y=100;\nwhile(1){\n    x=$mouseX;\n    y=$mouseY;\n    update();\n}",
+    },
+});
+</script>
