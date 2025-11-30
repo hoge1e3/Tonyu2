@@ -14,7 +14,8 @@ define(["Tonyu","WebSite"],function (Tonyu,WebSite) {
             globals:{
                 $defaultFPS:60,
                 $imageSmoothingDisabled:true,
-                $soundLoadAndDecode:false
+                $soundLoadAndDecode:false,
+                $picoAudioSoundQuality:1
             }
         },
         plugins: {},

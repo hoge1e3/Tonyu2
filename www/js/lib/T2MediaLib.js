@@ -140,7 +140,8 @@ var T2MediaLib = (function(){
                 this.picoAudio = new PicoAudio({
                     audioContext: this.context,
                     isSkipBeginning: true,
-                    initReverb: 0
+                    initReverb: 0,
+                    soundQuality: (typeof Tonyu.globals.$picoAudioSoundQuality !== 'undefined') ? Tonyu.globals.$picoAudioSoundQuality : 0
                 });
             }
         }
@@ -237,7 +238,8 @@ var T2MediaLib = (function(){
                 this.picoAudio = new PicoAudio({
                     audioContext: this.context,
                     isSkipBeginning: true,
-                    initReverb: 0
+                    initReverb: 0,
+                    soundQuality: (typeof Tonyu.globals.$picoAudioSoundQuality !== 'undefined') ? Tonyu.globals.$picoAudioSoundQuality : 0
                 });
             }
             var smf = new Uint8Array(arrayBuffer);
@@ -1386,7 +1388,8 @@ var T2MediaLib_BGMPlayer = (function(){
                     audioContext: this.context,
                     picoAudio: this.t2MediaLib.picoAudio,
                     isSkipBeginning: true,
-                    initReverb: 0
+                    initReverb: 0,
+                    soundQuality: (typeof Tonyu.globals.$picoAudioSoundQuality !== 'undefined') ? Tonyu.globals.$picoAudioSoundQuality : 0
                 });
             }
         }
