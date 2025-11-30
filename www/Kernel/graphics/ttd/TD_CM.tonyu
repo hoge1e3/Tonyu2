@@ -10,30 +10,11 @@ var gk, k_max;
 var GL, GU, GR, GD;
 var TD_visible;
 
-\new(opt){
+\new(zx,zy,zz, zxz,zyz,zxy, zgk,zk_max, zGL,zGU,zGR,zGD){
     cons();
-    super(opt);
+    super(zx);
+    if (typeof zx!="object") cameraSet(zx,zy,zz, zxz,zyz,zxy, zgk,zk_max, zGL,zGU,zGR,zGD);
 }
-
-// \new(zx,zy,zz, zxz,zyz,zxy, zgk,zk_max, zGL,zGU,zGR,zGD){
-//     x=zx;
-//     y=zy;
-//     z=zz;
-  
-//     xz=zxz;
-//     yz=zyz;
-//     xy=zxy;
-  
-//     gk=zgk;
-//     k_max=zk_max;
-  
-//     GL=zGL;
-//     GU=zGU;
-//     GR=zGR;
-//     GD=zGD;
-  
-//     TD_visible=1;
-// }
 
 \cons(){
     x=0;
@@ -53,12 +34,14 @@ var TD_visible;
     GD=$screenHeight;
     
     TD_visible=1;
+
+    if ($TD_M_ACM == null) throw new Error("TD_Zオブジェクトが作成されていません。先に作成してください。");
+    $TD_M_ACM.push(this); // 3D配列に自分を登録
 }
 
 
 
 function onAppear(){ // 生まれた時
-    $TD_M_ACM.push(this); // 3D配列に自分を登録
 }
 
 function onDie(){ // 死んだ時

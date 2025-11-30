@@ -172,7 +172,6 @@ function ZukeiDraw(angleDX,alphaDX,scaleXDX,scaleYDX){//■図形表示
                 setPolygon(2,p3.xx,p3.yy);
                 if(pr>=4)setPolygon(3,p4.xx,p4.yy);
                 
-                
             }else if(s==2){//●修正された図形の表示
                 setPolygon(0,dp1.xx,dp1.yy);
                 setPolygon(1,dp2.xx,dp2.yy);

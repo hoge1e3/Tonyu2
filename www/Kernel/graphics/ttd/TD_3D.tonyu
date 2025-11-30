@@ -7,19 +7,18 @@ extends DxChar;
 
 
 // コンストラクター
-\new(opt) {
+\new(xx,yy,zz) {
     cons();
-    super(opt);
+    super(xx);
+    if (typeof xx!="object") {
+        x = xx;
+        y = yy;
+        z = zz;
+    }
+    if(x==null)x=0;
+    if(y==null)y=0;
+    if(z==null)z=0;
 }
-// \new(xx,yy,zz, x,y,p,f,zOrder,angle,alpha,scaleX,scaleY) {
-//     // if (typeof x=="object") {
-//     //     cons();
-//     //     Tonyu.extend(this,x);
-//     // } else {
-//     super(x,y,p,f,scaleX,angle,alpha);
-//     cons(xx,yy,zz, x,y,p,f,zOrder,angle,alpha,scaleX,scaleY);
-//     // }
-// }
 
 var z;
 var TD_x, TD_y, TD_z;
@@ -35,9 +34,7 @@ var TD_k_xzsin, TD_k_xzcos;
 var TD_k_yzsin, TD_k_yzcos;
 var TD_k_xysin, TD_k_xycos;
 
-//\cons(xx,yy,zz, x,y,p,f,zOrder,angle,alpha,scaleX,scaleY){
 \cons(){
-    if(z==null)z=0;
     //setVisible(0);
     // オブジェクトの基本座標
     TD_x = 0;
@@ -70,6 +67,7 @@ var TD_k_xysin, TD_k_xycos;
     
     this.scaleY=scaleY||0;
     
+    if ($TD_M_A3D == null) throw new Error("TD_Zオブジェクトが作成されていません。先に作成してください。");
     if ($TD_M_A3D.indexOf() == -1) $TD_M_A3D.push(this); // 3D配列に自分を登録
     //onAppear();
     on("die") \{
@@ -131,7 +129,7 @@ function apudeto() {
   
     if (TD_visible) {
         // 表示状態
-        if ($TD_K_F!=$frameCount/*||$Navigator.isIOS()*/) {
+        if ($TD_K_F!=$frameCount||$Navigator.isIOS()) {
             // 処理がまだ１回もされてなかったら処理
             
             $TD_Z.RSC(); // 三角関数計算
@@ -460,13 +458,18 @@ function add3D_S(m,p1,p2,p3,p4,c,zt,h,blw,al){
     let v=args.map\(a) {
         return addPoint(a);
     };
+    let color = o.color;// if (color==null) color = "#000";
+    let zt = o.zt; if (zt==null) zt = 0;
+    let h = o.h; if (h==null) h = 0;
+    let blw = o.blw; if (blw==null) blw = 0;
+    let al = o.al; if (al==null) al = 255;
     switch (v.length){
         case 2:
-        return add3D_L(1,v[0],v[1],o.color, o.zt, o.h);
+        return add3D_L(1,v[0],v[1], color, zt, h, blw, al);
         case 3:
-        return add3D_T(1,v[0],v[1],v[2],o.color, o.zt, o.h);
+        return add3D_T(1,v[0],v[1],v[2], color, zt, h, blw, al);
         case 4:
-        return add3D_S(1,v[0],v[1],v[2],v[3],o.color, o.zt, o.h);
+        return add3D_S(1,v[0],v[1],v[2],v[3], color, zt, h, blw, al);
         default:
         throw new Error("addPolygonに指定できる頂点数は4までです．");
     }

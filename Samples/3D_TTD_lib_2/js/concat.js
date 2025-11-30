@@ -64,7 +64,6 @@ Tonyu.klass.define({
               _this.gk=10000;
             }
           }
-          _this.cameraMain();
           _this.update();
           
         }
@@ -125,7 +124,6 @@ Tonyu.klass.define({
               _this.gk=10000;
             }
           }
-          (yield* _this.fiber$cameraMain(_thread));
           (yield* _this.fiber$update(_thread));
           
         }
@@ -149,13 +147,20 @@ Tonyu.klass.define({
         
         _this.onStart();
         _this.onBeforeMove();
-        Tonyu.globals.$Boot.on("beforeMove",(function anonymous_385() {
+        _this.evtBeforeMove = Tonyu.globals.$Boot.on("beforeMove",(function anonymous_483() {
           
           _this.onBeforeMove();
         }));
-        Tonyu.globals.$Boot.on("afterMove",(function anonymous_430() {
+        
+        _this.evtAfterMove = Tonyu.globals.$Boot.on("afterMove",(function anonymous_546() {
           
           _this.onAfterMove();
+        }));
+        
+        _this.on("die",(function anonymous_577() {
+          
+          _this.evtBeforeMove.remove();
+          _this.evtAfterMove.remove();
         }));
       },
       fiber$main :function* _trc_Main_f_main(_thread) {
@@ -163,13 +168,20 @@ Tonyu.klass.define({
         
         (yield* _this.fiber$onStart(_thread));
         (yield* _this.fiber$onBeforeMove(_thread));
-        Tonyu.globals.$Boot.on("beforeMove",(function anonymous_385() {
+        _this.evtBeforeMove = Tonyu.globals.$Boot.on("beforeMove",(function anonymous_483() {
           
           _this.onBeforeMove();
         }));
-        Tonyu.globals.$Boot.on("afterMove",(function anonymous_430() {
+        
+        _this.evtAfterMove = Tonyu.globals.$Boot.on("afterMove",(function anonymous_546() {
           
           _this.onAfterMove();
+        }));
+        
+        _this.on("die",(function anonymous_577() {
+          
+          _this.evtBeforeMove.remove();
+          _this.evtAfterMove.remove();
         }));
         
       },
@@ -179,8 +191,7 @@ Tonyu.klass.define({
         Tonyu.globals.$printSize=12;
         _this.print("操作:\n←→:向き\n↑↓:前進後進\nA,Z:上下移動\nS,X:上下角\nD,F:傾き\nQ,W:ズーム");
         Tonyu.globals.$TD_Z=new Tonyu.classes.kernel.TD_Z;
-        Tonyu.globals.$TD_Z.STARTING();
-        Tonyu.globals.$Camera=new Tonyu.classes.user.Camera({x: 0,y: 500,z: 0,xz: 0,yz: 0,xy: 0,gk: 0,k_max: 10,GL: 0,GU: 0,GR: Tonyu.globals.$screenWidth,GD: Tonyu.globals.$screenHeight});
+        Tonyu.globals.$Camera=new Tonyu.classes.user.Camera({x: 0,y: 0,z: 0,xz: 0,yz: 0,xy: 0,gk: 0,k_max: 10,GL: 0,GU: 0,GR: Tonyu.globals.$screenWidth,GD: Tonyu.globals.$screenHeight});
         new Tonyu.classes.user.MyChar({x: - 250,y: - 250,z: 700});
       },
       fiber$onStart :function* _trc_Main_f_onStart(_thread) {
@@ -189,8 +200,7 @@ Tonyu.klass.define({
         Tonyu.globals.$printSize=12;
         _this.print("操作:\n←→:向き\n↑↓:前進後進\nA,Z:上下移動\nS,X:上下角\nD,F:傾き\nQ,W:ズーム");
         Tonyu.globals.$TD_Z=new Tonyu.classes.kernel.TD_Z;
-        Tonyu.globals.$TD_Z.STARTING();
-        Tonyu.globals.$Camera=new Tonyu.classes.user.Camera({x: 0,y: 500,z: 0,xz: 0,yz: 0,xy: 0,gk: 0,k_max: 10,GL: 0,GU: 0,GR: Tonyu.globals.$screenWidth,GD: Tonyu.globals.$screenHeight});
+        Tonyu.globals.$Camera=new Tonyu.classes.user.Camera({x: 0,y: 0,z: 0,xz: 0,yz: 0,xy: 0,gk: 0,k_max: 10,GL: 0,GU: 0,GR: Tonyu.globals.$screenWidth,GD: Tonyu.globals.$screenHeight});
         new Tonyu.classes.user.MyChar({x: - 250,y: - 250,z: 700});
         
       },
@@ -207,17 +217,25 @@ Tonyu.klass.define({
         var _this=this;
         
         Tonyu.globals.$TD_Z.draw3D();
+        if (Tonyu.globals.$frameCount%60==0) {
+          new Tonyu.classes.user.MyChar({x: - 250+_this.rnd(- 100,100),y: _this.rnd(- 300,300),z: 1500});
+          
+        }
       },
       fiber$onAfterMove :function* _trc_Main_f_onAfterMove(_thread) {
         var _this=this;
         
         Tonyu.globals.$TD_Z.draw3D();
+        if (Tonyu.globals.$frameCount%60==0) {
+          new Tonyu.classes.user.MyChar({x: - 250+_this.rnd(- 100,100),y: _this.rnd(- 300,300),z: 1500});
+          
+        }
         
       },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"onStart":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onBeforeMove":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onAfterMove":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"onStart":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onBeforeMove":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"onAfterMove":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"evtBeforeMove":{},"evtAfterMove":{}}}
 });
 Tonyu.klass.define({
   fullName: 'user.MyChar',
@@ -230,35 +248,18 @@ Tonyu.klass.define({
       main :function _trc_MyChar_main() {
         var _this=this;
         
-        _this.add3D_DX_P(1,150,250,250,3,0,0,255,1);
-        _this.add3D_L_P(1,200,200,200,200,200,400,_this.color(255,255,255),0,0);
-        _this.add3D_T_P(1,100,100,100,200,200,100,300,100,100,_this.color(255,255,0),0,0);
-        _this.add3D_S_P(1,300,200,300,300,300,300,400,300,300,400,200,300,_this.color(0,255,255),0,0);
-        _this.p1 = _this.add3D_P(0,0,0);
-        
-        _this.p2 = _this.add3D_P(0,0,500);
-        
-        _this.p3 = _this.add3D_P(500,0,500);
-        
-        _this.p4 = _this.add3D_P(500,0,0);
-        
-        _this.p5 = _this.add3D_P(0,500,0);
-        
-        _this.p6 = _this.add3D_P(0,500,500);
-        
-        _this.p7 = _this.add3D_P(500,500,500);
-        
-        _this.p8 = _this.add3D_P(500,500,0);
-        
-        _this.add3D_S(1,_this.p1,_this.p2,_this.p3,_this.p4,_this.color(128,128,128),0,0);
-        _this.add3D_S(1,_this.p1,_this.p2,_this.p6,_this.p5,_this.color(64,64,64),0,0);
-        _this.add3D_S(1,_this.p4,_this.p3,_this.p7,_this.p8,_this.color(64,64,64),0,0);
-        _this.add3D_S(1,_this.p5,_this.p6,_this.p7,_this.p8,_this.color(128,128,128),0,0);
-        _this.TD_angleX=250;
-        _this.TD_angleY=250;
-        _this.TD_angleZ=250;
+        _this.addPolygon([200,0,100],[300,0,100],[300,0,200],[200,0,200],{color: "red"});
+        _this.addPolygon([200,0,100],[200,0,200],[100,- 50,150],{color: "orange"});
+        _this.addPolygon([300,0,100],[300,0,200],[400,- 50,150],{color: "orange"});
+        _this.addPolygon([200,0,100],[300,0,100],[250,- 50,30],{color: "gray"});
+        _this.addSprite({x: 250,y: 30,z: 150,p: Tonyu.globals.$pat_neko,scaleX: 2});
+        _this.setPivot(250,50,150);
         while (true) {
           Tonyu.checkLoop();
+          _this.z-=10;
+          if (_this.z<0) {
+            _this.die();
+          }
           _this.update();
           
         }
@@ -266,35 +267,18 @@ Tonyu.klass.define({
       fiber$main :function* _trc_MyChar_f_main(_thread) {
         var _this=this;
         
-        (yield* _this.fiber$add3D_DX_P(_thread, 1, 150, 250, 250, 3, 0, 0, 255, 1));
-        (yield* _this.fiber$add3D_L_P(_thread, 1, 200, 200, 200, 200, 200, 400, _this.color(255,255,255), 0, 0));
-        (yield* _this.fiber$add3D_T_P(_thread, 1, 100, 100, 100, 200, 200, 100, 300, 100, 100, _this.color(255,255,0), 0, 0));
-        (yield* _this.fiber$add3D_S_P(_thread, 1, 300, 200, 300, 300, 300, 300, 400, 300, 300, 400, 200, 300, _this.color(0,255,255), 0, 0));
-        _this.p1=yield* _this.fiber$add3D_P(_thread, 0, 0, 0);
-        
-        _this.p2=yield* _this.fiber$add3D_P(_thread, 0, 0, 500);
-        
-        _this.p3=yield* _this.fiber$add3D_P(_thread, 500, 0, 500);
-        
-        _this.p4=yield* _this.fiber$add3D_P(_thread, 500, 0, 0);
-        
-        _this.p5=yield* _this.fiber$add3D_P(_thread, 0, 500, 0);
-        
-        _this.p6=yield* _this.fiber$add3D_P(_thread, 0, 500, 500);
-        
-        _this.p7=yield* _this.fiber$add3D_P(_thread, 500, 500, 500);
-        
-        _this.p8=yield* _this.fiber$add3D_P(_thread, 500, 500, 0);
-        
-        (yield* _this.fiber$add3D_S(_thread, 1, _this.p1, _this.p2, _this.p3, _this.p4, _this.color(128,128,128), 0, 0));
-        (yield* _this.fiber$add3D_S(_thread, 1, _this.p1, _this.p2, _this.p6, _this.p5, _this.color(64,64,64), 0, 0));
-        (yield* _this.fiber$add3D_S(_thread, 1, _this.p4, _this.p3, _this.p7, _this.p8, _this.color(64,64,64), 0, 0));
-        (yield* _this.fiber$add3D_S(_thread, 1, _this.p5, _this.p6, _this.p7, _this.p8, _this.color(128,128,128), 0, 0));
-        _this.TD_angleX=250;
-        _this.TD_angleY=250;
-        _this.TD_angleZ=250;
+        (yield* _this.fiber$addPolygon(_thread, [200,0,100], [300,0,100], [300,0,200], [200,0,200], {color: "red"}));
+        (yield* _this.fiber$addPolygon(_thread, [200,0,100], [200,0,200], [100,- 50,150], {color: "orange"}));
+        (yield* _this.fiber$addPolygon(_thread, [300,0,100], [300,0,200], [400,- 50,150], {color: "orange"}));
+        (yield* _this.fiber$addPolygon(_thread, [200,0,100], [300,0,100], [250,- 50,30], {color: "gray"}));
+        (yield* _this.fiber$addSprite(_thread, {x: 250,y: 30,z: 150,p: Tonyu.globals.$pat_neko,scaleX: 2}));
+        (yield* _this.fiber$setPivot(_thread, 250, 50, 150));
         while (true) {
           yield null;
+          _this.z-=10;
+          if (_this.z<0) {
+            _this.die();
+          }
           (yield* _this.fiber$update(_thread));
           
         }
@@ -303,7 +287,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}}},"fields":{"p1":{},"p2":{},"p3":{},"p4":{},"p5":{},"p6":{},"p7":{},"p8":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
 });
 
 });

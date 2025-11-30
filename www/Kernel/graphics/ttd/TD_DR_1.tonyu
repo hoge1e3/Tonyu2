@@ -573,7 +573,6 @@ function hamidasiSyusei(GL,GU,GR,GD,scaleXDX,scaleYDX){//■はみ出し修正�
                 if(hh!=0){dpA.push(pp1);if(hh==2)dpA.push(pp2);}
                 //print(pp1.x, pp1.y, pp2.x, pp2.y);
             }
-            $printSize=12;
             //print(pr, s, ss, dpA.length, dpA, dpAsw.length, dpAsw);
       
       

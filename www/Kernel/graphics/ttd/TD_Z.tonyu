@@ -7,6 +7,7 @@ native performance;
 //■初期値設定■■■■■■■■■
 
 var sindata, cosdata;
+var isStarting = false;
 
 \new(){
     p=-1;
@@ -15,9 +16,14 @@ var sindata, cosdata;
     $TD_M_ACM=[]; // カメラ配列
     // $TD_M_APS=[]; // プロセス配列
     $TD_M_APL=[]; // パネル配列
+
+    STARTING();
 }
 function STARTING(){ // ３Ｄに必要な初期セッティング
     var t;
+  
+    if (isStarting) return;
+    isStarting = true;
     /*
     ●…値を変更してもいい
     ○…値を変更してもいい（あまり変更は薦めない）
@@ -70,16 +76,15 @@ function STARTING(){ // ３Ｄに必要な初期セッティング
   
   
     /* 画面領域設定（画面はみ出し修正機能） */
-    /*$TD_G_GL=-1;            // ●画面左端
+    $TD_G_GL=-1;            // ●画面左端
     $TD_G_GU=-1;            // ●画面上端
-    $TD_G_GR=$screenWidth;  // ●画面右端
-    $TD_G_GD=$screenHeight; // ●画面下端
-  */
+    $TD_G_GR=$screenWidth+1;  // ●画面右端
+    $TD_G_GD=$screenHeight+1; // ●画面下端
     
-    $TD_G_GL=50;               // ●画面左端
-    $TD_G_GU=50;               // ●画面上端
-    $TD_G_GR=$screenWidth-51;  // ●画面右端
-    $TD_G_GD=$screenHeight-51; // ●画面下端
+    // $TD_G_GL=50;               // ●画面左端
+    // $TD_G_GU=50;               // ●画面上端
+    // $TD_G_GR=$screenWidth-51;  // ●画面右端
+    // $TD_G_GD=$screenHeight-51; // ●画面下端
     
   
   
@@ -137,7 +142,6 @@ function STARTING(){ // ３Ｄに必要な初期セッティング
   
     /* Objectの動作再開 */
     //t.releaseAll();
-  
 }
 
 
@@ -173,8 +177,8 @@ function GKK(zGL,zGU,zGR,zGD){//■画面関係計算
   
 }
 
-function FPS(visible, x1, y1, x2, y2){//■ＦＰＳ測定
-    var col;
+function FPS(visible, x1, y1, x2, y2, textSize){//■ＦＰＳ測定
+    var col, tr;
     //■ＦＰＳ
     if(performance.now()-$TD_FPS_gt>=1000){$TD_FPS_fps=$TD_FPS_dv;$TD_FPS_fps2=$TD_FPS_v;$TD_FPS_gt=performance.now();$TD_FPS_v=0;$TD_FPS_dv=0;}
     $TD_FPS_v++;
@@ -185,13 +189,18 @@ function FPS(visible, x1, y1, x2, y2){//■ＦＰＳ測定
   
     //■表示
     if(visible){
-        //fillRect($screenWidth-70,$screenHeight-40,$screenWidth,$screenHeight,"#101010",0);
-        if (x1 == null) x1 = $screenWidth-70;
-        if (y1 == null) y1 = $screenWidth-40;
-        if (x2 == null) x2 = $screenWidth-70;
-        if (y2 == null) y2 = $screenWidth-20;
-        drawText(x1,y1,"FPS:"+$TD_FPS_fps,colorHSL(140-($TD_FPS_fps-1)*140/59,240,120),16,-1);
-        drawText(x2,y2,"RPS:"+$TD_FPS_fps2,colorHSL(140-($TD_FPS_fps2-1)*140/59,240,120),16,-1);
+        if (textSize == null) textSize = 16;
+        tr = textSize / 16;
+        if (x1 == null) x1 = $screenWidth-70*tr;
+        if (y1 == null) y1 = $screenHeight-40*tr;
+        if (x2 == null) x2 = $screenWidth-70*tr;
+        if (y2 == null) y2 = $screenHeight-20*tr;
+        if(visible==true||visible==1){
+            fillRect(x1,y1,70*tr,20*tr,"#101010cc",0);
+            fillRect(x2,y2,70*tr,20*tr,"#101010cc",0);
+        }
+        drawText(x1,y1,"FPS:"+$TD_FPS_fps,colorHSL(140-($TD_FPS_fps-1)*140/59,240,120),16*tr,-1);
+        drawText(x2,y2,"RPS:"+$TD_FPS_fps2,colorHSL(140-($TD_FPS_fps2-1)*140/59,240,120),16*tr,-1);
         // drawText(2,80+30,"chars:"+all().length,"#FFF",12,-1);
         // drawText(2,80+15*3,"$TD_Z_xz:"+$TD_Z_xz,"#FFF",12,-1);
         // drawText(2,80+15*4,"$TD_K_xzsin:"+$TD_K_xzsin,"#FFF",12,-1);

@@ -3,17 +3,25 @@
 // Tonyu1 と Tonyu2 の3Dグラフィックを表示するライブラリです。
 // サンプルは下記URLにあります。
 // https://www.tonyu.jp/project/viewProject.cgi?mainkey=301&
+// https://run.tonyu.jp/?hoge_ship/67260f5f
 // 
 // WebGLではなくCanvasで描画しているため、下記の制限があります。
 // ・ポリゴンの前後関係がおかしく表示される場合がある
 // ・交差するポリゴンは表現できない(どちらかが手前に表示されてしまう)
 // ・テクスチャは使えない(ポリゴン1枚1色のみ)
+// 
+// 本ライブラリ使用の新規プロジェクト作成する場合、ウィンドウ→フォルダを開く から
+// 本フォルダをProjetフォルダへコピーするのが便利です(ダウンロード版の場合)
 
 // Tonyu1のFrameManagerと同じ動作にする
 onStart();
 onBeforeMove();
-$Boot.on("beforeMove") \{ onBeforeMove(); };
-$Boot.on("afterMove") \{ onAfterMove(); };
+let evtBeforeMove = $Boot.on("beforeMove") \{ onBeforeMove(); };
+let evtAfterMove = $Boot.on("afterMove") \{ onAfterMove(); };
+on("die") \{ // loadPageでこのクラスが消える場合は、イベントを削除して処理が重複しないようにする
+    evtBeforeMove.remove();
+    evtAfterMove.remove();
+};
 
 function onStart() { // 最初に1度のみ実行される
     $printSize = 12;
@@ -28,7 +36,6 @@ function onStart() { // 最初に1度のみ実行される
     
     // 初期設定 //
     $TD_Z=new TD_Z;
-    $TD_Z.STARTING();
     
     // カメラ作成 //
     $Camera=new Camera{
@@ -46,6 +53,6 @@ function onBeforeMove() { // 毎フレーム、全オブジェクトよりも1�
 }
 
 function onAfterMove() { // 毎フレーム、全オブジェクトよりも1番最後に実行される
-    //$TD_Z.FPS(true);   // 描画回数計算
+    //$TD_Z.FPS(1);   // 描画回数計算(m,x1,y1,x2,y2,textsize) m=0:非表示,1:BGあり,2:BGなし
     $TD_Z.draw3D(); // ３Ｄ描画
 }
