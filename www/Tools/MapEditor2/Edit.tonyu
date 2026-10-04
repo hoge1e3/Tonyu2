@@ -19,7 +19,8 @@ new Button{left:bw*0.5-bhide, top: h-bw*3, width:bw ,text:"↑", key:"up",onClic
 new Button{left:bw*0.5-bhide, top: h-bw*1, width:bw ,text:"↓", key:"down",onClick:moveC,autoRepeat:30};
 new Button{left:bw*0-bhide, top: h-bw*2, width:bw ,text:"←", key:"left",onClick:moveC,autoRepeat:30};
 new Button{left:bw*1-bhide, top: h-bw*2, width:bw ,text:"→", key:"right",onClick:moveC,autoRepeat:30};
-
+let borders=[];
+drawBorders();
 
 var putB=new Button{top:h-bw*3,left:bw*3-bhide,width:100,text:"Put",key:"space",onClick:put};
 new Button{top:h-bw*3,left:bw*5-bhide,width:100,text:"Pick",key:"z",onClick:pick};
@@ -61,16 +62,16 @@ on("keyDown","x") \{
 on("keyDown","q") \{
     curP.changeLayer();
 };
-on("keyDown","d") \{
+on("autoRepeat","d") \{
     scrollTo(sx+32,sy,zoom);
 };
-on("keyDown","a") \{
+on("autoRepeat","a") \{
     scrollTo(sx-32,sy,zoom);
 };
-on("keyDown","s") \{
+on("autoRepeat","s") \{
     scrollTo(sx,sy+32,zoom);
 };
-on("keyDown","w") \{
+on("autoRepeat","w") \{
     scrollTo(sx,sy-32,zoom);
 };
 \scrollTo(sx,sy,zoom) {
@@ -257,6 +258,8 @@ mapToucher.on("touch") \(e){
 }
 \put() {
     c.put(curP);
+    if (curP==-1) $map.pack();
+    drawBorders();
 }
 \pick() {
     c.pick(curP);
@@ -274,4 +277,16 @@ mapToucher.on("touch") \(e){
 }
 \modified() {
     //$records.modified(mapFile);
+}
+\drawBorders(){
+    let cw=$map.chipWidth||32;
+    let ch=$map.chipHeight||32;
+    let w=cw*($map.col||1);
+    let h=ch*($map.row||1);
+    for (let b of borders) b.die();
+    borders=[];
+    borders.push(new Actor{x:-cw/2,y:h/2,width:cw,height:h+ch*2,fillStyle="black"});
+    borders.push(new Actor{x:w/2,y:-ch/2,width:w+cw*2,height:ch,fillStyle="black"});
+    borders.push(new Actor{x:w+cw/2,y:h/2,width:cw,height:h+ch*2,fillStyle="black"});
+    borders.push(new Actor{x:w/2,y:h+ch/2,width:w+cw*2,height:ch,fillStyle="black"});
 }
