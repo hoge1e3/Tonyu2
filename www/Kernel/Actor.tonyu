@@ -10,6 +10,7 @@ includes InputMod2D,SpriteMod2D,QueryMod2D,OneframeSpriteMod;
 \findEventHandlerClass(type) {
     if (type==="touch") return ActorTouch;
     if (type==="keyDown") return KeyDownHandler;
+    if (type==="autoRepeat") return AutoRepeatHandler;
     return super.findEventHandlerClass(type);
 }
 \toString() {

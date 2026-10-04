@@ -7,12 +7,17 @@ extends EventHandler;
     e.keyName=e.name=$Keys.codesRev[e.keyCode];
     if (!e.name) e.keyName=e.name=e.code+"";
     e.sendUps=[];
+    let ent;
     e.on=\(name,f) {
         if (name==="keyUp"||name==="up") {
             e.sendUps.push(f);
         }  
+        if (name==="enterFrame") {
+            ent=$Boot.on("enterFrame",f);
+        }
     };
     e.sendUp=\() {
+        if (ent) ent.remove();
         for (var f of e.sendUps) f();
     };
     return e;   
@@ -46,15 +51,28 @@ var handlers,pressState;
         }
     };
 }
-\newListener(keyName, f) {
-    var keyCode=typeof keyName==="number" ? keyName : $Keys.codes[keyName];
-    var a;
+\newListener() {
+    // (f)
+    // (number, f)
+    // (string, f)
+    let pa=new ArgParser(arguments);
+    let keyName=pa.shift("number")||pa.shift("string");
+    var keyCode=
+    keyName==null ? "all" :
+    typeof keyName==="number" ? keyName : $Keys.codes[keyName];
+    let f=pa.shift("function");
+    if (!f) {
+        throw new Error("keyDown: Handler is not set");
+    }
+    handlers[keyCode]=handlers[keyCode]||[];
+    var a=handlers[keyCode];
+    /*
     if (!f) {
         f=keyName;
         a=handlers.all=handlers.all||[];
     } else {
         a=handlers[keyCode]=handlers[keyCode]||[];
-    }
+    }*/
     a.push(f);
     return {
         dispose: \{

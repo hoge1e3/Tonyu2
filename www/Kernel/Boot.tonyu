@@ -523,6 +523,7 @@ nowait \moveFrame() {
     Tonyu.resetLoopCheck();
     if (newLimit) newLimitCount=newLimit;
     fireEvent("beforeMove");
+    fireEvent("enterFrame");
     //debug("MoveFrame",1);
     var sc=_scheduler.stepsAll();
     //debug("MoveFrame",2);
@@ -532,6 +533,7 @@ nowait \moveFrame() {
     $InputDevice.update();
     if ($sound )$sound.resetSEFrame();
     fireEvent("afterMove");
+    fireEvent("exitFrame");
     //console.log("running");
     //debug("MoveFrame",4);
     $screenWidth=$Screen.width;

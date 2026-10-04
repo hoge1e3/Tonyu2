@@ -16469,16 +16469,24 @@ Tonyu.klass.define({
           e.keyName=e.name=e.code+"";
         }
         e.sendUps=[];
-        e.on=(function anonymous_227(name,f) {
+        let ent;
+        e.on=(function anonymous_240(name,f) {
           
           if (name==="keyUp"||name==="up") {
             e.sendUps.push(f);
             
           }
+          if (name==="enterFrame") {
+            ent=Tonyu.globals.$Boot.on("enterFrame",f);
+            
+          }
         });
-        e.sendUp=(function anonymous_345() {
+        e.sendUp=(function anonymous_445() {
           var f;
           
+          if (ent) {
+            ent.remove();
+          }
           for ([f] of Tonyu.iterator2(e.sendUps,1)) {
             f();
           }
@@ -16497,16 +16505,24 @@ Tonyu.klass.define({
           e.keyName=e.name=e.code+"";
         }
         e.sendUps=[];
-        e.on=(function anonymous_227(name,f) {
+        let ent;
+        e.on=(function anonymous_240(name,f) {
           
           if (name==="keyUp"||name==="up") {
             e.sendUps.push(f);
             
           }
+          if (name==="enterFrame") {
+            ent=Tonyu.globals.$Boot.on("enterFrame",f);
+            
+          }
         });
-        e.sendUp=(function anonymous_345() {
+        e.sendUp=(function anonymous_445() {
           var f;
           
+          if (ent) {
+            ent.remove();
+          }
           for ([f] of Tonyu.iterator2(e.sendUps,1)) {
             f();
           }
@@ -16520,7 +16536,7 @@ Tonyu.klass.define({
         __superClass.apply( _this, []);
         _this.handlers={};
         _this.pressState={};
-        Tonyu.globals.$InputDevice.on("keyDownRaw",(function anonymous_532(raw) {
+        Tonyu.globals.$InputDevice.on("keyDownRaw",(function anonymous_663(raw) {
           var a;
           var e;
           var f;
@@ -16548,7 +16564,7 @@ Tonyu.klass.define({
             
           }
         }));
-        Tonyu.globals.$InputDevice.on("keyUpRaw",(function anonymous_968(e) {
+        Tonyu.globals.$InputDevice.on("keyUpRaw",(function anonymous_1099(e) {
           var a;
           var e;
           
@@ -16561,25 +16577,30 @@ Tonyu.klass.define({
           }
         }));
       },
-      newListener :function _trc_KeyDownHandler_newListener(keyName,f) {
+      newListener :function _trc_KeyDownHandler_newListener() {
         var _this=this;
         var keyCode;
         var a;
         var i;
         
-        keyCode = typeof  keyName==="number"?keyName:Tonyu.globals.$Keys.codes[keyName];
+        let pa = new Tonyu.classes.kernel.ArgParser(arguments);
         
+        let keyName = pa.shift("number")||pa.shift("string");
+        
+        keyCode = keyName==null?"all":typeof  keyName==="number"?keyName:Tonyu.globals.$Keys.codes[keyName];
+        
+        let f = pa.shift("function");
         
         if (! f) {
-          f=keyName;
-          a=_this.handlers.all=_this.handlers.all||[];
+          throw new Error("keyDown: Handler is not set");
           
-        } else {
-          a=_this.handlers[keyCode]=_this.handlers[keyCode]||[];
           
         }
+        _this.handlers[keyCode]=_this.handlers[keyCode]||[];
+        a = _this.handlers[keyCode];
+        
         a.push(f);
-        return {dispose: (function anonymous_1449() {
+        return {dispose: (function anonymous_1925() {
           var i;
           
           i = a.indexOf(f);
@@ -16590,7 +16611,7 @@ Tonyu.klass.define({
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"createEvent":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"newListener":{"nowait":true,"isMain":false,"vtype":{"params":[null,null],"returnValue":null}}},"fields":{"handlers":{},"pressState":{}}}
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"createEvent":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"newListener":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"handlers":{},"pressState":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Keys',
@@ -17519,6 +17540,66 @@ Tonyu.klass.define({
     };
   },
   decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"new":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"handleStart":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"handleMove":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"handleEnd":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"unsetEmu":{"nowait":false,"isMain":false,"vtype":{"params":[null],"returnValue":null}},"updateFingers":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}},"reset":{"nowait":false,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{"inputDevice":{},"fingerSet":{},"fingerArray":{},"mp":{}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.AutoRepeatHandler',
+  shortName: 'AutoRepeatHandler',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.EventHandler,
+  includes: [],
+  methods: function (__superClass) {
+    return {
+      main :function _trc_AutoRepeatHandler_main() {
+        var _this=this;
+        
+      },
+      fiber$main :function* _trc_AutoRepeatHandler_f_main(_thread) {
+        var _this=this;
+        
+        
+      },
+      newListener :function _trc_AutoRepeatHandler_newListener() {
+        var _this=this;
+        
+        let pa = new Tonyu.classes.kernel.ArgParser(arguments);
+        
+        let key = pa.shift("string")||pa.shift("number");
+        
+        Tonyu.globals.$autoRepeatDuration=Tonyu.globals.$autoRepeatDuration||30;
+        let duration = (key?pa.shift("number"):null)||Tonyu.globals.$autoRepeatDuration;
+        
+        key=key||"all";
+        let f = pa.shift("function");
+        
+        if (! f) {
+          throw new Error("autoRepeat: Handler is not set");
+          
+          
+        }
+        return _this.target.on("keyDown",key,(function anonymous_645(e) {
+          
+          let times = 0;
+          
+          e.times=times++;
+          f(e);
+          let c = duration;
+          
+          e.on("enterFrame",(function anonymous_763() {
+            
+            if (c>0) {
+              c--;
+            } else {
+              e.times=times++;
+              f(e);
+              
+            }
+          }));
+        }));
+      },
+      __dummy: false
+    };
+  },
+  decls: {"methods":{"main":{"nowait":false,"isMain":true,"vtype":{"params":[],"returnValue":null}},"newListener":{"nowait":true,"isMain":false,"vtype":{"params":[],"returnValue":null}}},"fields":{}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.LifeCycleMod',
@@ -21341,6 +21422,9 @@ Tonyu.klass.define({
         }
         if (type==="keyDown") {
           return Tonyu.classes.kernel.KeyDownHandler;
+        }
+        if (type==="autoRepeat") {
+          return Tonyu.classes.kernel.AutoRepeatHandler;
         }
         return __superClass.prototype.findEventHandlerClass.apply( _this, [type]);
       },
@@ -39325,6 +39409,7 @@ Tonyu.klass.define({
           _this.newLimitCount=_this.newLimit;
         }
         _this.fireEvent("beforeMove");
+        _this.fireEvent("enterFrame");
         sc = _this._scheduler.stepsAll();
         
         Tonyu.globals.$Keys.update();
@@ -39334,6 +39419,7 @@ Tonyu.klass.define({
           Tonyu.globals.$sound.resetSEFrame();
         }
         _this.fireEvent("afterMove");
+        _this.fireEvent("exitFrame");
         Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
         Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
         _this.moveTime=_this.now()-s;
@@ -39480,7 +39566,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_17143() {
+        requestAnimationFrame((function anonymous_17202() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;
@@ -39496,7 +39582,7 @@ Tonyu.klass.define({
           return _this;
         }
         _this._drawFrameRequested=true;
-        requestAnimationFrame((function anonymous_17143() {
+        requestAnimationFrame((function anonymous_17202() {
           
           _this.drawFrame();
           _this._drawFrameRequested=false;

@@ -1,0 +1,35 @@
+extends EventHandler;
+\newListener() {
+    let pa=new ArgParser(arguments);
+    // handler 
+    // (f)
+    // key, handler
+    // (number, f)
+    // (string, f)
+    // key, duration, handler
+    // (number, number, f)
+    // (string, number, f)    
+    // ("all", number, f)
+    let key=pa.shift("string")||pa.shift("number");
+    $autoRepeatDuration=$autoRepeatDuration||30;
+    let duration=(key? pa.shift("number"): null)||$autoRepeatDuration;
+    key=key||"all";
+    //print(key,duration);
+    let f=pa.shift("function");
+    if (!f) {
+        throw new Error("autoRepeat: Handler is not set");
+    }    
+    return target.on("keyDown",key) \(e) {
+        let times=0;
+        e.times=times++;
+        f(e);
+        let c=duration;
+        e.on("enterFrame") \{
+            if (c>0) c--;
+            else {
+                e.times=times++;
+                f(e);
+            }
+        };
+    };
+}
