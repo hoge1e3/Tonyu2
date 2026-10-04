@@ -2,6 +2,9 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
     var east=function (prj,options) {
         var dir=prj.getDir();
         options=options||{};
+        const outputJSON=options.json ? (f, type="text", content)=>{
+            
+        }:()=>false;
         console.log("east options",options);
         var excludes=options.excludes||{};
         var includeJSScript=options.includeJSScript;
@@ -60,6 +63,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             //var m="";//(name==main?" data-main='true'":"");
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
             if (chkDup(rel,"base")) return;
+            outputJSON(f);
             buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">";
             buf+=escapeLoosely(f.text());
             buf+="</script>\n\n";
@@ -68,12 +72,14 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             var rel=f.relPath(dir);
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
             if (chkDup(rel,"json")) return;
+            outputJSON(f);
             buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">\n";
             buf+=beautifyJSON(f.text());
             buf+="</script>\n\n";
         });
         let lu=` data-lastupdate='${new Date().getTime()}' `;
         if (!chkDup("options.json","options")) { 
+            outputJSON(dir.rel("options.json"),"json", popt);
             buf+="<script language='text/tonyu' type='text/tonyu' data-filename='options.json'"+lu+">\n";
             buf+=JSON.stringify(popt,null,4);
             buf+="</script>\n\n";
@@ -83,6 +89,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             let lu=" data-lastupdate='"+f.lastUpdate()+"' ";
             let rel=deps[ns].dstPath;
             if (chkDup(rel,"deps")) continue;
+            outputJSON(f);
             buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"' data-wrap='80'"+lu+">";
             buf+=escapeLoosely(wrap(f.text(),80));
             buf+="</script>\n\n";
@@ -91,6 +98,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
             var rel=f.relPath(dir);
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
             if (chkDup(rel,"binary")) return;
+            outputJSON(f,"base64");
             buf+="<script language='text/tonyu' type='text/tonyu' data-dataurl='true' data-filename='"+rel+"' data-wrap='80'"+lu+">";
             buf+=wrap(f.dataURL(),80);
             buf+="</script>\n\n";

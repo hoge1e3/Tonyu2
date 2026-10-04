@@ -1,6 +1,8 @@
 define(function(require, exports, module) {
     const UI = require("UI");
     const R = require("R");
+    const rpc = require("rpc_umd");
+    const WebSite = require("WebSite");
     const PopupWindow = require("PopupWindow");
     class DebugDialog {
         constructor(param) {
@@ -34,6 +36,7 @@ define(function(require, exports, module) {
         }
         show(reset, size) {
             const t = this;
+            const isSafeMode=false;
             let param = t.param;
             var d = t.dom;
             var desktopEnv = param.desktopEnv;
@@ -120,31 +123,20 @@ define(function(require, exports, module) {
             } else {
                 d.dialog();
             }
-            if (!reset && !doResize) t.iframe.attr("src", "debug.html?prj=" + param.prj+(t.param.isCloned? "&nodebug=1":""));
+            if (isSafeMode) {
+                t.iframe.attr("src",WebSite.safeModeURL);
+                t.iframe.on("load", ()=>{
+                    const c=rpc.proxy.client(t.iframe[0].contentWindow, 
+                        "tonyu-runScript",
+                        getOrigin(WebSite.safeModeURL));
+                    c.load(exportAsJSON());
+                });
+            } else if (!reset && !doResize) t.iframe.attr("src", "debug.html?prj=" + param.prj+(t.param.isCloned? "&nodebug=1":""));
             t.opened = true;
             $(".ui-dialog-titlebar-close").blur();
             t.focusToIframe();
             t.resizeCanvas(d.width(), d.height());
             console.log("Diag", size);
-            /*function change() {
-                try {
-                    const ch = t.autoReloadCheck.prop("checked");
-                    //console.log(ch);
-                    t.iframeGlobals().$Boot.autoReload = ch;
-                    t.project.startWithAutoReload = ch;
-                } catch (e) {
-                    console.log(e);
-                }
-            }*/
-            /*setInterval(()=>{
-                try {
-                    const ar=t.iframeGlobals().$Boot.autoReload;
-                    t.autoReloadCheck.prop("checked",!!ar);
-                    if (ar===true) t.iframeGlobals.$autoReloadWasTrue=ar;
-                }catch(e){
-                    console.log(e);
-                }
-            },1000);*/
             if (this.cloned) this.cloned.show();
         }
         setAutoReload(ch) {

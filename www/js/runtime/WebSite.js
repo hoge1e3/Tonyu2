@@ -107,11 +107,13 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 			WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
 			WebSite.quickUploadURL=prot+"//localhost/tsite/tonyu/project/quickDone.cgi";
 			WebSite.scriptServer="https://localhost/tonyu2/";
+			WebSite.safeModeURL="http://127.0.0.1/tonyu2/html/run1_rpc.html";
 		} else {
 			WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
 			WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
 			WebSite.quickUploadURL=prot+"//www.tonyu.jp/project/quickDone.cgi";
 			WebSite.scriptServer="https://edit.tonyu.jp/";
+			WebSite.safeModeURL="https://run.tonyu.jp/run1_rpc.html";
 		}
 		FS.setEnvProvider(new FS.Env(WebSite));
 		WebSite.sysVersion=VER;
